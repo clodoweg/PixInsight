@@ -121,6 +121,31 @@ td:first-child { font-family: var(--display); font-weight: 600; white-space: now
 table.scripts { min-width: 760px; }
 table.scripts td:first-child { white-space: normal; max-width: 220px; }
 table.scripts td:last-child { min-width: 220px; }
+a.tool { text-decoration: none; color: inherit; }
+a.tool.rc { color: var(--accent); }
+a.tool:hover, a.tool:focus-visible { border-color: var(--accent); background: var(--accent-soft); outline: none; }
+.toc { display: grid; gap: 8px; margin: 0 0 8px; }
+.toc-g { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; font-size: 15px; }
+.toc-g span { font-family: var(--display); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); min-width: 150px; }
+.toc-g a { color: var(--fg); text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; }
+.toc-g a:hover { color: var(--accent); text-decoration-color: var(--accent); }
+.tcards { display: grid; gap: 12px; }
+.tcard { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 16px 18px; min-width: 0; scroll-margin-top: 70px; }
+.tcard:target { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft); }
+.tcard-head { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin-bottom: 10px; }
+.tcard-head h4 { font-family: var(--display); font-size: 1.12rem; font-weight: 600; margin: 0; flex: 1 1 auto; min-width: 0; }
+.ttag { font-family: var(--display); font-size: 10px; font-weight: 700; letter-spacing: .08em; padding: 2px 7px; border-radius: 3px; border: 1px solid var(--line); color: var(--muted); }
+.ttag.rc { border-color: var(--accent); color: var(--accent); }
+.ttag.free { border-style: dashed; }
+.tlabel { font-family: var(--display); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin: 10px 0 4px; }
+.tsteps { margin: 0; padding-left: 20px; font-size: 16px; }
+.tsteps li { margin-bottom: 3px; }
+.tparams { margin: 0; display: grid; border-top: 1px solid var(--line); }
+.tparams > div { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); gap: 4px 16px; padding: 7px 0; border-bottom: 1px solid var(--line); }
+.tparams dt { font-family: var(--display); font-weight: 600; font-size: 15px; }
+.tparams dd { margin: 0; font-size: 15px; font-variant-numeric: tabular-nums; }
+.tnote { font-size: 15px; color: var(--muted); margin: 10px 0 0; }
+@media (max-width: 560px) { .tparams > div { grid-template-columns: 1fr; gap: 0; } .toc-g span { min-width: 0; width: 100%; } }
 .rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
 .rule { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 14px 16px; min-width: 0; }
 .rule h4 { font-family: var(--display); font-size: 1rem; margin: 0 0 4px; }
@@ -161,6 +186,7 @@ footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line);
     <a href="#rgbsho">RGB + SHO</a>
     <a href="#foraxx">Foraxx</a>
     <a href="#etoiles">Réduction d'étoiles</a>
+    <a href="#parametres">Paramètres</a>
     <a href="#regles">Règles d'or</a>
   </nav>
 
@@ -183,7 +209,7 @@ footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line);
 
     <h3>Modules natifs PixInsight</h3>
     <div class="tools">
-      <span class="tool nat">WBPP</span><span class="tool nat">FastBatchPreprocessing</span><span class="tool nat">ImageSolver</span><span class="tool nat">SPCC</span><span class="tool nat">MultiscaleGradientCorrection + MARS</span><span class="tool nat">GradientCorrection</span><span class="tool nat">DBE</span><span class="tool nat">GeneralizedHyperbolicStretch</span><span class="tool nat">ChannelCombination</span><span class="tool nat">LRGBCombination</span><span class="tool nat">NBRGBCombination</span><span class="tool nat">PixelMath</span><span class="tool nat">CurvesTransformation</span><span class="tool nat">LocalHistogramEqualization</span><span class="tool nat">HDRMultiscaleTransform</span><span class="tool nat">SCNR</span>
+      <a class="tool nat" href="#t-wbpp">WBPP</a><a class="tool nat" href="#t-fbpp">FastBatchPreprocessing</a><a class="tool nat" href="#t-solver">ImageSolver</a><a class="tool nat" href="#t-spcc">SPCC</a><a class="tool nat" href="#t-mgc">MultiscaleGradientCorrection + MARS</a><a class="tool nat" href="#t-gc">GradientCorrection</a><a class="tool nat" href="#t-dbe">DBE</a><a class="tool nat" href="#t-ghs">GeneralizedHyperbolicStretch</a><a class="tool nat" href="#t-chcomb">ChannelCombination</a><a class="tool nat" href="#t-lrgb">LRGBCombination</a><a class="tool nat" href="#t-nbrgb">NBRGBCombination</a><a class="tool nat" href="#t-pixelmath">PixelMath</a><a class="tool nat" href="#t-curves">CurvesTransformation</a><a class="tool nat" href="#t-lhe">LocalHistogramEqualization</a><a class="tool nat" href="#t-hdrmt">HDRMultiscaleTransform</a><a class="tool nat" href="#t-scnr">SCNR</a>
     </div>
 
     <h3>Scripts et modules gratuits</h3>
@@ -218,12 +244,12 @@ footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line);
       <li>
         <div class="step-head"><h4>Calibration</h4><span class="phase lin">Linéaire</span></div>
         <p>Darks, flats et flat-darks (ou bias). CosmeticCorrection automatique activée.</p>
-        <div class="tools"><span class="tool nat">WBPP</span><span class="tool nat">CosmeticCorrection</span></div>
+        <div class="tools"><a class="tool nat" href="#t-wbpp">WBPP</a><a class="tool nat" href="#t-cc">CosmeticCorrection</a></div>
       </li>
       <li>
         <div class="step-head"><h4>Pondération et alignement</h4><span class="phase lin">Linéaire</span></div>
         <p>Pondération par <em>PSF Signal Weight</em>, alignement de tous les filtres sur une référence commune, puis <strong>LocalNormalization</strong>.</p>
-        <div class="tools"><span class="tool nat">WBPP</span><span class="tool nat">LocalNormalization</span></div>
+        <div class="tools"><a class="tool nat" href="#t-wbpp">WBPP</a><a class="tool nat" href="#t-ln">LocalNormalization</a></div>
       </li>
       <li>
         <div class="step-head"><h4>Intégration</h4><span class="phase lin">Linéaire</span></div>
@@ -232,7 +258,7 @@ footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line);
           <li><strong>Autocrop</strong> activé.</li>
           <li><strong>Résolution astrométrique</strong> activée : indispensable pour SPCC et MGC.</li>
         </ul>
-        <div class="tools"><span class="tool nat">WBPP</span><span class="tool nat">FastBatchPreprocessing</span></div>
+        <div class="tools"><a class="tool nat" href="#t-wbpp">WBPP</a><a class="tool nat" href="#t-fbpp">FastBatchPreprocessing</a></div>
       </li>
     </ol>
   </section>
@@ -244,16 +270,16 @@ footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line);
       <li>
         <div class="step-head"><h4>Recadrage</h4><span class="phase lin">Linéaire</span></div>
         <p>Retire les bords restants, si Autocrop n'a pas suffi. Applique le même recadrage à tous les masters.</p>
-        <div class="tools"><span class="tool nat">DynamicCrop</span></div>
+        <div class="tools"><a class="tool nat" href="#t-crop">DynamicCrop</a></div>
       </li>
       <li>
         <div class="step-head"><h4>Suppression du gradient</h4><span class="phase lin">Linéaire</span></div>
         <ul>
-          <li><strong>MGC</strong> avec MARS en priorité.</li>
+          <li><strong>MGC</strong> avec MARS en priorité. Il demande une image résolue (ImageSolver) et calibrée en flux (SPFC) : pour le RGB, fais-le après ChannelCombination, juste avant SPCC.</li>
           <li>Sinon <strong>GradientCorrection</strong>, ou <strong>DBE</strong> pour les grandes nébulosités.</li>
           <li>GraXpert en alternative.</li>
         </ul>
-        <div class="tools"><span class="tool nat">MultiscaleGradientCorrection</span><span class="tool nat">GradientCorrection</span><span class="tool nat">DBE</span><span class="tool free">GraXpert</span></div>
+        <div class="tools"><a class="tool nat" href="#t-spfc">SPFC</a><a class="tool nat" href="#t-mgc">MultiscaleGradientCorrection</a><a class="tool nat" href="#t-gc">GradientCorrection</a><a class="tool nat" href="#t-dbe">DBE</a><a class="tool free" href="#t-graxpert">GraXpert</a></div>
       </li>
     </ol>
   </section>
@@ -266,48 +292,48 @@ footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line);
       <li>
         <div class="step-head"><h4>Combinaison RGB</h4><span class="phase lin">Linéaire</span></div>
         <p>Combine R, G et B. Relance ImageSolver si la solution astrométrique n'a pas été conservée.</p>
-        <div class="tools"><span class="tool nat">ChannelCombination</span><span class="tool nat">ImageSolver</span></div>
+        <div class="tools"><a class="tool nat" href="#t-chcomb">ChannelCombination</a><a class="tool nat" href="#t-solver">ImageSolver</a></div>
       </li>
       <li>
         <div class="step-head"><h4>Calibration des couleurs</h4><span class="phase lin">Linéaire</span></div>
         <p>Choisis ton profil de filtres et de capteur. Le type de galaxie <em>Average Spiral</em> sert de référence de blanc.</p>
-        <div class="tools"><span class="tool nat">SPCC</span></div>
+        <div class="tools"><a class="tool nat" href="#t-spcc">SPCC</a></div>
       </li>
       <li>
         <div class="step-head"><h4>Déconvolution et bruit du RGB</h4><span class="phase lin">Linéaire</span></div>
         <p>BXT en mode <em>Correct Only</em>, puis BXT complet (étoiles et non-stellaire). Ensuite NXT léger, entre 0,5 et 0,7.</p>
-        <div class="tools"><span class="tool rc">BlurXTerminator</span><span class="tool rc">NoiseXTerminator</span></div>
+        <div class="tools"><a class="tool rc" href="#t-bxt">BlurXTerminator</a><a class="tool rc" href="#t-nxt">NoiseXTerminator</a></div>
       </li>
       <li>
         <div class="step-head"><h4>Déconvolution et bruit de L</h4><span class="phase lin">Linéaire</span></div>
         <p>BXT complet, en poussant un peu plus fort le non-stellaire que sur le RGB. Puis NXT.</p>
-        <div class="tools"><span class="tool rc">BlurXTerminator</span><span class="tool rc">NoiseXTerminator</span></div>
+        <div class="tools"><a class="tool rc" href="#t-bxt">BlurXTerminator</a><a class="tool rc" href="#t-nxt">NoiseXTerminator</a></div>
       </li>
       <li>
         <div class="step-head"><h4>Étirement</h4><span class="phase nl">Étiré</span></div>
         <p>Étire séparément RGB et L, en visant un fond et une luminosité médiane comparables.</p>
-        <div class="tools"><span class="tool nat">GeneralizedHyperbolicStretch</span><span class="tool free">Statistical Stretch</span></div>
+        <div class="tools"><a class="tool nat" href="#t-ghs">GeneralizedHyperbolicStretch</a><a class="tool free" href="#t-statstretch">Statistical Stretch</a></div>
       </li>
       <li>
         <div class="step-head"><h4>Séparation des étoiles</h4><span class="phase nl">Étiré</span></div>
         <p>SXT avec <em>Generate star image</em> et <em>Unscreen</em>, sur RGB et sur L. Garde les <strong>étoiles RGB</strong>, jette les étoiles L.</p>
-        <div class="tools"><span class="tool rc">StarXTerminator</span></div>
+        <div class="tools"><a class="tool rc" href="#t-sxt">StarXTerminator</a></div>
       </li>
       <li>
         <div class="step-head"><h4>Combinaison L + RGB</h4><span class="phase nl">Étiré</span></div>
         <p>Sur les deux images sans étoiles : LRGBCombination, saturation vers 0,35 à 0,4, <em>Chrominance noise reduction</em> activée. Alternative : décomposer en CIE L*a*b*, remplacer L, recomposer.</p>
-        <div class="tools"><span class="tool nat">LRGBCombination</span><span class="tool nat">ChannelCombination (CIE L*a*b*)</span></div>
+        <div class="tools"><a class="tool nat" href="#t-lrgb">LRGBCombination</a><a class="tool nat" href="#t-chcomb">ChannelCombination (CIE L*a*b*)</a></div>
       </li>
       <li>
         <div class="step-head"><h4>Finition du fond</h4><span class="phase nl">Étiré</span></div>
         <p>Courbes pour la saturation et le contraste, contraste local sous masque, NXT final léger si besoin.</p>
-        <div class="tools"><span class="tool nat">CurvesTransformation</span><span class="tool nat">LHE</span><span class="tool nat">HDRMultiscaleTransform</span><span class="tool rc">NoiseXTerminator</span></div>
+        <div class="tools"><a class="tool nat" href="#t-curves">CurvesTransformation</a><a class="tool nat" href="#t-lhe">LHE</a><a class="tool nat" href="#t-hdrmt">HDRMultiscaleTransform</a><a class="tool rc" href="#t-nxt">NoiseXTerminator</a></div>
       </li>
       <li>
         <div class="step-head"><h4>Réintégration des étoiles</h4><span class="phase nl">Étiré</span></div>
         <p>Recombine en mode <em>screen</em>. Pour réduire ensuite les étoiles, utilise les <a href="#etoiles" style="color:var(--accent)">formules de Bill Blanshan</a>.</p>
         <div class="formula"><code>~((~starless) * (~stars))</code><button type="button" data-copy>Copier</button></div>
-        <div class="tools"><span class="tool nat">PixelMath</span><span class="tool nat">MorphologicalTransformation</span><span class="tool free">StarReduction</span><span class="tool free">ScreenStars</span></div>
+        <div class="tools"><a class="tool nat" href="#t-pixelmath">PixelMath</a><a class="tool nat" href="#t-morpho">MorphologicalTransformation</a><a class="tool free" href="#t-starred">StarReduction</a><a class="tool free" href="#t-starred">ScreenStars</a></div>
       </li>
     </ol>
   </section>
@@ -319,30 +345,30 @@ footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line);
       <li>
         <div class="step-head"><h4>RGB jusqu'à SPCC</h4><span class="phase lin">Linéaire</span></div>
         <p>Traite le RGB comme dans le workflow LRGB, jusqu'à SPCC inclus.</p>
-        <div class="tools"><span class="tool nat">ChannelCombination</span><span class="tool nat">SPCC</span></div>
+        <div class="tools"><a class="tool nat" href="#t-chcomb">ChannelCombination</a><a class="tool nat" href="#t-spcc">SPCC</a></div>
       </li>
       <li>
         <div class="step-head"><h4>Soustraction du continuum sur Ha</h4><span class="phase lin">Linéaire</span></div>
         <p>Ajuste <strong>k</strong> (environ 0,8 à 1) jusqu'à ce que les étoiles et le disque galactique disparaissent de Ha_cs.</p>
         <div class="formula"><span class="lbl">Ha_cs</span><code>Ha - k * (R - med(R))</code><button type="button" data-copy>Copier</button></div>
-        <div class="tools"><span class="tool nat">PixelMath</span><span class="tool nat">NBRGBCombination</span><span class="tool free">Automatic Continuum Subtraction</span></div>
+        <div class="tools"><a class="tool nat" href="#t-pixelmath">PixelMath</a><a class="tool nat" href="#t-nbrgb">NBRGBCombination</a><a class="tool free" href="#t-acs">Automatic Continuum Subtraction</a></div>
       </li>
       <li>
         <div class="step-head"><h4>Injection dans R</h4><span class="phase lin">Linéaire</span></div>
         <p><strong>w</strong> entre 0,5 et 2 selon l'effet voulu. ImageBlend permet de faire ce mélange avec aperçu.</p>
         <div class="formula"><span class="lbl">R'</span><code>R + w * Ha_cs</code><button type="button" data-copy>Copier</button></div>
-        <div class="tools"><span class="tool nat">PixelMath</span><span class="tool free">ImageBlend</span></div>
+        <div class="tools"><a class="tool nat" href="#t-pixelmath">PixelMath</a><a class="tool free" href="#t-imageblend">ImageBlend</a></div>
       </li>
       <li>
         <div class="step-head"><h4>Injection dans L (facultatif)</h4><span class="phase lin">Linéaire</span></div>
         <p>Rend les régions HII plus nettes. Un mélange léger fonctionne aussi.</p>
         <div class="formula"><span class="lbl">L'</span><code>max(L, Ha_cs * a)</code><button type="button" data-copy>Copier</button></div>
-        <div class="tools"><span class="tool nat">PixelMath</span></div>
+        <div class="tools"><a class="tool nat" href="#t-pixelmath">PixelMath</a></div>
       </li>
       <li>
         <div class="step-head"><h4>Suite du workflow LRGB</h4><span class="phase lin">Linéaire</span><span class="phase nl">Étiré</span></div>
         <p>BXT, NXT, étirement, SXT, LRGBCombination, finition et étoiles, comme dans le <a href="#lrgb" style="color:var(--accent)">workflow LRGB</a>.</p>
-        <div class="tools"><span class="tool rc">BXT</span><span class="tool rc">NXT</span><span class="tool rc">SXT</span><span class="tool nat">LRGBCombination</span></div>
+        <div class="tools"><a class="tool rc" href="#t-bxt">BXT</a><a class="tool rc" href="#t-nxt">NXT</a><a class="tool rc" href="#t-sxt">SXT</a><a class="tool nat" href="#t-lrgb">LRGBCombination</a></div>
       </li>
     </ol>
     <div class="note"><strong>Pour une nébuleuse sans galaxie,</strong> une version plus simple suffit : fais l'image HaRGB en linéaire (Ha dans R, un peu de Ha dans L), puis applique le workflow LRGB classique.</div>
@@ -355,37 +381,37 @@ footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line);
       <li>
         <div class="step-head"><h4>Masters narrowband</h4><span class="phase lin">Linéaire</span></div>
         <p>Pour Ha, OIII et SII : retrait du gradient, BXT, puis NXT. Réduis le bruit plus fort sur OIII et SII, souvent plus bruités.</p>
-        <div class="tools"><span class="tool nat">MGC</span><span class="tool rc">BlurXTerminator</span><span class="tool rc">NoiseXTerminator</span></div>
+        <div class="tools"><a class="tool nat" href="#t-mgc">MGC</a><a class="tool rc" href="#t-bxt">BlurXTerminator</a><a class="tool rc" href="#t-nxt">NoiseXTerminator</a></div>
       </li>
       <li>
         <div class="step-head"><h4>Retrait des étoiles narrowband</h4><span class="phase lin">Linéaire</span></div>
         <p>SXT sur chaque canal ou sur l'image combinée. Ne garde que le <strong>fond sans étoiles</strong>.</p>
-        <div class="tools"><span class="tool rc">StarXTerminator</span></div>
+        <div class="tools"><a class="tool rc" href="#t-sxt">StarXTerminator</a></div>
       </li>
       <li>
         <div class="step-head"><h4>Palette</h4><span class="phase lin">Linéaire</span><span class="phase nl">Étiré</span></div>
         <ul>
-          <li><strong>NarrowbandNormalization</strong> : la référence. Il prend les masters linéaires, gère l'étirement et l'équilibre SHO/HOO.</li>
+          <li><strong>NarrowbandNormalization</strong> : la référence. Il part d'une image RGB où les canaux narrowband sont déjà assignés (SII, Ha, OIII pour SHO), de préférence sans étoiles, et gère l'équilibre SHO/HOO.</li>
           <li><strong>NBColourMapper</strong> : pour des palettes créatives.</li>
           <li><strong>Foraxx dynamique</strong> en PixelMath : pour un SHO or et bleu naturel (<a href="#foraxx" style="color:var(--accent)">formules plus bas</a>).</li>
         </ul>
-        <div class="tools"><span class="tool free">NarrowbandNormalization</span><span class="tool free">Perfect Palette Picker</span><span class="tool free">NBColourMapper</span><span class="tool nat">PixelMath (Foraxx)</span></div>
+        <div class="tools"><a class="tool free" href="#t-nbn">NarrowbandNormalization</a><a class="tool free" href="#t-ppp">Perfect Palette Picker</a><a class="tool free" href="#t-nbcm">NBColourMapper</a><a class="tool nat" href="#t-pixelmath">PixelMath (Foraxx)</a></div>
       </li>
       <li>
         <div class="step-head"><h4>Finition du fond SHO</h4><span class="phase nl">Étiré</span></div>
         <p>Courbes de teinte et saturation, SCNR partiel sur le vert si besoin, contraste local, NXT final léger.</p>
-        <div class="tools"><span class="tool nat">CurvesTransformation</span><span class="tool nat">SCNR</span><span class="tool nat">LHE</span><span class="tool nat">HDRMultiscaleTransform</span><span class="tool rc">NoiseXTerminator</span></div>
+        <div class="tools"><a class="tool nat" href="#t-curves">CurvesTransformation</a><a class="tool nat" href="#t-scnr">SCNR</a><a class="tool nat" href="#t-lhe">LHE</a><a class="tool nat" href="#t-hdrmt">HDRMultiscaleTransform</a><a class="tool rc" href="#t-nxt">NoiseXTerminator</a></div>
       </li>
       <li>
         <div class="step-head"><h4>Étoiles RGB</h4><span class="phase lin">Linéaire</span><span class="phase nl">Étiré</span></div>
         <p>RGB traité (SPCC, BXT), étirement léger, puis SXT. Garde uniquement les étoiles. Star Stretch peut servir pour l'étirement.</p>
-        <div class="tools"><span class="tool nat">SPCC</span><span class="tool rc">BlurXTerminator</span><span class="tool rc">StarXTerminator</span><span class="tool free">Star Stretch</span><span class="tool free">NB to RGB Star Combination</span></div>
+        <div class="tools"><a class="tool nat" href="#t-spcc">SPCC</a><a class="tool rc" href="#t-bxt">BlurXTerminator</a><a class="tool rc" href="#t-sxt">StarXTerminator</a><a class="tool free" href="#t-starstretch">Star Stretch</a><a class="tool free" href="#t-nbrgbstars">NB to RGB Star Combination</a></div>
       </li>
       <li>
         <div class="step-head"><h4>Réintégration des étoiles</h4><span class="phase nl">Étiré</span></div>
         <p>Recombine en mode <em>screen</em>. S'il reste des étoiles magenta ou des halos, passe CorrectMagentaStars ou Halo-B-Gon.</p>
         <div class="formula"><code>~((~starless_SHO) * (~stars_RGB))</code><button type="button" data-copy>Copier</button></div>
-        <div class="tools"><span class="tool nat">PixelMath</span><span class="tool nat">CorrectMagentaStars</span><span class="tool free">Halo-B-Gon</span></div>
+        <div class="tools"><a class="tool nat" href="#t-pixelmath">PixelMath</a><a class="tool nat" href="#t-cms">CorrectMagentaStars</a><a class="tool free" href="#t-halo">Halo-B-Gon</a></div>
       </li>
     </ol>
 
@@ -469,6 +495,313 @@ $T*~($T-iif(I==1,E2,iif(I==2,E4,E6))));
 
 max(Img1,iif(M==1,E7,iif(M==2,E8,E9)))</code><button type="button" data-copy>Copier</button></div>
     <div class="formula"><span class="lbl">Symbols</span><code>I, M, Img1, E1, E2, E3, E4, E5, E6, E7, E8, E9</code><button type="button" data-copy>Copier</button></div>
+  </section>
+
+  <section id="parametres">
+    <h2>Paramètres des outils</h2>
+    <p class="sec-intro">Pour chaque outil : la méthode, puis des valeurs de départ. Ce sont des points de départ à ajuster à l'œil sur tes données, pas des valeurs absolues. Clique sur une étiquette d'outil dans les workflows pour arriver directement à sa fiche.</p>
+    <div class="toc">
+      <div class="toc-g"><span>Prétraitement</span><a href="#t-wbpp">WBPP</a><a href="#t-fbpp">FastBatchPreprocessing</a><a href="#t-cc">CosmeticCorrection</a><a href="#t-ln">LocalNormalization</a></div>
+      <div class="toc-g"><span>Recadrage et gradient</span><a href="#t-crop">DynamicCrop</a><a href="#t-mgc">MultiscaleGradientCorrection + MARS</a><a href="#t-gc">GradientCorrection</a><a href="#t-dbe">DBE</a><a href="#t-graxpert">GraXpert</a></div>
+      <div class="toc-g"><span>Couleur et astrométrie</span><a href="#t-chcomb">ChannelCombination</a><a href="#t-solver">ImageSolver</a><a href="#t-spcc">SPCC</a><a href="#t-spfc">SPFC</a></div>
+      <div class="toc-g"><span>RC Astro</span><a href="#t-bxt">BlurXTerminator</a><a href="#t-nxt">NoiseXTerminator</a><a href="#t-sxt">StarXTerminator</a></div>
+      <div class="toc-g"><span>Étirement</span><a href="#t-ghs">GeneralizedHyperbolicStretch</a><a href="#t-statstretch">Statistical Stretch</a></div>
+      <div class="toc-g"><span>Combinaison</span><a href="#t-lrgb">LRGBCombination</a><a href="#t-nbrgb">NBRGBCombination</a><a href="#t-acs">Automatic Continuum Subtraction</a><a href="#t-imageblend">ImageBlend</a></div>
+      <div class="toc-g"><span>Narrowband</span><a href="#t-nbn">NarrowbandNormalization</a><a href="#t-nbcm">NBColourMapper</a><a href="#t-ppp">Perfect Palette Picker</a><a href="#t-pixelmath">PixelMath</a></div>
+      <div class="toc-g"><span>Étoiles</span><a href="#t-starstretch">Star Stretch</a><a href="#t-nbrgbstars">NB to RGB Star Combination</a><a href="#t-starred">StarReduction et ScreenStars</a><a href="#t-morpho">MorphologicalTransformation</a><a href="#t-halo">Halo-B-Gon</a><a href="#t-cms">CorrectMagentaStars</a></div>
+      <div class="toc-g"><span>Finition</span><a href="#t-curves">CurvesTransformation</a><a href="#t-lhe">LocalHistogramEqualization</a><a href="#t-hdrmt">HDRMultiscaleTransform</a><a href="#t-scnr">SCNR</a></div>
+    </div>
+    <h3>Prétraitement</h3>
+    <div class="tcards">
+      <article class="tcard" id="t-wbpp">
+        <div class="tcard-head"><h4>WBPP (WeightedBatchPreprocessing)</h4><span class="ttag nat" title="Natif PixInsight">PI</span><span class="phase lin">Linéaire</span></div>
+        <div class="tlabel">Méthode</div>
+        <ol class="tsteps"><li>Charge toutes les brutes et calibrations d'un coup (Add Files) : WBPP les trie par type, filtre, durée et température.</li><li>Vérifie dans l'onglet Calibration que chaque groupe de lights trouve ses darks et ses flats.</li><li>Règle les options ci-dessous, puis Run. Contrôle ensuite le rapport et les poids des images.</li></ol>
+        <div class="tlabel">Paramètres</div>
+        <dl class="tparams"><div><dt>Output pedestal mode (Calibration)</dt><dd>Automatic</dd></div><div><dt>Optimize dark frames</dt><dd>Décoché si darks à même durée et même température (caméra refroidie)</dd></div><div><dt>CosmeticCorrection</dt><dd>Activé, avec une icône CosmeticCorrection en Auto detect (voir fiche)</dd></div><div><dt>Debayer (couleur uniquement)</dt><dd>Pattern Auto, méthode VNG</dd></div><div><dt>Subframe weighting</dt><dd>PSF Signal Weight</dd></div><div><dt>Registration reference</dt><dd>Auto</dd></div><div><dt>Distortion correction</dt><dd>Activé pour les courtes focales et les grands champs</dd></div><div><dt>Generate drizzle data</dt><dd>Activé si tu comptes faire un drizzle</dd></div><div><dt>Local normalization</dt><dd>Activé, référence : intégration des meilleures images (réglage par défaut)</dd></div><div><dt>Rejection algorithm</dt><dd>Auto ; ou Generalized ESD au-delà de 15 à 20 images</dd></div><div><dt>Large-scale pixel rejection (High)</dt><dd>Activé si tu as des traînées de satellites</dd></div><div><dt>Drizzle</dt><dd>Scale 2, Drop shrink 0,9, noyau Square</dd></div><div><dt>Autocrop</dt><dd>Activé</dd></div><div><dt>Astrometric solution</dt><dd>Activé (nécessaire pour SPCC, SPFC et MGC)</dd></div><div><dt>Grouping keywords</dt><dd>Ajoute un mot-clé de nuit (par ex. NIGHT) si les flats changent d'une nuit à l'autre</dd></div></dl>
+        <p class="tnote">Aligne tous les filtres sur la même référence : les combinaisons de canaux et les formules PixelMath en dépendent.</p>
+      </article>
+      <article class="tcard" id="t-fbpp">
+        <div class="tcard-head"><h4>FastBatchPreprocessing</h4><span class="ttag nat" title="Natif PixInsight">PI</span><span class="phase lin">Linéaire</span></div>
+        <div class="tlabel">Méthode</div>
+        <ol class="tsteps"><li>Alternative rapide à WBPP pour des centaines de poses courtes (couleur ou mono).</li><li>Charge brutes et calibrations, choisis le dossier de sortie, Run.</li></ol>
+        <div class="tlabel">Paramètres</div>
+        <dl class="tparams"><div><dt>Quand l'utiliser</dt><dd>Très gros volumes, poses courtes, machine modeste</dd></div><div><dt>Limites</dt><dd>Moins d'options que WBPP (pondération, normalisation locale) : WBPP reste la référence pour la qualité</dd></div></dl>
+      </article>
+      <article class="tcard" id="t-cc">
+        <div class="tcard-head"><h4>CosmeticCorrection</h4><span class="ttag nat" title="Natif PixInsight">PI</span><span class="phase lin">Linéaire</span></div>
+        <div class="tlabel">Méthode</div>
+        <ol class="tsteps"><li>Crée une icône de process réglée comme ci-dessous.</li><li>Dans WBPP, sélectionne cette icône comme modèle de correction cosmétique.</li></ol>
+        <div class="tlabel">Paramètres</div>
+        <dl class="tparams"><div><dt>Use Auto detect</dt><dd>Activé</dd></div><div><dt>Hot sigma</dt><dd>3,0 (baisser à 2,5 si des pixels chauds restent)</dd></div><div><dt>Cold sigma</dt><dd>3,0</dd></div><div><dt>CFA</dt><dd>Coché pour une caméra couleur</dd></div></dl>
+      </article>
+      <article class="tcard" id="t-ln">
+        <div class="tcard-head"><h4>LocalNormalization</h4><span class="ttag nat" title="Natif PixInsight">PI</span><span class="phase lin">Linéaire</span></div>
+        <div class="tlabel">Méthode</div>
+        <ol class="tsteps"><li>Géré automatiquement par WBPP : tu n'as normalement rien à lancer à la main.</li></ol>
+        <div class="tlabel">Paramètres</div>
+        <dl class="tparams"><div><dt>Scale</dt><dd>1024 (défaut)</dd></div><div><dt>Référence</dt><dd>Intégration des meilleures images (choix de WBPP)</dd></div></dl>
+        <p class="tnote">Très utile quand les gradients varient d'une nuit à l'autre.</p>
+      </article>
+    </div>
+    <h3>Recadrage et gradient</h3>
+    <div class="tcards">
+      <article class="tcard" id="t-crop">
+        <div class="tcard-head"><h4>DynamicCrop</h4><span class="ttag nat" title="Natif PixInsight">PI</span><span class="phase lin">Linéaire</span></div>
+        <div class="tlabel">Méthode</div>
+        <ol class="tsteps"><li>Ouvre un master, trace le cadre en excluant les bords mal couverts.</li><li>Glisse le triangle du process sur la fenêtre de l'espace de travail pour créer une icône.</li><li>Applique cette icône à tous les autres masters : ils sont alignés, le recadrage est identique.</li></ol>
+        <div class="tlabel">Paramètres</div>
+        <dl class="tparams"><div><dt>Rotation</dt><dd>0</dd></div><div><dt>Marge</dt><dd>Quelques dizaines de pixels au-delà des bords bruités</dd></div></dl>
+      </article>
+      <article class="tcard" id="t-mgc">
+        <div class="tcard-head"><h4>MultiscaleGradientCorrection + MARS</h4><span class="ttag nat" title="Natif PixInsight">PI</span><span class="phase lin">Linéaire</span></div>
+        <div class="tlabel">Méthode</div>
+        <ol class="tsteps"><li>Installe la base MARS (.xmars) : icône clé à molette du process, Add, puis choisis le fichier.</li><li>Sur l'image linéaire : ImageSolver, puis SpectrophotometricFluxCalibration (SPFC), puis MGC.</li><li>Coche Show gradient model et contrôle le modèle : il doit être lisse, sans structure de la nébuleuse.</li><li>Enchaîne avec SPCC (neutralisation du fond activée).</li></ol>
+        <div class="tlabel">Paramètres</div>
+        <dl class="tparams"><div><dt>Gradient scale</dt><dd>1024 au départ ; 512 ou 256 si un gradient reste dans les coins (plus bas = plus agressif)</dd></div><div><dt>Structure separation</dt><dd>3 ; 1 ou 2 pour mieux corriger bords et coins</dd></div><div><dt>Model smoothness</dt><dd>1,0 ; 3 à 5 si le modèle ondule</dd></div><div><dt>Scale factors R/G/B</dt><dd>1,0</dd></div><div><dt>Show gradient model</dt><dd>Coché</dd></div></dl>
+        <p class="tnote">Prérequis : image linéaire, solution astrométrique, calibration SPFC, bases Gaia DR3/SP et MARS installées. Si ta base MARS ne couvre pas un filtre, passe à GradientCorrection ou DBE.</p>
+      </article>
+      <article class="tcard" id="t-gc">
+        <div class="tcard-head"><h4>GradientCorrection</h4><span class="ttag nat" title="Natif PixInsight">PI</span><span class="phase lin">Linéaire</span></div>
+        <div class="tlabel">Méthode</div>
+        <ol class="tsteps"><li>Pars des valeurs par défaut et génère le modèle de gradient pour le contrôler.</li><li>Ajuste selon les symptômes (ci-dessous), en gardant Structure protection activée.</li></ol>
+        <div class="tlabel">Paramètres</div>
+        <dl class="tparams"><div><dt>Gradient scale</dt><dd>Défaut ; baisser si un gradient reste dans les coins</dd></div><div><dt>Structure protection</dt><dd>Activé</dd></div><div><dt>Protection threshold</dt><dd>Plus bas = protège aussi les zones faibles de la nébuleuse</dd></div><div><dt>Protection amount</dt><dd>Monter si la nébuleuse est assombrie</dd></div><div><dt>Low threshold</dt><dd>Monter si des zones claires apparaissent autour des structures sombres</dd></div><div><dt>Bords nets dans le modèle</dt><dd>Désactive temporairement la protection, baisse Scale et Smoothness, puis réactive</dd></div></dl>
+      </article>
+      <article class="tcard" id="t-dbe">
+        <div class="tcard-head"><h4>DBE (DynamicBackgroundExtraction)</h4><span class="ttag nat" title="Natif PixInsight">PI</span><span class="phase lin">Linéaire</span></div>
+        <div class="tlabel">Méthode</div>
+        <ol class="tsteps"><li>Clique sur l'image pour ouvrir DBE, puis Generate pour placer les points.</li><li>Supprime tous les points posés sur la nébuleuse, la galaxie ou une étoile brillante.</li><li>Ajoute des points à la main dans le fond de ciel vide, surtout vers les coins.</li><li>Exécute, contrôle le modèle, puis ferme-le.</li></ol>
+        <div class="tlabel">Paramètres</div>
+        <dl class="tparams"><div><dt>Samples per row</dt><dd>15 à 20</dd></div><div><dt>Sample radius</dt><dd>10 à 25 selon l'échantillonnage</dd></div><div><dt>Tolerance</dt><dd>0,5 ; monter à 1,0 à 1,5 si des points sont rejetés (rouges)</dd></div><div><dt>Smoothing factor</dt><dd>0,25</dd></div><div><dt>Correction</dt><dd>Subtraction (gradients de pollution lumineuse) ; Division seulement pour du vignettage</dd></div><div><dt>Discard background model</dt><dd>Coché</dd></div><div><dt>Replace target image</dt><dd>Coché</dd></div></dl>
+        <p class="tnote">Meilleur choix que les outils automatiques quand la nébulosité remplit presque tout le champ.</p>
+      </article>
+      <article class="tcard" id="t-graxpert">
+        <div class="tcard-head"><h4>GraXpert (module DeepSkyForge)</h4><span class="ttag free" title="Script ou module gratuit">GRATUIT</span><span class="phase lin">Linéaire</span></div>
+        <div class="tlabel">Méthode</div>
+        <ol class="tsteps"><li>Installe GraXpert sur ta machine, puis le module via son dépôt.</li><li>Lance le process sur l'image linéaire, contrôle le modèle de fond.</li></ol>
+        <div class="tlabel">Paramètres</div>
+        <dl class="tparams"><div><dt>Correction</dt><dd>Subtraction</dd></div><div><dt>Smoothing</dt><dd>0,1 ; monter si le modèle crée des artefacts</dd></div><div><dt>Modèle IA</dt><dd>Dernière version disponible</dd></div></dl>
+      </article>
+    </div>
+    <h3>Couleur et astrométrie</h3>
+    <div class="tcards">
+      <article class="tcard" id="t-chcomb">
+        <div class="tcard-head"><h4>ChannelCombination</h4><span class="ttag nat" title="Natif PixInsight">PI</span><span class="phase lin">Linéaire</span></div>
+        <div class="tlabel">Méthode</div>
+        <ol class="tsteps"><li>Espace de couleur RGB, assigne une image par canal, puis clique sur le rond bleu (application globale).</li></ol>
+        <div class="tlabel">Paramètres</div>
+        <dl class="tparams"><div><dt>RGB naturel</dt><dd>R = R, G = G, B = B</dd></div><div><dt>SHO (pour NarrowbandNormalization)</dt><dd>R = SII, G = Ha, B = OIII</dd></div><div><dt>HOO</dt><dd>R = Ha, G = OIII, B = OIII</dd></div><div><dt>CIE L*a*b*</dt><dd>Pour remplacer L : L = ta luminance, a et b issus du RGB (ChannelExtraction en L*a*b*)</dd></div></dl>
+      </article>
+      <article class="tcard" id="t-solver">
+        <div class="tcard-head"><h4>ImageSolver</h4><span class="ttag nat" title="Natif PixInsight">PI</span><span class="phase lin">Linéaire</span></div>
+        <div class="tlabel">Méthode</div>
+        <ol class="tsteps"><li>Inutile si WBPP a déjà résolu l'image (la solution est conservée dans le fichier).</li><li>Sinon : Search coordinates avec le nom de l'objet, vérifie focale et taille de pixel, Run.</li></ol>
+        <div class="tlabel">Paramètres</div>
+        <dl class="tparams"><div><dt>Coordinates</dt><dd>Search : nom de l'objet (ex. M31)</dd></div><div><dt>Focal length / Pixel size</dt><dd>Ceux de ton setup (lus dans le FITS si présents)</dd></div><div><dt>Catalogue</dt><dd>Gaia DR3 local (XPSD) si installé</dd></div><div><dt>Distortion correction</dt><dd>Activé pour les grands champs</dd></div></dl>
+      </article>
+      <article class="tcard" id="t-spcc">
+        <div class="tcard-head"><h4>SPCC (SpectrophotometricColorCalibration)</h4><span class="ttag nat" title="Natif PixInsight">PI</span><span class="phase lin">Linéaire</span></div>
+        <div class="tlabel">Méthode</div>
+        <ol class="tsteps"><li>Crée une petite preview sur une zone de fond vide.</li><li>Choisis capteur et filtres, sélectionne la preview comme référence de fond, Apply.</li><li>Coche Generate graphs et vérifie que les étoiles suivent bien les droites.</li></ol>
+        <div class="tlabel">Paramètres</div>
+        <dl class="tparams"><div><dt>White reference</dt><dd>Average Spiral Galaxy</dd></div><div><dt>QE curve</dt><dd>Ton capteur (ex. Sony IMX571) ; Ideal QE si absent</dd></div><div><dt>Filters (mono)</dt><dd>Ton jeu RGB (Astronomik, Baader, Antlia, Chroma…)</dd></div><div><dt>Filters (couleur)</dt><dd>Filtres Bayer de ta caméra</dd></div><div><dt>Narrowband filters mode</dt><dd>Pour une image composée de filtres étroits (longueurs d'onde et bandes passantes)</dd></div><div><dt>Catalogue</dt><dd>Gaia DR3/SP</dd></div><div><dt>Background neutralization</dt><dd>Activé, référence = la preview de fond</dd></div><div><dt>Generate graphs</dt><dd>Coché</dd></div></dl>
+        <p class="tnote">Toujours sur l'image linéaire, après le retrait du gradient et avant BXT.</p>
+      </article>
+      <article class="tcard" id="t-spfc">
+        <div class="tcard-head"><h4>SPFC (SpectrophotometricFluxCalibration)</h4><span class="ttag nat" title="Natif PixInsight">PI</span><span class="phase lin">Linéaire</span></div>
+        <div class="tlabel">Méthode</div>
+        <ol class="tsteps"><li>Sur l'image linéaire et résolue, choisis capteur et filtre, Apply.</li><li>Ne modifie pas les pixels : écrit dans le fichier les métadonnées de flux utilisées par MGC.</li></ol>
+        <div class="tlabel">Paramètres</div>
+        <dl class="tparams"><div><dt>Filter</dt><dd>Le filtre du master (mono) ; filtres Bayer (couleur)</dd></div><div><dt>QE curve</dt><dd>Ton capteur</dd></div><div><dt>Catalogue</dt><dd>Gaia DR3/SP</dd></div></dl>
+      </article>
+    </div>
+    <h3>RC Astro</h3>
+    <div class="tcards">
+      <article class="tcard" id="t-bxt">
+        <div class="tcard-head"><h4>BlurXTerminator</h4><span class="ttag rc" title="RC Astro">RC</span><span class="phase lin">Linéaire</span></div>
+        <div class="tlabel">Méthode</div>
+        <ol class="tsteps"><li>Passe 1 : coche Correct Only et applique (corrige aberrations, coma, tilt).</li><li>Passe 2 : décoche Correct Only, règle la netteté ci-dessous et applique.</li><li>Toujours sur l'image linéaire, après gradient et SPCC, avant toute réduction de bruit.</li></ol>
+        <div class="tlabel">Paramètres</div>
+        <dl class="tparams"><div><dt>Sharpen Stars</dt><dd>0,25 à 0,50</dd></div><div><dt>Adjust Star Halos</dt><dd>−0,10 à 0,00</dd></div><div><dt>Automatic PSF</dt><dd>Coché</dd></div><div><dt>Sharpen Nonstellar</dt><dd>0,50 à 0,90 (plus fort sur L que sur RGB)</dd></div><div><dt>Modèle IA</dt><dd>Dernier (AI4 ou plus récent)</dd></div></dl>
+        <p class="tnote">Zoome à 100 % sur une zone de nébuleuse : si des vers ou des pores apparaissent, baisse Sharpen Nonstellar.</p>
+      </article>
+      <article class="tcard" id="t-nxt">
+        <div class="tcard-head"><h4>NoiseXTerminator</h4><span class="ttag rc" title="RC Astro">RC</span><span class="phase lin">Linéaire</span><span class="phase nl">Étiré</span></div>
+        <div class="tlabel">Méthode</div>
+        <ol class="tsteps"><li>Passe linéaire, juste après BXT : réduction modérée.</li><li>Passe finale sur l'image étirée seulement si besoin, plus légère.</li></ol>
+        <div class="tlabel">Paramètres</div>
+        <dl class="tparams"><div><dt>Denoise (linéaire)</dt><dd>0,60 à 0,80 ; plus fort sur OIII et SII</dd></div><div><dt>Detail</dt><dd>0,15</dd></div><div><dt>Iterations</dt><dd>1</dd></div><div><dt>Denoise (passe finale étirée)</dt><dd>0,30 à 0,50</dd></div><div><dt>Frequency separation</dt><dd>Désactivé au départ ; utile pour traiter à part le bruit fin et le bruit en taches</dd></div></dl>
+        <p class="tnote">Mieux vaut un peu de grain qu'un aspect plastique : garde la texture fine.</p>
+      </article>
+      <article class="tcard" id="t-sxt">
+        <div class="tcard-head"><h4>StarXTerminator</h4><span class="ttag rc" title="RC Astro">RC</span><span class="phase lin">Linéaire</span><span class="phase nl">Étiré</span></div>
+        <div class="tlabel">Méthode</div>
+        <ol class="tsteps"><li>Applique sur l'image linéaire ou étirée : tu obtiens l'image sans étoiles et une image d'étoiles séparée.</li><li>Traite les deux séparément, puis recombine en mode screen (voir la formule du workflow LRGB).</li></ol>
+        <div class="tlabel">Paramètres</div>
+        <dl class="tparams"><div><dt>Generate star image</dt><dd>Coché</dd></div><div><dt>Unscreen stars</dt><dd>Coché (indispensable pour la recombinaison en screen)</dd></div><div><dt>Large overlap</dt><dd>Coché : plus lent, meilleure qualité</dd></div><div><dt>Modèle IA</dt><dd>Dernier (AI11 ou plus récent)</dd></div></dl>
+      </article>
+    </div>
+    <h3>Étirement</h3>
+    <div class="tcards">
+      <article class="tcard" id="t-ghs">
+        <div class="tcard-head"><h4>GeneralizedHyperbolicStretch (GHS)</h4><span class="ttag nat" title="Natif PixInsight">PI</span><span class="phase nl">Étiré</span></div>
+        <div class="tlabel">Méthode</div>
+        <ol class="tsteps"><li>Passe 1 : clique dans le fond de ciel pour placer SP au pic de l'histogramme, puis étire fort sur les basses lumières.</li><li>Passes 2 à 4 : replace SP sur le nouveau pic, baisse b et D à chaque passe.</li><li>Termine par un réglage du point noir (étirement linéaire) sans écrêter le fond.</li><li>Pour une image couleur, préfère un mode qui préserve la couleur plutôt que canal par canal.</li></ol>
+        <div class="tlabel">Paramètres</div>
+        <dl class="tparams"><div><dt>D (stretch factor)</dt><dd>1,5 à 3 par passe</dd></div><div><dt>b (local intensity)</dt><dd>5 à 15 en première passe, puis 0 à 5</dd></div><div><dt>SP (symmetry point)</dt><dd>Au pic de l'histogramme (fond de ciel)</dd></div><div><dt>HP (highlight protection)</dt><dd>0,90 à 1,00 pour protéger étoiles et cœurs brillants</dd></div><div><dt>LP (shadow protection)</dt><dd>0 à 0,05</dd></div></dl>
+        <p class="tnote">Si le module manque dans ta version, installe-le via le dépôt ghsastro.</p>
+      </article>
+      <article class="tcard" id="t-statstretch">
+        <div class="tcard-head"><h4>Statistical Stretch (SetiAstro)</h4><span class="ttag free" title="Script ou module gratuit">GRATUIT</span><span class="phase nl">Étiré</span></div>
+        <div class="tlabel">Méthode</div>
+        <ol class="tsteps"><li>Choisis l'image linéaire, règle la médiane cible et applique.</li><li>Pratique pour donner des niveaux comparables à L et à RGB avant de les combiner.</li></ol>
+        <div class="tlabel">Paramètres</div>
+        <dl class="tparams"><div><dt>Target median</dt><dd>0,15 à 0,25</dd></div><div><dt>Linked stretch</dt><dd>Coché pour une image couleur déjà calibrée (SPCC)</dd></div><div><dt>Normalize</dt><dd>Décoché au départ</dd></div><div><dt>Apply curves</dt><dd>Optionnel, boost léger</dd></div></dl>
+      </article>
+    </div>
+    <h3>Combinaison</h3>
+    <div class="tcards">
+      <article class="tcard" id="t-lrgb">
+        <div class="tcard-head"><h4>LRGBCombination</h4><span class="ttag nat" title="Natif PixInsight">PI</span><span class="phase nl">Étiré</span></div>
+        <div class="tlabel">Méthode</div>
+        <ol class="tsteps"><li>Prépare L et RGB étirés et sans étoiles, avec des niveaux de fond et une médiane proches.</li><li>Dans le process : décoche R, G et B, coche L et choisis ta luminance.</li><li>Glisse le triangle sur l'image RGB.</li></ol>
+        <div class="tlabel">Paramètres</div>
+        <dl class="tparams"><div><dt>Channel weights</dt><dd>1</dd></div><div><dt>Lightness</dt><dd>0,5 (défaut)</dd></div><div><dt>Saturation</dt><dd>0,35 à 0,40 (plus bas = plus saturé)</dd></div><div><dt>Chrominance noise reduction</dt><dd>Coché (valeurs par défaut)</dd></div></dl>
+        <p class="tnote">Si les couleurs sortent délavées, la luminance est trop claire par rapport au RGB : étire-la moins.</p>
+      </article>
+      <article class="tcard" id="t-nbrgb">
+        <div class="tcard-head"><h4>NBRGBCombination</h4><span class="ttag nat" title="Natif PixInsight">PI</span><span class="phase lin">Linéaire</span></div>
+        <div class="tlabel">Méthode</div>
+        <ol class="tsteps"><li>Sur le RGB linéaire calibré (SPCC) : ajoute Ha dans le canal rouge, en tenant compte des bandes passantes.</li><li>Compare avec la soustraction du continuum en PixelMath et garde le résultat le plus propre.</li></ol>
+        <div class="tlabel">Paramètres</div>
+        <dl class="tparams"><div><dt>Canal R</dt><dd>Image Ha</dd></div><div><dt>Bande passante narrowband</dt><dd>Celle de ton filtre (3, 5 ou 7 nm)</dd></div><div><dt>Bande passante RGB</dt><dd>Environ 100 nm pour un filtre R classique</dd></div><div><dt>Scale factor</dt><dd>1 à 2</dd></div></dl>
+        <p class="tnote">Vérifie les noms exacts des champs dans l'aide du process, selon ta version de PixInsight.</p>
+      </article>
+      <article class="tcard" id="t-acs">
+        <div class="tcard-head"><h4>Automatic Continuum Subtraction (SetiAstro)</h4><span class="ttag free" title="Script ou module gratuit">GRATUIT</span><span class="phase lin">Linéaire</span></div>
+        <div class="tlabel">Méthode</div>
+        <ol class="tsteps"><li>Choisis le master Ha et le master R (ou OIII et G).</li><li>Le script calcule le coefficient et produit Ha_cs sans continuum.</li></ol>
+        <div class="tlabel">Paramètres</div>
+        <dl class="tparams"><div><dt>Entrées</dt><dd>Masters linéaires, alignés, gradient retiré</dd></div><div><dt>Contrôle</dt><dd>Les étoiles et le disque galactique doivent disparaître de Ha_cs</dd></div></dl>
+      </article>
+      <article class="tcard" id="t-imageblend">
+        <div class="tcard-head"><h4>ImageBlend (Mike Cranfield)</h4><span class="ttag free" title="Script ou module gratuit">GRATUIT</span><span class="phase lin">Linéaire</span><span class="phase nl">Étiré</span></div>
+        <div class="tlabel">Méthode</div>
+        <ol class="tsteps"><li>Choisis l'image de base et l'image à mélanger.</li><li>Choisis le mode et l'opacité en regardant l'aperçu, puis applique.</li></ol>
+        <div class="tlabel">Paramètres</div>
+        <dl class="tparams"><div><dt>Ha dans R ou L</dt><dd>Mode Lighten ou Screen, opacité 20 à 60 %</dd></div><div><dt>Étoiles</dt><dd>Mode Screen</dd></div><div><dt>Étirement ou filtre par image</dt><dd>Optionnel, pour équilibrer les intensités</dd></div></dl>
+      </article>
+    </div>
+    <h3>Narrowband</h3>
+    <div class="tcards">
+      <article class="tcard" id="t-nbn">
+        <div class="tcard-head"><h4>NarrowbandNormalization (module)</h4><span class="ttag free" title="Script ou module gratuit">GRATUIT</span><span class="phase lin">Linéaire</span><span class="phase nl">Étiré</span></div>
+        <div class="tlabel">Méthode</div>
+        <ol class="tsteps"><li>Combine d'abord SII, Ha et OIII en une image RGB selon la palette (voir ChannelCombination), de préférence sans étoiles.</li><li>Choisis la palette correspondante (SHO, HOO…) dans le module.</li><li>Règle OIII, SII, ombres, hautes lumières et luminosité avec l'aperçu en temps réel.</li><li>Utilise le SCNR intégré si un reste de vert apparaît.</li></ol>
+        <div class="tlabel">Paramètres</div>
+        <dl class="tparams"><div><dt>Palette</dt><dd>Celle de ta combinaison (SHO, HOO…)</dd></div><div><dt>Boost OIII / SII</dt><dd>Monter progressivement jusqu'à l'équilibre voulu</dd></div><div><dt>Lightness</dt><dd>Choisis le canal qui porte le détail (souvent Ha)</dd></div><div><dt>SCNR intégré</dt><dd>Partiel, seulement si nécessaire</dd></div></dl>
+        <p class="tnote">L'aide intégrée du module détaille chaque réglage et l'état attendu de l'image : lis-la avant la première utilisation.</p>
+      </article>
+      <article class="tcard" id="t-nbcm">
+        <div class="tcard-head"><h4>NBColourMapper (Mike Cranfield)</h4><span class="ttag free" title="Script ou module gratuit">GRATUIT</span><span class="phase nl">Étiré</span></div>
+        <div class="tlabel">Méthode</div>
+        <ol class="tsteps"><li>Ajoute chaque image narrowband sans étoiles comme une couche.</li><li>Assigne une teinte et une saturation à chaque couche, puis règle le mélange avec l'aperçu.</li></ol>
+        <div class="tlabel">Paramètres</div>
+        <dl class="tparams"><div><dt>Ha</dt><dd>Teinte rouge à orange</dd></div><div><dt>OIII</dt><dd>Teinte cyan à bleu</dd></div><div><dt>SII</dt><dd>Teinte rouge profond ou or selon la palette</dd></div><div><dt>Nombre de couches</dt><dd>Illimité : tu peux ajouter d'autres filtres</dd></div></dl>
+      </article>
+      <article class="tcard" id="t-ppp">
+        <div class="tcard-head"><h4>Perfect Palette Picker (SetiAstro)</h4><span class="ttag free" title="Script ou module gratuit">GRATUIT</span><span class="phase lin">Linéaire</span><span class="phase nl">Étiré</span></div>
+        <div class="tlabel">Méthode</div>
+        <ol class="tsteps"><li>Charge Ha, OIII et SII : le script affiche des vignettes de nombreuses palettes.</li><li>Choisis la palette qui te plaît et génère l'image.</li></ol>
+        <div class="tlabel">Paramètres</div>
+        <dl class="tparams"><div><dt>Usage</dt><dd>Explorer rapidement les palettes avant de choisir la méthode finale</dd></div></dl>
+      </article>
+      <article class="tcard" id="t-pixelmath">
+        <div class="tcard-head"><h4>PixelMath</h4><span class="ttag nat" title="Natif PixInsight">PI</span><span class="phase lin">Linéaire</span><span class="phase nl">Étiré</span></div>
+        <div class="tlabel">Méthode</div>
+        <ol class="tsteps"><li>Écris la formule dans RGB/K (une seule expression) ou canal par canal (décoche Use a single RGB/K expression).</li><li>Déclare les variables utilisées dans l'onglet Symbols.</li><li>Destination : Create new image pour garder l'original intact.</li></ol>
+        <div class="tlabel">Paramètres</div>
+        <dl class="tparams"><div><dt>~x</dt><dd>1 − x</dd></div><div><dt>^</dt><dd>Puissance</dd></div><div><dt>$T</dt><dd>L'image cible</dd></div><div><dt>Formules prêtes</dt><dd>Foraxx, réduction d'étoiles, continuum : voir les sections dédiées</dd></div></dl>
+      </article>
+    </div>
+    <h3>Étoiles</h3>
+    <div class="tcards">
+      <article class="tcard" id="t-starstretch">
+        <div class="tcard-head"><h4>Star Stretch (SetiAstro)</h4><span class="ttag free" title="Script ou module gratuit">GRATUIT</span><span class="phase nl">Étiré</span></div>
+        <div class="tlabel">Méthode</div>
+        <ol class="tsteps"><li>Applique sur l'image d'étoiles linéaire issue de SXT.</li></ol>
+        <div class="tlabel">Paramètres</div>
+        <dl class="tparams"><div><dt>Stretch amount</dt><dd>5 au départ</dd></div><div><dt>Color boost</dt><dd>1,0 à 1,5</dd></div><div><dt>Remove green (SCNR)</dt><dd>Coché</dd></div></dl>
+      </article>
+      <article class="tcard" id="t-nbrgbstars">
+        <div class="tcard-head"><h4>NB to RGB Star Combination (SetiAstro)</h4><span class="ttag free" title="Script ou module gratuit">GRATUIT</span><span class="phase lin">Linéaire</span><span class="phase nl">Étiré</span></div>
+        <div class="tlabel">Méthode</div>
+        <ol class="tsteps"><li>Combine les images d'étoiles Ha, OIII et SII en étoiles de couleur naturelle.</li><li>Utile quand tu n'as pas de poses RGB pour les étoiles.</li></ol>
+        <div class="tlabel">Paramètres</div>
+        <dl class="tparams"><div><dt>Entrées</dt><dd>Images d'étoiles issues de SXT, une par filtre</dd></div><div><dt>Ratio</dt><dd>Ajuste jusqu'à des étoiles blanches à légèrement colorées</dd></div></dl>
+      </article>
+      <article class="tcard" id="t-starred">
+        <div class="tcard-head"><h4>StarReduction et ScreenStars (Mike Cranfield)</h4><span class="ttag free" title="Script ou module gratuit">GRATUIT</span><span class="phase nl">Étiré</span></div>
+        <div class="tlabel">Méthode</div>
+        <ol class="tsteps"><li>StarReduction : choisis la méthode (Transfer, Halo, Star) et l'image sans étoiles de référence, règle avec l'aperçu.</li><li>ScreenStars : recombine l'image sans étoiles et l'image d'étoiles en mode screen.</li></ol>
+        <div class="tlabel">Paramètres</div>
+        <dl class="tparams"><div><dt>Méthode</dt><dd>Transfer pour commencer</dd></div><div><dt>S</dt><dd>0,15 ; plus bas = étoiles plus petites</dd></div><div><dt>Formules équivalentes</dt><dd>Voir la section Réduction d'étoiles</dd></div></dl>
+      </article>
+      <article class="tcard" id="t-morpho">
+        <div class="tcard-head"><h4>MorphologicalTransformation</h4><span class="ttag nat" title="Natif PixInsight">PI</span><span class="phase nl">Étiré</span></div>
+        <div class="tlabel">Méthode</div>
+        <ol class="tsteps"><li>Applique sur l'image d'étoiles seule (ou avec un masque d'étoiles sur l'image complète).</li></ol>
+        <div class="tlabel">Paramètres</div>
+        <dl class="tparams"><div><dt>Operator</dt><dd>Morphological Selection</dd></div><div><dt>Selection</dt><dd>0,20 à 0,30</dd></div><div><dt>Amount</dt><dd>0,50 à 0,70</dd></div><div><dt>Iterations</dt><dd>1 à 2</dd></div><div><dt>Structuring element</dt><dd>3×3 ou 5×5, forme circulaire</dd></div></dl>
+      </article>
+      <article class="tcard" id="t-halo">
+        <div class="tcard-head"><h4>Halo-B-Gon (SetiAstro)</h4><span class="ttag free" title="Script ou module gratuit">GRATUIT</span><span class="phase nl">Étiré</span></div>
+        <div class="tlabel">Méthode</div>
+        <ol class="tsteps"><li>Applique sur l'image d'étoiles seule.</li></ol>
+        <div class="tlabel">Paramètres</div>
+        <dl class="tparams"><div><dt>Reduction amount</dt><dd>Low à Medium au départ</dd></div><div><dt>Linear data</dt><dd>Coché uniquement si l'image est encore linéaire</dd></div></dl>
+      </article>
+      <article class="tcard" id="t-cms">
+        <div class="tcard-head"><h4>CorrectMagentaStars</h4><span class="ttag nat" title="Natif PixInsight">PI</span><span class="phase nl">Étiré</span></div>
+        <div class="tlabel">Méthode</div>
+        <ol class="tsteps"><li>Menu Script › Utilities (livré avec PixInsight).</li><li>Applique sur l'image SHO finale, étoiles comprises.</li></ol>
+        <div class="tlabel">Paramètres</div>
+        <dl class="tparams"><div><dt>Amount</dt><dd>Monter progressivement jusqu'à la disparition du magenta</dd></div></dl>
+      </article>
+    </div>
+    <h3>Finition</h3>
+    <div class="tcards">
+      <article class="tcard" id="t-curves">
+        <div class="tcard-head"><h4>CurvesTransformation</h4><span class="ttag nat" title="Natif PixInsight">PI</span><span class="phase nl">Étiré</span></div>
+        <div class="tlabel">Méthode</div>
+        <ol class="tsteps"><li>Contraste : légère courbe en S sur L ou RGB/K.</li><li>Saturation : canal S, monte le milieu de la courbe.</li><li>Utilise un masque de luminance pour protéger le fond.</li></ol>
+        <div class="tlabel">Paramètres</div>
+        <dl class="tparams"><div><dt>Courbe en S</dt><dd>Points à environ 25 % et 75 %, déplacements de quelques pourcents</dd></div><div><dt>Saturation (S)</dt><dd>Milieu monté de 10 à 20 %</dd></div></dl>
+      </article>
+      <article class="tcard" id="t-lhe">
+        <div class="tcard-head"><h4>LocalHistogramEqualization</h4><span class="ttag nat" title="Natif PixInsight">PI</span><span class="phase nl">Étiré</span></div>
+        <div class="tlabel">Méthode</div>
+        <ol class="tsteps"><li>Applique avec un masque de luminance, sur l'image sans étoiles.</li><li>Deux passes à des rayons différents donnent un contraste plus naturel.</li></ol>
+        <div class="tlabel">Paramètres</div>
+        <dl class="tparams"><div><dt>Kernel radius</dt><dd>64 à 128 (structures moyennes) ; 200 et plus (grandes structures)</dd></div><div><dt>Contrast limit</dt><dd>1,5 à 2,5</dd></div><div><dt>Amount</dt><dd>0,20 à 0,40</dd></div><div><dt>Circular kernel</dt><dd>Coché</dd></div></dl>
+      </article>
+      <article class="tcard" id="t-hdrmt">
+        <div class="tcard-head"><h4>HDRMultiscaleTransform</h4><span class="ttag nat" title="Natif PixInsight">PI</span><span class="phase nl">Étiré</span></div>
+        <div class="tlabel">Méthode</div>
+        <ol class="tsteps"><li>Applique sur l'image sans étoiles pour récupérer le détail des zones brillantes (cœurs de galaxie, nébuleuses denses).</li></ol>
+        <div class="tlabel">Paramètres</div>
+        <dl class="tparams"><div><dt>Number of layers</dt><dd>6 à 8</dd></div><div><dt>Number of iterations</dt><dd>1</dd></div><div><dt>To lightness</dt><dd>Coché</dd></div><div><dt>Preserve hue</dt><dd>Coché</dd></div><div><dt>Lightness mask</dt><dd>Coché</dd></div></dl>
+        <p class="tnote">Si l'effet est trop fort, mélange à 50 % avec l'original (PixelMath ou ImageBlend).</p>
+      </article>
+      <article class="tcard" id="t-scnr">
+        <div class="tcard-head"><h4>SCNR</h4><span class="ttag nat" title="Natif PixInsight">PI</span><span class="phase nl">Étiré</span></div>
+        <div class="tlabel">Méthode</div>
+        <ol class="tsteps"><li>Retire un excès de vert. Rarement utile en LRGB après SPCC, souvent utile en SHO.</li></ol>
+        <div class="tlabel">Paramètres</div>
+        <dl class="tparams"><div><dt>Color to remove</dt><dd>Green</dd></div><div><dt>Protection method</dt><dd>Average Neutral</dd></div><div><dt>Amount</dt><dd>0,50 à 0,80 en SHO ; 1,0 pour un vert franc</dd></div></dl>
+      </article>
+    </div>
   </section>
 
   <section id="regles">
