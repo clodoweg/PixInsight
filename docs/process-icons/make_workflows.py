@@ -106,7 +106,7 @@ D_CC = ("CosmeticCorrection pour WBPP : Auto detect, Hot sigma 2,5 (2,2 à 3,0 ;
 D_BXT_CO = ("BlurXTerminator — Correct Only, AVANT SPCC (manuel RC Astro) : corrige aberrations, coma et tilt sans accentuer. Sur l'image couleur combinée, en linéaire, après le gradient. "
             "Si les aberrations diffèrent d'un filtre à l'autre : applique-le sur chaque master avant de combiner.")
 D_SXT_LIN = ("StarXTerminator — sur données LINÉAIRES, le plus tôt possible après BXT (RC Astro). Generate star image coché, UNSCREEN DÉCOCHÉ (réservé aux images étirées) : "
-             "simple soustraction, couleurs d'étoiles les plus fidèles. N'applique pas l'autoSTF de façon permanente à l'image d'étoiles.")
+             "simple soustraction, couleurs d'étoiles les plus fidèles. N'applique pas l'autoSTF de façon permanente à l'image d'étoiles. Large overlap : décoché par défaut, à cocher seulement si un quadrillage apparaît (deux fois plus lent).")
 D_GHS1 = ("GHS, 1er étirement — Stretch factor à 0 : l'icône ne fait rien tant que tu ne l'as pas réglée. Zoome l'histogramme, clique dans l'image sur la zone intéressante la plus faible (sonde 15x15), "
           "Send to SP. Local intensity (b) = 10. Monte Stretch factor jusqu'à un pic d'histogramme vers 0,20-0,25. Retire l'autoSTF, active l'aperçu, affine SP. "
           "Image couleur : passe Colour mode sur Colour (clip RGBBlend). Même niveau de fond visé pour toutes les images à combiner.")
@@ -214,7 +214,8 @@ def extract(prefix_names, src_desc):
     out = []
     for idx, n in prefix_names:
         out.append((pm('Extraire_' + n, '$T[%d]' % idx, new_image=True, new_id=n, space='Gray'),
-                    "Extraction du canal %d (équivalent de ChannelExtraction) : applique sur %s. Crée la vue mono '%s'." % (idx, src_desc, n)))
+                    "Extraction du canal %d (équivalent de ChannelExtraction) : applique sur %s. Crée la vue mono '%s'. "
+                    "AVANT : renomme les masters linéaires qui portent déjà ce nom (par exemple '%s_lin'), sinon PixInsight donnera un autre nom à la nouvelle vue et les formules suivantes ne la trouveront pas." % (idx, src_desc, n, n)))
     return out
 
 nb_noise = [(M.nxt('NXT_Ha', 0.60, 1), "NoiseXTerminator sur Ha sans étoiles : Denoise 0,60 (0,50 à 0,70), Detail 0,15. En linéaire ou après étirement."),

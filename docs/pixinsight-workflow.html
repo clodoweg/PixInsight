@@ -362,9 +362,9 @@ footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line);
     <p class="sec-intro">Galaxies avec régions HII, ou nébuleuses en émission. Le Ha s'ajoute au rouge et, en option, à la luminance.</p>
     <ol class="steps">
       <li>
-        <div class="step-head"><h4>RGB jusqu'à SPCC</h4><span class="phase lin">Linéaire</span></div>
-        <p>Traite le RGB comme dans le workflow LRGB, jusqu'à SPCC inclus.</p>
-        <div class="tools"><a class="tool nat" href="#t-chcomb">ChannelCombination</a><a class="tool nat" href="#t-spcc">SPCC</a></div>
+        <div class="step-head"><h4>RGB, L et Ha jusqu'à la déconvolution</h4><span class="phase lin">Linéaire</span></div>
+        <p>RGB comme dans le workflow LRGB : combinaison, gradient, BXT <em>Correct Only</em>, SPCC, puis BXT complet. Retire aussi le gradient de L et de Ha, et applique BXT complet à L et à Ha. Toute la déconvolution se fait <strong>avant</strong> la soustraction du continuum et les injections, qui mélangent des canaux.</p>
+        <div class="tools"><a class="tool nat" href="#t-chcomb">ChannelCombination</a><a class="tool rc" href="#t-bxt">BlurXTerminator</a><a class="tool nat" href="#t-spcc">SPCC</a></div>
       </li>
       <li>
         <div class="step-head"><h4>Soustraction du continuum sur Ha</h4><span class="phase lin">Linéaire</span></div>
@@ -374,7 +374,7 @@ footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line);
       </li>
       <li>
         <div class="step-head"><h4>Injection dans R</h4><span class="phase lin">Linéaire</span></div>
-        <p><strong>w</strong> entre 0,5 et 2 selon l'effet voulu. ImageBlend permet de faire ce mélange avec aperçu.</p>
+        <p>Sur le canal rouge de l'image RGB calibrée. <strong>w</strong> entre 0,5 et 2 selon l'effet voulu. ImageBlend permet de faire ce mélange avec aperçu.</p>
         <div class="formula"><span class="lbl">R'</span><code>R + w * Ha_cs</code><button type="button" data-copy>Copier</button></div>
         <div class="tools"><a class="tool nat" href="#t-pixelmath">PixelMath</a><a class="tool free" href="#t-imageblend">ImageBlend</a></div>
       </li>
@@ -386,8 +386,8 @@ footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line);
       </li>
       <li>
         <div class="step-head"><h4>Suite du workflow LRGB</h4><span class="phase lin">Linéaire</span><span class="phase nl">Étiré</span></div>
-        <p>BXT, NXT, étirement, SXT, LRGBCombination, finition et étoiles, comme dans le <a href="#lrgb" style="color:var(--accent)">workflow LRGB</a>.</p>
-        <div class="tools"><a class="tool rc" href="#t-bxt">BXT</a><a class="tool rc" href="#t-nxt">NXT</a><a class="tool rc" href="#t-sxt">SXT</a><a class="tool nat" href="#t-lrgb">LRGBCombination</a></div>
+        <p>SXT en linéaire (<em>Unscreen</em> décoché), NXT, étirement, LRGBCombination, finition et étoiles, comme dans le <a href="#lrgb" style="color:var(--accent)">workflow LRGB</a>.</p>
+        <div class="tools"><a class="tool rc" href="#t-sxt">SXT</a><a class="tool rc" href="#t-nxt">NXT</a><a class="tool nat" href="#t-ghs">GeneralizedHyperbolicStretch</a><a class="tool nat" href="#t-lrgb">LRGBCombination</a></div>
       </li>
     </ol>
     <div class="note"><strong>Pour une nébuleuse sans galaxie,</strong> une version plus simple suffit : fais l'image HaRGB en linéaire (Ha dans R, un peu de Ha dans L), puis applique le workflow LRGB classique.</div>
@@ -901,7 +901,7 @@ max(Img1,iif(M==1,E7,iif(M==2,E8,E9)))</code><button type="button" data-copy>Cop
         <div class="tlabel">Méthode</div>
         <ol class="tsteps"><li>Crée une petite preview sur une zone de fond vide.</li><li>Choisis capteur et filtres, sélectionne la preview comme référence de fond, Apply.</li><li>Coche Generate graphs et vérifie que les étoiles suivent bien les droites.</li></ol>
         <div class="tlabel">Paramètres</div>
-        <dl class="tparams"><div><dt>White reference</dt><dd>Average Spiral Galaxy</dd></div><div><dt>QE curve</dt><dd>Ton capteur (ex. Sony IMX571) ; Ideal QE si absent</dd></div><div><dt>Filters (mono)</dt><dd>Ton jeu RGB (Astronomik, Baader, Antlia, Chroma…)</dd></div><div><dt>Filters (couleur)</dt><dd>Filtres Bayer de ta caméra</dd></div><div><dt>Narrowband filters mode</dt><dd>Pour une image composée de filtres étroits (longueurs d'onde et bandes passantes)</dd></div><div><dt>Catalogue</dt><dd>Gaia DR3/SP</dd></div><div><dt>Background neutralization</dt><dd>Activé, référence = la preview de fond</dd></div><div><dt>Generate graphs</dt><dd>Coché</dd></div></dl>
+        <dl class="tparams"><div><dt>White reference</dt><dd>Average Spiral Galaxy</dd></div><div><dt>QE curve</dt><dd>Ton capteur (ex. Sony IMX571) ; Ideal QE si absent</dd></div><div><dt>Filters (mono)</dt><dd>Ton jeu RGB (Astronomik, Baader, Antlia, Chroma…)</dd></div><div><dt>Filters (couleur)</dt><dd>Filtres Bayer de ta caméra</dd></div><div><dt>Narrowband filters mode</dt><dd>Pour une image composée de filtres étroits (longueurs d'onde et bandes passantes)</dd></div><div><dt>Catalogue</dt><dd>Gaia DR3/SP</dd></div><div><dt>Background neutralization</dt><dd>Activé, référence = la preview de fond ; limites basse et haute −2,80 et +2,00 (valeurs par défaut)</dd></div><div><dt>Generate graphs</dt><dd>Coché</dd></div></dl>
         <div class="tlabel">Par filtre</div>
         <div class="pf"><div><span class="filters"><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span></span><p>Calibration normale, avec tes filtres RGB. Indispensable aussi pour les étoiles RGB du workflow RGB + SHO.</p></div><div><span class="filters"><span class="flt L">L</span></span><p>Non applicable : la couleur vient du RGB.</p></div><div><span class="filters"><span class="flt SII">SII</span><span class="flt Ha">Ha</span><span class="flt OIII">OIII</span></span><p>Pas de SPCC sur une palette SHO/HOO : l'équilibre se fait avec NarrowbandNormalization ou la formule Foraxx. Le mode Narrowband filters sert seulement pour une couleur « calibrée ».</p></div></div>
         <p class="tnote">Toujours sur l'image linéaire, après le retrait du gradient et avant BXT.</p>
@@ -943,7 +943,7 @@ max(Img1,iif(M==1,E7,iif(M==2,E8,E9)))</code><button type="button" data-copy>Cop
         <div class="tlabel">Méthode</div>
         <ol class="tsteps"><li>Le plus tôt possible, sur données linéaires, juste après BXT (RC Astro).</li><li>Tu obtiens l'image sans étoiles et une image d'étoiles séparée (simple soustraction : les couleurs d'étoiles les plus fidèles).</li><li>N'applique pas l'autoSTF de façon permanente à l'image d'étoiles : cela détruit l'information de calibration.</li><li>Étire les deux images séparément, puis recombine-les en mode screen, après étirement.</li></ol>
         <div class="tlabel">Paramètres</div>
-        <dl class="tparams"><div><dt>Generate star image</dt><dd>Coché</dd></div><div><dt>Unscreen stars</dt><dd><strong>Décoché</strong> sur une image linéaire ; coché seulement sur une image déjà étirée</dd></div><div><dt>Large overlap</dt><dd>Coché : plus lent, meilleure qualité</dd></div><div><dt>Modèle IA</dt><dd>Dernier (AI11 ou plus récent)</dd></div></dl>
+        <dl class="tparams"><div><dt>Generate star image</dt><dd>Coché</dd></div><div><dt>Unscreen stars</dt><dd><strong>Décoché</strong> sur une image linéaire ; coché seulement sur une image déjà étirée</dd></div><div><dt>Large overlap</dt><dd>Décoché par défaut ; coche-le si un quadrillage apparaît dans l'image sans étoiles (environ deux fois plus lent, peut parfois créer d'autres artefacts)</dd></div><div><dt>Modèle IA</dt><dd>Dernier (AI11 ou plus récent)</dd></div></dl>
               <div class="tlabel">Par filtre</div>
         <div class="pf"><div><span class="filters"><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span></span><p>Garde l'image d'étoiles : ce sont les étoiles de l'image finale (LRGB, LHaRGB et RGB + SHO).</p></div><div><span class="filters"><span class="flt L">L</span></span><p>Jette l'image d'étoiles.</p></div><div><span class="filters"><span class="flt SII">SII</span><span class="flt Ha">Ha</span><span class="flt OIII">OIII</span></span><p>Jette les étoiles, sauf si tu n'as pas de RGB : garde-les alors pour NB to RGB Star Combination.</p></div></div>
               <p class="tnote">Après un étirement GHS, arcsinh ou HDR, le profil des étoiles change et le retrait devient moins complet : c'est la raison de le faire en linéaire.</p>

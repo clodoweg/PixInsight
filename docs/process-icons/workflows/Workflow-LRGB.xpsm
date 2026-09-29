@@ -194,7 +194,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="overlap" value="0.20"/>
    </instance>
    <instance class="StarXTerminator" version="256" id="LRGB_13_SXT_lineaire_instance">
-      <description>StarXTerminator — sur données LINÉAIRES, le plus tôt possible après BXT (RC Astro). Generate star image coché, UNSCREEN DÉCOCHÉ (réservé aux images étirées) : simple soustraction, couleurs d'étoiles les plus fidèles. N'applique pas l'autoSTF de façon permanente à l'image d'étoiles. Sur RGB (garde les étoiles : ce sont celles de l'image finale) et sur L (jette ses étoiles).</description>
+      <description>StarXTerminator — sur données LINÉAIRES, le plus tôt possible après BXT (RC Astro). Generate star image coché, UNSCREEN DÉCOCHÉ (réservé aux images étirées) : simple soustraction, couleurs d'étoiles les plus fidèles. N'applique pas l'autoSTF de façon permanente à l'image d'étoiles. Large overlap : décoché par défaut, à cocher seulement si un quadrillage apparaît (deux fois plus lent). Sur RGB (garde les étoiles : ce sont celles de l'image finale) et sur L (jette ses étoiles).</description>
       <parameter id="ml_version" value="0"/>
       <parameter id="output_stars" value="true"/>
       <parameter id="unscreen" value="false"/>

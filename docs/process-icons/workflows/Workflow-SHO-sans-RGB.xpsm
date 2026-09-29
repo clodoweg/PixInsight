@@ -120,7 +120,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="overlap" value="0.20"/>
    </instance>
    <instance class="StarXTerminator" version="256" id="SHO_11_SXT_lineaire_instance">
-      <description>StarXTerminator — sur données LINÉAIRES, le plus tôt possible après BXT (RC Astro). Generate star image coché, UNSCREEN DÉCOCHÉ (réservé aux images étirées) : simple soustraction, couleurs d'étoiles les plus fidèles. N'applique pas l'autoSTF de façon permanente à l'image d'étoiles. Sur l'image SHO : GARDE LES DEUX images (fond et étoiles), les étoiles viennent ici du narrowband.</description>
+      <description>StarXTerminator — sur données LINÉAIRES, le plus tôt possible après BXT (RC Astro). Generate star image coché, UNSCREEN DÉCOCHÉ (réservé aux images étirées) : simple soustraction, couleurs d'étoiles les plus fidèles. N'applique pas l'autoSTF de façon permanente à l'image d'étoiles. Large overlap : décoché par défaut, à cocher seulement si un quadrillage apparaît (deux fois plus lent). Sur l'image SHO : GARDE LES DEUX images (fond et étoiles), les étoiles viennent ici du narrowband.</description>
       <parameter id="ml_version" value="0"/>
       <parameter id="output_stars" value="true"/>
       <parameter id="unscreen" value="false"/>
@@ -131,7 +131,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="overlap" value="0.20"/>
    </instance>
    <instance class="PixelMath" version="256" id="SHO_12_Extraire_Sii_instance">
-      <description>Extraction du canal 0 (équivalent de ChannelExtraction) : applique sur l'image SHO sans étoiles. Crée la vue mono 'Sii'.</description>
+      <description>Extraction du canal 0 (équivalent de ChannelExtraction) : applique sur l'image SHO sans étoiles. Crée la vue mono 'Sii'. AVANT : renomme les masters linéaires qui portent déjà ce nom (par exemple 'Sii_lin'), sinon PixInsight donnera un autre nom à la nouvelle vue et les formules suivantes ne la trouveront pas.</description>
       <parameter id="expression">$T[0]</parameter>
       <parameter id="expression1"></parameter>
       <parameter id="expression2"></parameter>
@@ -161,7 +161,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <table id="outputData" rows="0"/>
    </instance>
    <instance class="PixelMath" version="256" id="SHO_13_Extraire_Ha_instance">
-      <description>Extraction du canal 1 (équivalent de ChannelExtraction) : applique sur l'image SHO sans étoiles. Crée la vue mono 'Ha'.</description>
+      <description>Extraction du canal 1 (équivalent de ChannelExtraction) : applique sur l'image SHO sans étoiles. Crée la vue mono 'Ha'. AVANT : renomme les masters linéaires qui portent déjà ce nom (par exemple 'Ha_lin'), sinon PixInsight donnera un autre nom à la nouvelle vue et les formules suivantes ne la trouveront pas.</description>
       <parameter id="expression">$T[1]</parameter>
       <parameter id="expression1"></parameter>
       <parameter id="expression2"></parameter>
@@ -191,7 +191,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <table id="outputData" rows="0"/>
    </instance>
    <instance class="PixelMath" version="256" id="SHO_14_Extraire_Oiii_instance">
-      <description>Extraction du canal 2 (équivalent de ChannelExtraction) : applique sur l'image SHO sans étoiles. Crée la vue mono 'Oiii'.</description>
+      <description>Extraction du canal 2 (équivalent de ChannelExtraction) : applique sur l'image SHO sans étoiles. Crée la vue mono 'Oiii'. AVANT : renomme les masters linéaires qui portent déjà ce nom (par exemple 'Oiii_lin'), sinon PixInsight donnera un autre nom à la nouvelle vue et les formules suivantes ne la trouveront pas.</description>
       <parameter id="expression">$T[2]</parameter>
       <parameter id="expression1"></parameter>
       <parameter id="expression2"></parameter>
@@ -221,7 +221,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <table id="outputData" rows="0"/>
    </instance>
    <instance class="PixelMath" version="256" id="SHO_15_Extraire_Sii_stars_instance">
-      <description>Extraction du canal 0 (équivalent de ChannelExtraction) : applique sur l'image d'étoiles SHO (linéaire). Crée la vue mono 'Sii_stars'.</description>
+      <description>Extraction du canal 0 (équivalent de ChannelExtraction) : applique sur l'image d'étoiles SHO (linéaire). Crée la vue mono 'Sii_stars'. AVANT : renomme les masters linéaires qui portent déjà ce nom (par exemple 'Sii_stars_lin'), sinon PixInsight donnera un autre nom à la nouvelle vue et les formules suivantes ne la trouveront pas.</description>
       <parameter id="expression">$T[0]</parameter>
       <parameter id="expression1"></parameter>
       <parameter id="expression2"></parameter>
@@ -251,7 +251,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <table id="outputData" rows="0"/>
    </instance>
    <instance class="PixelMath" version="256" id="SHO_16_Extraire_Ha_stars_instance">
-      <description>Extraction du canal 1 (équivalent de ChannelExtraction) : applique sur l'image d'étoiles SHO (linéaire). Crée la vue mono 'Ha_stars'.</description>
+      <description>Extraction du canal 1 (équivalent de ChannelExtraction) : applique sur l'image d'étoiles SHO (linéaire). Crée la vue mono 'Ha_stars'. AVANT : renomme les masters linéaires qui portent déjà ce nom (par exemple 'Ha_stars_lin'), sinon PixInsight donnera un autre nom à la nouvelle vue et les formules suivantes ne la trouveront pas.</description>
       <parameter id="expression">$T[1]</parameter>
       <parameter id="expression1"></parameter>
       <parameter id="expression2"></parameter>
@@ -281,7 +281,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <table id="outputData" rows="0"/>
    </instance>
    <instance class="PixelMath" version="256" id="SHO_17_Extraire_Oiii_stars_instance">
-      <description>Extraction du canal 2 (équivalent de ChannelExtraction) : applique sur l'image d'étoiles SHO (linéaire). Crée la vue mono 'Oiii_stars'.</description>
+      <description>Extraction du canal 2 (équivalent de ChannelExtraction) : applique sur l'image d'étoiles SHO (linéaire). Crée la vue mono 'Oiii_stars'. AVANT : renomme les masters linéaires qui portent déjà ce nom (par exemple 'Oiii_stars_lin'), sinon PixInsight donnera un autre nom à la nouvelle vue et les formules suivantes ne la trouveront pas.</description>
       <parameter id="expression">$T[2]</parameter>
       <parameter id="expression1"></parameter>
       <parameter id="expression2"></parameter>

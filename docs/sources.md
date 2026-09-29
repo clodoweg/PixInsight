@@ -127,6 +127,11 @@ Légende :
 - Tutoriel — [theAstroShed, icônes de process](https://github.com/jamiesmith/pixinsight-icons) : fichiers `.xpsm` générés par PixInsight 1.9.3, utilisés comme modèles (format, noms de paramètres, versions, valeurs d'énumération) ; formules Foraxx identiques à celles de la fiche ; formules de Bill Blanshan version 3 avec leurs commentaires d'origine (`FromLukeAndBill.xpsm`) ; noms internes des réglages de NarrowbandNormalization ; modèles de SPCC (Average Spiral Galaxy), GradientCorrection, GHS (énumérations ST_GeneralisedHyperbolic, SC_RGB, CT_RGBBlend), CurvesTransformation ; descriptions et icônes-notes NoOperation.
 - Officiel — [AutoIntegrate, code source](https://github.com/jarmoruuth/AutoIntegrate) : opérateur `Selection` de MorphologicalTransformation et masque circulaire 5×5.
 
+## Audit de cohérence des icônes
+
+- Tutoriel — [Evan Tsai, comparatif des outils de retrait d'étoiles](https://www.astroimagetw.com/en/tutorials/star-removal-tools/) *(résumé)* : Large overlap de StarXTerminator utile contre le quadrillage, environ deux fois plus lent, peut créer d'autres artefacts.
+- Officiel — [AutoIntegrate, code source](https://github.com/jarmoruuth/AutoIntegrate) et 11 icônes SPCC de theAstroShed : limites de neutralisation du fond de SPCC −2,80 / +2,00.
+
 ## Non vérifié
 
 Réglages sans source trouvée, donnés comme valeurs de départ issues de la pratique :
