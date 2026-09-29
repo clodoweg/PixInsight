@@ -71,7 +71,7 @@ T_WBPP = ("ÉTAPE MANUELLE — WBPP 3.1 (Script › Batch Processing › Weighte
           "plusieurs nuits : dossiers SESSION_<date> et Grouping keywords = SESSION. Add Directory, puis vérifie dans l'onglet Calibration que chaque groupe de lights a son dark et son flat. "
           "Réglages : préréglage Maximum quality ; Output pedestal Automatic ; Optimize dark frames décoché ; CosmeticCorrection avec l'icône CC_auto ; caméra couleur : CFA images, motif Auto, Debayer VNG ; "
           "Subframe weighting PSF Signal Weight ; Registration reference Auto, Distortion correction pour les grands champs ; Local normalization activée ; "
-          "Rejection Auto (sinon Percentile < 10 images, Winsorized ou Linear fit > 10, ESD pour les grands lots) ; Large-scale pixel rejection High ; "
+          "Rejection Auto (sinon Percentile < 10 images, Winsorized > 10, ESD pour les grands lots) ; Large-scale pixel rejection High ; "
           "Fast Integration automatique dès 150 images par groupe (à décocher pour l'intégration pondérée complète) ; Drizzle par groupe x2 seulement si FWHM < 2 px et 15-20 poses dithérées "
           "(caméra couleur : drizzle CFA Scale 1, Drop shrink 1,0) ; Autocrop et Astrometric solution activés. Contrôle ensuite le journal et les cartes de réjection." + SRC)
 T_CROP = ("ÉTAPE MANUELLE — DynamicCrop. Icône-note : le cadre dépend de ton image. Trace le cadre sur un master en excluant les bords mal couverts, glisse le triangle du process sur l'espace de travail pour créer une icône, "
