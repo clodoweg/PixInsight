@@ -1,0 +1,512 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Workflows PixInsight 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout : fiche de référence en une colonne, barre de filtres collante, étapes numérotées avec marqueur de phase linéaire / étiré */
+:root {
+  --bg: #f4f5f7;
+  --surface: #ffffff;
+  --line: #dde1e8;
+  --fg: #171b23;
+  --muted: #5c6474;
+  --accent: #9a5c0e;
+  --accent-soft: #f6ead8;
+  --lin: #2d6fb8;
+  --lin-soft: #e3edf9;
+  --nl: #a2471f;
+  --nl-soft: #f8e6dc;
+  --code-bg: #eef0f4;
+  --f-L: #6b7280; --f-R: #d0433b; --f-G: #2f9a52; --f-B: #3a6fd6;
+  --f-Ha: #c7304f; --f-OIII: #14968a; --f-SII: #9c3a17;
+  --display: "IBM Plex Sans Condensed", "Arial Narrow", system-ui, sans-serif;
+  --body: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0c0f15; --surface: #141923; --line: #252c3a; --fg: #dde2ea; --muted: #8e97a8;
+    --accent: #e3a548; --accent-soft: #2a2114; --lin: #7fb2f0; --lin-soft: #16233a;
+    --nl: #f09a6e; --nl-soft: #33201a; --code-bg: #0f131b;
+    --f-L: #b4bac5; --f-R: #f06a60; --f-G: #5cc47d; --f-B: #6d98f0;
+    --f-Ha: #f0587a; --f-OIII: #39c7b8; --f-SII: #e0784e;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0c0f15; --surface: #141923; --line: #252c3a; --fg: #dde2ea; --muted: #8e97a8;
+  --accent: #e3a548; --accent-soft: #2a2114; --lin: #7fb2f0; --lin-soft: #16233a;
+  --nl: #f09a6e; --nl-soft: #33201a; --code-bg: #0f131b;
+  --f-L: #b4bac5; --f-R: #f06a60; --f-G: #5cc47d; --f-B: #6d98f0;
+  --f-Ha: #f0587a; --f-OIII: #39c7b8; --f-SII: #e0784e;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 17px; line-height: 1.6; }
+.wrap { max-width: 900px; margin: 0 auto; padding-inline: 20px; padding-block: 0 64px; }
+
+header.top { padding-block: 48px 28px; display: grid; gap: 14px; }
+.eyebrow { font-family: var(--display); text-transform: uppercase; letter-spacing: .12em; font-size: 13px; color: var(--accent); font-weight: 600; }
+h1 { font-family: var(--display); font-weight: 700; font-size: clamp(2.1rem, 6vw, 3.2rem); line-height: 1.05; margin: 0; text-wrap: balance; }
+.lede { color: var(--muted); max-width: 62ch; margin: 0; }
+.pillars { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+.pillars span { font-family: var(--display); font-size: 14px; font-weight: 600; padding: 4px 10px; border: 1px solid var(--line); border-radius: 4px; background: var(--surface); }
+
+nav.jump { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line); margin-inline: -20px; padding: 10px 20px; display: flex; gap: 6px; overflow-x: auto; scrollbar-width: thin; }
+nav.jump a { font-family: var(--display); font-weight: 600; font-size: 14px; text-decoration: none; color: var(--fg); padding: 6px 12px; border-radius: 4px; white-space: nowrap; border: 1px solid transparent; }
+nav.jump a:hover, nav.jump a:focus-visible { border-color: var(--accent); color: var(--accent); outline: none; }
+
+section { padding-top: 44px; scroll-margin-top: 60px; }
+#foraxx { scroll-margin-top: 70px; }
+h2 { font-family: var(--display); font-weight: 700; font-size: 1.75rem; line-height: 1.15; margin: 0 0 6px; text-wrap: balance; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+h3 { font-family: var(--display); font-weight: 600; font-size: 1.2rem; margin: 28px 0 10px; }
+.sec-intro { color: var(--muted); margin: 0 0 18px; max-width: 64ch; }
+p { margin: 0 0 12px; }
+
+.filters { display: inline-flex; gap: 4px; flex-wrap: wrap; }
+.flt { font-family: var(--mono); font-size: 12px; font-weight: 600; padding: 2px 7px; border-radius: 3px; border: 1.5px solid currentColor; line-height: 1.4; }
+.flt small { font-weight: 400; opacity: .8; margin-left: 4px; }
+.flt.L { color: var(--f-L); } .flt.R { color: var(--f-R); } .flt.G { color: var(--f-G); } .flt.B { color: var(--f-B); }
+.flt.Ha { color: var(--f-Ha); } .flt.OIII { color: var(--f-OIII); } .flt.SII { color: var(--f-SII); }
+
+.legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 14px; color: var(--muted); margin: 0 0 20px; align-items: center; }
+.legend > span { display: inline-flex; gap: 6px; align-items: center; }
+
+ol.steps { list-style: none; margin: 0; padding: 0; counter-reset: s; display: grid; gap: 12px; }
+ol.steps > li { counter-increment: s; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 16px 18px 16px 58px; position: relative; min-width: 0; }
+ol.steps > li::before { content: counter(s); position: absolute; left: 16px; top: 15px; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; font-family: var(--display); font-weight: 700; font-size: 15px; background: var(--accent-soft); color: var(--accent); }
+.step-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 12px; margin-bottom: 6px; }
+.step-head h4 { font-family: var(--display); font-size: 1.1rem; font-weight: 600; margin: 0; }
+.phase { font-family: var(--display); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; padding: 2px 7px; border-radius: 3px; }
+.phase.lin { background: var(--lin-soft); color: var(--lin); }
+.phase.nl { background: var(--nl-soft); color: var(--nl); }
+ol.steps li p:last-child, ol.steps li ul:last-child { margin-bottom: 0; }
+ol.steps ul { margin: 4px 0 10px; padding-left: 20px; }
+ol.steps ul li { margin-bottom: 3px; }
+
+.tools { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.tool { font-family: var(--display); font-size: 13px; font-weight: 600; padding: 2px 8px; border-radius: 3px; border: 1px solid var(--line); }
+.tool::before { font-size: 10px; letter-spacing: .08em; margin-right: 6px; font-weight: 700; }
+.tool.rc { border-color: var(--accent); color: var(--accent); }
+.tool.rc::before { content: "RC"; }
+.tool.nat::before { content: "PI"; color: var(--muted); }
+.tool.free { border-style: dashed; }
+.tool.free::before { content: "GRATUIT"; color: var(--muted); }
+
+.formula { margin: 10px 0; border: 1px solid var(--line); border-radius: 5px; background: var(--code-bg); display: flex; align-items: stretch; min-width: 0; }
+.formula code { font-family: var(--mono); font-size: 14px; padding: 10px 12px; flex: 1; overflow-x: auto; white-space: pre; min-width: 0; }
+.formula button { font-family: var(--display); font-size: 12px; font-weight: 600; border: 0; border-left: 1px solid var(--line); background: transparent; color: var(--muted); padding: 0 12px; cursor: pointer; }
+.formula button:hover, .formula button:focus-visible { color: var(--accent); outline: none; }
+.formula .lbl { font-family: var(--display); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); padding: 11px 0 0 12px; white-space: nowrap; }
+
+.note { border-left: 3px solid var(--accent); padding: 8px 14px; background: var(--accent-soft); border-radius: 0 5px 5px 0; margin: 14px 0; font-size: 16px; }
+.note strong { font-family: var(--display); }
+
+.tbl-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 15px; min-width: 560px; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-family: var(--display); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); font-weight: 600; }
+tr:last-child td { border-bottom: 0; }
+td:first-child { font-family: var(--display); font-weight: 600; white-space: nowrap; }
+
+.repo { font-family: var(--mono); font-size: 12px; word-break: break-all; }
+.norepo { color: var(--muted); font-size: 14px; }
+.kind { font-family: var(--display); font-weight: 500; font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-top: 2px; }
+table.scripts { min-width: 760px; }
+table.scripts td:first-child { white-space: normal; max-width: 220px; }
+table.scripts td:last-child { min-width: 220px; }
+.rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+.rule { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 14px 16px; min-width: 0; }
+.rule h4 { font-family: var(--display); font-size: 1rem; margin: 0 0 4px; }
+.rule p { font-size: 15px; color: var(--muted); margin: 0; }
+
+.chain { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-family: var(--display); font-weight: 600; font-size: 15px; margin: 6px 0 18px; }
+.chain span { padding: 4px 10px; background: var(--surface); border: 1px solid var(--line); border-radius: 4px; }
+.chain i { font-style: normal; color: var(--muted); }
+
+footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+
+@media (max-width: 520px) {
+  body { font-size: 16px; }
+  ol.steps > li { padding: 14px 14px 14px 48px; }
+  ol.steps > li::before { left: 12px; width: 26px; height: 26px; font-size: 14px; }
+}
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+</style>
+<style>body { margin: 0; } img { max-width: 100%; }</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="eyebrow">PixInsight 1.9 · Référence 2026</div>
+    <h1>Workflows LRGB, LHaRGB et RGB + SHO</h1>
+    <p class="lede">Du master WBPP à l'image finale, dans l'ordre. Chaque étape indique si elle se fait sur l'image linéaire ou étirée, et quels outils utiliser : modules natifs, RC Astro (sous licence) et scripts gratuits.</p>
+    <div class="pillars">
+      <span>WBPP</span><span>SPCC</span><span>BXT · NXT · SXT</span><span>Fond et étoiles séparés</span>
+    </div>
+  </header>
+
+  <nav class="jump" aria-label="Sections">
+    <a href="#outils">Outils</a>
+    <a href="#pretraitement">Prétraitement</a>
+    <a href="#lineaire">Phase linéaire</a>
+    <a href="#lrgb">LRGB</a>
+    <a href="#lhargb">LHaRGB</a>
+    <a href="#rgbsho">RGB + SHO</a>
+    <a href="#foraxx">Foraxx</a>
+    <a href="#etoiles">Réduction d'étoiles</a>
+    <a href="#regles">Règles d'or</a>
+  </nav>
+
+  <section id="outils">
+    <h2>Outils à installer</h2>
+    <p class="sec-intro">Ajoute les dépôts via <em>Resources › Updates › Manage Repositories</em>, puis <em>Check for Updates</em>. Les URL de dépôt des scripts gratuits sont listées plus bas.</p>
+
+    <h3>RC Astro (licence)</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Outil</th><th>Rôle</th><th>Quand</th></tr></thead>
+        <tbody>
+          <tr><td>BlurXTerminator</td><td>Déconvolution, correction des étoiles (aberrations, tilt)</td><td>Linéaire, après le retrait du gradient</td></tr>
+          <tr><td>NoiseXTerminator</td><td>Réduction du bruit</td><td>Linéaire, après BXT ; petite passe finale si besoin</td></tr>
+          <tr><td>StarXTerminator</td><td>Séparation du fond et des étoiles</td><td>Linéaire (option <em>Unscreen</em>) ou après étirement</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:10px;font-size:15px;color:var(--muted)">Dépôt : <code style="font-family:var(--mono);font-size:13px">https://www.rc-astro.com/BlurXTerminator/PixInsight</code> (même schéma pour NoiseXTerminator et StarXTerminator).</p>
+
+    <h3>Modules natifs PixInsight</h3>
+    <div class="tools">
+      <span class="tool nat">WBPP</span><span class="tool nat">FastBatchPreprocessing</span><span class="tool nat">ImageSolver</span><span class="tool nat">SPCC</span><span class="tool nat">MultiscaleGradientCorrection + MARS</span><span class="tool nat">GradientCorrection</span><span class="tool nat">DBE</span><span class="tool nat">GeneralizedHyperbolicStretch</span><span class="tool nat">ChannelCombination</span><span class="tool nat">LRGBCombination</span><span class="tool nat">NBRGBCombination</span><span class="tool nat">PixelMath</span><span class="tool nat">CurvesTransformation</span><span class="tool nat">LocalHistogramEqualization</span><span class="tool nat">HDRMultiscaleTransform</span><span class="tool nat">SCNR</span>
+    </div>
+
+    <h3>Scripts et modules gratuits</h3>
+    <p style="font-size:15px;color:var(--muted)">Dépôts vérifiés sur les sites des auteurs en septembre 2026. Copie l'URL telle quelle, barre oblique finale comprise.</p>
+    <div class="tbl-wrap">
+      <table class="scripts">
+        <thead><tr><th>Outil</th><th>Auteur</th><th>Usage</th><th>Dépôt à ajouter</th></tr></thead>
+        <tbody>
+          <tr><td>NarrowbandNormalization<div class="kind">Module (process)</div></td><td>Bill Blanshan &amp; Mike Cranfield</td><td>Palettes SHO et HOO, équilibre des canaux</td><td><code class="repo">https://www.cosmicphotons.com/pi-modules/narrowbandnormalization/</code></td></tr>
+          <tr><td>NBColourMapper<div class="kind">Script</div></td><td>Mike Cranfield</td><td>Palettes narrowband sur mesure, avec aperçu</td><td><code class="repo">https://www.cosmicphotons.com/pi-scripts/nbcolourmapper/</code></td></tr>
+          <tr><td>ImageBlend<div class="kind">Script</div></td><td>Mike Cranfield</td><td>Mélanges : Ha dans RGB, étoiles, masques</td><td><code class="repo">https://www.cosmicphotons.com/pi-scripts/imageblend/</code></td></tr>
+          <tr><td>StarReduction<div class="kind">Script</div></td><td>Mike Cranfield (méthodes Bill Blanshan)</td><td>Réduction d'étoiles</td><td><code class="repo">https://www.cosmicphotons.com/pi-scripts/starreduction/</code></td></tr>
+          <tr><td>ScreenStars<div class="kind">Script</div></td><td>Mike Cranfield</td><td>Réintégration des étoiles en mode screen</td><td><code class="repo">https://www.cosmicphotons.com/pi-scripts/screenstars/</code></td></tr>
+          <tr><td>GeneralizedHyperbolicStretch<div class="kind">Module (process)</div></td><td>Mike Cranfield &amp; David Payne</td><td>Étirement GHS (dépôt utile seulement s'il manque dans ta version)</td><td><code class="repo">https://www.ghsastro.co.uk/updates/</code></td></tr>
+          <tr><td>Statistical Stretch, Star Stretch, Halo-B-Gon, Automatic Continuum Subtraction, NB to RGB Star Combination, Perfect Palette Picker<div class="kind">Scripts</div></td><td>SetiAstro (Franklin Marek)</td><td>Étirement, étoiles, halos, continuum Ha, palettes. Dépôt de secours : https://raw.githubusercontent.com/setiastro/pixinsight-updates-194/main/</td><td><code class="repo">https://updates.setiastro.com/</code></td></tr>
+          <tr><td>GraXpert<div class="kind">Module (process)</div></td><td>DeepSkyForge (pont vers GraXpert)</td><td>Retrait du gradient par IA dans PixInsight. Nécessite le logiciel GraXpert installé. Garder la barre oblique finale.</td><td><code class="repo">https://pixinsight.deepskyforge.com/update/graxpert-process/</code></td></tr>
+          <tr><td>CorrectMagentaStars<div class="kind">Script</div></td><td>Roberto Sartori &amp; Edoardo Luca Radice</td><td>Étoiles magenta en SHO. Déjà livré avec PixInsight : Script › Utilities</td><td><span class="norepo">Aucun dépôt à ajouter</span></td></tr>
+          <tr><td>Foraxx dynamique<div class="kind">Formule PixelMath</div></td><td>Communauté</td><td>Palette SHO dynamique</td><td><span class="norepo">Aucun dépôt (formule à copier)</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="pretraitement">
+    <h2>Prétraitement <span class="filters"><span class="flt L">L</span><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span><span class="flt Ha">Ha</span><span class="flt OIII">OIII</span><span class="flt SII">SII</span></span></h2>
+    <p class="sec-intro">Commun à tous les workflows. Le résultat attendu : un master par filtre, tous alignés sur la même référence.</p>
+    <div class="legend">
+      <span><span class="phase lin">Linéaire</span> avant tout étirement</span>
+      <span><span class="phase nl">Étiré</span> après étirement</span>
+    </div>
+    <ol class="steps">
+      <li>
+        <div class="step-head"><h4>Calibration</h4><span class="phase lin">Linéaire</span></div>
+        <p>Darks, flats et flat-darks (ou bias). CosmeticCorrection automatique activée.</p>
+        <div class="tools"><span class="tool nat">WBPP</span><span class="tool nat">CosmeticCorrection</span></div>
+      </li>
+      <li>
+        <div class="step-head"><h4>Pondération et alignement</h4><span class="phase lin">Linéaire</span></div>
+        <p>Pondération par <em>PSF Signal Weight</em>, alignement de tous les filtres sur une référence commune, puis <strong>LocalNormalization</strong>.</p>
+        <div class="tools"><span class="tool nat">WBPP</span><span class="tool nat">LocalNormalization</span></div>
+      </li>
+      <li>
+        <div class="step-head"><h4>Intégration</h4><span class="phase lin">Linéaire</span></div>
+        <ul>
+          <li><strong>Drizzle ×2</strong> si tu es sous-échantillonné (plus de 2″/px) avec beaucoup de poses dithérées.</li>
+          <li><strong>Autocrop</strong> activé.</li>
+          <li><strong>Résolution astrométrique</strong> activée : indispensable pour SPCC et MGC.</li>
+        </ul>
+        <div class="tools"><span class="tool nat">WBPP</span><span class="tool nat">FastBatchPreprocessing</span></div>
+      </li>
+    </ol>
+  </section>
+
+  <section id="lineaire">
+    <h2>Phase linéaire commune</h2>
+    <p class="sec-intro">Pour chaque master, avant toute combinaison et avant BXT.</p>
+    <ol class="steps">
+      <li>
+        <div class="step-head"><h4>Recadrage</h4><span class="phase lin">Linéaire</span></div>
+        <p>Retire les bords restants, si Autocrop n'a pas suffi. Applique le même recadrage à tous les masters.</p>
+        <div class="tools"><span class="tool nat">DynamicCrop</span></div>
+      </li>
+      <li>
+        <div class="step-head"><h4>Suppression du gradient</h4><span class="phase lin">Linéaire</span></div>
+        <ul>
+          <li><strong>MGC</strong> avec MARS en priorité.</li>
+          <li>Sinon <strong>GradientCorrection</strong>, ou <strong>DBE</strong> pour les grandes nébulosités.</li>
+          <li>GraXpert en alternative.</li>
+        </ul>
+        <div class="tools"><span class="tool nat">MultiscaleGradientCorrection</span><span class="tool nat">GradientCorrection</span><span class="tool nat">DBE</span><span class="tool free">GraXpert</span></div>
+      </li>
+    </ol>
+  </section>
+
+  <section id="lrgb">
+    <h2>LRGB <span class="filters"><span class="flt L">L</span><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span></span></h2>
+    <p class="sec-intro">Galaxies, nébuleuses par réflexion, amas. La couleur vient du RGB, le détail de la luminance.</p>
+    <div class="chain"><span>RGB</span><i>→</i><span>SPCC</span><i>→</i><span>BXT</span><i>→</i><span>NXT</span><i>→</i><span>Étirement</span><i>→</i><span>SXT</span><i>→</i><span>+ L</span><i>→</i><span>Étoiles</span></div>
+    <ol class="steps">
+      <li>
+        <div class="step-head"><h4>Combinaison RGB</h4><span class="phase lin">Linéaire</span></div>
+        <p>Combine R, G et B. Relance ImageSolver si la solution astrométrique n'a pas été conservée.</p>
+        <div class="tools"><span class="tool nat">ChannelCombination</span><span class="tool nat">ImageSolver</span></div>
+      </li>
+      <li>
+        <div class="step-head"><h4>Calibration des couleurs</h4><span class="phase lin">Linéaire</span></div>
+        <p>Choisis ton profil de filtres et de capteur. Le type de galaxie <em>Average Spiral</em> sert de référence de blanc.</p>
+        <div class="tools"><span class="tool nat">SPCC</span></div>
+      </li>
+      <li>
+        <div class="step-head"><h4>Déconvolution et bruit du RGB</h4><span class="phase lin">Linéaire</span></div>
+        <p>BXT en mode <em>Correct Only</em>, puis BXT complet (étoiles et non-stellaire). Ensuite NXT léger, entre 0,5 et 0,7.</p>
+        <div class="tools"><span class="tool rc">BlurXTerminator</span><span class="tool rc">NoiseXTerminator</span></div>
+      </li>
+      <li>
+        <div class="step-head"><h4>Déconvolution et bruit de L</h4><span class="phase lin">Linéaire</span></div>
+        <p>BXT complet, en poussant un peu plus fort le non-stellaire que sur le RGB. Puis NXT.</p>
+        <div class="tools"><span class="tool rc">BlurXTerminator</span><span class="tool rc">NoiseXTerminator</span></div>
+      </li>
+      <li>
+        <div class="step-head"><h4>Étirement</h4><span class="phase nl">Étiré</span></div>
+        <p>Étire séparément RGB et L, en visant un fond et une luminosité médiane comparables.</p>
+        <div class="tools"><span class="tool nat">GeneralizedHyperbolicStretch</span><span class="tool free">Statistical Stretch</span></div>
+      </li>
+      <li>
+        <div class="step-head"><h4>Séparation des étoiles</h4><span class="phase nl">Étiré</span></div>
+        <p>SXT avec <em>Generate star image</em> et <em>Unscreen</em>, sur RGB et sur L. Garde les <strong>étoiles RGB</strong>, jette les étoiles L.</p>
+        <div class="tools"><span class="tool rc">StarXTerminator</span></div>
+      </li>
+      <li>
+        <div class="step-head"><h4>Combinaison L + RGB</h4><span class="phase nl">Étiré</span></div>
+        <p>Sur les deux images sans étoiles : LRGBCombination, saturation vers 0,35 à 0,4, <em>Chrominance noise reduction</em> activée. Alternative : décomposer en CIE L*a*b*, remplacer L, recomposer.</p>
+        <div class="tools"><span class="tool nat">LRGBCombination</span><span class="tool nat">ChannelCombination (CIE L*a*b*)</span></div>
+      </li>
+      <li>
+        <div class="step-head"><h4>Finition du fond</h4><span class="phase nl">Étiré</span></div>
+        <p>Courbes pour la saturation et le contraste, contraste local sous masque, NXT final léger si besoin.</p>
+        <div class="tools"><span class="tool nat">CurvesTransformation</span><span class="tool nat">LHE</span><span class="tool nat">HDRMultiscaleTransform</span><span class="tool rc">NoiseXTerminator</span></div>
+      </li>
+      <li>
+        <div class="step-head"><h4>Réintégration des étoiles</h4><span class="phase nl">Étiré</span></div>
+        <p>Recombine en mode <em>screen</em>. Pour réduire ensuite les étoiles, utilise les <a href="#etoiles" style="color:var(--accent)">formules de Bill Blanshan</a>.</p>
+        <div class="formula"><code>~((~starless) * (~stars))</code><button type="button" data-copy>Copier</button></div>
+        <div class="tools"><span class="tool nat">PixelMath</span><span class="tool nat">MorphologicalTransformation</span><span class="tool free">StarReduction</span><span class="tool free">ScreenStars</span></div>
+      </li>
+    </ol>
+  </section>
+
+  <section id="lhargb">
+    <h2>LHaRGB <span class="filters"><span class="flt L">L</span><span class="flt Ha">Ha<small>656,3 nm</small></span><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span></span></h2>
+    <p class="sec-intro">Galaxies avec régions HII, ou nébuleuses en émission. Le Ha s'ajoute au rouge et, en option, à la luminance.</p>
+    <ol class="steps">
+      <li>
+        <div class="step-head"><h4>RGB jusqu'à SPCC</h4><span class="phase lin">Linéaire</span></div>
+        <p>Traite le RGB comme dans le workflow LRGB, jusqu'à SPCC inclus.</p>
+        <div class="tools"><span class="tool nat">ChannelCombination</span><span class="tool nat">SPCC</span></div>
+      </li>
+      <li>
+        <div class="step-head"><h4>Soustraction du continuum sur Ha</h4><span class="phase lin">Linéaire</span></div>
+        <p>Ajuste <strong>k</strong> (environ 0,8 à 1) jusqu'à ce que les étoiles et le disque galactique disparaissent de Ha_cs.</p>
+        <div class="formula"><span class="lbl">Ha_cs</span><code>Ha - k * (R - med(R))</code><button type="button" data-copy>Copier</button></div>
+        <div class="tools"><span class="tool nat">PixelMath</span><span class="tool nat">NBRGBCombination</span><span class="tool free">Automatic Continuum Subtraction</span></div>
+      </li>
+      <li>
+        <div class="step-head"><h4>Injection dans R</h4><span class="phase lin">Linéaire</span></div>
+        <p><strong>w</strong> entre 0,5 et 2 selon l'effet voulu. ImageBlend permet de faire ce mélange avec aperçu.</p>
+        <div class="formula"><span class="lbl">R'</span><code>R + w * Ha_cs</code><button type="button" data-copy>Copier</button></div>
+        <div class="tools"><span class="tool nat">PixelMath</span><span class="tool free">ImageBlend</span></div>
+      </li>
+      <li>
+        <div class="step-head"><h4>Injection dans L (facultatif)</h4><span class="phase lin">Linéaire</span></div>
+        <p>Rend les régions HII plus nettes. Un mélange léger fonctionne aussi.</p>
+        <div class="formula"><span class="lbl">L'</span><code>max(L, Ha_cs * a)</code><button type="button" data-copy>Copier</button></div>
+        <div class="tools"><span class="tool nat">PixelMath</span></div>
+      </li>
+      <li>
+        <div class="step-head"><h4>Suite du workflow LRGB</h4><span class="phase lin">Linéaire</span><span class="phase nl">Étiré</span></div>
+        <p>BXT, NXT, étirement, SXT, LRGBCombination, finition et étoiles, comme dans le <a href="#lrgb" style="color:var(--accent)">workflow LRGB</a>.</p>
+        <div class="tools"><span class="tool rc">BXT</span><span class="tool rc">NXT</span><span class="tool rc">SXT</span><span class="tool nat">LRGBCombination</span></div>
+      </li>
+    </ol>
+    <div class="note"><strong>Pour une nébuleuse sans galaxie,</strong> une version plus simple suffit : fais l'image HaRGB en linéaire (Ha dans R, un peu de Ha dans L), puis applique le workflow LRGB classique.</div>
+  </section>
+
+  <section id="rgbsho">
+    <h2>RGB + SHO <span class="filters"><span class="flt SII">SII<small>672,4 nm</small></span><span class="flt Ha">Ha<small>656,3 nm</small></span><span class="flt OIII">OIII<small>500,7 nm</small></span><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span></span></h2>
+    <p class="sec-intro">La nébuleuse en palette SHO, les étoiles en couleurs naturelles issues du RGB.</p>
+    <ol class="steps">
+      <li>
+        <div class="step-head"><h4>Masters narrowband</h4><span class="phase lin">Linéaire</span></div>
+        <p>Pour Ha, OIII et SII : retrait du gradient, BXT, puis NXT. Réduis le bruit plus fort sur OIII et SII, souvent plus bruités.</p>
+        <div class="tools"><span class="tool nat">MGC</span><span class="tool rc">BlurXTerminator</span><span class="tool rc">NoiseXTerminator</span></div>
+      </li>
+      <li>
+        <div class="step-head"><h4>Retrait des étoiles narrowband</h4><span class="phase lin">Linéaire</span></div>
+        <p>SXT sur chaque canal ou sur l'image combinée. Ne garde que le <strong>fond sans étoiles</strong>.</p>
+        <div class="tools"><span class="tool rc">StarXTerminator</span></div>
+      </li>
+      <li>
+        <div class="step-head"><h4>Palette</h4><span class="phase lin">Linéaire</span><span class="phase nl">Étiré</span></div>
+        <ul>
+          <li><strong>NarrowbandNormalization</strong> : la référence. Il prend les masters linéaires, gère l'étirement et l'équilibre SHO/HOO.</li>
+          <li><strong>NBColourMapper</strong> : pour des palettes créatives.</li>
+          <li><strong>Foraxx dynamique</strong> en PixelMath : pour un SHO or et bleu naturel (<a href="#foraxx" style="color:var(--accent)">formules plus bas</a>).</li>
+        </ul>
+        <div class="tools"><span class="tool free">NarrowbandNormalization</span><span class="tool free">Perfect Palette Picker</span><span class="tool free">NBColourMapper</span><span class="tool nat">PixelMath (Foraxx)</span></div>
+      </li>
+      <li>
+        <div class="step-head"><h4>Finition du fond SHO</h4><span class="phase nl">Étiré</span></div>
+        <p>Courbes de teinte et saturation, SCNR partiel sur le vert si besoin, contraste local, NXT final léger.</p>
+        <div class="tools"><span class="tool nat">CurvesTransformation</span><span class="tool nat">SCNR</span><span class="tool nat">LHE</span><span class="tool nat">HDRMultiscaleTransform</span><span class="tool rc">NoiseXTerminator</span></div>
+      </li>
+      <li>
+        <div class="step-head"><h4>Étoiles RGB</h4><span class="phase lin">Linéaire</span><span class="phase nl">Étiré</span></div>
+        <p>RGB traité (SPCC, BXT), étirement léger, puis SXT. Garde uniquement les étoiles. Star Stretch peut servir pour l'étirement.</p>
+        <div class="tools"><span class="tool nat">SPCC</span><span class="tool rc">BlurXTerminator</span><span class="tool rc">StarXTerminator</span><span class="tool free">Star Stretch</span><span class="tool free">NB to RGB Star Combination</span></div>
+      </li>
+      <li>
+        <div class="step-head"><h4>Réintégration des étoiles</h4><span class="phase nl">Étiré</span></div>
+        <p>Recombine en mode <em>screen</em>. S'il reste des étoiles magenta ou des halos, passe CorrectMagentaStars ou Halo-B-Gon.</p>
+        <div class="formula"><code>~((~starless_SHO) * (~stars_RGB))</code><button type="button" data-copy>Copier</button></div>
+        <div class="tools"><span class="tool nat">PixelMath</span><span class="tool nat">CorrectMagentaStars</span><span class="tool free">Halo-B-Gon</span></div>
+      </li>
+    </ol>
+
+    <h3 id="foraxx">Formules Foraxx (palette dynamique)</h3>
+    <p>La couleur de chaque pixel dépend de la force relative des signaux : là où l'OIII domine, le rouge vient du SII, ailleurs du Ha. On obtient des tons or et bleu sans vert envahissant.</p>
+    <ul>
+      <li>Renomme les vues <strong>Ha</strong>, <strong>Oiii</strong> et <strong>Sii</strong>. Les formules utilisent ces identifiants.</li>
+      <li>Travaille sur des images <strong>étirées et sans étoiles</strong>, avec des niveaux de fond proches entre les trois canaux.</li>
+      <li>Dans PixelMath : décoche <em>Use a single RGB/K expression</em>, puis dans <em>Destination</em> choisis <em>Create new image</em> avec l'espace de couleur <em>RGB Color</em>.</li>
+    </ul>
+    <p style="font-size:15px;color:var(--muted)">Dans PixelMath, <code style="font-family:var(--mono)">~x</code> vaut 1 − x et <code style="font-family:var(--mono)">^</code> est la puissance.</p>
+
+    <h4 style="font-family:var(--display);font-size:1.05rem;margin:18px 0 6px">SHO Foraxx</h4>
+    <div class="formula"><span class="lbl">R/K</span><code>(Oiii^~Oiii)*Sii + ~(Oiii^~Oiii)*Ha</code><button type="button" data-copy>Copier</button></div>
+    <div class="formula"><span class="lbl">G</span><code>((Oiii*Ha)^~(Oiii*Ha))*Ha + ~((Oiii*Ha)^~(Oiii*Ha))*Oiii</code><button type="button" data-copy>Copier</button></div>
+    <div class="formula"><span class="lbl">B</span><code>Oiii</code><button type="button" data-copy>Copier</button></div>
+
+    <h4 style="font-family:var(--display);font-size:1.05rem;margin:18px 0 6px">HOO Foraxx (bicolore)</h4>
+    <div class="formula"><span class="lbl">R/K</span><code>Ha</code><button type="button" data-copy>Copier</button></div>
+    <div class="formula"><span class="lbl">G</span><code>((Oiii*Ha)^~(Oiii*Ha))*Ha + ~((Oiii*Ha)^~(Oiii*Ha))*Oiii</code><button type="button" data-copy>Copier</button></div>
+    <div class="formula"><span class="lbl">B</span><code>Oiii</code><button type="button" data-copy>Copier</button></div>
+
+    <div class="note"><strong>Le résultat est un point de départ.</strong> Enchaîne avec les courbes (teinte, saturation), un SCNR partiel si besoin, puis la finition du fond SHO décrite plus haut. Formules de Ludo (ForaxX), publiées sur thecoldestnights.com.</div>
+
+    <h3>Variante : RGB enrichi par le narrowband</h3>
+    <p>Pour garder des couleurs naturelles tout en renforçant les émissions, injecte le narrowband dans le RGB en linéaire, après soustraction du continuum (voir <a href="#lhargb" style="color:var(--accent)">LHaRGB</a>). Pondère modérément :</p>
+    <div class="formula"><span class="lbl">R'</span><code>R + w * Ha_cs</code><button type="button" data-copy>Copier</button></div>
+    <div class="formula"><span class="lbl">G'</span><code>G + 0.3 * OIII_cs</code><button type="button" data-copy>Copier</button></div>
+    <div class="formula"><span class="lbl">B'</span><code>B + 0.5 * OIII_cs</code><button type="button" data-copy>Copier</button></div>
+  </section>
+
+  <section id="etoiles">
+    <h2>Réduction d'étoiles Bill Blanshan</h2>
+    <p class="sec-intro">Trois formules PixelMath (version 2) qui réduisent les étoiles sans toucher au fond. Elles s'appliquent à la fin, sur l'image étirée avec étoiles, à tous les workflows.</p>
+    <ul>
+      <li>Garde ouverte la version <strong>sans étoiles</strong> de la même image, étirée de la même façon, et nomme la vue <strong>starless</strong>.</li>
+      <li>Ouvre PixelMath, coche <em>Use a single RGB/K expression</em> et colle la formule dans le champ RGB/K.</li>
+      <li>Colle la ligne <em>Symbols</em> dans l'onglet <em>Symbols</em>.</li>
+      <li>Applique sur l'image <strong>avec étoiles</strong> (<code style="font-family:var(--mono)">$T</code> = l'image cible). Teste d'abord sur une preview.</li>
+    </ul>
+    <p style="font-size:15px;color:var(--muted)">Le script gratuit StarReduction (Mike Cranfield, avec Bill Blanshan) applique ces mêmes méthodes avec un aperçu en temps réel.</p>
+
+    <h3>1. Méthode Transfer</h3>
+    <p>La plus polyvalente. Baisse <strong>S</strong> (0,15 par défaut) pour réduire davantage.</p>
+    <div class="formula"><span class="lbl">RGB/K</span><code>S=0.15;
+Img1=starless;
+f1= ~((~mtf(~S,$T)/~mtf(~S,Img1))*~Img1);
+max(Img1,f1)</code><button type="button" data-copy>Copier</button></div>
+    <div class="formula"><span class="lbl">Symbols</span><code>S, Img1, f1</code><button type="button" data-copy>Copier</button></div>
+
+    <h3>2. Méthode Halo</h3>
+    <p>Réduit surtout les halos autour des étoiles brillantes. Même réglage avec <strong>S</strong>.</p>
+    <div class="formula"><span class="lbl">RGB/K</span><code>S=0.15;
+Img1=starless;
+f2= ((~(~$T/~Img1)-~(~mtf(~S,$T)/~mtf(~S,Img1)))*~Img1);
+f3= (~(~$T/~Img1)-~(~mtf(~S,$T)/~mtf(~S,Img1)));
+max(Img1,$T-mean(f2,f3))</code><button type="button" data-copy>Copier</button></div>
+    <div class="formula"><span class="lbl">Symbols</span><code>S, Img1, f2, f3</code><button type="button" data-copy>Copier</button></div>
+
+    <h3>3. Méthode Star</h3>
+    <p><strong>I</strong> : nombre d'itérations, de 1 à 3. <strong>M</strong> : 1 = forte, 2 = modérée, 3 = douce.</p>
+    <div class="formula"><span class="lbl">RGB/K</span><code>Img1=starless;
+I=1;
+M=1;
+
+E1= $T*~(~(Img1/$T)*~$T);
+E2= max(E1,($T*E1)+(E1*~E1));
+
+E3= E1*~(~(Img1/E1)*~E1);
+E4= max(E3,($T*E3)+(E3*~E3));
+
+E5= E3*~(~(Img1/E3)*~E3);
+E6= max(E5,($T*E5)+(E5*~E5));
+
+E7= iif(I==1,E1,iif(I==2,E3,E5));
+E8= iif(I==1,E2,iif(I==2,E4,E6));
+
+E9= mean(
+$T-($T-iif(I==1,E2,iif(I==2,E4,E6))),
+$T*~($T-iif(I==1,E2,iif(I==2,E4,E6))));
+
+max(Img1,iif(M==1,E7,iif(M==2,E8,E9)))</code><button type="button" data-copy>Copier</button></div>
+    <div class="formula"><span class="lbl">Symbols</span><code>I, M, Img1, E1, E2, E3, E4, E5, E6, E7, E8, E9</code><button type="button" data-copy>Copier</button></div>
+  </section>
+
+  <section id="regles">
+    <h2>Règles d'or</h2>
+    <div class="rules">
+      <div class="rule"><h4>L'ordre en linéaire</h4><p>Gradient, puis SPCC, puis BXT, puis NXT. Combine les canaux avant l'étirement quand c'est possible.</p></div>
+      <div class="rule"><h4>BXT d'abord</h4><p>BXT avant toute réduction de bruit, et jamais sur une image déjà étirée.</p></div>
+      <div class="rule"><h4>Fond et étoiles séparés</h4><p>Traiter le fond sans étoiles et les étoiles séparément est le standard actuel.</p></div>
+      <div class="rule"><h4>SXT en linéaire</h4><p>Si tu préfères éviter SXT sur une image étirée, utilise-le sur la donnée linéaire avec <em>Unscreen</em>.</p></div>
+      <div class="rule"><h4>Reproductibilité</h4><p>Garde tes paramètres dans des ProcessIcons ou l'History Explorer pour pouvoir refaire le traitement.</p></div>
+      <div class="rule"><h4>Un seul alignement</h4><p>Tous les filtres alignés sur la même référence dans WBPP : les combinaisons PixelMath en dépendent.</p></div>
+    </div>
+  </section>
+
+  <footer>
+    Fiche de référence pour PixInsight 1.9.x avec RC Astro. Dépôts vérifiés en septembre 2026 sur cosmicphotons.com, setiastro.com, deepskyforge.com et GitHub.
+  </footer>
+</div>
+
+<script>
+document.querySelectorAll('[data-copy]').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    var code = btn.parentElement.querySelector('code');
+    var text = code.textContent;
+    var done = function () { btn.textContent = 'Copié'; setTimeout(function () { btn.textContent = 'Copier'; }, 1400); };
+    var fallback = function () {
+      var r = document.createRange(); r.selectNodeContents(code);
+      var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+      btn.textContent = 'Sélectionné';
+      setTimeout(function () { btn.textContent = 'Copier'; }, 1400);
+    };
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, fallback);
+      } else { fallback(); }
+    } catch (e) { fallback(); }
+  });
+});
+</script>
+</body>
+</html>
