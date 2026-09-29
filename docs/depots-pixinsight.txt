@@ -1,0 +1,65 @@
+DÉPÔTS PIXINSIGHT À AJOUTER
+Fiche de référence PixInsight — vérifiés le 29 septembre 2026
+==========================================================
+
+COMMENT LES AJOUTER
+1. Resources > Updates > Manage Repositories > Add
+2. Colle une adresse exactement comme ci-dessous (barre oblique finale comprise
+   quand il y en a une), OK.
+3. Recommence pour chaque dépôt.
+4. Resources > Updates > Check for Updates > Apply
+5. Quitte complètement PixInsight : l'installation se fait à la fermeture.
+   Réponds Yes au redémarrage.
+
+
+INDISPENSABLE — RC ASTRO (licence requise)
+BlurXTerminator, NoiseXTerminator, StarXTerminator (un seul dépôt pour les trois)
+https://www.rc-astro.com/PixInsight
+  > Menu : Process > RCAstro
+  > Licence : au premier lancement, clé à molette de chaque outil (connexion Internet)
+  > Supprime les anciennes adresses RC Astro du type .../BlurXTerminator/PixInsight
+
+
+RECOMMANDÉ — COSMIC PHOTONS (Mike Cranfield, gratuit)
+NarrowbandNormalization (module)
+https://www.cosmicphotons.com/pi-modules/narrowbandnormalization/
+
+NBColourMapper (script)
+https://www.cosmicphotons.com/pi-scripts/nbcolourmapper/
+
+ImageBlend (script)
+https://www.cosmicphotons.com/pi-scripts/imageblend/
+
+StarReduction (script, méthodes de Bill Blanshan)
+https://www.cosmicphotons.com/pi-scripts/starreduction/
+
+ScreenStars (script)
+https://www.cosmicphotons.com/pi-scripts/screenstars/
+
+
+RECOMMANDÉ — SETI ASTRO (Franklin Marek, gratuit)
+Statistical Stretch, Star Stretch, Halo-B-Gon, NB to RGB Star Combination,
+Automatic Continuum Subtraction, Perfect Palette Picker...
+https://updates.setiastro.com/
+
+  Dépôt de secours (seulement si le premier ne répond pas, ne pas mettre les deux) :
+  https://raw.githubusercontent.com/setiastro/pixinsight-updates-194/main/
+
+
+SEULEMENT SI BESOIN
+GeneralizedHyperbolicStretch (GHS) — n'ajoute ce dépôt que si GHS n'apparaît
+pas déjà dans le menu Process de ton PixInsight.
+https://www.ghsastro.co.uk/updates/
+
+GraXpert (module DeepSkyForge) — nécessite le logiciel GraXpert installé.
+Adresse relevée sur deepskyforge.com ; son serveur refuse les accès
+automatiques, elle n'a donc pas pu être testée ici.
+https://pixinsight.deepskyforge.com/update/graxpert-process/
+
+
+DÉJÀ INCLUS DANS PIXINSIGHT (rien à ajouter)
+WBPP, SPCC, SPFC, MultiscaleGradientCorrection, GradientCorrection, DBE,
+ImageSolver, LRGBCombination, NBRGBCombination, CorrectMagentaStars,
+LocalHistogramEqualization, HDRMultiscaleTransform, SCNR, PixelMath...
+MGC demande en plus la base MARS (fichier .xmars, depuis les téléchargements
+PixInsight) : clé à molette de MGC > Add.
