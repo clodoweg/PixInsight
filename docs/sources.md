@@ -150,6 +150,14 @@ Légende :
 - Utilisateur — base de filtres exportée depuis ton PixInsight (`.xspd`, 256 courbes, 29 septembre 2026) : courbes Antlia V Pro Series R, G, B, Sony IMX411/455/461/533/571 (identique à celle du modèle SPCC de theAstroShed) utilisées dans les icônes SPCC et SPFC. Filtres narrowband Antlia 3 nm (confirmé par l'utilisateur).
 - Revendeur — [Teleskop-Express, Antlia L-V Pro](https://www.teleskop-express.de/en/antlia-175/photo-r-g-b-and-ir-cut-filters-267/antlia-2-l-v-pro-uv-ir-cut-luminance-filter-19102) : passe-bande 420 à 715 nm, transmission supérieure à 95 %.
 
+## Schémas de la fiche
+
+Les schémas ne reprennent que des faits déjà sourcés plus haut ; ils n'ajoutent aucun réglage.
+
+- Frises des workflows, arbre de choix, comparaison large bande / narrowband, circuit des étoiles : ordre des étapes et phase linéaire ou étirée tirés des étapes de la fiche (sources des rubriques correspondantes).
+- Courbes GHS : calculées avec l'équation hyperbolique généralisée de David Payne (b > 0) telle qu'elle est codée dans les formules PixelMath de Bill Blanshan (`FromLukeAndBill.xpsm`, [theAstroShed](https://github.com/jamiesmith/pixinsight-icons)) ; D = 10, SP = 0,1, b = 10 et b = 1, sans LP ni HP. Lecture des paramètres d'après la [documentation GHS](https://www.ghsastro.co.uk/doc/tools/GeneralizedHyperbolicStretch/GeneralizedHyperbolicStretch.html).
+- Continuum : filtre R vers 600–700 nm, raie Ha à 656,3 nm, filtre Ha de 3 nm et formule `Ha_cs = Ha − k·(R − med(R))`, déjà sourcés (rubrique Combinaison et narrowband). Les hauteurs sont schématiques, pas à l'échelle.
+
 ## Dernier audit (septembre 2026)
 
 - **Liens** : 74 URL uniques testées. Environ deux tiers répondent directement ; les autres renvoient 403 ou 406 à un robot (protection anti-robots des forums AstroBin et Cloudy Nights, de Chaotic Nebula et de Remote Astrophotography ; filtrage réseau pour GitHub). Les 5 dépôts GitHub ont été confirmés par Git, Chaotic Nebula par une lecture de page. Le tutoriel Telescope Live sur CosmeticCorrection demande une inscription ; le site Light Vortex ne répond plus. Une page morte (DSLR Astrophotography, réjection) a été retirée, et la recommandation « Linear fit au-delà de 10 images » qu'elle seule appuyait a été retirée de la fiche.
