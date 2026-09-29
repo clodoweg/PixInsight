@@ -175,7 +175,7 @@ footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line);
 <div class="wrap">
   <header class="top">
     <div class="eyebrow">PixInsight 1.9 · Référence 2026</div>
-    <h1>Workflows LRGB, LHaRGB, RGB + SHO et HOO</h1>
+    <h1>Workflows LRGB, LHaRGB, SHO et HOO</h1>
     <p class="lede">Du master WBPP à l'image finale, dans l'ordre. Chaque étape indique si elle se fait sur l'image linéaire ou étirée, et quels outils utiliser : modules natifs, RC Astro (sous licence) et scripts gratuits.</p>
     <div class="pillars">
       <span>WBPP</span><span>SPCC</span><span>BXT · NXT · SXT</span><span>Fond et étoiles séparés</span>
@@ -189,6 +189,7 @@ footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line);
     <a href="#lrgb">LRGB</a>
     <a href="#lhargb">LHaRGB</a>
     <a href="#rgbsho">RGB + SHO</a>
+    <a href="#sho">SHO sans RGB</a>
     <a href="#hoo">HOO</a>
     <a href="#foraxx">Foraxx</a>
     <a href="#ghs">GHS</a>
@@ -473,6 +474,65 @@ footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line);
     <div class="formula"><span class="lbl">R'</span><code>R + w * Ha_cs</code><button type="button" data-copy>Copier</button></div>
     <div class="formula"><span class="lbl">G'</span><code>G + 0.3 * OIII_cs</code><button type="button" data-copy>Copier</button></div>
     <div class="formula"><span class="lbl">B'</span><code>B + 0.5 * OIII_cs</code><button type="button" data-copy>Copier</button></div>
+  </section>
+
+  <section id="sho">
+    <h2>SHO sans RGB <span class="filters"><span class="flt SII">SII<small>672,4 nm</small></span><span class="flt Ha">Ha<small>656,3 nm</small></span><span class="flt OIII">OIII<small>500,7 nm</small></span></span></h2>
+    <p class="sec-intro">Palette Hubble avec uniquement des poses narrowband : le fond et les étoiles viennent tous deux de SII, Ha et OIII.</p>
+    <div class="chain"><span>SII · Ha · OIII</span><i>→</i><span>Gradient</span><i>→</i><span>LinearFit</span><i>→</i><span>Combinaison</span><i>→</i><span>BXT</span><i>→</i><span>SXT</span><i>→</i><span>NXT</span><i>→</i><span>Étirement</span><i>→</i><span>Palette</span><i>→</i><span>Étoiles NB</span></div>
+    <ol class="steps">
+      <li>
+        <div class="step-head"><h4>Masters narrowband</h4><span class="phase lin">Linéaire</span></div>
+        <p>Pour SII, Ha et OIII séparément : recadrage identique et retrait du gradient. Surveille OIII, le plus sensible à la Lune.</p>
+        <div class="tools"><a class="tool nat" href="#t-gc">GradientCorrection</a><a class="tool nat" href="#t-dbe">DBE</a><a class="tool nat" href="#t-mgc">MGC</a></div>
+      </li>
+      <li>
+        <div class="step-head"><h4>Égaliser les canaux (option)</h4><span class="phase lin">Linéaire</span></div>
+        <p>LinearFit sur OIII et SII, avec Ha comme référence, pour rapprocher les fonds.</p>
+        <div class="tools"><a class="tool nat" href="#t-linfit">LinearFit</a></div>
+      </li>
+      <li>
+        <div class="step-head"><h4>Combinaison simple, puis BXT</h4><span class="phase lin">Linéaire</span></div>
+        <p>ChannelCombination avec R = SII, G = Ha, B = OIII, sans boost ni mélange, puis BXT sur cette image couleur (manuel RC Astro).</p>
+        <div class="tools"><a class="tool nat" href="#t-chcomb">ChannelCombination</a><a class="tool rc" href="#t-bxt">BlurXTerminator</a></div>
+      </li>
+      <li>
+        <div class="step-head"><h4>Séparer fond et étoiles</h4><span class="phase lin">Linéaire</span></div>
+        <p>SXT sur l'image SHO combinée, <em>Generate star image</em> coché, <em>Unscreen</em> décoché. <strong>Garde les deux images</strong> : ici, les étoiles viennent du narrowband. Sépare ensuite chacune en trois canaux avec ChannelExtraction (SII = R, Ha = G, OIII = B) : tu obtiens SII, Ha et OIII sans étoiles, et les étoiles de chaque filtre.</p>
+        <div class="tools"><a class="tool rc" href="#t-sxt">StarXTerminator</a><a class="tool nat" href="#t-chcomb">ChannelCombination</a></div>
+      </li>
+      <li>
+        <div class="step-head"><h4>Bruit et étirement du fond</h4><span class="phase lin">Linéaire</span><span class="phase nl">Étiré</span></div>
+        <p>NXT sur chaque canal sans étoiles, plus fort sur OIII et SII (0,60 à 0,85) que sur Ha (0,50 à 0,70). Puis GHS sur chaque canal jusqu'à des fonds de même luminosité ; OIII et SII demandent un étirement plus fort.</p>
+        <div class="tools"><a class="tool rc" href="#t-nxt">NoiseXTerminator</a><a class="tool nat" href="#t-ghs">GeneralizedHyperbolicStretch</a></div>
+      </li>
+      <li>
+        <div class="step-head"><h4>Palette et finition</h4><span class="phase nl">Étiré</span></div>
+        <p>NarrowbandNormalization, Foraxx ou NBColourMapper, puis courbes, SCNR si besoin, contraste local et NXT final léger : mêmes étapes que dans le <a href="#rgbsho" style="color:var(--accent)">workflow RGB + SHO</a>.</p>
+        <div class="tools"><a class="tool free" href="#t-nbn">NarrowbandNormalization</a><a class="tool nat" href="#t-pixelmath">PixelMath (Foraxx)</a><a class="tool free" href="#t-nbcm">NBColourMapper</a><a class="tool nat" href="#t-curves">CurvesTransformation</a><a class="tool nat" href="#t-scnr">SCNR</a></div>
+      </li>
+      <li>
+        <div class="step-head"><h4>Étoiles sans RGB</h4><span class="phase lin">Linéaire</span><span class="phase nl">Étiré</span></div>
+        <p>Sans poses RGB, les étoiles d'une palette SHO sortent souvent magenta : Ha est bien plus fort que SII et OIII, qu'il faut étirer davantage. Trois méthodes, de la plus naturelle à la plus simple :</p>
+        <ul>
+          <li><strong>NB to RGB Star Combination (SetiAstro)</strong> : donne au script les étoiles Ha et OIII (SII en option), linéaires. Il fabrique des étoiles aux couleurs réalistes. Option <em>Green Channel Blend Ratio</em> : rapport Ha/OIII du vert, 0,3 par défaut. Option <em>Apply Star Stretch</em> (recommandée par l'auteur) : Stretch Factor 5, Color Boost 1,0.</li>
+          <li><strong>Étoiles HOO synthétiques en PixelMath</strong> : sur les images d'étoiles linéaires Ha et OIII. Le vert mélange 20 % de Ha et 80 % d'OIII : c'est le rapport qui a donné les couleurs les plus proches du RGB dans les essais d'AIASTRO (à ajuster selon ton matériel). L'auteur calibre ensuite la couleur (calibration photométrique) ; étire enfin avec Star Stretch.</li>
+        </ul>
+        <div class="formula"><span class="lbl">R</span><code>Ha_stars</code><button type="button" data-copy>Copier</button></div>
+        <div class="formula"><span class="lbl">G</span><code>0.2*Ha_stars + 0.8*Oiii_stars</code><button type="button" data-copy>Copier</button></div>
+        <div class="formula"><span class="lbl">B</span><code>Oiii_stars</code><button type="button" data-copy>Copier</button></div>
+        <ul>
+          <li><strong>Étoiles SHO corrigées</strong> : garde l'image d'étoiles SHO telle quelle, étire-la, puis après recombinaison passe CorrectMagentaStars (Amount 0,8 par défaut). Le script inverse l'image, retire le vert (le magenta inversé), puis la réinverse.</li>
+        </ul>
+        <div class="tools"><a class="tool free" href="#t-nbrgbstars">NB to RGB Star Combination</a><a class="tool nat" href="#t-pixelmath">PixelMath</a><a class="tool free" href="#t-starstretch">Star Stretch</a><a class="tool nat" href="#t-cms">CorrectMagentaStars</a></div>
+      </li>
+      <li>
+        <div class="step-head"><h4>Réintégration des étoiles</h4><span class="phase nl">Étiré</span></div>
+        <p>Recombine en mode <em>screen</em>, puis réduis les étoiles si besoin avec les <a href="#etoiles" style="color:var(--accent)">formules de Bill Blanshan</a> ou Halo-B-Gon.</p>
+        <div class="formula"><code>~((~starless_SHO) * (~stars))</code><button type="button" data-copy>Copier</button></div>
+        <div class="tools"><a class="tool nat" href="#t-pixelmath">PixelMath</a><a class="tool free" href="#t-starred">StarReduction</a><a class="tool free" href="#t-halo">Halo-B-Gon</a></div>
+      </li>
+    </ol>
   </section>
 
   <section id="hoo">
@@ -999,7 +1059,7 @@ max(Img1,iif(M==1,E7,iif(M==2,E8,E9)))</code><button type="button" data-copy>Cop
         <div class="tlabel">Méthode</div>
         <ol class="tsteps"><li>Combine les images d'étoiles Ha, OIII et SII en étoiles de couleur naturelle.</li><li>Utile quand tu n'as pas de poses RGB pour les étoiles.</li></ol>
         <div class="tlabel">Paramètres</div>
-        <dl class="tparams"><div><dt>Entrées</dt><dd>Images d'étoiles issues de SXT, une par filtre</dd></div><div><dt>Ratio</dt><dd>Ajuste jusqu'à des étoiles blanches à légèrement colorées</dd></div></dl>
+        <dl class="tparams"><div><dt>Ha / OIII Stars Image</dt><dd>Images d'étoiles linéaires issues de SXT (obligatoires)</dd></div><div><dt>SII Stars Image</dt><dd>Optionnelle</dd></div><div><dt>OSC Image</dt><dd>Alternative pour une caméra couleur avec filtre dual-band</dd></div><div><dt>Green Channel Blend Ratio</dt><dd>Décoché par défaut ; Ha to OIII ratio 0,3 si activé</dd></div><div><dt>Apply Star Stretch</dt><dd>Recommandé par l'auteur ; Stretch Factor 5, Color Boost 1,0</dd></div></dl>
       </article>
       <article class="tcard" id="t-starred">
         <div class="tcard-head"><h4>StarReduction et ScreenStars (Mike Cranfield)</h4><span class="ttag free" title="Script ou module gratuit">GRATUIT</span><span class="phase nl">Étiré</span></div>
