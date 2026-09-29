@@ -20,6 +20,9 @@ Légende :
 
 ## RC Astro (BlurXTerminator, NoiseXTerminator, StarXTerminator)
 
+- Officiel — [RC Astro, installation dans PixInsight](https://www.rc-astro.com/pixinsight-installation-instructions/) : dépôt unique `https://www.rc-astro.com/PixInsight`, PixInsight 1.8.9-2 minimum, redémarrage complet après Apply, menu Process › RCAstro, licence via la clé à molette.
+- Officiel — [RC Astro, FAQ](https://www.rc-astro.com/faq/) : modules parfois supprimés par un antivirus ; activation de la licence en ligne ; processeur incompatible avec les calculs de réseau de neurones.
+
 - Officiel — [Manuel technique BlurXTerminator](https://www.rc-astro.com/blurxterminator-technical-manual/) : Correct Only avant SPCC, BXT complet après ; RGB combiné plutôt que canaux séparés ; en narrowband, BXT sur une combinaison SHO simple (un filtre par canal, poids proches), mélanges et boosts seulement après ; pas de réduction de bruit avant BXT.
 - Officiel — [Manuel NoiseXTerminator AI3](https://www.rc-astro.com/noisexterminator-2-ai3-user-manual-pixinsight/) : linéaire ou étiré ; exemple Denoise 0,85 ; séparation couleur et fréquences.
 - Officiel — [Notes d'utilisation StarXTerminator](https://www.rc-astro.com/starxterminator-usage-notes/) : le plus tôt possible en linéaire ; Unscreen seulement sur image étirée ; recombinaison en screen après étirement.
