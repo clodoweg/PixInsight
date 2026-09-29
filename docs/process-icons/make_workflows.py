@@ -131,10 +131,10 @@ D_SPFC_COMMUN = (" Prérequis : image LINÉAIRE et résolue (ImageSolver ou WBPP
                  "SPFC ne modifie pas les pixels : il écrit les métadonnées de flux lues par MGC. Utilise ensuite les MÊMES filtres dans SPCC.")
 D_SPFC = {
  'SPFC_RGB_filtres': "SPFC sur l'image RGB combinée, configuré pour ton matériel : QE curve Sony IMX411/455/461/533/571 (QHY600), Red/Green/Blue filter = Antlia V Pro Series R, G, B (courbes de ta base de filtres). Mêmes filtres que l'icône SPCC.",
- 'SPFC_L': "SPFC sur le master L : QE curve IMX455 ; Gray filter = Generic UV-IR-CUT Filter, approximation car le filtre Antlia V Pro L n'est pas dans ta base de filtres (remplace-le si tu l'ajoutes).",
- 'SPFC_Ha': "SPFC sur le master Ha : QE curve IMX455 ; Narrowband mode, 656,3 nm, bande passante 3 nm À CONFIRMER selon ton filtre Antlia (3 nm Pro : 3 nm).",
- 'SPFC_OIII': "SPFC sur le master OIII : QE curve IMX455 ; Narrowband mode, 500,7 nm, bande passante 3 nm À CONFIRMER selon ton filtre Antlia.",
- 'SPFC_SII': "SPFC sur le master SII : QE curve IMX455 ; Narrowband mode, 672,4 nm, bande passante 3 nm À CONFIRMER selon ton filtre Antlia.",
+ 'SPFC_L': "SPFC sur le master L : QE curve IMX455 ; Gray filter = courbe approchée du filtre Antlia V Pro L (420 à 715 nm, transmission 95 %, d'après les caractéristiques publiées : la vraie courbe n'est pas dans ta base de filtres).",
+ 'SPFC_Ha': "SPFC sur le master Ha : QE curve IMX455 ; Narrowband mode, 656,3 nm, bande passante 3 nm (filtres Antlia 3 nm).",
+ 'SPFC_OIII': "SPFC sur le master OIII : QE curve IMX455 ; Narrowband mode, 500,7 nm, bande passante 3 nm (filtres Antlia 3 nm).",
+ 'SPFC_SII': "SPFC sur le master SII : QE curve IMX455 ; Narrowband mode, 672,4 nm, bande passante 3 nm (filtres Antlia 3 nm).",
 }
 D_MGC = ("MultiscaleGradientCorrection, juste après SPFC, sur la même image. Use MARS database coché ; filtres MARS Gray = L (image mono), Red = R, Green = G, Blue = B (image couleur) ; "
          "Gradient scale 1024 (512 ou 256 si un gradient reste dans les coins), Structure separation 3 (1-2 pour les bords), Model smoothness 1,0 (3-5 si le modèle ondule), Scale factors 1,0, Show gradient model coché. "
@@ -148,9 +148,9 @@ def gradient_block(kind='rgb'):
     """kind : 'rgb' (RGB + L), 'lha' (RGB + L + Ha), 'sho', 'hoo'."""
     names = {'rgb': ['SPFC_RGB_filtres', 'SPFC_L'], 'lha': ['SPFC_RGB_filtres', 'SPFC_L', 'SPFC_Ha'],
              'sho': ['SPFC_SII', 'SPFC_Ha', 'SPFC_OIII'], 'hoo': ['SPFC_Ha', 'SPFC_OIII']}[kind]
-    opts = {'SPFC_RGB_filtres': dict(rgb='antlia', gray='generic_uvir', qe='qe_imx455'), 'SPFC_L': dict(rgb='antlia', gray='generic_uvir', qe='qe_imx455'),
-            'SPFC_Ha': dict(nb=(656.3, 3.0), rgb='antlia', gray='generic_uvir', qe='qe_imx455'), 'SPFC_OIII': dict(nb=(500.7, 3.0), rgb='antlia', gray='generic_uvir', qe='qe_imx455'),
-            'SPFC_SII': dict(nb=(672.4, 3.0), rgb='antlia', gray='generic_uvir', qe='qe_imx455')}
+    opts = {'SPFC_RGB_filtres': dict(rgb='antlia', gray='antlia_L_spec', qe='qe_imx455'), 'SPFC_L': dict(rgb='antlia', gray='antlia_L_spec', qe='qe_imx455'),
+            'SPFC_Ha': dict(nb=(656.3, 3.0), rgb='antlia', gray='antlia_L_spec', qe='qe_imx455'), 'SPFC_OIII': dict(nb=(500.7, 3.0), rgb='antlia', gray='antlia_L_spec', qe='qe_imx455'),
+            'SPFC_SII': dict(nb=(672.4, 3.0), rgb='antlia', gray='antlia_L_spec', qe='qe_imx455')}
     b = [(M.spfc(n, **opts[n]), D_SPFC[n] + D_SPFC_COMMUN) for n in names]
     b += [(M.mgc('MGC_MARS'), D_MGC),
           (M.instance('GradientCorrection', 'GradientCorrection'), T_GC),
@@ -344,8 +344,8 @@ hoo = pre_block() + [
 
 os.makedirs(OUT, exist_ok=True)
 mat = [(spcc_perso('SPCC_QHY600_Antlia'), T_SPCC)] + [(M.spfc(n + '_QHY600_Antlia' if n != 'SPFC_RGB_filtres' else 'SPFC_RGB_QHY600_Antlia', **o), D_SPFC[n] + D_SPFC_COMMUN) for n, o in [
-    ('SPFC_RGB_filtres', dict(rgb='antlia', gray='generic_uvir', qe='qe_imx455')), ('SPFC_L', dict(rgb='antlia', gray='generic_uvir', qe='qe_imx455')),
-    ('SPFC_Ha', dict(nb=(656.3, 3.0), rgb='antlia', gray='generic_uvir', qe='qe_imx455')), ('SPFC_OIII', dict(nb=(500.7, 3.0), rgb='antlia', gray='generic_uvir', qe='qe_imx455')), ('SPFC_SII', dict(nb=(672.4, 3.0), rgb='antlia', gray='generic_uvir', qe='qe_imx455'))]]
+    ('SPFC_RGB_filtres', dict(rgb='antlia', gray='antlia_L_spec', qe='qe_imx455')), ('SPFC_L', dict(rgb='antlia', gray='antlia_L_spec', qe='qe_imx455')),
+    ('SPFC_Ha', dict(nb=(656.3, 3.0), rgb='antlia', gray='antlia_L_spec', qe='qe_imx455')), ('SPFC_OIII', dict(nb=(500.7, 3.0), rgb='antlia', gray='antlia_L_spec', qe='qe_imx455')), ('SPFC_SII', dict(nb=(672.4, 3.0), rgb='antlia', gray='antlia_L_spec', qe='qe_imx455'))]]
 insts, icons = [], []
 for i, (item, desc) in enumerate(mat):
     item = described(item, desc)

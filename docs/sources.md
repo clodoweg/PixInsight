@@ -144,7 +144,8 @@ Légende :
 
 ## Ton matériel
 
-- Utilisateur — base de filtres exportée depuis ton PixInsight (`.xspd`, 256 courbes, 29 septembre 2026) : courbes Antlia V Pro Series R, G, B, Sony IMX411/455/461/533/571 (identique à celle du modèle SPCC de theAstroShed) et Generic UV-IR-CUT Filter, utilisées dans les icônes SPCC et SPFC.
+- Utilisateur — base de filtres exportée depuis ton PixInsight (`.xspd`, 256 courbes, 29 septembre 2026) : courbes Antlia V Pro Series R, G, B, Sony IMX411/455/461/533/571 (identique à celle du modèle SPCC de theAstroShed) utilisées dans les icônes SPCC et SPFC. Filtres narrowband Antlia 3 nm (confirmé par l'utilisateur).
+- Revendeur — [Teleskop-Express, Antlia L-V Pro](https://www.teleskop-express.de/en/antlia-175/photo-r-g-b-and-ir-cut-filters-267/antlia-2-l-v-pro-uv-ir-cut-luminance-filter-19102) : passe-bande 420 à 715 nm, transmission supérieure à 95 %.
 
 ## Dernier audit (septembre 2026)
 
@@ -168,4 +169,4 @@ Points clos au dernier contrôle :
 
 - GHS par filtre : pas de valeur fixe de Stretch factor, par conception ; la méthode officielle vise un pic d'histogramme vers 0,20–0,25 et le même fond pour tous les canaux, ce que suivent la fiche et les icônes.
 - NarrowbandNormalization : Palette_SHO confirmée dans le module ; icônes réelles ajoutées.
-- Icônes SPFC narrowband : bande passante 3 nm en attendant de connaître le modèle exact de tes filtres Antlia Ha, OIII et SII ; filtre L approché par « Generic UV-IR-CUT Filter » (Antlia V Pro L absent de ta base).
+- Icône SPFC L : courbe du filtre Antlia V Pro L approchée par un plateau de 95 % entre 420 et 715 nm, d'après les caractéristiques publiées ; la courbe mesurée n'est pas disponible.
