@@ -175,7 +175,7 @@ footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line);
 <div class="wrap">
   <header class="top">
     <div class="eyebrow">PixInsight 1.9 · Référence 2026</div>
-    <h1>Workflows LRGB, LHaRGB et RGB + SHO</h1>
+    <h1>Workflows LRGB, LHaRGB, RGB + SHO et HOO</h1>
     <p class="lede">Du master WBPP à l'image finale, dans l'ordre. Chaque étape indique si elle se fait sur l'image linéaire ou étirée, et quels outils utiliser : modules natifs, RC Astro (sous licence) et scripts gratuits.</p>
     <div class="pillars">
       <span>WBPP</span><span>SPCC</span><span>BXT · NXT · SXT</span><span>Fond et étoiles séparés</span>
@@ -189,6 +189,7 @@ footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line);
     <a href="#lrgb">LRGB</a>
     <a href="#lhargb">LHaRGB</a>
     <a href="#rgbsho">RGB + SHO</a>
+    <a href="#hoo">HOO</a>
     <a href="#foraxx">Foraxx</a>
     <a href="#ghs">GHS</a>
     <a href="#etoiles">Réduction d'étoiles</a>
@@ -467,6 +468,84 @@ footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line);
     <div class="formula"><span class="lbl">R'</span><code>R + w * Ha_cs</code><button type="button" data-copy>Copier</button></div>
     <div class="formula"><span class="lbl">G'</span><code>G + 0.3 * OIII_cs</code><button type="button" data-copy>Copier</button></div>
     <div class="formula"><span class="lbl">B'</span><code>B + 0.5 * OIII_cs</code><button type="button" data-copy>Copier</button></div>
+  </section>
+
+  <section id="hoo">
+    <h2>HOO <span class="filters"><span class="flt Ha">Ha<small>656,3 nm</small></span><span class="flt OIII">OIII<small>500,7 nm</small></span></span></h2>
+    <p class="sec-intro">Palette bicolore : Ha en rouge, OIII en cyan. Idéale pour les nébuleuses planétaires, les rémanents de supernova et les régions HII riches en OIII, avec une caméra mono (filtres Ha et OIII) ou une caméra couleur avec un filtre dual-band.</p>
+    <div class="chain"><span>Ha · OIII</span><i>→</i><span>Gradient</span><i>→</i><span>BXT</span><i>→</i><span>LinearFit</span><i>→</i><span>SXT</span><i>→</i><span>NXT</span><i>→</i><span>Étirement</span><i>→</i><span>Palette HOO</span><i>→</i><span>Étoiles</span></div>
+    <ol class="steps">
+      <li>
+        <div class="step-head"><h4>Caméra couleur dual-band : extraire Ha et OIII</h4><span class="phase lin">Linéaire</span></div>
+        <p>Avec un filtre dual-band, Ha tombe dans le canal rouge et OIII dans les canaux vert et bleu. Retire d'abord le gradient sur l'image couleur, puis crée deux images mono avec PixelMath (<em>Create new image</em>, espace <em>Grayscale</em>). Caméra mono : passe directement à l'étape suivante.</p>
+        <div class="formula"><span class="lbl">Ha</span><code>$T[0]</code><button type="button" data-copy>Copier</button></div>
+        <div class="formula"><span class="lbl">OIII</span><code>($T[1] + $T[2]) / 2</code><button type="button" data-copy>Copier</button></div>
+        <div class="tools"><a class="tool nat" href="#t-pixelmath">PixelMath</a><a class="tool nat" href="#t-dbe">DBE</a><a class="tool free" href="#t-graxpert">GraXpert</a></div>
+      </li>
+      <li>
+        <div class="step-head"><h4>Masters Ha et OIII</h4><span class="phase lin">Linéaire</span></div>
+        <p>Sur chaque master séparément : retrait du gradient, puis BXT (déconvolution avant tout mélange de canaux, comme le demande RC Astro). OIII est souvent plus touché par la Lune : contrôle bien son modèle de gradient.</p>
+        <div class="tools"><a class="tool nat" href="#t-gc">GradientCorrection</a><a class="tool nat" href="#t-dbe">DBE</a><a class="tool nat" href="#t-mgc">MGC</a><a class="tool rc" href="#t-bxt">BlurXTerminator</a></div>
+      </li>
+      <li>
+        <div class="step-head"><h4>Égaliser OIII sur Ha (option)</h4><span class="phase lin">Linéaire</span></div>
+        <p>LinearFit sur OIII, avec Ha comme référence. Les fonds se rapprochent, ce qui facilite la palette, surtout avec Foraxx.</p>
+        <div class="tools"><a class="tool nat" href="#t-linfit">LinearFit</a></div>
+      </li>
+      <li>
+        <div class="step-head"><h4>Retrait des étoiles</h4><span class="phase lin">Linéaire</span></div>
+        <p>SXT sur Ha et sur OIII, <em>Unscreen</em> décoché. Garde l'image d'étoiles de Ha si tu n'as pas d'étoiles RGB (voir l'étape Étoiles).</p>
+        <div class="tools"><a class="tool rc" href="#t-sxt">StarXTerminator</a></div>
+      </li>
+      <li>
+        <div class="step-head"><h4>Bruit</h4><span class="phase lin">Linéaire</span><span class="phase nl">Étiré</span></div>
+        <p>NXT sur chaque canal sans étoiles. OIII est presque toujours le plus bruité : Denoise 0,80 à 0,95 sur OIII, 0,50 à 0,70 sur Ha.</p>
+        <div class="tools"><a class="tool rc" href="#t-nxt">NoiseXTerminator</a></div>
+      </li>
+      <li>
+        <div class="step-head"><h4>Étirement des deux canaux</h4><span class="phase nl">Étiré</span></div>
+        <p>GHS sur Ha d'abord, puis sur OIII jusqu'au même niveau de fond et à une médiane proche. OIII demande en général un Stretch factor plus élevé : monte LP pour ne pas faire ressortir son bruit de fond.</p>
+        <div class="tools"><a class="tool nat" href="#t-ghs">GeneralizedHyperbolicStretch</a><a class="tool free" href="#t-statstretch">Statistical Stretch</a></div>
+      </li>
+      <li>
+        <div class="step-head"><h4>Palette HOO</h4><span class="phase nl">Étiré</span></div>
+        <p>Trois méthodes, sur les images étirées et sans étoiles :</p>
+        <ul>
+          <li><strong>Combinaison simple + NarrowbandNormalization</strong> : ChannelCombination avec R = Ha, G = OIII, B = OIII, puis NarrowbandNormalization avec la palette HOO pour équilibrer OIII (OIIIBoost) et le fond.</li>
+          <li><strong>Foraxx HOO</strong> : le vert varie selon le rapport Ha/OIII, ce qui donne des transitions orangées naturelles (<a href="#foraxx" style="color:var(--accent)">formule HOO</a>).</li>
+          <li><strong>NBColourMapper</strong> : deux couches, Ha en rouge orangé et OIII en cyan, pour choisir les teintes exactes.</li>
+        </ul>
+        <p>Combinaison simple en PixelMath (canal par canal, <em>Create new image</em>, <em>RGB Color</em>) :</p>
+        <div class="formula"><span class="lbl">R/K</span><code>Ha</code><button type="button" data-copy>Copier</button></div>
+        <div class="formula"><span class="lbl">G</span><code>Oiii</code><button type="button" data-copy>Copier</button></div>
+        <div class="formula"><span class="lbl">B</span><code>Oiii</code><button type="button" data-copy>Copier</button></div>
+        <div class="tools"><a class="tool nat" href="#t-chcomb">ChannelCombination</a><a class="tool free" href="#t-nbn">NarrowbandNormalization</a><a class="tool nat" href="#t-pixelmath">PixelMath (Foraxx)</a><a class="tool free" href="#t-nbcm">NBColourMapper</a></div>
+      </li>
+      <li>
+        <div class="step-head"><h4>Ha en luminance (option)</h4><span class="phase nl">Étiré</span></div>
+        <p>Ha porte presque tout le détail. Pour plus de netteté, applique Ha comme luminance sur l'image HOO avec LRGBCombination (seul L coché, Saturation vers 0,40), comme dans le workflow LRGB.</p>
+        <div class="tools"><a class="tool nat" href="#t-lrgb">LRGBCombination</a></div>
+      </li>
+      <li>
+        <div class="step-head"><h4>Finition du fond</h4><span class="phase nl">Étiré</span></div>
+        <p>Courbes de teinte et de saturation pour séparer le rouge et le cyan, contraste local sous masque, NXT final léger. SCNR est en général inutile en HOO, sauf si un vert apparaît après la palette.</p>
+        <div class="tools"><a class="tool nat" href="#t-curves">CurvesTransformation</a><a class="tool nat" href="#t-lhe">LHE</a><a class="tool nat" href="#t-hdrmt">HDRMultiscaleTransform</a><a class="tool rc" href="#t-nxt">NoiseXTerminator</a><a class="tool nat" href="#t-scnr">SCNR</a></div>
+      </li>
+      <li>
+        <div class="step-head"><h4>Étoiles</h4><span class="phase lin">Linéaire</span><span class="phase nl">Étiré</span></div>
+        <ul>
+          <li><strong>Avec des poses RGB</strong> : étoiles RGB comme dans le workflow RGB + SHO (gradient, BXT <em>Correct Only</em>, SPCC, BXT complet, SXT linéaire), étirées à part.</li>
+          <li><strong>Sans RGB</strong> : combine les images d'étoiles de Ha et OIII (R = Ha, G = OIII, B = OIII) ou utilise NB to RGB Star Combination, puis étire avec Star Stretch. Les étoiles HOO tirent souvent vers le rouge et le cyan : désature-les légèrement si besoin.</li>
+        </ul>
+        <div class="tools"><a class="tool rc" href="#t-sxt">StarXTerminator</a><a class="tool free" href="#t-nbrgbstars">NB to RGB Star Combination</a><a class="tool free" href="#t-starstretch">Star Stretch</a></div>
+      </li>
+      <li>
+        <div class="step-head"><h4>Réintégration des étoiles</h4><span class="phase nl">Étiré</span></div>
+        <p>Recombine en mode <em>screen</em>, puis réduis les étoiles si besoin avec les <a href="#etoiles" style="color:var(--accent)">formules de Bill Blanshan</a>.</p>
+        <div class="formula"><code>~((~starless_HOO) * (~stars))</code><button type="button" data-copy>Copier</button></div>
+        <div class="tools"><a class="tool nat" href="#t-pixelmath">PixelMath</a><a class="tool free" href="#t-starred">StarReduction</a><a class="tool free" href="#t-halo">Halo-B-Gon</a></div>
+      </li>
+    </ol>
   </section>
 
   <section id="ghs">
