@@ -130,11 +130,11 @@ D_NXT_F = "NoiseXTerminator, passe finale légère sur l'image étirée : Denois
 D_SPFC_COMMUN = (" Prérequis : image LINÉAIRE et résolue (ImageSolver ou WBPP), base Gaia DR3/SP installée. Catalog Gaia DR3/SP, Automatic limit magnitude coché, détection PSF par défaut. "
                  "SPFC ne modifie pas les pixels : il écrit les métadonnées de flux lues par MGC. Utilise ensuite les MÊMES filtres dans SPCC.")
 D_SPFC = {
- 'SPFC_RGB_filtres': "SPFC sur l'image RGB combinée (caméra mono + filtres R, G, B). ATTENTION : l'icône contient les filtres Astrodon E-series et le capteur Sony IMX571 de l'icône SPCC : remplace-les par TES filtres (Red/Green/Blue filter) et TON capteur (QE curve), sinon Ideal QE curve.",
- 'SPFC_L': "SPFC sur le master L (mono) : Gray filter = Astronomik L-2 dans l'icône, à remplacer par ton filtre L ; QE curve Ideal (ou ton capteur).",
- 'SPFC_Ha': "SPFC sur le master Ha (mono) : Narrowband mode coché, longueur d'onde 656,3 nm, bande passante 3 nm dans l'icône : mets celle de TON filtre. QE curve Ideal (ou ton capteur).",
- 'SPFC_OIII': "SPFC sur le master OIII (mono) : Narrowband mode coché, 500,7 nm, bande passante 3 nm à remplacer par celle de ton filtre.",
- 'SPFC_SII': "SPFC sur le master SII (mono) : Narrowband mode coché, 672,4 nm, bande passante 3 nm à remplacer par celle de ton filtre.",
+ 'SPFC_RGB_filtres': "SPFC sur l'image RGB combinée, configuré pour ton matériel : QE curve Sony IMX411/455/461/533/571 (QHY600), Red/Green/Blue filter = Antlia V Pro Series R, G, B (courbes de ta base de filtres). Mêmes filtres que l'icône SPCC.",
+ 'SPFC_L': "SPFC sur le master L : QE curve IMX455 ; Gray filter = Generic UV-IR-CUT Filter, approximation car le filtre Antlia V Pro L n'est pas dans ta base de filtres (remplace-le si tu l'ajoutes).",
+ 'SPFC_Ha': "SPFC sur le master Ha : QE curve IMX455 ; Narrowband mode, 656,3 nm, bande passante 3 nm À CONFIRMER selon ton filtre Antlia (3 nm Pro : 3 nm).",
+ 'SPFC_OIII': "SPFC sur le master OIII : QE curve IMX455 ; Narrowband mode, 500,7 nm, bande passante 3 nm À CONFIRMER selon ton filtre Antlia.",
+ 'SPFC_SII': "SPFC sur le master SII : QE curve IMX455 ; Narrowband mode, 672,4 nm, bande passante 3 nm À CONFIRMER selon ton filtre Antlia.",
 }
 D_MGC = ("MultiscaleGradientCorrection, juste après SPFC, sur la même image. Use MARS database coché ; filtres MARS Gray = L (image mono), Red = R, Green = G, Blue = B (image couleur) ; "
          "Gradient scale 1024 (512 ou 256 si un gradient reste dans les coins), Structure separation 3 (1-2 pour les bords), Model smoothness 1,0 (3-5 si le modèle ondule), Scale factors 1,0, Show gradient model coché. "
@@ -148,8 +148,9 @@ def gradient_block(kind='rgb'):
     """kind : 'rgb' (RGB + L), 'lha' (RGB + L + Ha), 'sho', 'hoo'."""
     names = {'rgb': ['SPFC_RGB_filtres', 'SPFC_L'], 'lha': ['SPFC_RGB_filtres', 'SPFC_L', 'SPFC_Ha'],
              'sho': ['SPFC_SII', 'SPFC_Ha', 'SPFC_OIII'], 'hoo': ['SPFC_Ha', 'SPFC_OIII']}[kind]
-    opts = {'SPFC_RGB_filtres': dict(rgb='astrodon', qe='qe_imx571'), 'SPFC_L': {}, 'SPFC_Ha': dict(nb=(656.3, 3.0)),
-            'SPFC_OIII': dict(nb=(500.7, 3.0)), 'SPFC_SII': dict(nb=(672.4, 3.0))}
+    opts = {'SPFC_RGB_filtres': dict(rgb='antlia', gray='generic_uvir', qe='qe_imx455'), 'SPFC_L': dict(rgb='antlia', gray='generic_uvir', qe='qe_imx455'),
+            'SPFC_Ha': dict(nb=(656.3, 3.0), rgb='antlia', gray='generic_uvir', qe='qe_imx455'), 'SPFC_OIII': dict(nb=(500.7, 3.0), rgb='antlia', gray='generic_uvir', qe='qe_imx455'),
+            'SPFC_SII': dict(nb=(672.4, 3.0), rgb='antlia', gray='generic_uvir', qe='qe_imx455')}
     b = [(M.spfc(n, **opts[n]), D_SPFC[n] + D_SPFC_COMMUN) for n in names]
     b += [(M.mgc('MGC_MARS'), D_MGC),
           (M.instance('GradientCorrection', 'GradientCorrection'), T_GC),
@@ -181,7 +182,25 @@ def ghs_block(extra_desc=''):
 
 rgb_comb = lambda: (pm('Combinaison_RGB', 'R', 'G', 'B', new_image=True, new_id='RGB', space='RGB'),
                     "Combinaison RGB (équivalent de ChannelCombination) : nomme tes masters linéaires 'R', 'G' et 'B'. Crée l'image couleur 'RGB'.")
-spcc = lambda: (raw('SPCC_RGB_ASG', 'SPCC'), T_SPCC)
+MATERIEL = "QHY600 (Sony IMX455) + filtres Antlia V Pro"
+
+def spcc_perso(name):
+    n, t = raw('SPCC_RGB_ASG', name)
+    for ch in ('red', 'green', 'blue'):
+        cn, cc = M.CURVES['antlia_' + ch]
+        t, k1 = re.subn(r'<parameter id="%sFilterTrCurve">[^<]*</parameter>' % ch, '<parameter id="%sFilterTrCurve">%s</parameter>' % (ch, cc), t)
+        t, k2 = re.subn(r'<parameter id="%sFilterName">[^<]*</parameter>' % ch, '<parameter id="%sFilterName">%s</parameter>' % (ch, escape(cn)), t)
+        assert k1 == 1 and k2 == 1
+    qn, qc = M.CURVES['qe_imx455']
+    t, k1 = re.subn(r'<parameter id="deviceQECurve">[^<]*</parameter>', '<parameter id="deviceQECurve">%s</parameter>' % qc, t)
+    t, k2 = re.subn(r'<parameter id="deviceQECurveName">[^<]*</parameter>', '<parameter id="deviceQECurveName">%s</parameter>' % escape(qn), t)
+    assert k1 == 1 and k2 == 1
+    return n, t
+
+T_SPCC = ("SPCC configuré pour ton matériel (" + MATERIEL + ") : White reference Average Spiral Galaxy ; QE curve Sony IMX411/455/461/533/571 ; filtres Antlia V Pro Series R, G, B "
+          "(courbes issues de ta base de filtres PixInsight) ; neutralisation du fond activée (limites -2,80 / +2,00) ; Generate graphs coché. "
+          "Crée une preview sur du fond vide et choisis-la comme référence de fond. Toujours en linéaire, après le gradient et BXT Correct Only, avant BXT complet.")
+spcc = lambda: (spcc_perso('SPCC'), T_SPCC)
 
 # ---------------------------------------------------------------- LRGB
 lrgb = pre_block() + [rgb_comb(), (note('ImageSolver', T_SOLVER), '')] + gradient_block('rgb') + [
@@ -324,6 +343,16 @@ hoo = pre_block() + [
 ] + stars_end()
 
 os.makedirs(OUT, exist_ok=True)
+mat = [(spcc_perso('SPCC_QHY600_Antlia'), T_SPCC)] + [(M.spfc(n + '_QHY600_Antlia' if n != 'SPFC_RGB_filtres' else 'SPFC_RGB_QHY600_Antlia', **o), D_SPFC[n] + D_SPFC_COMMUN) for n, o in [
+    ('SPFC_RGB_filtres', dict(rgb='antlia', gray='generic_uvir', qe='qe_imx455')), ('SPFC_L', dict(rgb='antlia', gray='generic_uvir', qe='qe_imx455')),
+    ('SPFC_Ha', dict(nb=(656.3, 3.0), rgb='antlia', gray='generic_uvir', qe='qe_imx455')), ('SPFC_OIII', dict(nb=(500.7, 3.0), rgb='antlia', gray='generic_uvir', qe='qe_imx455')), ('SPFC_SII', dict(nb=(672.4, 3.0), rgb='antlia', gray='generic_uvir', qe='qe_imx455'))]]
+insts, icons = [], []
+for i, (item, desc) in enumerate(mat):
+    item = described(item, desc)
+    insts.append(item[1])
+    icons.append('   <icon id="%s" instance="%s_instance" xpos="30" ypos="%d" workspace="Workspace01"/>' % (item[0], item[0], 30 + 30 * i))
+open(os.path.join(OUT, '..', '04-Materiel-QHY600-Antlia.xpsm'), 'w', encoding='utf-8').write(
+    M.HEADER + '<!-- Icônes pour ' + MATERIEL + ' -->\n' + '\n'.join(insts) + '\n' + '\n'.join(icons) + '\n</xpsm>\n')
 for fn, pre, title, steps in [
     ('Workflow-LRGB.xpsm', 'LRGB', 'Workflow LRGB', lrgb),
     ('Workflow-LHaRGB.xpsm', 'LHA', 'Workflow LHaRGB', lhargb),

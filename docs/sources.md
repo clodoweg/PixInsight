@@ -142,6 +142,10 @@ Légende :
 - Tutoriel — [Chaotic Nebula, ImageIntegration](https://chaoticnebula.com/pixinsight-image-integration/) : Percentile clipping pour moins de 10 images, Winsorized sigma clipping pour les lots plus importants.
 - Forum — [PixInsight, réjection ESD choisie automatiquement par WBPP](https://pixinsight.com/forum/index.php?threads%2Fwbpp-rejection-method-auto-selected-generalized-extreme-studentized-deviate.20180%2F=) : ESD pour les grands lots.
 
+## Ton matériel
+
+- Utilisateur — base de filtres exportée depuis ton PixInsight (`.xspd`, 256 courbes, 29 septembre 2026) : courbes Antlia V Pro Series R, G, B, Sony IMX411/455/461/533/571 (identique à celle du modèle SPCC de theAstroShed) et Generic UV-IR-CUT Filter, utilisées dans les icônes SPCC et SPFC.
+
 ## Dernier audit (septembre 2026)
 
 - **Liens** : 74 URL uniques testées. Environ deux tiers répondent directement ; les autres renvoient 403 ou 406 à un robot (protection anti-robots des forums AstroBin et Cloudy Nights, de Chaotic Nebula et de Remote Astrophotography ; filtrage réseau pour GitHub). Les 5 dépôts GitHub ont été confirmés par Git, Chaotic Nebula par une lecture de page. Le tutoriel Telescope Live sur CosmeticCorrection demande une inscription ; le site Light Vortex ne répond plus. Une page morte (DSLR Astrophotography, réjection) a été retirée, et la recommandation « Linear fit au-delà de 10 images » qu'elle seule appuyait a été retirée de la fiche.
@@ -164,3 +168,4 @@ Points clos au dernier contrôle :
 
 - GHS par filtre : pas de valeur fixe de Stretch factor, par conception ; la méthode officielle vise un pic d'histogramme vers 0,20–0,25 et le même fond pour tous les canaux, ce que suivent la fiche et les icônes.
 - NarrowbandNormalization : Palette_SHO confirmée dans le module ; icônes réelles ajoutées.
+- Icônes SPFC narrowband : bande passante 3 nm en attendant de connaître le modèle exact de tes filtres Antlia Ha, OIII et SII ; filtre L approché par « Generic UV-IR-CUT Filter » (Antlia V Pro L absent de ta base).

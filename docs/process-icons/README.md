@@ -66,6 +66,17 @@ Les formules supposent des images nommées comme indiqué (renomme tes vues avec
 
 Les process qui dépendent de ton matériel ou de ton image (WBPP, SPCC, SPFC, DBE, MGC, GHS) sont dans les fichiers par workflow ci-dessous.
 
+## 04-Materiel-QHY600-Antlia.xpsm (ton matériel)
+
+Icônes SPCC et SPFC configurées pour **QHY600 (capteur Sony IMX455) + filtres Antlia V Pro**, avec les courbes de filtres et de capteur issues de ta base de filtres PixInsight. Les cinq workflows utilisent les mêmes réglages.
+
+| Icône | Réglages |
+|---|---|
+| `SPCC_QHY600_Antlia` | Average Spiral Galaxy ; QE Sony IMX411/455/461/533/571 ; Antlia V Pro Series R, G, B ; neutralisation du fond (−2,80 / +2,00) ; graphes |
+| `SPFC_RGB_QHY600_Antlia` | Image RGB combinée : Antlia V Pro R, G, B ; QE IMX455 |
+| `SPFC_L_QHY600_Antlia` | Master L : Gray filter « Generic UV-IR-CUT Filter » (approximation : le filtre Antlia V Pro L n'est pas dans ta base) ; QE IMX455 |
+| `SPFC_Ha/OIII/SII_QHY600_Antlia` | Narrowband mode, 656,3 / 500,7 / 672,4 nm, **bande passante 3 nm à confirmer** selon tes filtres Antlia ; QE IMX455 |
+
 ## Un fichier par workflow (dossier `workflows/`)
 
 Chaque fichier contient **tous les process du workflow, dans l'ordre**, numérotés (`LRGB_01_WBPP`, `LRGB_02_CC_auto`…) et disposés en colonnes de haut en bas. **Chaque icône porte une description détaillée** : réglages, vues attendues, quand l'appliquer et pourquoi. Pour la lire dans PixInsight, survole l'icône ou ouvre-la (champ *Description*).
@@ -82,9 +93,9 @@ Chaque fichier contient **tous les process du workflow, dans l'ordre**, numérot
 
 - **Process réglés** : s'appliquent directement (PixelMath, BlurXTerminator, NoiseXTerminator, StarXTerminator, LRGBCombination, LinearFit, SCNR, LHE, HDRMT, MorphologicalTransformation, CurvesTransformation, GradientCorrection, NarrowbandNormalization SHO et HOO, CosmeticCorrection).
 - **Process à compléter sur ton image ou ton matériel** :
-  - `SPFC_…` et `MGC_MARS` : icônes réelles ; remplace les filtres et le capteur par les tiens, et charge la base MARS dans les préférences de MGC si elle ne l'est pas.
+  - `MGC_MARS` : charge la base MARS dans les préférences de MGC si elle ne l'est pas.
   - `DynamicCrop` et `DBE` : icônes réelles, sans cadre ni points (ils dépendent de l'image).
-  - `SPCC` : réglé sur *Average Spiral Galaxy* avec neutralisation du fond, mais il contient les filtres Astrodon E-series et le capteur Sony IMX571 de l'auteur du modèle. **Remplace-les par les tiens.**
+  - `SPCC` et `SPFC_…` : configurés pour ton matériel (QHY600 + Antlia V Pro). La bande passante des SPFC narrowband (3 nm) est à confirmer.
   - `GHS_1_premier`, `GHS_2_contraste`, `GHS_3_fond` : Local intensity et protections réglés, mais **Stretch factor à 0 et SP à choisir sur ton image** (l'icône ne fait rien tant que tu ne l'as pas réglée).
   - `Courbes` : légère courbe en S et saturation, à ajuster à l'œil.
 - **Icônes-notes** (process *NoOperation*, sans effet) : seulement pour les **scripts** (WBPP, ImageSolver, Statistical Stretch, Star Stretch, Halo-B-Gon, CorrectMagentaStars, NB to RGB Star Combination, NBColourMapper, Automatic Continuum Subtraction, NBRGBCombination) et les en-têtes d'étape. Une icône de script enregistre le chemin du fichier et son empreinte sur la machine de l'auteur, et WBPP 3.x a changé d'emplacement : une icône de script recopiée risquerait de ne pas se charger chez toi. La description donne tous les réglages à faire dans le script.
