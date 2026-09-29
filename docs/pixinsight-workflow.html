@@ -495,7 +495,7 @@ footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line);
       </li>
       <li>
         <div class="step-head"><h4>Égaliser OIII sur Ha (option)</h4><span class="phase lin">Linéaire</span></div>
-        <p>LinearFit sur OIII, avec Ha comme référence. Les fonds se rapprochent, ce qui facilite la palette, surtout avec Foraxx.</p>
+        <p>LinearFit sur OIII, avec Ha comme référence (méthode de Galactic Hunter) : les fonds doivent avoir la même luminosité pour que la combinaison ne paraisse pas étrange. Cela facilite la palette, surtout avec Foraxx.</p>
         <div class="tools"><a class="tool nat" href="#t-linfit">LinearFit</a></div>
       </li>
       <li>
@@ -525,10 +525,12 @@ footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line);
           <li><strong>Combinaison simple + NarrowbandNormalization</strong> : ChannelCombination avec R = Ha, G = OIII, B = OIII, puis NarrowbandNormalization avec la palette HOO pour équilibrer OIII (OIIIBoost) et le fond.</li>
           <li><strong>Foraxx HOO</strong> : le vert varie selon le rapport Ha/OIII, ce qui donne des transitions orangées naturelles (<a href="#foraxx" style="color:var(--accent)">formule HOO</a>).</li>
           <li><strong>NBColourMapper</strong> : deux couches, Ha en rouge orangé et OIII en cyan, pour choisir les teintes exactes.</li>
+          <li><strong>Variante « style Hubble »</strong> (Galactic Hunter) : R = Ha, G = 0,6·Ha + 0,4·OIII, B = OIII. Le vert mélange les deux gaz et donne des tons plus dorés ; ajuste les coefficients à ton goût.</li>
         </ul>
         <p>Combinaison simple en PixelMath (canal par canal, <em>Create new image</em>, <em>RGB Color</em>) :</p>
         <div class="formula"><span class="lbl">R/K</span><code>Ha</code><button type="button" data-copy>Copier</button></div>
         <div class="formula"><span class="lbl">G</span><code>Oiii</code><button type="button" data-copy>Copier</button></div>
+        <div class="formula"><span class="lbl">G (variante)</span><code>0.6*Ha + 0.4*Oiii</code><button type="button" data-copy>Copier</button></div>
         <div class="formula"><span class="lbl">B</span><code>Oiii</code><button type="button" data-copy>Copier</button></div>
         <div class="tools"><a class="tool nat" href="#t-chcomb">ChannelCombination</a><a class="tool free" href="#t-nbn">NarrowbandNormalization</a><a class="tool nat" href="#t-pixelmath">PixelMath (Foraxx)</a><a class="tool free" href="#t-nbcm">NBColourMapper</a></div>
       </li>
@@ -745,9 +747,9 @@ max(Img1,iif(M==1,E7,iif(M==2,E8,E9)))</code><button type="button" data-copy>Cop
         <div class="tlabel">Méthode</div>
         <ol class="tsteps"><li>Crée une icône de process réglée comme ci-dessous.</li><li>Dans WBPP, sélectionne cette icône comme modèle de correction cosmétique.</li></ol>
         <div class="tlabel">Paramètres</div>
-        <dl class="tparams"><div><dt>Use Auto detect</dt><dd>Activé</dd></div><div><dt>Hot sigma</dt><dd>3,0 (baisser à 2,5 si des pixels chauds restent)</dd></div><div><dt>Cold sigma</dt><dd>3,0</dd></div><div><dt>CFA</dt><dd>Coché pour une caméra couleur</dd></div></dl>
+        <dl class="tparams"><div><dt>Use Auto detect</dt><dd>Activé</dd></div><div><dt>Hot sigma</dt><dd>2,2 à 3,0 (Telescope Live : 2,2 à 2,5). Ne descends pas trop bas, sinon du vrai signal est modifié</dd></div><div><dt>Cold sigma</dt><dd>3,0, ou désactivé (Telescope Live le laisse à 0)</dd></div><div><dt>CFA</dt><dd>Coché pour une caméra couleur</dd></div></dl>
               <div class="tlabel">Par filtre</div>
-        <div class="pf"><div><span class="filters"><span class="flt L">L</span><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span></span><p>Hot sigma 3,0.</p></div><div><span class="filters"><span class="flt SII">SII</span><span class="flt Ha">Ha</span><span class="flt OIII">OIII</span></span><p>Poses longues, donc plus de pixels chauds : Hot sigma 2,5 à 3,0.</p></div></div>
+        <div class="pf"><div><span class="filters"><span class="flt L">L</span><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span></span><p>Hot sigma 2,5 à 3,0.</p></div><div><span class="filters"><span class="flt SII">SII</span><span class="flt Ha">Ha</span><span class="flt OIII">OIII</span></span><p>Poses longues : les pixels chauds viennent du courant d'obscurité et sont plus nombreux. Hot sigma 2,2 à 2,5, et des darks de même durée que les brutes.</p></div></div>
       </article>
       <article class="tcard" id="t-ln">
         <div class="tcard-head"><h4>LocalNormalization</h4><span class="ttag nat" title="Natif PixInsight">PI</span><span class="phase lin">Linéaire</span></div>
@@ -793,7 +795,7 @@ max(Img1,iif(M==1,E7,iif(M==2,E8,E9)))</code><button type="button" data-copy>Cop
         <div class="tlabel">Paramètres</div>
         <dl class="tparams"><div><dt>Samples per row</dt><dd>10 à 20 (Jon Rista : 20 à 25 pour un capteur 4:3 ou 3:2)</dd></div><div><dt>Sample radius</dt><dd>10 à 50 selon l'échantillonnage</dd></div><div><dt>Tolerance</dt><dd>0,5 (défaut) ; monter à 1,0 à 1,5 si des points sont rejetés (rouges)</dd></div><div><dt>Shadows relaxation</dt><dd>3,0 (défaut) ; monter si des points sombres sont rejetés</dd></div><div><dt>Smoothing factor</dt><dd>0,25 (défaut) ; 0,5 à 1,0 pour les champs nébuleux complexes</dd></div><div><dt>Correction</dt><dd>Subtraction pour la pollution lumineuse ; Division pour le vignettage</dd></div><div><dt>Normalize</dt><dd>Coché (conseillé par nrStellar)</dd></div><div><dt>Discard background model</dt><dd>Coché</dd></div><div><dt>Replace target image</dt><dd>Coché</dd></div></dl>
         <div class="tlabel">Par filtre</div>
-        <div class="pf"><div><span class="filters"><span class="flt L">L</span></span><p>Gradient le plus fort : beaucoup de points bien répartis (18 à 20 par ligne).</p></div><div><span class="filters"><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span></span><p>Même grille sur les trois masters, ou DBE sur l'image couleur combinée.</p></div><div><span class="filters"><span class="flt Ha">Ha</span><span class="flt SII">SII</span></span><p>Peu de gradient : grille légère (10 à 12 par ligne). Attention, la nébulosité Ha couvre souvent tout le champ : place les points à la main.</p></div><div><span class="filters"><span class="flt OIII">OIII</span></span><p>Signal faible : monte Tolerance (1,0 à 1,5) pour que les points du fond ne soient pas rejetés.</p></div></div>
+        <div class="pf"><div><span class="filters"><span class="flt L">L</span></span><p>Gradient le plus fort : beaucoup de points bien répartis (18 à 20 par ligne).</p></div><div><span class="filters"><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span></span><p>Même grille sur les trois masters, ou DBE sur l'image couleur combinée. D'un filtre à l'autre, garde les points et ajuste plutôt Tolerance (conseil de Chaotic Nebula).</p></div><div><span class="filters"><span class="flt Ha">Ha</span><span class="flt SII">SII</span></span><p>Peu de gradient : grille légère (10 à 12 par ligne). Attention, la nébulosité Ha couvre souvent tout le champ : place les points à la main.</p></div><div><span class="filters"><span class="flt OIII">OIII</span></span><p>Signal faible : monte Tolerance (1,0 à 1,5) pour que les points du fond ne soient pas rejetés.</p></div></div>
         <p class="tnote">Meilleur choix que les outils automatiques quand la nébulosité remplit presque tout le champ. Les sources divergent sur la correction : Jon Rista et la majorité réservent Division au vignettage, Chaotic Nebula l'utilise aussi pour les gradients.</p>
       </article>
       <article class="tcard" id="t-graxpert">
@@ -923,7 +925,7 @@ max(Img1,iif(M==1,E7,iif(M==2,E8,E9)))</code><button type="button" data-copy>Cop
         <div class="tlabel">Méthode</div>
         <ol class="tsteps"><li>Menu Script › Utilities › NBRGBCombination (script livré avec PixInsight).</li><li>Choisis l'image RGB et sa bande passante, puis l'image narrowband de chaque canal concerné et la bande passante de son filtre.</li><li>Compare avec les boutons d'aperçu RGB et NBRGB, ajuste Scale, puis applique. Compare aussi avec la soustraction du continuum en PixelMath.</li></ol>
         <div class="tlabel">Paramètres</div>
-        <dl class="tparams"><div><dt>RGB</dt><dd>Ton image RGB et sa bande passante (≈ 100 nm pour un filtre R ; un tutoriel utilise 200 nm pour un capteur couleur)</dd></div><div><dt>R Channel</dt><dd>Image Ha et bande passante de ton filtre (3, 5, 7 nm…)</dd></div><div><dt>G / B Channel</dt><dd>Image OIII et sa bande passante, si tu l'injectes</dd></div><div><dt>Scale</dt><dd>1,2 (défaut) ; jusqu'à 3 à 5 pour faire ressortir un Ha faible</dd></div></dl>
+        <dl class="tparams"><div><dt>RGB</dt><dd>Ton image RGB et sa bande passante : ≈ 100 nm pour un filtre R mono (Chroma R : 600 à 700 nm) ; un tutoriel utilise 200 nm pour un capteur couleur</dd></div><div><dt>R Channel</dt><dd>Image Ha et bande passante de ton filtre (3, 5, 7 nm…)</dd></div><div><dt>G / B Channel</dt><dd>Image OIII et sa bande passante, si tu l'injectes</dd></div><div><dt>Scale</dt><dd>1,2 (défaut) ; jusqu'à 3 à 5 pour faire ressortir un Ha faible</dd></div></dl>
         <div class="tlabel">Par filtre</div>
         <div class="pf"><div><span class="filters"><span class="flt Ha">Ha</span></span><p>Canal R. Continuum : le master R.</p></div><div><span class="filters"><span class="flt OIII">OIII</span></span><p>Canaux G et B. Continuum : G, éventuellement B.</p></div><div><span class="filters"><span class="flt SII">SII</span></span><p>En général pas injecté dans un RGB naturel : faible, et même teinte rouge que Ha.</p></div></div>
         <p class="tnote">Aperçus par canal (R, G, B), RGB (sans remplacement) et NBRGB (résultat) avant d'appliquer.</p>

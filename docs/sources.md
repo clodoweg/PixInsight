@@ -108,13 +108,17 @@ Légende :
 - Forum — [Cloudy Nights, Lune et filtres 3 nm](https://www.cloudynights.com/topic/893726-moon-effect-on-mono-3nm-hasiioiii/) *(résumé)*
 - Tutoriel — [Optical Mechanics, guide narrowband](https://www.opticalmechanics.com/mastering-narrowband-astrophotography-ha-oiii-sii/) *(résumé)* : poses de 180 à 600 s en narrowband sur CMOS refroidi.
 - Forum — [AstroBin, pourquoi 300 s en mono CMOS](https://app.astrobin.com/forum/topic/105210/acquisition/how-long-an-exposure-with-monochrome-cmos-cameras-why-does-300sec-seem-to-be-the-standard) *(résumé)*
+- Tutoriel — [Telescope Live, correction des défauts d'image](https://telescope.live/blog/correcting-image-data-problems-pixinsight) : CosmeticCorrection Hot sigma 2,2 à 2,5, Cold sigma à 0.
+- Tutoriel — [Chaotic Nebula, CosmeticCorrection](https://chaoticnebula.com/cosmetic-correction/) : ne pas être trop agressif sur Hot sigma.
+- Tutoriel — [Galactic Hunter, combinaison bicolore](https://www.galactic-hunter.com/post/pixinsight-bi-color-combination-tutorial) : LinearFit d'OIII sur Ha, fonds de même luminosité, variante HOO G = 0,6·Ha + 0,4·OIII.
+- Tutoriel — [High Point Scientific, combiner le narrowband](https://www.highpointscientific.com/astronomy-hub/post/astro-photography-guides/combining-narrowband-data-pixinsight) : étirement de chaque canal plus ou moins fort selon la palette voulue.
+- Forum — [AstroBin, NarrowbandNormalization et données couleur](https://app.astrobin.com/forum/topic/144808/problems-with-narrowband-normalisation-of-osc-data) *(résumé)* : OIII à étirer plus fort, fonds à égaliser avant de combiner.
+- Tutoriel — [OPT, les filtres expliqués](https://optcorp.com/blogs/deep-sky-imaging/filters-explained) *(résumé)* : filtre Chroma R de 600 à 700 nm.
 
 ## Non vérifié
 
 Réglages sans source trouvée, donnés comme valeurs de départ issues de la pratique :
 
-- CosmeticCorrection : Hot sigma plus bas (2,5 à 3,0) en narrowband.
-- GHS : Stretch factor plus élevé sur OIII et SII que sur Ha (logique vu leur signal plus faible, mais aucune valeur publiée).
-- NBRGBCombination : bande passante RGB d'environ 100 nm pour un filtre R mono (ordre de grandeur, un seul tutoriel donne une valeur, pour un capteur couleur).
-- DBE et GraXpert : réglages différents par filtre.
+- GraXpert : réglages différents par filtre.
+- GHS : valeurs chiffrées de Stretch factor par filtre (le principe d'un étirement plus fort sur OIII est confirmé, pas les valeurs).
 - Ha en luminance en HOO : procédure confirmée, mais le réglage Saturation 0,40 vient du workflow LRGB.
