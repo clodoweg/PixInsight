@@ -34,7 +34,7 @@ Légende :
 - Forum — [PixInsight, réjection ESD](https://pixinsight.com/forum/index.php?threads%2Fwbpp-rejection-method-auto-selected-generalized-extreme-studentized-deviate.20180%2F=)
 - Tutoriel — [Chaotic Nebula, normalisation locale](https://chaoticnebula.com/pixinsight-local-normalization/)
 - Tutoriel — [Star-watcher, drizzle](https://www.star-watcher.ch/image-processing/drizzle-integration/) : critère FWHM < 2 px, 15 à 20 poses dithérées.
-- Tutoriel — [Telescope Live, CosmeticCorrection dans WBPP](https://telescope.live/tutorials/enhanced-automated-wbpp-cosmeticcorrection)
+- Tutoriel — [Telescope Live, CosmeticCorrection dans WBPP](https://telescope.live/tutorials/enhanced-automated-wbpp-cosmeticcorrection) *(inscription requise)*
 
 ## Gradient (MGC, GradientCorrection, DBE, GraXpert)
 
@@ -60,7 +60,7 @@ Légende :
 - Tutoriel — [Chaotic Nebula, luminance](https://chaoticnebula.com/pixinsight-luminance-integration/) : réglages LRGBCombination.
 - Officiel — [PixInsight, combinaison broadband et narrowband](https://pixinsight.com/tutorials/narrowband/)
 - Officiel — [PixInsight, notes M31 Ha](https://pixinsight.com/examples/M31-Ha/) : soustraction du continuum.
-- Tutoriel — [Light Vortex, LRGB et narrowband](https://www.lightvortexastronomy.com/tutorial-combining-lrgb-with-narrowband.html) *(résumé)*
+- Tutoriel — [Light Vortex, LRGB et narrowband](https://www.lightvortexastronomy.com/tutorial-combining-lrgb-with-narrowband.html) *(résumé ; site indisponible en septembre 2026)*
 - Tutoriel — [Remote Astrophotography, NarrowbandNormalization](https://remoteastrophotography.com/using-narrowbandnormalization-to-enhance-your-narrowband-images/) : image étirée et sans étoiles, noms des réglages.
 - Tutoriel — [The Coldest Nights, formules Foraxx](https://thecoldestnights.com/2020/06/pixinsight-dynamic-narrowband-combinations-with-pixelmath/)
 - Tutoriel — [Telescope Live, combinaisons dynamiques](https://telescope.live/blog/dynamic-narrowband-combinations-pixelmath)
@@ -132,11 +132,16 @@ Légende :
 - Tutoriel — [Evan Tsai, comparatif des outils de retrait d'étoiles](https://www.astroimagetw.com/en/tutorials/star-removal-tools/) *(résumé)* : Large overlap de StarXTerminator utile contre le quadrillage, environ deux fois plus lent, peut créer d'autres artefacts.
 - Officiel — [AutoIntegrate, code source](https://github.com/jarmoruuth/AutoIntegrate) et 11 icônes SPCC de theAstroShed : limites de neutralisation du fond de SPCC −2,80 / +2,00.
 
+## Dernier audit (septembre 2026)
+
+- **Liens** : 68 URL uniques testées. 42 répondent directement. 24 renvoient 403 ou 406 à un robot (protection anti-robots des forums AstroBin et Cloudy Nights, du site Chaotic Nebula et de Remote Astrophotography, filtrage réseau pour GitHub) : les 4 dépôts GitHub ont été confirmés par Git, et Chaotic Nebula par une lecture de page. Le tutoriel Telescope Live sur CosmeticCorrection existe mais demande une inscription. Le site Light Vortex ne répond plus.
+- **Doublons** : trois dépôts apparaissent dans deux rubriques (AutoIntegrate, Seti Astro, CorrectMagentaStars), volontairement, car ils justifient des points différents.
+- **Icônes** : 213 icônes dans 8 fichiers ; XML valide, identifiants uniques, numérotation continue, une description par icône de workflow ; 91 valeurs citées dans les descriptions comparées aux réglages, aucun écart ; valeurs des icônes unitaires identiques à leur README ; enchaînement des noms de vues vérifié dans les cinq workflows.
+
 ## Non vérifié
 
 Réglages sans source trouvée, donnés comme valeurs de départ issues de la pratique :
 
-- GraXpert : réglages différents par filtre.
 - GHS : valeurs chiffrées de Stretch factor par filtre (le principe d'un étirement plus fort sur OIII est confirmé, pas les valeurs).
 - Ha en luminance en HOO : procédure confirmée, mais le réglage Saturation 0,40 vient du workflow LRGB.
 - Icônes de process (unitaires et par workflow) : format vérifié sur des fichiers réels, mais chargement non testé dans PixInsight.
