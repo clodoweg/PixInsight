@@ -64,6 +64,7 @@ nav.jump a:hover, nav.jump a:focus-visible { border-color: var(--accent); color:
 
 section { padding-top: 44px; scroll-margin-top: 60px; }
 #foraxx { scroll-margin-top: 70px; }
+.steps .tools + p, .steps ul + .tools { margin-top: 10px; }
 h2 { font-family: var(--display); font-weight: 700; font-size: 1.75rem; line-height: 1.15; margin: 0 0 6px; text-wrap: balance; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
 h3 { font-family: var(--display); font-weight: 600; font-size: 1.2rem; margin: 28px 0 10px; }
 .sec-intro { color: var(--muted); margin: 0 0 18px; max-width: 64ch; }
@@ -185,6 +186,7 @@ footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line);
     <a href="#lhargb">LHaRGB</a>
     <a href="#rgbsho">RGB + SHO</a>
     <a href="#foraxx">Foraxx</a>
+    <a href="#ghs">GHS</a>
     <a href="#etoiles">Réduction d'étoiles</a>
     <a href="#parametres">Paramètres</a>
     <a href="#regles">Règles d'or</a>
@@ -311,7 +313,7 @@ footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line);
       </li>
       <li>
         <div class="step-head"><h4>Étirement</h4><span class="phase nl">Étiré</span></div>
-        <p>Étire séparément RGB et L, en visant un fond et une luminosité médiane comparables.</p>
+        <p>Étire séparément RGB et L, en visant un fond et une luminosité médiane comparables. Pas à pas : <a href="#ghs" style="color:var(--accent)">méthode GHS en détail</a>.</p>
         <div class="tools"><a class="tool nat" href="#t-ghs">GeneralizedHyperbolicStretch</a><a class="tool free" href="#t-statstretch">Statistical Stretch</a></div>
       </li>
       <li>
@@ -441,6 +443,100 @@ footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line);
     <div class="formula"><span class="lbl">R'</span><code>R + w * Ha_cs</code><button type="button" data-copy>Copier</button></div>
     <div class="formula"><span class="lbl">G'</span><code>G + 0.3 * OIII_cs</code><button type="button" data-copy>Copier</button></div>
     <div class="formula"><span class="lbl">B'</span><code>B + 0.5 * OIII_cs</code><button type="button" data-copy>Copier</button></div>
+  </section>
+
+  <section id="ghs">
+    <h2>Méthode GHS en détail</h2>
+    <p class="sec-intro">GeneralizedHyperbolicStretch (GHS), de Mike Cranfield et David Payne, étire l'image en plusieurs passes contrôlées. Tu choisis où placer le contraste (SP), avec quelle concentration (b) et ce que tu protèges (LP, HP). Ce pas à pas suit la documentation officielle de GHS.</p>
+
+    <h3>Les paramètres</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Paramètre</th><th>Plage</th><th>Rôle</th></tr></thead>
+        <tbody>
+          <tr><td>Transformation type</td><td>—</td><td>Generalized Hyperbolic pour presque tout. Linear sert au point noir et au point blanc. Existent aussi Midtone Transfer, Arcsinh et Power Law.</td></tr>
+          <tr><td>Stretch factor (ln(D+1))</td><td>0 à 20</td><td>Force de l'étirement. 0 ne change rien.</td></tr>
+          <tr><td>Local intensity (b)</td><td>−5 à 15</td><td>Concentration de l'étirement autour de SP. Élevé : l'histogramme s'élargit fortement autour de SP. Bas ou négatif : l'image s'éclaircit globalement sans élargir l'histogramme.</td></tr>
+          <tr><td>Symmetry point (SP)</td><td>0 à 1</td><td>Niveau où le contraste ajouté est maximal.</td></tr>
+          <tr><td>Protect shadows (LP)</td><td>0 à SP</td><td>En dessous de LP, étirement linéaire : garde le contraste des ombres et limite l'éclaircissement du fond.</td></tr>
+          <tr><td>Protect highlights (HP)</td><td>SP à 1</td><td>Au-dessus de HP, étirement linéaire : garde le contraste des hautes lumières (étoiles, cœurs brillants).</td></tr>
+          <tr><td>Blackpoint (BP) / Whitepoint (WP)</td><td>BP −1 à WP ; WP BP à 2</td><td>Uniquement en Linear. Tout ce qui est sous BP passe à 0 : perte de données par écrêtage.</td></tr>
+          <tr><td>Colour mode</td><td>—</td><td>RGB/K : canal par canal, peut délaver les couleurs. Colour : moyenne pondérée des canaux, garde la saturation. Lightness : canal L* seul. Saturation : saturation seule. Red, Green, Blue : un seul canal.</td></tr>
+          <tr><td>Clip mode (Colour)</td><td>—</td><td>Clip, Rescale, RGBBlend, RescaleGlobal. RGBBlend évite souvent les écrêtages.</td></tr>
+          <tr><td>Invert</td><td>—</td><td>Applique la transformation inverse. Fiable seulement en RGB/K ou sur un seul canal.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Préparation</h3>
+    <ul>
+      <li>L'image est linéaire, recadrée, sans gradient, calibrée en couleur (SPCC), passée dans BXT et NXT.</li>
+      <li>Dans PixInsight, règle la taille de la sonde de lecture (readout) sur 15×15, en moyenne : un clic dans l'image lit alors la valeur moyenne d'une petite zone.</li>
+      <li>Garde l'autoSTF pendant le réglage, puis retire-le avant d'activer l'aperçu en temps réel de GHS.</li>
+    </ul>
+
+    <ol class="steps">
+      <li>
+        <div class="step-head"><h4>Premier étirement</h4><span class="phase lin">Linéaire</span></div>
+        <ul>
+          <li>Transformation type : <strong>Generalized Hyperbolic</strong>.</li>
+          <li>Zoome sur l'histogramme avec la loupe « + » : les données linéaires sont tassées tout à gauche.</li>
+          <li>Clique dans l'image sur la <strong>zone intéressante la plus faible</strong> (nébulosité ténue, bras de galaxie), puis sur <em>Send to SP</em>.</li>
+          <li><strong>Local intensity (b) ≈ 10</strong> : étirement très concentré sur ce niveau.</li>
+          <li>Réinitialise le zoom et monte <strong>Stretch factor</strong> jusqu'à ce que le pic de l'histogramme arrive vers <strong>0,20 à 0,25</strong>.</li>
+          <li>Retire l'autoSTF et active l'aperçu en temps réel. Affine SP avec la sensibilité la plus fine (<em>highest sensitivity</em>), puis ajuste ensemble Stretch factor, b et SP. Applique.</li>
+        </ul>
+        <div class="tools"><a class="tool nat" href="#t-ghs">GeneralizedHyperbolicStretch</a></div>
+      </li>
+      <li>
+        <div class="step-head"><h4>Garder les couleurs (image couleur)</h4><span class="phase lin">Linéaire</span></div>
+        <ul>
+          <li>Pour ce premier étirement, choisis le Colour mode <strong>Colour</strong> plutôt que RGB/K.</li>
+          <li>Si des zones saturent, essaie les clip modes, en commençant par <strong>RGBBlend</strong>.</li>
+          <li>Si les couleurs sortent trop saturées, atténue-les avec le curseur <em>Colour blend</em>.</li>
+        </ul>
+      </li>
+      <li>
+        <div class="step-head"><h4>Ajouter du contraste</h4><span class="phase nl">Étiré</span></div>
+        <p>Deuxième passe et suivantes, sur l'image déjà étirée :</p>
+        <ul>
+          <li>Repère une zone qui paraît plate (nébulosité moyenne, halo de galaxie), clique dessus, puis <em>Send to SP</em>.</li>
+          <li>Passe l'histogramme en <strong>échelle logarithmique</strong> si cela aide à voir la zone visée.</li>
+          <li><strong>Local intensity (b) entre 3 et 5.</strong></li>
+          <li>Active l'aperçu et monte Stretch factor doucement. Affine SP, cette fois sans la sensibilité la plus fine.</li>
+          <li>Baisse <strong>HP</strong> jusqu'à ce que les étoiles brillantes et les cœurs ne gonflent plus.</li>
+          <li>Monte <strong>LP</strong> pour que le fond ne s'éclaircisse pas.</li>
+          <li>Applique, puis répète sur une autre plage de luminosité si besoin (en général 1 à 3 passes).</li>
+        </ul>
+      </li>
+      <li>
+        <div class="step-head"><h4>Assombrir le fond sans écrêter</h4><span class="phase nl">Étiré</span></div>
+        <p>Plus propre qu'un point noir en Linear, qui détruit des données.</p>
+        <ul>
+          <li>Transformation type : <strong>Generalized Hyperbolic</strong> (pas Linear).</li>
+          <li><strong>SP</strong> juste sous le niveau que tu veux voir devenir noir.</li>
+          <li><strong>HP = SP</strong> et <strong>LP = 0</strong>.</li>
+          <li><strong>Local intensity (b) ≈ 10.</strong></li>
+          <li>Ajuste Stretch factor jusqu'à obtenir la forme de courbe voulue : le fond descend, le reste de l'image n'est quasiment pas touché.</li>
+        </ul>
+      </li>
+      <li>
+        <div class="step-head"><h4>Avec les étoiles séparées</h4><span class="phase lin">Linéaire</span><span class="phase nl">Étiré</span></div>
+        <ul>
+          <li><strong>Méthode conseillée :</strong> StarXTerminator fonctionne sur données linéaires. Retire les étoiles avant d'étirer (avec <em>Unscreen stars</em>), puis étire séparément le fond et les étoiles.</li>
+          <li><strong>Pour l'image d'étoiles :</strong> un seul étirement modéré, avec HP un peu sous 1 pour éviter les étoiles blanches saturées. Star Stretch (SetiAstro) est une alternative.</li>
+          <li><strong>Autre méthode :</strong> étirement modéré avec b = 0 en mode RGB/K, retrait des étoiles, puis la même transformation en <em>Invert</em> (paramètres identiques) appliquée à l'image sans étoiles et à l'image d'étoiles.</li>
+        </ul>
+      </li>
+      <li>
+        <div class="step-head"><h4>LRGB : accorder L et RGB</h4><span class="phase nl">Étiré</span></div>
+        <ul>
+          <li>Étire L et RGB séparément avec la même méthode, en visant le même niveau de fond et une luminosité médiane proche : lis les valeurs avec la sonde 15×15 au même endroit sur les deux images.</li>
+          <li>Enregistre chaque réglage réussi en icône de process (glisse le triangle sur l'espace de travail) pour le réutiliser sur une autre image.</li>
+        </ul>
+      </li>
+    </ol>
+    <div class="note"><strong>Contrôle à chaque passe :</strong> garde un œil sur l'histogramme. Aucun pic collé à 0 (fond écrêté) et aucune accumulation à 1 (étoiles brûlées).</div>
   </section>
 
   <section id="etoiles">
@@ -647,10 +743,10 @@ max(Img1,iif(M==1,E7,iif(M==2,E8,E9)))</code><button type="button" data-copy>Cop
       <article class="tcard" id="t-ghs">
         <div class="tcard-head"><h4>GeneralizedHyperbolicStretch (GHS)</h4><span class="ttag nat" title="Natif PixInsight">PI</span><span class="phase nl">Étiré</span></div>
         <div class="tlabel">Méthode</div>
-        <ol class="tsteps"><li>Passe 1 : clique dans le fond de ciel pour placer SP au pic de l'histogramme, puis étire fort sur les basses lumières.</li><li>Passes 2 à 4 : replace SP sur le nouveau pic, baisse b et D à chaque passe.</li><li>Termine par un réglage du point noir (étirement linéaire) sans écrêter le fond.</li><li>Pour une image couleur, préfère un mode qui préserve la couleur plutôt que canal par canal.</li></ol>
+        <ol class="tsteps"><li>Premier étirement : SP sur le signal faible, Local intensity (b) vers 10, puis monte Stretch factor jusqu'à un pic d'histogramme vers 0,20 à 0,25.</li><li>Passes suivantes : ajoute du contraste là où l'image est plate, avec b entre 3 et 5, en protégeant les étoiles avec HP et le fond avec LP.</li><li>Fond trop clair : assombris-le sans rien écrêter grâce à la technique HP = SP.</li></ol>
         <div class="tlabel">Paramètres</div>
-        <dl class="tparams"><div><dt>D (stretch factor)</dt><dd>1,5 à 3 par passe</dd></div><div><dt>b (local intensity)</dt><dd>5 à 15 en première passe, puis 0 à 5</dd></div><div><dt>SP (symmetry point)</dt><dd>Au pic de l'histogramme (fond de ciel)</dd></div><div><dt>HP (highlight protection)</dt><dd>0,90 à 1,00 pour protéger étoiles et cœurs brillants</dd></div><div><dt>LP (shadow protection)</dt><dd>0 à 0,05</dd></div></dl>
-        <p class="tnote">Si le module manque dans ta version, installe-le via le dépôt ghsastro.</p>
+        <dl class="tparams"><div><dt>Transformation type</dt><dd>Generalized Hyperbolic</dd></div><div><dt>Stretch factor (ln(D+1))</dt><dd>0 à 20 ; 0 = aucun effet. Monte-le en regardant l'histogramme</dd></div><div><dt>Local intensity (b)</dt><dd>≈ 10 au premier étirement, 3 à 5 ensuite</dd></div><div><dt>Symmetry point (SP)</dt><dd>Clic dans l'image, puis bouton Send to SP</dd></div><div><dt>Protect shadows (LP)</dt><dd>0 au départ ; monter pour garder le fond sombre</dd></div><div><dt>Protect highlights (HP)</dt><dd>1 au départ ; baisser pour protéger les étoiles</dd></div><div><dt>Colour mode</dt><dd>Colour pour une image couleur, avec la clip mode RGBBlend</dd></div></dl>
+        <p class="tnote">Le pas à pas complet, avec tous les réglages, est dans la section <a href="#ghs" style="color:var(--accent)">Méthode GHS en détail</a>.</p>
       </article>
       <article class="tcard" id="t-statstretch">
         <div class="tcard-head"><h4>Statistical Stretch (SetiAstro)</h4><span class="ttag free" title="Script ou module gratuit">GRATUIT</span><span class="phase nl">Étiré</span></div>
