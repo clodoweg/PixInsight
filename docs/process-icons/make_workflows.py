@@ -225,9 +225,10 @@ GHS_NB = " En narrowband : étire Ha en premier, puis OIII et SII jusqu'au MÊME
 sho_combine = (pm('Combinaison_SHO', 'Sii', 'Ha', 'Oiii', new_image=True, new_id='SHO', space='RGB'),
                "Combinaison SHO SIMPLE (équivalent de ChannelCombination) : R = Sii, G = Ha, B = Oiii, sans boost ni mélange. Sert à BXT et SXT. Crée l'image 'SHO'.")
 sho_palette = [
-    (note('NarrowbandNormalization_SHO', "PALETTE — NarrowbandNormalization (Process › ColorCalibration). Icône-note : le nom interne de la palette SHO n'a pas pu être vérifié. "
-          "Sur l'image SHO combinée (R = Sii, G = Ha, B = Oiii), ÉTIRÉE et sans étoiles (recombine les canaux étirés avec l'icône Combinaison_SHO). "
-          "Palette SHO, aperçu en temps réel ; O3 boost et S2 boost progressivement ; Shadowpoint pour le fond ; Highlight reduction ; Brightness ; SCNR partiel si besoin."), ''),
+    (M.instance('NarrowbandNormalization', 'NBN_SHO', {'palette': 'Palette_SHO'}),
+     "PALETTE — NarrowbandNormalization, palette SHO (valeurs par défaut ; nom interne Palette_SHO vérifié dans le module 1.1). Sur l'image SHO combinée (R = Sii, G = Ha, B = Oiii), "
+     "ÉTIRÉE et sans étoiles (recombine les canaux étirés avec l'icône Combinaison_SHO). Active l'aperçu ; monte O3 boost et S2 boost progressivement ; Shadowpoint pour le fond ; "
+     "Highlight reduction ; Brightness ; Lightness (Off, Preserve, Ha, OIII ou SII) ; SCNR partiel si besoin."),
     (pm('Foraxx_SHO', '(Oiii^~Oiii)*Sii + ~(Oiii^~Oiii)*Ha', '((Oiii*Ha)^~(Oiii*Ha))*Ha + ~((Oiii*Ha)^~(Oiii*Ha))*Oiii', 'Oiii', new_image=True, new_id='SHO_Foraxx', space='RGB'),
      "ALTERNATIVE — Palette Foraxx SHO dynamique (Ludo/ForaxX) : vues 'Sii', 'Ha', 'Oiii' ÉTIRÉES, sans étoiles, fonds proches. Crée 'SHO_Foraxx'. Tons or et bleu sans vert envahissant."),
     (note('NBColourMapper', T_NBCM), ''),

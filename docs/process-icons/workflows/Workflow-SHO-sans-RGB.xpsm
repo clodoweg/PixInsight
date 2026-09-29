@@ -399,8 +399,18 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
    <instance class="NoOperation" version="256" id="SHO_23_Statistical_Stretch_instance">
       <description>ÉTAPE MANUELLE — Statistical Stretch (SetiAstro, script). Icône-note : le chemin du script dépend de ton installation. Alternative à GHS. Target Median 0,25 (défaut, 0,15-0,25) ; Linked Stretch coché pour une image couleur calibrée ; Blackpoint Sigma 5,0 ; Normalize décoché ; Curves Boost 0 ; même Target Median pour les images à combiner.</description>
    </instance>
-   <instance class="NoOperation" version="256" id="SHO_24_NarrowbandNormalization_SHO_instance">
-      <description>PALETTE — NarrowbandNormalization (Process › ColorCalibration). Icône-note : le nom interne de la palette SHO n'a pas pu être vérifié. Sur l'image SHO combinée (R = Sii, G = Ha, B = Oiii), ÉTIRÉE et sans étoiles (recombine les canaux étirés avec l'icône Combinaison_SHO). Palette SHO, aperçu en temps réel ; O3 boost et S2 boost progressivement ; Shadowpoint pour le fond ; Highlight reduction ; Brightness ; SCNR partiel si besoin.</description>
+   <instance class="NarrowbandNormalization" version="256" id="SHO_24_NBN_SHO_instance">
+      <description>PALETTE — NarrowbandNormalization, palette SHO (valeurs par défaut ; nom interne Palette_SHO vérifié dans le module 1.1). Sur l'image SHO combinée (R = Sii, G = Ha, B = Oiii), ÉTIRÉE et sans étoiles (recombine les canaux étirés avec l'icône Combinaison_SHO). Active l'aperçu ; monte O3 boost et S2 boost progressivement ; Shadowpoint pour le fond ; Highlight reduction ; Brightness ; Lightness (Off, Preserve, Ha, OIII ou SII) ; SCNR partiel si besoin.</description>
+      <parameter id="palette" value="Palette_SHO"/>
+      <parameter id="lightness" value="Lightness_Off"/>
+      <parameter id="blendMode" value="Blend_Mode1"/>
+      <parameter id="haBlend" value="0.000"/>
+      <parameter id="scnr" value="0.000"/>
+      <parameter id="o3Boost" value="0.000"/>
+      <parameter id="s2Boost" value="0.000"/>
+      <parameter id="shadowpoint" value="1.000"/>
+      <parameter id="highlightReduction" value="0.000"/>
+      <parameter id="brightness" value="0.000"/>
    </instance>
    <instance class="PixelMath" version="256" id="SHO_25_Foraxx_SHO_instance">
       <description>ALTERNATIVE — Palette Foraxx SHO dynamique (Ludo/ForaxX) : vues 'Sii', 'Ha', 'Oiii' ÉTIRÉES, sans étoiles, fonds proches. Crée 'SHO_Foraxx'. Tons or et bleu sans vert envahissant.</description>
@@ -773,7 +783,7 @@ max(Img1,f1)</parameter>
    <icon id="SHO_21_GHS_2_contraste" instance="SHO_21_GHS_2_contraste_instance" xpos="330" ypos="210" workspace="Workspace01"/>
    <icon id="SHO_22_GHS_3_fond" instance="SHO_22_GHS_3_fond_instance" xpos="330" ypos="240" workspace="Workspace01"/>
    <icon id="SHO_23_Statistical_Stretch" instance="SHO_23_Statistical_Stretch_instance" xpos="330" ypos="270" workspace="Workspace01"/>
-   <icon id="SHO_24_NarrowbandNormalization_SHO" instance="SHO_24_NarrowbandNormalization_SHO_instance" xpos="330" ypos="300" workspace="Workspace01"/>
+   <icon id="SHO_24_NBN_SHO" instance="SHO_24_NBN_SHO_instance" xpos="330" ypos="300" workspace="Workspace01"/>
    <icon id="SHO_25_Foraxx_SHO" instance="SHO_25_Foraxx_SHO_instance" xpos="330" ypos="330" workspace="Workspace01"/>
    <icon id="SHO_26_NBColourMapper" instance="SHO_26_NBColourMapper_instance" xpos="330" ypos="360" workspace="Workspace01"/>
    <icon id="SHO_27_SCNR_SHO" instance="SHO_27_SCNR_SHO_instance" xpos="330" ypos="390" workspace="Workspace01"/>

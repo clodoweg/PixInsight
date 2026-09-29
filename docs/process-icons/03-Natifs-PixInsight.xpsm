@@ -98,6 +98,30 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          </tr>
       </table>
    </instance>
+   <instance class="NarrowbandNormalization" version="256" id="NBN_SHO_instance">
+      <parameter id="palette" value="Palette_SHO"/>
+      <parameter id="lightness" value="Lightness_Off"/>
+      <parameter id="blendMode" value="Blend_Mode1"/>
+      <parameter id="haBlend" value="0.000"/>
+      <parameter id="scnr" value="0.000"/>
+      <parameter id="o3Boost" value="0.000"/>
+      <parameter id="s2Boost" value="0.000"/>
+      <parameter id="shadowpoint" value="1.000"/>
+      <parameter id="highlightReduction" value="0.000"/>
+      <parameter id="brightness" value="0.000"/>
+   </instance>
+   <instance class="NarrowbandNormalization" version="256" id="NBN_HOO_instance">
+      <parameter id="palette" value="Palette_HOO"/>
+      <parameter id="lightness" value="Lightness_Off"/>
+      <parameter id="blendMode" value="Blend_Mode1"/>
+      <parameter id="haBlend" value="0.000"/>
+      <parameter id="scnr" value="0.000"/>
+      <parameter id="o3Boost" value="0.000"/>
+      <parameter id="s2Boost" value="0.000"/>
+      <parameter id="shadowpoint" value="1.000"/>
+      <parameter id="highlightReduction" value="0.000"/>
+      <parameter id="brightness" value="0.000"/>
+   </instance>
    <instance class="CosmeticCorrection" version="256" id="CC_auto_WBPP_instance">
       <table id="targetFrames" rows="0"/>
       <parameter id="masterDarkPath"></parameter>
@@ -128,5 +152,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
    <icon id="LHE_150" instance="LHE_150_instance" xpos="40" ypos="168" workspace="Workspace01"/>
    <icon id="HDRMT_6" instance="HDRMT_6_instance" xpos="40" ypos="200" workspace="Workspace01"/>
    <icon id="MT_reduction_etoiles" instance="MT_reduction_etoiles_instance" xpos="40" ypos="232" workspace="Workspace01"/>
-   <icon id="CC_auto_WBPP" instance="CC_auto_WBPP_instance" xpos="40" ypos="264" workspace="Workspace01"/>
+   <icon id="NBN_SHO" instance="NBN_SHO_instance" xpos="40" ypos="264" workspace="Workspace01"/>
+   <icon id="NBN_HOO" instance="NBN_HOO_instance" xpos="40" ypos="296" workspace="Workspace01"/>
+   <icon id="CC_auto_WBPP" instance="CC_auto_WBPP_instance" xpos="40" ypos="328" workspace="Workspace01"/>
 </xpsm>

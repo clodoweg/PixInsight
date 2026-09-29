@@ -54,9 +54,10 @@ Les formules supposent des images nommées comme indiqué (renomme tes vues avec
 | `LHE_150` | Kernel radius 150, Contrast limit 2,0, Amount 0,35, noyau circulaire |
 | `HDRMT_6` | 6 couches, 1 itération, To lightness, Preserve hue, Lightness mask |
 | `MT_reduction_etoiles` | Morphological Selection 0,25, Amount 0,60, 1 itération, élément circulaire 5×5 |
+| `NBN_SHO` / `NBN_HOO` | NarrowbandNormalization, palette SHO ou HOO, valeurs par défaut, sur l'image combinée étirée sans étoiles |
 | `CC_auto_WBPP` | Auto detect, Hot sigma 2,5, Cold désactivé ; à sélectionner comme modèle dans WBPP |
 
-Les process qui dépendent de ton matériel ou de ton image (WBPP, SPCC, SPFC, DBE, MGC, GHS, NarrowbandNormalization SHO) sont dans les fichiers par workflow ci-dessous.
+Les process qui dépendent de ton matériel ou de ton image (WBPP, SPCC, SPFC, DBE, MGC, GHS) sont dans les fichiers par workflow ci-dessous.
 
 ## Un fichier par workflow (dossier `workflows/`)
 
@@ -72,12 +73,12 @@ Chaque fichier contient **tous les process du workflow, dans l'ordre**, numérot
 
 **Trois sortes d'icônes :**
 
-- **Process réglés** : s'appliquent directement (PixelMath, BlurXTerminator, NoiseXTerminator, StarXTerminator, LRGBCombination, LinearFit, SCNR, LHE, HDRMT, MorphologicalTransformation, CurvesTransformation, GradientCorrection, NarrowbandNormalization HOO, CosmeticCorrection).
+- **Process réglés** : s'appliquent directement (PixelMath, BlurXTerminator, NoiseXTerminator, StarXTerminator, LRGBCombination, LinearFit, SCNR, LHE, HDRMT, MorphologicalTransformation, CurvesTransformation, GradientCorrection, NarrowbandNormalization SHO et HOO, CosmeticCorrection).
 - **Process à compléter sur ton image ou ton matériel** :
   - `SPCC` : réglé sur *Average Spiral Galaxy* avec neutralisation du fond, mais il contient les filtres Astrodon E-series et le capteur Sony IMX571 de l'auteur du modèle. **Remplace-les par les tiens.**
   - `GHS_1_premier`, `GHS_2_contraste`, `GHS_3_fond` : Local intensity et protections réglés, mais **Stretch factor à 0 et SP à choisir sur ton image** (l'icône ne fait rien tant que tu ne l'as pas réglée).
   - `Courbes` : légère courbe en S et saturation, à ajuster à l'œil.
-- **Icônes-notes** (process *NoOperation*, sans effet) : pour les étapes qui ne peuvent pas être enregistrées de façon portable, la description donne tous les réglages. Ce sont WBPP, DynamicCrop, ImageSolver, SPFC + MGC (base MARS), DBE, NarrowbandNormalization SHO, et les scripts SetiAstro et CorrectMagentaStars (le chemin et l'empreinte du script dépendent de ton installation).
+- **Icônes-notes** (process *NoOperation*, sans effet) : pour les étapes qui ne peuvent pas être enregistrées de façon portable, la description donne tous les réglages. Ce sont WBPP, DynamicCrop, ImageSolver, SPFC + MGC (base MARS), DBE, et les scripts SetiAstro et CorrectMagentaStars (le chemin et l'empreinte du script dépendent de ton installation).
 
 ChannelCombination et ChannelExtraction sont remplacés par des icônes PixelMath équivalentes (par exemple `$T[1]` pour extraire le canal vert).
 

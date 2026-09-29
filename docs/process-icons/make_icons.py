@@ -1,6 +1,4 @@
 """Génère les fichiers .xpsm de la fiche PixInsight à partir d'instances réelles
-Usage : TEMPLATES=templates.json SRC_V3=FromLukeAndBill.xpsm python3 make_icons.py <dossier_sortie>
-(templates.json : instances extraites de https://github.com/jamiesmith/pixinsight-icons)
 (jamiesmith/pixinsight-icons, générées par PixInsight 1.9.3) en ne changeant que les valeurs."""
 import json, re, os, sys
 from xml.sax.saxutils import escape
@@ -176,6 +174,8 @@ nat = [
     instance('HDRMultiscaleTransform', 'HDRMT_6', {'numberOfLayers': 6, 'numberOfIterations': 1, 'toLightness': True, 'preserveHue': True, 'lightnessMask': True}),
     instance('MorphologicalTransformation', 'MT_reduction_etoiles', {'operator': 'Selection', 'numberOfIterations': 1, 'amount': '0.60',
                                                                     'selectionPoint': '0.25', 'structureSize': 5}, post=mt_post),
+    instance('NarrowbandNormalization', 'NBN_SHO', {'palette': 'Palette_SHO'}),
+    instance('NarrowbandNormalization', 'NBN_HOO', {'palette': 'Palette_HOO'}),
     instance('CosmeticCorrection', 'CC_auto_WBPP', {'useAutoDetect': True, 'hotAutoCheck': True, 'hotAutoValue': '2.5',
                                                    'coldAutoCheck': False, 'coldAutoValue': '3.0', 'cfa': False}),
 ]

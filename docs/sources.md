@@ -138,11 +138,18 @@ Légende :
 - **Doublons** : trois dépôts apparaissent dans deux rubriques (AutoIntegrate, Seti Astro, CorrectMagentaStars), volontairement, car ils justifient des points différents.
 - **Icônes** : 213 icônes dans 8 fichiers ; XML valide, identifiants uniques, numérotation continue, une description par icône de workflow ; 91 valeurs citées dans les descriptions comparées aux réglages, aucun écart ; valeurs des icônes unitaires identiques à leur README ; enchaînement des noms de vues vérifié dans les cinq workflows.
 
+## NarrowbandNormalization (module)
+
+- Officiel — [Dépôt Cosmic Photons du module](https://www.cosmicphotons.com/pi-modules/narrowbandnormalization/) : module 1.1 pour PixInsight 1.9 (Windows et macOS) examiné ; valeurs internes Palette_HOO, Palette_SHO, Palette_HSO, Palette_HOS ; Lightness_Off, Lightness_Preserve, Lightness_Ha, Lightness_OIII, Lightness_SII ; Blend_Mode1 à 3.
+
 ## Non vérifié
 
-Réglages sans source trouvée, donnés comme valeurs de départ issues de la pratique :
+Points sans source directe :
 
-- GHS : valeurs chiffrées de Stretch factor par filtre (le principe d'un étirement plus fort sur OIII est confirmé, pas les valeurs).
-- Ha en luminance en HOO : procédure confirmée, mais le réglage Saturation 0,40 vient du workflow LRGB.
-- Icônes de process (unitaires et par workflow) : format vérifié sur des fichiers réels, mais chargement non testé dans PixInsight.
-- NarrowbandNormalization : nom interne de la palette SHO (seule `Palette_HOO` est confirmée), d'où l'absence d'icône.
+- Ha en luminance en HOO : Saturation 0,40 reprise du réglage LRGBCombination sourcé (Chaotic Nebula : Lightness 0,55, Saturation 0,40) ; aucune valeur propre au HOO publiée.
+- Icônes de process : format vérifié sur des fichiers réels générés par PixInsight 1.9.3 et noms d'énumération vérifiés, mais chargement non testé dans PixInsight (le schéma XPSM officiel n'est plus en ligne à son adresse d'origine).
+
+Points clos au dernier contrôle :
+
+- GHS par filtre : pas de valeur fixe de Stretch factor, par conception ; la méthode officielle vise un pic d'histogramme vers 0,20–0,25 et le même fond pour tous les canaux, ce que suivent la fiche et les icônes.
+- NarrowbandNormalization : Palette_SHO confirmée dans le module ; icônes réelles ajoutées.
