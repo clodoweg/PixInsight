@@ -124,7 +124,7 @@ Légende :
 
 ## Icônes de process (docs/process-icons)
 
-- Tutoriel — [theAstroShed, icônes de process](https://github.com/jamiesmith/pixinsight-icons) : fichiers `.xpsm` générés par PixInsight 1.9.3, utilisés comme modèles (format, noms de paramètres, versions, valeurs d'énumération) ; formules Foraxx identiques à celles de la fiche ; formules de Bill Blanshan version 3 avec leurs commentaires d'origine (`FromLukeAndBill.xpsm`) ; noms internes des réglages de NarrowbandNormalization.
+- Tutoriel — [theAstroShed, icônes de process](https://github.com/jamiesmith/pixinsight-icons) : fichiers `.xpsm` générés par PixInsight 1.9.3, utilisés comme modèles (format, noms de paramètres, versions, valeurs d'énumération) ; formules Foraxx identiques à celles de la fiche ; formules de Bill Blanshan version 3 avec leurs commentaires d'origine (`FromLukeAndBill.xpsm`) ; noms internes des réglages de NarrowbandNormalization ; modèles de SPCC (Average Spiral Galaxy), GradientCorrection, GHS (énumérations ST_GeneralisedHyperbolic, SC_RGB, CT_RGBBlend), CurvesTransformation ; descriptions et icônes-notes NoOperation.
 - Officiel — [AutoIntegrate, code source](https://github.com/jarmoruuth/AutoIntegrate) : opérateur `Selection` de MorphologicalTransformation et masque circulaire 5×5.
 
 ## Non vérifié
@@ -134,5 +134,5 @@ Réglages sans source trouvée, donnés comme valeurs de départ issues de la pr
 - GraXpert : réglages différents par filtre.
 - GHS : valeurs chiffrées de Stretch factor par filtre (le principe d'un étirement plus fort sur OIII est confirmé, pas les valeurs).
 - Ha en luminance en HOO : procédure confirmée, mais le réglage Saturation 0,40 vient du workflow LRGB.
-- Icônes de process : format vérifié sur des fichiers réels, mais chargement non testé dans PixInsight.
+- Icônes de process (unitaires et par workflow) : format vérifié sur des fichiers réels, mais chargement non testé dans PixInsight.
 - NarrowbandNormalization : nom interne de la palette SHO (seule `Palette_HOO` est confirmée), d'où l'absence d'icône.

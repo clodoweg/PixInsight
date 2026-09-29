@@ -1,0 +1,792 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Fiche PixInsight — icônes de process générées pour docs/pixinsight-workflow.html
+Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes images.
+-->
+<xpsm version="1.0" xmlns="http://www.pixinsight.com/xpsm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.pixinsight.com/xpsm http://pixinsight.com/xpsm/xpsm-1.0.xsd">
+<!-- Workflow HOO -->
+   <instance class="NoOperation" version="256" id="HOO_01_WBPP_instance">
+      <description>ÉTAPE MANUELLE — WBPP (Script › Batch Processing › WeightedBatchPreprocessing). Icône-note : WBPP dépend de tes fichiers et de ton dossier de sortie. Réglages : Output pedestal Automatic ; Optimize dark frames décoché (darks même durée/température, pas de bias pour calibrer les darks en CMOS) ; CosmeticCorrection avec l'icône CC_auto (Hot sigma 2,2 à 3,0) ; Debayer VNG si caméra couleur ; Subframe weighting : PSF Signal Weight ; Registration reference Auto, Distortion correction pour les grands champs ; Local normalization activée ; Rejection Auto ou Generalized ESD au-delà de 15-20 images ; Large-scale pixel rejection High contre les satellites ; Drizzle x2 seulement si FWHM &lt; 2 px et au moins 15-20 poses dithérées ; Autocrop et Astrometric solution activés. Aligne TOUS les filtres sur la même référence. Détails et sources : docs/pixinsight-workflow.html et docs/sources.md (github.com/clodoweg/PixInsight).</description>
+   </instance>
+   <instance class="CosmeticCorrection" version="256" id="HOO_02_CC_auto_instance">
+      <description>CosmeticCorrection pour WBPP : Auto detect, Hot sigma 2,5 (2,2 à 3,0 ; 2,2-2,5 en narrowband, poses longues), Cold désactivé. Coche CFA si caméra couleur. Ne l'applique pas directement : dans WBPP, sélectionne cette icône comme modèle de correction cosmétique.</description>
+      <table id="targetFrames" rows="0"/>
+      <parameter id="masterDarkPath"></parameter>
+      <parameter id="outputDir"></parameter>
+      <parameter id="outputExtension">.xisf</parameter>
+      <parameter id="prefix"></parameter>
+      <parameter id="postfix">_cc</parameter>
+      <parameter id="overwrite" value="false"/>
+      <parameter id="amount" value="1.00"/>
+      <parameter id="cfa" value="false"/>
+      <parameter id="useMasterDark" value="false"/>
+      <parameter id="hotDarkCheck" value="false"/>
+      <parameter id="hotDarkLevel" value="1.0000000"/>
+      <parameter id="coldDarkCheck" value="false"/>
+      <parameter id="coldDarkLevel" value="0.0000000"/>
+      <parameter id="useAutoDetect" value="true"/>
+      <parameter id="hotAutoCheck" value="true"/>
+      <parameter id="hotAutoValue" value="2.5"/>
+      <parameter id="coldAutoCheck" value="false"/>
+      <parameter id="coldAutoValue" value="3.0"/>
+      <parameter id="useDefectList" value="false"/>
+      <table id="defects" rows="0"/>
+   </instance>
+   <instance class="NoOperation" version="256" id="HOO_03_DynamicCrop_instance">
+      <description>ÉTAPE MANUELLE — DynamicCrop. Icône-note : le cadre dépend de ton image. Trace le cadre sur un master en excluant les bords mal couverts, glisse le triangle du process sur l'espace de travail pour créer une icône, puis applique CETTE icône à tous les autres masters (ils sont alignés, le recadrage sera identique).</description>
+   </instance>
+   <instance class="PixelMath" version="256" id="HOO_04_DualBand_Ha_instance">
+      <description>CAMÉRA COULEUR + filtre dual-band seulement : applique sur l'image couleur (gradient retiré, BXT déjà appliqué) ; Ha = canal rouge. Caméra mono : ignore cette icône et la suivante.</description>
+      <parameter id="expression">$T[0]</parameter>
+      <parameter id="expression1"></parameter>
+      <parameter id="expression2"></parameter>
+      <parameter id="expression3"></parameter>
+      <parameter id="useSingleExpression" value="true"/>
+      <parameter id="symbols"></parameter>
+      <parameter id="clearImageCacheAndExit" value="false"/>
+      <parameter id="cacheGeneratedImages" value="false"/>
+      <parameter id="generateOutput" value="true"/>
+      <parameter id="singleThreaded" value="false"/>
+      <parameter id="optimization" value="true"/>
+      <parameter id="use64BitWorkingImage" value="false"/>
+      <parameter id="rescale" value="false"/>
+      <parameter id="rescaleLower" value="0"/>
+      <parameter id="rescaleUpper" value="1"/>
+      <parameter id="truncate" value="true"/>
+      <parameter id="truncateLower" value="0"/>
+      <parameter id="truncateUpper" value="1"/>
+      <parameter id="createNewImage" value="true"/>
+      <parameter id="showNewImage" value="true"/>
+      <parameter id="newImageId">Ha</parameter>
+      <parameter id="newImageWidth" value="0"/>
+      <parameter id="newImageHeight" value="0"/>
+      <parameter id="newImageAlpha" value="false"/>
+      <parameter id="newImageColorSpace" value="Gray"/>
+      <parameter id="newImageSampleFormat" value="SameAsTarget"/>
+      <table id="outputData" rows="0"/>
+   </instance>
+   <instance class="PixelMath" version="256" id="HOO_05_DualBand_OIII_instance">
+      <description>CAMÉRA COULEUR + dual-band : OIII = moyenne de G et B. Le bleu est plus bruité et moins riche : donner plus de poids à G donne souvent un OIII plus propre (poids selon capteur et filtre). La fuite Bayer (OIII dans R, Ha dans B) ne peut pas être séparée parfaitement.</description>
+      <parameter id="expression">($T[1] + $T[2]) / 2</parameter>
+      <parameter id="expression1"></parameter>
+      <parameter id="expression2"></parameter>
+      <parameter id="expression3"></parameter>
+      <parameter id="useSingleExpression" value="true"/>
+      <parameter id="symbols"></parameter>
+      <parameter id="clearImageCacheAndExit" value="false"/>
+      <parameter id="cacheGeneratedImages" value="false"/>
+      <parameter id="generateOutput" value="true"/>
+      <parameter id="singleThreaded" value="false"/>
+      <parameter id="optimization" value="true"/>
+      <parameter id="use64BitWorkingImage" value="false"/>
+      <parameter id="rescale" value="false"/>
+      <parameter id="rescaleLower" value="0"/>
+      <parameter id="rescaleUpper" value="1"/>
+      <parameter id="truncate" value="true"/>
+      <parameter id="truncateLower" value="0"/>
+      <parameter id="truncateUpper" value="1"/>
+      <parameter id="createNewImage" value="true"/>
+      <parameter id="showNewImage" value="true"/>
+      <parameter id="newImageId">Oiii</parameter>
+      <parameter id="newImageWidth" value="0"/>
+      <parameter id="newImageHeight" value="0"/>
+      <parameter id="newImageAlpha" value="false"/>
+      <parameter id="newImageColorSpace" value="Gray"/>
+      <parameter id="newImageSampleFormat" value="SameAsTarget"/>
+      <table id="outputData" rows="0"/>
+   </instance>
+   <instance class="NoOperation" version="256" id="HOO_06_Masters_Ha_Oiii_instance">
+      <description>Masters Ha et Oiii : même recadrage (icône DynamicCrop) et retrait du gradient sur CHAQUE master séparément (icônes suivantes). OIII est le plus sensible à la Lune : contrôle bien son modèle. Nomme les vues exactement 'Sii', 'Ha' et 'Oiii' : les formules en dépendent.</description>
+   </instance>
+   <instance class="NoOperation" version="256" id="HOO_07_Gradient_SPFC_MGC_instance">
+      <description>ÉTAPE MANUELLE — Gradient par MARS : SpectrophotometricFluxCalibration (SPFC) puis MultiscaleGradientCorrection (MGC). Icône-note : SPFC dépend de ton capteur/filtres, MGC de l'emplacement de ta base MARS. Prérequis : image linéaire, solution astrométrique, bases Gaia DR3/SP et MARS installées (clé à molette de MGC › Add › fichier .xmars). SPFC : ton capteur (QE) et ton filtre (mono) ou tes filtres Bayer (couleur), catalogue Gaia DR3/SP. MGC : Gradient scale 1024 au départ (512 ou 256 si un gradient reste dans les coins), Structure separation 3 (1-2 pour les bords), Model smoothness 1,0 (3-5 si le modèle ondule), Scale factors 1,0, Show gradient model coché. Si ta base MARS ne couvre pas le filtre (narrowband), utilise l'icône GradientCorrection ou DBE.</description>
+   </instance>
+   <instance class="GradientCorrection" version="1" id="HOO_08_GradientCorrection_instance">
+      <description>ALTERNATIVE — GradientCorrection, valeurs par défaut. Structure protection activée ; Generate gradient model coché pour contrôler le modèle. Si des zones claires apparaissent autour des structures sombres : monte Low threshold. Si le modèle a des bords nets : désactive la protection, baisse Scale et Smoothness, puis réactive.</description>
+      <parameter id="reference" value="0.50"/>
+      <parameter id="lowThreshold" value="0.20"/>
+      <parameter id="lowTolerance" value="0.50"/>
+      <parameter id="highThreshold" value="0.05"/>
+      <parameter id="highTolerance" value="0.00"/>
+      <parameter id="iterations" value="15"/>
+      <parameter id="scale" value="5.00"/>
+      <parameter id="smoothness" value="0.60"/>
+      <parameter id="downsamplingFactor" value="16"/>
+      <parameter id="protection" value="true"/>
+      <parameter id="protectionThreshold" value="0.10"/>
+      <parameter id="protectionAmount" value="0.50"/>
+      <parameter id="protectionSmoothingFactor" value="16"/>
+      <parameter id="lowClippingLevel" value="0.000076"/>
+      <parameter id="automaticConvergence" value="true"/>
+      <parameter id="convergenceLimit" value="0.00001000"/>
+      <parameter id="maxIterations" value="10"/>
+      <parameter id="useSimplification" value="false"/>
+      <parameter id="simplificationDegree" value="1"/>
+      <parameter id="simplificationScale" value="1024"/>
+      <parameter id="generateSimpleModel" value="false"/>
+      <parameter id="generateGradientModel" value="true"/>
+      <parameter id="generateProtectionMasks" value="false"/>
+      <parameter id="gridSamplingDelta" value="16"/>
+   </instance>
+   <instance class="NoOperation" version="256" id="HOO_09_Gradient_DBE_instance">
+      <description>ALTERNATIVE — DynamicBackgroundExtraction. Icône-note : les points dépendent de l'image. Samples per row 10-20 ; Sample radius 10-50 ; Tolerance 0,5 (1,0-1,5 si points rejetés) ; Shadows relaxation 3 ; Smoothing 0,25 (0,5-1,0 champs nébuleux) ; Correction Subtraction (pollution lumineuse), Division seulement pour le vignettage ; Normalize, Discard model et Replace target cochés. Retire les points posés sur la nébuleuse. D'un filtre à l'autre, garde les points et ajuste Tolerance.</description>
+   </instance>
+   <instance class="LinearFit" version="256" id="HOO_10_LinearFit_ref_Ha_instance">
+      <description>Option — LinearFit avec Ha comme référence : applique sur OIII (et SII). Rapproche fonds et niveaux, ce qu'exige Foraxx (theAstroShed, Galactic Hunter). Référence : vue nommée 'Ha'.</description>
+      <parameter id="referenceViewId">Ha</parameter>
+      <parameter id="rejectLow" value="0.000000"/>
+      <parameter id="rejectHigh" value="0.920000"/>
+   </instance>
+   <instance class="PixelMath" version="256" id="HOO_11_Combinaison_HOO_instance">
+      <description>Combinaison HOO SIMPLE : R = Ha, G = Oiii, B = Oiii, sans boost. Sert à BXT et SXT (en caméra couleur, BXT s'applique plutôt sur l'image d'origine avant extraction). Crée 'HOO'.</description>
+      <parameter id="expression">Ha</parameter>
+      <parameter id="expression1">Oiii</parameter>
+      <parameter id="expression2">Oiii</parameter>
+      <parameter id="expression3"></parameter>
+      <parameter id="useSingleExpression" value="false"/>
+      <parameter id="symbols"></parameter>
+      <parameter id="clearImageCacheAndExit" value="false"/>
+      <parameter id="cacheGeneratedImages" value="false"/>
+      <parameter id="generateOutput" value="true"/>
+      <parameter id="singleThreaded" value="false"/>
+      <parameter id="optimization" value="true"/>
+      <parameter id="use64BitWorkingImage" value="false"/>
+      <parameter id="rescale" value="false"/>
+      <parameter id="rescaleLower" value="0"/>
+      <parameter id="rescaleUpper" value="1"/>
+      <parameter id="truncate" value="true"/>
+      <parameter id="truncateLower" value="0"/>
+      <parameter id="truncateUpper" value="1"/>
+      <parameter id="createNewImage" value="true"/>
+      <parameter id="showNewImage" value="true"/>
+      <parameter id="newImageId">HOO</parameter>
+      <parameter id="newImageWidth" value="0"/>
+      <parameter id="newImageHeight" value="0"/>
+      <parameter id="newImageAlpha" value="false"/>
+      <parameter id="newImageColorSpace" value="RGB"/>
+      <parameter id="newImageSampleFormat" value="SameAsTarget"/>
+      <table id="outputData" rows="0"/>
+   </instance>
+   <instance class="BlurXTerminator" version="256" id="HOO_12_BXT_NB_instance">
+      <description>BlurXTerminator complet sur la combinaison narrowband SIMPLE (un filtre par canal, sans boost ni mélange) : Sharpen Stars 0,25, Halos 0, Nonstellar 0,60. Manuel RC Astro : mélanger ou booster un canal avant la déconvolution modifie la PSF (étoiles brillantes incohérentes). Baisse Nonstellar si artefacts dans OIII/SII.</description>
+      <parameter id="ml_version" value="4"/>
+      <parameter id="correct_only" value="false"/>
+      <parameter id="sharpen_stars" value="0.25"/>
+      <parameter id="adjust_star_halos" value="0.00"/>
+      <parameter id="nonstellar_diameter" value="0.0"/>
+      <parameter id="auto_nonstellar_psf" value="true"/>
+      <parameter id="sharpen_nonstellar" value="0.60"/>
+      <parameter id="lunar_planetary" value="false"/>
+      <parameter id="overlap" value="0.20"/>
+   </instance>
+   <instance class="StarXTerminator" version="256" id="HOO_13_SXT_lineaire_instance">
+      <description>StarXTerminator — sur données LINÉAIRES, le plus tôt possible après BXT (RC Astro). Generate star image coché, UNSCREEN DÉCOCHÉ (réservé aux images étirées) : simple soustraction, couleurs d'étoiles les plus fidèles. N'applique pas l'autoSTF de façon permanente à l'image d'étoiles. Sur l'image HOO : garde l'image d'étoiles si tu n'as pas d'étoiles RGB.</description>
+      <parameter id="ml_version" value="0"/>
+      <parameter id="output_stars" value="true"/>
+      <parameter id="unscreen" value="false"/>
+      <parameter id="remove_stars" value="true"/>
+      <parameter id="remove_spikes" value="true"/>
+      <parameter id="remove_aureoles" value="true"/>
+      <parameter id="remove_reflections" value="false"/>
+      <parameter id="overlap" value="0.20"/>
+   </instance>
+   <instance class="PixelMath" version="256" id="HOO_14_Extraire_Ha_instance">
+      <description>Extraction du canal 0 (équivalent de ChannelExtraction) : applique sur l'image HOO sans étoiles. Crée la vue mono 'Ha'.</description>
+      <parameter id="expression">$T[0]</parameter>
+      <parameter id="expression1"></parameter>
+      <parameter id="expression2"></parameter>
+      <parameter id="expression3"></parameter>
+      <parameter id="useSingleExpression" value="true"/>
+      <parameter id="symbols"></parameter>
+      <parameter id="clearImageCacheAndExit" value="false"/>
+      <parameter id="cacheGeneratedImages" value="false"/>
+      <parameter id="generateOutput" value="true"/>
+      <parameter id="singleThreaded" value="false"/>
+      <parameter id="optimization" value="true"/>
+      <parameter id="use64BitWorkingImage" value="false"/>
+      <parameter id="rescale" value="false"/>
+      <parameter id="rescaleLower" value="0"/>
+      <parameter id="rescaleUpper" value="1"/>
+      <parameter id="truncate" value="true"/>
+      <parameter id="truncateLower" value="0"/>
+      <parameter id="truncateUpper" value="1"/>
+      <parameter id="createNewImage" value="true"/>
+      <parameter id="showNewImage" value="true"/>
+      <parameter id="newImageId">Ha</parameter>
+      <parameter id="newImageWidth" value="0"/>
+      <parameter id="newImageHeight" value="0"/>
+      <parameter id="newImageAlpha" value="false"/>
+      <parameter id="newImageColorSpace" value="Gray"/>
+      <parameter id="newImageSampleFormat" value="SameAsTarget"/>
+      <table id="outputData" rows="0"/>
+   </instance>
+   <instance class="PixelMath" version="256" id="HOO_15_Extraire_Oiii_instance">
+      <description>Extraction du canal 1 (équivalent de ChannelExtraction) : applique sur l'image HOO sans étoiles. Crée la vue mono 'Oiii'.</description>
+      <parameter id="expression">$T[1]</parameter>
+      <parameter id="expression1"></parameter>
+      <parameter id="expression2"></parameter>
+      <parameter id="expression3"></parameter>
+      <parameter id="useSingleExpression" value="true"/>
+      <parameter id="symbols"></parameter>
+      <parameter id="clearImageCacheAndExit" value="false"/>
+      <parameter id="cacheGeneratedImages" value="false"/>
+      <parameter id="generateOutput" value="true"/>
+      <parameter id="singleThreaded" value="false"/>
+      <parameter id="optimization" value="true"/>
+      <parameter id="use64BitWorkingImage" value="false"/>
+      <parameter id="rescale" value="false"/>
+      <parameter id="rescaleLower" value="0"/>
+      <parameter id="rescaleUpper" value="1"/>
+      <parameter id="truncate" value="true"/>
+      <parameter id="truncateLower" value="0"/>
+      <parameter id="truncateUpper" value="1"/>
+      <parameter id="createNewImage" value="true"/>
+      <parameter id="showNewImage" value="true"/>
+      <parameter id="newImageId">Oiii</parameter>
+      <parameter id="newImageWidth" value="0"/>
+      <parameter id="newImageHeight" value="0"/>
+      <parameter id="newImageAlpha" value="false"/>
+      <parameter id="newImageColorSpace" value="Gray"/>
+      <parameter id="newImageSampleFormat" value="SameAsTarget"/>
+      <table id="outputData" rows="0"/>
+   </instance>
+   <instance class="NoiseXTerminator" version="256" id="HOO_16_NXT_Ha_instance">
+      <description>NoiseXTerminator sur Ha sans étoiles : Denoise 0,60 (0,50 à 0,70), Detail 0,15. En linéaire ou après étirement.</description>
+      <parameter id="ml_version" value="0"/>
+      <parameter id="denoise" value="0.60"/>
+      <parameter id="enable_color_separation" value="false"/>
+      <parameter id="enable_frequency_separation" value="false"/>
+      <parameter id="denoise_intensity" value="0.90"/>
+      <parameter id="denoise_color" value="0.90"/>
+      <parameter id="denoise_high_freq" value="0.90"/>
+      <parameter id="denoise_low_freq" value="0.90"/>
+      <parameter id="denoise_intensity_high_freq" value="0.90"/>
+      <parameter id="denoise_intensity_low_freq" value="0.90"/>
+      <parameter id="denoise_color_high_freq" value="0.90"/>
+      <parameter id="denoise_color_low_freq" value="0.90"/>
+      <parameter id="frequency_scale" value="5.0"/>
+      <parameter id="iterations" value="1"/>
+      <parameter id="detail" value="0.15"/>
+      <parameter id="overlap" value="0.20"/>
+   </instance>
+   <instance class="NoiseXTerminator" version="256" id="HOO_17_NXT_OIII_SII_instance">
+      <description>NoiseXTerminator sur OIII et SII sans étoiles, plus bruités : Denoise 0,75 (0,60 à 0,85). Ne pousse pas plus : aspect plastique.</description>
+      <parameter id="ml_version" value="0"/>
+      <parameter id="denoise" value="0.75"/>
+      <parameter id="enable_color_separation" value="false"/>
+      <parameter id="enable_frequency_separation" value="false"/>
+      <parameter id="denoise_intensity" value="0.90"/>
+      <parameter id="denoise_color" value="0.90"/>
+      <parameter id="denoise_high_freq" value="0.90"/>
+      <parameter id="denoise_low_freq" value="0.90"/>
+      <parameter id="denoise_intensity_high_freq" value="0.90"/>
+      <parameter id="denoise_intensity_low_freq" value="0.90"/>
+      <parameter id="denoise_color_high_freq" value="0.90"/>
+      <parameter id="denoise_color_low_freq" value="0.90"/>
+      <parameter id="frequency_scale" value="5.0"/>
+      <parameter id="iterations" value="1"/>
+      <parameter id="detail" value="0.15"/>
+      <parameter id="overlap" value="0.20"/>
+   </instance>
+   <instance class="GeneralizedHyperbolicStretch" version="256" id="HOO_18_GHS_1_premier_instance">
+      <description>GHS, 1er étirement — Stretch factor à 0 : l'icône ne fait rien tant que tu ne l'as pas réglée. Zoome l'histogramme, clique dans l'image sur la zone intéressante la plus faible (sonde 15x15), Send to SP. Local intensity (b) = 10. Monte Stretch factor jusqu'à un pic d'histogramme vers 0,20-0,25. Retire l'autoSTF, active l'aperçu, affine SP. Image couleur : passe Colour mode sur Colour (clip RGBBlend). Même niveau de fond visé pour toutes les images à combiner. En narrowband : étire Ha en premier, puis OIII et SII jusqu'au MÊME fond et à une médiane proche ; OIII/SII demandent un Stretch factor plus élevé, monte LP pour ne pas faire ressortir leur bruit.</description>
+      <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
+      <parameter id="stretchChannel" value="SC_RGB"/>
+      <parameter id="inverse" value="false"/>
+      <parameter id="stretchFactor" value="0.000"/>
+      <parameter id="localIntensity" value="10.000"/>
+      <parameter id="symmetryPoint" value="0.000000"/>
+      <parameter id="highlightProtection" value="1.000000"/>
+      <parameter id="shadowProtection" value="0.000000"/>
+      <parameter id="blackPoint" value="0.000000"/>
+      <parameter id="whitePoint" value="1.000000"/>
+      <parameter id="colourBlend" value="1.000"/>
+      <parameter id="clipType" value="CT_RGBBlend"/>
+      <parameter id="useRGBWorkingSpace" value="false"/>
+   </instance>
+   <instance class="GeneralizedHyperbolicStretch" version="256" id="HOO_19_GHS_2_contraste_instance">
+      <description>GHS, ajout de contraste (passes suivantes) — clique sur une zone qui paraît plate, Send to SP ; Local intensity (b) 4 (3 à 5) ; monte Stretch factor doucement ; baisse HP (ici 0,90) pour protéger les étoiles et les cœurs brillants ; monte LP pour garder le fond sombre. 1 à 3 passes.</description>
+      <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
+      <parameter id="stretchChannel" value="SC_RGB"/>
+      <parameter id="inverse" value="false"/>
+      <parameter id="stretchFactor" value="0.000"/>
+      <parameter id="localIntensity" value="4.000"/>
+      <parameter id="symmetryPoint" value="0.000000"/>
+      <parameter id="highlightProtection" value="0.900000"/>
+      <parameter id="shadowProtection" value="0.000000"/>
+      <parameter id="blackPoint" value="0.000000"/>
+      <parameter id="whitePoint" value="1.000000"/>
+      <parameter id="colourBlend" value="1.000"/>
+      <parameter id="clipType" value="CT_RGBBlend"/>
+      <parameter id="useRGBWorkingSpace" value="false"/>
+   </instance>
+   <instance class="GeneralizedHyperbolicStretch" version="256" id="HOO_20_GHS_3_fond_instance">
+      <description>GHS, assombrir le fond sans écrêter — SP juste sous le niveau à rendre noir, HP = SP (règle HP à la même valeur que SP), LP = 0, b = 10 ; ajuste Stretch factor. Plus propre qu'un point noir en Linear, qui détruit des données.</description>
+      <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
+      <parameter id="stretchChannel" value="SC_RGB"/>
+      <parameter id="inverse" value="false"/>
+      <parameter id="stretchFactor" value="0.000"/>
+      <parameter id="localIntensity" value="10.000"/>
+      <parameter id="symmetryPoint" value="0.000000"/>
+      <parameter id="highlightProtection" value="1.000000"/>
+      <parameter id="shadowProtection" value="0.000000"/>
+      <parameter id="blackPoint" value="0.000000"/>
+      <parameter id="whitePoint" value="1.000000"/>
+      <parameter id="colourBlend" value="1.000"/>
+      <parameter id="clipType" value="CT_RGBBlend"/>
+      <parameter id="useRGBWorkingSpace" value="false"/>
+   </instance>
+   <instance class="NoOperation" version="256" id="HOO_21_Statistical_Stretch_instance">
+      <description>ÉTAPE MANUELLE — Statistical Stretch (SetiAstro, script). Icône-note : le chemin du script dépend de ton installation. Alternative à GHS. Target Median 0,25 (défaut, 0,15-0,25) ; Linked Stretch coché pour une image couleur calibrée ; Blackpoint Sigma 5,0 ; Normalize décoché ; Curves Boost 0 ; même Target Median pour les images à combiner.</description>
+   </instance>
+   <instance class="PixelMath" version="256" id="HOO_22_HOO_simple_instance">
+      <description>PALETTE — combinaison simple sur 'Ha' et 'Oiii' étirés sans étoiles, à équilibrer ensuite avec NarrowbandNormalization (icône suivante).</description>
+      <parameter id="expression">Ha</parameter>
+      <parameter id="expression1">Oiii</parameter>
+      <parameter id="expression2">Oiii</parameter>
+      <parameter id="expression3"></parameter>
+      <parameter id="useSingleExpression" value="false"/>
+      <parameter id="symbols"></parameter>
+      <parameter id="clearImageCacheAndExit" value="false"/>
+      <parameter id="cacheGeneratedImages" value="false"/>
+      <parameter id="generateOutput" value="true"/>
+      <parameter id="singleThreaded" value="false"/>
+      <parameter id="optimization" value="true"/>
+      <parameter id="use64BitWorkingImage" value="false"/>
+      <parameter id="rescale" value="false"/>
+      <parameter id="rescaleLower" value="0"/>
+      <parameter id="rescaleUpper" value="1"/>
+      <parameter id="truncate" value="true"/>
+      <parameter id="truncateLower" value="0"/>
+      <parameter id="truncateUpper" value="1"/>
+      <parameter id="createNewImage" value="true"/>
+      <parameter id="showNewImage" value="true"/>
+      <parameter id="newImageId">HOO_etire</parameter>
+      <parameter id="newImageWidth" value="0"/>
+      <parameter id="newImageHeight" value="0"/>
+      <parameter id="newImageAlpha" value="false"/>
+      <parameter id="newImageColorSpace" value="RGB"/>
+      <parameter id="newImageSampleFormat" value="SameAsTarget"/>
+      <table id="outputData" rows="0"/>
+   </instance>
+   <instance class="NarrowbandNormalization" version="256" id="HOO_23_NBN_HOO_instance">
+      <description>NarrowbandNormalization, palette HOO (valeurs par défaut) : applique sur l'image HOO étirée sans étoiles, active l'aperçu, monte O3 boost progressivement, Shadowpoint pour le fond, SCNR si besoin.</description>
+      <parameter id="palette" value="Palette_HOO"/>
+      <parameter id="lightness" value="Lightness_Off"/>
+      <parameter id="blendMode" value="Blend_Mode1"/>
+      <parameter id="haBlend" value="0.000"/>
+      <parameter id="scnr" value="0.000"/>
+      <parameter id="o3Boost" value="0.000"/>
+      <parameter id="s2Boost" value="0.000"/>
+      <parameter id="shadowpoint" value="1.000"/>
+      <parameter id="highlightReduction" value="0.000"/>
+      <parameter id="brightness" value="0.000"/>
+   </instance>
+   <instance class="PixelMath" version="256" id="HOO_24_Foraxx_HOO_instance">
+      <description>ALTERNATIVE — Foraxx HOO : le vert varie selon le rapport Ha/OIII (transitions orangées). Vues 'Ha' et 'Oiii' étirées, sans étoiles, fonds proches.</description>
+      <parameter id="expression">Ha</parameter>
+      <parameter id="expression1">((Oiii*Ha)^~(Oiii*Ha))*Ha + ~((Oiii*Ha)^~(Oiii*Ha))*Oiii</parameter>
+      <parameter id="expression2">Oiii</parameter>
+      <parameter id="expression3"></parameter>
+      <parameter id="useSingleExpression" value="false"/>
+      <parameter id="symbols"></parameter>
+      <parameter id="clearImageCacheAndExit" value="false"/>
+      <parameter id="cacheGeneratedImages" value="false"/>
+      <parameter id="generateOutput" value="true"/>
+      <parameter id="singleThreaded" value="false"/>
+      <parameter id="optimization" value="true"/>
+      <parameter id="use64BitWorkingImage" value="false"/>
+      <parameter id="rescale" value="false"/>
+      <parameter id="rescaleLower" value="0"/>
+      <parameter id="rescaleUpper" value="1"/>
+      <parameter id="truncate" value="true"/>
+      <parameter id="truncateLower" value="0"/>
+      <parameter id="truncateUpper" value="1"/>
+      <parameter id="createNewImage" value="true"/>
+      <parameter id="showNewImage" value="true"/>
+      <parameter id="newImageId">HOO_Foraxx</parameter>
+      <parameter id="newImageWidth" value="0"/>
+      <parameter id="newImageHeight" value="0"/>
+      <parameter id="newImageAlpha" value="false"/>
+      <parameter id="newImageColorSpace" value="RGB"/>
+      <parameter id="newImageSampleFormat" value="SameAsTarget"/>
+      <table id="outputData" rows="0"/>
+   </instance>
+   <instance class="PixelMath" version="256" id="HOO_25_HOO_Hubble_instance">
+      <description>ALTERNATIVE — variante « style Hubble » (Galactic Hunter) : G = 0,6·Ha + 0,4·OIII, tons plus dorés ; ajuste les coefficients.</description>
+      <parameter id="expression">Ha</parameter>
+      <parameter id="expression1">0.6*Ha + 0.4*Oiii</parameter>
+      <parameter id="expression2">Oiii</parameter>
+      <parameter id="expression3"></parameter>
+      <parameter id="useSingleExpression" value="false"/>
+      <parameter id="symbols"></parameter>
+      <parameter id="clearImageCacheAndExit" value="false"/>
+      <parameter id="cacheGeneratedImages" value="false"/>
+      <parameter id="generateOutput" value="true"/>
+      <parameter id="singleThreaded" value="false"/>
+      <parameter id="optimization" value="true"/>
+      <parameter id="use64BitWorkingImage" value="false"/>
+      <parameter id="rescale" value="false"/>
+      <parameter id="rescaleLower" value="0"/>
+      <parameter id="rescaleUpper" value="1"/>
+      <parameter id="truncate" value="true"/>
+      <parameter id="truncateLower" value="0"/>
+      <parameter id="truncateUpper" value="1"/>
+      <parameter id="createNewImage" value="true"/>
+      <parameter id="showNewImage" value="true"/>
+      <parameter id="newImageId">HOO_Hubble</parameter>
+      <parameter id="newImageWidth" value="0"/>
+      <parameter id="newImageHeight" value="0"/>
+      <parameter id="newImageAlpha" value="false"/>
+      <parameter id="newImageColorSpace" value="RGB"/>
+      <parameter id="newImageSampleFormat" value="SameAsTarget"/>
+      <table id="outputData" rows="0"/>
+   </instance>
+   <instance class="NoOperation" version="256" id="HOO_26_NBColourMapper_instance">
+      <description>OPTION — NBColourMapper (Mike Cranfield, script). Une couche par filtre sans étoiles : Ha rouge-orangé, OIII cyan-bleu, SII rouge profond ou or ; règle teinte et saturation avec l'aperçu.</description>
+   </instance>
+   <instance class="LRGBCombination" version="256" id="HOO_27_Ha_en_luminance_instance">
+      <description>Option — Ha en luminance : fais une copie de Ha étiré nommée 'L' (même fond et médiane proche que l'image HOO, sinon couleurs délavées), puis applique sur l'image HOO. Seul L activé, Saturation 0,40.</description>
+      <table id="channels" rows="4">
+         <tr>
+            <td id="enabled" value="false"/>
+            <td id="id"></td>
+            <td id="k" value="1.00000"/>
+         </tr>
+         <tr>
+            <td id="enabled" value="false"/>
+            <td id="id"></td>
+            <td id="k" value="1.00000"/>
+         </tr>
+         <tr>
+            <td id="enabled" value="false"/>
+            <td id="id"></td>
+            <td id="k" value="1.00000"/>
+         </tr>
+         <tr>
+            <td id="enabled" value="true"/>
+            <td id="id">L</td>
+            <td id="k" value="1.00000"/>
+         </tr>
+      </table>
+      <parameter id="mL" value="0.500"/>
+      <parameter id="mc" value="0.400"/>
+      <parameter id="clipHighlights" value="false"/>
+      <parameter id="noiseReduction" value="true"/>
+      <parameter id="layersRemoved" value="4"/>
+      <parameter id="layersProtected" value="2"/>
+      <parameter id="inheritAstrometricSolution" value="true"/>
+   </instance>
+   <instance class="CurvesTransformation" version="256" id="HOO_28_Courbes_instance">
+      <description>CurvesTransformation — légère courbe en S sur RGB/K (0,25→0,22 ; 0,75→0,78) et saturation (canal S : milieu monté de 0,5 à 0,6). Ajuste à l'œil, idéalement sous un masque de luminance pour protéger le fond.</description>
+      <table id="R" rows="2">
+         <tr>
+            <td id="x" value="0.00000"/>
+            <td id="y" value="0.00000"/>
+         </tr>
+         <tr>
+            <td id="x" value="1.00000"/>
+            <td id="y" value="1.00000"/>
+         </tr>
+      </table>
+      <parameter id="Rt" value="AkimaSubsplines"/>
+      <table id="G" rows="2">
+         <tr>
+            <td id="x" value="0.00000"/>
+            <td id="y" value="0.00000"/>
+         </tr>
+         <tr>
+            <td id="x" value="1.00000"/>
+            <td id="y" value="1.00000"/>
+         </tr>
+      </table>
+      <parameter id="Gt" value="AkimaSubsplines"/>
+      <table id="B" rows="2">
+         <tr>
+            <td id="x" value="0.00000"/>
+            <td id="y" value="0.00000"/>
+         </tr>
+         <tr>
+            <td id="x" value="1.00000"/>
+            <td id="y" value="1.00000"/>
+         </tr>
+      </table>
+      <parameter id="Bt" value="AkimaSubsplines"/>
+      <table id="K" rows="4">
+         <tr>
+            <td id="x" value="0.00000"/>
+            <td id="y" value="0.00000"/>
+         </tr>
+         <tr>
+            <td id="x" value="0.25000"/>
+            <td id="y" value="0.22000"/>
+         </tr>
+         <tr>
+            <td id="x" value="0.75000"/>
+            <td id="y" value="0.78000"/>
+         </tr>
+         <tr>
+            <td id="x" value="1.00000"/>
+            <td id="y" value="1.00000"/>
+         </tr>
+      </table>
+      <parameter id="Kt" value="AkimaSubsplines"/>
+      <table id="A" rows="2">
+         <tr>
+            <td id="x" value="0.00000"/>
+            <td id="y" value="0.00000"/>
+         </tr>
+         <tr>
+            <td id="x" value="1.00000"/>
+            <td id="y" value="1.00000"/>
+         </tr>
+      </table>
+      <parameter id="At" value="AkimaSubsplines"/>
+      <table id="L" rows="2">
+         <tr>
+            <td id="x" value="0.00000"/>
+            <td id="y" value="0.00000"/>
+         </tr>
+         <tr>
+            <td id="x" value="1.00000"/>
+            <td id="y" value="1.00000"/>
+         </tr>
+      </table>
+      <parameter id="Lt" value="AkimaSubsplines"/>
+      <table id="a" rows="2">
+         <tr>
+            <td id="x" value="0.00000"/>
+            <td id="y" value="0.00000"/>
+         </tr>
+         <tr>
+            <td id="x" value="1.00000"/>
+            <td id="y" value="1.00000"/>
+         </tr>
+      </table>
+      <parameter id="at" value="AkimaSubsplines"/>
+      <table id="b" rows="2">
+         <tr>
+            <td id="x" value="0.00000"/>
+            <td id="y" value="0.00000"/>
+         </tr>
+         <tr>
+            <td id="x" value="1.00000"/>
+            <td id="y" value="1.00000"/>
+         </tr>
+      </table>
+      <parameter id="bt" value="AkimaSubsplines"/>
+      <table id="c" rows="2">
+         <tr>
+            <td id="x" value="0.00000"/>
+            <td id="y" value="0.00000"/>
+         </tr>
+         <tr>
+            <td id="x" value="1.00000"/>
+            <td id="y" value="1.00000"/>
+         </tr>
+      </table>
+      <parameter id="ct" value="AkimaSubsplines"/>
+      <table id="H" rows="2">
+         <tr>
+            <td id="x" value="0.00000"/>
+            <td id="y" value="0.00000"/>
+         </tr>
+         <tr>
+            <td id="x" value="1.00000"/>
+            <td id="y" value="1.00000"/>
+         </tr>
+      </table>
+      <parameter id="Ht" value="AkimaSubsplines"/>
+      <table id="S" rows="3">
+         <tr>
+            <td id="x" value="0.00000"/>
+            <td id="y" value="0.00000"/>
+         </tr>
+         <tr>
+            <td id="x" value="0.50000"/>
+            <td id="y" value="0.60000"/>
+         </tr>
+         <tr>
+            <td id="x" value="1.00000"/>
+            <td id="y" value="1.00000"/>
+         </tr>
+      </table>
+      <parameter id="St" value="AkimaSubsplines"/>
+   </instance>
+   <instance class="LocalHistogramEqualization" version="256" id="HOO_29_LHE_instance">
+      <description>LocalHistogramEqualization sur l'image sans étoiles, sous masque de luminance : Kernel radius 150 (64 à 300 selon les structures), Contrast limit 2,0, Amount 0,35 (facile à exagérer).</description>
+      <parameter id="radius" value="150"/>
+      <parameter id="histogramBins" value="Bit8"/>
+      <parameter id="slopeLimit" value="2.0"/>
+      <parameter id="amount" value="0.350"/>
+      <parameter id="circularKernel" value="true"/>
+   </instance>
+   <instance class="HDRMultiscaleTransform" version="256" id="HOO_30_HDRMT_instance">
+      <description>HDRMultiscaleTransform sur l'image sans étoiles pour les zones brillantes : 6 couches, 1 itération (essaie 2), To lightness, Preserve hue et Lightness mask cochés. Trop fort : mélange à 50 % avec l'original.</description>
+      <parameter id="numberOfLayers" value="6"/>
+      <parameter id="numberOfIterations" value="1"/>
+      <parameter id="invertedIterations" value="true"/>
+      <parameter id="overdrive" value="0.000"/>
+      <parameter id="medianTransform" value="false"/>
+      <parameter id="scalingFunctionData">0.003906,0.015625,0.023438,0.015625,0.003906,0.015625,0.0625,0.09375,0.0625,0.015625,0.023438,0.09375,0.140625,0.09375,0.023438,0.015625,0.0625,0.09375,0.0625,0.015625,0.003906,0.015625,0.023438,0.015625,0.003906</parameter>
+      <parameter id="scalingFunctionRowFilter">0.0625,0.25,0.375,0.25,0.0625</parameter>
+      <parameter id="scalingFunctionColFilter">0.0625,0.25,0.375,0.25,0.0625</parameter>
+      <parameter id="scalingFunctionName">B3 Spline (5)</parameter>
+      <parameter id="deringing" value="false"/>
+      <parameter id="smallScaleDeringing" value="0.000"/>
+      <parameter id="largeScaleDeringing" value="0.250"/>
+      <parameter id="outputDeringingMaps" value="false"/>
+      <parameter id="midtonesBalanceMode" value="Automatic"/>
+      <parameter id="midtonesBalance" value="0.500000"/>
+      <parameter id="toIntensity" value="false"/>
+      <parameter id="toLightness" value="true"/>
+      <parameter id="preserveHue" value="true"/>
+      <parameter id="lightnessMask" value="true"/>
+      <parameter id="intensity" value="1.00"/>
+   </instance>
+   <instance class="NoiseXTerminator" version="256" id="HOO_31_NXT_final_instance">
+      <description>NoiseXTerminator, passe finale légère sur l'image étirée : Denoise 0,40, Detail 0,15. Seulement si besoin.</description>
+      <parameter id="ml_version" value="0"/>
+      <parameter id="denoise" value="0.40"/>
+      <parameter id="enable_color_separation" value="false"/>
+      <parameter id="enable_frequency_separation" value="false"/>
+      <parameter id="denoise_intensity" value="0.90"/>
+      <parameter id="denoise_color" value="0.90"/>
+      <parameter id="denoise_high_freq" value="0.90"/>
+      <parameter id="denoise_low_freq" value="0.90"/>
+      <parameter id="denoise_intensity_high_freq" value="0.90"/>
+      <parameter id="denoise_intensity_low_freq" value="0.90"/>
+      <parameter id="denoise_color_high_freq" value="0.90"/>
+      <parameter id="denoise_color_low_freq" value="0.90"/>
+      <parameter id="frequency_scale" value="5.0"/>
+      <parameter id="iterations" value="1"/>
+      <parameter id="detail" value="0.15"/>
+      <parameter id="overlap" value="0.20"/>
+   </instance>
+   <instance class="NoOperation" version="256" id="HOO_32_Etoiles_HOO_instance">
+      <description>ÉTOILES — avec RGB : suis le bloc étoiles RGB du workflow RGB + SHO. Sans RGB : utilise l'image d'étoiles de SXT sur HOO (ou NB to RGB Star Combination), étire-la avec Star Stretch et renomme-la 'stars'. Les étoiles HOO tirent vers le rouge et le cyan : désature-les légèrement si besoin.</description>
+   </instance>
+   <instance class="NoOperation" version="256" id="HOO_33_Star_Stretch_instance">
+      <description>ÉTAPE MANUELLE — Star Stretch (SetiAstro, script) sur l'image d'étoiles LINÉAIRE issue de SXT. Stretch Amount 5 (défaut, prudence au-delà) ; Color Boost 1,0 (0 à 2) ; Remove Green via SCNR optionnel (décoché par défaut).</description>
+   </instance>
+   <instance class="PixelMath" version="256" id="HOO_34_Etoiles_screen_instance">
+      <description>Recombinaison des étoiles en mode screen : ~((~starless) * (~stars)). Renomme la vue sans étoiles 'starless' et l'image d'étoiles 'stars', toutes deux étirées. Résultat : nouvelle image 'Final'.</description>
+      <parameter id="expression">~((~starless) * (~stars))</parameter>
+      <parameter id="expression1"></parameter>
+      <parameter id="expression2"></parameter>
+      <parameter id="expression3"></parameter>
+      <parameter id="useSingleExpression" value="true"/>
+      <parameter id="symbols"></parameter>
+      <parameter id="clearImageCacheAndExit" value="false"/>
+      <parameter id="cacheGeneratedImages" value="false"/>
+      <parameter id="generateOutput" value="true"/>
+      <parameter id="singleThreaded" value="false"/>
+      <parameter id="optimization" value="true"/>
+      <parameter id="use64BitWorkingImage" value="false"/>
+      <parameter id="rescale" value="false"/>
+      <parameter id="rescaleLower" value="0"/>
+      <parameter id="rescaleUpper" value="1"/>
+      <parameter id="truncate" value="true"/>
+      <parameter id="truncateLower" value="0"/>
+      <parameter id="truncateUpper" value="1"/>
+      <parameter id="createNewImage" value="true"/>
+      <parameter id="showNewImage" value="true"/>
+      <parameter id="newImageId">Final</parameter>
+      <parameter id="newImageWidth" value="0"/>
+      <parameter id="newImageHeight" value="0"/>
+      <parameter id="newImageAlpha" value="false"/>
+      <parameter id="newImageColorSpace" value="SameAsTarget"/>
+      <parameter id="newImageSampleFormat" value="SameAsTarget"/>
+      <table id="outputData" rows="0"/>
+   </instance>
+   <instance class="PixelMath" version="256" id="HOO_35_Blanshan_Transfer_instance">
+      <description>Réduction d'étoiles Bill Blanshan, méthode Transfer V2 : applique sur l'image AVEC étoiles, la version sans étoiles de la même image (étirée pareil) doit s'appeler 'starless'. S = 0,15 (plus bas = étoiles plus petites). Les versions V3 et les méthodes Halo/Star sont dans 01-PixelMath-formules.xpsm.</description>
+      <parameter id="expression">S=0.15;
+Img1=starless;
+f1= ~((~mtf(~S,$T)/~mtf(~S,Img1))*~Img1);
+max(Img1,f1)</parameter>
+      <parameter id="expression1"></parameter>
+      <parameter id="expression2"></parameter>
+      <parameter id="expression3"></parameter>
+      <parameter id="useSingleExpression" value="true"/>
+      <parameter id="symbols">S, Img1, f1</parameter>
+      <parameter id="clearImageCacheAndExit" value="false"/>
+      <parameter id="cacheGeneratedImages" value="false"/>
+      <parameter id="generateOutput" value="true"/>
+      <parameter id="singleThreaded" value="false"/>
+      <parameter id="optimization" value="true"/>
+      <parameter id="use64BitWorkingImage" value="false"/>
+      <parameter id="rescale" value="false"/>
+      <parameter id="rescaleLower" value="0"/>
+      <parameter id="rescaleUpper" value="1"/>
+      <parameter id="truncate" value="true"/>
+      <parameter id="truncateLower" value="0"/>
+      <parameter id="truncateUpper" value="1"/>
+      <parameter id="createNewImage" value="false"/>
+      <parameter id="showNewImage" value="true"/>
+      <parameter id="newImageId"></parameter>
+      <parameter id="newImageWidth" value="0"/>
+      <parameter id="newImageHeight" value="0"/>
+      <parameter id="newImageAlpha" value="false"/>
+      <parameter id="newImageColorSpace" value="SameAsTarget"/>
+      <parameter id="newImageSampleFormat" value="SameAsTarget"/>
+      <table id="outputData" rows="0"/>
+   </instance>
+   <instance class="MorphologicalTransformation" version="256" id="HOO_36_MT_etoiles_instance">
+      <description>Alternative : MorphologicalTransformation sur l'image d'étoiles seule (ou avec un masque d'étoiles). Morphological Selection 0,25 (sous 0,5 = érosion), Amount 0,60, 1 itération, élément circulaire 5x5.</description>
+      <parameter id="operator" value="Selection"/>
+      <parameter id="interlacingDistance" value="1"/>
+      <parameter id="lowThreshold" value="0.000000"/>
+      <parameter id="highThreshold" value="0.000000"/>
+      <parameter id="numberOfIterations" value="1"/>
+      <parameter id="amount" value="0.60"/>
+      <parameter id="selectionPoint" value="0.25"/>
+      <parameter id="structureName"></parameter>
+      <parameter id="structureSize" value="5"/>
+      <table id="structureWayTable" rows="1">
+         <tr>
+            <td id="mask">0x00,0x01,0x01,0x01,0x00,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x00,0x01,0x01,0x01,0x00</td>
+         </tr>
+      </table>
+   </instance>
+   <instance class="NoOperation" version="256" id="HOO_37_Halo_B_Gon_instance">
+      <description>ÉTAPE MANUELLE — Halo-B-Gon (SetiAstro, script) sur l'image d'étoiles seule. Reduction Amount Low au départ (Extra Low / Low / Med / High) ; Linear Data coché seulement si l'image est encore linéaire.</description>
+   </instance>
+   <icon id="HOO_01_WBPP" instance="HOO_01_WBPP_instance" xpos="30" ypos="30" workspace="Workspace01"/>
+   <icon id="HOO_02_CC_auto" instance="HOO_02_CC_auto_instance" xpos="30" ypos="60" workspace="Workspace01"/>
+   <icon id="HOO_03_DynamicCrop" instance="HOO_03_DynamicCrop_instance" xpos="30" ypos="90" workspace="Workspace01"/>
+   <icon id="HOO_04_DualBand_Ha" instance="HOO_04_DualBand_Ha_instance" xpos="30" ypos="120" workspace="Workspace01"/>
+   <icon id="HOO_05_DualBand_OIII" instance="HOO_05_DualBand_OIII_instance" xpos="30" ypos="150" workspace="Workspace01"/>
+   <icon id="HOO_06_Masters_Ha_Oiii" instance="HOO_06_Masters_Ha_Oiii_instance" xpos="30" ypos="180" workspace="Workspace01"/>
+   <icon id="HOO_07_Gradient_SPFC_MGC" instance="HOO_07_Gradient_SPFC_MGC_instance" xpos="30" ypos="210" workspace="Workspace01"/>
+   <icon id="HOO_08_GradientCorrection" instance="HOO_08_GradientCorrection_instance" xpos="30" ypos="240" workspace="Workspace01"/>
+   <icon id="HOO_09_Gradient_DBE" instance="HOO_09_Gradient_DBE_instance" xpos="30" ypos="270" workspace="Workspace01"/>
+   <icon id="HOO_10_LinearFit_ref_Ha" instance="HOO_10_LinearFit_ref_Ha_instance" xpos="30" ypos="300" workspace="Workspace01"/>
+   <icon id="HOO_11_Combinaison_HOO" instance="HOO_11_Combinaison_HOO_instance" xpos="30" ypos="330" workspace="Workspace01"/>
+   <icon id="HOO_12_BXT_NB" instance="HOO_12_BXT_NB_instance" xpos="30" ypos="360" workspace="Workspace01"/>
+   <icon id="HOO_13_SXT_lineaire" instance="HOO_13_SXT_lineaire_instance" xpos="30" ypos="390" workspace="Workspace01"/>
+   <icon id="HOO_14_Extraire_Ha" instance="HOO_14_Extraire_Ha_instance" xpos="30" ypos="420" workspace="Workspace01"/>
+   <icon id="HOO_15_Extraire_Oiii" instance="HOO_15_Extraire_Oiii_instance" xpos="330" ypos="30" workspace="Workspace01"/>
+   <icon id="HOO_16_NXT_Ha" instance="HOO_16_NXT_Ha_instance" xpos="330" ypos="60" workspace="Workspace01"/>
+   <icon id="HOO_17_NXT_OIII_SII" instance="HOO_17_NXT_OIII_SII_instance" xpos="330" ypos="90" workspace="Workspace01"/>
+   <icon id="HOO_18_GHS_1_premier" instance="HOO_18_GHS_1_premier_instance" xpos="330" ypos="120" workspace="Workspace01"/>
+   <icon id="HOO_19_GHS_2_contraste" instance="HOO_19_GHS_2_contraste_instance" xpos="330" ypos="150" workspace="Workspace01"/>
+   <icon id="HOO_20_GHS_3_fond" instance="HOO_20_GHS_3_fond_instance" xpos="330" ypos="180" workspace="Workspace01"/>
+   <icon id="HOO_21_Statistical_Stretch" instance="HOO_21_Statistical_Stretch_instance" xpos="330" ypos="210" workspace="Workspace01"/>
+   <icon id="HOO_22_HOO_simple" instance="HOO_22_HOO_simple_instance" xpos="330" ypos="240" workspace="Workspace01"/>
+   <icon id="HOO_23_NBN_HOO" instance="HOO_23_NBN_HOO_instance" xpos="330" ypos="270" workspace="Workspace01"/>
+   <icon id="HOO_24_Foraxx_HOO" instance="HOO_24_Foraxx_HOO_instance" xpos="330" ypos="300" workspace="Workspace01"/>
+   <icon id="HOO_25_HOO_Hubble" instance="HOO_25_HOO_Hubble_instance" xpos="330" ypos="330" workspace="Workspace01"/>
+   <icon id="HOO_26_NBColourMapper" instance="HOO_26_NBColourMapper_instance" xpos="330" ypos="360" workspace="Workspace01"/>
+   <icon id="HOO_27_Ha_en_luminance" instance="HOO_27_Ha_en_luminance_instance" xpos="330" ypos="390" workspace="Workspace01"/>
+   <icon id="HOO_28_Courbes" instance="HOO_28_Courbes_instance" xpos="330" ypos="420" workspace="Workspace01"/>
+   <icon id="HOO_29_LHE" instance="HOO_29_LHE_instance" xpos="630" ypos="30" workspace="Workspace01"/>
+   <icon id="HOO_30_HDRMT" instance="HOO_30_HDRMT_instance" xpos="630" ypos="60" workspace="Workspace01"/>
+   <icon id="HOO_31_NXT_final" instance="HOO_31_NXT_final_instance" xpos="630" ypos="90" workspace="Workspace01"/>
+   <icon id="HOO_32_Etoiles_HOO" instance="HOO_32_Etoiles_HOO_instance" xpos="630" ypos="120" workspace="Workspace01"/>
+   <icon id="HOO_33_Star_Stretch" instance="HOO_33_Star_Stretch_instance" xpos="630" ypos="150" workspace="Workspace01"/>
+   <icon id="HOO_34_Etoiles_screen" instance="HOO_34_Etoiles_screen_instance" xpos="630" ypos="180" workspace="Workspace01"/>
+   <icon id="HOO_35_Blanshan_Transfer" instance="HOO_35_Blanshan_Transfer_instance" xpos="630" ypos="210" workspace="Workspace01"/>
+   <icon id="HOO_36_MT_etoiles" instance="HOO_36_MT_etoiles_instance" xpos="630" ypos="240" workspace="Workspace01"/>
+   <icon id="HOO_37_Halo_B_Gon" instance="HOO_37_Halo_B_Gon_instance" xpos="630" ypos="270" workspace="Workspace01"/>
+</xpsm>

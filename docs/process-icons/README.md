@@ -56,9 +56,35 @@ Les formules supposent des images nommées comme indiqué (renomme tes vues avec
 | `MT_reduction_etoiles` | Morphological Selection 0,25, Amount 0,60, 1 itération, élément circulaire 5×5 |
 | `CC_auto_WBPP` | Auto detect, Hot sigma 2,5, Cold désactivé ; à sélectionner comme modèle dans WBPP |
 
-Non fournis, car ils dépendent de ton matériel ou de ton image : WBPP, SPCC, SPFC, DBE, MGC, GHS (le point SP se choisit sur l'image) et NarrowbandNormalization (le nom interne de la palette SHO n'a pas pu être vérifié).
+Les process qui dépendent de ton matériel ou de ton image (WBPP, SPCC, SPFC, DBE, MGC, GHS, NarrowbandNormalization SHO) sont dans les fichiers par workflow ci-dessous.
+
+## Un fichier par workflow (dossier `workflows/`)
+
+Chaque fichier contient **tous les process du workflow, dans l'ordre**, numérotés (`LRGB_01_WBPP`, `LRGB_02_CC_auto`…) et disposés en colonnes de haut en bas. **Chaque icône porte une description détaillée** : réglages, vues attendues, quand l'appliquer et pourquoi. Pour la lire dans PixInsight, survole l'icône ou ouvre-la (champ *Description*).
+
+| Fichier | Icônes | Contenu |
+|---|---|---|
+| `Workflow-LRGB.xpsm` | 29 | Prétraitement, combinaison RGB, gradient, BXT Correct Only, SPCC, BXT, SXT linéaire, NXT, GHS, LRGBCombination, finition, étoiles |
+| `Workflow-LHaRGB.xpsm` | 34 | LRGB + soustraction du continuum, Ha dans le rouge et dans L, NBRGBCombination en alternative |
+| `Workflow-RGB-SHO.xpsm` | 40 | Masters narrowband, LinearFit, combinaison SHO simple, BXT, SXT, extraction des canaux, palettes (NarrowbandNormalization, Foraxx, NBColourMapper), étoiles RGB |
+| `Workflow-SHO-sans-RGB.xpsm` | 39 | Idem sans RGB, avec étoiles narrowband (NB to RGB Star Combination, étoiles HOO synthétiques, CorrectMagentaStars) |
+| `Workflow-HOO.xpsm` | 37 | Extraction dual-band pour caméra couleur, combinaison HOO, NarrowbandNormalization HOO, Foraxx HOO, variante Hubble, Ha en luminance |
+
+**Trois sortes d'icônes :**
+
+- **Process réglés** : s'appliquent directement (PixelMath, BlurXTerminator, NoiseXTerminator, StarXTerminator, LRGBCombination, LinearFit, SCNR, LHE, HDRMT, MorphologicalTransformation, CurvesTransformation, GradientCorrection, NarrowbandNormalization HOO, CosmeticCorrection).
+- **Process à compléter sur ton image ou ton matériel** :
+  - `SPCC` : réglé sur *Average Spiral Galaxy* avec neutralisation du fond, mais il contient les filtres Astrodon E-series et le capteur Sony IMX571 de l'auteur du modèle. **Remplace-les par les tiens.**
+  - `GHS_1_premier`, `GHS_2_contraste`, `GHS_3_fond` : Local intensity et protections réglés, mais **Stretch factor à 0 et SP à choisir sur ton image** (l'icône ne fait rien tant que tu ne l'as pas réglée).
+  - `Courbes` : légère courbe en S et saturation, à ajuster à l'œil.
+- **Icônes-notes** (process *NoOperation*, sans effet) : pour les étapes qui ne peuvent pas être enregistrées de façon portable, la description donne tous les réglages. Ce sont WBPP, DynamicCrop, ImageSolver, SPFC + MGC (base MARS), DBE, NarrowbandNormalization SHO, et les scripts SetiAstro et CorrectMagentaStars (le chemin et l'empreinte du script dépendent de ton installation).
+
+ChannelCombination et ChannelExtraction sont remplacés par des icônes PixelMath équivalentes (par exemple `$T[1]` pour extraire le canal vert).
+
+Les fichiers ont été générés par `make_workflows.py` (dans ce dossier) à partir des modèles vérifiés.
 
 ## Sources
 
 - [theAstroShed, icônes de process](https://github.com/jamiesmith/pixinsight-icons) : fichiers `.xpsm` générés par PixInsight 1.9.3, utilisés comme modèles (noms de paramètres, versions, valeurs d'énumération) ; formules Foraxx identiques ; formules de Bill Blanshan V3 (`FromLukeAndBill.xpsm`).
-- [AutoIntegrate](https://github.com/jarmoruuth/AutoIntegrate) : opérateur `Selection` de MorphologicalTransformation et masque circulaire 5×5 ; formules de Bill Blanshan V2.
+- [AutoIntegrate](https://github.com/jarmoruuth/AutoIntegrate) : opérateur `Selection` de MorphologicalTransformation et masque circulaire 5×5 ; formules de Bill Blanshan V2 ; paramètres de MultiscaleGradientCorrection.
+- Les modèles de SPCC (*Average Spiral Galaxy*), GradientCorrection, GHS, CurvesTransformation, NarrowbandNormalization et l'usage de NoOperation comme icône-note avec description viennent aussi des fichiers de theAstroShed.
