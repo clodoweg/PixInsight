@@ -72,6 +72,77 @@ def write(filename, items, title):
     xml = HEADER + '<!-- ' + title + ' -->\n' + '\n'.join(body) + '\n' + '\n'.join(icons) + '\n</xpsm>\n'
     open(os.path.join(OUT, filename), 'w', encoding='utf-8').write(xml)
 
+
+# ---------- Process sans modèle .xpsm : construits à partir des paramètres du code d'AutoIntegrate ----------
+CURVES = json.load(open(os.environ.get('SPFC_CURVES', os.path.join(os.path.dirname(__file__), 'spfc_curves.json'))))
+
+def build(cls, version, name, params):
+    """params : liste de (id, valeur, 'v' = attribut value | 't' = texte | 'table0' = table vide)."""
+    lines = ['   <instance class="%s" version="%s" id="%s_instance">' % (cls, version, name)]
+    for pid, val, kind in params:
+        if kind == 'v':
+            if isinstance(val, bool):
+                val = 'true' if val else 'false'
+            lines.append('      <parameter id="%s" value="%s"/>' % (pid, val))
+        elif kind == 't':
+            lines.append('      <parameter id="%s">%s</parameter>' % (pid, escape(val)))
+        elif kind == 'table0':
+            lines.append('      <table id="%s" rows="0"/>' % pid)
+    lines.append('   </instance>')
+    return name, '\n'.join(lines)
+
+def spfc(name, rgb='ai', gray='ai_gray', qe=None, nb=None):
+    """rgb : 'ai' (filtres Bayer Sony) ou 'astrodon' ; nb : (longueur d'onde, bande passante) pour un master narrowband."""
+    qn, qc = CURVES[qe] if qe else ('Ideal QE curve', '1,1.0,500,1.0,1000,1.0,1500,1.0,2000,1.0,2500,1.0')
+    gn, gc = CURVES[gray]
+    rn, rc = CURVES[rgb + '_red']; gnn, gcc = CURVES[rgb + '_green']; bn, bc = CURVES[rgb + '_blue']
+    wl, bw = nb if nb else (656.3, 3.0)
+    p = [('narrowbandMode', bool(nb), 'v'),
+         ('grayFilterTrCurve', gc, 't'), ('grayFilterName', gn, 't'),
+         ('redFilterTrCurve', rc, 't'), ('redFilterName', rn, 't'),
+         ('greenFilterTrCurve', gcc, 't'), ('greenFilterName', gnn, 't'),
+         ('blueFilterTrCurve', bc, 't'), ('blueFilterName', bn, 't'),
+         ('grayFilterWavelength', '%.1f' % wl, 'v'), ('grayFilterBandwidth', '%.1f' % bw, 'v'),
+         ('redFilterWavelength', '656.3', 'v'), ('redFilterBandwidth', '3.0', 'v'),
+         ('greenFilterWavelength', '500.7', 'v'), ('greenFilterBandwidth', '3.0', 'v'),
+         ('blueFilterWavelength', '500.7', 'v'), ('blueFilterBandwidth', '3.0', 'v'),
+         ('deviceQECurve', qc, 't'), ('deviceQECurveName', qn, 't'),
+         ('broadbandIntegrationStepSize', '0.50', 'v'), ('narrowbandIntegrationSteps', '10', 'v'),
+         ('rejectionLimit', '0.30', 'v'), ('catalogId', 'GaiaDR3SP', 't'),
+         ('minMagnitude', '0.00', 'v'), ('limitMagnitude', '12.00', 'v'), ('autoLimitMagnitude', True, 'v'),
+         ('psfStructureLayers', '5', 'v'), ('saturationThreshold', '0.75', 'v'), ('saturationRelative', True, 'v'),
+         ('saturationShrinkFactor', '0.10', 'v'), ('psfNoiseLayers', '1', 'v'), ('psfHotPixelFilterRadius', '1', 'v'),
+         ('psfNoiseReductionFilterRadius', '0', 'v'), ('psfMinStructureSize', '0', 'v'), ('psfMinSNR', '40.00', 'v'),
+         ('psfAllowClusteredSources', False, 'v'), ('psfType', 'PSFType_Auto', 'v'), ('psfGrowth', '1.75', 'v'),
+         ('psfMaxStars', '24576', 'v'), ('psfSearchTolerance', '4.00', 'v'), ('psfChannelSearchTolerance', '2.00', 'v'),
+         ('generateGraphs', False, 'v'), ('generateStarMaps', False, 'v'), ('generateTextFiles', False, 'v'),
+         ('outputDirectory', '', 't')]
+    return build('SpectrophotometricFluxCalibration', 1, name, p)
+
+def mgc(name, scale=1024):
+    p = [('command', '', 't'), ('useMARSDatabase', True, 'v'),
+         ('grayMARSFilter', 'L', 't'), ('redMARSFilter', 'R', 't'), ('greenMARSFilter', 'G', 't'), ('blueMARSFilter', 'B', 't'),
+         ('referenceImageId', '', 't'), ('gradientScale', str(scale), 'v'), ('structureSeparation', '3', 'v'),
+         ('modelSmoothness', '1.00', 'v'), ('minFieldRatio', '0.017', 'v'), ('maxFieldRatio', '0.167', 'v'),
+         ('enforceFieldLimits', True, 'v'), ('scaleFactorRK', '1.00', 'v'), ('scaleFactorG', '1.00', 'v'),
+         ('scaleFactorB', '1.00', 'v'), ('showGradientModel', True, 'v')]
+    return build('MultiscaleGradientCorrection', 1, name, p)
+
+def dbe(name):
+    p = [('table0', None, None)]
+    p = [('data', None, 'table0'), ('derivativeOrder', '2', 'v'), ('smoothing', '0.250', 'v'), ('ignoreWeights', False, 'v'),
+         ('modelId', '', 't'), ('modelWidth', '0', 'v'), ('modelHeight', '0', 'v'), ('downsample', '2', 'v'),
+         ('modelSampleFormat', 'f32', 'v'), ('targetCorrection', 'Subtract', 'v'), ('normalize', True, 'v'),
+         ('discardModel', True, 'v'), ('replaceTarget', True, 'v'), ('correctedImageId', '', 't'),
+         ('correctedImageSampleFormat', 'SameAsTarget', 'v'), ('samples', None, 'table0'),
+         ('imageWidth', '0', 'v'), ('imageHeight', '0', 'v'), ('symmetryCenterX', '0.500000', 'v'), ('symmetryCenterY', '0.500000', 'v'),
+         ('tolerance', '0.500', 'v'), ('shadowsRelaxation', '3.000', 'v'), ('minSampleFraction', '0.050', 'v'),
+         ('defaultSampleRadius', '15', 'v'), ('samplesPerRow', '15', 'v')]
+    return build('DynamicBackgroundExtraction', 1, name, p)
+
+def crop(name):
+    return instance('DynamicCrop', name)
+
 # ---------- 1. PixelMath : formules ----------
 blanshan_transfer = "S=0.15;\nImg1=starless;\nf1= ~((~mtf(~S,$T)/~mtf(~S,Img1))*~Img1);\nmax(Img1,f1)"
 blanshan_halo = "S=0.15;\nImg1=starless;\nf2= ((~(~$T/~Img1)-~(~mtf(~S,$T)/~mtf(~S,Img1)))*~Img1);\nf3= (~(~$T/~Img1)-~(~mtf(~S,$T)/~mtf(~S,Img1)));\nmax(Img1,$T-mean(f2,f3))"
@@ -174,6 +245,15 @@ nat = [
     instance('HDRMultiscaleTransform', 'HDRMT_6', {'numberOfLayers': 6, 'numberOfIterations': 1, 'toLightness': True, 'preserveHue': True, 'lightnessMask': True}),
     instance('MorphologicalTransformation', 'MT_reduction_etoiles', {'operator': 'Selection', 'numberOfIterations': 1, 'amount': '0.60',
                                                                     'selectionPoint': '0.25', 'structureSize': 5}, post=mt_post),
+    spfc('SPFC_RGB_filtres', rgb='astrodon', qe='qe_imx571'),
+    spfc('SPFC_couleur_OSC', rgb='ai'),
+    spfc('SPFC_L'),
+    spfc('SPFC_Ha', nb=(656.3, 3.0)),
+    spfc('SPFC_OIII', nb=(500.7, 3.0)),
+    spfc('SPFC_SII', nb=(672.4, 3.0)),
+    mgc('MGC_MARS'),
+    dbe('DBE_base'),
+    crop('DynamicCrop_base'),
     instance('NarrowbandNormalization', 'NBN_SHO', {'palette': 'Palette_SHO'}),
     instance('NarrowbandNormalization', 'NBN_HOO', {'palette': 'Palette_HOO'}),
     instance('CosmeticCorrection', 'CC_auto_WBPP', {'useAutoDetect': True, 'hotAutoCheck': True, 'hotAutoValue': '2.5',

@@ -127,15 +127,38 @@ D_LHE = "LocalHistogramEqualization sur l'image sans étoiles, sous masque de lu
 D_HDR = "HDRMultiscaleTransform sur l'image sans étoiles pour les zones brillantes : 6 couches, 1 itération (essaie 2), To lightness, Preserve hue et Lightness mask cochés. Trop fort : mélange à 50 % avec l'original."
 D_NXT_F = "NoiseXTerminator, passe finale légère sur l'image étirée : Denoise 0,40, Detail 0,15. Seulement si besoin."
 
-def gradient_block():
-    return [
-        (note('Gradient_SPFC_MGC', T_MGC), ''),
-        (M.instance('GradientCorrection', 'GradientCorrection'), T_GC),
-        (note('Gradient_DBE', T_DBE), ''),
-    ]
+D_SPFC_COMMUN = (" Prérequis : image LINÉAIRE et résolue (ImageSolver ou WBPP), base Gaia DR3/SP installée. Catalog Gaia DR3/SP, Automatic limit magnitude coché, détection PSF par défaut. "
+                 "SPFC ne modifie pas les pixels : il écrit les métadonnées de flux lues par MGC. Utilise ensuite les MÊMES filtres dans SPCC.")
+D_SPFC = {
+ 'SPFC_RGB_filtres': "SPFC sur l'image RGB combinée (caméra mono + filtres R, G, B). ATTENTION : l'icône contient les filtres Astrodon E-series et le capteur Sony IMX571 de l'icône SPCC : remplace-les par TES filtres (Red/Green/Blue filter) et TON capteur (QE curve), sinon Ideal QE curve.",
+ 'SPFC_L': "SPFC sur le master L (mono) : Gray filter = Astronomik L-2 dans l'icône, à remplacer par ton filtre L ; QE curve Ideal (ou ton capteur).",
+ 'SPFC_Ha': "SPFC sur le master Ha (mono) : Narrowband mode coché, longueur d'onde 656,3 nm, bande passante 3 nm dans l'icône : mets celle de TON filtre. QE curve Ideal (ou ton capteur).",
+ 'SPFC_OIII': "SPFC sur le master OIII (mono) : Narrowband mode coché, 500,7 nm, bande passante 3 nm à remplacer par celle de ton filtre.",
+ 'SPFC_SII': "SPFC sur le master SII (mono) : Narrowband mode coché, 672,4 nm, bande passante 3 nm à remplacer par celle de ton filtre.",
+}
+D_MGC = ("MultiscaleGradientCorrection, juste après SPFC, sur la même image. Use MARS database coché ; filtres MARS Gray = L (image mono), Red = R, Green = G, Blue = B (image couleur) ; "
+         "Gradient scale 1024 (512 ou 256 si un gradient reste dans les coins), Structure separation 3 (1-2 pour les bords), Model smoothness 1,0 (3-5 si le modèle ondule), Scale factors 1,0, Show gradient model coché. "
+         "La base MARS se charge dans les préférences de MGC (clé à molette › Add › fichier .xmars) : si MGC signale qu'aucune base n'est chargée, ajoute-la là. "
+         "Narrowband : seulement si ta base MARS couvre le filtre, sinon utilise GradientCorrection ou DBE.")
+D_DBE = ("ALTERNATIVE — DynamicBackgroundExtraction, sans points (ils dépendent de l'image) : ouvre l'icône, clique sur l'image, puis Generate. Samples per row 15, Sample radius 15 (10 à 50), "
+         "Tolerance 0,5 (1,0-1,5 si des points sont rejetés), Shadows relaxation 3, Smoothing 0,25 (0,5-1,0 champs nébuleux), Correction Subtract (Division seulement pour le vignettage), "
+         "Normalize, Discard model et Replace target cochés. Retire les points posés sur la nébuleuse ; d'un filtre à l'autre, garde les points et ajuste Tolerance.")
+
+def gradient_block(kind='rgb'):
+    """kind : 'rgb' (RGB + L), 'lha' (RGB + L + Ha), 'sho', 'hoo'."""
+    names = {'rgb': ['SPFC_RGB_filtres', 'SPFC_L'], 'lha': ['SPFC_RGB_filtres', 'SPFC_L', 'SPFC_Ha'],
+             'sho': ['SPFC_SII', 'SPFC_Ha', 'SPFC_OIII'], 'hoo': ['SPFC_Ha', 'SPFC_OIII']}[kind]
+    opts = {'SPFC_RGB_filtres': dict(rgb='astrodon', qe='qe_imx571'), 'SPFC_L': {}, 'SPFC_Ha': dict(nb=(656.3, 3.0)),
+            'SPFC_OIII': dict(nb=(500.7, 3.0)), 'SPFC_SII': dict(nb=(672.4, 3.0))}
+    b = [(M.spfc(n, **opts[n]), D_SPFC[n] + D_SPFC_COMMUN) for n in names]
+    b += [(M.mgc('MGC_MARS'), D_MGC),
+          (M.instance('GradientCorrection', 'GradientCorrection'), T_GC),
+          (M.dbe('DBE'), D_DBE)]
+    return b
 
 def pre_block():
-    return [(note('WBPP', T_WBPP), ''), (cc(), D_CC), (note('DynamicCrop', T_CROP), '')]
+    return [(note('WBPP', T_WBPP), ''), (cc(), D_CC), (M.crop('DynamicCrop'), "DynamicCrop, sans recadrage au départ (le cadre dépend de ton image) : ouvre l'icône, trace le cadre sur un master en excluant les bords mal couverts, "
+            "glisse le triangle du process sur l'espace de travail pour créer ton icône, puis applique CETTE icône à tous les autres masters (ils sont alignés, le recadrage sera identique).")]
 
 def finish_block(extra=None):
     b = [(curves('Courbes'), D_CURVES), (M.instance('LocalHistogramEqualization', 'LHE', {'radius': 150, 'slopeLimit': '2.0', 'amount': '0.350', 'circularKernel': True}), D_LHE),
@@ -161,7 +184,7 @@ rgb_comb = lambda: (pm('Combinaison_RGB', 'R', 'G', 'B', new_image=True, new_id=
 spcc = lambda: (raw('SPCC_RGB_ASG', 'SPCC'), T_SPCC)
 
 # ---------------------------------------------------------------- LRGB
-lrgb = pre_block() + [rgb_comb(), (note('ImageSolver', T_SOLVER), '')] + gradient_block() + [
+lrgb = pre_block() + [rgb_comb(), (note('ImageSolver', T_SOLVER), '')] + gradient_block('rgb') + [
     (M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), D_BXT_CO),
     spcc(),
     (M.bxt('BXT_RGB', False, 0.25, 0.0, 0.50), "BlurXTerminator complet sur RGB, APRÈS SPCC : Sharpen Stars 0,25 (0 à 0,5), Adjust Star Halos 0, PSF automatique, Sharpen Nonstellar 0,50 (le détail viendra de L). Avant toute réduction de bruit."),
@@ -177,7 +200,7 @@ lrgb = pre_block() + [rgb_comb(), (note('ImageSolver', T_SOLVER), '')] + gradien
 ] + finish_block() + stars_end()
 
 # ---------------------------------------------------------------- LHaRGB
-lhargb = pre_block() + [rgb_comb(), (note('ImageSolver', T_SOLVER), '')] + gradient_block() + [
+lhargb = pre_block() + [rgb_comb(), (note('ImageSolver', T_SOLVER), '')] + gradient_block('lha') + [
     (M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), D_BXT_CO),
     spcc(),
     (M.bxt('BXT_RGB', False, 0.25, 0.0, 0.50), "BlurXTerminator complet sur RGB, après SPCC : Sharpen Stars 0,25, Halos 0, Nonstellar 0,50."),
@@ -205,7 +228,7 @@ lhargb = pre_block() + [rgb_comb(), (note('ImageSolver', T_SOLVER), '')] + gradi
 def nb_masters(chans):
     names = ' et '.join(chans)
     return [(note('Masters_' + '_'.join(chans), "Masters %s : même recadrage (icône DynamicCrop) et retrait du gradient sur CHAQUE master séparément (icônes suivantes). OIII est le plus sensible à la Lune : contrôle bien son modèle. "
-                  "Nomme les vues exactement 'Sii', 'Ha' et 'Oiii' : les formules en dépendent." % names), '')] + gradient_block() + [
+                  "Nomme les vues exactement 'Sii', 'Ha' et 'Oiii' : les formules en dépendent." % names), '')] + gradient_block('sho' if 'Sii' in chans else 'hoo') + [
         (M.instance('LinearFit', 'LinearFit_ref_Ha', {'rejectLow': '0.000000', 'rejectHigh': '0.920000'}, {'referenceViewId': 'Ha'}),
          "Option — LinearFit avec Ha comme référence : applique sur OIII (et SII). Rapproche fonds et niveaux, ce qu'exige Foraxx (theAstroShed, Galactic Hunter). Référence : vue nommée 'Ha'.")]
 

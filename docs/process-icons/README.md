@@ -54,6 +54,13 @@ Les formules supposent des images nommées comme indiqué (renomme tes vues avec
 | `LHE_150` | Kernel radius 150, Contrast limit 2,0, Amount 0,35, noyau circulaire |
 | `HDRMT_6` | 6 couches, 1 itération, To lightness, Preserve hue, Lightness mask |
 | `MT_reduction_etoiles` | Morphological Selection 0,25, Amount 0,60, 1 itération, élément circulaire 5×5 |
+| `SPFC_RGB_filtres` | SpectrophotometricFluxCalibration pour un RGB combiné (filtres Astrodon E-series et capteur IMX571, comme l'icône SPCC : **à remplacer par ton matériel**) |
+| `SPFC_couleur_OSC` | SPFC pour une caméra couleur : filtres Bayer Sony (R/G/B-UVIRcut), QE idéale |
+| `SPFC_L` | SPFC pour un master L : Gray filter Astronomik L-2 (à remplacer par ton filtre), QE idéale |
+| `SPFC_Ha` / `SPFC_OIII` / `SPFC_SII` | SPFC en Narrowband mode : 656,3 / 500,7 / 672,4 nm, bande passante 3 nm (mets celle de ton filtre) |
+| `MGC_MARS` | MultiscaleGradientCorrection : base MARS, filtres MARS L/R/G/B, Gradient scale 1024, Structure separation 3, Model smoothness 1,0, modèle affiché |
+| `DBE_base` | DynamicBackgroundExtraction sans points : Samples per row 15, radius 15, Tolerance 0,5, Shadows relaxation 3, Smoothing 0,25, Subtract, Normalize |
+| `DynamicCrop_base` | DynamicCrop sans recadrage : trace ton cadre, puis crée ton icône |
 | `NBN_SHO` / `NBN_HOO` | NarrowbandNormalization, palette SHO ou HOO, valeurs par défaut, sur l'image combinée étirée sans étoiles |
 | `CC_auto_WBPP` | Auto detect, Hot sigma 2,5, Cold désactivé ; à sélectionner comme modèle dans WBPP |
 
@@ -65,26 +72,30 @@ Chaque fichier contient **tous les process du workflow, dans l'ordre**, numérot
 
 | Fichier | Icônes | Contenu |
 |---|---|---|
-| `Workflow-LRGB.xpsm` | 29 | Prétraitement, combinaison RGB, gradient, BXT Correct Only, SPCC, BXT, SXT linéaire, NXT, GHS, LRGBCombination, finition, étoiles |
-| `Workflow-LHaRGB.xpsm` | 34 | LRGB + soustraction du continuum, Ha dans le rouge et dans L, NBRGBCombination en alternative |
-| `Workflow-RGB-SHO.xpsm` | 40 | Masters narrowband, LinearFit, combinaison SHO simple, BXT, SXT, extraction des canaux, palettes (NarrowbandNormalization, Foraxx, NBColourMapper), étoiles RGB |
-| `Workflow-SHO-sans-RGB.xpsm` | 39 | Idem sans RGB, avec étoiles narrowband (NB to RGB Star Combination, étoiles HOO synthétiques, CorrectMagentaStars) |
-| `Workflow-HOO.xpsm` | 37 | Extraction dual-band pour caméra couleur, combinaison HOO, NarrowbandNormalization HOO, Foraxx HOO, variante Hubble, Ha en luminance |
+| `Workflow-LRGB.xpsm` | 31 | Prétraitement, combinaison RGB, gradient, BXT Correct Only, SPCC, BXT, SXT linéaire, NXT, GHS, LRGBCombination, finition, étoiles |
+| `Workflow-LHaRGB.xpsm` | 37 | LRGB + soustraction du continuum, Ha dans le rouge et dans L, NBRGBCombination en alternative |
+| `Workflow-RGB-SHO.xpsm` | 43 | Masters narrowband, LinearFit, combinaison SHO simple, BXT, SXT, extraction des canaux, palettes (NarrowbandNormalization, Foraxx, NBColourMapper), étoiles RGB |
+| `Workflow-SHO-sans-RGB.xpsm` | 42 | Idem sans RGB, avec étoiles narrowband (NB to RGB Star Combination, étoiles HOO synthétiques, CorrectMagentaStars) |
+| `Workflow-HOO.xpsm` | 39 | Extraction dual-band pour caméra couleur, combinaison HOO, NarrowbandNormalization HOO, Foraxx HOO, variante Hubble, Ha en luminance |
 
 **Trois sortes d'icônes :**
 
 - **Process réglés** : s'appliquent directement (PixelMath, BlurXTerminator, NoiseXTerminator, StarXTerminator, LRGBCombination, LinearFit, SCNR, LHE, HDRMT, MorphologicalTransformation, CurvesTransformation, GradientCorrection, NarrowbandNormalization SHO et HOO, CosmeticCorrection).
 - **Process à compléter sur ton image ou ton matériel** :
+  - `SPFC_…` et `MGC_MARS` : icônes réelles ; remplace les filtres et le capteur par les tiens, et charge la base MARS dans les préférences de MGC si elle ne l'est pas.
+  - `DynamicCrop` et `DBE` : icônes réelles, sans cadre ni points (ils dépendent de l'image).
   - `SPCC` : réglé sur *Average Spiral Galaxy* avec neutralisation du fond, mais il contient les filtres Astrodon E-series et le capteur Sony IMX571 de l'auteur du modèle. **Remplace-les par les tiens.**
   - `GHS_1_premier`, `GHS_2_contraste`, `GHS_3_fond` : Local intensity et protections réglés, mais **Stretch factor à 0 et SP à choisir sur ton image** (l'icône ne fait rien tant que tu ne l'as pas réglée).
   - `Courbes` : légère courbe en S et saturation, à ajuster à l'œil.
-- **Icônes-notes** (process *NoOperation*, sans effet) : pour les étapes qui ne peuvent pas être enregistrées de façon portable, la description donne tous les réglages. Ce sont WBPP, DynamicCrop, ImageSolver, SPFC + MGC (base MARS), DBE, et les scripts SetiAstro et CorrectMagentaStars (le chemin et l'empreinte du script dépendent de ton installation).
+- **Icônes-notes** (process *NoOperation*, sans effet) : seulement pour les **scripts** (WBPP, ImageSolver, Statistical Stretch, Star Stretch, Halo-B-Gon, CorrectMagentaStars, NB to RGB Star Combination, NBColourMapper, Automatic Continuum Subtraction, NBRGBCombination) et les en-têtes d'étape. Une icône de script enregistre le chemin du fichier et son empreinte sur la machine de l'auteur, et WBPP 3.x a changé d'emplacement : une icône de script recopiée risquerait de ne pas se charger chez toi. La description donne tous les réglages à faire dans le script.
 
 ChannelCombination et ChannelExtraction sont remplacés par des icônes PixelMath équivalentes (par exemple `$T[1]` pour extraire le canal vert).
 
 Les fichiers ont été générés par `make_workflows.py` (dans ce dossier) à partir des modèles vérifiés.
 
 ## Sources
+
+- SPFC, MGC et DBE n'ont pas de modèle `.xpsm` public : leurs icônes sont construites à partir de la liste de paramètres du code d'AutoIntegrate, au format des paramètres communs avec SPCC (modèle réel) ; courbes de filtres et de capteur tirées du même code et de l'icône SPCC de theAstroShed (`spfc_curves.json`).
 
 - [theAstroShed, icônes de process](https://github.com/jamiesmith/pixinsight-icons) : fichiers `.xpsm` générés par PixInsight 1.9.3, utilisés comme modèles (noms de paramètres, versions, valeurs d'énumération) ; formules Foraxx identiques ; formules de Bill Blanshan V3 (`FromLukeAndBill.xpsm`).
 - [AutoIntegrate](https://github.com/jarmoruuth/AutoIntegrate) : opérateur `Selection` de MorphologicalTransformation et masque circulaire 5×5 ; formules de Bill Blanshan V2 ; paramètres de MultiscaleGradientCorrection.
