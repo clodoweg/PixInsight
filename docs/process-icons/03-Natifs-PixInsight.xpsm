@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Fiche PixInsight — icônes de process générées pour docs/pixinsight-workflow.html
+Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes images.
+-->
+<xpsm version="1.0" xmlns="http://www.pixinsight.com/xpsm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.pixinsight.com/xpsm http://pixinsight.com/xpsm/xpsm-1.0.xsd">
+<!-- Process natifs -->
+   <instance class="LRGBCombination" version="256" id="LRGB_ajout_L_instance">
+      <table id="channels" rows="4">
+         <tr>
+            <td id="enabled" value="false"/>
+            <td id="id"></td>
+            <td id="k" value="1.00000"/>
+         </tr>
+         <tr>
+            <td id="enabled" value="false"/>
+            <td id="id"></td>
+            <td id="k" value="1.00000"/>
+         </tr>
+         <tr>
+            <td id="enabled" value="false"/>
+            <td id="id"></td>
+            <td id="k" value="1.00000"/>
+         </tr>
+         <tr>
+            <td id="enabled" value="true"/>
+            <td id="id">L</td>
+            <td id="k" value="1.00000"/>
+         </tr>
+      </table>
+      <parameter id="mL" value="0.500"/>
+      <parameter id="mc" value="0.400"/>
+      <parameter id="clipHighlights" value="false"/>
+      <parameter id="noiseReduction" value="true"/>
+      <parameter id="layersRemoved" value="4"/>
+      <parameter id="layersProtected" value="2"/>
+      <parameter id="inheritAstrometricSolution" value="true"/>
+   </instance>
+   <instance class="LinearFit" version="256" id="LinearFit_ref_Ha_instance">
+      <parameter id="referenceViewId">Ha</parameter>
+      <parameter id="rejectLow" value="0.000000"/>
+      <parameter id="rejectHigh" value="0.920000"/>
+   </instance>
+   <instance class="SCNR" version="256" id="SCNR_vert_instance">
+      <parameter id="amount" value="1.00"/>
+      <parameter id="protectionMethod" value="AverageNeutral"/>
+      <parameter id="colorToRemove" value="Green"/>
+      <parameter id="preserveLightness" value="true"/>
+   </instance>
+   <instance class="SCNR" version="256" id="SCNR_SHO_partiel_instance">
+      <parameter id="amount" value="0.70"/>
+      <parameter id="protectionMethod" value="AverageNeutral"/>
+      <parameter id="colorToRemove" value="Green"/>
+      <parameter id="preserveLightness" value="true"/>
+   </instance>
+   <instance class="LocalHistogramEqualization" version="256" id="LHE_150_instance">
+      <parameter id="radius" value="150"/>
+      <parameter id="histogramBins" value="Bit8"/>
+      <parameter id="slopeLimit" value="2.0"/>
+      <parameter id="amount" value="0.350"/>
+      <parameter id="circularKernel" value="true"/>
+   </instance>
+   <instance class="HDRMultiscaleTransform" version="256" id="HDRMT_6_instance">
+      <parameter id="numberOfLayers" value="6"/>
+      <parameter id="numberOfIterations" value="1"/>
+      <parameter id="invertedIterations" value="true"/>
+      <parameter id="overdrive" value="0.000"/>
+      <parameter id="medianTransform" value="false"/>
+      <parameter id="scalingFunctionData">0.003906,0.015625,0.023438,0.015625,0.003906,0.015625,0.0625,0.09375,0.0625,0.015625,0.023438,0.09375,0.140625,0.09375,0.023438,0.015625,0.0625,0.09375,0.0625,0.015625,0.003906,0.015625,0.023438,0.015625,0.003906</parameter>
+      <parameter id="scalingFunctionRowFilter">0.0625,0.25,0.375,0.25,0.0625</parameter>
+      <parameter id="scalingFunctionColFilter">0.0625,0.25,0.375,0.25,0.0625</parameter>
+      <parameter id="scalingFunctionName">B3 Spline (5)</parameter>
+      <parameter id="deringing" value="false"/>
+      <parameter id="smallScaleDeringing" value="0.000"/>
+      <parameter id="largeScaleDeringing" value="0.250"/>
+      <parameter id="outputDeringingMaps" value="false"/>
+      <parameter id="midtonesBalanceMode" value="Automatic"/>
+      <parameter id="midtonesBalance" value="0.500000"/>
+      <parameter id="toIntensity" value="false"/>
+      <parameter id="toLightness" value="true"/>
+      <parameter id="preserveHue" value="true"/>
+      <parameter id="lightnessMask" value="true"/>
+      <parameter id="intensity" value="1.00"/>
+   </instance>
+   <instance class="MorphologicalTransformation" version="256" id="MT_reduction_etoiles_instance">
+      <parameter id="operator" value="Selection"/>
+      <parameter id="interlacingDistance" value="1"/>
+      <parameter id="lowThreshold" value="0.000000"/>
+      <parameter id="highThreshold" value="0.000000"/>
+      <parameter id="numberOfIterations" value="1"/>
+      <parameter id="amount" value="0.60"/>
+      <parameter id="selectionPoint" value="0.25"/>
+      <parameter id="structureName"></parameter>
+      <parameter id="structureSize" value="5"/>
+      <table id="structureWayTable" rows="1">
+         <tr>
+            <td id="mask">0x00,0x01,0x01,0x01,0x00,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x00,0x01,0x01,0x01,0x00</td>
+         </tr>
+      </table>
+   </instance>
+   <instance class="CosmeticCorrection" version="256" id="CC_auto_WBPP_instance">
+      <table id="targetFrames" rows="0"/>
+      <parameter id="masterDarkPath"></parameter>
+      <parameter id="outputDir"></parameter>
+      <parameter id="outputExtension">.xisf</parameter>
+      <parameter id="prefix"></parameter>
+      <parameter id="postfix">_cc</parameter>
+      <parameter id="overwrite" value="false"/>
+      <parameter id="amount" value="1.00"/>
+      <parameter id="cfa" value="false"/>
+      <parameter id="useMasterDark" value="false"/>
+      <parameter id="hotDarkCheck" value="false"/>
+      <parameter id="hotDarkLevel" value="1.0000000"/>
+      <parameter id="coldDarkCheck" value="false"/>
+      <parameter id="coldDarkLevel" value="0.0000000"/>
+      <parameter id="useAutoDetect" value="true"/>
+      <parameter id="hotAutoCheck" value="true"/>
+      <parameter id="hotAutoValue" value="2.5"/>
+      <parameter id="coldAutoCheck" value="false"/>
+      <parameter id="coldAutoValue" value="3.0"/>
+      <parameter id="useDefectList" value="false"/>
+      <table id="defects" rows="0"/>
+   </instance>
+   <icon id="LRGB_ajout_L" instance="LRGB_ajout_L_instance" xpos="40" ypos="40" workspace="Workspace01"/>
+   <icon id="LinearFit_ref_Ha" instance="LinearFit_ref_Ha_instance" xpos="40" ypos="72" workspace="Workspace01"/>
+   <icon id="SCNR_vert" instance="SCNR_vert_instance" xpos="40" ypos="104" workspace="Workspace01"/>
+   <icon id="SCNR_SHO_partiel" instance="SCNR_SHO_partiel_instance" xpos="40" ypos="136" workspace="Workspace01"/>
+   <icon id="LHE_150" instance="LHE_150_instance" xpos="40" ypos="168" workspace="Workspace01"/>
+   <icon id="HDRMT_6" instance="HDRMT_6_instance" xpos="40" ypos="200" workspace="Workspace01"/>
+   <icon id="MT_reduction_etoiles" instance="MT_reduction_etoiles_instance" xpos="40" ypos="232" workspace="Workspace01"/>
+   <icon id="CC_auto_WBPP" instance="CC_auto_WBPP_instance" xpos="40" ypos="264" workspace="Workspace01"/>
+</xpsm>

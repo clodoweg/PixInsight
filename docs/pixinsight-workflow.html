@@ -201,6 +201,7 @@ footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line);
   <section id="outils">
     <h2>Outils à installer</h2>
     <p class="sec-intro">Ajoute les dépôts via <em>Resources › Updates › Manage Repositories</em>, puis <em>Check for Updates</em>. Les URL de dépôt des scripts gratuits sont listées plus bas.</p>
+    <div class="note"><strong>Icônes de process prêtes à charger :</strong> 34 icônes avec les réglages de cette fiche (formules PixelMath, RC Astro, process natifs), dans le dossier <a href="https://github.com/clodoweg/PixInsight/tree/main/docs/process-icons" style="color:var(--accent)">docs/process-icons</a>. Dans PixInsight : clic droit sur l'espace de travail › <em>Process Icons</em> › <em>Load Process Icons</em>.</div>
 
     <h3>RC Astro (licence)</h3>
     <div class="tbl-wrap">
@@ -726,6 +727,8 @@ footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line);
     </ul>
     <p style="font-size:15px;color:var(--muted)">Le script gratuit StarReduction (Mike Cranfield, avec Bill Blanshan) applique ces mêmes méthodes avec un aperçu en temps réel.</p>
 
+    <div class="note"><strong>Version 3.</strong> Bill Blanshan a publié une version 3 de ces formules : S vaut 0,20 par défaut, la méthode Transfer n'applique plus <code style="font-family:var(--mono)">max(Img1, …)</code>, la méthode Halo se termine par <code style="font-family:var(--mono)">$T*~mean(f2,f3)</code>, et la méthode Star borne ses divisions entre 0 et 1, avec le mode doux (M = 3) par défaut. Les deux versions sont dans les icônes de process.</div>
+
     <h3>1. Méthode Transfer</h3>
     <p>La plus polyvalente. Baisse <strong>S</strong> (0,15 par défaut) pour réduire davantage.</p>
     <div class="formula"><span class="lbl">RGB/K</span><code>S=0.15;
@@ -1014,12 +1017,12 @@ max(Img1,iif(M==1,E7,iif(M==2,E8,E9)))</code><button type="button" data-copy>Cop
       <article class="tcard" id="t-nbn">
         <div class="tcard-head"><h4>NarrowbandNormalization (module)</h4><span class="ttag free" title="Script ou module gratuit">GRATUIT</span><span class="phase nl">Étiré</span></div>
         <div class="tlabel">Méthode</div>
-        <ol class="tsteps"><li>Combine SII, Ha et OIII en une image RGB selon la palette (ChannelCombination), de préférence <strong>étirée et sans étoiles</strong>.</li><li>Choisis la palette correspondante (SHO, HOO…) et le Mode (non linéaire).</li><li>Active l'aperçu en temps réel et règle les boosts, le point noir et les hautes lumières.</li><li>Utilise le SCNR intégré si un reste de vert apparaît.</li></ol>
+        <ol class="tsteps"><li>Combine SII, Ha et OIII en une image RGB selon la palette (ChannelCombination), de préférence <strong>étirée et sans étoiles</strong>.</li><li>Choisis la palette correspondante (SHO, HOO…).</li><li>Active l'aperçu en temps réel et règle les boosts, le point noir et les hautes lumières.</li><li>Utilise le SCNR intégré si un reste de vert apparaît.</li></ol>
         <div class="tlabel">Paramètres</div>
-        <dl class="tparams"><div><dt>Palette</dt><dd>Celle de ta combinaison (SHO, HOO…)</dd></div><div><dt>Mode</dt><dd>1 : non linéaire (0 : linéaire, fonctions d'équilibrage limitées)</dd></div><div><dt>SIIBoost / OIIIBoost</dt><dd>Monter progressivement jusqu'à l'équilibre voulu</dd></div><div><dt>Blackpoint</dt><dd>Ajuster le fond sans l'écrêter</dd></div><div><dt>HLRecover / HLReduction</dt><dd>Récupérer ou atténuer les hautes lumières</dd></div><div><dt>Brightness</dt><dd>Luminosité globale</dd></div><div><dt>Lightness</dt><dd>Canal qui porte le détail (souvent Ha)</dd></div><div><dt>SCNR</dt><dd>Partiel, seulement si nécessaire</dd></div></dl>
+        <dl class="tparams"><div><dt>Palette</dt><dd>Celle de ta combinaison (SHO, HOO…)</dd></div><div><dt>O3 boost / S2 boost</dt><dd>0 par défaut ; monter progressivement jusqu'à l'équilibre voulu</dd></div><div><dt>Shadowpoint</dt><dd>Point noir : ajuster le fond sans l'écrêter</dd></div><div><dt>Highlight reduction</dt><dd>Atténuer les hautes lumières</dd></div><div><dt>Brightness</dt><dd>Luminosité globale</dd></div><div><dt>Lightness</dt><dd>Canal qui porte la luminance (désactivé par défaut ; souvent Ha)</dd></div><div><dt>Blend mode / Ha blend</dt><dd>Mode de mélange du vert, surtout pour les données de caméra couleur</dd></div><div><dt>SCNR</dt><dd>0 par défaut ; partiel, seulement si nécessaire</dd></div></dl>
         <div class="tlabel">Par filtre</div>
         <div class="pf"><div><span class="filters"><span class="flt Ha">Ha</span></span><p>Porte en général la luminance et le détail.</p></div><div><span class="filters"><span class="flt OIII">OIII</span></span><p>Souvent à renforcer pour faire ressortir les bleus.</p></div><div><span class="filters"><span class="flt SII">SII</span></span><p>Le plus faible et le plus bruité : renforce avec prudence.</p></div></div>
-        <p class="tnote">En linéaire, le module fonctionne mais équilibre mal la luminosité entre canaux. L'aide intégrée détaille chaque réglage.</p>
+        <p class="tnote">Noms des réglages relevés dans des icônes générées par PixInsight 1.9.3 (palette, o3Boost, s2Boost, shadowpoint, highlightReduction, brightness, lightness, blendMode, haBlend, scnr) ; les libellés affichés peuvent différer légèrement. En linéaire, le module équilibre mal la luminosité entre canaux. L'aide intégrée détaille chaque réglage.</p>
       </article>
       <article class="tcard" id="t-nbcm">
         <div class="tcard-head"><h4>NBColourMapper (Mike Cranfield)</h4><span class="ttag free" title="Script ou module gratuit">GRATUIT</span><span class="phase nl">Étiré</span></div>

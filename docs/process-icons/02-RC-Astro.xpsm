@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Fiche PixInsight — icônes de process générées pour docs/pixinsight-workflow.html
+Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes images.
+-->
+<xpsm version="1.0" xmlns="http://www.pixinsight.com/xpsm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.pixinsight.com/xpsm http://pixinsight.com/xpsm/xpsm-1.0.xsd">
+<!-- RC Astro (licence requise) -->
+   <instance class="BlurXTerminator" version="256" id="BXT_CorrectOnly_instance">
+      <parameter id="ml_version" value="4"/>
+      <parameter id="correct_only" value="true"/>
+      <parameter id="sharpen_stars" value="0.25"/>
+      <parameter id="adjust_star_halos" value="0.00"/>
+      <parameter id="nonstellar_diameter" value="0.0"/>
+      <parameter id="auto_nonstellar_psf" value="true"/>
+      <parameter id="sharpen_nonstellar" value="0.50"/>
+      <parameter id="lunar_planetary" value="false"/>
+      <parameter id="overlap" value="0.20"/>
+   </instance>
+   <instance class="BlurXTerminator" version="256" id="BXT_RGB_instance">
+      <parameter id="ml_version" value="4"/>
+      <parameter id="correct_only" value="false"/>
+      <parameter id="sharpen_stars" value="0.25"/>
+      <parameter id="adjust_star_halos" value="0.00"/>
+      <parameter id="nonstellar_diameter" value="0.0"/>
+      <parameter id="auto_nonstellar_psf" value="true"/>
+      <parameter id="sharpen_nonstellar" value="0.50"/>
+      <parameter id="lunar_planetary" value="false"/>
+      <parameter id="overlap" value="0.20"/>
+   </instance>
+   <instance class="BlurXTerminator" version="256" id="BXT_L_Ha_instance">
+      <parameter id="ml_version" value="4"/>
+      <parameter id="correct_only" value="false"/>
+      <parameter id="sharpen_stars" value="0.25"/>
+      <parameter id="adjust_star_halos" value="0.00"/>
+      <parameter id="nonstellar_diameter" value="0.0"/>
+      <parameter id="auto_nonstellar_psf" value="true"/>
+      <parameter id="sharpen_nonstellar" value="0.80"/>
+      <parameter id="lunar_planetary" value="false"/>
+      <parameter id="overlap" value="0.20"/>
+   </instance>
+   <instance class="BlurXTerminator" version="256" id="BXT_NB_combine_instance">
+      <parameter id="ml_version" value="4"/>
+      <parameter id="correct_only" value="false"/>
+      <parameter id="sharpen_stars" value="0.25"/>
+      <parameter id="adjust_star_halos" value="0.00"/>
+      <parameter id="nonstellar_diameter" value="0.0"/>
+      <parameter id="auto_nonstellar_psf" value="true"/>
+      <parameter id="sharpen_nonstellar" value="0.60"/>
+      <parameter id="lunar_planetary" value="false"/>
+      <parameter id="overlap" value="0.20"/>
+   </instance>
+   <instance class="NoiseXTerminator" version="256" id="NXT_L_Ha_instance">
+      <parameter id="ml_version" value="0"/>
+      <parameter id="denoise" value="0.60"/>
+      <parameter id="enable_color_separation" value="false"/>
+      <parameter id="enable_frequency_separation" value="false"/>
+      <parameter id="denoise_intensity" value="0.90"/>
+      <parameter id="denoise_color" value="0.90"/>
+      <parameter id="denoise_high_freq" value="0.90"/>
+      <parameter id="denoise_low_freq" value="0.90"/>
+      <parameter id="denoise_intensity_high_freq" value="0.90"/>
+      <parameter id="denoise_intensity_low_freq" value="0.90"/>
+      <parameter id="denoise_color_high_freq" value="0.90"/>
+      <parameter id="denoise_color_low_freq" value="0.90"/>
+      <parameter id="frequency_scale" value="5.0"/>
+      <parameter id="iterations" value="1"/>
+      <parameter id="detail" value="0.15"/>
+      <parameter id="overlap" value="0.20"/>
+   </instance>
+   <instance class="NoiseXTerminator" version="256" id="NXT_RGB_instance">
+      <parameter id="ml_version" value="0"/>
+      <parameter id="denoise" value="0.80"/>
+      <parameter id="enable_color_separation" value="false"/>
+      <parameter id="enable_frequency_separation" value="false"/>
+      <parameter id="denoise_intensity" value="0.90"/>
+      <parameter id="denoise_color" value="0.90"/>
+      <parameter id="denoise_high_freq" value="0.90"/>
+      <parameter id="denoise_low_freq" value="0.90"/>
+      <parameter id="denoise_intensity_high_freq" value="0.90"/>
+      <parameter id="denoise_intensity_low_freq" value="0.90"/>
+      <parameter id="denoise_color_high_freq" value="0.90"/>
+      <parameter id="denoise_color_low_freq" value="0.90"/>
+      <parameter id="frequency_scale" value="5.0"/>
+      <parameter id="iterations" value="1"/>
+      <parameter id="detail" value="0.15"/>
+      <parameter id="overlap" value="0.20"/>
+   </instance>
+   <instance class="NoiseXTerminator" version="256" id="NXT_OIII_SII_instance">
+      <parameter id="ml_version" value="0"/>
+      <parameter id="denoise" value="0.75"/>
+      <parameter id="enable_color_separation" value="false"/>
+      <parameter id="enable_frequency_separation" value="false"/>
+      <parameter id="denoise_intensity" value="0.90"/>
+      <parameter id="denoise_color" value="0.90"/>
+      <parameter id="denoise_high_freq" value="0.90"/>
+      <parameter id="denoise_low_freq" value="0.90"/>
+      <parameter id="denoise_intensity_high_freq" value="0.90"/>
+      <parameter id="denoise_intensity_low_freq" value="0.90"/>
+      <parameter id="denoise_color_high_freq" value="0.90"/>
+      <parameter id="denoise_color_low_freq" value="0.90"/>
+      <parameter id="frequency_scale" value="5.0"/>
+      <parameter id="iterations" value="1"/>
+      <parameter id="detail" value="0.15"/>
+      <parameter id="overlap" value="0.20"/>
+   </instance>
+   <instance class="NoiseXTerminator" version="256" id="NXT_final_etire_instance">
+      <parameter id="ml_version" value="0"/>
+      <parameter id="denoise" value="0.40"/>
+      <parameter id="enable_color_separation" value="false"/>
+      <parameter id="enable_frequency_separation" value="false"/>
+      <parameter id="denoise_intensity" value="0.90"/>
+      <parameter id="denoise_color" value="0.90"/>
+      <parameter id="denoise_high_freq" value="0.90"/>
+      <parameter id="denoise_low_freq" value="0.90"/>
+      <parameter id="denoise_intensity_high_freq" value="0.90"/>
+      <parameter id="denoise_intensity_low_freq" value="0.90"/>
+      <parameter id="denoise_color_high_freq" value="0.90"/>
+      <parameter id="denoise_color_low_freq" value="0.90"/>
+      <parameter id="frequency_scale" value="5.0"/>
+      <parameter id="iterations" value="1"/>
+      <parameter id="detail" value="0.15"/>
+      <parameter id="overlap" value="0.20"/>
+   </instance>
+   <instance class="StarXTerminator" version="256" id="SXT_lineaire_instance">
+      <parameter id="ml_version" value="0"/>
+      <parameter id="output_stars" value="true"/>
+      <parameter id="unscreen" value="false"/>
+      <parameter id="remove_stars" value="true"/>
+      <parameter id="remove_spikes" value="true"/>
+      <parameter id="remove_aureoles" value="true"/>
+      <parameter id="remove_reflections" value="false"/>
+      <parameter id="overlap" value="0.20"/>
+   </instance>
+   <instance class="StarXTerminator" version="256" id="SXT_etire_instance">
+      <parameter id="ml_version" value="0"/>
+      <parameter id="output_stars" value="true"/>
+      <parameter id="unscreen" value="true"/>
+      <parameter id="remove_stars" value="true"/>
+      <parameter id="remove_spikes" value="true"/>
+      <parameter id="remove_aureoles" value="true"/>
+      <parameter id="remove_reflections" value="false"/>
+      <parameter id="overlap" value="0.20"/>
+   </instance>
+   <icon id="BXT_CorrectOnly" instance="BXT_CorrectOnly_instance" xpos="40" ypos="40" workspace="Workspace01"/>
+   <icon id="BXT_RGB" instance="BXT_RGB_instance" xpos="40" ypos="72" workspace="Workspace01"/>
+   <icon id="BXT_L_Ha" instance="BXT_L_Ha_instance" xpos="40" ypos="104" workspace="Workspace01"/>
+   <icon id="BXT_NB_combine" instance="BXT_NB_combine_instance" xpos="40" ypos="136" workspace="Workspace01"/>
+   <icon id="NXT_L_Ha" instance="NXT_L_Ha_instance" xpos="40" ypos="168" workspace="Workspace01"/>
+   <icon id="NXT_RGB" instance="NXT_RGB_instance" xpos="40" ypos="200" workspace="Workspace01"/>
+   <icon id="NXT_OIII_SII" instance="NXT_OIII_SII_instance" xpos="40" ypos="232" workspace="Workspace01"/>
+   <icon id="NXT_final_etire" instance="NXT_final_etire_instance" xpos="40" ypos="264" workspace="Workspace01"/>
+   <icon id="SXT_lineaire" instance="SXT_lineaire_instance" xpos="40" ypos="296" workspace="Workspace01"/>
+   <icon id="SXT_etire" instance="SXT_etire_instance" xpos="40" ypos="328" workspace="Workspace01"/>
+</xpsm>
