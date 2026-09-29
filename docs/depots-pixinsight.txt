@@ -20,6 +20,13 @@ https://www.rc-astro.com/PixInsight
   > Supprime les anciennes adresses RC Astro du type .../BlurXTerminator/PixInsight
 
 
+INDISPENSABLE — GHS (Mike Cranfield & David Payne, gratuit)
+GeneralizedHyperbolicStretch : l'outil d'étirement de tous les workflows de la fiche
+https://www.ghsastro.co.uk/updates/
+  > Après redémarrage, cherche GeneralizedHyperbolicStretch dans
+    Process > <All Processes>
+
+
 RECOMMANDÉ — COSMIC PHOTONS (Mike Cranfield, gratuit)
 NarrowbandNormalization (module)
 https://www.cosmicphotons.com/pi-modules/narrowbandnormalization/
@@ -47,10 +54,6 @@ https://updates.setiastro.com/
 
 
 SEULEMENT SI BESOIN
-GeneralizedHyperbolicStretch (GHS) — n'ajoute ce dépôt que si GHS n'apparaît
-pas déjà dans le menu Process de ton PixInsight.
-https://www.ghsastro.co.uk/updates/
-
 GraXpert (module DeepSkyForge) — nécessite le logiciel GraXpert installé.
 Adresse relevée sur deepskyforge.com ; son serveur refuse les accès
 automatiques, elle n'a donc pas pu être testée ici.
