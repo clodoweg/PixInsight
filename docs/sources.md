@@ -40,6 +40,8 @@ Légende :
 
 - Officiel — [PixInsight, projet MARS](https://pixinsight.com/mars/)
 - Tutoriel — [Stirling Astrophoto, MultiscaleGradientCorrection](https://stirlingastrophoto.com/posts/multiscale-gradient-correction/) : ordre ImageSolver, SPFC, MGC, SPCC ; paramètres.
+- Officiel — [AutoIntegrate, code source](https://github.com/jarmoruuth/AutoIntegrate) (`AutoIntegrateEngine.js`) : paramètres complets de SpectrophotometricFluxCalibration (QE curve, Gray/Red/Green/Blue filter, Narrowband mode avec longueur d'onde et bande passante, catalogue Gaia DR3/SP, magnitude limite automatique, détection PSF) et de MultiscaleGradientCorrection (Use MARS database, filtres MARS L/R/G/B, référence vide).
+- Tutoriel — [Stirling Astrophoto, réglages SPFC](https://stirlingastrophoto.com/posts/multiscale-gradient-correction/) : QE curve et Gray filter par défaut sans filtre L, filtres R/G/B de la caméra, Gaia DR3/SP, magnitude limite automatique ; image inchangée après SPFC ; mêmes filtres ensuite dans SPCC.
 - Tutoriel — [Chaotic Nebula, GradientCorrection](https://chaoticnebula.com/how-to-use-pixinsight-gradient-correction/)
 - Tutoriel — [Jon Rista, DBE](https://jonrista.com/the-astrophotographers-guide/pixinsights/dynamicbackgroundextraction/)
 - Tutoriel — [Chaotic Nebula, DBE](https://chaoticnebula.com/pixinsight-dynamic-background-extraction/)
