@@ -478,6 +478,7 @@ footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line);
       <li>
         <div class="step-head"><h4>Caméra couleur dual-band : extraire Ha et OIII</h4><span class="phase lin">Linéaire</span></div>
         <p>Avec un filtre dual-band, Ha tombe dans le canal rouge et OIII dans les canaux vert et bleu. Retire d'abord le gradient sur l'image couleur, puis crée deux images mono avec PixelMath (<em>Create new image</em>, espace <em>Grayscale</em>). Caméra mono : passe directement à l'étape suivante.</p>
+        <p>La moyenne de G et B est la méthode la plus simple. Le canal bleu est cependant plus bruité et moins riche en OIII que le vert : donner plus de poids à G donne souvent un OIII plus propre. Les poids exacts dépendent du capteur et du filtre (un exemple publié pour un filtre L-eNhance et un capteur Sony : 0,05·R + 0,60·G + 0,51·B). La matrice de Bayer laisse aussi fuir un peu d'OIII dans le rouge et du Ha dans le bleu : cette fuite ne peut pas être séparée parfaitement.</p>
         <div class="formula"><span class="lbl">Ha</span><code>$T[0]</code><button type="button" data-copy>Copier</button></div>
         <div class="formula"><span class="lbl">OIII</span><code>($T[1] + $T[2]) / 2</code><button type="button" data-copy>Copier</button></div>
         <div class="tools"><a class="tool nat" href="#t-pixelmath">PixelMath</a><a class="tool nat" href="#t-dbe">DBE</a><a class="tool free" href="#t-graxpert">GraXpert</a></div>
@@ -499,7 +500,7 @@ footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line);
       </li>
       <li>
         <div class="step-head"><h4>Bruit</h4><span class="phase lin">Linéaire</span><span class="phase nl">Étiré</span></div>
-        <p>NXT sur chaque canal sans étoiles. OIII est presque toujours le plus bruité : Denoise 0,80 à 0,95 sur OIII, 0,50 à 0,70 sur Ha.</p>
+        <p>NXT sur chaque canal sans étoiles. OIII est presque toujours le plus bruité : Denoise 0,60 à 0,85 sur OIII, 0,50 à 0,70 sur Ha. Ne pousse pas OIII au-delà : le fond devient vite plastique.</p>
         <div class="tools"><a class="tool rc" href="#t-nxt">NoiseXTerminator</a></div>
       </li>
       <li>
@@ -523,7 +524,7 @@ footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line);
       </li>
       <li>
         <div class="step-head"><h4>Ha en luminance (option)</h4><span class="phase nl">Étiré</span></div>
-        <p>Ha porte presque tout le détail. Pour plus de netteté, applique Ha comme luminance sur l'image HOO avec LRGBCombination (seul L coché, Saturation vers 0,40), comme dans le workflow LRGB.</p>
+        <p>Ha porte presque tout le détail. Pour plus de netteté, applique Ha comme luminance sur l'image HOO avec LRGBCombination (seul L coché, Saturation vers 0,40), comme dans le workflow LRGB. Condition, rappelée par PixInsight : la luminosité de Ha doit correspondre à celle de l'image HOO, sinon les couleurs se délavent. Étire Ha pour qu'il ait le même fond et une médiane proche.</p>
         <div class="tools"><a class="tool nat" href="#t-lrgb">LRGBCombination</a></div>
       </li>
       <li>
@@ -859,7 +860,7 @@ max(Img1,iif(M==1,E7,iif(M==2,E8,E9)))</code><button type="button" data-copy>Cop
         <div class="tlabel">Paramètres</div>
         <dl class="tparams"><div><dt>Denoise</dt><dd>0,50 à 0,85 (RC Astro montre 0,85 en exemple ; AstroBackyard utilise 0,5)</dd></div><div><dt>Detail</dt><dd>0,15 (modèle AI2 seulement)</dd></div><div><dt>Iterations</dt><dd>1 ; 2 sur une image très bruitée (AstroBackyard : 0,5 × 2)</dd></div><div><dt>Denoise (passe finale étirée)</dt><dd>0,30 à 0,50</dd></div><div><dt>Color separation</dt><dd>Réduire davantage la couleur que l'intensité : le bruit de couleur est le plus gênant</dd></div><div><dt>Frequency separation</dt><dd>HF intensité 80–90 %, HF couleur 90–100 %, LF intensité 50–70 %, LF couleur 100 % (exemple RC Astro) ; LF plus bas sur les nuages de poussière</dd></div></dl>
         <div class="tlabel">Par filtre</div>
-        <div class="pf"><div><span class="filters"><span class="flt L">L</span></span><p>Denoise 0,50 à 0,70 : garde le détail fin.</p></div><div><span class="filters"><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span></span><p>Denoise 0,70 à 0,90 : le bruit de couleur peut être traité fort, le détail vient de L.</p></div><div><span class="filters"><span class="flt Ha">Ha</span></span><p>Denoise 0,50 à 0,70.</p></div><div><span class="filters"><span class="flt OIII">OIII</span><span class="flt SII">SII</span></span><p>Denoise 0,80 à 0,95. Deux itérations si le master est très bruité.</p></div></div>
+        <div class="pf"><div><span class="filters"><span class="flt L">L</span></span><p>Denoise 0,50 à 0,70 : garde le détail fin.</p></div><div><span class="filters"><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span></span><p>Denoise 0,70 à 0,90 : le bruit de couleur peut être traité fort, le détail vient de L.</p></div><div><span class="filters"><span class="flt Ha">Ha</span></span><p>Denoise 0,50 à 0,70 (valeurs rapportées : 0,50 à 0,55, Detail 0,10 à 0,20).</p></div><div><span class="filters"><span class="flt OIII">OIII</span><span class="flt SII">SII</span></span><p>Denoise 0,60 à 0,85 (valeurs rapportées : 0,60 à 0,75, Detail 0,15 à 0,25). Deux itérations si le master est très bruité.</p></div></div>
         <p class="tnote">Mieux vaut un peu de grain qu'un aspect plastique : garde la texture fine.</p>
       </article>
       <article class="tcard" id="t-sxt">
