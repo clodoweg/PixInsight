@@ -66,12 +66,14 @@ def write(filename, prefix, title, steps):
 
 # ---------------------------------------------------------------- textes communs
 SRC = ' Détails et sources : docs/pixinsight-workflow.html et docs/sources.md (github.com/clodoweg/PixInsight).'
-T_WBPP = ("ÉTAPE MANUELLE — WBPP (Script › Batch Processing › WeightedBatchPreprocessing). Icône-note : WBPP dépend de tes fichiers et de ton dossier de sortie. "
-          "Réglages : Output pedestal Automatic ; Optimize dark frames décoché (darks même durée/température, pas de bias pour calibrer les darks en CMOS) ; "
-          "CosmeticCorrection avec l'icône CC_auto (Hot sigma 2,2 à 3,0) ; Debayer VNG si caméra couleur ; Subframe weighting : PSF Signal Weight ; "
-          "Registration reference Auto, Distortion correction pour les grands champs ; Local normalization activée ; Rejection Auto ou Generalized ESD au-delà de 15-20 images ; "
-          "Large-scale pixel rejection High contre les satellites ; Drizzle x2 seulement si FWHM < 2 px et au moins 15-20 poses dithérées ; Autocrop et Astrometric solution activés. "
-          "Aligne TOUS les filtres sur la même référence." + SRC)
+T_WBPP = ("ÉTAPE MANUELLE — WBPP 3.1 (Script › Batch Processing › WeightedBatchPreprocessing). Icône-note : WBPP dépend de tes fichiers et de ton dossier de sortie. "
+          "Fichiers : mêmes gain/offset/température/driver/format ; darks de même durée et température (jamais pré-calibrés avec les bias) ; flats par filtre et par session, flat-darks de même durée ; "
+          "plusieurs nuits : dossiers SESSION_<date> et Grouping keywords = SESSION. Add Directory, puis vérifie dans l'onglet Calibration que chaque groupe de lights a son dark et son flat. "
+          "Réglages : préréglage Maximum quality ; Output pedestal Automatic ; Optimize dark frames décoché ; CosmeticCorrection avec l'icône CC_auto ; caméra couleur : CFA images, motif Auto, Debayer VNG ; "
+          "Subframe weighting PSF Signal Weight ; Registration reference Auto, Distortion correction pour les grands champs ; Local normalization activée ; "
+          "Rejection Auto (sinon Percentile < 10 images, Winsorized ou Linear fit > 10, ESD pour les grands lots) ; Large-scale pixel rejection High ; "
+          "Fast Integration automatique dès 150 images par groupe (à décocher pour l'intégration pondérée complète) ; Drizzle par groupe x2 seulement si FWHM < 2 px et 15-20 poses dithérées "
+          "(caméra couleur : drizzle CFA Scale 1, Drop shrink 1,0) ; Autocrop et Astrometric solution activés. Contrôle ensuite le journal et les cartes de réjection." + SRC)
 T_CROP = ("ÉTAPE MANUELLE — DynamicCrop. Icône-note : le cadre dépend de ton image. Trace le cadre sur un master en excluant les bords mal couverts, glisse le triangle du process sur l'espace de travail pour créer une icône, "
           "puis applique CETTE icône à tous les autres masters (ils sont alignés, le recadrage sera identique).")
 T_SOLVER = ("ÉTAPE MANUELLE — ImageSolver (Script › Image Analysis › ImageSolver). Icône-note : dépend de ta focale et de ta caméra. Inutile si WBPP a déjà résolu l'image. "

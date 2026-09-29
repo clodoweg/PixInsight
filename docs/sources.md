@@ -132,6 +132,14 @@ Légende :
 - Tutoriel — [Evan Tsai, comparatif des outils de retrait d'étoiles](https://www.astroimagetw.com/en/tutorials/star-removal-tools/) *(résumé)* : Large overlap de StarXTerminator utile contre le quadrillage, environ deux fois plus lent, peut créer d'autres artefacts.
 - Officiel — [AutoIntegrate, code source](https://github.com/jarmoruuth/AutoIntegrate) et 11 icônes SPCC de theAstroShed : limites de neutralisation du fond de SPCC −2,80 / +2,00.
 
+## WBPP 3.1 (configuration détaillée)
+
+- Tutoriel — [Bernd Landmann, Guide to Preprocessing of Raw Data with PixInsight](https://sh-cosmiccanvas.s3.us-west-2.amazonaws.com/Resources/20230101_GuideToPreprocessingOfRawDataWithPixInsight.pdf) (collaborateur du forum PixInsight, révision 2023, WBPP 2.5.6) : mêmes réglages caméra pour lights et calibrations ; ne jamais pré-calibrer les darks ; flats calibrés avec flat-darks ou bias seul, sans optimisation ; pas d'optimisation des darks sur ASI294MC Pro refroidie ; output pedestal automatique (≈ 0,01 % de pixels écrêtés) ; CFA dans CosmeticCorrection ; PSF Signal Weight ; Distortion correction ; normalisation locale ; intégration Average + LocalNormalization + PSF Signal Weight ; drizzle CFA recommandé par Juan Conejero (Scale 1, Drop shrink 1,0) ; contrôle des cartes de réjection.
+- Officiel — [psf-guard, module WBPP](https://github.com/theatrus/psf-guard) (`src/commands/export/wbpp.rs`, vérifié contre PixInsight 1.9.5 et WBPP 3.1.0) : préréglages de qualité (Maximum par défaut, Good, Fast), Fast Integration automatique dès 150 images par groupe, drizzle réglé par groupe de lights, Autocrop activé par défaut, algorithmes de réjection proposés (Percentile, Winsorized, Linear fit, ESD, Robust Chauvenet, Auto), groupement par mot-clé lu dans le chemin (`SESSION_<nuit>`).
+- Forum — [PixInsight, Fast Integration dans WBPP](https://pixinsight.com/forum/index.php?threads/fast-integration-option-within-wbpp-what-does-it-do.23150/) : l'option lance le process FastIntegration.
+- Tutoriel — [Chaotic Nebula, ImageIntegration](https://chaoticnebula.com/pixinsight-image-integration/) *(résumé)* : choix de l'algorithme de réjection selon le nombre d'images.
+- Tutoriel — [DSLR Astrophotography, méthodes de réjection](https://dslr-astrophotography.com/detailed-pixel-rejection-methods/) *(résumé)* : Percentile pour moins de 10 images, Winsorized ou Linear fit au-delà.
+
 ## Dernier audit (septembre 2026)
 
 - **Liens** : 68 URL uniques testées. 42 répondent directement. 24 renvoient 403 ou 406 à un robot (protection anti-robots des forums AstroBin et Cloudy Nights, du site Chaotic Nebula et de Remote Astrophotography, filtrage réseau pour GitHub) : les 4 dépôts GitHub ont été confirmés par Git, et Chaotic Nebula par une lecture de page. Le tutoriel Telescope Live sur CosmeticCorrection existe mais demande une inscription. Le site Light Vortex ne répond plus.
