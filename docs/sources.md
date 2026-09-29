@@ -20,7 +20,7 @@ Légende :
 
 ## RC Astro (BlurXTerminator, NoiseXTerminator, StarXTerminator)
 
-- Officiel — [Manuel technique BlurXTerminator](https://www.rc-astro.com/blurxterminator-technical-manual/) : Correct Only avant SPCC, BXT complet après ; RGB combiné plutôt que canaux séparés ; déconvolution avant tout mélange narrowband ; pas de réduction de bruit avant BXT.
+- Officiel — [Manuel technique BlurXTerminator](https://www.rc-astro.com/blurxterminator-technical-manual/) : Correct Only avant SPCC, BXT complet après ; RGB combiné plutôt que canaux séparés ; en narrowband, BXT sur une combinaison SHO simple (un filtre par canal, poids proches), mélanges et boosts seulement après ; pas de réduction de bruit avant BXT.
 - Officiel — [Manuel NoiseXTerminator AI3](https://www.rc-astro.com/noisexterminator-2-ai3-user-manual-pixinsight/) : linéaire ou étiré ; exemple Denoise 0,85 ; séparation couleur et fréquences.
 - Officiel — [Notes d'utilisation StarXTerminator](https://www.rc-astro.com/starxterminator-usage-notes/) : le plus tôt possible en linéaire ; Unscreen seulement sur image étirée ; recombinaison en screen après étirement.
 - Tutoriel — [Cosgrove's Cosmos, BlurXTerminator](https://cosgrovescosmos.com/tips-n-techniques/blurxtermintor-a-breakthrough-for-decon) : valeurs par défaut de BXT.
@@ -88,11 +88,33 @@ Légende :
 - Tutoriel — [nrStellar, workflow narrowband](https://nrstellar.com/blogs/articles/narrowband-editing-workflow-for-pixinsight)
 - Tutoriel — [AstroBackyard, workflow de traitement](https://astrobackyard.com/astrophotography-processing-workflow/)
 
+## Scripts (code source lu directement)
+
+- Officiel — [Seti Astro, dépôt des scripts](https://github.com/setiastro/pixinsight-updates-194) (archive `SetiAstroScripts09.19.2026.zip`) :
+  - `statisticalstretch.js` v2.3 : Target Median 0,25, Linked Stretch coché, Blackpoint Sigma 5,0, Normalize décoché, Curves Boost 0, HDR Compress décoché (Amount 0,25, Knee 0,35).
+  - `star_stretch.js` v2.6 : Stretch Amount 5 (plage 0 à 8), Color Boost 1,0 (plage 0 à 2), Remove Green via SCNR décoché par défaut.
+  - `Halo-B-Gon.js` v2.1 : Reduction Amount Extra Low / Low / Med / High, Low par défaut ; Linear Data décoché.
+- Officiel — [CorrectMagentaStars.js](https://github.com/terrordrummer/correctMagentaStars) v1.1 : menu Utilities, Amount 0,8 par défaut (plage 0 à 1), SCNR sur l'image inversée.
+
+## NBRGBCombination
+
+- Tutoriel — [Chaotic Nebula, LRGB + Ha](https://chaoticnebula.com/pixinsight-lrgbha-combination/) : script du menu Script › Utilities ; champs RGB, canal narrowband, Bandwidth, Scale.
+- Tutoriel — [Galactic Hunter, HaRGB avec le script](https://www.galactic-hunter.com/post/hargbcompositetutorialpixinsight) : bande passante RGB (200 nm pour un capteur couleur), Scale 4 à 5 sur un Ha faible.
+- Tutoriel — [Blog de M. Striebeck, NBRGBCombination](http://mstriebeck-astrophotography.blogspot.com/2018/09/using-nbrgbcombination-script-in.html) : Scale 1,20 par défaut.
+
+## Écarts entre filtres
+
+- Forum — [Cloudy Nights, effet de la Lune en narrowband](https://www.cloudynights.com/topic/603732-effect-of-moon-on-narrowband/) *(résumé)* : OIII bien plus touché par la Lune que Ha et SII.
+- Forum — [Cloudy Nights, Lune et filtres 3 nm](https://www.cloudynights.com/topic/893726-moon-effect-on-mono-3nm-hasiioiii/) *(résumé)*
+- Tutoriel — [Optical Mechanics, guide narrowband](https://www.opticalmechanics.com/mastering-narrowband-astrophotography-ha-oiii-sii/) *(résumé)* : poses de 180 à 600 s en narrowband sur CMOS refroidi.
+- Forum — [AstroBin, pourquoi 300 s en mono CMOS](https://app.astrobin.com/forum/topic/105210/acquisition/how-long-an-exposure-with-monochrome-cmos-cameras-why-does-300sec-seem-to-be-the-standard) *(résumé)*
+
 ## Non vérifié
 
 Réglages sans source trouvée, donnés comme valeurs de départ issues de la pratique :
 
-- Statistical Stretch : médiane cible 0,25.
-- Star Stretch, Halo-B-Gon, CorrectMagentaStars : valeurs de réglage.
-- NBRGBCombination : noms exacts des champs.
-- La plupart des écarts entre filtres des blocs « Par filtre ».
+- CosmeticCorrection : Hot sigma plus bas (2,5 à 3,0) en narrowband.
+- GHS : Stretch factor plus élevé sur OIII et SII que sur Ha (logique vu leur signal plus faible, mais aucune valeur publiée).
+- NBRGBCombination : bande passante RGB d'environ 100 nm pour un filtre R mono (ordre de grandeur, un seul tutoriel donne une valeur, pour un capteur couleur).
+- DBE et GraXpert : réglages différents par filtre.
+- Ha en luminance en HOO : procédure confirmée, mais le réglage Saturation 0,40 vient du workflow LRGB.

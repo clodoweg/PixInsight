@@ -397,8 +397,8 @@ footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line);
     <ol class="steps">
       <li>
         <div class="step-head"><h4>Masters narrowband</h4><span class="phase lin">Linéaire</span></div>
-        <p>Pour Ha, OIII et SII séparément : retrait du gradient, puis BXT. RC Astro demande de déconvoluer chaque canal <strong>avant</strong> tout mélange de canaux.</p>
-        <div class="tools"><a class="tool nat" href="#t-gc">GradientCorrection</a><a class="tool nat" href="#t-dbe">DBE</a><a class="tool nat" href="#t-mgc">MGC</a><a class="tool rc" href="#t-bxt">BlurXTerminator</a></div>
+        <p>Pour Ha, OIII et SII séparément : recadrage identique et retrait du gradient.</p>
+        <div class="tools"><a class="tool nat" href="#t-gc">GradientCorrection</a><a class="tool nat" href="#t-dbe">DBE</a><a class="tool nat" href="#t-mgc">MGC</a></div>
       </li>
       <li>
         <div class="step-head"><h4>Égaliser les canaux (option)</h4><span class="phase lin">Linéaire</span></div>
@@ -406,9 +406,14 @@ footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line);
         <div class="tools"><a class="tool nat" href="#t-linfit">LinearFit</a></div>
       </li>
       <li>
-        <div class="step-head"><h4>Retrait des étoiles narrowband</h4><span class="phase lin">Linéaire</span></div>
-        <p>SXT sur chaque canal, <em>Unscreen</em> décoché (données linéaires). Ne garde que le <strong>fond sans étoiles</strong>.</p>
-        <div class="tools"><a class="tool rc" href="#t-sxt">StarXTerminator</a></div>
+        <div class="step-head"><h4>Combinaison simple, puis BXT</h4><span class="phase lin">Linéaire</span></div>
+        <p>ChannelCombination avec R = SII, G = Ha, B = OIII, <strong>sans boost ni mélange</strong> (un filtre par canal, poids proches). Applique BXT sur cette image couleur. C'est la méthode du manuel RC Astro : mélanger les canaux ou booster fortement un canal (SII par exemple) avant la déconvolution modifie la PSF et donne des résultats incohérents, surtout sur les étoiles brillantes. Si les aberrations diffèrent d'un filtre à l'autre, fais d'abord BXT <em>Correct Only</em> sur chaque master.</p>
+        <div class="tools"><a class="tool nat" href="#t-chcomb">ChannelCombination</a><a class="tool rc" href="#t-bxt">BlurXTerminator</a></div>
+      </li>
+      <li>
+        <div class="step-head"><h4>Retrait des étoiles</h4><span class="phase lin">Linéaire</span></div>
+        <p>SXT sur l'image SHO combinée, <em>Unscreen</em> décoché (données linéaires). Ne garde que le <strong>fond sans étoiles</strong>. Pour Foraxx ou NBColourMapper, sépare ensuite les trois canaux avec ChannelExtraction (SII = R, Ha = G, OIII = B).</p>
+        <div class="tools"><a class="tool rc" href="#t-sxt">StarXTerminator</a><a class="tool nat" href="#t-chcomb">ChannelCombination</a></div>
       </li>
       <li>
         <div class="step-head"><h4>Bruit et étirement des canaux</h4><span class="phase lin">Linéaire</span><span class="phase nl">Étiré</span></div>
@@ -418,7 +423,7 @@ footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line);
       <li>
         <div class="step-head"><h4>Palette</h4><span class="phase nl">Étiré</span></div>
         <ul>
-          <li><strong>NarrowbandNormalization</strong> : la référence. Combine d'abord SII, Ha et OIII en RGB selon la palette (ChannelCombination). Il fonctionne de préférence sur une image <strong>étirée et sans étoiles</strong> : en linéaire, l'équilibrage de luminosité entre canaux est limité.</li>
+          <li><strong>NarrowbandNormalization</strong> : la référence, sur l'image SHO combinée (recombine les canaux avec ChannelCombination si tu les as séparés). Il fonctionne de préférence sur une image <strong>étirée et sans étoiles</strong> : en linéaire, l'équilibrage de luminosité entre canaux est limité.</li>
           <li><strong>NBColourMapper</strong> : pour des palettes créatives.</li>
           <li><strong>Foraxx dynamique</strong> en PixelMath : pour un SHO or et bleu naturel (<a href="#foraxx" style="color:var(--accent)">formules plus bas</a>).</li>
         </ul>
@@ -473,11 +478,11 @@ footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line);
   <section id="hoo">
     <h2>HOO <span class="filters"><span class="flt Ha">Ha<small>656,3 nm</small></span><span class="flt OIII">OIII<small>500,7 nm</small></span></span></h2>
     <p class="sec-intro">Palette bicolore : Ha en rouge, OIII en cyan. Idéale pour les nébuleuses planétaires, les rémanents de supernova et les régions HII riches en OIII, avec une caméra mono (filtres Ha et OIII) ou une caméra couleur avec un filtre dual-band.</p>
-    <div class="chain"><span>Ha · OIII</span><i>→</i><span>Gradient</span><i>→</i><span>BXT</span><i>→</i><span>LinearFit</span><i>→</i><span>SXT</span><i>→</i><span>NXT</span><i>→</i><span>Étirement</span><i>→</i><span>Palette HOO</span><i>→</i><span>Étoiles</span></div>
+    <div class="chain"><span>Ha · OIII</span><i>→</i><span>Gradient</span><i>→</i><span>LinearFit</span><i>→</i><span>Combinaison</span><i>→</i><span>BXT</span><i>→</i><span>SXT</span><i>→</i><span>NXT</span><i>→</i><span>Étirement</span><i>→</i><span>Palette HOO</span><i>→</i><span>Étoiles</span></div>
     <ol class="steps">
       <li>
         <div class="step-head"><h4>Caméra couleur dual-band : extraire Ha et OIII</h4><span class="phase lin">Linéaire</span></div>
-        <p>Avec un filtre dual-band, Ha tombe dans le canal rouge et OIII dans les canaux vert et bleu. Retire d'abord le gradient sur l'image couleur, puis crée deux images mono avec PixelMath (<em>Create new image</em>, espace <em>Grayscale</em>). Caméra mono : passe directement à l'étape suivante.</p>
+        <p>Avec un filtre dual-band, Ha tombe dans le canal rouge et OIII dans les canaux vert et bleu. Retire d'abord le gradient sur l'image couleur et applique BXT (image couleur, avant tout mélange), puis crée deux images mono avec PixelMath (<em>Create new image</em>, espace <em>Grayscale</em>). Caméra mono : passe directement à l'étape suivante.</p>
         <p>La moyenne de G et B est la méthode la plus simple. Le canal bleu est cependant plus bruité et moins riche en OIII que le vert : donner plus de poids à G donne souvent un OIII plus propre. Les poids exacts dépendent du capteur et du filtre (un exemple publié pour un filtre L-eNhance et un capteur Sony : 0,05·R + 0,60·G + 0,51·B). La matrice de Bayer laisse aussi fuir un peu d'OIII dans le rouge et du Ha dans le bleu : cette fuite ne peut pas être séparée parfaitement.</p>
         <div class="formula"><span class="lbl">Ha</span><code>$T[0]</code><button type="button" data-copy>Copier</button></div>
         <div class="formula"><span class="lbl">OIII</span><code>($T[1] + $T[2]) / 2</code><button type="button" data-copy>Copier</button></div>
@@ -485,8 +490,8 @@ footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line);
       </li>
       <li>
         <div class="step-head"><h4>Masters Ha et OIII</h4><span class="phase lin">Linéaire</span></div>
-        <p>Sur chaque master séparément : retrait du gradient, puis BXT (déconvolution avant tout mélange de canaux, comme le demande RC Astro). OIII est souvent plus touché par la Lune : contrôle bien son modèle de gradient.</p>
-        <div class="tools"><a class="tool nat" href="#t-gc">GradientCorrection</a><a class="tool nat" href="#t-dbe">DBE</a><a class="tool nat" href="#t-mgc">MGC</a><a class="tool rc" href="#t-bxt">BlurXTerminator</a></div>
+        <p>Sur chaque master séparément : recadrage identique et retrait du gradient. OIII est nettement plus sensible à la Lune que Ha : contrôle bien son modèle de gradient.</p>
+        <div class="tools"><a class="tool nat" href="#t-gc">GradientCorrection</a><a class="tool nat" href="#t-dbe">DBE</a><a class="tool nat" href="#t-mgc">MGC</a></div>
       </li>
       <li>
         <div class="step-head"><h4>Égaliser OIII sur Ha (option)</h4><span class="phase lin">Linéaire</span></div>
@@ -494,8 +499,13 @@ footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line);
         <div class="tools"><a class="tool nat" href="#t-linfit">LinearFit</a></div>
       </li>
       <li>
+        <div class="step-head"><h4>Combinaison simple, puis BXT</h4><span class="phase lin">Linéaire</span></div>
+        <p>ChannelCombination avec R = Ha, G = OIII, B = OIII, sans boost ni mélange, puis BXT sur cette image couleur (méthode du manuel RC Astro : déconvolution avant tout mélange de canaux). Avec une caméra couleur dual-band, applique BXT directement sur l'image couleur d'origine, avant l'extraction.</p>
+        <div class="tools"><a class="tool nat" href="#t-chcomb">ChannelCombination</a><a class="tool rc" href="#t-bxt">BlurXTerminator</a></div>
+      </li>
+      <li>
         <div class="step-head"><h4>Retrait des étoiles</h4><span class="phase lin">Linéaire</span></div>
-        <p>SXT sur Ha et sur OIII, <em>Unscreen</em> décoché. Garde l'image d'étoiles de Ha si tu n'as pas d'étoiles RGB (voir l'étape Étoiles).</p>
+        <p>SXT sur l'image HOO combinée, <em>Unscreen</em> décoché. Garde l'image d'étoiles si tu n'as pas d'étoiles RGB. Sépare ensuite Ha (canal R) et OIII (canal G) sans étoiles avec ChannelExtraction pour les étapes suivantes.</p>
         <div class="tools"><a class="tool rc" href="#t-sxt">StarXTerminator</a></div>
       </li>
       <li>
@@ -536,7 +546,7 @@ footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line);
         <div class="step-head"><h4>Étoiles</h4><span class="phase lin">Linéaire</span><span class="phase nl">Étiré</span></div>
         <ul>
           <li><strong>Avec des poses RGB</strong> : étoiles RGB comme dans le workflow RGB + SHO (gradient, BXT <em>Correct Only</em>, SPCC, BXT complet, SXT linéaire), étirées à part.</li>
-          <li><strong>Sans RGB</strong> : combine les images d'étoiles de Ha et OIII (R = Ha, G = OIII, B = OIII) ou utilise NB to RGB Star Combination, puis étire avec Star Stretch. Les étoiles HOO tirent souvent vers le rouge et le cyan : désature-les légèrement si besoin.</li>
+          <li><strong>Sans RGB</strong> : utilise l'image d'étoiles produite par SXT sur l'image HOO combinée, ou NB to RGB Star Combination, puis étire avec Star Stretch. Les étoiles HOO tirent souvent vers le rouge et le cyan : désature-les légèrement si besoin.</li>
         </ul>
         <div class="tools"><a class="tool rc" href="#t-sxt">StarXTerminator</a><a class="tool free" href="#t-nbrgbstars">NB to RGB Star Combination</a><a class="tool free" href="#t-starstretch">Star Stretch</a></div>
       </li>
@@ -850,8 +860,8 @@ max(Img1,iif(M==1,E7,iif(M==2,E8,E9)))</code><button type="button" data-copy>Cop
         <div class="tlabel">Paramètres</div>
         <dl class="tparams"><div><dt>Sharpen Stars</dt><dd>0,25 (défaut) à 0,50 ; plage 0 à 0,5</dd></div><div><dt>Adjust Star Halos</dt><dd>−0,10 à 0,00 (défaut 0)</dd></div><div><dt>Automatic PSF</dt><dd>Coché</dd></div><div><dt>Sharpen Nonstellar</dt><dd>0,50 à 0,90 (0,9 par défaut en PSF manuel ; plus fort sur L que sur RGB)</dd></div><div><dt>Modèle IA</dt><dd>Dernier (AI4 ou plus récent)</dd></div></dl>
         <div class="tlabel">Par filtre</div>
-        <div class="pf"><div><span class="filters"><span class="flt L">L</span></span><p>Sharpen Nonstellar 0,70 à 0,90 : c'est la luminance qui porte le détail.</p></div><div><span class="filters"><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span></span><p>Sur l'image RGB combinée (conseillé par RC Astro) : Sharpen Nonstellar 0,40 à 0,60, le détail vient de L.</p></div><div><span class="filters"><span class="flt Ha">Ha</span></span><p>Sharpen Nonstellar 0,70 à 0,90, comme L : c'est souvent le master le plus net et le plus riche.</p></div><div><span class="filters"><span class="flt OIII">OIII</span><span class="flt SII">SII</span></span><p>Sharpen Nonstellar 0,40 à 0,60 : plus bruités, risque d'artefacts si tu pousses.</p></div><div><span class="filters"><span class="flt L">L</span><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span><span class="flt SII">SII</span><span class="flt Ha">Ha</span><span class="flt OIII">OIII</span></span><p>Sharpen Stars 0,25 à 0,50 et Adjust Star Halos −0,10 à 0 pour tous les filtres, pour des étoiles cohérentes.</p></div></div>
-        <p class="tnote">RC Astro : meilleurs résultats sur l'image RGB combinée que sur R, G, B séparés. Si les aberrations diffèrent d'un filtre à l'autre, fais Correct Only sur chaque canal avant de combiner. En narrowband, déconvolue chaque canal avant tout mélange. Ne combine pas BXT avec une déconvolution classique. Si des vers ou des pores apparaissent à 100 %, baisse Sharpen Nonstellar.</p>
+        <div class="pf"><div><span class="filters"><span class="flt L">L</span></span><p>Sharpen Nonstellar 0,70 à 0,90 : c'est la luminance qui porte le détail.</p></div><div><span class="filters"><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span></span><p>Sur l'image RGB combinée (conseillé par RC Astro) : Sharpen Nonstellar 0,40 à 0,60, le détail vient de L.</p></div><div><span class="filters"><span class="flt SII">SII</span><span class="flt Ha">Ha</span><span class="flt OIII">OIII</span></span><p>Sur la combinaison simple SHO ou HOO (un filtre par canal, poids proches), pas sur chaque master. Baisse Sharpen Nonstellar si des artefacts apparaissent dans les zones bruitées (souvent OIII et SII).</p></div><div><span class="filters"><span class="flt L">L</span><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span><span class="flt SII">SII</span><span class="flt Ha">Ha</span><span class="flt OIII">OIII</span></span><p>Sharpen Stars 0,25 à 0,50 et Adjust Star Halos −0,10 à 0 pour tous les filtres, pour des étoiles cohérentes.</p></div></div>
+        <p class="tnote">RC Astro : meilleurs résultats sur l'image RGB combinée que sur R, G, B séparés. Si les aberrations diffèrent d'un filtre à l'autre, fais Correct Only sur chaque canal avant de combiner. En narrowband, fais une combinaison SHO simple (un filtre par canal, poids proches), applique BXT, puis seulement ensuite les mélanges et les boosts de canaux. Ne combine pas BXT avec une déconvolution classique. Si des vers ou des pores apparaissent à 100 %, baisse Sharpen Nonstellar.</p>
       </article>
       <article class="tcard" id="t-nxt">
         <div class="tcard-head"><h4>NoiseXTerminator</h4><span class="ttag rc" title="RC Astro">RC</span><span class="phase lin">Linéaire</span><span class="phase nl">Étiré</span></div>
@@ -891,7 +901,7 @@ max(Img1,iif(M==1,E7,iif(M==2,E8,E9)))</code><button type="button" data-copy>Cop
         <div class="tlabel">Méthode</div>
         <ol class="tsteps"><li>Choisis l'image linéaire, règle la médiane cible et applique.</li><li>Pratique pour donner des niveaux comparables à L et à RGB avant de les combiner.</li></ol>
         <div class="tlabel">Paramètres</div>
-        <dl class="tparams"><div><dt>Target median</dt><dd>0,15 à 0,25</dd></div><div><dt>Linked stretch</dt><dd>Coché pour une image couleur déjà calibrée (SPCC)</dd></div><div><dt>Normalize</dt><dd>Décoché au départ</dd></div><div><dt>Apply curves</dt><dd>Optionnel, boost léger</dd></div></dl>
+        <dl class="tparams"><div><dt>Target Median</dt><dd>0,25 (défaut) ; 0,15 à 0,25</dd></div><div><dt>Linked Stretch</dt><dd>Coché par défaut ; décocher pour un étirement non lié</dd></div><div><dt>Blackpoint Sigma</dt><dd>5,0 (défaut)</dd></div><div><dt>Normalize Image Range to [0,1]</dt><dd>Décoché (défaut)</dd></div><div><dt>Curves Boost</dt><dd>0 (défaut) ; boost léger optionnel</dd></div><div><dt>HDR Compress</dt><dd>Décoché (défaut) ; Amount 0,25, Knee 0,35 si activé</dd></div></dl>
               <div class="tlabel">Par filtre</div>
         <div class="pf"><div><span class="filters"><span class="flt L">L</span><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span></span><p>Même Target median pour L et RGB. Linked stretch coché pour l'image couleur.</p></div><div><span class="filters"><span class="flt SII">SII</span><span class="flt Ha">Ha</span><span class="flt OIII">OIII</span></span><p>Même Target median pour les trois masters : des fonds équilibrés sont indispensables pour Foraxx et les palettes.</p></div></div>
       </article>
@@ -909,14 +919,14 @@ max(Img1,iif(M==1,E7,iif(M==2,E8,E9)))</code><button type="button" data-copy>Cop
         <p class="tnote">Si les couleurs sortent délavées, la luminance est trop claire par rapport au RGB : étire-la moins.</p>
       </article>
       <article class="tcard" id="t-nbrgb">
-        <div class="tcard-head"><h4>NBRGBCombination</h4><span class="ttag nat" title="Natif PixInsight">PI</span><span class="phase lin">Linéaire</span></div>
+        <div class="tcard-head"><h4>NBRGBCombination (script)</h4><span class="ttag nat" title="Natif PixInsight">PI</span><span class="phase lin">Linéaire</span></div>
         <div class="tlabel">Méthode</div>
-        <ol class="tsteps"><li>Sur le RGB linéaire calibré (SPCC) : ajoute Ha dans le canal rouge, en tenant compte des bandes passantes.</li><li>Compare avec la soustraction du continuum en PixelMath et garde le résultat le plus propre.</li></ol>
+        <ol class="tsteps"><li>Menu Script › Utilities › NBRGBCombination (script livré avec PixInsight).</li><li>Choisis l'image RGB et sa bande passante, puis l'image narrowband de chaque canal concerné et la bande passante de son filtre.</li><li>Compare avec les boutons d'aperçu RGB et NBRGB, ajuste Scale, puis applique. Compare aussi avec la soustraction du continuum en PixelMath.</li></ol>
         <div class="tlabel">Paramètres</div>
-        <dl class="tparams"><div><dt>Canal R</dt><dd>Image Ha</dd></div><div><dt>Bande passante narrowband</dt><dd>Celle de ton filtre (3, 5 ou 7 nm)</dd></div><div><dt>Bande passante RGB</dt><dd>Environ 100 nm pour un filtre R classique</dd></div><div><dt>Scale factor</dt><dd>1 à 2</dd></div></dl>
+        <dl class="tparams"><div><dt>RGB</dt><dd>Ton image RGB et sa bande passante (≈ 100 nm pour un filtre R ; un tutoriel utilise 200 nm pour un capteur couleur)</dd></div><div><dt>R Channel</dt><dd>Image Ha et bande passante de ton filtre (3, 5, 7 nm…)</dd></div><div><dt>G / B Channel</dt><dd>Image OIII et sa bande passante, si tu l'injectes</dd></div><div><dt>Scale</dt><dd>1,2 (défaut) ; jusqu'à 3 à 5 pour faire ressortir un Ha faible</dd></div></dl>
         <div class="tlabel">Par filtre</div>
         <div class="pf"><div><span class="filters"><span class="flt Ha">Ha</span></span><p>Canal R. Continuum : le master R.</p></div><div><span class="filters"><span class="flt OIII">OIII</span></span><p>Canaux G et B. Continuum : G, éventuellement B.</p></div><div><span class="filters"><span class="flt SII">SII</span></span><p>En général pas injecté dans un RGB naturel : faible, et même teinte rouge que Ha.</p></div></div>
-        <p class="tnote">Vérifie les noms exacts des champs dans l'aide du process, selon ta version de PixInsight.</p>
+        <p class="tnote">Aperçus par canal (R, G, B), RGB (sans remplacement) et NBRGB (résultat) avant d'appliquer.</p>
       </article>
       <article class="tcard" id="t-acs">
         <div class="tcard-head"><h4>Automatic Continuum Subtraction (SetiAstro)</h4><span class="ttag free" title="Script ou module gratuit">GRATUIT</span><span class="phase lin">Linéaire</span></div>
@@ -978,7 +988,7 @@ max(Img1,iif(M==1,E7,iif(M==2,E8,E9)))</code><button type="button" data-copy>Cop
         <div class="tlabel">Méthode</div>
         <ol class="tsteps"><li>Applique sur l'image d'étoiles linéaire issue de SXT.</li></ol>
         <div class="tlabel">Paramètres</div>
-        <dl class="tparams"><div><dt>Stretch amount</dt><dd>5 au départ</dd></div><div><dt>Color boost</dt><dd>1,0 à 1,5</dd></div><div><dt>Remove green (SCNR)</dt><dd>Coché</dd></div></dl>
+        <dl class="tparams"><div><dt>Stretch Amount</dt><dd>5 (défaut) ; plage 0 à 8, au-delà de 5 avec prudence</dd></div><div><dt>Color Boost Amount</dt><dd>1,0 (défaut) ; plage 0 à 2</dd></div><div><dt>Remove Green via SCNR</dt><dd>Optionnel, décoché par défaut ; utile si les étoiles tirent vers le vert</dd></div></dl>
               <div class="tlabel">Par filtre</div>
         <div class="pf"><div><span class="filters"><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span></span><p>Source préférée : étoiles de couleur naturelle.</p></div><div><span class="filters"><span class="flt SII">SII</span><span class="flt Ha">Ha</span><span class="flt OIII">OIII</span></span><p>Seulement si tu n'as pas de RGB, après NB to RGB Star Combination.</p></div></div>
       </article>
@@ -1008,14 +1018,14 @@ max(Img1,iif(M==1,E7,iif(M==2,E8,E9)))</code><button type="button" data-copy>Cop
         <div class="tlabel">Méthode</div>
         <ol class="tsteps"><li>Applique sur l'image d'étoiles seule.</li></ol>
         <div class="tlabel">Paramètres</div>
-        <dl class="tparams"><div><dt>Reduction amount</dt><dd>Low à Medium au départ</dd></div><div><dt>Linear data</dt><dd>Coché uniquement si l'image est encore linéaire</dd></div></dl>
+        <dl class="tparams"><div><dt>Reduction Amount</dt><dd>Extra Low, Low, Med ou High ; Low par défaut</dd></div><div><dt>Linear Data</dt><dd>Décoché par défaut ; coche-le seulement si l'image est encore linéaire</dd></div></dl>
       </article>
       <article class="tcard" id="t-cms">
         <div class="tcard-head"><h4>CorrectMagentaStars</h4><span class="ttag nat" title="Natif PixInsight">PI</span><span class="phase nl">Étiré</span></div>
         <div class="tlabel">Méthode</div>
-        <ol class="tsteps"><li>Menu Script › Utilities (livré avec PixInsight).</li><li>Applique sur l'image SHO finale, étoiles comprises.</li></ol>
+        <ol class="tsteps"><li>Menu Script › Utilities › CorrectMagentaStars.</li><li>Applique sur l'image SHO finale, étoiles comprises. Le script inverse l'image, retire le vert avec SCNR (le magenta devient vert une fois inversé), puis la réinverse.</li></ol>
         <div class="tlabel">Paramètres</div>
-        <dl class="tparams"><div><dt>Amount</dt><dd>Monter progressivement jusqu'à la disparition du magenta</dd></div></dl>
+        <dl class="tparams"><div><dt>Amount</dt><dd>0,8 (défaut) ; plage 0 à 1. C'est la force du SCNR appliqué à l'image inversée</dd></div></dl>
       </article>
     </div>
     <h3>Finition</h3>
@@ -1057,7 +1067,7 @@ max(Img1,iif(M==1,E7,iif(M==2,E8,E9)))</code><button type="button" data-copy>Cop
   <section id="regles">
     <h2>Règles d'or</h2>
     <div class="rules">
-      <div class="rule"><h4>L'ordre en linéaire</h4><p>Gradient, BXT <em>Correct Only</em>, SPCC, BXT complet, SXT, puis NXT. En narrowband, BXT sur chaque canal avant de les mélanger.</p></div>
+      <div class="rule"><h4>L'ordre en linéaire</h4><p>Gradient, BXT <em>Correct Only</em>, SPCC, BXT complet, SXT, puis NXT. En narrowband, BXT sur la combinaison SHO simple, avant tout mélange ou boost de canal.</p></div>
       <div class="rule"><h4>BXT d'abord</h4><p>BXT avant toute réduction de bruit et avant le retrait des étoiles, jamais sur une image déjà étirée, et sans autre déconvolution en plus.</p></div>
       <div class="rule"><h4>Fond et étoiles séparés</h4><p>Traiter le fond sans étoiles et les étoiles séparément est le standard actuel.</p></div>
       <div class="rule"><h4>SXT en linéaire</h4><p>SXT le plus tôt possible, sur données linéaires, <em>Unscreen</em> décoché. <em>Unscreen</em> ne sert que pour une image déjà étirée.</p></div>
