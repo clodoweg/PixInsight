@@ -195,15 +195,21 @@ def write(filename, prefix, title, steps):
     opts = [(b, ph, x) for b, ph, r, x, t in entries if not L.is_default(r)]
     save(filename, title + ' — chemin principal', *layout(main, lambda k, b: 'E%02d_%s' % (k, b)))
     save(filename.replace('Workflow-', 'Options-'), title + ' — options et alternatives', *layout(opts, lambda k, b: 'Opt_%s' % b))
-    # conteneurs : fichier Conteneurs-X.xpsm (étapes du chemin principal uniquement)
-    byb = {b: x for b, ph, r, x, t in entries if L.is_default(r)}
-    cinsts, cicons, conts = [], [], []
-    for k, (cn, target, members) in enumerate(L.CONTAINERS.get(prefix, [])):
-        if all(m in byb for m in members):
-            cinsts.append(container(cn, [byb[m] for m in members]))
-            cicons.append('   <icon id="%s" instance="%s_instance" xpos="30" ypos="%d" workspace="Workspace01"/>' % (cn, cn, 30 + 30 * k))
-        conts.append({'n': cn, 't': target, 'm': members})
-    save(filename.replace('Workflow-', 'Conteneurs-'), title + ' — conteneurs (étapes sans réglage regroupées)', cinsts, cicons)
+    # Conteneurs-X.xpsm : chemin principal complet, suites sans réglage remplacées par un ProcessContainer
+    byb = {b: x for b, ph, x in main}
+    used = [c for c in L.CONTAINERS.get(prefix, []) if all(m in byb for m in c[2])]
+    member = {m for c in used for m in c[2]}
+    cmain, done = [], set()
+    for b, ph, x in main:
+        if b not in member:
+            cmain.append((b, ph, x))
+            continue
+        for cn, target, members in used:
+            if cn not in done and members[0] == b:
+                done.add(cn)
+                cmain.append((cn, ph, container('__ID__', [byb[m] for m in members])))
+    save(filename.replace('Workflow-', 'Conteneurs-'), title + ' — chemin principal avec conteneurs', *layout(cmain, lambda k, b: 'E%02d_%s' % (k, b)))
+    conts = [{'n': cn, 't': target, 'm': members} for cn, target, members in L.CONTAINERS.get(prefix, [])]
     wf = {'id': prefix, 'file': filename, 'title': title, 'steps': [], 'containers': conts}
     for b, ph, r, x, t in entries:
         key = 'i%d' % len(DATA['inst'])
@@ -215,7 +221,7 @@ def write(filename, prefix, title, steps):
         d = re.search(r'<description>(.*?)</description>', x, re.S)
         wf['steps'].append({'b': b, 'p': ph, 'r': r, 'k': key, 'w': L.WHEN.get(b, ''), 'd': html_unescape(d.group(1)) if d else ''})
     DATA['wf'].append(wf)
-    return len(main), len(opts)
+    return len(main), len(opts), len(cmain)
 
 # ---------------------------------------------------------------- textes communs
 SRC = ' Détails et sources : docs/pixinsight-workflow.html et docs/sources.md (github.com/clodoweg/PixInsight).'
@@ -650,6 +656,6 @@ for fn, pre, title, steps in [
     ('Workflow-SHO-sans-RGB.xpsm', 'SHO', 'Workflow SHO sans RGB', sho),
     ('Workflow-HOO.xpsm', 'HOO', 'Workflow HOO', hoo),
 ]:
-    print(fn, 'principal + options :', write(fn, pre, title, steps))
+    print(fn, 'principal, options, avec conteneurs :', write(fn, pre, title, steps))
 DATA['header'] = M.HEADER
 json.dump(DATA, open(os.path.join(OUT, '..', 'preparer-data.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
