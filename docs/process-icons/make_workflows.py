@@ -179,8 +179,8 @@ def finish_block(extra=None):
         b = extra + b
     return b + [(M.nxt('NXT_final', 0.40, 1), D_NXT_F)]
 
-def stars_end(cms=False):
-    b = [(pm('Etoiles_screen', '~((~starless) * (~stars))', new_image=True, new_id='Final'), D_SCREEN)]
+def stars_end(cms=False, screen_extra=''):
+    b = [(pm('Etoiles_screen', '~((~starless) * (~stars))', new_image=True, new_id='Final'), D_SCREEN + screen_extra)]
     if cms:
         b.append((note('CorrectMagentaStars', T_CMS), ''))
     b += [(pm('Blanshan_Transfer', "S=0.15;\nImg1=starless;\nf1= ~((~mtf(~S,$T)/~mtf(~S,Img1))*~Img1);\nmax(Img1,f1)", symbols='S, Img1, f1'), D_BL),
@@ -321,15 +321,23 @@ sho_palette = [
 sho_finish = [(M.instance('SCNR', 'SCNR_SHO', {'amount': '0.70', 'protectionMethod': 'AverageNeutral', 'colorToRemove': 'Green'}),
                "SCNR sur la palette SHO si un vert reste : Green, Average Neutral, Amount 0,70 (1,0 par défaut convient souvent ; plus bas pour garder un peu de vert).")]
 
+SCREEN_RGBSHO = (" RGB + SHO — CONTRÔLE après recombinaison, à 100 % : pas de restes d'étoiles SHO sous les étoiles RGB (anneaux ou points magenta, trous sombres : SXT incomplet sur l'image SHO, "
+                 "refais-le ou passe CorrectMagentaStars) ; étoiles pas « collées » (ni plus grosses ni plus brillantes que la nébuleuse ne le laisse attendre, sinon réduction d'étoiles ou étirement plus doux) ; "
+                 "pas de décalage entre étoiles RGB et leurs traces (aligne RGB et SHO sur la même référence dans WBPP, même recadrage) ; fond toujours R = G = B (fond éclairci ou teinté : fond de l'image d'étoiles pas à 0). "
+                 "Nébuleuse en fausses couleurs et étoiles en vraies couleurs : c'est voulu.")
+STARS_RGBSHO = (" RGB + SHO — les étoiles doivent avoir des couleurs NATURELLES calibrées : du bleu-blanc au jaune-orange, jamais vertes (G au-dessus de R et B) ni magenta (R et B nettement au-dessus de G). "
+                "Contrôle sur l'image d'étoiles seule avant recombinaison : graphes SPCC corrects, toute une gamme bleue et jaune-orange. Étoiles toutes blanches : étirement trop fort ; criardes : Color Boost plus bas ou légère désaturation ; "
+                "vertes, bleues ou jaunes en bloc : SPCC du RGB à revoir.")
+
 def rgb_stars_block():
     return [
-        (note('Etoiles_RGB', "ÉTOILES RGB — masters R, G, B : même recadrage, puis les icônes suivantes dans l'ordre (combinaison, gradient via l'icône GradientCorrection ou les notes, BXT Correct Only, SPCC, BXT, SXT)."), ''),
+        (note('Etoiles_RGB', "ÉTOILES RGB — masters R, G, B : même recadrage, puis les icônes suivantes dans l'ordre (combinaison, gradient via l'icône GradientCorrection ou les notes, BXT Correct Only, SPCC, BXT, SXT)." + STARS_RGBSHO), ''),
         rgb_comb(),
         (M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), D_BXT_CO),
         spcc(),
         (M.bxt('BXT_RGB', False, 0.25, 0.0, 0.50), "BlurXTerminator complet sur RGB après SPCC : Sharpen Stars 0,25, Halos 0, Nonstellar 0,50."),
         (M.sxt('SXT_RGB_lineaire', False), D_SXT_LIN + " Garde uniquement l'image d'étoiles RGB."),
-        (note('Star_Stretch', T_STARSTRETCH), ''),
+        (note('Star_Stretch', T_STARSTRETCH + STARS_RGBSHO), ''),
     ]
 
 # ---------------------------------------------------------------- RGB + SHO
@@ -337,7 +345,7 @@ rgbsho = pre_block() + nb_masters(['Sii', 'Ha', 'Oiii']) + [
     sho_combine,
     (M.bxt('BXT_NB', False, 0.25, 0.0, 0.60), D_BXT_NB),
     (M.sxt('SXT_lineaire', False), D_SXT_LIN + " Sur l'image SHO : garde le fond sans étoiles (les étoiles viendront du RGB)."),
-] + extract([(0, 'Sii'), (1, 'Ha'), (2, 'Oiii')], "l'image SHO sans étoiles") + nb_noise + ghs_block(GHS_NB, STAT_NB) + sho_palette + finish_block(sho_finish) + rgb_stars_block() + stars_end(cms=True)
+] + extract([(0, 'Sii'), (1, 'Ha'), (2, 'Oiii')], "l'image SHO sans étoiles") + nb_noise + ghs_block(GHS_NB, STAT_NB) + sho_palette + finish_block(sho_finish) + rgb_stars_block() + stars_end(cms=True, screen_extra=SCREEN_RGBSHO)
 
 # ---------------------------------------------------------------- SHO sans RGB
 sho = pre_block() + nb_masters(['Sii', 'Ha', 'Oiii']) + [

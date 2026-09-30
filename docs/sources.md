@@ -195,6 +195,12 @@ Légende :
 - Régions HII roses : mêmes sources que la rubrique « Couleurs LRGB » (UNLV, NASA NGC 3982).
 - Règles de contrôle (comparaison avec la copie LRGB, lecture à la sonde, cœur et étoiles inchangés) : déduites de la composition des couleurs et du principe de la soustraction du continuum ; aucune source ne les chiffre, la page l'indique.
 
+## Couleurs RGB + SHO
+
+- Tutoriel — [Optical Mechanics, SHO ou HOO](https://www.opticalmechanics.com/narrowband-astrophotography-sho-vs-hoo-guide/) : étoiles narrowband aux teintes peu naturelles ; poses RGB courtes pour des étoiles en vraies couleurs, qui remplacent les étoiles narrowband à la recombinaison.
+- Standards des deux calques : rubriques « Couleurs SHO et choix de la palette » (nébuleuse) et « Couleurs LRGB » (étoiles calibrées, jamais vertes).
+- Contrôles de recombinaison (restes d'étoiles SHO magenta, étoiles « collées », alignement RGB/SHO, fond de l'image d'étoiles) : pratique de la fiche, sans chiffre sourcé ; la page l'indique.
+
 ## Couleurs SHO et choix de la palette
 
 - Tutoriel — [AstroBackyard, guide du narrowband et de la palette Hubble](https://astrobackyard.com/narrowband-imaging/)
@@ -219,6 +225,7 @@ Les schémas ne reprennent que des faits déjà sourcés plus haut ; ils n'ajout
 
 - Frises des workflows, arbre de choix, comparaison large bande / narrowband, circuit des étoiles : ordre des étapes et phase linéaire ou étirée tirés des étapes de la fiche (sources des rubriques correspondantes).
 - Courbes GHS : calculées avec l'équation hyperbolique généralisée de David Payne (b > 0) telle qu'elle est codée dans les formules PixelMath de Bill Blanshan (`FromLukeAndBill.xpsm`, [theAstroShed](https://github.com/jamiesmith/pixinsight-icons)) ; D = 10, SP = 0,1, b = 10 et b = 1, sans LP ni HP. Lecture des paramètres d'après la [documentation GHS](https://www.ghsastro.co.uk/doc/tools/GeneralizedHyperbolicStretch/GeneralizedHyperbolicStretch.html).
+- Calques RGB + SHO (section RGB + SHO) : schéma des deux calques et de leurs contrôles, rubrique « Couleurs RGB + SHO ».
 - Lecture des couleurs LHaRGB (section LHaRGB) : valeurs illustratives, règles de la rubrique « Couleurs LHaRGB ».
 - Lecture des couleurs LRGB (section LRGB) : valeurs illustratives, règles de la rubrique « Couleurs LRGB ».
 - Lecture des couleurs HOO (section HOO) : valeurs illustratives, règles de la rubrique « Couleurs HOO ».

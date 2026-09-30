@@ -250,7 +250,7 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
 <aside class="side" id="side">
   <div class="side-top"><a class="brand" href="#top">PixInsight 2026</a><button type="button" class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="side-nav">Sommaire</button></div>
   <div class="search"><label class="sr" for="q">Rechercher</label><input id="q" type="search" autocomplete="off" placeholder="Chercher un outil, une étape…"><ul id="results" hidden></ul></div>
-  <nav id="side-nav" aria-label="Sommaire"><div class="ngroup"><div class="nhead">Démarrer</div><a href="#demarrer" data-sec="demarrer">Par où commencer</a><a href="#outils" data-sec="outils">Outils et dépôts</a><a href="#pretraitement" data-sec="pretraitement">Prétraitement WBPP</a><a href="#lineaire" data-sec="lineaire">Phase linéaire commune</a></div><div class="ngroup"><div class="nhead">Workflows</div><a href="#lrgb" data-sec="lrgb">LRGB<span class="ndots"><i class="flt-dot L"></i><i class="flt-dot R"></i><i class="flt-dot G"></i><i class="flt-dot B"></i></span></a><a href="#lhargb" data-sec="lhargb">LHaRGB<span class="ndots"><i class="flt-dot L"></i><i class="flt-dot Ha"></i><i class="flt-dot R"></i><i class="flt-dot G"></i><i class="flt-dot B"></i></span></a><a href="#rgbsho" data-sec="rgbsho">RGB + SHO<span class="ndots"><i class="flt-dot SII"></i><i class="flt-dot Ha"></i><i class="flt-dot OIII"></i><i class="flt-dot R"></i><i class="flt-dot G"></i><i class="flt-dot B"></i></span></a><a href="#sho" data-sec="sho">SHO sans RGB<span class="ndots"><i class="flt-dot SII"></i><i class="flt-dot Ha"></i><i class="flt-dot OIII"></i></span></a><a href="#hoo" data-sec="hoo">HOO<span class="ndots"><i class="flt-dot Ha"></i><i class="flt-dot OIII"></i></span></a></div><div class="ngroup"><div class="nhead">Techniques</div><a href="#ghs" data-sec="ghs">Méthode GHS</a><a href="#couleurs-lrgb" data-sec="couleurs-lrgb">Couleurs LRGB</a><a href="#couleurs-lhargb" data-sec="couleurs-lhargb">Couleurs LHaRGB</a><a href="#couleurs-sho" data-sec="couleurs-sho">Couleurs SHO</a><a href="#couleurs-hoo" data-sec="couleurs-hoo">Couleurs HOO</a><a href="#foraxx" data-sec="foraxx">Formules Foraxx</a><a href="#continuum" data-sec="continuum">Le continuum</a><a href="#etoiles" data-sec="etoiles">Réduction d&#x27;étoiles</a></div><div class="ngroup"><div class="nhead">Référence</div><a href="#parametres" data-sec="parametres">Paramètres des outils</a><a href="#regles" data-sec="regles">Règles d&#x27;or</a></div></nav>
+  <nav id="side-nav" aria-label="Sommaire"><div class="ngroup"><div class="nhead">Démarrer</div><a href="#demarrer" data-sec="demarrer">Par où commencer</a><a href="#outils" data-sec="outils">Outils et dépôts</a><a href="#pretraitement" data-sec="pretraitement">Prétraitement WBPP</a><a href="#lineaire" data-sec="lineaire">Phase linéaire commune</a></div><div class="ngroup"><div class="nhead">Workflows</div><a href="#lrgb" data-sec="lrgb">LRGB<span class="ndots"><i class="flt-dot L"></i><i class="flt-dot R"></i><i class="flt-dot G"></i><i class="flt-dot B"></i></span></a><a href="#lhargb" data-sec="lhargb">LHaRGB<span class="ndots"><i class="flt-dot L"></i><i class="flt-dot Ha"></i><i class="flt-dot R"></i><i class="flt-dot G"></i><i class="flt-dot B"></i></span></a><a href="#rgbsho" data-sec="rgbsho">RGB + SHO<span class="ndots"><i class="flt-dot SII"></i><i class="flt-dot Ha"></i><i class="flt-dot OIII"></i><i class="flt-dot R"></i><i class="flt-dot G"></i><i class="flt-dot B"></i></span></a><a href="#sho" data-sec="sho">SHO sans RGB<span class="ndots"><i class="flt-dot SII"></i><i class="flt-dot Ha"></i><i class="flt-dot OIII"></i></span></a><a href="#hoo" data-sec="hoo">HOO<span class="ndots"><i class="flt-dot Ha"></i><i class="flt-dot OIII"></i></span></a></div><div class="ngroup"><div class="nhead">Techniques</div><a href="#ghs" data-sec="ghs">Méthode GHS</a><a href="#couleurs-lrgb" data-sec="couleurs-lrgb">Couleurs LRGB</a><a href="#couleurs-lhargb" data-sec="couleurs-lhargb">Couleurs LHaRGB</a><a href="#couleurs-rgbsho" data-sec="couleurs-rgbsho">Couleurs RGB + SHO</a><a href="#couleurs-sho" data-sec="couleurs-sho">Couleurs SHO</a><a href="#couleurs-hoo" data-sec="couleurs-hoo">Couleurs HOO</a><a href="#foraxx" data-sec="foraxx">Formules Foraxx</a><a href="#continuum" data-sec="continuum">Le continuum</a><a href="#etoiles" data-sec="etoiles">Réduction d&#x27;étoiles</a></div><div class="ngroup"><div class="nhead">Référence</div><a href="#parametres" data-sec="parametres">Paramètres des outils</a><a href="#regles" data-sec="regles">Règles d&#x27;or</a></div></nav>
 </aside>
 <div class="wrap" id="top">
   <header class="top">
@@ -1071,11 +1071,78 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
       </li>
       <li id="rgbsho-e9">
         <div class="step-head"><h4>Réintégration des étoiles</h4><span class="phase nl">Étiré</span></div>
-        <p>Recombine en mode <em>screen</em>. S'il reste des étoiles magenta ou des halos, passe CorrectMagentaStars ou Halo-B-Gon.</p>
+        <p>Recombine en mode <em>screen</em>. S'il reste des étoiles magenta ou des halos, passe CorrectMagentaStars ou Halo-B-Gon. Contrôle ensuite l'accord entre nébuleuse et étoiles (<a href="#couleurs-rgbsho" style="color:var(--accent)">couleurs RGB + SHO</a>).</p>
         <div class="formula"><code>~((~starless_SHO) * (~stars_RGB))</code><button type="button" data-copy>Copier</button></div>
         <div class="tools"><a class="tool nat" href="#t-pixelmath">PixelMath</a><a class="tool nat" href="#t-cms">CorrectMagentaStars</a><a class="tool free" href="#t-halo">Halo-B-Gon</a></div>
       </li>
     </ol>
+
+    <h3 id="couleurs-rgbsho">Couleurs RGB + SHO : deux standards superposés</h3>
+    <p>L'image finale réunit deux calques, chacun avec son standard : la <strong>nébuleuse</strong> vient du SHO (<a href="#couleurs-sho" style="color:var(--accent)">couleurs SHO</a>), les <strong>étoiles</strong> viennent du RGB calibré par SPCC (<a href="#couleurs-lrgb" style="color:var(--accent)">couleurs LRGB</a>). Une nébuleuse en fausses couleurs avec des étoiles en vraies couleurs, c'est voulu : c'est tout l'intérêt des poses RGB, qui remplacent les étoiles narrowband aux teintes peu naturelles (Optical Mechanics). Ce qui est propre à ce workflow, c'est de vérifier que les deux calques s'accordent.</p>
+    <figure class="dg"><div class="dg-scroll"><div style="min-width:620px"><svg class="dg" viewBox="0 0 760 290" role="img" aria-label="RGB + SHO : une nébuleuse SHO sans étoiles en fausses couleurs et des étoiles RGB en vraies couleurs, recombinées en screen ; contrôles sur chaque calque puis sur l'image finale">
+<defs><marker id="arr-rgbsho-col" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
+<rect class="f-surf s-line" x="10" y="10" width="250" height="120" rx="8"/>
+<text class="lab" x="22" y="30">Nébuleuse SHO sans étoiles</text><text class="tick" x="22" y="46">fausses couleurs (look Hubble)</text>
+<rect x="22" y="58" width="22" height="16" rx="3" fill="#d9a441" stroke="currentColor" stroke-opacity="0.35"/><text class="lab small" x="52" y="70">zones Ha : or</text>
+<rect x="22" y="80" width="22" height="16" rx="3" fill="#3fa7c9" stroke="currentColor" stroke-opacity="0.35"/><text class="lab small" x="52" y="92">zones OIII : cyan à bleu</text>
+<rect x="22" y="102" width="22" height="16" rx="3" fill="#3b3b3b" stroke="currentColor" stroke-opacity="0.35"/><text class="lab small" x="52" y="114">fond : R = G = B</text>
+<rect class="f-surf s-line" x="10" y="150" width="250" height="130" rx="8"/>
+<text class="lab" x="22" y="170">Étoiles RGB (SPCC)</text><text class="tick" x="22" y="186">vraies couleurs</text>
+<rect x="22" y="196" width="22" height="16" rx="3" fill="#cfdcff" stroke="currentColor" stroke-opacity="0.35"/><text class="lab small" x="52" y="208">bleu-blanc</text>
+<rect x="140" y="196" width="22" height="16" rx="3" fill="#f2c47a" stroke="currentColor" stroke-opacity="0.35"/><text class="lab small" x="170" y="208">jaune-orange</text>
+<rect x="22" y="222" width="22" height="16" rx="3" fill="#6fcf4f" stroke="currentColor" stroke-opacity="0.35"/><line x1="20" y1="240" x2="46" y2="220" stroke="currentColor" stroke-width="1.6"/><text class="lab small curve-a-t" x="52" y="234">verte</text>
+<rect x="140" y="222" width="22" height="16" rx="3" fill="#d65ad6" stroke="currentColor" stroke-opacity="0.35"/><line x1="138" y1="240" x2="164" y2="220" stroke="currentColor" stroke-width="1.6"/><text class="lab small curve-a-t" x="170" y="234">magenta</text>
+<text class="tick" x="22" y="266">graphes SPCC, gamme de couleurs</text>
+<line x1="262" y1="70" x2="338" y2="130" stroke="currentColor" stroke-width="1.4" marker-end="url(#arr-rgbsho-col)"/>
+<line x1="262" y1="215" x2="338" y2="160" stroke="currentColor" stroke-width="1.4" marker-end="url(#arr-rgbsho-col)"/>
+<rect class="f-acc s-acc" x="340" y="118" width="150" height="54" rx="8"/>
+<text class="lab" x="415" y="140" text-anchor="middle">Screen</text><text class="tick" x="415" y="158" text-anchor="middle">~((~starless)·(~stars))</text>
+<line x1="492" y1="145" x2="528" y2="145" stroke="currentColor" stroke-width="1.4" marker-end="url(#arr-rgbsho-col)"/>
+<rect class="f-surf s-line" x="530" y="60" width="220" height="170" rx="8"/>
+<text class="lab" x="542" y="80">Image finale, à 100 %</text>
+<text class="tick" x="542" y="104">✓ pas de reste magenta</text><text class="tick" x="542" y="120">   sous les étoiles RGB</text>
+<text class="tick" x="542" y="144">✓ étoiles pas « collées »</text>
+<text class="tick" x="542" y="168">✓ pas de décalage étoiles /</text><text class="tick" x="542" y="184">   traces (même alignement)</text>
+<text class="tick" x="542" y="208">✓ fond toujours R = G = B</text>
+</svg></div></div><figcaption>Les deux calques et leurs contrôles. Chaque calque se vérifie séparément, avant la recombinaison ; l'image finale se contrôle ensuite à 100 %. Les contrôles de recombinaison (restes magenta, étoiles collées, alignement, fond) relèvent de la pratique, sans chiffre sourcé.</figcaption></figure>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Élément</th><th>Couleur attendue</th><th>Référence</th></tr></thead>
+        <tbody>
+          <tr><td>Nébuleuse, zones Ha</td><td><strong>Or, jaune orangé</strong></td><td><a href="#couleurs-sho" style="color:var(--accent)">Couleurs SHO</a></td></tr>
+          <tr><td>Nébuleuse, zones OIII</td><td><strong>Cyan à bleu</strong></td><td>Idem</td></tr>
+          <tr><td>Nébuleuse, soufre</td><td>Orange plus rouge ; vert en touches seulement</td><td>Idem</td></tr>
+          <tr><td>Étoiles</td><td><strong>Couleurs naturelles calibrées</strong>, du bleu-blanc au jaune-orange, <strong>jamais vertes ni magenta</strong></td><td><a href="#couleurs-lrgb" style="color:var(--accent)">Couleurs LRGB</a> ; Optical Mechanics</td></tr>
+          <tr><td>Fond de ciel</td><td><strong>Gris neutre foncé</strong> (0,12–0,14, R = G = B)</td><td><a href="#ghs-reperes" style="color:var(--accent)">Repères d'étirement</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>Vérifier que tu es dedans</h4>
+    <ol>
+      <li><strong>Nébuleuse</strong>, avant de remettre les étoiles : contrôles SHO à la sonde 15×15 (zones Ha R ≥ G ≫ B, zones OIII B ≥ G ≫ R, fond R ≈ G ≈ B).</li>
+      <li><strong>Étoiles RGB</strong>, sur l'image d'étoiles seule : graphes SPCC corrects ; toute une gamme bleue et jaune-orange ; aucune étoile avec G au-dessus de R et de B (verte), ni avec R et B nettement au-dessus de G (magenta).</li>
+      <li><strong>Après recombinaison</strong>, à 100 % : pas de restes d'étoiles SHO sous les étoiles RGB (anneaux ou points magenta, trous sombres : extraction SXT incomplète de l'image SHO) ; pas d'étoiles « collées », plus grosses ou plus brillantes que la nébuleuse ne le laisse attendre ; pas de décalage entre les étoiles RGB et leurs traces dans la nébuleuse.</li>
+      <li><strong>Fond</strong> : toujours R ≈ G ≈ B après ajout des étoiles.</li>
+    </ol>
+
+    <h4>Quoi ajuster</h4>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Constat</th><th>Cause, réglage</th></tr></thead>
+        <tbody>
+          <tr><td>Nébuleuse trop verte, sans bleu, fond coloré</td><td>Réglages SHO : NarrowbandNormalization (SCNR, O3 et S2 boost, Shadowpoint), voir <a href="#couleurs-sho" style="color:var(--accent)">couleurs SHO</a></td></tr>
+          <tr><td>Étoiles vertes, bleues ou jaunes en bloc</td><td>SPCC du RGB à revoir (filtres, capteur, gradient avant SPCC)</td></tr>
+          <tr><td>Étoiles blanches, sans couleur</td><td>Étirement des étoiles trop fort : <a href="#t-starstretch" style="color:var(--accent)">Star Stretch</a> plus doux, ou GHS avec HP</td></tr>
+          <tr><td>Étoiles criardes</td><td>Star Stretch avec un Color Boost plus bas, ou légère désaturation de l'image d'étoiles</td></tr>
+          <tr><td>Anneaux ou points magenta sous les étoiles</td><td>Étoiles SHO mal retirées : refais SXT sur la combinaison SHO (Unscreen décoché en linéaire), ou <a href="#t-cms" style="color:var(--accent)">CorrectMagentaStars</a></td></tr>
+          <tr><td>Étoiles trop grosses ou trop présentes</td><td><a href="#etoiles" style="color:var(--accent)">Réduction d'étoiles</a> après recombinaison, ou étirement plus faible des étoiles</td></tr>
+          <tr><td>Fond éclairci ou teinté après ajout des étoiles</td><td>Fond de l'image d'étoiles pas à 0 : revois SXT ou l'étirement des étoiles</td></tr>
+          <tr><td>Étoiles décalées de leurs traces</td><td>RGB et SHO pas alignés : aligne-les sur la même référence dans WBPP, avec le même recadrage</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>Quand choisir autre chose :</strong> pas de poses RGB : <a href="#sho" style="color:var(--accent)">SHO sans RGB</a> (étoiles narrowband) ; couleurs naturelles partout, nébuleuse comprise : <a href="#lhargb" style="color:var(--accent)">LHaRGB</a> ou la variante « RGB enrichi par le narrowband » plus bas ; SII faible : <a href="#hoo" style="color:var(--accent)">HOO</a> avec étoiles RGB, même principe.</p>
 
     <h3 id="couleurs-sho">Couleurs SHO : le rendu de référence et comment le vérifier</h3>
     <p>Il n'existe pas de norme officielle, mais un rendu de référence, le « look Hubble » : <strong>or et bleu</strong>. Une combinaison SHO brute sort très verte, car Ha, placé dans le vert, domine presque toutes les nébuleuses ; tout le travail consiste à repousser ce vert vers le jaune et l'or. Beaucoup d'images publiées sont très orange et bleu ; un soupçon de vert reste acceptable.</p>
