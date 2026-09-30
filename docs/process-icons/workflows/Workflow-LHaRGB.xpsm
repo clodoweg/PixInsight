@@ -626,7 +626,7 @@ max(L, H_cs*a)</parameter>
       <parameter id="overlap" value="0.20"/>
    </instance>
    <instance class="NoiseXTerminator" version="256" id="LHA_24_NXT_RGB_instance">
-      <description>NoiseXTerminator sur RGB sans étoiles : Denoise 0,80, Detail 0,15.</description>
+      <description>NoiseXTerminator sur RGB sans étoiles : Denoise 0,80, Detail 0,15. Réglages communs (manuel RC Astro AI3) : Iterations 1 (plus = garde mieux le détail des zones très bruitées, mais trop d'itérations crée des artefacts) ; Detail sans effet en AI3 ; séparations décochées. Option Enable color separation (image couleur seulement) : Denoise color plus haut que l'intensité. Option Enable frequency separation : HF intensité 0,80-0,90, HF couleur 0,90-1,00, LF intensité 0,50-0,70, LF couleur 1,00 ; HF/LF scale 5 px (règle-le avec LF à 0 en aperçu).</description>
       <parameter id="ml_version" value="0"/>
       <parameter id="denoise" value="0.80"/>
       <parameter id="enable_color_separation" value="false"/>
@@ -645,7 +645,7 @@ max(L, H_cs*a)</parameter>
       <parameter id="overlap" value="0.20"/>
    </instance>
    <instance class="NoiseXTerminator" version="256" id="LHA_25_NXT_L_instance">
-      <description>NoiseXTerminator sur L sans étoiles : Denoise 0,60.</description>
+      <description>NoiseXTerminator sur L sans étoiles : Denoise 0,60. Réglages communs (manuel RC Astro AI3) : Iterations 1 (plus = garde mieux le détail des zones très bruitées, mais trop d'itérations crée des artefacts) ; Detail sans effet en AI3 ; séparations décochées. Option Enable color separation (image couleur seulement) : Denoise color plus haut que l'intensité. Option Enable frequency separation : HF intensité 0,80-0,90, HF couleur 0,90-1,00, LF intensité 0,50-0,70, LF couleur 1,00 ; HF/LF scale 5 px (règle-le avec LF à 0 en aperçu).</description>
       <parameter id="ml_version" value="0"/>
       <parameter id="denoise" value="0.60"/>
       <parameter id="enable_color_separation" value="false"/>
@@ -1034,7 +1034,7 @@ max(0, (0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2] - s) / (1 - s))</parameter>
       <parameter id="intensity" value="1.00"/>
    </instance>
    <instance class="NoiseXTerminator" version="256" id="LHA_36_NXT_final_instance">
-      <description>NoiseXTerminator, passe finale légère sur l'image étirée : Denoise 0,40, Detail 0,15. Seulement si besoin.</description>
+      <description>NoiseXTerminator, passe finale légère sur l'image étirée : Denoise 0,40 (0,30 à 0,50). Seulement si besoin. Réglages communs (manuel RC Astro AI3) : Iterations 1 (plus = garde mieux le détail des zones très bruitées, mais trop d'itérations crée des artefacts) ; Detail sans effet en AI3 ; séparations décochées. Option Enable color separation (image couleur seulement) : Denoise color plus haut que l'intensité. Option Enable frequency separation : HF intensité 0,80-0,90, HF couleur 0,90-1,00, LF intensité 0,50-0,70, LF couleur 1,00 ; HF/LF scale 5 px (règle-le avec LF à 0 en aperçu).</description>
       <parameter id="ml_version" value="0"/>
       <parameter id="denoise" value="0.40"/>
       <parameter id="enable_color_separation" value="false"/>

@@ -222,7 +222,10 @@ D_HDR = ("HDRMultiscaleTransform sur l'image sans étoiles pour les zones brilla
          "Overdrive 0 (0,10 à 0,20 pour plus de force). Median transform décoché (coché = moins d'anneaux, plus lent). Scaling function B3 Spline (5). Deringing décoché (petites valeurs si anneaux). "
          "Midtones balance Automatic. To lightness, Preserve hue et Lightness mask cochés (le masque interne protège le fond : pas de masque externe). "
          "Trop fort : mélange à 50 % avec l'original.")
-D_NXT_F = "NoiseXTerminator, passe finale légère sur l'image étirée : Denoise 0,40, Detail 0,15. Seulement si besoin."
+NXT_C = (" Réglages communs (manuel RC Astro AI3) : Iterations 1 (plus = garde mieux le détail des zones très bruitées, mais trop d'itérations crée des artefacts) ; "
+         "Detail sans effet en AI3 ; séparations décochées. Option Enable color separation (image couleur seulement) : Denoise color plus haut que l'intensité. "
+         "Option Enable frequency separation : HF intensité 0,80-0,90, HF couleur 0,90-1,00, LF intensité 0,50-0,70, LF couleur 1,00 ; HF/LF scale 5 px (règle-le avec LF à 0 en aperçu).")
+D_NXT_F = "NoiseXTerminator, passe finale légère sur l'image étirée : Denoise 0,40 (0,30 à 0,50). Seulement si besoin." + NXT_C
 
 D_SPFC_COMMUN = (" Prérequis : image LINÉAIRE et résolue (ImageSolver ou WBPP), base Gaia DR3/SP installée. Catalog Gaia DR3/SP, Automatic limit magnitude coché, détection PSF par défaut. "
                  "SPFC ne modifie pas les pixels : il écrit les métadonnées de flux lues par MGC. Utilise ensuite les MÊMES filtres dans SPCC.")
@@ -340,8 +343,8 @@ lrgb = pre_block() + [rgb_comb(), (note('ImageSolver', T_SOLVER), '')] + gradien
     (M.bxt('BXT_RGB', False, 0.25, 0.0, 0.50), "BlurXTerminator complet sur RGB, APRÈS SPCC : Sharpen Stars 0,25 (0 à 0,5), Adjust Star Halos 0, PSF automatique, Sharpen Nonstellar 0,50 (le détail viendra de L). Avant toute réduction de bruit."),
     (M.bxt('BXT_L', False, 0.25, 0.0, 0.80), "BlurXTerminator complet sur L (linéaire, gradient retiré) : Sharpen Stars 0,25, Halos 0, Sharpen Nonstellar 0,80 (0,70 à 0,90), plus fort que sur RGB car la luminance porte le détail. Si vers ou pores à 100 % : baisse Nonstellar."),
     (M.sxt('SXT_lineaire', False), D_SXT_LIN + " Sur RGB (garde les étoiles : ce sont celles de l'image finale) et sur L (jette ses étoiles)."),
-    (M.nxt('NXT_RGB', 0.80, 1), "NoiseXTerminator sur RGB sans étoiles : Denoise 0,80 (0,70 à 0,90), Detail 0,15. Toujours après BXT. Fonctionne en linéaire ou après étirement (RC Astro)."),
-    (M.nxt('NXT_L', 0.60, 1), "NoiseXTerminator sur L sans étoiles : Denoise 0,60 (0,50 à 0,70) pour garder le détail fin."),
+    (M.nxt('NXT_RGB', 0.80, 1), "NoiseXTerminator sur RGB sans étoiles : Denoise 0,80 (0,70 à 0,90), Detail 0,15. Toujours après BXT. Fonctionne en linéaire ou après étirement (RC Astro)." + NXT_C),
+    (M.nxt('NXT_L', 0.60, 1), "NoiseXTerminator sur L sans étoiles : Denoise 0,60 (0,50 à 0,70) pour garder le détail fin." + NXT_C),
 ] + ghs_block(" En LRGB : étire le RGB sans étoiles et L sans étoiles jusqu'au MÊME fond et à une médiane proche.") + [
     (note('Star_Stretch', T_STARSTRETCH + STARS_LRGB), ''),
     (M.instance('LRGBCombination', 'LRGB_ajout_L', {'mL': '0.500', 'mc': '0.400', 'noiseReduction': True}, post=M.lrgb_post),
@@ -380,8 +383,8 @@ lhargb = pre_block() + [rgb_comb(), (note('ImageSolver', T_SOLVER), '')] + gradi
     (M.sxt('SXT_lineaire', False), D_SXT_LIN + " Sur RGB (garde les étoiles) et sur L (jette ses étoiles). "
      "Les étoiles RGB gardées ici contiennent l'injection de H : compare-les à la copie d'avant injection (pas plus rouges, sans halo ni anneau). "
      "Si elles sont abîmées : monte k, baisse w, ou passe SXT sur la copie du RGB non injecté et garde ses étoiles (option la plus propre)."),
-    (M.nxt('NXT_RGB', 0.80, 1), "NoiseXTerminator sur RGB sans étoiles : Denoise 0,80, Detail 0,15."),
-    (M.nxt('NXT_L', 0.60, 1), "NoiseXTerminator sur L sans étoiles : Denoise 0,60."),
+    (M.nxt('NXT_RGB', 0.80, 1), "NoiseXTerminator sur RGB sans étoiles : Denoise 0,80, Detail 0,15." + NXT_C),
+    (M.nxt('NXT_L', 0.60, 1), "NoiseXTerminator sur L sans étoiles : Denoise 0,60." + NXT_C),
 ] + ghs_block(" Étire RGB et L sans étoiles jusqu'au même fond.") + [
     (note('Star_Stretch', T_STARSTRETCH + STARS_LRGB), ''),
     (M.instance('LRGBCombination', 'LRGB_ajout_L', {'mL': '0.500', 'mc': '0.400', 'noiseReduction': True}, post=M.lrgb_post),
@@ -409,8 +412,8 @@ def extract(prefix_names, src_desc):
                     "AVANT : renomme les masters linéaires qui portent déjà ce nom (par exemple '%s_lin'), sinon PixInsight donnera un autre nom à la nouvelle vue et les formules suivantes ne la trouveront pas." % (idx, src_desc, n, n)))
     return out
 
-nb_noise = [(M.nxt('NXT_H', 0.60, 1), "NoiseXTerminator sur H sans étoiles : Denoise 0,60 (0,50 à 0,70), Detail 0,15. En linéaire ou après étirement."),
-            (M.nxt('NXT_O_S', 0.75, 1), "NoiseXTerminator sur O et S sans étoiles, plus bruités : Denoise 0,75 (0,60 à 0,85). Ne pousse pas plus : aspect plastique.")]
+nb_noise = [(M.nxt('NXT_H', 0.60, 1), "NoiseXTerminator sur H sans étoiles : Denoise 0,60 (0,50 à 0,70), Detail 0,15. En linéaire ou après étirement." + NXT_C),
+            (M.nxt('NXT_O_S', 0.75, 1), "NoiseXTerminator sur O et S sans étoiles, plus bruités : Denoise 0,75 (0,60 à 0,85). Ne pousse pas plus : aspect plastique." + NXT_C)]
 GHS_NB = (" En narrowband, étire chaque canal séparément. Règle : même niveau de fond et médiane proche pour tous les canaux (on n'égalise pas la nébuleuse : l'écart de signal, c'est la couleur). "
           "Étire H en premier (pic d'histogramme vers 0,20-0,25) et note ce niveau : c'est la référence. Puis O et S jusqu'au MÊME fond et à la même médiane ; ils demandent un Stretch factor plus élevé, monte LP pour ne pas faire ressortir leur bruit. "
           "Vérifie le fond avec Statistics ou la lecture de pixel. CONTRÔLE : combinaison simple des canaux étirés ; le fond doit être gris neutre, sinon le fond du canal dominant est trop clair : reprends son étirement. "
