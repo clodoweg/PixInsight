@@ -186,12 +186,21 @@ Légende :
 - Règles de lecture à la sonde (or : R ≥ G ≫ B ; cyan : B ≥ G ≫ R ; fond R = G = B) et tableau des ajustements NarrowbandNormalization : déduits de la composition des couleurs et des rôles des réglages déjà sourcés ; aucune source ne les chiffre, la page l'indique.
 - Code — [Seti Astro, `PerfectPalettePicker.js` v1.3](https://github.com/setiastro/pixinsight-updates-194) (archive des scripts) : menu `Script › SetiAstro › Perfect Palette Picker` ; 16 palettes (HOO, HOS, HSO, HSS, OHH, OHS, OSH, OSS, SHH, SHO, SOH, SOO, Realistic1, Realistic2, Foraxx, Dynamic Inverse) ; case *Linear Input Data* cochée par défaut, qui étire chaque canal à une médiane de 0,25 (point noir médiane − 2,7 σ) ; Ha remplace SII s'il manque (et inversement) ; entrées OSC HaO3 et S2O3 (Ha ou SII = rouge, OIII = moyenne de G et B) ; clic sur une vignette = palette en pleine taille.
 
+## Couleurs HOO
+
+- Tutoriel — [StarTools, colorations populaires](https://www.startools.org/modules/composite/usage/popular-coloring) : HOO = Ha en rouge, OIII en vert et en bleu ; Ha rouge profond, OIII vert turquoise.
+- Tutoriel — [Bortle 9 Astrophotography, workflow HOO](https://bortle9astro.com/field-guides/hoo-palette-workflow) : régions Ha rouge orangé, régions OIII bleu turquoise ; zones mixtes décrites « dorées » (divergence signalée sur la page : en HOO strictement classique, G = B, une zone mixte sort rose saumon à blanchâtre ; l'or n'apparaît qu'avec du Ha dans le vert).
+- Tutoriel — [Optical Mechanics, SHO ou HOO](https://www.opticalmechanics.com/narrowband-astrophotography-sho-vs-hoo-guide/) : rouge contre cyan ; G = 0,85·OIII + 0,15·Ha pour adoucir le cyan et réchauffer ; SCNR léger si besoin ; étoiles narrowband aux teintes peu naturelles, étoiles RGB courtes en remplacement.
+- Tutoriel — [Galactic Hunter, combinaison bicolore](https://www.galactic-hunter.com/post/pixinsight-bi-color-combination-tutorial) : Ha et OIII ensemble dans le vert pour s'approcher du style Hubble.
+- Règles de lecture à la sonde (Ha : R ≫ G ≈ B ; OIII : G ≈ B ≫ R ; mixte : R haut, G ≈ B ; fond R = G = B) et couleur des zones mixtes en HOO classique : déduites de la composition des couleurs ; aucune source ne les chiffre, la page l'indique.
+
 ## Schémas de la fiche
 
 Les schémas ne reprennent que des faits déjà sourcés plus haut ; ils n'ajoutent aucun réglage.
 
 - Frises des workflows, arbre de choix, comparaison large bande / narrowband, circuit des étoiles : ordre des étapes et phase linéaire ou étirée tirés des étapes de la fiche (sources des rubriques correspondantes).
 - Courbes GHS : calculées avec l'équation hyperbolique généralisée de David Payne (b > 0) telle qu'elle est codée dans les formules PixelMath de Bill Blanshan (`FromLukeAndBill.xpsm`, [theAstroShed](https://github.com/jamiesmith/pixinsight-icons)) ; D = 10, SP = 0,1, b = 10 et b = 1, sans LP ni HP. Lecture des paramètres d'après la [documentation GHS](https://www.ghsastro.co.uk/doc/tools/GeneralizedHyperbolicStretch/GeneralizedHyperbolicStretch.html).
+- Lecture des couleurs HOO (section HOO) : valeurs illustratives, règles de la rubrique « Couleurs HOO ».
 - Lecture des couleurs SHO (section RGB + SHO) : valeurs illustratives, règles de la rubrique « Couleurs SHO et choix de la palette ».
 - Échelle du fond (section GHS) : reprend les valeurs de la rubrique « Repères d'étirement ».
 - Continuum : filtre R vers 600–700 nm, raie Ha à 656,3 nm, filtre Ha de 3 nm et formule `Ha_cs = Ha − k·(R − med(R))`, déjà sourcés (rubrique Combinaison et narrowband). Les hauteurs sont schématiques, pas à l'échelle.

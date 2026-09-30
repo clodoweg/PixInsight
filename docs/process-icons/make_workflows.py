@@ -355,7 +355,12 @@ hoo = pre_block() + [
     (pm('HOO_simple', 'Ha', 'Oiii', 'Oiii', new_image=True, new_id='HOO_etire', space='RGB'),
      "PALETTE — combinaison simple sur 'Ha' et 'Oiii' étirés sans étoiles, à équilibrer ensuite avec NarrowbandNormalization (icône suivante)."),
     (M.instance('NarrowbandNormalization', 'NBN_HOO', {'palette': 'Palette_HOO'}),
-     "NarrowbandNormalization, palette HOO (valeurs par défaut) : applique sur l'image HOO étirée sans étoiles, active l'aperçu, monte O3 boost progressivement, Shadowpoint pour le fond, SCNR si besoin."),
+     ("NarrowbandNormalization, palette HOO (valeurs par défaut) : applique sur l'image HOO étirée sans étoiles, active l'aperçu, monte O3 boost progressivement, Shadowpoint pour le fond, SCNR si besoin. "
+      "RENDU VISÉ (HOO classique R = Ha, G = B = OIII) : zones Ha rouge profond à rouge orangé, zones OIII cyan / turquoise, zones mixtes rose saumon à blanchâtre (or ou orange seulement si le vert reçoit du Ha : Foraxx HOO, variante Hubble), fond gris neutre foncé. "
+      "CONTRÔLE à la sonde 15x15 : zone Ha R >> G = B ; zone OIII G = B, nettement au-dessus de R ; fond R = G = B (fond rouge : Ha trop étiré ; fond cyan : OIII trop étiré). G et B sont égaux avant NBN : un écart vient du module ou des courbes. "
+      "AJUSTER : tout rouge -> O3 boost, sinon reprends l'étirement d'OIII ; cyan trop froid -> baisse O3 boost ou mets un peu de Ha dans le vert (G = 0,85·OIII + 0,15·Ha) ; fond coloré -> Shadowpoint ; OIII granuleux -> NXT plus fort sur OIII, LP plus haut ; "
+      "détail pâteux -> Lightness Ha ou Ha en luminance ; SCNR souvent inutile en HOO. Étoiles cœur rouge / halo cyan : étoiles RGB, NB to RGB Star Combination ou étoiles HOO synthétiques, sinon désature. "
+      "PAS DE HOO si la cible contient du SII (SHO) ou si OIII est quasi absent (HaRGB, Ha en noir et blanc).")),
     (pm('Foraxx_HOO', 'Ha', '((Oiii*Ha)^~(Oiii*Ha))*Ha + ~((Oiii*Ha)^~(Oiii*Ha))*Oiii', 'Oiii', new_image=True, new_id='HOO_Foraxx', space='RGB'),
      "ALTERNATIVE — Foraxx HOO : le vert varie selon le rapport Ha/OIII (transitions orangées). Vues 'Ha' et 'Oiii' étirées, sans étoiles, fonds proches."),
     (pm('HOO_Hubble', 'Ha', '0.6*Ha + 0.4*Oiii', 'Oiii', new_image=True, new_id='HOO_Hubble', space='RGB'),

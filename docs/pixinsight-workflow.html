@@ -250,7 +250,7 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
 <aside class="side" id="side">
   <div class="side-top"><a class="brand" href="#top">PixInsight 2026</a><button type="button" class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="side-nav">Sommaire</button></div>
   <div class="search"><label class="sr" for="q">Rechercher</label><input id="q" type="search" autocomplete="off" placeholder="Chercher un outil, une étape…"><ul id="results" hidden></ul></div>
-  <nav id="side-nav" aria-label="Sommaire"><div class="ngroup"><div class="nhead">Démarrer</div><a href="#demarrer" data-sec="demarrer">Par où commencer</a><a href="#outils" data-sec="outils">Outils et dépôts</a><a href="#pretraitement" data-sec="pretraitement">Prétraitement WBPP</a><a href="#lineaire" data-sec="lineaire">Phase linéaire commune</a></div><div class="ngroup"><div class="nhead">Workflows</div><a href="#lrgb" data-sec="lrgb">LRGB<span class="ndots"><i class="flt-dot L"></i><i class="flt-dot R"></i><i class="flt-dot G"></i><i class="flt-dot B"></i></span></a><a href="#lhargb" data-sec="lhargb">LHaRGB<span class="ndots"><i class="flt-dot L"></i><i class="flt-dot Ha"></i><i class="flt-dot R"></i><i class="flt-dot G"></i><i class="flt-dot B"></i></span></a><a href="#rgbsho" data-sec="rgbsho">RGB + SHO<span class="ndots"><i class="flt-dot SII"></i><i class="flt-dot Ha"></i><i class="flt-dot OIII"></i><i class="flt-dot R"></i><i class="flt-dot G"></i><i class="flt-dot B"></i></span></a><a href="#sho" data-sec="sho">SHO sans RGB<span class="ndots"><i class="flt-dot SII"></i><i class="flt-dot Ha"></i><i class="flt-dot OIII"></i></span></a><a href="#hoo" data-sec="hoo">HOO<span class="ndots"><i class="flt-dot Ha"></i><i class="flt-dot OIII"></i></span></a></div><div class="ngroup"><div class="nhead">Techniques</div><a href="#ghs" data-sec="ghs">Méthode GHS</a><a href="#couleurs-sho" data-sec="couleurs-sho">Couleurs SHO</a><a href="#foraxx" data-sec="foraxx">Formules Foraxx</a><a href="#continuum" data-sec="continuum">Le continuum</a><a href="#etoiles" data-sec="etoiles">Réduction d&#x27;étoiles</a></div><div class="ngroup"><div class="nhead">Référence</div><a href="#parametres" data-sec="parametres">Paramètres des outils</a><a href="#regles" data-sec="regles">Règles d&#x27;or</a></div></nav>
+  <nav id="side-nav" aria-label="Sommaire"><div class="ngroup"><div class="nhead">Démarrer</div><a href="#demarrer" data-sec="demarrer">Par où commencer</a><a href="#outils" data-sec="outils">Outils et dépôts</a><a href="#pretraitement" data-sec="pretraitement">Prétraitement WBPP</a><a href="#lineaire" data-sec="lineaire">Phase linéaire commune</a></div><div class="ngroup"><div class="nhead">Workflows</div><a href="#lrgb" data-sec="lrgb">LRGB<span class="ndots"><i class="flt-dot L"></i><i class="flt-dot R"></i><i class="flt-dot G"></i><i class="flt-dot B"></i></span></a><a href="#lhargb" data-sec="lhargb">LHaRGB<span class="ndots"><i class="flt-dot L"></i><i class="flt-dot Ha"></i><i class="flt-dot R"></i><i class="flt-dot G"></i><i class="flt-dot B"></i></span></a><a href="#rgbsho" data-sec="rgbsho">RGB + SHO<span class="ndots"><i class="flt-dot SII"></i><i class="flt-dot Ha"></i><i class="flt-dot OIII"></i><i class="flt-dot R"></i><i class="flt-dot G"></i><i class="flt-dot B"></i></span></a><a href="#sho" data-sec="sho">SHO sans RGB<span class="ndots"><i class="flt-dot SII"></i><i class="flt-dot Ha"></i><i class="flt-dot OIII"></i></span></a><a href="#hoo" data-sec="hoo">HOO<span class="ndots"><i class="flt-dot Ha"></i><i class="flt-dot OIII"></i></span></a></div><div class="ngroup"><div class="nhead">Techniques</div><a href="#ghs" data-sec="ghs">Méthode GHS</a><a href="#couleurs-sho" data-sec="couleurs-sho">Couleurs SHO</a><a href="#couleurs-hoo" data-sec="couleurs-hoo">Couleurs HOO</a><a href="#foraxx" data-sec="foraxx">Formules Foraxx</a><a href="#continuum" data-sec="continuum">Le continuum</a><a href="#etoiles" data-sec="etoiles">Réduction d&#x27;étoiles</a></div><div class="ngroup"><div class="nhead">Référence</div><a href="#parametres" data-sec="parametres">Paramètres des outils</a><a href="#regles" data-sec="regles">Règles d&#x27;or</a></div></nav>
 </aside>
 <div class="wrap" id="top">
   <header class="top">
@@ -1259,7 +1259,7 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
       </li>
       <li id="hoo-e8">
         <div class="step-head"><h4>Palette HOO</h4><span class="phase nl">Étiré</span></div>
-        <p>Trois méthodes, sur les images étirées et sans étoiles :</p>
+        <p>Trois méthodes, sur les images étirées et sans étoiles (couleurs à viser et contrôle : <a href="#couleurs-hoo" style="color:var(--accent)">couleurs HOO</a>) :</p>
         <ul>
           <li><strong>Combinaison simple + NarrowbandNormalization</strong> : ChannelCombination avec R = Ha, G = OIII, B = OIII, puis NarrowbandNormalization avec la palette HOO pour équilibrer OIII (OIIIBoost) et le fond.</li>
           <li><strong>Foraxx HOO</strong> : le vert varie selon le rapport Ha/OIII, ce qui donne des transitions orangées naturelles (<a href="#foraxx" style="color:var(--accent)">formule HOO</a>).</li>
@@ -1299,6 +1299,94 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
         <div class="tools"><a class="tool nat" href="#t-pixelmath">PixelMath</a><a class="tool free" href="#t-starred">StarReduction</a><a class="tool free" href="#t-halo">Halo-B-Gon</a></div>
       </li>
     </ol>
+
+    <h3 id="couleurs-hoo">Couleurs HOO : le rendu de référence et comment le vérifier</h3>
+    <p>En HOO, le rendu de référence est <strong>rouge et cyan (turquoise)</strong> : Ha en rouge, OIII en vert et en bleu. Il n'y a que deux signaux, c'est donc plus simple qu'en SHO (<a href="#couleurs-sho" style="color:var(--accent)">couleurs SHO</a>).</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Zone</th><th>Couleur attendue (HOO classique : R = Ha, G = B = OIII)</th><th>Source</th></tr></thead>
+        <tbody>
+          <tr><td>Régions dominées par Ha</td><td><strong>Rouge profond à rouge orangé</strong></td><td>StarTools, Bortle 9, Optical Mechanics</td></tr>
+          <tr><td>Régions riches en OIII</td><td><strong>Cyan, turquoise, bleu-vert</strong></td><td>Mêmes sources</td></tr>
+          <tr><td>Ha et OIII forts tous les deux</td><td><strong>Rose saumon à blanchâtre</strong> en HOO classique ; <strong>or, orange</strong> seulement si le vert reçoit du Ha</td><td>Voir la divergence ci-dessous</td></tr>
+          <tr><td>Fond de ciel</td><td><strong>Gris neutre foncé</strong> (0,12–0,14, R = G = B)</td><td><a href="#ghs-reperes" style="color:var(--accent)">Repères d'étirement</a></td></tr>
+          <tr><td>Étoiles</td><td>Sans halos rouges ou cyan marqués</td><td>Voir plus bas</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note"><strong>Divergence sur les zones mixtes.</strong> Bortle 9 les décrit dorées. En HOO strictement classique, le vert et le bleu reçoivent le même OIII : une zone mixte a beaucoup de rouge et autant de vert que de bleu, donc elle sort rose saumon à blanchâtre. L'or ou l'orange n'apparaît que si le vert reçoit une part de Ha : Foraxx HOO, variante « style Hubble » (G = 0,6·Ha + 0,4·OIII, Galactic Hunter) ou G = 0,85·OIII + 0,15·Ha (Optical Mechanics). Choisis la variante selon le rendu voulu : <strong>rouge / cyan / rose</strong> (classique) ou <strong>rouge / cyan / or</strong> (Foraxx HOO, variante Hubble).</div>
+
+    <h4>Vérifier avec la sonde de lecture (15×15)</h4>
+    <figure class="dg"><div class="dg-scroll"><div style="min-width:600px"><svg class="dg" viewBox="0 0 760 250" role="img" aria-label="Ce que la sonde doit lire en HOO classique : zone Ha rouge avec R bien au-dessus de G et B égaux, zone OIII cyan avec G et B égaux au-dessus de R, zone mixte saumon avec R élevé et G égal à B, fond gris avec R, G, B égaux">
+<rect x="14" y="10" width="162" height="34" rx="6" fill="#c8453a" stroke="currentColor" stroke-opacity="0.35"/>
+<text class="lab" x="95" y="62" text-anchor="middle">Zone Ha (rouge)</text>
+<rect class="f-surf s-line" x="36" y="98" width="30" height="102"/>
+<text class="tick" x="51" y="214" text-anchor="middle">R</text>
+<rect class="f-surf s-line" x="78" y="174" width="30" height="26"/>
+<text class="tick" x="93" y="214" text-anchor="middle">G</text>
+<rect class="f-surf s-line" x="120" y="174" width="30" height="26"/>
+<text class="tick" x="135" y="214" text-anchor="middle">B</text>
+<line x1="28" y1="200" x2="162" y2="200" stroke="currentColor" stroke-width="1"/>
+<text class="lab" x="95" y="238" text-anchor="middle">R ≫ G ≈ B</text>
+<rect x="204" y="10" width="162" height="34" rx="6" fill="#3fb3b8" stroke="currentColor" stroke-opacity="0.35"/>
+<text class="lab" x="285" y="62" text-anchor="middle">Zone OIII (cyan)</text>
+<rect class="f-surf s-line" x="226" y="174" width="30" height="26"/>
+<text class="tick" x="241" y="214" text-anchor="middle">R</text>
+<rect class="f-surf s-line" x="268" y="116" width="30" height="84"/>
+<text class="tick" x="283" y="214" text-anchor="middle">G</text>
+<rect class="f-surf s-line" x="310" y="114" width="30" height="86"/>
+<text class="tick" x="325" y="214" text-anchor="middle">B</text>
+<line x1="218" y1="200" x2="352" y2="200" stroke="currentColor" stroke-width="1"/>
+<text class="lab" x="285" y="238" text-anchor="middle">G ≈ B ≫ R</text>
+<rect x="394" y="10" width="162" height="34" rx="6" fill="#e0a39a" stroke="currentColor" stroke-opacity="0.35"/>
+<text class="lab" x="475" y="62" text-anchor="middle">Mixte (saumon)</text>
+<rect class="f-surf s-line" x="416" y="98" width="30" height="102"/>
+<text class="tick" x="431" y="214" text-anchor="middle">R</text>
+<rect class="f-surf s-line" x="458" y="128" width="30" height="72"/>
+<text class="tick" x="473" y="214" text-anchor="middle">G</text>
+<rect class="f-surf s-line" x="500" y="130" width="30" height="70"/>
+<text class="tick" x="515" y="214" text-anchor="middle">B</text>
+<line x1="408" y1="200" x2="542" y2="200" stroke="currentColor" stroke-width="1"/>
+<text class="lab" x="475" y="238" text-anchor="middle">R haut, G ≈ B</text>
+<rect x="584" y="10" width="162" height="34" rx="6" fill="#3b3b3b" stroke="currentColor" stroke-opacity="0.35"/>
+<text class="lab" x="665" y="62" text-anchor="middle">Fond (gris neutre)</text>
+<rect class="f-surf s-line" x="606" y="184" width="30" height="16"/>
+<text class="tick" x="621" y="214" text-anchor="middle">R</text>
+<rect class="f-surf s-line" x="648" y="184" width="30" height="16"/>
+<text class="tick" x="663" y="214" text-anchor="middle">G</text>
+<rect class="f-surf s-line" x="690" y="184" width="30" height="16"/>
+<text class="tick" x="705" y="214" text-anchor="middle">B</text>
+<line x1="598" y1="200" x2="732" y2="200" stroke="currentColor" stroke-width="1"/>
+<text class="lab" x="665" y="238" text-anchor="middle">R ≈ G ≈ B</text>
+</svg></div></div><figcaption>Schéma (valeurs illustratives, pas des cibles chiffrées) : ce que la sonde doit lire en HOO classique. Le vert et le bleu valent exactement la même chose avant NarrowbandNormalization ; un écart qui apparaît ensuite vient des réglages du module ou des courbes. Règles déduites de la composition des couleurs ; aucune source ne les chiffre.</figcaption></figure>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Zone</th><th>À lire</th><th>Problème si…</th></tr></thead>
+        <tbody>
+          <tr><td>Zone Ha</td><td><strong>R ≫ G ≈ B</strong></td><td>R à peine au-dessus : Ha trop faible ou OIII trop étiré</td></tr>
+          <tr><td>Zone OIII</td><td><strong>G ≈ B, nettement au-dessus de R</strong></td><td>R proche de G et B : zone délavée, blanchâtre</td></tr>
+          <tr><td>Zone mixte (classique)</td><td>R élevé, G ≈ B moyens</td><td>G ≫ B : ce n'est plus du HOO classique (Ha dans le vert)</td></tr>
+          <tr><td>Fond</td><td><strong>R ≈ G ≈ B</strong></td><td>Fond rouge : Ha trop étiré ; fond cyan : OIII trop étiré</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>Quoi ajuster dans NarrowbandNormalization (palette HOO)</h4>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Constat</th><th>Réglage</th></tr></thead>
+        <tbody>
+          <tr><td>Tout est rouge, OIII invisible</td><td>Monte <strong>O3 boost</strong> ; si OIII reste noyé, reprends son étirement (même fond et même médiane que Ha)</td></tr>
+          <tr><td>Cyan trop saturé, froid</td><td>Baisse O3 boost, ou mets un peu de Ha dans le vert (variante Hubble ou Optical Mechanics) pour réchauffer</td></tr>
+          <tr><td>Fond rouge ou cyan</td><td><strong>Shadowpoint</strong>, sinon reprends l'étirement des canaux</td></tr>
+          <tr><td>OIII bruité, fond granuleux cyan</td><td>NXT plus fort sur OIII (0,60 à 0,85), LP plus haut dans GHS</td></tr>
+          <tr><td>Détail pâteux</td><td><strong>Lightness = Ha</strong>, ou Ha en luminance (<a href="#hoo-e9" style="color:var(--accent)">étape 9</a>)</td></tr>
+          <tr><td>Vert parasite</td><td>Rare en HOO, où le SCNR est souvent inutile ; sinon SCNR léger</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>Étoiles :</strong> en HOO, elles ont souvent un cœur rouge et un halo cyan, car les étoiles OIII sont plus grosses. Utilise des étoiles RGB si tu en as, NB to RGB Star Combination ou les étoiles HOO synthétiques (G = 0,2·Ha + 0,8·OIII) ; sinon, désature-les légèrement.</p>
+    <p><strong>Quand ne pas choisir le HOO :</strong> tu as du SII et la cible en contient (<a href="#sho" style="color:var(--accent)">SHO</a>, plus riche en nuances) ; Ha très dominant et OIII quasi absent, comme la California (le HOO sort presque tout rouge : HaRGB, HOO centré sur Ha, voire Ha en noir et blanc) ; tu veux de l'or sans vert (Foraxx HOO) ; tu veux comparer (<a href="#t-ppp" style="color:var(--accent)">Perfect Palette Picker</a>).</p>
   </section>
 
   <section id="ghs">
