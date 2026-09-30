@@ -402,8 +402,14 @@ hoo = pre_block() + [
      "Option — Ha en luminance : fais une copie de Ha étiré nommée 'L' (même fond et médiane proche que l'image HOO, sinon couleurs délavées), puis applique sur l'image HOO. Seul L activé, Saturation 0,40."),
 ] + finish_block() + [
     (note('Etoiles_HOO', "ÉTOILES — avec RGB : suis le bloc étoiles RGB du workflow RGB + SHO. Sans RGB : utilise l'image d'étoiles de SXT sur HOO (ou NB to RGB Star Combination), étire-la avec Star Stretch et renomme-la 'stars'. "
-          "Les étoiles HOO tirent vers le rouge et le cyan : désature-les légèrement si besoin."), ''),
-    (note('Star_Stretch', T_STARSTRETCH), ''),
+          "Les étoiles HOO tirent vers le rouge et le cyan : désature-les légèrement si besoin. "
+          "STANDARD : étoiles plausibles, du bleu-blanc au jaune-orange, peu saturées, une gamme de couleurs, jamais vertes. En HOO classique (G = B = OIII), le magenta est impossible "
+          "mais les étoiles chaudes sortent rouges ou saumon (jamais jaunes) et les froides cyan ; cœur rouge / halo cyan fréquent (étoiles OIII plus grosses). "
+          "MIEUX : vert synthétique, G = 0,2·Ha + 0,8·OIII (AIASTRO) ou NB to RGB Star Combination (sans SII : R = Ha, G = 0,3·Ha + 0,7·OIII, B = OIII) : étoile chaude G > B donc jaune-orange, froide G < B donc bleutée. "
+          "Caméra couleur dual-band : NB to RGB accepte l'image couleur directement (Ha = canal rouge, OIII = canal vert seul). "
+          "CONTRÔLE à la sonde 15x15 sur le halo : chaude R >= G >= B (G = B exactement = HOO classique, pas de jaune possible), froide B >= G >= R, pas de G au-dessus de R et B ; une dizaine d'étoiles pas toutes identiques. "
+          "AJUSTER : bleues verdâtres ou chaudes trop rouges -> plus de Ha dans le vert ; chaudes jaune-vert -> moins ; cyan saturé -> désature ou Color Boost plus bas ; anneau rouge/cyan -> réduction d'étoiles ; toutes blanches -> étirement plus doux."), ''),
+    (note('Star_Stretch', T_STARSTRETCH + " Étoiles HOO : Color Boost plus bas si le cyan ou le rouge est criard, Stretch Amount plus bas si toutes blanches."), ''),
 ] + stars_end()
 
 os.makedirs(OUT, exist_ok=True)
