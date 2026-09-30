@@ -84,7 +84,10 @@ Légende :
 
 - Officiel — [AutoIntegrate, code source](https://github.com/jarmoruuth/AutoIntegrate) (`AutoIntegrateEngine.js`) : formules de réduction d'étoiles de Bill Blanshan, version 2.
 - Tutoriel — [Chaotic Nebula, réduction d'étoiles](https://chaoticnebula.com/pixinsight-star-reduction/)
-- Tutoriel — [Chaotic Nebula, LHE](https://chaoticnebula.com/unlocking-faint-details-a-guide-to-local-histogram-equalization/)
+- Tutoriel — [Chaotic Nebula, LHE](https://chaoticnebula.com/unlocking-faint-details-a-guide-to-local-histogram-equalization/) : Contrast Limit 1,5 ou 2,0, Amount 1,000 = pas de mélange, mélange 50/50 conseillé ; masque RangeSelection Fuzziness 0,1, Smoothness > 0,6.
+- Documentation — [Starlust Astroguide, LocalHistogramEqualization](https://astroguide.starlust.de/html/LocalHistogramEqualization.html) : définitions de Kernel Radius (petit = effet fort, bruit, anneaux ; grand = stable), Contrast Limit (1,0 = aucun changement, rester sous 3), Amount (0,75 = 3/4 traité), Histogram Resolution (8-bit, plus haut = plus lent, moins bon avec petits rayons), Circular Kernel (plus uniforme).
+- Tutoriel — [Chad Leader, Local Histogram Equalization](https://chadleader.wixsite.com/my-site/post/bringing-out-the-details-part-1-local-histogram-equalization-pixinsight) : Contrast Limit 2,0 « good for most images » ; deux passes (nébuleuse 212 px / 0,19 puis 42 px / 0,16 ; galaxie 140 px / 0,20 puis 32 px / 0,18) ; masque RangeSelection ; « LHE is very easy to overdo ».
+- Officiel — [PixInsight, Dynamic Range and Local Contrast (NGC 7023)](https://pixinsight.com/tutorials/NGC7023-HDR/) : LHE implémente CLAHE ; Contrast limit 1,7 ; baisse de saturation à grande échelle.
 - Tutoriel — [Chaotic Nebula, HDRMultiscaleTransform](https://chaoticnebula.com/pixinsight-hdr-multiscale-transform/)
 
 ## Workflows complets (auteurs de tutoriels vidéo, versions écrites)

@@ -210,7 +210,10 @@ D_BL = ("Réduction d'étoiles Bill Blanshan, méthode Transfer V2 : applique su
 D_MT = ("Alternative : MorphologicalTransformation sur l'image d'étoiles seule (ou avec un masque d'étoiles). Morphological Selection 0,25 (sous 0,5 = érosion), Amount 0,60, 1 itération, élément circulaire 5x5.")
 D_CURVES = ("CurvesTransformation — légère courbe en S sur RGB/K (0,25→0,22 ; 0,75→0,78) et saturation (canal S : milieu monté de 0,5 à 0,6). "
             "Ajuste à l'œil, idéalement sous un masque de luminance pour protéger le fond (icône Masque_L juste avant).")
-D_LHE = "LocalHistogramEqualization sur l'image sans étoiles, sous masque de luminance (icône Masque_L, masque attaché avec Ctrl+M) : Kernel radius 150 (64 à 300 selon les structures), Contrast limit 2,0, Amount 0,35 (facile à exagérer)."
+D_LHE = ("LocalHistogramEqualization (CLAHE) sur l'image sans étoiles, sous masque de luminance (icône Masque_L, masque attaché avec Ctrl+M) : sans masque, le fond bruité prend du contraste. "
+         "Kernel radius 150 (défaut 64 ; 100 à 300 selon la taille des structures ; petit = effet fort mais bruit et anneaux, grand = plus doux ; en pixels, donc plus grand à fort échantillonnage). "
+         "Contrast limit 2,0 (1,0 = rien ; 1,5 à 2,0 ; sous 3 sinon bruit). Amount 0,35 (1,0 = résultat pur ; facile à exagérer). Histogram resolution 8-bit, Circular kernel coché. "
+         "Option deux passes : grand rayon puis petit rayon, Amount 0,15 à 0,20 chacune (ex. galaxie 140 px à 0,20 puis 32 px à 0,18). Resature aux courbes si besoin.")
 D_HDR = "HDRMultiscaleTransform sur l'image sans étoiles pour les zones brillantes : 6 couches, 1 itération (essaie 2), To lightness, Preserve hue et Lightness mask cochés. Trop fort : mélange à 50 % avec l'original."
 D_NXT_F = "NoiseXTerminator, passe finale légère sur l'image étirée : Denoise 0,40, Detail 0,15. Seulement si besoin."
 

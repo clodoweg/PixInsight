@@ -851,7 +851,7 @@ max(0, (0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2] - s) / (1 - s))</parameter>
       <parameter id="St" value="AkimaSubsplines"/>
    </instance>
    <instance class="LocalHistogramEqualization" version="256" id="RSHO_33_LHE_instance">
-      <description>LocalHistogramEqualization sur l'image sans étoiles, sous masque de luminance (icône Masque_L, masque attaché avec Ctrl+M) : Kernel radius 150 (64 à 300 selon les structures), Contrast limit 2,0, Amount 0,35 (facile à exagérer).</description>
+      <description>LocalHistogramEqualization (CLAHE) sur l'image sans étoiles, sous masque de luminance (icône Masque_L, masque attaché avec Ctrl+M) : sans masque, le fond bruité prend du contraste. Kernel radius 150 (défaut 64 ; 100 à 300 selon la taille des structures ; petit = effet fort mais bruit et anneaux, grand = plus doux ; en pixels, donc plus grand à fort échantillonnage). Contrast limit 2,0 (1,0 = rien ; 1,5 à 2,0 ; sous 3 sinon bruit). Amount 0,35 (1,0 = résultat pur ; facile à exagérer). Histogram resolution 8-bit, Circular kernel coché. Option deux passes : grand rayon puis petit rayon, Amount 0,15 à 0,20 chacune (ex. galaxie 140 px à 0,20 puis 32 px à 0,18). Resature aux courbes si besoin.</description>
       <parameter id="radius" value="150"/>
       <parameter id="histogramBins" value="Bit8"/>
       <parameter id="slopeLimit" value="2.0"/>
