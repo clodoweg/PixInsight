@@ -1321,6 +1321,59 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
       </li>
     </ol>
     <div class="note"><strong>Contrôle à chaque passe :</strong> garde un œil sur l'histogramme. Aucun pic collé à 0 (fond écrêté) et aucune accumulation à 1 (étoiles brûlées).</div>
+
+    <h3 id="ghs-reperes">Valeurs de référence : ni trop, ni pas assez étiré</h3>
+    <p>Il n'existe pas de norme officielle, mais les sources convergent sur ces repères. Les valeurs sont sur l'échelle 0–1 de PixInsight (entre parenthèses, l'équivalent sur 255).</p>
+    <figure class="dg"><div class="dg-scroll"><div style="min-width:560px"><svg class="dg" viewBox="0 0 720 140" role="img" aria-label="Niveau du fond de ciel : vers 0,20-0,25 après le premier étirement, puis 0,12-0,14 dans l'image finale, jamais 0">
+<rect class="f-surf s-line" x="30" y="50" width="620" height="26" rx="4"/>
+<rect class="f-nl" x="185" y="50" width="78" height="26"/>
+<rect class="f-acc s-acc" x="216" y="50" width="31" height="26"/>
+<rect class="f-lin" x="340" y="50" width="78" height="26"/>
+<line x1="30" y1="44" x2="30" y2="82" stroke="currentColor" stroke-width="2"/>
+<text class="lab curve-b-t" x="379" y="24" text-anchor="middle">Après le 1er étirement</text>
+<text class="tick" x="379" y="40" text-anchor="middle">0,20–0,25</text>
+<text class="tick" x="549" y="67" text-anchor="middle">final &gt; 0,18–0,20 : trop étiré</text>
+<text class="tick" x="30" y="96" text-anchor="start">0 (écrêté)</text>
+<text class="tick" x="185" y="96" text-anchor="middle">0,1</text><text class="tick" x="340" y="96" text-anchor="middle">0,2</text><text class="tick" x="495" y="96" text-anchor="middle">0,3</text><text class="tick" x="650" y="96" text-anchor="middle">0,4</text>
+<text class="tick" x="656" y="67" text-anchor="start">… 1</text>
+<text class="lab curve-a-t" x="224" y="114" text-anchor="middle">Image finale : 0,12–0,14 (30–35 / 255)</text>
+<text class="tick" x="224" y="130" text-anchor="middle">0,10 données propres · 0,15 données bruitées</text>
+</svg></div></div><figcaption>Où doit se trouver le fond de ciel. Le premier étirement est généreux (pic vers 0,20–0,25, documentation GHS) pour faire sortir le signal faible ; les passes de contraste et l'assombrissement du fond (HP = SP) le ramènent ensuite vers 0,12–0,14 dans l'image finale (30–35 sur 255 : Jerry Lodriguss, AstroBackyard), sans jamais toucher 0.</figcaption></figure>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Moment</th><th>Valeur à viser</th><th>Source</th></tr></thead>
+        <tbody>
+          <tr><td>Après le 1er étirement</td><td>Pic de l'histogramme (≈ fond) vers <strong>0,20–0,25</strong> ; SP à la frontière fond / signal, b ≈ 10, LP = 0, HP = 1</td><td>Documentation GHS ; 0,25 est aussi la médiane cible par défaut de Statistical Stretch</td></tr>
+          <tr><td>Passes de contraste</td><td>b = 3 à 5, SP sur la zone plate, HP pour les étoiles, LP pour le fond</td><td>Documentation GHS</td></tr>
+          <tr><td>Fond de l'image finale</td><td>Gris foncé, <strong>0,12–0,14</strong> (30–35 sur 255)</td><td>Jerry Lodriguss (≈ 35), AstroBackyard (30)</td></tr>
+          <tr><td>Couleur du fond</td><td><strong>R = G = B</strong>, à quelques unités près (on ne lit jamais exactement la même valeur partout)</td><td>Jerry Lodriguss, AstroBackyard</td></tr>
+          <tr><td>Point noir</td><td><strong>Jamais 0</strong> : aucun pixel du fond écrêté</td><td>Jerry Lodriguss ; Roger Clark : mieux vaut sous-corriger qu'écrêter</td></tr>
+          <tr><td>Selon le bruit</td><td>Données bruitées : haut de la fourchette (0,14–0,15). Données propres, après NXT : 0,10–0,12</td><td>Pratique de la fiche, dans le sens de Jon Rista (après réduction du bruit, on peut assombrir davantage)</td></tr>
+          <tr><td>Hautes lumières</td><td>Seuls les cœurs des étoiles les plus brillantes atteignent 1 ; le cœur d'une galaxie ou d'une nébuleuse garde du détail</td><td>Pratique de la fiche (pas de chiffre sourcé)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Comment contrôler dans PixInsight</h3>
+    <ol>
+      <li><strong>Valeur du fond :</strong> preview sur du fond vide, puis <em>Process › Image › Statistics</em> : lis la <strong>médiane</strong> de chaque canal.</li>
+      <li><strong>Lecture sur 255 :</strong> clic droit sur la barre de lecture en bas de la fenêtre › <em>Readout Options</em> › plage entière 8 bits. Tu lis alors directement 30–35 sur le fond.</li>
+      <li><strong>Écrêtage :</strong> dans HistogramTransformation, le nombre de pixels écrêtés en bas doit rester à 0 (ou presque), sans pic collé au bord gauche.</li>
+      <li><strong>Hautes lumières :</strong> si la lecture donne 1,0 sur de grandes zones, baisse HP (GHS) ou utilise Highlight reduction.</li>
+    </ol>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Trop étiré</th><th>Pas assez étiré</th></tr></thead>
+        <tbody>
+          <tr><td>Fond grisâtre ou granuleux, bruit visible</td><td>Image sombre, extensions faibles invisibles (bras de galaxie, nébulosité diffuse)</td></tr>
+          <tr><td>Halos, étoiles grosses et blanches</td><td>Aspect très contrasté, « découpé » sur du noir</td></tr>
+          <tr><td>Couleurs délavées</td><td>Fond sous 0,08, ou pixels à 0</td></tr>
+          <tr><td>Fond au-dessus de 0,18–0,20 dans l'image finale</td><td>Histogramme collé à gauche</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>Test simple :</strong> regarde l'image en plein écran à 100 %, puis en vignette, et sur un autre écran (téléphone) : un écran trop lumineux pousse à trop assombrir le fond.</p>
   </section>
 
   <section id="etoiles">

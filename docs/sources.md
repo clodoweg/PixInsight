@@ -166,12 +166,22 @@ Légende :
 - Forum — [PixInsight, NeutralizeBackground (AstroGerdt)](https://pixinsight.com/forum/index.php?threads/rudimentary-script-to-optimize-background-neutralization-in-spcc.21398/) : alternative (pièce jointe du forum, sans dépôt) ; cherche les zones les plus sombres et recommande une limite haute pour SPCC.
 - Forum — [PixInsight, difficultés de neutralisation du fond dans SPCC](https://pixinsight.com/forum/index.php?threads/struggles-with-background-neutralization-in-spcc.20388/) et [Cloudy Nights, SPCC ou BackgroundNeutralization](https://www.cloudynights.com/forums/topic/938201-spcc-background-neutralization-vs-bn-tool/) : limites par défaut −2,80 / +2,00 ; la limite basse sert surtout à éviter un fond artificiellement sombre.
 
+## Repères d'étirement (niveau du fond, trop ou pas assez étiré)
+
+- Officiel — [Documentation GHS](https://www.ghsastro.co.uk/doc/tools/GeneralizedHyperbolicStretch/GeneralizedHyperbolicStretch.html) : pic d'histogramme vers 0,2–0,25 après le 1er étirement ; b ≈ 10 au début, 3 à 5 ensuite ; LP et HP inutiles au 1er étirement.
+- Tutoriel — [Jerry Lodriguss, correction de base des astrophotos](https://www.astropix.com/html/processing/digtechs.html) : fond neutralisé en gris foncé vers 35-35-35 (sur 255), jamais 0-0-0 (écrêtage) ; les valeurs ne sont jamais exactement identiques partout.
+- Tutoriel — [AstroBackyard, traitement pas à pas](https://astrobackyard.com/tutorials/astrophotography-tutorial-1/) : fond gris foncé vers 30, 30, 30.
+- Tutoriel — [Roger Clark, traitement d'image 2](https://clarkvision.com/articles/astrophotography.image.processing2/) : mieux vaut sous-corriger qu'écrêter ; aucun canal écrêté en bas. [rnc-color-stretch](https://clarkvision.com/articles/astrophotography-rnc-color-stretch/) : point zéro par défaut 4096/65535 (≈ 0,06).
+- Tutoriel — [Jon Rista, signal, bruit et histogrammes](https://jonrista.com/the-astrophotographers-guide/astrophotography-basics/signal-noise-and-histograms/) : après réduction du bruit, on peut assombrir davantage le fond.
+- Pratique de la fiche (signalée comme telle sur la page) : fourchette 0,14–0,15 pour des données bruitées et 0,10–0,12 pour des données propres ; seuil « trop étiré » au-delà de 0,18–0,20 ; hautes lumières (seuls les cœurs d'étoiles à 1) ; signes visuels de sur- et sous-étirement.
+
 ## Schémas de la fiche
 
 Les schémas ne reprennent que des faits déjà sourcés plus haut ; ils n'ajoutent aucun réglage.
 
 - Frises des workflows, arbre de choix, comparaison large bande / narrowband, circuit des étoiles : ordre des étapes et phase linéaire ou étirée tirés des étapes de la fiche (sources des rubriques correspondantes).
 - Courbes GHS : calculées avec l'équation hyperbolique généralisée de David Payne (b > 0) telle qu'elle est codée dans les formules PixelMath de Bill Blanshan (`FromLukeAndBill.xpsm`, [theAstroShed](https://github.com/jamiesmith/pixinsight-icons)) ; D = 10, SP = 0,1, b = 10 et b = 1, sans LP ni HP. Lecture des paramètres d'après la [documentation GHS](https://www.ghsastro.co.uk/doc/tools/GeneralizedHyperbolicStretch/GeneralizedHyperbolicStretch.html).
+- Échelle du fond (section GHS) : reprend les valeurs de la rubrique « Repères d'étirement ».
 - Continuum : filtre R vers 600–700 nm, raie Ha à 656,3 nm, filtre Ha de 3 nm et formule `Ha_cs = Ha − k·(R − med(R))`, déjà sourcés (rubrique Combinaison et narrowband). Les hauteurs sont schématiques, pas à l'échelle.
 
 ## Dernier audit (septembre 2026)

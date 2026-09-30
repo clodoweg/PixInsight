@@ -96,7 +96,7 @@ Chaque fichier contient **tous les process du workflow, dans l'ordre**, numérot
   - `MGC_MARS` : charge la base MARS dans les préférences de MGC si elle ne l'est pas.
   - `DynamicCrop` et `DBE` : icônes réelles, sans cadre ni points (ils dépendent de l'image).
   - `SPCC` et `SPFC_…` : configurés pour ton matériel (QHY600 + Antlia V Pro). Bande passante narrowband 3 nm (filtres Antlia 3 nm).
-  - `GHS_1_premier`, `GHS_2_contraste`, `GHS_3_fond` : Local intensity et protections réglés, mais **Stretch factor à 0 et SP à choisir sur ton image** (l'icône ne fait rien tant que tu ne l'as pas réglée).
+  - `GHS_1_premier`, `GHS_2_contraste`, `GHS_3_fond` : Local intensity et protections réglés, mais **Stretch factor à 0 et SP à choisir sur ton image** (l'icône ne fait rien tant que tu ne l'as pas réglée). Leurs descriptions donnent les repères de niveau : fond vers 0,20–0,25 après le 1er étirement, 0,12–0,14 (30–35 sur 255) dans l'image finale, jamais 0.
   - `Courbes` : légère courbe en S et saturation, à ajuster à l'œil.
 - **Icônes-notes** (process *NoOperation*, sans effet) : seulement pour les **scripts** (WBPP, ImageSolver, Statistical Stretch, Star Stretch, Halo-B-Gon, CorrectMagentaStars, NB to RGB Star Combination, NBColourMapper, Automatic Continuum Subtraction, NBRGBCombination) et les en-têtes d'étape. Une icône de script enregistre le chemin du fichier et son empreinte sur la machine de l'auteur, et WBPP 3.x a changé d'emplacement : une icône de script recopiée risquerait de ne pas se charger chez toi. La description donne tous les réglages à faire dans le script.
 
