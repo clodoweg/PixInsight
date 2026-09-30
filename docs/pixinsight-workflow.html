@@ -250,7 +250,7 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
 <aside class="side" id="side">
   <div class="side-top"><a class="brand" href="#top">PixInsight 2026</a><button type="button" class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="side-nav">Sommaire</button></div>
   <div class="search"><label class="sr" for="q">Rechercher</label><input id="q" type="search" autocomplete="off" placeholder="Chercher un outil, une étape…"><ul id="results" hidden></ul></div>
-  <nav id="side-nav" aria-label="Sommaire"><div class="ngroup"><div class="nhead">Démarrer</div><a href="#demarrer" data-sec="demarrer">Par où commencer</a><a href="#outils" data-sec="outils">Outils et dépôts</a><a href="#pretraitement" data-sec="pretraitement">Prétraitement WBPP</a><a href="#lineaire" data-sec="lineaire">Phase linéaire commune</a></div><div class="ngroup"><div class="nhead">Workflows</div><a href="#lrgb" data-sec="lrgb">LRGB<span class="ndots"><i class="flt-dot L"></i><i class="flt-dot R"></i><i class="flt-dot G"></i><i class="flt-dot B"></i></span></a><a href="#lhargb" data-sec="lhargb">LHaRGB<span class="ndots"><i class="flt-dot L"></i><i class="flt-dot Ha"></i><i class="flt-dot R"></i><i class="flt-dot G"></i><i class="flt-dot B"></i></span></a><a href="#rgbsho" data-sec="rgbsho">RGB + SHO<span class="ndots"><i class="flt-dot SII"></i><i class="flt-dot Ha"></i><i class="flt-dot OIII"></i><i class="flt-dot R"></i><i class="flt-dot G"></i><i class="flt-dot B"></i></span></a><a href="#sho" data-sec="sho">SHO sans RGB<span class="ndots"><i class="flt-dot SII"></i><i class="flt-dot Ha"></i><i class="flt-dot OIII"></i></span></a><a href="#hoo" data-sec="hoo">HOO<span class="ndots"><i class="flt-dot Ha"></i><i class="flt-dot OIII"></i></span></a></div><div class="ngroup"><div class="nhead">Techniques</div><a href="#ghs" data-sec="ghs">Méthode GHS</a><a href="#couleurs-sho" data-sec="couleurs-sho">Couleurs SHO</a><a href="#couleurs-hoo" data-sec="couleurs-hoo">Couleurs HOO</a><a href="#foraxx" data-sec="foraxx">Formules Foraxx</a><a href="#continuum" data-sec="continuum">Le continuum</a><a href="#etoiles" data-sec="etoiles">Réduction d&#x27;étoiles</a></div><div class="ngroup"><div class="nhead">Référence</div><a href="#parametres" data-sec="parametres">Paramètres des outils</a><a href="#regles" data-sec="regles">Règles d&#x27;or</a></div></nav>
+  <nav id="side-nav" aria-label="Sommaire"><div class="ngroup"><div class="nhead">Démarrer</div><a href="#demarrer" data-sec="demarrer">Par où commencer</a><a href="#outils" data-sec="outils">Outils et dépôts</a><a href="#pretraitement" data-sec="pretraitement">Prétraitement WBPP</a><a href="#lineaire" data-sec="lineaire">Phase linéaire commune</a></div><div class="ngroup"><div class="nhead">Workflows</div><a href="#lrgb" data-sec="lrgb">LRGB<span class="ndots"><i class="flt-dot L"></i><i class="flt-dot R"></i><i class="flt-dot G"></i><i class="flt-dot B"></i></span></a><a href="#lhargb" data-sec="lhargb">LHaRGB<span class="ndots"><i class="flt-dot L"></i><i class="flt-dot Ha"></i><i class="flt-dot R"></i><i class="flt-dot G"></i><i class="flt-dot B"></i></span></a><a href="#rgbsho" data-sec="rgbsho">RGB + SHO<span class="ndots"><i class="flt-dot SII"></i><i class="flt-dot Ha"></i><i class="flt-dot OIII"></i><i class="flt-dot R"></i><i class="flt-dot G"></i><i class="flt-dot B"></i></span></a><a href="#sho" data-sec="sho">SHO sans RGB<span class="ndots"><i class="flt-dot SII"></i><i class="flt-dot Ha"></i><i class="flt-dot OIII"></i></span></a><a href="#hoo" data-sec="hoo">HOO<span class="ndots"><i class="flt-dot Ha"></i><i class="flt-dot OIII"></i></span></a></div><div class="ngroup"><div class="nhead">Techniques</div><a href="#ghs" data-sec="ghs">Méthode GHS</a><a href="#couleurs-lrgb" data-sec="couleurs-lrgb">Couleurs LRGB</a><a href="#couleurs-sho" data-sec="couleurs-sho">Couleurs SHO</a><a href="#couleurs-hoo" data-sec="couleurs-hoo">Couleurs HOO</a><a href="#foraxx" data-sec="foraxx">Formules Foraxx</a><a href="#continuum" data-sec="continuum">Le continuum</a><a href="#etoiles" data-sec="etoiles">Réduction d&#x27;étoiles</a></div><div class="ngroup"><div class="nhead">Référence</div><a href="#parametres" data-sec="parametres">Paramètres des outils</a><a href="#regles" data-sec="regles">Règles d&#x27;or</a></div></nav>
 </aside>
 <div class="wrap" id="top">
   <header class="top">
@@ -612,7 +612,7 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
       </li>
       <li id="lrgb-e4">
         <div class="step-head"><h4>Calibration des couleurs</h4><span class="phase lin">Linéaire</span></div>
-        <p>Choisis ton profil de filtres et de capteur. Le type de galaxie <em>Average Spiral</em> sert de référence de blanc.</p>
+        <p>Choisis ton profil de filtres et de capteur. Le type de galaxie <em>Average Spiral</em> sert de référence de blanc. Contrôle ensuite les graphes et les couleurs (<a href="#couleurs-lrgb" style="color:var(--accent)">couleurs LRGB</a>).</p>
         <div class="tools"><a class="tool nat" href="#t-spcc">SPCC</a></div>
       </li>
       <li id="lrgb-e5">
@@ -637,7 +637,7 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
       </li>
       <li id="lrgb-e9">
         <div class="step-head"><h4>Combinaison L + RGB</h4><span class="phase nl">Étiré</span></div>
-        <p>Sur les deux images sans étoiles : LRGBCombination, saturation vers 0,35 à 0,4, <em>Chrominance noise reduction</em> activée. Alternative : décomposer en CIE L*a*b*, remplacer L, recomposer.</p>
+        <p>Sur les deux images sans étoiles : LRGBCombination, saturation vers 0,35 à 0,4, <em>Chrominance noise reduction</em> activée. Alternative : décomposer en CIE L*a*b*, remplacer L, recomposer. Vérifie ensuite que les couleurs ne sont ni délavées ni criardes (<a href="#couleurs-lrgb" style="color:var(--accent)">couleurs LRGB</a>).</p>
         <div class="tools"><a class="tool nat" href="#t-lrgb">LRGBCombination</a><a class="tool nat" href="#t-chcomb">ChannelCombination (CIE L*a*b*)</a></div>
       </li>
       <li id="lrgb-e10">
@@ -652,6 +652,94 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
         <div class="tools"><a class="tool nat" href="#t-pixelmath">PixelMath</a><a class="tool nat" href="#t-morpho">MorphologicalTransformation</a><a class="tool free" href="#t-starred">StarReduction</a><a class="tool free" href="#t-starred">ScreenStars</a></div>
       </li>
     </ol>
+
+    <h3 id="couleurs-lrgb">Couleurs LRGB : le rendu de référence et comment le vérifier</h3>
+    <p>En LRGB, la couleur est <strong>calibrée</strong> : SPCC fixe un blanc de référence objectif, l'<em>Average Spiral Galaxy</em> (moyenne des spectres de galaxies S0 à Sdm). Le standard est donc plus précis qu'en narrowband : une galaxie spirale, prise dans son ensemble, doit être blanche en moyenne.</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Zone</th><th>Couleur attendue</th><th>Source</th></tr></thead>
+        <tbody>
+          <tr><td>Galaxie spirale, vue dans son ensemble</td><td><strong>Blanche en moyenne</strong> (définition du blanc de SPCC)</td><td>Documentation SPCC</td></tr>
+          <tr><td>Bulbe, cœur de galaxie</td><td><strong>Jaune à jaune orangé</strong> (vieilles étoiles)</td><td>NASA APOD (M81), Buta (NED)</td></tr>
+          <tr><td>Bras spiraux</td><td><strong>Bleu</strong> (jeunes étoiles chaudes)</td><td>NASA APOD, Buta, UNLV</td></tr>
+          <tr><td>Régions HII dans les bras</td><td><strong>Rose</strong></td><td>UNLV (Jeffery), NASA (NGC 3982)</td></tr>
+          <tr><td>Bandes de poussière</td><td><strong>Brun sombre</strong></td><td>UNLV (Jeffery)</td></tr>
+          <tr><td>Nébuleuse par réflexion</td><td><strong>Bleu</strong> (la poussière diffuse mieux le bleu)</td><td>Wikipédia</td></tr>
+          <tr><td>Nébuleuse en émission</td><td><strong>Rouge</strong> (raies de Balmer de l'hydrogène, surtout Ha)</td><td>Wikipédia</td></tr>
+          <tr><td>Étoiles</td><td>Du <strong>bleu-blanc</strong> au <strong>jaune-orange</strong>, <strong>jamais vertes</strong></td><td>Las Cumbres Observatory (corps noir)</td></tr>
+          <tr><td>Fond de ciel</td><td><strong>Gris neutre foncé</strong> (0,12–0,14, R = G = B)</td><td><a href="#ghs-reperes" style="color:var(--accent)">Repères d'étirement</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>SPCC donne une calibration <strong>légèrement plus bleue</strong> (en général moins de 10 %) qu'avec l'ancienne photométrie APASS, selon sa documentation : une image qui tire un peu vers le bleu n'est pas forcément fausse.</p>
+
+    <h4>Vérifier que tu es dedans</h4>
+    <ol>
+      <li><strong>Graphes de SPCC</strong> (<em>Generate graphs</em>) : les étoiles suivent les droites de près, la croix du blanc de référence est dans le nuage de points. Une forte dispersion signale souvent un mauvais flat (gradient multiplicatif).</li>
+      <li><strong>Étoiles, à la sonde 15×15</strong> : aucune étoile avec G au-dessus de R et de B à la fois (il n'existe pas d'étoile verte) ; on trouve des étoiles bleues (B ≥ G ≥ R) et jaune-orange (R ≥ G ≥ B). Toutes blanches : sur-étirement ou combinaison L/RGB mal accordée.</li>
+      <li><strong>Galaxie</strong> : cœur R ≥ G, nettement au-dessus de B ; bras B au-dessus de R ; régions HII R au-dessus de B au-dessus de G.</li>
+      <li><strong>Fond</strong> : R ≈ G ≈ B.</li>
+    </ol>
+    <figure class="dg"><div class="dg-scroll"><div style="min-width:600px"><svg class="dg" viewBox="0 0 760 250" role="img" aria-label="Ce que la sonde doit lire en LRGB calibré : cœur de galaxie jaune avec R au moins égal à G et B faible, bras bleus avec B au-dessus de G et R, régions HII roses avec R au-dessus de B au-dessus de G ; une étoile avec G au-dessus de R et B est impossible">
+<rect x="14" y="10" width="162" height="34" rx="6" fill="#d8b25a" stroke="currentColor" stroke-opacity="0.35"/>
+<text class="lab" x="95" y="62" text-anchor="middle">Cœur (jaune)</text>
+<rect class="f-surf s-line" x="36" y="104" width="30" height="96"/>
+<text class="tick" x="51" y="214" text-anchor="middle">R</text>
+<rect class="f-surf s-line" x="78" y="121" width="30" height="79"/>
+<text class="tick" x="93" y="214" text-anchor="middle">G</text>
+<rect class="f-surf s-line" x="120" y="158" width="30" height="42"/>
+<text class="tick" x="135" y="214" text-anchor="middle">B</text>
+<line x1="28" y1="200" x2="162" y2="200" stroke="currentColor" stroke-width="1"/>
+<text class="lab" x="95" y="238" text-anchor="middle">R ≥ G ≫ B</text>
+<rect x="204" y="10" width="162" height="34" rx="6" fill="#7c9fd6" stroke="currentColor" stroke-opacity="0.35"/>
+<text class="lab" x="285" y="62" text-anchor="middle">Bras (bleu)</text>
+<rect class="f-surf s-line" x="226" y="146" width="30" height="54"/>
+<text class="tick" x="241" y="214" text-anchor="middle">R</text>
+<rect class="f-surf s-line" x="268" y="130" width="30" height="70"/>
+<text class="tick" x="283" y="214" text-anchor="middle">G</text>
+<rect class="f-surf s-line" x="310" y="104" width="30" height="96"/>
+<text class="tick" x="325" y="214" text-anchor="middle">B</text>
+<line x1="218" y1="200" x2="352" y2="200" stroke="currentColor" stroke-width="1"/>
+<text class="lab" x="285" y="238" text-anchor="middle">B > G > R</text>
+<rect x="394" y="10" width="162" height="34" rx="6" fill="#e39bb3" stroke="currentColor" stroke-opacity="0.35"/>
+<text class="lab" x="475" y="62" text-anchor="middle">Région HII (rose)</text>
+<rect class="f-surf s-line" x="416" y="98" width="30" height="102"/>
+<text class="tick" x="431" y="214" text-anchor="middle">R</text>
+<rect class="f-surf s-line" x="458" y="134" width="30" height="66"/>
+<text class="tick" x="473" y="214" text-anchor="middle">G</text>
+<rect class="f-surf s-line" x="500" y="118" width="30" height="82"/>
+<text class="tick" x="515" y="214" text-anchor="middle">B</text>
+<line x1="408" y1="200" x2="542" y2="200" stroke="currentColor" stroke-width="1"/>
+<text class="lab" x="475" y="238" text-anchor="middle">R > B > G</text>
+<rect x="584" y="10" width="162" height="34" rx="6" fill="#8fbf3f" stroke="currentColor" stroke-opacity="0.35"/>
+<text class="lab" x="665" y="62" text-anchor="middle">Étoile verte</text>
+<rect class="f-surf s-line" x="606" y="134" width="30" height="66"/>
+<text class="tick" x="621" y="214" text-anchor="middle">R</text>
+<rect class="f-acc s-acc" x="648" y="106" width="30" height="94"/>
+<text class="tick" x="663" y="214" text-anchor="middle">G</text>
+<rect class="f-surf s-line" x="690" y="152" width="30" height="48"/>
+<text class="tick" x="705" y="214" text-anchor="middle">B</text>
+<line x1="598" y1="200" x2="732" y2="200" stroke="currentColor" stroke-width="1"/>
+<text class="lab curve-a-t" x="665" y="238" text-anchor="middle">impossible : à corriger</text>
+</svg></div></div><figcaption>Schéma (valeurs illustratives, pas des cibles chiffrées) : ce que la sonde doit lire sur une galaxie calibrée. Une étoile où G dépasse à la fois R et B est physiquement impossible : c'est une erreur de calibration ou un excès de vert. Règles déduites de la composition des couleurs ; aucune source ne les chiffre.</figcaption></figure>
+
+    <h4>Quoi ajuster</h4>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Constat</th><th>Cause probable, réglage</th></tr></thead>
+        <tbody>
+          <tr><td>Dominante verte générale</td><td>SPCC mal configuré (filtres, capteur) : refais-le. En dernier recours, <a href="#t-scnr" style="color:var(--accent)">SCNR</a> vert, Average Neutral (rarement utile après SPCC)</td></tr>
+          <tr><td>Tout bleu ou tout jaune</td><td>Mauvais filtres ou capteur dans SPCC, ou gradient resté avant SPCC</td></tr>
+          <tr><td>Graphes dispersés</td><td>Flat à revoir, gradient multiplicatif, ou gradient retiré après SPCC au lieu d'avant</td></tr>
+          <tr><td>Couleurs délavées après LRGBCombination</td><td>L trop claire par rapport au RGB : accorde fonds et médianes (<a href="#ghs-e6" style="color:var(--accent)">méthode</a>) ; Saturation 0,35 à 0,40 (plus bas = plus saturé)</td></tr>
+          <tr><td>Couleurs criardes, bruit coloré</td><td>Saturation trop poussée : réduis-la (dans LRGBCombination, remonte la valeur Saturation : plus haut = moins saturé) ; NXT sur le RGB ; réduction de chrominance de LRGBCombination</td></tr>
+          <tr><td>Étoiles toutes blanches</td><td>Étire les étoiles à part (Star Stretch, ou GHS avec HP) ; fais la combinaison LRGB sur l'image sans étoiles</td></tr>
+          <tr><td>Fond coloré</td><td>Neutralisation du fond de <a href="#t-spcc" style="color:var(--accent)">SPCC</a></td></tr>
+          <tr><td>Régions HII peu visibles</td><td>Normal en LRGB pur ; pour les faire ressortir : <a href="#lhargb" style="color:var(--accent)">LHaRGB</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>Quand passer à autre chose :</strong> galaxie riche en régions HII : <a href="#lhargb" style="color:var(--accent)">LHaRGB</a> ; nébuleuse en émission ou ciel pollué : narrowband (<a href="#sho" style="color:var(--accent)">SHO</a>, <a href="#hoo" style="color:var(--accent)">HOO</a>) ou <a href="#rgbsho" style="color:var(--accent)">RGB + SHO</a> ; nébuleuse par réflexion, amas, galaxie sans régions HII marquées : le LRGB est dans son élément.</p>
   </section>
 
   <section id="lhargb">

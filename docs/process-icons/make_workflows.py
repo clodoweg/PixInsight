@@ -213,7 +213,11 @@ T_SPCC = ("SPCC configuré pour ton matériel (" + MATERIEL + ") : White referen
           "FOND DE RÉFÉRENCE : l'icône n'a ni vue de référence ni Region of Interest, donc SPCC prend l'image entière ; les limites sont en écarts-types autour de la médiane et écartent étoiles et nébuleuse. "
           "Suffisant après le retrait du gradient sur une galaxie ou un champ avec du ciel libre. Champ rempli de nébuleuse : baisse la limite haute, ou lance Script › SetiAstro › Find Background (dépôt "
           "https://updates.setiastro.com/) qui crée automatiquement un aperçu nommé Background, puis coche Region of Interest et clique From Preview (ou crée toi-même une preview sur du fond vide). "
-          "Après SPCC, vérifie que le fond est gris neutre. Toujours en linéaire, après le gradient et BXT Correct Only, avant BXT complet.")
+          "Après SPCC, vérifie que le fond est gris neutre. Toujours en linéaire, après le gradient et BXT Correct Only, avant BXT complet. "
+          "CONTRÔLE : graphes = étoiles serrées autour des droites, croix du blanc de référence dans le nuage (forte dispersion : flat à revoir, gradient multiplicatif). "
+          "COULEURS ATTENDUES : galaxie spirale blanche en moyenne (définition du blanc Average Spiral Galaxy), cœur jaune, bras bleus, régions HII roses, poussière brun sombre, "
+          "nébuleuse par réflexion bleue, en émission rouge, étoiles du bleu-blanc au jaune-orange, JAMAIS vertes (G au-dessus de R et de B à la fois = erreur). "
+          "Légère dominante bleue (moins de 10 %) possible et normale avec SPCC. Tout vert, tout bleu ou tout jaune : filtres ou capteur mal choisis, ou gradient resté avant SPCC.")
 spcc = lambda: (spcc_perso('SPCC'), T_SPCC)
 
 # ---------------------------------------------------------------- LRGB
@@ -229,7 +233,9 @@ lrgb = pre_block() + [rgb_comb(), (note('ImageSolver', T_SOLVER), '')] + gradien
     (note('Star_Stretch', T_STARSTRETCH), ''),
     (M.instance('LRGBCombination', 'LRGB_ajout_L', {'mL': '0.500', 'mc': '0.400', 'noiseReduction': True}, post=M.lrgb_post),
      "LRGBCombination sur les images étirées et SANS étoiles : seul L activé (renomme ta luminance 'L'), glisse le triangle sur le RGB. Lightness 0,5 ; Saturation 0,40 (plus bas = plus saturé) ; "
-     "Chrominance noise reduction cochée. Couleurs délavées : L trop claire par rapport au RGB, étire-la moins."),
+     "Chrominance noise reduction cochée. Couleurs délavées : L trop claire par rapport au RGB, étire-la moins. "
+     "CONTRÔLE après combinaison (sonde 15x15) : cœur de galaxie R >= G, nettement au-dessus de B ; bras B au-dessus de R ; régions HII R > B > G ; aucune étoile verte ; toute une gamme d'étoiles bleues et jaune-orange ; fond R = G = B. "
+     "Couleurs criardes ou bruit coloré : remonte la valeur de Saturation (plus haut = moins saturé), NXT sur le RGB. Étoiles toutes blanches : étire-les à part. Régions HII peu visibles : normal en LRGB pur, passe en LHaRGB."),
 ] + finish_block() + stars_end()
 
 # ---------------------------------------------------------------- LHaRGB
@@ -254,7 +260,8 @@ lhargb = pre_block() + [rgb_comb(), (note('ImageSolver', T_SOLVER), '')] + gradi
 ] + ghs_block(" Étire RGB et L sans étoiles jusqu'au même fond.") + [
     (note('Star_Stretch', T_STARSTRETCH), ''),
     (M.instance('LRGBCombination', 'LRGB_ajout_L', {'mL': '0.500', 'mc': '0.400', 'noiseReduction': True}, post=M.lrgb_post),
-     "LRGBCombination sur les images étirées sans étoiles : seul L activé (vue 'L'), Lightness 0,5, Saturation 0,40, Chrominance noise reduction cochée."),
+     "LRGBCombination sur les images étirées sans étoiles : seul L activé (vue 'L'), Lightness 0,5, Saturation 0,40, Chrominance noise reduction cochée. "
+     "CONTRÔLE (sonde 15x15) : cœur de galaxie jaune (R >= G >> B), bras bleus, régions HII roses et bien visibles grâce au Ha (R > B > G), aucune étoile verte, fond R = G = B ; couleurs délavées : L trop claire, étire-la moins."),
 ] + finish_block() + stars_end()
 
 # ---------------------------------------------------------------- narrowband communs

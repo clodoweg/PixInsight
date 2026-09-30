@@ -176,6 +176,17 @@ Légende :
 - Tutoriel — [Jon Rista, signal, bruit et histogrammes](https://jonrista.com/the-astrophotographers-guide/astrophotography-basics/signal-noise-and-histograms/) : après réduction du bruit, on peut assombrir davantage le fond.
 - Pratique de la fiche (signalée comme telle sur la page) : fourchette 0,14–0,15 pour des données bruitées et 0,10–0,12 pour des données propres ; seuil « trop étiré » au-delà de 0,18–0,20 ; hautes lumières (seuls les cœurs d'étoiles à 1) ; signes visuels de sur- et sous-étirement.
 
+## Couleurs LRGB
+
+- Officiel — [Documentation SPCC](https://pixinsight.com/doc/docs/SPCC/SPCC.html) : blanc de référence Average Spiral Galaxy (moyenne des spectres S0 à Sdm) ; graphes corrects = droites suivant les points, croix du blanc dans le nuage ; forte dispersion souvent due à un mauvais flat ; calibration légèrement plus bleue qu'avec APASS, en général moins de 10 %.
+- Officiel — [NASA APOD, M81 en vraies couleurs](https://science.nasa.gov/image-article/apod-1997-july-26-m81-in-true-color/) : noyau jaune (vieilles étoiles), bras bleus (jeunes étoiles chaudes).
+- Recherche — [Buta, morphologie des galaxies en couleur (NED)](https://ned.ipac.caltech.edu/level5/Sept11/Buta/Buta15.html) : populations anciennes jaune orangé, bras dominés par les jeunes étoiles donc plus bleus.
+- Cours — [UNLV (Jeffery), bras spiraux](https://www.physics.unlv.edu/~jeffery/astro/galaxies/spiral_arms_bars.html) : bras en vraies couleurs = mélange de bleu (étoiles OB), rose (régions HII) et brun sombre (poussière).
+- Officiel — [NASA, NGC 3982](https://science.nasa.gov/asset/hubble/face-on-spiral-galaxy-ngc-3982/) : régions de formation d'étoiles roses, amas bleus, bandes de poussière.
+- Encyclopédie — [Wikipédia, nébuleuse par réflexion](https://en.wikipedia.org/wiki/Reflection_nebula) (bleue : la diffusion est plus efficace pour le bleu) et [nébuleuse en émission](https://en.wikipedia.org/wiki/Emission_nebula) (rouge : raies de Balmer, surtout Ha).
+- Officiel — [Las Cumbres Observatory, corps noir](https://lco.global/spacebook/light/black-body-radiation/) : pas d'étoile verte, une étoile qui culmine dans le vert émet aussi beaucoup de rouge et de bleu et paraît blanche.
+- Règles de lecture à la sonde (cœur R ≥ G ≫ B, bras B au-dessus de R, HII R > B > G, aucune étoile avec G au-dessus de R et B) : déduites de la composition des couleurs ; aucune source ne les chiffre, la page l'indique.
+
 ## Couleurs SHO et choix de la palette
 
 - Tutoriel — [AstroBackyard, guide du narrowband et de la palette Hubble](https://astrobackyard.com/narrowband-imaging/)
@@ -200,6 +211,7 @@ Les schémas ne reprennent que des faits déjà sourcés plus haut ; ils n'ajout
 
 - Frises des workflows, arbre de choix, comparaison large bande / narrowband, circuit des étoiles : ordre des étapes et phase linéaire ou étirée tirés des étapes de la fiche (sources des rubriques correspondantes).
 - Courbes GHS : calculées avec l'équation hyperbolique généralisée de David Payne (b > 0) telle qu'elle est codée dans les formules PixelMath de Bill Blanshan (`FromLukeAndBill.xpsm`, [theAstroShed](https://github.com/jamiesmith/pixinsight-icons)) ; D = 10, SP = 0,1, b = 10 et b = 1, sans LP ni HP. Lecture des paramètres d'après la [documentation GHS](https://www.ghsastro.co.uk/doc/tools/GeneralizedHyperbolicStretch/GeneralizedHyperbolicStretch.html).
+- Lecture des couleurs LRGB (section LRGB) : valeurs illustratives, règles de la rubrique « Couleurs LRGB ».
 - Lecture des couleurs HOO (section HOO) : valeurs illustratives, règles de la rubrique « Couleurs HOO ».
 - Lecture des couleurs SHO (section RGB + SHO) : valeurs illustratives, règles de la rubrique « Couleurs SHO et choix de la palette ».
 - Échelle du fond (section GHS) : reprend les valeurs de la rubrique « Repères d'étirement ».
