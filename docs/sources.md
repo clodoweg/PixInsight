@@ -216,6 +216,12 @@ Légende :
 - Réglages Star Stretch (Stretch Amount, Color Boost) : rubrique Scripts (code SetiAstro) et fiche Star Stretch.
 - Lecture sur le halo (cœur saturé), variété des couleurs, contrôles après recombinaison (couleur identique à l'image d'étoiles seule, anneaux sombres, halos, taille, fond) : pratique de la fiche, sans chiffre sourcé ; la page l'indique.
 
+## Étoiles en LHaRGB
+
+- Officiel — [PixInsight, notes de traitement Ha de M31](https://pixinsight.com/examples/M31-Ha/) : la soustraction du continuum abîme toujours un peu les étoiles, les PSF ne pouvant pas coïncider ; étoiles restaurées à partir de poses rouges.
+- Tutoriel — [AstroBackyard, HaRGB](https://astrobackyard.com/hargb-astrophotography/) : trop de Ha grossit les étoiles.
+- Déduction de la fiche (signalée sur la page) : dans l'ordre des étapes (injection avant SXT), les étoiles gardées contiennent l'injection ; variante « étoiles prises sur une copie du RGB avant injection », même principe que la restauration de l'exemple M31, non publiée telle quelle.
+
 ## Standard des étoiles HOO
 
 - Mêmes sources que « Standard des étoiles sans RGB » (AIASTRO, `NBtoRGBStars.js`, Las Cumbres Observatory).
