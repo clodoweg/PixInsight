@@ -821,7 +821,7 @@ max(0, (0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2] - s) / (1 - s))</parameter>
       <parameter id="circularKernel" value="true"/>
    </instance>
    <instance class="HDRMultiscaleTransform" version="256" id="LRGB_28_HDRMT_instance">
-      <description>HDRMultiscaleTransform sur l'image sans étoiles pour les zones brillantes : 6 couches, 1 itération (essaie 2), To lightness, Preserve hue et Lightness mask cochés. Trop fort : mélange à 50 % avec l'original.</description>
+      <description>HDRMultiscaleTransform sur l'image sans étoiles pour les zones brillantes (cœurs, nébuleuses denses). Number of layers 6 = échelles 1 à 32 px (4 à 6 selon Starlust ; plus de couches = plus grandes structures ; essaie 7 à fort échantillonnage). Iterations 1 (plus = plus fort et plus doux ; essaie 2). Overdrive 0 (0,10 à 0,20 pour plus de force). Median transform décoché (coché = moins d'anneaux, plus lent). Scaling function B3 Spline (5). Deringing décoché (petites valeurs si anneaux). Midtones balance Automatic. To lightness, Preserve hue et Lightness mask cochés (le masque interne protège le fond : pas de masque externe). Trop fort : mélange à 50 % avec l'original.</description>
       <parameter id="numberOfLayers" value="6"/>
       <parameter id="numberOfIterations" value="1"/>
       <parameter id="invertedIterations" value="true"/>
