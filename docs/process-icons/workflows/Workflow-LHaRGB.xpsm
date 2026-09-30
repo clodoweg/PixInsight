@@ -335,7 +335,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="samplesPerRow" value="15"/>
    </instance>
    <instance class="BlurXTerminator" version="256" id="LHA_13_BXT_CorrectOnly_instance">
-      <description>BlurXTerminator — Correct Only, AVANT SPCC (manuel RC Astro) : corrige aberrations, coma et tilt sans accentuer. Sur l'image couleur combinée, en linéaire, après le gradient. Si les aberrations diffèrent d'un filtre à l'autre : applique-le sur chaque master avant de combiner.</description>
+      <description>BlurXTerminator — Correct Only, AVANT SPCC (manuel RC Astro) : corrige aberrations, coma et tilt sans accentuer. Sur l'image couleur combinée, en linéaire, après le gradient. Si les aberrations diffèrent d'un filtre à l'autre : applique-le sur chaque master avant de combiner. Réglages (manuel RC Astro AI4) : données LINÉAIRES obligatoires, avant toute réduction de bruit et avant SXT. Sharpen Stars 0 à 0,5 (défaut 0,25 ; au maximum les étoiles perdent la moitié de leur taille) ; longue focale : une valeur haute peut laisser des zones sans détail autour des étoiles brillantes, et des halos sombres (baisse la valeur ou monte Adjust Star Halos). Adjust Star Halos −0,5 à +0,5 (défaut 0 ; plus haut = halos plus larges et plus doux, plus bas = étoiles plus dures). Automatic PSF coché ; sinon PSF Diameter = FWHM des étoiles en pixels (8 px au plus ; au-delà, réduis l'image de moitié). CDK17 + QHY600 bin 1 : 0,264″/px, donc 2″ de FWHM = 7,6 px, 2,5″ = 9,5 px. Sharpen Nonstellar 0 à 1 (1 = viser une PSF ponctuelle). Ne pas appliquer deux fois.</description>
       <parameter id="ml_version" value="4"/>
       <parameter id="correct_only" value="true"/>
       <parameter id="sharpen_stars" value="0.25"/>
@@ -467,7 +467,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="outputDirectory"></parameter>
    </instance>
    <instance class="BlurXTerminator" version="256" id="LHA_16_BXT_RGB_instance">
-      <description>BlurXTerminator complet sur RGB, après SPCC : Sharpen Stars 0,25, Halos 0, Nonstellar 0,50.</description>
+      <description>BlurXTerminator complet sur RGB, après SPCC : Sharpen Stars 0,25, Halos 0, Nonstellar 0,50. Réglages (manuel RC Astro AI4) : données LINÉAIRES obligatoires, avant toute réduction de bruit et avant SXT. Sharpen Stars 0 à 0,5 (défaut 0,25 ; au maximum les étoiles perdent la moitié de leur taille) ; longue focale : une valeur haute peut laisser des zones sans détail autour des étoiles brillantes, et des halos sombres (baisse la valeur ou monte Adjust Star Halos). Adjust Star Halos −0,5 à +0,5 (défaut 0 ; plus haut = halos plus larges et plus doux, plus bas = étoiles plus dures). Automatic PSF coché ; sinon PSF Diameter = FWHM des étoiles en pixels (8 px au plus ; au-delà, réduis l'image de moitié). CDK17 + QHY600 bin 1 : 0,264″/px, donc 2″ de FWHM = 7,6 px, 2,5″ = 9,5 px. Sharpen Nonstellar 0 à 1 (1 = viser une PSF ponctuelle). Ne pas appliquer deux fois.</description>
       <parameter id="ml_version" value="4"/>
       <parameter id="correct_only" value="false"/>
       <parameter id="sharpen_stars" value="0.25"/>
@@ -479,7 +479,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="overlap" value="0.20"/>
    </instance>
    <instance class="BlurXTerminator" version="256" id="LHA_17_BXT_L_H_instance">
-      <description>BlurXTerminator complet sur L et sur le master H (mono, linéaires) : Sharpen Stars 0,25, Halos 0, Nonstellar 0,80. Déconvolue AVANT tout mélange (soustraction du continuum, injection).</description>
+      <description>BlurXTerminator complet sur L et sur le master H (mono, linéaires) : Sharpen Stars 0,25, Halos 0, Nonstellar 0,80. Déconvolue AVANT tout mélange (soustraction du continuum, injection). Réglages (manuel RC Astro AI4) : données LINÉAIRES obligatoires, avant toute réduction de bruit et avant SXT. Sharpen Stars 0 à 0,5 (défaut 0,25 ; au maximum les étoiles perdent la moitié de leur taille) ; longue focale : une valeur haute peut laisser des zones sans détail autour des étoiles brillantes, et des halos sombres (baisse la valeur ou monte Adjust Star Halos). Adjust Star Halos −0,5 à +0,5 (défaut 0 ; plus haut = halos plus larges et plus doux, plus bas = étoiles plus dures). Automatic PSF coché ; sinon PSF Diameter = FWHM des étoiles en pixels (8 px au plus ; au-delà, réduis l'image de moitié). CDK17 + QHY600 bin 1 : 0,264″/px, donc 2″ de FWHM = 7,6 px, 2,5″ = 9,5 px. Sharpen Nonstellar 0 à 1 (1 = viser une PSF ponctuelle). Ne pas appliquer deux fois.</description>
       <parameter id="ml_version" value="4"/>
       <parameter id="correct_only" value="false"/>
       <parameter id="sharpen_stars" value="0.25"/>

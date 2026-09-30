@@ -186,6 +186,11 @@ def cc():
 
 D_CC = ("CosmeticCorrection pour WBPP : Auto detect, Hot sigma 2,5 (2,2 à 3,0 ; 2,2-2,5 en narrowband, poses longues), Cold désactivé. Coche CFA si caméra couleur. "
         "Ne l'applique pas directement : dans WBPP, sélectionne cette icône comme modèle de correction cosmétique.")
+BXT_C = (" Réglages (manuel RC Astro AI4) : données LINÉAIRES obligatoires, avant toute réduction de bruit et avant SXT. Sharpen Stars 0 à 0,5 (défaut 0,25 ; au maximum les étoiles perdent la moitié de leur taille) ; "
+         "longue focale : une valeur haute peut laisser des zones sans détail autour des étoiles brillantes, et des halos sombres (baisse la valeur ou monte Adjust Star Halos). "
+         "Adjust Star Halos −0,5 à +0,5 (défaut 0 ; plus haut = halos plus larges et plus doux, plus bas = étoiles plus dures). "
+         "Automatic PSF coché ; sinon PSF Diameter = FWHM des étoiles en pixels (8 px au plus ; au-delà, réduis l'image de moitié). CDK17 + QHY600 bin 1 : 0,264″/px, donc 2″ de FWHM = 7,6 px, 2,5″ = 9,5 px. "
+         "Sharpen Nonstellar 0 à 1 (1 = viser une PSF ponctuelle). Ne pas appliquer deux fois.")
 D_BXT_CO = ("BlurXTerminator — Correct Only, AVANT SPCC (manuel RC Astro) : corrige aberrations, coma et tilt sans accentuer. Sur l'image couleur combinée, en linéaire, après le gradient. "
             "Si les aberrations diffèrent d'un filtre à l'autre : applique-le sur chaque master avant de combiner.")
 D_SXT_LIN = ("StarXTerminator — sur données LINÉAIRES, le plus tôt possible après BXT (RC Astro). Generate star image coché, UNSCREEN DÉCOCHÉ (réservé aux images étirées) : "
@@ -337,11 +342,11 @@ SCREEN_LRGB = (" LRGB — CONTRÔLE après recombinaison, à 100 % : étoiles de
                "fond toujours R = G = B (fond éclairci : fond de l'image d'étoiles pas à 0).")
 
 lrgb = pre_block() + [rgb_comb(), (note('ImageSolver', T_SOLVER), '')] + gradient_block('rgb') + [
-    (M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), D_BXT_CO),
+    (M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), D_BXT_CO + BXT_C),
     (note('Find_Background', T_FINDBG), ''),
     spcc(),
-    (M.bxt('BXT_RGB', False, 0.25, 0.0, 0.50), "BlurXTerminator complet sur RGB, APRÈS SPCC : Sharpen Stars 0,25 (0 à 0,5), Adjust Star Halos 0, PSF automatique, Sharpen Nonstellar 0,50 (le détail viendra de L). Avant toute réduction de bruit."),
-    (M.bxt('BXT_L', False, 0.25, 0.0, 0.80), "BlurXTerminator complet sur L (linéaire, gradient retiré) : Sharpen Stars 0,25, Halos 0, Sharpen Nonstellar 0,80 (0,70 à 0,90), plus fort que sur RGB car la luminance porte le détail. Si vers ou pores à 100 % : baisse Nonstellar."),
+    (M.bxt('BXT_RGB', False, 0.25, 0.0, 0.50), "BlurXTerminator complet sur RGB, APRÈS SPCC : Sharpen Stars 0,25 (0 à 0,5), Adjust Star Halos 0, PSF automatique, Sharpen Nonstellar 0,50 (le détail viendra de L). Avant toute réduction de bruit." + BXT_C),
+    (M.bxt('BXT_L', False, 0.25, 0.0, 0.80), "BlurXTerminator complet sur L (linéaire, gradient retiré) : Sharpen Stars 0,25, Halos 0, Sharpen Nonstellar 0,80 (0,70 à 0,90), plus fort que sur RGB car la luminance porte le détail. Si vers ou pores à 100 % : baisse Nonstellar." + BXT_C),
     (M.sxt('SXT_lineaire', False), D_SXT_LIN + " Sur RGB (garde les étoiles : ce sont celles de l'image finale) et sur L (jette ses étoiles)."),
     (M.nxt('NXT_RGB', 0.80, 1), "NoiseXTerminator sur RGB sans étoiles : Denoise 0,80 (0,70 à 0,90), Detail 0,15. Toujours après BXT. Fonctionne en linéaire ou après étirement (RC Astro)." + NXT_C),
     (M.nxt('NXT_L', 0.60, 1), "NoiseXTerminator sur L sans étoiles : Denoise 0,60 (0,50 à 0,70) pour garder le détail fin." + NXT_C),
@@ -356,11 +361,11 @@ lrgb = pre_block() + [rgb_comb(), (note('ImageSolver', T_SOLVER), '')] + gradien
 
 # ---------------------------------------------------------------- LHaRGB
 lhargb = pre_block() + [rgb_comb(), (note('ImageSolver', T_SOLVER), '')] + gradient_block('lha') + [
-    (M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), D_BXT_CO),
+    (M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), D_BXT_CO + BXT_C),
     (note('Find_Background', T_FINDBG), ''),
     spcc(),
-    (M.bxt('BXT_RGB', False, 0.25, 0.0, 0.50), "BlurXTerminator complet sur RGB, après SPCC : Sharpen Stars 0,25, Halos 0, Nonstellar 0,50."),
-    (M.bxt('BXT_L_H', False, 0.25, 0.0, 0.80), "BlurXTerminator complet sur L et sur le master H (mono, linéaires) : Sharpen Stars 0,25, Halos 0, Nonstellar 0,80. Déconvolue AVANT tout mélange (soustraction du continuum, injection)."),
+    (M.bxt('BXT_RGB', False, 0.25, 0.0, 0.50), "BlurXTerminator complet sur RGB, après SPCC : Sharpen Stars 0,25, Halos 0, Nonstellar 0,50." + BXT_C),
+    (M.bxt('BXT_L_H', False, 0.25, 0.0, 0.80), "BlurXTerminator complet sur L et sur le master H (mono, linéaires) : Sharpen Stars 0,25, Halos 0, Nonstellar 0,80. Déconvolue AVANT tout mélange (soustraction du continuum, injection)." + BXT_C),
     (pm('Continuum_H', 'k = 0.9;\nH - k*(R - med(R))', symbols='k', new_image=True, new_id='H_cs', space='Gray'),
      "Soustraction du continuum : H_cs = H - k*(R - med(R)). Vues 'H' et 'R' (master rouge linéaire, gradient retiré). Ajuste k (0,8 à 1) jusqu'à faire disparaître étoiles et disque galactique. "
      "med(R) garde le niveau du fond. Limite : résidus sur les étoiles (PSF différentes). "
@@ -456,10 +461,10 @@ def rgb_stars_block():
     return [
         (note('Etoiles_RGB', "ÉTOILES RGB — masters R, G, B : même recadrage, puis les icônes suivantes dans l'ordre (combinaison, gradient via l'icône GradientCorrection ou les notes, BXT Correct Only, SPCC, BXT, SXT)." + STARS_RGBSHO), ''),
         rgb_comb(),
-        (M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), D_BXT_CO),
+        (M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), D_BXT_CO + BXT_C),
         (note('Find_Background', T_FINDBG), ''),
         spcc(),
-        (M.bxt('BXT_RGB', False, 0.25, 0.0, 0.50), "BlurXTerminator complet sur RGB après SPCC : Sharpen Stars 0,25, Halos 0, Nonstellar 0,50."),
+        (M.bxt('BXT_RGB', False, 0.25, 0.0, 0.50), "BlurXTerminator complet sur RGB après SPCC : Sharpen Stars 0,25, Halos 0, Nonstellar 0,50." + BXT_C),
         (M.sxt('SXT_RGB_lineaire', False), D_SXT_LIN + " Garde uniquement l'image d'étoiles RGB."),
         (note('Star_Stretch', T_STARSTRETCH + STARS_RGBSHO), ''),
     ]
@@ -467,7 +472,7 @@ def rgb_stars_block():
 # ---------------------------------------------------------------- RGB + SHO
 rgbsho = pre_block() + nb_masters(['S', 'H', 'O']) + [
     sho_combine,
-    (M.bxt('BXT_NB', False, 0.25, 0.0, 0.60), D_BXT_NB),
+    (M.bxt('BXT_NB', False, 0.25, 0.0, 0.60), D_BXT_NB + BXT_C),
     (M.sxt('SXT_lineaire', False), D_SXT_LIN + " Sur l'image SHO : garde le fond sans étoiles (les étoiles viendront du RGB)."),
 ] + extract([(0, 'S'), (1, 'H'), (2, 'O')], "l'image SHO sans étoiles") + nb_noise + ghs_block(GHS_NB, STAT_NB) + sho_palette + finish_block(sho_finish) + rgb_stars_block() + stars_end(cms=True, screen_extra=SCREEN_RGBSHO)
 
@@ -481,7 +486,7 @@ STARS_NB_FIX = ("AJUSTER : magenta -> NB to RGB ou étoiles HOO synthétiques, s
 
 sho = pre_block() + nb_masters(['S', 'H', 'O']) + [
     sho_combine,
-    (M.bxt('BXT_NB', False, 0.25, 0.0, 0.60), D_BXT_NB),
+    (M.bxt('BXT_NB', False, 0.25, 0.0, 0.60), D_BXT_NB + BXT_C),
     (M.sxt('SXT_lineaire', False), D_SXT_LIN + " Sur l'image SHO : GARDE LES DEUX images (fond et étoiles), les étoiles viennent ici du narrowband."),
 ] + extract([(0, 'S'), (1, 'H'), (2, 'O')], "l'image SHO sans étoiles") + extract([(0, 'S_stars'), (1, 'H_stars'), (2, 'O_stars')], "l'image d'étoiles SHO (linéaire)") + nb_noise + ghs_block(GHS_NB, STAT_NB) + sho_palette + finish_block(sho_finish) + [
     (note('NB_to_RGB_Stars', "ÉTOILES — méthode 1 : NB to RGB Star Combination (SetiAstro, script). Ha Stars et OIII Stars (linéaires, obligatoires), S optionnel. "
@@ -504,7 +509,7 @@ hoo = pre_block() + [
 ] + nb_masters(['H', 'O']) + [
     (pm('Combinaison_HOO', 'H', 'O', 'O', new_image=True, new_id='HOO', space='RGB'),
      "Combinaison HOO SIMPLE : R = H, G = O, B = O, sans boost. Sert à BXT et SXT (en caméra couleur, BXT s'applique plutôt sur l'image d'origine avant extraction). Crée 'HOO'."),
-    (M.bxt('BXT_NB', False, 0.25, 0.0, 0.60), D_BXT_NB),
+    (M.bxt('BXT_NB', False, 0.25, 0.0, 0.60), D_BXT_NB + BXT_C),
     (M.sxt('SXT_lineaire', False), D_SXT_LIN + " Sur l'image HOO : garde l'image d'étoiles si tu n'as pas d'étoiles RGB."),
 ] + extract([(0, 'H'), (1, 'O')], "l'image HOO sans étoiles") + nb_noise + ghs_block(GHS_NB, STAT_NB) + [
     (pm('HOO_simple', 'H', 'O', 'O', new_image=True, new_id='HOO_etire', space='RGB'),
