@@ -218,9 +218,9 @@ def write(filename, prefix, title, steps):
         xml = shorten(item[1], prefix, base)
         r = L.role(prefix, base)
         if r == 'opt':
-            tag = 'OPTION — %s. ' % L.WHEN[base]
+            tag = 'OPTION — %s.\n\n' % L.WHEN[base]
         elif not L.is_default(r):
-            tag = 'ALTERNATIVE — %s. ' % label(r)
+            tag = 'ALTERNATIVE — %s.\n\n' % label(r)
         else:
             tag = ''
         xml = xml.replace('<description>', '<description>' + escape(tag), 1)

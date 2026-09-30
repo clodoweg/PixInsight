@@ -137,17 +137,20 @@ V = {
     ('LHA', 'SXT_lineaire'): ("Generate star image coché, Unscreen décoché", "rien ; sur RGB (garde les étoiles) et sur L (jette ses étoiles)", ["quadrillage -> Large overlap"]),
 }
 
-LAUNCH = {True: "Glisse l'icône sur l'image. ", False: "Double-clic sur l'icône puis Apply Global. "}
-MD5 = "Si l'icône est bloquée après une mise à jour du script : efface son champ MD5. "
+LAUNCH = {True: "LANCEMENT : glisse l'icône sur l'image.", False: "LANCEMENT : double-clic sur l'icône, puis Apply Global."}
+MD5 = " Si l'icône est bloquée après une mise à jour du script, efface son champ MD5."
 
 
 def text(prefix, base, drag=None, md5=False):
+    """Paragraphes séparés par une ligne vide : LANCEMENT, PRÉRÉGLÉ, À RÉGLER, SI (un cas par ligne), Détails."""
     key = ('NB', base) if prefix in NB and ('NB', base) in V else (prefix, base)
     pre, todo, ifs = V.get(key) or S[base]
-    t = ''
+    parts = []
     if drag is not None:
-        t += LAUNCH[drag] + (MD5 if md5 else '')
-    t += "PRÉRÉGLÉ : %s. À RÉGLER : %s." % (pre, todo)
+        parts.append(LAUNCH[drag] + (MD5 if md5 else ''))
+    parts.append("PRÉRÉGLÉ : %s." % pre)
+    parts.append("À RÉGLER : %s." % todo)
     if ifs:
-        t += " SI " + " ; si ".join(ifs) + "."
-    return t + PAGE
+        parts.append("SI :\n" + "\n".join("- " + x for x in ifs))
+    parts.append(PAGE.strip())
+    return "\n\n".join(parts)

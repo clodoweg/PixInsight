@@ -9,14 +9,32 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <description>PHASE 1 — Préparation : masters intégrés, recadrés et combinés. Colonne de repère, sans effet.</description>
    </instance>
    <instance class="Script" version="256" id="E01_WBPP_instance">
-      <description>Double-clic sur l'icône puis Apply Global. PRÉRÉGLÉ : rien (WBPP garde ses propres réglages). À RÉGLER : Maximum quality ; CosmeticCorrection = icône CC_auto ; PSF Signal Weight ; Local normalization activée ; Rejection Auto ; Large-scale rejection High ; pas de drizzle (sauf FWHM &lt; 2 px). SI un groupe de lights sans dark ou flat (onglet Calibration) -&gt; corrige avant Run ; si plusieurs nuits -&gt; Grouping keywords = SESSION. Détails : page docs/pixinsight-workflow.html.</description>
+      <description>LANCEMENT : double-clic sur l'icône, puis Apply Global.
+
+PRÉRÉGLÉ : rien (WBPP garde ses propres réglages).
+
+À RÉGLER : Maximum quality ; CosmeticCorrection = icône CC_auto ; PSF Signal Weight ; Local normalization activée ; Rejection Auto ; Large-scale rejection High ; pas de drizzle (sauf FWHM &lt; 2 px).
+
+SI :
+- un groupe de lights sans dark ou flat (onglet Calibration) -&gt; corrige avant Run
+- plusieurs nuits -&gt; Grouping keywords = SESSION
+
+Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/BatchPreprocessing/BPP-Main.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="0"/>
       <parameter id="information"></parameter>
    </instance>
    <instance class="CosmeticCorrection" version="256" id="E02_CC_auto_instance">
-      <description>PRÉRÉGLÉ : Auto detect, Hot sigma 2,5, Cold désactivé. À RÉGLER : rien ; choisis cette icône comme modèle Cosmetic correction dans WBPP ; coche CFA seulement en caméra couleur. SI petites étoiles modifiées -&gt; Hot sigma 3,0 ; si S, H, O en poses longues -&gt; 2,2. Détails : page docs/pixinsight-workflow.html.</description>
+      <description>PRÉRÉGLÉ : Auto detect, Hot sigma 2,5, Cold désactivé.
+
+À RÉGLER : rien ; choisis cette icône comme modèle Cosmetic correction dans WBPP ; coche CFA seulement en caméra couleur.
+
+SI :
+- petites étoiles modifiées -&gt; Hot sigma 3,0
+- S, H, O en poses longues -&gt; 2,2
+
+Détails : page docs/pixinsight-workflow.html.</description>
       <table id="targetFrames" rows="0"/>
       <parameter id="masterDarkPath"></parameter>
       <parameter id="outputDir"></parameter>
@@ -40,7 +58,11 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <table id="defects" rows="0"/>
    </instance>
    <instance class="DynamicCrop" version="2" id="E03_DynamicCrop_instance">
-      <description>PRÉRÉGLÉ : rien (le cadre dépend de ton image). À RÉGLER : trace le cadre sur un master en excluant les bords bruités, crée une icône, applique-la à tous les masters. Détails : page docs/pixinsight-workflow.html.</description>
+      <description>PRÉRÉGLÉ : rien (le cadre dépend de ton image).
+
+À RÉGLER : trace le cadre sur un master en excluant les bords bruités, crée une icône, applique-la à tous les masters.
+
+Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="refWidth" value="1"/>
       <parameter id="refHeight" value="1"/>
       <parameter id="outWidth" value="1.00"/>
@@ -68,7 +90,11 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="noGUIMessages" value="false"/>
    </instance>
    <instance class="PixelMath" version="256" id="E04_Combinaison_RGB_instance">
-      <description>PRÉRÉGLÉ : R, G, B -&gt; image couleur 'RGB'. À RÉGLER : nomme tes masters R, G et B, puis glisse l'icône. Détails : page docs/pixinsight-workflow.html.</description>
+      <description>PRÉRÉGLÉ : R, G, B -&gt; image couleur 'RGB'.
+
+À RÉGLER : nomme tes masters R, G et B, puis glisse l'icône.
+
+Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="expression">R</parameter>
       <parameter id="expression1">G</parameter>
       <parameter id="expression2">B</parameter>
@@ -101,7 +127,11 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <description>PHASE 2 — Gradient : image linéaire : retrait du gradient. Colonne de repère, sans effet.</description>
    </instance>
    <instance class="SpectrophotometricFluxCalibration" version="1" id="E05_SPFC_RGB_filtres_instance">
-      <description>PRÉRÉGLÉ : QE IMX455, filtres Antlia R, G, B, Gaia DR3/SP. À RÉGLER : rien ; applique sur l'image RGB combinée linéaire, résolue, avant MGC. Détails : page docs/pixinsight-workflow.html.</description>
+      <description>PRÉRÉGLÉ : QE IMX455, filtres Antlia R, G, B, Gaia DR3/SP.
+
+À RÉGLER : rien ; applique sur l'image RGB combinée linéaire, résolue, avant MGC.
+
+Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="narrowbandMode" value="false"/>
       <parameter id="grayFilterTrCurve">300,0,410,0,420,0.95,705,0.95,720,0,800,0</parameter>
       <parameter id="grayFilterName">Antlia V Pro Series L (approx. 420-715 nm)</parameter>
@@ -147,7 +177,11 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="generateTextFiles" value="false"/>
    </instance>
    <instance class="SpectrophotometricFluxCalibration" version="1" id="E06_SPFC_L_instance">
-      <description>PRÉRÉGLÉ : QE IMX455, Gray = Antlia L, Gaia DR3/SP. À RÉGLER : rien ; applique sur le master L linéaire, résolu, avant MGC. Détails : page docs/pixinsight-workflow.html.</description>
+      <description>PRÉRÉGLÉ : QE IMX455, Gray = Antlia L, Gaia DR3/SP.
+
+À RÉGLER : rien ; applique sur le master L linéaire, résolu, avant MGC.
+
+Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="narrowbandMode" value="false"/>
       <parameter id="grayFilterTrCurve">300,0,410,0,420,0.95,705,0.95,720,0,800,0</parameter>
       <parameter id="grayFilterName">Antlia V Pro Series L (approx. 420-715 nm)</parameter>
@@ -193,7 +227,11 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="generateTextFiles" value="false"/>
    </instance>
    <instance class="SpectrophotometricFluxCalibration" version="1" id="E07_SPFC_H_instance">
-      <description>PRÉRÉGLÉ : QE IMX455, Narrowband 656,3 nm, 3 nm. À RÉGLER : rien ; applique sur le master H, puis MGC_MARS_H. Détails : page docs/pixinsight-workflow.html.</description>
+      <description>PRÉRÉGLÉ : QE IMX455, Narrowband 656,3 nm, 3 nm.
+
+À RÉGLER : rien ; applique sur le master H, puis MGC_MARS_H.
+
+Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="narrowbandMode" value="true"/>
       <parameter id="grayFilterTrCurve">300,0,410,0,420,0.95,705,0.95,720,0,800,0</parameter>
       <parameter id="grayFilterName">Antlia V Pro Series L (approx. 420-715 nm)</parameter>
@@ -239,7 +277,16 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="generateTextFiles" value="false"/>
    </instance>
    <instance class="MultiscaleGradientCorrection" version="1" id="E08_MGC_MARS_instance">
-      <description>PRÉRÉGLÉ : Gradient scale 1024, Structure separation 3, Smoothness 1,0, MARS Gray = L, modèle affiché. À RÉGLER : rien ; après SPFC, sur l'image linéaire. SI gradient restant dans les coins -&gt; Gradient scale 512 puis 256 ; si modèle qui ondule -&gt; Smoothness 3 à 5 ; si image couleur -&gt; filtres MARS R, G, B. Détails : page docs/pixinsight-workflow.html.</description>
+      <description>PRÉRÉGLÉ : Gradient scale 1024, Structure separation 3, Smoothness 1,0, MARS Gray = L, modèle affiché.
+
+À RÉGLER : rien ; après SPFC, sur l'image linéaire.
+
+SI :
+- gradient restant dans les coins -&gt; Gradient scale 512 puis 256
+- modèle qui ondule -&gt; Smoothness 3 à 5
+- image couleur -&gt; filtres MARS R, G, B
+
+Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="command"></parameter>
       <parameter id="useMARSDatabase" value="true"/>
       <parameter id="grayMARSFilter">L</parameter>
@@ -259,7 +306,14 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="showGradientModel" value="true"/>
    </instance>
    <instance class="MultiscaleGradientCorrection" version="1" id="E09_MGC_MARS_H_instance">
-      <description>PRÉRÉGLÉ : comme MGC_MARS, filtre MARS Gray = Ha. À RÉGLER : rien ; après SPFC_H, sur le master H. SI gradient restant -&gt; Gradient scale 512 puis 256. Détails : page docs/pixinsight-workflow.html.</description>
+      <description>PRÉRÉGLÉ : comme MGC_MARS, filtre MARS Gray = Ha.
+
+À RÉGLER : rien ; après SPFC_H, sur le master H.
+
+SI :
+- gradient restant -&gt; Gradient scale 512 puis 256
+
+Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="command"></parameter>
       <parameter id="useMARSDatabase" value="true"/>
       <parameter id="grayMARSFilter">Ha</parameter>
@@ -282,7 +336,11 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <description>PHASE 3 — Linéaire : image linéaire : couleur, déconvolution, retrait des étoiles, bruit. Colonne de repère, sans effet.</description>
    </instance>
    <instance class="BlurXTerminator" version="256" id="E10_BXT_CorrectOnly_instance">
-      <description>PRÉRÉGLÉ : Correct Only coché. À RÉGLER : rien ; sur le RGB combiné linéaire, AVANT SPCC. Détails : page docs/pixinsight-workflow.html.</description>
+      <description>PRÉRÉGLÉ : Correct Only coché.
+
+À RÉGLER : rien ; sur le RGB combiné linéaire, AVANT SPCC.
+
+Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="ml_version" value="4"/>
       <parameter id="correct_only" value="true"/>
       <parameter id="sharpen_stars" value="0.25"/>
@@ -294,7 +352,14 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="overlap" value="0.20"/>
    </instance>
    <instance class="SpectrophotometricColorCalibration" version="1" id="E11_SPCC_instance">
-      <description>PRÉRÉGLÉ : Average Spiral Galaxy, QE IMX455, filtres Antlia R, G, B, neutralisation du fond (−2,80 / +2,00), Gaia DR3/SP. À RÉGLER : rien ; sur le RGB linéaire, après BXT Correct Only. SI champ rempli de nébuleuse -&gt; aperçu Background (Find Background) en Region of Interest. Détails : page docs/pixinsight-workflow.html.</description>
+      <description>PRÉRÉGLÉ : Average Spiral Galaxy, QE IMX455, filtres Antlia R, G, B, neutralisation du fond (−2,80 / +2,00), Gaia DR3/SP.
+
+À RÉGLER : rien ; sur le RGB linéaire, après BXT Correct Only.
+
+SI :
+- champ rempli de nébuleuse -&gt; aperçu Background (Find Background) en Region of Interest
+
+Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="applyCalibration" value="true"/>
       <parameter id="narrowbandMode" value="false"/>
       <parameter id="narrowbandOptimizeStars" value="false"/>
@@ -350,7 +415,15 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="outputDirectory"></parameter>
    </instance>
    <instance class="BlurXTerminator" version="256" id="E12_BXT_RGB_instance">
-      <description>PRÉRÉGLÉ : Sharpen Stars 0,25, Halos 0, Nonstellar 0,50, PSF auto. À RÉGLER : rien ; après SPCC, en linéaire. SI vers ou pores à 100 % -&gt; Nonstellar 0,40 ; si halos sombres -&gt; Sharpen Stars plus bas ou Halos plus haut. Détails : page docs/pixinsight-workflow.html.</description>
+      <description>PRÉRÉGLÉ : Sharpen Stars 0,25, Halos 0, Nonstellar 0,50, PSF auto.
+
+À RÉGLER : rien ; après SPCC, en linéaire.
+
+SI :
+- vers ou pores à 100 % -&gt; Nonstellar 0,40
+- halos sombres -&gt; Sharpen Stars plus bas ou Halos plus haut
+
+Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="ml_version" value="4"/>
       <parameter id="correct_only" value="false"/>
       <parameter id="sharpen_stars" value="0.25"/>
@@ -362,7 +435,15 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="overlap" value="0.20"/>
    </instance>
    <instance class="BlurXTerminator" version="256" id="E13_BXT_L_H_instance">
-      <description>PRÉRÉGLÉ : Sharpen Stars 0,25, Halos 0, Nonstellar 0,80, PSF auto. À RÉGLER : rien ; sur L puis sur H, linéaires, avant tout mélange. SI vers ou pores -&gt; Nonstellar 0,70 ; si FWHM &gt; 8 px -&gt; bin 2 ou réduction ×0,5 avant. Détails : page docs/pixinsight-workflow.html.</description>
+      <description>PRÉRÉGLÉ : Sharpen Stars 0,25, Halos 0, Nonstellar 0,80, PSF auto.
+
+À RÉGLER : rien ; sur L puis sur H, linéaires, avant tout mélange.
+
+SI :
+- vers ou pores -&gt; Nonstellar 0,70
+- FWHM &gt; 8 px -&gt; bin 2 ou réduction ×0,5 avant
+
+Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="ml_version" value="4"/>
       <parameter id="correct_only" value="false"/>
       <parameter id="sharpen_stars" value="0.25"/>
@@ -374,7 +455,15 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="overlap" value="0.20"/>
    </instance>
    <instance class="PixelMath" version="256" id="E14_Continuum_H_instance">
-      <description>PRÉRÉGLÉ : k = 0,9 ; crée H_cs. À RÉGLER : vues nommées H et R (linéaires) ; ajuste k de 0,8 à 1. SI étoiles ou disque encore visibles dans H_cs -&gt; monte k ; si H_cs trop sombre ou négatif -&gt; baisse k. Détails : page docs/pixinsight-workflow.html.</description>
+      <description>PRÉRÉGLÉ : k = 0,9 ; crée H_cs.
+
+À RÉGLER : vues nommées H et R (linéaires) ; ajuste k de 0,8 à 1.
+
+SI :
+- étoiles ou disque encore visibles dans H_cs -&gt; monte k
+- H_cs trop sombre ou négatif -&gt; baisse k
+
+Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="expression">k = 0.9;
 H - k*(R - med(R))</parameter>
       <parameter id="expression1"></parameter>
@@ -405,7 +494,15 @@ H - k*(R - med(R))</parameter>
       <table id="outputData" rows="0"/>
    </instance>
    <instance class="PixelMath" version="256" id="E15_H_dans_RGB_instance">
-      <description>PRÉRÉGLÉ : w = 1,0 ; R' = R + w·H_cs. À RÉGLER : glisse sur le RGB linéaire calibré ; w entre 0,5 et 2. SI régions HII rouge vif -&gt; baisse w ; si invisibles -&gt; monte w. Détails : page docs/pixinsight-workflow.html.</description>
+      <description>PRÉRÉGLÉ : w = 1,0 ; R' = R + w·H_cs.
+
+À RÉGLER : glisse sur le RGB linéaire calibré ; w entre 0,5 et 2.
+
+SI :
+- régions HII rouge vif -&gt; baisse w
+- invisibles -&gt; monte w
+
+Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="expression">w = 1.0;
 $T[0] + w*H_cs</parameter>
       <parameter id="expression1">$T[1]</parameter>
@@ -436,7 +533,14 @@ $T[0] + w*H_cs</parameter>
       <table id="outputData" rows="0"/>
    </instance>
    <instance class="StarXTerminator" version="256" id="E16_SXT_lineaire_instance">
-      <description>PRÉRÉGLÉ : Generate star image coché, Unscreen décoché. À RÉGLER : rien ; sur RGB (garde les étoiles) et sur L (jette ses étoiles). SI quadrillage -&gt; Large overlap. Détails : page docs/pixinsight-workflow.html.</description>
+      <description>PRÉRÉGLÉ : Generate star image coché, Unscreen décoché.
+
+À RÉGLER : rien ; sur RGB (garde les étoiles) et sur L (jette ses étoiles).
+
+SI :
+- quadrillage -&gt; Large overlap
+
+Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="ml_version" value="0"/>
       <parameter id="output_stars" value="true"/>
       <parameter id="unscreen" value="false"/>
@@ -447,7 +551,15 @@ $T[0] + w*H_cs</parameter>
       <parameter id="overlap" value="0.20"/>
    </instance>
    <instance class="NoiseXTerminator" version="256" id="E17_NXT_RGB_instance">
-      <description>PRÉRÉGLÉ : Denoise 0,80, 1 itération, séparations décochées. À RÉGLER : rien ; après BXT. SI aspect plastique -&gt; 0,70 ; si taches de couleur -&gt; Color separation, Denoise color plus haut. Détails : page docs/pixinsight-workflow.html.</description>
+      <description>PRÉRÉGLÉ : Denoise 0,80, 1 itération, séparations décochées.
+
+À RÉGLER : rien ; après BXT.
+
+SI :
+- aspect plastique -&gt; 0,70
+- taches de couleur -&gt; Color separation, Denoise color plus haut
+
+Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="ml_version" value="0"/>
       <parameter id="denoise" value="0.80"/>
       <parameter id="enable_color_separation" value="false"/>
@@ -466,7 +578,15 @@ $T[0] + w*H_cs</parameter>
       <parameter id="overlap" value="0.20"/>
    </instance>
    <instance class="NoiseXTerminator" version="256" id="E18_NXT_L_instance">
-      <description>PRÉRÉGLÉ : Denoise 0,60, 1 itération. À RÉGLER : rien ; après BXT. SI détail fin perdu -&gt; 0,50 ; si encore bruité -&gt; 0,70. Détails : page docs/pixinsight-workflow.html.</description>
+      <description>PRÉRÉGLÉ : Denoise 0,60, 1 itération.
+
+À RÉGLER : rien ; après BXT.
+
+SI :
+- détail fin perdu -&gt; 0,50
+- encore bruité -&gt; 0,70
+
+Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="ml_version" value="0"/>
       <parameter id="denoise" value="0.60"/>
       <parameter id="enable_color_separation" value="false"/>
@@ -488,7 +608,15 @@ $T[0] + w*H_cs</parameter>
       <description>PHASE 4 — Étirement : passage en non linéaire, même fond pour toutes les images. Colonne de repère, sans effet.</description>
    </instance>
    <instance class="GeneralizedHyperbolicStretch" version="256" id="E19_GHS_1_premier_instance">
-      <description>PRÉRÉGLÉ : b = 10, Stretch factor 0 (aucun effet tant que tu ne le montes pas). À RÉGLER : clique le signal faible et Send to SP ; monte Stretch factor jusqu'au pic du fond vers 0,20–0,25. SI étoiles qui gonflent -&gt; baisse HP ; si fond bruité -&gt; monte LP. Détails : page docs/pixinsight-workflow.html.</description>
+      <description>PRÉRÉGLÉ : b = 10, Stretch factor 0 (aucun effet tant que tu ne le montes pas).
+
+À RÉGLER : clique le signal faible et Send to SP ; monte Stretch factor jusqu'au pic du fond vers 0,20–0,25.
+
+SI :
+- étoiles qui gonflent -&gt; baisse HP
+- fond bruité -&gt; monte LP
+
+Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
       <parameter id="stretchChannel" value="SC_RGB"/>
       <parameter id="inverse" value="false"/>
@@ -504,7 +632,15 @@ $T[0] + w*H_cs</parameter>
       <parameter id="useRGBWorkingSpace" value="false"/>
    </instance>
    <instance class="GeneralizedHyperbolicStretch" version="256" id="E20_GHS_2_contraste_instance">
-      <description>PRÉRÉGLÉ : b = 4, HP 0,9, Stretch factor 0. À RÉGLER : SP dans la zone à contraster ; monte Stretch factor peu à peu. SI étoiles brûlées -&gt; HP plus bas ; si fond qui remonte -&gt; LP. Détails : page docs/pixinsight-workflow.html.</description>
+      <description>PRÉRÉGLÉ : b = 4, HP 0,9, Stretch factor 0.
+
+À RÉGLER : SP dans la zone à contraster ; monte Stretch factor peu à peu.
+
+SI :
+- étoiles brûlées -&gt; HP plus bas
+- fond qui remonte -&gt; LP
+
+Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
       <parameter id="stretchChannel" value="SC_RGB"/>
       <parameter id="inverse" value="false"/>
@@ -520,7 +656,11 @@ $T[0] + w*H_cs</parameter>
       <parameter id="useRGBWorkingSpace" value="false"/>
    </instance>
    <instance class="GeneralizedHyperbolicStretch" version="256" id="E21_GHS_3_fond_instance">
-      <description>PRÉRÉGLÉ : b = 10, Stretch factor 0. À RÉGLER : technique HP = SP pour assombrir le fond vers 0,12–0,14 sans écrêter. Détails : page docs/pixinsight-workflow.html.</description>
+      <description>PRÉRÉGLÉ : b = 10, Stretch factor 0.
+
+À RÉGLER : technique HP = SP pour assombrir le fond vers 0,12–0,14 sans écrêter.
+
+Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
       <parameter id="stretchChannel" value="SC_RGB"/>
       <parameter id="inverse" value="false"/>
@@ -536,7 +676,17 @@ $T[0] + w*H_cs</parameter>
       <parameter id="useRGBWorkingSpace" value="false"/>
    </instance>
    <instance class="Script" version="256" id="E22_Star_Stretch_instance">
-      <description>Glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script : efface son champ MD5. PRÉRÉGLÉ : Stretch Amount 5, Color Boost 1,0, SCNR décoché. À RÉGLER : rien ; sur l'image d'étoiles linéaire. SI étoiles trop grosses -&gt; 4 ; si couleurs criardes -&gt; Color Boost 0,7. Détails : page docs/pixinsight-workflow.html.</description>
+      <description>LANCEMENT : glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
+
+PRÉRÉGLÉ : Stretch Amount 5, Color Boost 1,0, SCNR décoché.
+
+À RÉGLER : rien ; sur l'image d'étoiles linéaire.
+
+SI :
+- étoiles trop grosses -&gt; 4
+- couleurs criardes -&gt; Color Boost 0,7
+
+Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/star_stretch.js</parameter>
       <parameter id="md5sum">69a1ee6db4e9f5374c2cddb1e5a7f4ae</parameter>
       <table id="parameters" rows="4">
@@ -563,7 +713,14 @@ $T[0] + w*H_cs</parameter>
       <description>PHASE 5 — Couleur : combinaison finale et palette. Colonne de repère, sans effet.</description>
    </instance>
    <instance class="LRGBCombination" version="256" id="E23_LRGB_ajout_L_instance">
-      <description>PRÉRÉGLÉ : seul L coché, Lightness 0,5, Saturation 0,40, réduction du bruit de chrominance. À RÉGLER : vue L nommée 'L' ; glisse sur le RGB sans étoiles. SI couleurs délavées -&gt; étire L moins fort. Détails : page docs/pixinsight-workflow.html.</description>
+      <description>PRÉRÉGLÉ : seul L coché, Lightness 0,5, Saturation 0,40, réduction du bruit de chrominance.
+
+À RÉGLER : vue L nommée 'L' ; glisse sur le RGB sans étoiles.
+
+SI :
+- couleurs délavées -&gt; étire L moins fort
+
+Détails : page docs/pixinsight-workflow.html.</description>
       <table id="channels" rows="4">
          <tr>
             <td id="enabled" value="false"/>
@@ -598,7 +755,14 @@ $T[0] + w*H_cs</parameter>
       <description>PHASE 6 — Finition : contraste et saturation sur l'image sans étoiles. Colonne de repère, sans effet.</description>
    </instance>
    <instance class="PixelMath" version="256" id="E24_Masque_L_instance">
-      <description>PRÉRÉGLÉ : fond coupé à s = 0,14, crée 'masque_L'. À RÉGLER : glisse sur l'image sans étoiles étirée ; s = fond mesuré + 0,01 ; léger flou ; Ctrl+M. SI fond du masque au-dessus de 0,05 -&gt; monte s. Détails : page docs/pixinsight-workflow.html.</description>
+      <description>PRÉRÉGLÉ : fond coupé à s = 0,14, crée 'masque_L'.
+
+À RÉGLER : glisse sur l'image sans étoiles étirée ; s = fond mesuré + 0,01 ; léger flou ; Ctrl+M.
+
+SI :
+- fond du masque au-dessus de 0,05 -&gt; monte s
+
+Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="expression">s = 0.14;
 max(0, (0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2] - s) / (1 - s))</parameter>
       <parameter id="expression1"></parameter>
@@ -629,7 +793,14 @@ max(0, (0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2] - s) / (1 - s))</parameter>
       <table id="outputData" rows="0"/>
    </instance>
    <instance class="CurvesTransformation" version="256" id="E25_Courbes_instance">
-      <description>PRÉRÉGLÉ : légère courbe en S (0,25 -&gt; 0,22 ; 0,75 -&gt; 0,78), saturation 0,5 -&gt; 0,6. À RÉGLER : sous Masque_L ; ajuste à l'œil. SI fond qui se colore -&gt; vérifie le masque. Détails : page docs/pixinsight-workflow.html.</description>
+      <description>PRÉRÉGLÉ : légère courbe en S (0,25 -&gt; 0,22 ; 0,75 -&gt; 0,78), saturation 0,5 -&gt; 0,6.
+
+À RÉGLER : sous Masque_L ; ajuste à l'œil.
+
+SI :
+- fond qui se colore -&gt; vérifie le masque
+
+Détails : page docs/pixinsight-workflow.html.</description>
       <table id="R" rows="2">
          <tr>
             <td id="x" value="0.00000"/>
@@ -765,7 +936,16 @@ max(0, (0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2] - s) / (1 - s))</parameter>
       <parameter id="St" value="AkimaSubsplines"/>
    </instance>
    <instance class="LocalHistogramEqualization" version="256" id="E26_LHE_instance">
-      <description>PRÉRÉGLÉ : Kernel 150, Contrast limit 2,0, Amount 0,35, 8-bit, circulaire. À RÉGLER : sous Masque_L. SI effet artificiel -&gt; Amount 0,20 ; si bruit -&gt; Contrast limit 1,5 ; si anneaux -&gt; Kernel plus grand. Détails : page docs/pixinsight-workflow.html.</description>
+      <description>PRÉRÉGLÉ : Kernel 150, Contrast limit 2,0, Amount 0,35, 8-bit, circulaire.
+
+À RÉGLER : sous Masque_L.
+
+SI :
+- effet artificiel -&gt; Amount 0,20
+- bruit -&gt; Contrast limit 1,5
+- anneaux -&gt; Kernel plus grand
+
+Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="radius" value="150"/>
       <parameter id="histogramBins" value="Bit8"/>
       <parameter id="slopeLimit" value="2.0"/>
@@ -776,7 +956,11 @@ max(0, (0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2] - s) / (1 - s))</parameter>
       <description>PHASE 7 — Étoiles : étoiles : étirement, recombinaison, réduction. Colonne de repère, sans effet.</description>
    </instance>
    <instance class="PixelMath" version="256" id="E27_Etoiles_screen_instance">
-      <description>PRÉRÉGLÉ : ~((~starless) * (~stars)), image 'Final'. À RÉGLER : nomme l'image sans étoiles 'starless' et les étoiles 'stars', toutes deux étirées. Détails : page docs/pixinsight-workflow.html.</description>
+      <description>PRÉRÉGLÉ : ~((~starless) * (~stars)), image 'Final'.
+
+À RÉGLER : nomme l'image sans étoiles 'starless' et les étoiles 'stars', toutes deux étirées.
+
+Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="expression">~((~starless) * (~stars))</parameter>
       <parameter id="expression1"></parameter>
       <parameter id="expression2"></parameter>
@@ -806,7 +990,14 @@ max(0, (0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2] - s) / (1 - s))</parameter>
       <table id="outputData" rows="0"/>
    </instance>
    <instance class="PixelMath" version="256" id="E28_Blanshan_Transfer_instance">
-      <description>PRÉRÉGLÉ : S = 0,15. À RÉGLER : vue sans étoiles nommée 'starless' ; glisse sur l'image avec étoiles. SI étoiles encore grosses -&gt; S plus bas. Détails : page docs/pixinsight-workflow.html.</description>
+      <description>PRÉRÉGLÉ : S = 0,15.
+
+À RÉGLER : vue sans étoiles nommée 'starless' ; glisse sur l'image avec étoiles.
+
+SI :
+- étoiles encore grosses -&gt; S plus bas
+
+Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="expression">S=0.15;
 Img1=starless;
 f1= ~((~mtf(~S,$T)/~mtf(~S,Img1))*~Img1);

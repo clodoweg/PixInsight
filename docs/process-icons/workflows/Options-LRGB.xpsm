@@ -9,14 +9,35 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <description>PHASE 2 — Gradient : image linéaire : retrait du gradient. Colonne de repère, sans effet.</description>
    </instance>
    <instance class="Script" version="256" id="Opt_ImageSolver_instance">
-      <description>OPTION — si WBPP n'a pas résolu l'image. Double-clic sur l'icône puis Apply Global. PRÉRÉGLÉ : rien. À RÉGLER : nom de l'objet ; focale 2 939 mm ; pixel 3,76 µm ; Gaia DR3. SI WBPP a déjà résolu l'image -&gt; saute cette étape. Détails : page docs/pixinsight-workflow.html.</description>
+      <description>OPTION — si WBPP n'a pas résolu l'image.
+
+LANCEMENT : double-clic sur l'icône, puis Apply Global.
+
+PRÉRÉGLÉ : rien.
+
+À RÉGLER : nom de l'objet ; focale 2 939 mm ; pixel 3,76 µm ; Gaia DR3.
+
+SI :
+- WBPP a déjà résolu l'image -&gt; saute cette étape
+
+Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/AdP/ImageSolver.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="0"/>
       <parameter id="information"></parameter>
    </instance>
    <instance class="GradientCorrection" version="1" id="Opt_GradientCorrection_instance">
-      <description>ALTERNATIVE — GradientCorrection. PRÉRÉGLÉ : valeurs par défaut, Structure protection activée. À RÉGLER : rien ; contrôle le modèle de gradient. SI gradient dans les coins -&gt; baisse Gradient scale ; si nébuleuse assombrie -&gt; monte Protection amount. Détails : page docs/pixinsight-workflow.html.</description>
+      <description>ALTERNATIVE — GradientCorrection.
+
+PRÉRÉGLÉ : valeurs par défaut, Structure protection activée.
+
+À RÉGLER : rien ; contrôle le modèle de gradient.
+
+SI :
+- gradient dans les coins -&gt; baisse Gradient scale
+- nébuleuse assombrie -&gt; monte Protection amount
+
+Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="reference" value="0.50"/>
       <parameter id="lowThreshold" value="0.20"/>
       <parameter id="lowTolerance" value="0.50"/>
@@ -43,7 +64,17 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="gridSamplingDelta" value="16"/>
    </instance>
    <instance class="DynamicBackgroundExtraction" version="1" id="Opt_DBE_instance">
-      <description>ALTERNATIVE — DBE. PRÉRÉGLÉ : 15 points par ligne, rayon 15, Tolerance 0,5, Smoothing 0,25, Subtraction. À RÉGLER : Generate, retire les points sur l'objet, ajoute-en dans le fond vide. SI points rouges -&gt; Tolerance 1,0 à 1,5 ; si vignettage -&gt; Division. Détails : page docs/pixinsight-workflow.html.</description>
+      <description>ALTERNATIVE — DBE.
+
+PRÉRÉGLÉ : 15 points par ligne, rayon 15, Tolerance 0,5, Smoothing 0,25, Subtraction.
+
+À RÉGLER : Generate, retire les points sur l'objet, ajoute-en dans le fond vide.
+
+SI :
+- points rouges -&gt; Tolerance 1,0 à 1,5
+- vignettage -&gt; Division
+
+Détails : page docs/pixinsight-workflow.html.</description>
       <table id="data" rows="0"/>
       <parameter id="derivativeOrder" value="2"/>
       <parameter id="smoothing" value="0.250"/>
@@ -74,7 +105,15 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <description>PHASE 3 — Linéaire : image linéaire : couleur, déconvolution, retrait des étoiles, bruit. Colonne de repère, sans effet.</description>
    </instance>
    <instance class="Script" version="256" id="Opt_Find_Background_instance">
-      <description>OPTION — champ rempli de nébuleuse : fond de référence pour SPCC. Double-clic sur l'icône puis Apply Global. Si l'icône est bloquée après une mise à jour du script : efface son champ MD5. PRÉRÉGLÉ : rien. À RÉGLER : glisse sur l'image : crée l'aperçu Background ; dans SPCC, Region of Interest › From Preview. Détails : page docs/pixinsight-workflow.html.</description>
+      <description>OPTION — champ rempli de nébuleuse : fond de référence pour SPCC.
+
+LANCEMENT : double-clic sur l'icône, puis Apply Global. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
+
+PRÉRÉGLÉ : rien.
+
+À RÉGLER : glisse sur l'image : crée l'aperçu Background ; dans SPCC, Region of Interest › From Preview.
+
+Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/FindBackground.js</parameter>
       <parameter id="md5sum">4af61e322ea5149f93fdcfe6ef0e62bd</parameter>
       <table id="parameters" rows="14">
@@ -141,7 +180,19 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <description>PHASE 4 — Étirement : passage en non linéaire, même fond pour toutes les images. Colonne de repère, sans effet.</description>
    </instance>
    <instance class="Script" version="256" id="Opt_Statistical_Stretch_instance">
-      <description>ALTERNATIVE — Statistical Stretch. Glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script : efface son champ MD5. PRÉRÉGLÉ : Target Median 0,25, Blackpoint Sigma 5, Linked coché, reste par défaut. À RÉGLER : rien ; alternative à GHS. SI cible compacte (galaxie) -&gt; Target Median 0,10 ; si fond trop clair -&gt; Blackpoint Sigma plus haut. Détails : page docs/pixinsight-workflow.html.</description>
+      <description>ALTERNATIVE — Statistical Stretch.
+
+LANCEMENT : glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
+
+PRÉRÉGLÉ : Target Median 0,25, Blackpoint Sigma 5, Linked coché, reste par défaut.
+
+À RÉGLER : rien ; alternative à GHS.
+
+SI :
+- cible compacte (galaxie) -&gt; Target Median 0,10
+- fond trop clair -&gt; Blackpoint Sigma plus haut
+
+Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/statisticalstretch.js</parameter>
       <parameter id="md5sum">defab45bb4e2f33db39a7bb016cdefb0</parameter>
       <table id="parameters" rows="15">
@@ -212,7 +263,17 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <description>PHASE 6 — Finition : contraste et saturation sur l'image sans étoiles. Colonne de repère, sans effet.</description>
    </instance>
    <instance class="HDRMultiscaleTransform" version="256" id="Opt_HDRMT_instance">
-      <description>OPTION — cœur de galaxie ou nébuleuse brillante brûlé. PRÉRÉGLÉ : 6 couches, 1 itération, To lightness, Preserve hue, Lightness mask. À RÉGLER : rien. SI pas assez -&gt; 2 itérations ; si trop fort -&gt; mélange 50 % avec l'original. Détails : page docs/pixinsight-workflow.html.</description>
+      <description>OPTION — cœur de galaxie ou nébuleuse brillante brûlé.
+
+PRÉRÉGLÉ : 6 couches, 1 itération, To lightness, Preserve hue, Lightness mask.
+
+À RÉGLER : rien.
+
+SI :
+- pas assez -&gt; 2 itérations
+- trop fort -&gt; mélange 50 % avec l'original
+
+Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="numberOfLayers" value="6"/>
       <parameter id="numberOfIterations" value="1"/>
       <parameter id="invertedIterations" value="true"/>
@@ -235,7 +296,16 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="intensity" value="1.00"/>
    </instance>
    <instance class="NoiseXTerminator" version="256" id="Opt_NXT_final_instance">
-      <description>OPTION — bruit visible sur l'image finale. PRÉRÉGLÉ : Denoise 0,40, 1 itération. À RÉGLER : seulement si du bruit reste sur l'image finale. SI aspect plastique -&gt; 0,30. Détails : page docs/pixinsight-workflow.html.</description>
+      <description>OPTION — bruit visible sur l'image finale.
+
+PRÉRÉGLÉ : Denoise 0,40, 1 itération.
+
+À RÉGLER : seulement si du bruit reste sur l'image finale.
+
+SI :
+- aspect plastique -&gt; 0,30
+
+Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="ml_version" value="0"/>
       <parameter id="denoise" value="0.40"/>
       <parameter id="enable_color_separation" value="false"/>
@@ -257,7 +327,16 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <description>PHASE 7 — Étoiles : étoiles : étirement, recombinaison, réduction. Colonne de repère, sans effet.</description>
    </instance>
    <instance class="MorphologicalTransformation" version="256" id="Opt_MT_etoiles_instance">
-      <description>OPTION — réduction d'étoiles supplémentaire. PRÉRÉGLÉ : Selection 0,25, Amount 0,60, 1 itération, 5×5 circulaire. À RÉGLER : sur l'image d'étoiles seule. SI trop fort -&gt; Amount 0,50. Détails : page docs/pixinsight-workflow.html.</description>
+      <description>OPTION — réduction d'étoiles supplémentaire.
+
+PRÉRÉGLÉ : Selection 0,25, Amount 0,60, 1 itération, 5×5 circulaire.
+
+À RÉGLER : sur l'image d'étoiles seule.
+
+SI :
+- trop fort -&gt; Amount 0,50
+
+Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="operator" value="Selection"/>
       <parameter id="interlacingDistance" value="1"/>
       <parameter id="lowThreshold" value="0.000000"/>
@@ -274,7 +353,18 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </table>
    </instance>
    <instance class="Script" version="256" id="Opt_Halo_B_Gon_instance">
-      <description>OPTION — halos autour des étoiles brillantes. Double-clic sur l'icône puis Apply Global. Si l'icône est bloquée après une mise à jour du script : efface son champ MD5. PRÉRÉGLÉ : rien (réglages dans le dialogue). À RÉGLER : Reduction Amount Low ; Linear Data décoché sur une image étirée. SI pas assez -&gt; relance en Low (Med = 4 courbes, High = 9). Détails : page docs/pixinsight-workflow.html.</description>
+      <description>OPTION — halos autour des étoiles brillantes.
+
+LANCEMENT : double-clic sur l'icône, puis Apply Global. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
+
+PRÉRÉGLÉ : rien (réglages dans le dialogue).
+
+À RÉGLER : Reduction Amount Low ; Linear Data décoché sur une image étirée.
+
+SI :
+- pas assez -&gt; relance en Low (Med = 4 courbes, High = 9)
+
+Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/Halo-B-Gon.js</parameter>
       <parameter id="md5sum">b9427e718e2b9760704c8c738e0893b7</parameter>
       <table id="parameters" rows="0"/>
