@@ -405,7 +405,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="overlap" value="0.20"/>
    </instance>
    <instance class="PixelMath" version="256" id="LHA_16_Continuum_Ha_instance">
-      <description>Soustraction du continuum : Ha_cs = Ha - k*(R - med(R)). Vues 'Ha' et 'R' (master rouge linéaire, gradient retiré). Ajuste k (0,8 à 1) jusqu'à faire disparaître étoiles et disque galactique. med(R) garde le niveau du fond. Limite : résidus sur les étoiles (PSF différentes).</description>
+      <description>Soustraction du continuum : Ha_cs = Ha - k*(R - med(R)). Vues 'Ha' et 'R' (master rouge linéaire, gradient retiré). Ajuste k (0,8 à 1) jusqu'à faire disparaître étoiles et disque galactique. med(R) garde le niveau du fond. Limite : résidus sur les étoiles (PSF différentes). CONTRÔLE : dans Ha_cs, étoiles et disque galactique ont disparu, il ne reste que les taches HII sur un fond sombre proche de 0. Continuum mal soustrait = cœur et halo de la galaxie rougis et étoiles à halo rouge dans l'image finale : augmente k. NXT sur Ha_cs avant injection si son fond est granuleux.</description>
       <parameter id="expression">k = 0.9;
 Ha - k*(R - med(R))</parameter>
       <parameter id="expression1"></parameter>
@@ -439,7 +439,7 @@ Ha - k*(R - med(R))</parameter>
       <description>OPTION — Automatic Continuum Subtraction (SetiAstro, script) : choisis Ha et R ; le script calcule le coefficient. Contrôle que les étoiles disparaissent de Ha_cs.</description>
    </instance>
    <instance class="PixelMath" version="256" id="LHA_18_Ha_dans_RGB_instance">
-      <description>Injection de Ha_cs dans le rouge : applique sur l'image RGB (linéaire, calibrée) ; R' = R + w*Ha_cs, G et B inchangés. w de 0,5 à 2 selon l'effet voulu.</description>
+      <description>Injection de Ha_cs dans le rouge : applique sur l'image RGB (linéaire, calibrée) ; R' = R + w*Ha_cs, G et B inchangés. w de 0,5 à 2 selon l'effet voulu. Garde une copie du RGB avant injection pour comparer. RENDU VISÉ : identique au LRGB partout, sauf les régions HII, rose à rouge rosé (Hα + Hβ), plus visibles mais ponctuelles ; cœur, bras, étoiles et fond inchangés. CONTRÔLE à la sonde 15x15 : région HII R nettement au-dessus de G et B avec B &gt;= G ; cœur R &gt;= G &gt;&gt; B comme en LRGB ; fond R = G = B. Taches HII rouge vif : baisse w. Régions HII invisibles : monte w ou injecte aussi dans L. Fond rouge : bruit de Ha_cs injecté. Cœur ou étoiles rougis : continuum mal soustrait (icône précédente).</description>
       <parameter id="expression">w = 1.0;
 $T[0] + w*Ha_cs</parameter>
       <parameter id="expression1">$T[1]</parameter>
@@ -470,7 +470,7 @@ $T[0] + w*Ha_cs</parameter>
       <table id="outputData" rows="0"/>
    </instance>
    <instance class="PixelMath" version="256" id="LHA_19_Ha_dans_L_instance">
-      <description>Option : injection de Ha dans la luminance, L' = max(L, a*Ha_cs). Vues 'L' et 'Ha_cs'. Rend les régions HII plus nettes. Renomme ensuite 'L_Ha' en 'L' pour la suite.</description>
+      <description>Option : injection de Ha dans la luminance, L' = max(L, a*Ha_cs). Vues 'L' et 'Ha_cs'. Rend les régions HII plus nettes. Renomme ensuite 'L_Ha' en 'L' pour la suite. Régions HII nettes mais couleurs délavées après LRGBCombination : a trop fort, baisse-le ou fais un mélange léger.</description>
       <parameter id="expression">a = 1.0;
 max(L, Ha_cs*a)</parameter>
       <parameter id="expression1"></parameter>
@@ -607,7 +607,7 @@ max(L, Ha_cs*a)</parameter>
       <description>ÉTAPE MANUELLE — Star Stretch (SetiAstro, script) sur l'image d'étoiles LINÉAIRE issue de SXT. Stretch Amount 5 (défaut, prudence au-delà) ; Color Boost 1,0 (0 à 2) ; Remove Green via SCNR optionnel (décoché par défaut).</description>
    </instance>
    <instance class="LRGBCombination" version="256" id="LHA_29_LRGB_ajout_L_instance">
-      <description>LRGBCombination sur les images étirées sans étoiles : seul L activé (vue 'L'), Lightness 0,5, Saturation 0,40, Chrominance noise reduction cochée. CONTRÔLE (sonde 15x15) : cœur de galaxie jaune (R &gt;= G &gt;&gt; B), bras bleus, régions HII roses et bien visibles grâce au Ha (R &gt; B &gt; G), aucune étoile verte, fond R = G = B ; couleurs délavées : L trop claire, étire-la moins.</description>
+      <description>LRGBCombination sur les images étirées sans étoiles : seul L activé (vue 'L'), Lightness 0,5, Saturation 0,40, Chrominance noise reduction cochée. CONTRÔLE (sonde 15x15) : cœur de galaxie jaune (R &gt;= G &gt;&gt; B), bras bleus, régions HII roses et bien visibles grâce au Ha (R &gt; B &gt; G), aucune étoile verte, fond R = G = B ; couleurs délavées : L trop claire, étire-la moins. Compare avec la copie LRGB sans Ha : seules les régions HII doivent changer ; si le cœur ou les étoiles ont rougi, reprends la soustraction du continuum (k).</description>
       <table id="channels" rows="4">
          <tr>
             <td id="enabled" value="false"/>

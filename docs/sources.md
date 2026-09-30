@@ -187,6 +187,14 @@ Légende :
 - Officiel — [Las Cumbres Observatory, corps noir](https://lco.global/spacebook/light/black-body-radiation/) : pas d'étoile verte, une étoile qui culmine dans le vert émet aussi beaucoup de rouge et de bleu et paraît blanche.
 - Règles de lecture à la sonde (cœur R ≥ G ≫ B, bras B au-dessus de R, HII R > B > G, aucune étoile avec G au-dessus de R et B) : déduites de la composition des couleurs ; aucune source ne les chiffre, la page l'indique.
 
+## Couleurs LHaRGB
+
+- Officiel — [PixInsight, notes de traitement Ha de M31](https://pixinsight.com/examples/M31-Ha/) : aucun filtre étroit ne bloque totalement le continuum ; sans soustraction, on renforce en rouge des halos d'étoiles de la galaxie et non de la nébulosité ; la soustraction abîme un peu les étoiles (PSF différentes).
+- Encyclopédie — [Wikipédia, série de Balmer](https://en.wikipedia.org/wiki/Balmer_series) : Hα à 656 nm, Hβ à 486 nm ; la raie Hα donne aux nébuleuses en émission leur teinte rouge-rose en photo.
+- Tutoriel — [AstroBackyard, HaRGB](https://astrobackyard.com/hargb-astrophotography/) : trop de Ha rougit toute l'image et grossit les étoiles.
+- Régions HII roses : mêmes sources que la rubrique « Couleurs LRGB » (UNLV, NASA NGC 3982).
+- Règles de contrôle (comparaison avec la copie LRGB, lecture à la sonde, cœur et étoiles inchangés) : déduites de la composition des couleurs et du principe de la soustraction du continuum ; aucune source ne les chiffre, la page l'indique.
+
 ## Couleurs SHO et choix de la palette
 
 - Tutoriel — [AstroBackyard, guide du narrowband et de la palette Hubble](https://astrobackyard.com/narrowband-imaging/)
@@ -211,6 +219,7 @@ Les schémas ne reprennent que des faits déjà sourcés plus haut ; ils n'ajout
 
 - Frises des workflows, arbre de choix, comparaison large bande / narrowband, circuit des étoiles : ordre des étapes et phase linéaire ou étirée tirés des étapes de la fiche (sources des rubriques correspondantes).
 - Courbes GHS : calculées avec l'équation hyperbolique généralisée de David Payne (b > 0) telle qu'elle est codée dans les formules PixelMath de Bill Blanshan (`FromLukeAndBill.xpsm`, [theAstroShed](https://github.com/jamiesmith/pixinsight-icons)) ; D = 10, SP = 0,1, b = 10 et b = 1, sans LP ni HP. Lecture des paramètres d'après la [documentation GHS](https://www.ghsastro.co.uk/doc/tools/GeneralizedHyperbolicStretch/GeneralizedHyperbolicStretch.html).
+- Lecture des couleurs LHaRGB (section LHaRGB) : valeurs illustratives, règles de la rubrique « Couleurs LHaRGB ».
 - Lecture des couleurs LRGB (section LRGB) : valeurs illustratives, règles de la rubrique « Couleurs LRGB ».
 - Lecture des couleurs HOO (section HOO) : valeurs illustratives, règles de la rubrique « Couleurs HOO ».
 - Lecture des couleurs SHO (section RGB + SHO) : valeurs illustratives, règles de la rubrique « Couleurs SHO et choix de la palette ».
@@ -232,6 +241,7 @@ Les schémas ne reprennent que des faits déjà sourcés plus haut ; ils n'ajout
 
 Points sans source directe :
 
+- LHaRGB, part du Ha à ajouter au bleu pour imiter Hβ : la répartition « 80 % rouge / 20 % bleu » n'apparaît que dans un résumé de recherche d'un fil [AstroBin](https://ssr.app.astrobin.com/forum/topic/201571/pleiades-astrophoto-pixinsight/incorporating-ha-into-rgb-images) inaccessible ; la page la mentionne comme piste sans chiffre, rien n'est dans les icônes.
 - Ha en luminance en HOO : Saturation 0,40 reprise du réglage LRGBCombination sourcé (Chaotic Nebula : Lightness 0,55, Saturation 0,40) ; aucune valeur propre au HOO publiée.
 - Icônes de process : format vérifié sur des fichiers réels générés par PixInsight 1.9.3 et noms d'énumération vérifiés, mais chargement non testé dans PixInsight (le schéma XPSM officiel n'est plus en ligne à son adresse d'origine).
 

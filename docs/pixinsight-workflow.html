@@ -250,7 +250,7 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
 <aside class="side" id="side">
   <div class="side-top"><a class="brand" href="#top">PixInsight 2026</a><button type="button" class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="side-nav">Sommaire</button></div>
   <div class="search"><label class="sr" for="q">Rechercher</label><input id="q" type="search" autocomplete="off" placeholder="Chercher un outil, une étape…"><ul id="results" hidden></ul></div>
-  <nav id="side-nav" aria-label="Sommaire"><div class="ngroup"><div class="nhead">Démarrer</div><a href="#demarrer" data-sec="demarrer">Par où commencer</a><a href="#outils" data-sec="outils">Outils et dépôts</a><a href="#pretraitement" data-sec="pretraitement">Prétraitement WBPP</a><a href="#lineaire" data-sec="lineaire">Phase linéaire commune</a></div><div class="ngroup"><div class="nhead">Workflows</div><a href="#lrgb" data-sec="lrgb">LRGB<span class="ndots"><i class="flt-dot L"></i><i class="flt-dot R"></i><i class="flt-dot G"></i><i class="flt-dot B"></i></span></a><a href="#lhargb" data-sec="lhargb">LHaRGB<span class="ndots"><i class="flt-dot L"></i><i class="flt-dot Ha"></i><i class="flt-dot R"></i><i class="flt-dot G"></i><i class="flt-dot B"></i></span></a><a href="#rgbsho" data-sec="rgbsho">RGB + SHO<span class="ndots"><i class="flt-dot SII"></i><i class="flt-dot Ha"></i><i class="flt-dot OIII"></i><i class="flt-dot R"></i><i class="flt-dot G"></i><i class="flt-dot B"></i></span></a><a href="#sho" data-sec="sho">SHO sans RGB<span class="ndots"><i class="flt-dot SII"></i><i class="flt-dot Ha"></i><i class="flt-dot OIII"></i></span></a><a href="#hoo" data-sec="hoo">HOO<span class="ndots"><i class="flt-dot Ha"></i><i class="flt-dot OIII"></i></span></a></div><div class="ngroup"><div class="nhead">Techniques</div><a href="#ghs" data-sec="ghs">Méthode GHS</a><a href="#couleurs-lrgb" data-sec="couleurs-lrgb">Couleurs LRGB</a><a href="#couleurs-sho" data-sec="couleurs-sho">Couleurs SHO</a><a href="#couleurs-hoo" data-sec="couleurs-hoo">Couleurs HOO</a><a href="#foraxx" data-sec="foraxx">Formules Foraxx</a><a href="#continuum" data-sec="continuum">Le continuum</a><a href="#etoiles" data-sec="etoiles">Réduction d&#x27;étoiles</a></div><div class="ngroup"><div class="nhead">Référence</div><a href="#parametres" data-sec="parametres">Paramètres des outils</a><a href="#regles" data-sec="regles">Règles d&#x27;or</a></div></nav>
+  <nav id="side-nav" aria-label="Sommaire"><div class="ngroup"><div class="nhead">Démarrer</div><a href="#demarrer" data-sec="demarrer">Par où commencer</a><a href="#outils" data-sec="outils">Outils et dépôts</a><a href="#pretraitement" data-sec="pretraitement">Prétraitement WBPP</a><a href="#lineaire" data-sec="lineaire">Phase linéaire commune</a></div><div class="ngroup"><div class="nhead">Workflows</div><a href="#lrgb" data-sec="lrgb">LRGB<span class="ndots"><i class="flt-dot L"></i><i class="flt-dot R"></i><i class="flt-dot G"></i><i class="flt-dot B"></i></span></a><a href="#lhargb" data-sec="lhargb">LHaRGB<span class="ndots"><i class="flt-dot L"></i><i class="flt-dot Ha"></i><i class="flt-dot R"></i><i class="flt-dot G"></i><i class="flt-dot B"></i></span></a><a href="#rgbsho" data-sec="rgbsho">RGB + SHO<span class="ndots"><i class="flt-dot SII"></i><i class="flt-dot Ha"></i><i class="flt-dot OIII"></i><i class="flt-dot R"></i><i class="flt-dot G"></i><i class="flt-dot B"></i></span></a><a href="#sho" data-sec="sho">SHO sans RGB<span class="ndots"><i class="flt-dot SII"></i><i class="flt-dot Ha"></i><i class="flt-dot OIII"></i></span></a><a href="#hoo" data-sec="hoo">HOO<span class="ndots"><i class="flt-dot Ha"></i><i class="flt-dot OIII"></i></span></a></div><div class="ngroup"><div class="nhead">Techniques</div><a href="#ghs" data-sec="ghs">Méthode GHS</a><a href="#couleurs-lrgb" data-sec="couleurs-lrgb">Couleurs LRGB</a><a href="#couleurs-lhargb" data-sec="couleurs-lhargb">Couleurs LHaRGB</a><a href="#couleurs-sho" data-sec="couleurs-sho">Couleurs SHO</a><a href="#couleurs-hoo" data-sec="couleurs-hoo">Couleurs HOO</a><a href="#foraxx" data-sec="foraxx">Formules Foraxx</a><a href="#continuum" data-sec="continuum">Le continuum</a><a href="#etoiles" data-sec="etoiles">Réduction d&#x27;étoiles</a></div><div class="ngroup"><div class="nhead">Référence</div><a href="#parametres" data-sec="parametres">Paramètres des outils</a><a href="#regles" data-sec="regles">Règles d&#x27;or</a></div></nav>
 </aside>
 <div class="wrap" id="top">
   <header class="top">
@@ -816,7 +816,7 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
       </li>
       <li id="lhargb-e3">
         <div class="step-head"><h4>Injection dans R</h4><span class="phase lin">Linéaire</span></div>
-        <p>Sur le canal rouge de l'image RGB calibrée. <strong>w</strong> entre 0,5 et 2 selon l'effet voulu. ImageBlend permet de faire ce mélange avec aperçu.</p>
+        <p>Sur le canal rouge de l'image RGB calibrée. <strong>w</strong> entre 0,5 et 2 selon l'effet voulu. ImageBlend permet de faire ce mélange avec aperçu. Garde une copie du RGB avant injection pour comparer (<a href="#couleurs-lhargb" style="color:var(--accent)">couleurs LHaRGB</a>).</p>
         <div class="formula"><span class="lbl">R'</span><code>R + w * Ha_cs</code><button type="button" data-copy>Copier</button></div>
         <div class="tools"><a class="tool nat" href="#t-pixelmath">PixelMath</a><a class="tool free" href="#t-imageblend">ImageBlend</a></div>
       </li>
@@ -833,6 +833,115 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
       </li>
     </ol>
     <div class="note"><strong>Pour une nébuleuse sans galaxie,</strong> une version plus simple suffit : fais l'image HaRGB en linéaire (Ha dans R, un peu de Ha dans L), puis applique le workflow LRGB classique.</div>
+
+    <h3 id="couleurs-lhargb">Couleurs LHaRGB : le rendu de référence et comment le vérifier</h3>
+    <p>Le standard est <strong>celui du LRGB calibré</strong> (<a href="#couleurs-lrgb" style="color:var(--accent)">couleurs LRGB</a>), avec une seule différence : les <strong>régions HII ressortent davantage</strong>. Le piège principal est l'excès de Ha, qui rougit toute l'image.</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Zone</th><th>Couleur attendue</th><th>Source</th></tr></thead>
+        <tbody>
+          <tr><td>Galaxie dans son ensemble, cœur, bras, poussière, étoiles, fond</td><td><strong>Identiques au LRGB</strong> : blanche en moyenne, cœur jaune, bras bleus, poussière brune, étoiles jamais vertes, fond neutre</td><td><a href="#couleurs-lrgb" style="color:var(--accent)">Couleurs LRGB</a></td></tr>
+          <tr><td>Régions HII</td><td><strong>Rose à rouge rosé</strong>, plus visibles qu'en LRGB mais ponctuelles, posées sur les bras bleus</td><td>UNLV, NASA (NGC 3982) ; Wikipédia (Balmer : nébuleuses rouge-rose en photo)</td></tr>
+          <tr><td>Nébuleuse en émission</td><td>Rouge à rouge-rose, plus détaillée</td><td>Wikipédia</td></tr>
+          <tr><td>Cœur et halo de la galaxie</td><td><strong>Pas plus rouges qu'en LRGB</strong></td><td>Exemple M31 de PixInsight</td></tr>
+          <tr><td>Étoiles</td><td><strong>Mêmes couleurs qu'en LRGB</strong>, sans halo rouge ni étoiles grossies</td><td>Exemple M31, AstroBackyard</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>Pourquoi rose et pas rouge vif :</strong> l'hydrogène émet surtout Hα (rouge, 656 nm), mais aussi Hβ (bleu-vert, 486 nm) ; une région HII réelle est donc rose. Injecté seulement dans le rouge, le Ha rend les régions HII d'un rouge plus pur et plus saturé que nature. Certains ajoutent aussi une petite part du Ha dans le bleu pour imiter Hβ ; la proportion souvent citée n'a pas pu être vérifiée (voir les sources).</p>
+
+    <h4>Vérifier que tu es dedans</h4>
+    <ol>
+      <li><strong>Compare avec ton LRGB sans Ha</strong> (garde une copie avant injection) : hors des régions HII, les couleurs doivent être <strong>identiques</strong> (cœur, bras, étoiles, fond). Seules les régions HII changent.</li>
+      <li><strong>Contrôle de Ha_cs</strong> : étoiles et disque galactique ont <strong>disparu</strong>, il ne reste que les taches HII sur un fond sombre (critère de réglage de k, <a href="#lhargb-e2" style="color:var(--accent)">étape 2</a>).</li>
+      <li><strong>Sonde 15×15</strong> : région HII, R nettement au-dessus de G et B, avec B ≥ G (rose ; si B ≪ G, le rose vire à l'orange-rouge) ; cœur, mêmes valeurs qu'en LRGB (R ≥ G ≫ B) ; étoiles, R pas franchement plus haut qu'en LRGB ; fond, R ≈ G ≈ B (fond rouge : bruit de Ha injecté).</li>
+    </ol>
+    <figure class="dg"><div class="dg-scroll"><div style="min-width:620px"><svg class="dg" viewBox="0 0 760 250" role="img" aria-label="LRGB contre LHaRGB à la sonde : seule la région HII change et devient plus rose, le cœur de galaxie et les étoiles restent identiques ; un rouge en hausse sur le cœur signale un continuum mal soustrait">
+<text class="lab" x="95" y="22" text-anchor="middle">Région HII</text>
+<rect class="f-surf s-line" x="24" y="134" width="18" height="66"/>
+<text class="tick" x="33" y="213" text-anchor="middle">R</text>
+<rect class="f-surf s-line" x="46" y="146" width="18" height="54"/>
+<text class="tick" x="55" y="213" text-anchor="middle">G</text>
+<rect class="f-surf s-line" x="68" y="140" width="18" height="60"/>
+<text class="tick" x="77" y="213" text-anchor="middle">B</text>
+<text class="tick" x="55" y="228" text-anchor="middle">LRGB</text>
+<rect class="f-nl" x="108" y="98" width="18" height="102"/>
+<text class="tick" x="117" y="213" text-anchor="middle">R</text>
+<rect class="f-nl" x="130" y="150" width="18" height="50"/>
+<text class="tick" x="139" y="213" text-anchor="middle">G</text>
+<rect class="f-nl" x="152" y="134" width="18" height="66"/>
+<text class="tick" x="161" y="213" text-anchor="middle">B</text>
+<text class="tick" x="139" y="228" text-anchor="middle">LHaRGB</text>
+<line x1="20" y1="200" x2="174" y2="200" stroke="currentColor" stroke-width="1"/>
+<text class="lab small" x="95" y="46" text-anchor="middle">rose, plus marquée</text>
+<text class="lab" x="285" y="22" text-anchor="middle">Cœur de galaxie</text>
+<rect class="f-surf s-line" x="214" y="104" width="18" height="96"/>
+<text class="tick" x="223" y="213" text-anchor="middle">R</text>
+<rect class="f-surf s-line" x="236" y="121" width="18" height="79"/>
+<text class="tick" x="245" y="213" text-anchor="middle">G</text>
+<rect class="f-surf s-line" x="258" y="158" width="18" height="42"/>
+<text class="tick" x="267" y="213" text-anchor="middle">B</text>
+<text class="tick" x="245" y="228" text-anchor="middle">LRGB</text>
+<rect class="f-nl" x="298" y="104" width="18" height="96"/>
+<text class="tick" x="307" y="213" text-anchor="middle">R</text>
+<rect class="f-nl" x="320" y="121" width="18" height="79"/>
+<text class="tick" x="329" y="213" text-anchor="middle">G</text>
+<rect class="f-nl" x="342" y="158" width="18" height="42"/>
+<text class="tick" x="351" y="213" text-anchor="middle">B</text>
+<text class="tick" x="329" y="228" text-anchor="middle">LHaRGB</text>
+<line x1="210" y1="200" x2="364" y2="200" stroke="currentColor" stroke-width="1"/>
+<text class="lab small" x="285" y="46" text-anchor="middle">inchangé</text>
+<text class="lab" x="475" y="22" text-anchor="middle">Étoile</text>
+<rect class="f-surf s-line" x="404" y="116" width="18" height="84"/>
+<text class="tick" x="413" y="213" text-anchor="middle">R</text>
+<rect class="f-surf s-line" x="426" y="116" width="18" height="84"/>
+<text class="tick" x="435" y="213" text-anchor="middle">G</text>
+<rect class="f-surf s-line" x="448" y="109" width="18" height="91"/>
+<text class="tick" x="457" y="213" text-anchor="middle">B</text>
+<text class="tick" x="435" y="228" text-anchor="middle">LRGB</text>
+<rect class="f-nl" x="488" y="116" width="18" height="84"/>
+<text class="tick" x="497" y="213" text-anchor="middle">R</text>
+<rect class="f-nl" x="510" y="116" width="18" height="84"/>
+<text class="tick" x="519" y="213" text-anchor="middle">G</text>
+<rect class="f-nl" x="532" y="109" width="18" height="91"/>
+<text class="tick" x="541" y="213" text-anchor="middle">B</text>
+<text class="tick" x="519" y="228" text-anchor="middle">LHaRGB</text>
+<line x1="400" y1="200" x2="554" y2="200" stroke="currentColor" stroke-width="1"/>
+<text class="lab small" x="475" y="46" text-anchor="middle">inchangée</text>
+<text class="lab" x="665" y="22" text-anchor="middle">Cœur, continuum mal soustrait</text>
+<rect class="f-surf s-line" x="594" y="104" width="18" height="96"/>
+<text class="tick" x="603" y="213" text-anchor="middle">R</text>
+<rect class="f-surf s-line" x="616" y="121" width="18" height="79"/>
+<text class="tick" x="625" y="213" text-anchor="middle">G</text>
+<rect class="f-surf s-line" x="638" y="158" width="18" height="42"/>
+<text class="tick" x="647" y="213" text-anchor="middle">B</text>
+<text class="tick" x="625" y="228" text-anchor="middle">LRGB</text>
+<rect class="f-acc s-acc" x="678" y="82" width="18" height="118"/>
+<text class="tick" x="687" y="213" text-anchor="middle">R</text>
+<rect class="f-nl" x="700" y="121" width="18" height="79"/>
+<text class="tick" x="709" y="213" text-anchor="middle">G</text>
+<rect class="f-nl" x="722" y="158" width="18" height="42"/>
+<text class="tick" x="731" y="213" text-anchor="middle">B</text>
+<text class="tick" x="709" y="228" text-anchor="middle">LHaRGB</text>
+<line x1="590" y1="200" x2="744" y2="200" stroke="currentColor" stroke-width="1"/>
+<text class="lab curve-a-t" x="665" y="46" text-anchor="middle">R en hausse : à corriger</text>
+</svg></div></div><figcaption>Schéma (valeurs illustratives) : la même zone lue à la sonde avant (LRGB) et après injection du Ha (LHaRGB). Seule la région HII doit changer ; si le rouge monte aussi sur le cœur de la galaxie ou sur les étoiles, le continuum a été mal soustrait. Règles déduites de la composition des couleurs et du principe de la soustraction du continuum ; aucune source ne les chiffre.</figcaption></figure>
+
+    <h4>Quoi ajuster</h4>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Constat</th><th>Cause, réglage</th></tr></thead>
+        <tbody>
+          <tr><td>Cœur ou halo rougi, étoiles à halo rouge</td><td><strong>Continuum mal soustrait</strong> : augmente k jusqu'à ce que étoiles et disque disparaissent de Ha_cs</td></tr>
+          <tr><td>Taches HII rouge vif, trop saturées</td><td><strong>w trop fort</strong> dans R' = R + w·Ha_cs : baisse w (0,5 à 2)</td></tr>
+          <tr><td>Régions HII invisibles</td><td>w trop faible ou Ha_cs trop sombre : monte w, ou injecte aussi dans L</td></tr>
+          <tr><td>Fond rouge ou granuleux</td><td>Bruit de Ha_cs injecté : NXT sur Ha_cs avant injection ; vérifie que le fond de Ha_cs reste près de 0</td></tr>
+          <tr><td>Régions HII nettes mais couleurs délavées</td><td>Injection dans L trop forte (<code style="font-family:var(--mono)">max(L, Ha_cs·a)</code>) : baisse a, ou mélange léger</td></tr>
+          <tr><td>Étoiles grossies</td><td>Ha trop fort ou continuum mal soustrait</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>Quand choisir autre chose :</strong> galaxie sans régions HII marquées (elliptique, lenticulaire) : <a href="#lrgb" style="color:var(--accent)">LRGB</a> ; nébuleuse en émission sans galaxie : la version HaRGB simple ci-dessus, ou le narrowband (<a href="#hoo" style="color:var(--accent)">HOO</a>, <a href="#sho" style="color:var(--accent)">SHO</a>) ; avec aussi de l'OIII (nébuleuses planétaires) : <a href="#rgbsho" style="color:var(--accent)">RGB + SHO</a>.</p>
   </section>
 
   <section id="rgbsho">

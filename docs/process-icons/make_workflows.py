@@ -246,12 +246,18 @@ lhargb = pre_block() + [rgb_comb(), (note('ImageSolver', T_SOLVER), '')] + gradi
     (M.bxt('BXT_L_Ha', False, 0.25, 0.0, 0.80), "BlurXTerminator complet sur L et sur le master Ha (mono, linéaires) : Nonstellar 0,80. Déconvolue AVANT tout mélange (soustraction du continuum, injection)."),
     (pm('Continuum_Ha', 'k = 0.9;\nHa - k*(R - med(R))', symbols='k', new_image=True, new_id='Ha_cs', space='Gray'),
      "Soustraction du continuum : Ha_cs = Ha - k*(R - med(R)). Vues 'Ha' et 'R' (master rouge linéaire, gradient retiré). Ajuste k (0,8 à 1) jusqu'à faire disparaître étoiles et disque galactique. "
-     "med(R) garde le niveau du fond. Limite : résidus sur les étoiles (PSF différentes)."),
+     "med(R) garde le niveau du fond. Limite : résidus sur les étoiles (PSF différentes). "
+     "CONTRÔLE : dans Ha_cs, étoiles et disque galactique ont disparu, il ne reste que les taches HII sur un fond sombre proche de 0. "
+     "Continuum mal soustrait = cœur et halo de la galaxie rougis et étoiles à halo rouge dans l'image finale : augmente k. NXT sur Ha_cs avant injection si son fond est granuleux."),
     (note('Continuum_auto', "OPTION — Automatic Continuum Subtraction (SetiAstro, script) : choisis Ha et R ; le script calcule le coefficient. Contrôle que les étoiles disparaissent de Ha_cs."), ''),
     (pm('Ha_dans_RGB', 'w = 1.0;\n$T[0] + w*Ha_cs', '$T[1]', '$T[2]', symbols='w'),
-     "Injection de Ha_cs dans le rouge : applique sur l'image RGB (linéaire, calibrée) ; R' = R + w*Ha_cs, G et B inchangés. w de 0,5 à 2 selon l'effet voulu."),
+     "Injection de Ha_cs dans le rouge : applique sur l'image RGB (linéaire, calibrée) ; R' = R + w*Ha_cs, G et B inchangés. w de 0,5 à 2 selon l'effet voulu. "
+     "Garde une copie du RGB avant injection pour comparer. RENDU VISÉ : identique au LRGB partout, sauf les régions HII, rose à rouge rosé (Hα + Hβ), plus visibles mais ponctuelles ; cœur, bras, étoiles et fond inchangés. "
+     "CONTRÔLE à la sonde 15x15 : région HII R nettement au-dessus de G et B avec B >= G ; cœur R >= G >> B comme en LRGB ; fond R = G = B. "
+     "Taches HII rouge vif : baisse w. Régions HII invisibles : monte w ou injecte aussi dans L. Fond rouge : bruit de Ha_cs injecté. Cœur ou étoiles rougis : continuum mal soustrait (icône précédente)."),
     (pm('Ha_dans_L', 'a = 1.0;\nmax(L, Ha_cs*a)', symbols='a', new_image=True, new_id='L_Ha', space='Gray'),
-     "Option : injection de Ha dans la luminance, L' = max(L, a*Ha_cs). Vues 'L' et 'Ha_cs'. Rend les régions HII plus nettes. Renomme ensuite 'L_Ha' en 'L' pour la suite."),
+     "Option : injection de Ha dans la luminance, L' = max(L, a*Ha_cs). Vues 'L' et 'Ha_cs'. Rend les régions HII plus nettes. Renomme ensuite 'L_Ha' en 'L' pour la suite. "
+     "Régions HII nettes mais couleurs délavées après LRGBCombination : a trop fort, baisse-le ou fais un mélange léger."),
     (note('NBRGBCombination', "ALTERNATIVE — NBRGBCombination (Script › Utilities) : image RGB et sa bande passante (~100 nm pour un filtre R mono), image Ha dans le canal R avec la bande passante de ton filtre (3, 5, 7 nm), "
           "Scale 1,2 par défaut (3 à 5 pour un Ha faible). Compare avec les aperçus RGB et NBRGB."), ''),
     (M.sxt('SXT_lineaire', False), D_SXT_LIN + " Sur RGB (garde les étoiles) et sur L (jette ses étoiles)."),
@@ -261,7 +267,8 @@ lhargb = pre_block() + [rgb_comb(), (note('ImageSolver', T_SOLVER), '')] + gradi
     (note('Star_Stretch', T_STARSTRETCH), ''),
     (M.instance('LRGBCombination', 'LRGB_ajout_L', {'mL': '0.500', 'mc': '0.400', 'noiseReduction': True}, post=M.lrgb_post),
      "LRGBCombination sur les images étirées sans étoiles : seul L activé (vue 'L'), Lightness 0,5, Saturation 0,40, Chrominance noise reduction cochée. "
-     "CONTRÔLE (sonde 15x15) : cœur de galaxie jaune (R >= G >> B), bras bleus, régions HII roses et bien visibles grâce au Ha (R > B > G), aucune étoile verte, fond R = G = B ; couleurs délavées : L trop claire, étire-la moins."),
+     "CONTRÔLE (sonde 15x15) : cœur de galaxie jaune (R >= G >> B), bras bleus, régions HII roses et bien visibles grâce au Ha (R > B > G), aucune étoile verte, fond R = G = B ; couleurs délavées : L trop claire, étire-la moins. "
+     "Compare avec la copie LRGB sans Ha : seules les régions HII doivent changer ; si le cœur ou les étoiles ont rougi, reprends la soustraction du continuum (k)."),
 ] + finish_block() + stars_end()
 
 # ---------------------------------------------------------------- narrowband communs
