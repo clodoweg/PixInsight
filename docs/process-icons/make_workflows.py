@@ -82,7 +82,7 @@ T_MGC = ("ÉTAPE MANUELLE — Gradient par MARS : SpectrophotometricFluxCalibrat
          "Prérequis : image linéaire, solution astrométrique, bases Gaia DR3/SP et MARS installées (clé à molette de MGC › Add › fichier .xmars). "
          "SPFC (Process › ColorCalibration) : QE curve = ton capteur, sinon Ideal QE curve ; image mono : Gray filter = ton filtre (Narrowband mode + longueur d'onde et bande passante pour Ha/OIII/SII) ; image couleur : Red/Green/Blue filter = tes filtres ou les filtres Bayer du capteur ; Catalog Gaia DR3/SP ; Automatic limit magnitude coché ; le reste par défaut. SPFC ne modifie pas les pixels (métadonnées de flux pour MGC) ; utilise ensuite les mêmes filtres dans SPCC. "
          "MGC : Use MARS database coché, filtres MARS Gray = L, Red = R, Green = G, Blue = B ; Gradient scale 1024 au départ (512 ou 256 si un gradient reste dans les coins), Structure separation 3 (1-2 pour les bords), Model smoothness 1,0 (3-5 si le modèle ondule), Scale factors 1,0, Show gradient model coché. "
-         "Narrowband : MARS DR2 (juin 2026) couvre Ha et OIII jusqu'à +75° de déclinaison (SPFC en Narrowband mode, puis MGC avec le filtre MARS Gray = Ha pour le master Ha, OIII pour le master OIII) ; SII absent de DR2 : icône GradientCorrection ou DBE.")
+         "Narrowband : MARS DR2 (juin 2026) couvre Ha et OIII jusqu'à +75° de déclinaison (SPFC en Narrowband mode, puis les icônes MGC_MARS_Ha et MGC_MARS_OIII, filtre MARS Gray = Ha ou OIII) ; SII absent de DR2 : icône GradientCorrection ou DBE.")
 T_GC = ("ALTERNATIVE — GradientCorrection, valeurs par défaut. Structure protection activée ; Generate gradient model coché pour contrôler le modèle. "
         "Si des zones claires apparaissent autour des structures sombres : monte Low threshold. Si le modèle a des bords nets : désactive la protection, baisse Scale et Smoothness, puis réactive.")
 T_DBE = ("ALTERNATIVE — DynamicBackgroundExtraction. Icône-note : les points dépendent de l'image. Samples per row 10-20 ; Sample radius 10-50 ; Tolerance 0,5 (1,0-1,5 si points rejetés) ; "
@@ -150,10 +150,17 @@ D_SPFC = {
 D_MGC = ("MultiscaleGradientCorrection, juste après SPFC, sur la même image. Use MARS database coché ; filtres MARS Gray = L (image mono), Red = R, Green = G, Blue = B (image couleur) ; "
          "Gradient scale 1024 (512 ou 256 si un gradient reste dans les coins), Structure separation 3 (1-2 pour les bords), Model smoothness 1,0 (3-5 si le modèle ondule), Scale factors 1,0, Show gradient model coché. "
          "La base MARS se charge dans les préférences de MGC (clé à molette › Add › fichier .xmars) : si MGC signale qu'aucune base n'est chargée, ajoute-la là. "
-         "Narrowband : MARS DR2 (juin 2026, fichier .xmars d'environ 1,35 Go) couvre Ha et OIII jusqu'à +75° de déclinaison : règle le filtre MARS Gray sur Ha pour le master Ha, sur OIII pour le master OIII (l'icône est réglée sur L). SII absent de DR2 : GradientCorrection ou DBE.")
+         "Narrowband : MARS DR2 (juin 2026, fichier .xmars d'environ 1,35 Go) couvre Ha et OIII jusqu'à +75° de déclinaison : utilise les icônes MGC_MARS_Ha et MGC_MARS_OIII (filtre MARS Gray = Ha ou OIII) ; cette icône-ci est réglée sur L. SII absent de DR2 : GradientCorrection ou DBE.")
 D_DBE = ("ALTERNATIVE — DynamicBackgroundExtraction, sans points (ils dépendent de l'image) : ouvre l'icône, clique sur l'image, puis Generate. Samples per row 15, Sample radius 15 (10 à 50), "
          "Tolerance 0,5 (1,0-1,5 si des points sont rejetés), Shadows relaxation 3, Smoothing 0,25 (0,5-1,0 champs nébuleux), Correction Subtract (Division seulement pour le vignettage), "
          "Normalize, Discard model et Replace target cochés. Retire les points posés sur la nébuleuse ; d'un filtre à l'autre, garde les points et ajuste Tolerance.")
+
+D_MGC_NB = ("MultiscaleGradientCorrection pour le master %s : filtre MARS Gray = %s (MARS DR2, juin 2026 : bandes Ha et OIII, couverture narrowband jusqu'à +75° de déclinaison ; "
+            "valeur du paramètre relevée dans un outil qui pilote MGC sous PixInsight 1.9.5, texte du menu non vu dans l'interface). "
+            "Applique juste après l'icône %s, sur le même master linéaire et résolu. Autres réglages identiques à MGC_MARS : Gradient scale 1024 (512 ou 256 si un gradient reste dans les coins), "
+            "Structure separation 3, Model smoothness 1,0, Show gradient model coché (le modèle doit être lisse, sans structure de la nébuleuse). "
+            "Base MARS DR2 à charger dans les préférences de MGC (clé à molette › Add › fichier .xmars). Hors couverture MARS : GradientCorrection ou DBE. "
+            "SII : pas de bande SII dans MARS, utilise GradientCorrection ou DBE.")
 
 def gradient_block(kind='rgb'):
     """kind : 'rgb' (RGB + L), 'lha' (RGB + L + Ha), 'sho', 'hoo'."""
@@ -163,8 +170,12 @@ def gradient_block(kind='rgb'):
             'SPFC_Ha': dict(nb=(656.3, 3.0), rgb='antlia', gray='antlia_L_spec', qe='qe_imx455'), 'SPFC_OIII': dict(nb=(500.7, 3.0), rgb='antlia', gray='antlia_L_spec', qe='qe_imx455'),
             'SPFC_SII': dict(nb=(672.4, 3.0), rgb='antlia', gray='antlia_L_spec', qe='qe_imx455')}
     b = [(M.spfc(n, **opts[n]), D_SPFC[n] + D_SPFC_COMMUN) for n in names]
-    b += [(M.mgc('MGC_MARS'), D_MGC),
-          (M.instance('GradientCorrection', 'GradientCorrection'), T_GC),
+    b += [(M.mgc('MGC_MARS'), D_MGC)]
+    if kind in ('lha', 'sho', 'hoo'):
+        b += [(M.mgc('MGC_MARS_Ha', gray='Ha'), D_MGC_NB % ('Ha', 'Ha', 'SPFC_Ha'))]
+    if kind in ('sho', 'hoo'):
+        b += [(M.mgc('MGC_MARS_OIII', gray='OIII'), D_MGC_NB % ('OIII', 'OIII', 'SPFC_OIII'))]
+    b += [(M.instance('GradientCorrection', 'GradientCorrection'), T_GC),
           (M.dbe('DBE'), D_DBE)]
     return b
 

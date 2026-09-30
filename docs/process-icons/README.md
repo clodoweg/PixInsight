@@ -61,6 +61,7 @@ Les formules supposent des images nommées comme indiqué (renomme tes vues avec
 | `SPFC_L` | SPFC pour un master L : Gray filter Astronomik L-2 (à remplacer par ton filtre), QE idéale |
 | `SPFC_Ha` / `SPFC_OIII` / `SPFC_SII` | SPFC en Narrowband mode : 656,3 / 500,7 / 672,4 nm, bande passante 3 nm (mets celle de ton filtre) |
 | `MGC_MARS` | MultiscaleGradientCorrection : base MARS, filtres MARS L/R/G/B, Gradient scale 1024, Structure separation 3, Model smoothness 1,0, modèle affiché |
+| `MGC_MARS_Ha` / `MGC_MARS_OIII` | Idem pour un master narrowband : filtre MARS Gray = `Ha` ou `OIII` (base MARS DR2, juin 2026). Pas de bande SII dans MARS : GradientCorrection ou DBE pour SII |
 | `DBE_base` | DynamicBackgroundExtraction sans points : Samples per row 15, radius 15, Tolerance 0,5, Shadows relaxation 3, Smoothing 0,25, Subtract, Normalize |
 | `DynamicCrop_base` | DynamicCrop sans recadrage : trace ton cadre, puis crée ton icône |
 | `NBN_SHO` / `NBN_HOO` | NarrowbandNormalization, palette SHO ou HOO, valeurs par défaut, sur l'image combinée étirée sans étoiles |
@@ -86,16 +87,16 @@ Chaque fichier contient **tous les process du workflow, dans l'ordre**, numérot
 | Fichier | Icônes | Contenu |
 |---|---|---|
 | `Workflow-LRGB.xpsm` | 31 | Prétraitement, combinaison RGB, gradient, BXT Correct Only, SPCC, BXT, SXT linéaire, NXT, GHS, LRGBCombination, finition, étoiles (standard de couleur et contrôle après recombinaison) |
-| `Workflow-LHaRGB.xpsm` | 37 | LRGB + soustraction du continuum, Ha dans le rouge et dans L, NBRGBCombination en alternative ; contrôles de couleur et des étoiles (option : étoiles prises avant injection) |
-| `Workflow-RGB-SHO.xpsm` | 44 | Masters narrowband, LinearFit, combinaison SHO simple, BXT, SXT, extraction des canaux, palettes (NarrowbandNormalization avec rendu visé et contrôle des couleurs, Foraxx, Perfect Palette Picker, NBColourMapper), étoiles RGB (couleurs attendues et contrôle de la recombinaison) |
-| `Workflow-SHO-sans-RGB.xpsm` | 43 | Idem sans RGB, avec étoiles narrowband (NB to RGB Star Combination, étoiles HOO synthétiques, CorrectMagentaStars) et leur standard de couleur (contrôle à la sonde, ajustements) |
-| `Workflow-HOO.xpsm` | 40 | Extraction dual-band pour caméra couleur, combinaison HOO, NarrowbandNormalization HOO (avec rendu visé et contrôle des couleurs), Foraxx HOO, variante Hubble, Perfect Palette Picker, Ha en luminance, standard des étoiles HOO (vert synthétique, contrôle à la sonde) |
+| `Workflow-LHaRGB.xpsm` | 38 | LRGB + soustraction du continuum, Ha dans le rouge et dans L, NBRGBCombination en alternative ; contrôles de couleur et des étoiles (option : étoiles prises avant injection) |
+| `Workflow-RGB-SHO.xpsm` | 46 | Masters narrowband, LinearFit, combinaison SHO simple, BXT, SXT, extraction des canaux, palettes (NarrowbandNormalization avec rendu visé et contrôle des couleurs, Foraxx, Perfect Palette Picker, NBColourMapper), étoiles RGB (couleurs attendues et contrôle de la recombinaison) |
+| `Workflow-SHO-sans-RGB.xpsm` | 45 | Idem sans RGB, avec étoiles narrowband (NB to RGB Star Combination, étoiles HOO synthétiques, CorrectMagentaStars) et leur standard de couleur (contrôle à la sonde, ajustements) |
+| `Workflow-HOO.xpsm` | 42 | Extraction dual-band pour caméra couleur, combinaison HOO, NarrowbandNormalization HOO (avec rendu visé et contrôle des couleurs), Foraxx HOO, variante Hubble, Perfect Palette Picker, Ha en luminance, standard des étoiles HOO (vert synthétique, contrôle à la sonde) |
 
 **Trois sortes d'icônes :**
 
 - **Process réglés** : s'appliquent directement (PixelMath, BlurXTerminator, NoiseXTerminator, StarXTerminator, LRGBCombination, LinearFit, SCNR, LHE, HDRMT, MorphologicalTransformation, CurvesTransformation, GradientCorrection, NarrowbandNormalization SHO et HOO, CosmeticCorrection).
 - **Process à compléter sur ton image ou ton matériel** :
-  - `MGC_MARS` : charge la base MARS dans les préférences de MGC si elle ne l'est pas.
+  - `MGC_MARS`, `MGC_MARS_Ha`, `MGC_MARS_OIII` : charge la base MARS (DR2) dans les préférences de MGC si elle ne l'est pas. Les icônes Ha et OIII sont dans les workflows LHaRGB (Ha seulement), RGB-SHO, SHO sans RGB et HOO.
   - `DynamicCrop` et `DBE` : icônes réelles, sans cadre ni points (ils dépendent de l'image).
   - `SPCC` et `SPFC_…` : configurés pour ton matériel (QHY600 + Antlia V Pro). Bande passante narrowband 3 nm (filtres Antlia 3 nm).
   - `GHS_1_premier`, `GHS_2_contraste`, `GHS_3_fond` : Local intensity et protections réglés, mais **Stretch factor à 0 et SP à choisir sur ton image** (l'icône ne fait rien tant que tu ne l'as pas réglée). Leurs descriptions donnent les repères de niveau : fond vers 0,20–0,25 après le 1er étirement, 0,12–0,14 (30–35 sur 255) dans l'image finale, jamais 0.

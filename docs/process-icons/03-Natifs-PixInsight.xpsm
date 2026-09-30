@@ -399,6 +399,44 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="scaleFactorB" value="1.00"/>
       <parameter id="showGradientModel" value="true"/>
    </instance>
+   <instance class="MultiscaleGradientCorrection" version="1" id="MGC_MARS_Ha_instance">
+      <parameter id="command"></parameter>
+      <parameter id="useMARSDatabase" value="true"/>
+      <parameter id="grayMARSFilter">Ha</parameter>
+      <parameter id="redMARSFilter">R</parameter>
+      <parameter id="greenMARSFilter">G</parameter>
+      <parameter id="blueMARSFilter">B</parameter>
+      <parameter id="referenceImageId"></parameter>
+      <parameter id="gradientScale" value="1024"/>
+      <parameter id="structureSeparation" value="3"/>
+      <parameter id="modelSmoothness" value="1.00"/>
+      <parameter id="minFieldRatio" value="0.017"/>
+      <parameter id="maxFieldRatio" value="0.167"/>
+      <parameter id="enforceFieldLimits" value="true"/>
+      <parameter id="scaleFactorRK" value="1.00"/>
+      <parameter id="scaleFactorG" value="1.00"/>
+      <parameter id="scaleFactorB" value="1.00"/>
+      <parameter id="showGradientModel" value="true"/>
+   </instance>
+   <instance class="MultiscaleGradientCorrection" version="1" id="MGC_MARS_OIII_instance">
+      <parameter id="command"></parameter>
+      <parameter id="useMARSDatabase" value="true"/>
+      <parameter id="grayMARSFilter">OIII</parameter>
+      <parameter id="redMARSFilter">R</parameter>
+      <parameter id="greenMARSFilter">G</parameter>
+      <parameter id="blueMARSFilter">B</parameter>
+      <parameter id="referenceImageId"></parameter>
+      <parameter id="gradientScale" value="1024"/>
+      <parameter id="structureSeparation" value="3"/>
+      <parameter id="modelSmoothness" value="1.00"/>
+      <parameter id="minFieldRatio" value="0.017"/>
+      <parameter id="maxFieldRatio" value="0.167"/>
+      <parameter id="enforceFieldLimits" value="true"/>
+      <parameter id="scaleFactorRK" value="1.00"/>
+      <parameter id="scaleFactorG" value="1.00"/>
+      <parameter id="scaleFactorB" value="1.00"/>
+      <parameter id="showGradientModel" value="true"/>
+   </instance>
    <instance class="DynamicBackgroundExtraction" version="1" id="DBE_base_instance">
       <table id="data" rows="0"/>
       <parameter id="derivativeOrder" value="2"/>
@@ -514,9 +552,11 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
    <icon id="SPFC_OIII" instance="SPFC_OIII_instance" xpos="40" ypos="392" workspace="Workspace01"/>
    <icon id="SPFC_SII" instance="SPFC_SII_instance" xpos="270" ypos="40" workspace="Workspace01"/>
    <icon id="MGC_MARS" instance="MGC_MARS_instance" xpos="270" ypos="72" workspace="Workspace01"/>
-   <icon id="DBE_base" instance="DBE_base_instance" xpos="270" ypos="104" workspace="Workspace01"/>
-   <icon id="DynamicCrop_base" instance="DynamicCrop_base_instance" xpos="270" ypos="136" workspace="Workspace01"/>
-   <icon id="NBN_SHO" instance="NBN_SHO_instance" xpos="270" ypos="168" workspace="Workspace01"/>
-   <icon id="NBN_HOO" instance="NBN_HOO_instance" xpos="270" ypos="200" workspace="Workspace01"/>
-   <icon id="CC_auto_WBPP" instance="CC_auto_WBPP_instance" xpos="270" ypos="232" workspace="Workspace01"/>
+   <icon id="MGC_MARS_Ha" instance="MGC_MARS_Ha_instance" xpos="270" ypos="104" workspace="Workspace01"/>
+   <icon id="MGC_MARS_OIII" instance="MGC_MARS_OIII_instance" xpos="270" ypos="136" workspace="Workspace01"/>
+   <icon id="DBE_base" instance="DBE_base_instance" xpos="270" ypos="168" workspace="Workspace01"/>
+   <icon id="DynamicCrop_base" instance="DynamicCrop_base_instance" xpos="270" ypos="200" workspace="Workspace01"/>
+   <icon id="NBN_SHO" instance="NBN_SHO_instance" xpos="270" ypos="232" workspace="Workspace01"/>
+   <icon id="NBN_HOO" instance="NBN_HOO_instance" xpos="270" ypos="264" workspace="Workspace01"/>
+   <icon id="CC_auto_WBPP" instance="CC_auto_WBPP_instance" xpos="270" ypos="296" workspace="Workspace01"/>
 </xpsm>

@@ -119,9 +119,9 @@ def spfc(name, rgb='ai', gray='ai_gray', qe=None, nb=None):
          ('outputDirectory', '', 't')]
     return build('SpectrophotometricFluxCalibration', 1, name, p)
 
-def mgc(name, scale=1024):
+def mgc(name, scale=1024, gray='L'):
     p = [('command', '', 't'), ('useMARSDatabase', True, 'v'),
-         ('grayMARSFilter', 'L', 't'), ('redMARSFilter', 'R', 't'), ('greenMARSFilter', 'G', 't'), ('blueMARSFilter', 'B', 't'),
+         ('grayMARSFilter', gray, 't'), ('redMARSFilter', 'R', 't'), ('greenMARSFilter', 'G', 't'), ('blueMARSFilter', 'B', 't'),
          ('referenceImageId', '', 't'), ('gradientScale', str(scale), 'v'), ('structureSeparation', '3', 'v'),
          ('modelSmoothness', '1.00', 'v'), ('minFieldRatio', '0.017', 'v'), ('maxFieldRatio', '0.167', 'v'),
          ('enforceFieldLimits', True, 'v'), ('scaleFactorRK', '1.00', 'v'), ('scaleFactorG', '1.00', 'v'),
@@ -252,6 +252,8 @@ nat = [
     spfc('SPFC_OIII', nb=(500.7, 3.0)),
     spfc('SPFC_SII', nb=(672.4, 3.0)),
     mgc('MGC_MARS'),
+    mgc('MGC_MARS_Ha', gray='Ha'),
+    mgc('MGC_MARS_OIII', gray='OIII'),
     dbe('DBE_base'),
     crop('DynamicCrop_base'),
     instance('NarrowbandNormalization', 'NBN_SHO', {'palette': 'Palette_SHO'}),
