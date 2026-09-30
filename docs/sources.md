@@ -349,3 +349,7 @@ Points clos au dernier contrôle (30 septembre 2026) :
 - Tutoriel — [Madratter, CurvesTransformation Part 1](https://astroimages.weebly.com/curvestransformation-part-1.html) : pente raide = plus de contraste ; courbe en S qui abaisse aussi le bruit du fond ; valeur K du curseur dans la barre d'état pour placer les points.
 - Tutoriel — Light Vortex, Touching Up Colour in Images (https://www.lightvortexastronomy.com/tutorial-touching-up-colour-in-images.html, site injoignable ; extrait du moteur de recherche) : courbe H, un point au-dessus des bleus monté vers les pourpres change les bleus en pourpres, orangés descendus vers les rouges.
 - Icônes : types de courbe et noms de canaux (R, G, B, K, A, L, a, b, c, H, S ; interpolation AkimaSubsplines) relevés dans l'instance de référence `.xpsm` (theAstroShed, PixInsight 1.9.3).
+
+## Conteneurs de process
+
+- Modèle — [theAstroShed, icônes de process](https://github.com/jamiesmith/pixinsight-icons) : trois *ProcessContainer* réels (`RGB_PostProcess` : SPCC → BXT → NXT → script → SXT → script ; `for_each_in_RGB` ; `for_each_SHO__ADD_CROP`), générés par PixInsight 1.9.3 : instances imbriquées sans identifiant, attribut `enabled="true"`, pas de description sur le conteneur. Format recopié pour les fichiers Conteneurs-X et le préparateur ; non testé dans PixInsight 1.9.5.

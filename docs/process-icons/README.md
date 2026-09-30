@@ -90,7 +90,22 @@ Sinon, deux fichiers par workflow :
 - **`Workflow-X.xpsm` — chemin principal** : les étapes standard seulement (MGC + MARS pour le gradient, GHS pour l'étirement, NarrowbandNormalization pour la palette), numérotées `E01_WBPP`, `E02_CC_auto`…
 - **`Options-X.xpsm` — options et alternatives** (`Opt_HDRMT`, `Opt_DBE`…) : à charger seulement si besoin ; la description de chaque icône commence par `OPTION — quand l'utiliser` ou `ALTERNATIVE — à la place de quoi`.
 
-Dans les deux, **une colonne par phase**, avec une icône-titre sans effet en haut (`P1_Preparation`, `P2_Gradient`, `P3_Lineaire`, `P4_Etirement`, `P5_Couleur`, `P6_Finition`, `P7_Etoiles`). **Chaque icône porte une description courte** : `PRÉRÉGLÉ` (ce que l'icône règle déjà), `À RÉGLER` (ce qu'il te reste à faire) et `SI … ->` (quoi changer selon le symptôme), plus le mode de lancement pour les scripts. Textes dans `short_desc.py`, phases et rôles dans `layout.py` ; explications complètes dans les fiches de la page.
+- **`Conteneurs-X.xpsm` — conteneurs (à tester)** : les suites d'étapes sans réglage intermédiaire, appliquées à la même image, regroupées en une icône *ProcessContainer* (un clic au lieu de trois à cinq). Chaque étape garde les réglages de son icône du chemin principal. Le préparateur fait la même chose avec la case « Regrouper en conteneurs ».
+
+| Conteneur | Image cible | Étapes |
+|---|---|---|
+| `C_RGB_lineaire` (LRGB) | RGB combiné, linéaire, gradient retiré | BXT Correct Only → SPCC → BXT → SXT → NXT |
+| `C_L_lineaire` (LRGB) | master L | BXT → SXT → NXT |
+| `C_RGB_couleur` (LHaRGB) | RGB combiné | BXT Correct Only → SPCC → BXT |
+| `C_RGB_etoiles_bruit`, `C_L_etoiles_bruit` (LHaRGB) | RGB après injection de H, L après BXT | SXT → NXT |
+| `C_SHO_lineaire`, `C_HOO_lineaire` | combinaison narrowband linéaire | BXT → SXT |
+| `C_Extraction_SHO`, `C_Extraction_HOO`, `C_Extraction_etoiles` | image sans étoiles (ou d'étoiles) | extraction des canaux |
+| `C_Etoiles_RGB` (RGB + SHO) | RGB combiné | BXT Correct Only → SPCC → BXT → SXT |
+| `C_Finition` | image sans étoiles étirée, Masque_L attaché | Courbes → LHE |
+
+Format recopié des conteneurs des icônes de theAstroShed (PixInsight 1.9.3) : instances imbriquées sans identifiant, `enabled="true"`, pas de description sur le conteneur. Pas encore testé dans PixInsight : essaie d'abord sur une copie de l'image.
+
+Dans les trois fichiers, **une colonne par phase**, avec une icône-titre sans effet en haut (`P1_Preparation`, `P2_Gradient`, `P3_Lineaire`, `P4_Etirement`, `P5_Couleur`, `P6_Finition`, `P7_Etoiles`). **Chaque icône porte une description courte** : `PRÉRÉGLÉ` (ce que l'icône règle déjà), `À RÉGLER` (ce qu'il te reste à faire) et `SI … ->` (quoi changer selon le symptôme), plus le mode de lancement pour les scripts. Textes dans `short_desc.py`, phases et rôles dans `layout.py` ; explications complètes dans les fiches de la page.
 
 | Workflow | Principal | Options | Contenu |
 |---|---|---|---|

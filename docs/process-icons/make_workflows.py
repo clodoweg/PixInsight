@@ -157,6 +157,15 @@ def save(filename, title, insts, icons):
     xml = M.HEADER + '<!-- ' + escape(title) + ' -->\n' + '\n'.join(insts) + '\n' + '\n'.join(icons) + '\n</xpsm>\n'
     open(os.path.join(OUT, filename), 'w', encoding='utf-8').write(xml)
 
+def nested(xml):
+    """Instance d'une icône -> instance imbriquée dans un ProcessContainer (format des icônes de référence)."""
+    x = re.sub(r'\s*<description>.*?</description>', '', xml, count=1, flags=re.S)
+    x = x.replace(' id="__ID___instance"', ' enabled="true"', 1)
+    return '\n'.join('   ' + l for l in x.splitlines())
+
+def container(name, xmls):
+    return '   <instance class="ProcessContainer" id="%s_instance">\n%s\n   </instance>' % (name, '\n'.join(nested(x) for x in xmls))
+
 def label(r):
     g, vals = r.split(':')
     names = dict(L.CHOICES[g][1])
@@ -186,7 +195,16 @@ def write(filename, prefix, title, steps):
     opts = [(b, ph, x) for b, ph, r, x, t in entries if not L.is_default(r)]
     save(filename, title + ' — chemin principal', *layout(main, lambda k, b: 'E%02d_%s' % (k, b)))
     save(filename.replace('Workflow-', 'Options-'), title + ' — options et alternatives', *layout(opts, lambda k, b: 'Opt_%s' % b))
-    wf = {'id': prefix, 'file': filename, 'title': title, 'steps': []}
+    # conteneurs : fichier Conteneurs-X.xpsm (étapes du chemin principal uniquement)
+    byb = {b: x for b, ph, r, x, t in entries if L.is_default(r)}
+    cinsts, cicons, conts = [], [], []
+    for k, (cn, target, members) in enumerate(L.CONTAINERS.get(prefix, [])):
+        if all(m in byb for m in members):
+            cinsts.append(container(cn, [byb[m] for m in members]))
+            cicons.append('   <icon id="%s" instance="%s_instance" xpos="30" ypos="%d" workspace="Workspace01"/>' % (cn, cn, 30 + 30 * k))
+        conts.append({'n': cn, 't': target, 'm': members})
+    save(filename.replace('Workflow-', 'Conteneurs-'), title + ' — conteneurs (étapes sans réglage regroupées)', cinsts, cicons)
+    wf = {'id': prefix, 'file': filename, 'title': title, 'steps': [], 'containers': conts}
     for b, ph, r, x, t in entries:
         key = 'i%d' % len(DATA['inst'])
         for k2, v in DATA['inst'].items():

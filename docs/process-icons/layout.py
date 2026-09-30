@@ -85,3 +85,22 @@ def is_default(r):
         return False
     g, vals = r.split(':')
     return DEFAULT[g] in vals.split('|')
+
+# Conteneurs (ProcessContainer) : suites d'étapes sans réglage intermédiaire, appliquées à la même image.
+# nom -> (image cible, étapes). Un conteneur n'est utilisé que si toutes ses étapes sont dans la sélection.
+_FIN = ('C_Finition', "l'image sans étoiles étirée, Masque_L attaché (Ctrl+M)", ['Courbes', 'LHE'])
+CONTAINERS = {
+    'LRGB': [('C_RGB_lineaire', "l'image RGB combinée, linéaire, gradient retiré", ['BXT_CorrectOnly', 'SPCC', 'BXT_RGB', 'SXT_lineaire', 'NXT_RGB']),
+             ('C_L_lineaire', "le master L, linéaire, gradient retiré", ['BXT_L', 'SXT_lineaire', 'NXT_L']), _FIN],
+    'LHA': [('C_RGB_couleur', "l'image RGB combinée, linéaire, gradient retiré", ['BXT_CorrectOnly', 'SPCC', 'BXT_RGB']),
+            ('C_RGB_etoiles_bruit', "l'image RGB après injection de H", ['SXT_lineaire', 'NXT_RGB']),
+            ('C_L_etoiles_bruit', "le master L après BXT", ['SXT_lineaire', 'NXT_L']), _FIN],
+    'RSHO': [('C_SHO_lineaire', "l'image SHO combinée, linéaire", ['BXT_NB', 'SXT_lineaire']),
+             ('C_Extraction_SHO', "l'image SHO sans étoiles", ['Extraire_S', 'Extraire_H', 'Extraire_O']), _FIN,
+             ('C_Etoiles_RGB', "l'image RGB combinée, linéaire, gradient retiré", ['BXT_CorrectOnly', 'SPCC', 'BXT_RGB', 'SXT_RGB_lineaire'])],
+    'SHO': [('C_SHO_lineaire', "l'image SHO combinée, linéaire", ['BXT_NB', 'SXT_lineaire']),
+            ('C_Extraction_SHO', "l'image SHO sans étoiles", ['Extraire_S', 'Extraire_H', 'Extraire_O']),
+            ('C_Extraction_etoiles', "l'image d'étoiles SHO, linéaire", ['Extraire_S_stars', 'Extraire_H_stars', 'Extraire_O_stars']), _FIN],
+    'HOO': [('C_HOO_lineaire', "l'image HOO combinée, linéaire", ['BXT_NB', 'SXT_lineaire']),
+            ('C_Extraction_HOO', "l'image HOO sans étoiles", ['Extraire_H', 'Extraire_O']), _FIN],
+}
