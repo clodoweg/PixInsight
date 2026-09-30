@@ -194,7 +194,10 @@ BXT_C = (" Réglages (manuel RC Astro AI4) : données LINÉAIRES obligatoires, a
 D_BXT_CO = ("BlurXTerminator — Correct Only, AVANT SPCC (manuel RC Astro) : corrige aberrations, coma et tilt sans accentuer. Sur l'image couleur combinée, en linéaire, après le gradient. "
             "Si les aberrations diffèrent d'un filtre à l'autre : applique-le sur chaque master avant de combiner.")
 D_SXT_LIN = ("StarXTerminator — sur données LINÉAIRES, le plus tôt possible après BXT (RC Astro). Generate star image coché, UNSCREEN DÉCOCHÉ (réservé aux images étirées) : "
-             "simple soustraction, couleurs d'étoiles les plus fidèles. N'applique pas l'autoSTF de façon permanente à l'image d'étoiles. Large overlap : décoché par défaut, à cocher seulement si un quadrillage apparaît (deux fois plus lent).")
+             "simple soustraction, couleurs d'étoiles les plus fidèles. N'applique pas l'autoSTF de façon permanente à l'image d'étoiles. Large overlap : décoché (recouvrement des tuiles 20 %) ; coché = 50 %, seulement si un quadrillage apparaît (environ trois fois plus lent selon RC Astro). "
+             "AI11 : version complète de préférence (Lite = 75 % de mémoire en moins ; Lite.nonoise plus rapide mais sans bruit dans les zones retirées). Plus de case Linear : détection automatique. "
+             "Remove stars, spikes et aureoles cochés, reflections décoché : valeurs de l'instance de référence, non documentées par RC Astro, à laisser. "
+             "Masque noir sur un cœur de galaxie compact : zone protégée du retrait (SXT 2.2.0).")
 D_GHS1 = ("GHS, 1er étirement — Stretch factor à 0 : l'icône ne fait rien tant que tu ne l'as pas réglée. Zoome l'histogramme, clique dans l'image sur la zone intéressante la plus faible (sonde 15x15), "
           "Send to SP. Local intensity (b) = 10. Monte Stretch factor jusqu'à un pic d'histogramme vers 0,20-0,25. Retire l'autoSTF, active l'aperçu, affine SP. "
           "Image couleur : passe Colour mode sur Colour (clip RGBBlend). Même niveau de fond visé pour toutes les images à combiner. "
