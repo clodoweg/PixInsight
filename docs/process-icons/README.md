@@ -146,6 +146,8 @@ ChannelCombination et ChannelExtraction sont remplacés par des icônes PixelMat
 
 Les fichiers ont été générés par `make_workflows.py` (dans ce dossier) à partir des modèles vérifiés.
 
+**Régénérer tout** (icônes 01–04, workflows, options, conteneurs, données du préparateur et page) : `sh docs/process-icons/build/build.sh`. Le dossier `build/` contient les modèles d'instances (`templates.json`, `all.x`, `FromLukeAndBill.xpsm`, issus des icônes de theAstroShed, licence Apache 2.0 dans `LICENSE-theAstroShed-icons`), le script du préparateur (`prep_build.py`), la conversion page du dépôt ↔ source de l'artifact (`page.py`) et un audit des réglages (`audit_icons.py`, à lancer depuis `docs/process-icons`).
+
 ## Sources
 
 - SPFC, MGC et DBE n'ont pas de modèle `.xpsm` public : leurs icônes sont construites à partir de la liste de paramètres du code d'AutoIntegrate, au format des paramètres communs avec SPCC (modèle réel) ; courbes de filtres et de capteur tirées du même code et de l'icône SPCC de theAstroShed (`spfc_curves.json`).
