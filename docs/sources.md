@@ -201,6 +201,15 @@ Légende :
 - Standards des deux calques : rubriques « Couleurs SHO et choix de la palette » (nébuleuse) et « Couleurs LRGB » (étoiles calibrées, jamais vertes).
 - Contrôles de recombinaison (restes d'étoiles SHO magenta, étoiles « collées », alignement RGB/SHO, fond de l'image d'étoiles) : pratique de la fiche, sans chiffre sourcé ; la page l'indique.
 
+## Standard des étoiles sans RGB
+
+- Tutoriel — [AIASTRO, étoiles RGB à partir du narrowband](https://aiastro.wordpress.com/2020/06/02/rgb-stars-from-narroband-data/) (relu) : couleurs d'étoiles non calibrées en narrowband ; en SHO/HOO brut, étoiles bleues trop vertes et oranges trop rouges ; G = 80 % OIII + 20 % Ha choisi en comparant à du RGB, propre au matériel de l'auteur ; vérification par calibration photométrique ; légère teinte verte résiduelle sur les étoiles bleues.
+- Code — [Seti Astro, `NBtoRGBStars.js` v1.6](https://github.com/setiastro/pixinsight-updates-194) (relu) : « realistic RGB star image » ; R = 0,5·Ha + 0,5·SII (Ha seul sans SII), G = ratio·Ha + (1 − ratio)·OIII avec ratio 0,3 par défaut, B = OIII ; Star Stretch optionnel (Stretch Factor 5, Color Boost 1,0).
+- Tutoriel — [Telescope Live, étoiles violettes en SHO](https://telescope.live/blog/how-remove-purple-stars-sho-images) : magenta, défaut courant de la palette Hubble.
+- Officiel — [CorrectMagentaStars](https://github.com/terrordrummer/correctMagentaStars) : Amount 0,8 par défaut (0 à 1).
+- Officiel — [Las Cumbres Observatory, corps noir](https://lco.global/spacebook/light/black-body-radiation/) : pas d'étoile verte.
+- Sens du réglage de a dans G = a·Ha + (1 − a)·OIII : calcul (monter a baisse G quand OIII > Ha, le monte quand Ha > OIII) ; les valeurs 0,3 à 0,4 indiquent le sens, non sourcées ; règles de lecture à la sonde déduites de la composition des couleurs. La page l'indique.
+
 ## Couleurs SHO et choix de la palette
 
 - Tutoriel — [AstroBackyard, guide du narrowband et de la palette Hubble](https://astrobackyard.com/narrowband-imaging/)
@@ -225,6 +234,7 @@ Les schémas ne reprennent que des faits déjà sourcés plus haut ; ils n'ajout
 
 - Frises des workflows, arbre de choix, comparaison large bande / narrowband, circuit des étoiles : ordre des étapes et phase linéaire ou étirée tirés des étapes de la fiche (sources des rubriques correspondantes).
 - Courbes GHS : calculées avec l'équation hyperbolique généralisée de David Payne (b > 0) telle qu'elle est codée dans les formules PixelMath de Bill Blanshan (`FromLukeAndBill.xpsm`, [theAstroShed](https://github.com/jamiesmith/pixinsight-icons)) ; D = 10, SP = 0,1, b = 10 et b = 1, sans LP ni HP. Lecture des paramètres d'après la [documentation GHS](https://www.ghsastro.co.uk/doc/tools/GeneralizedHyperbolicStretch/GeneralizedHyperbolicStretch.html).
+- Étoiles sans RGB (section SHO sans RGB) : valeurs illustratives, rubrique « Standard des étoiles sans RGB ».
 - Calques RGB + SHO (section RGB + SHO) : schéma des deux calques et de leurs contrôles, rubrique « Couleurs RGB + SHO ».
 - Lecture des couleurs LHaRGB (section LHaRGB) : valeurs illustratives, règles de la rubrique « Couleurs LHaRGB ».
 - Lecture des couleurs LRGB (section LRGB) : valeurs illustratives, règles de la rubrique « Couleurs LRGB ».

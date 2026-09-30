@@ -179,10 +179,10 @@ def finish_block(extra=None):
         b = extra + b
     return b + [(M.nxt('NXT_final', 0.40, 1), D_NXT_F)]
 
-def stars_end(cms=False, screen_extra=''):
+def stars_end(cms=False, screen_extra='', cms_extra=''):
     b = [(pm('Etoiles_screen', '~((~starless) * (~stars))', new_image=True, new_id='Final'), D_SCREEN + screen_extra)]
     if cms:
-        b.append((note('CorrectMagentaStars', T_CMS), ''))
+        b.append((note('CorrectMagentaStars', T_CMS + cms_extra), ''))
     b += [(pm('Blanshan_Transfer', "S=0.15;\nImg1=starless;\nf1= ~((~mtf(~S,$T)/~mtf(~S,Img1))*~Img1);\nmax(Img1,f1)", symbols='S, Img1, f1'), D_BL),
           (M.instance('MorphologicalTransformation', 'MT_etoiles', {'operator': 'Selection', 'numberOfIterations': 1, 'amount': '0.60', 'selectionPoint': '0.25', 'structureSize': 5}, post=M.mt_post), D_MT),
           (note('Halo_B_Gon', T_HALO), '')]
@@ -348,18 +348,27 @@ rgbsho = pre_block() + nb_masters(['Sii', 'Ha', 'Oiii']) + [
 ] + extract([(0, 'Sii'), (1, 'Ha'), (2, 'Oiii')], "l'image SHO sans étoiles") + nb_noise + ghs_block(GHS_NB, STAT_NB) + sho_palette + finish_block(sho_finish) + rgb_stars_block() + stars_end(cms=True, screen_extra=SCREEN_RGBSHO)
 
 # ---------------------------------------------------------------- SHO sans RGB
+STARS_NB = (" STANDARD DES ÉTOILES SANS RGB : couleurs non calibrées, on vise des étoiles PLAUSIBLES, proches du RGB : du bleu-blanc au jaune-orange, peu saturées, une gamme de couleurs, "
+            "JAMAIS magenta (R et B nettement au-dessus de G) ni vertes (G au-dessus de R et B). CONTRÔLE à la sonde 15x15 sur le halo (le cœur est souvent blanc) : étoiles chaudes R >= G >= B, bleues B >= G >= R ; "
+            "parcours une dizaine d'étoiles, toutes identiques = couleurs écrasées. ")
+STARS_NB_FIX = ("AJUSTER : magenta -> NB to RGB ou étoiles HOO synthétiques, sinon CorrectMagentaStars ; bleues verdâtres ou étoiles trop rouges -> plus de Ha dans le vert (G = a·Ha + (1 − a)·OIII : monter a rend les bleues moins vertes et les rouges plus jaunes) ; étoiles chaudes trop jaunes ou verdâtres -> moins de Ha dans le vert ; "
+                "criardes -> Color Boost plus bas ; toutes blanches -> étirement plus doux ; anneau cœur rouge / halo cyan -> réduction d'étoiles ou désaturation des halos. "
+                "Étoiles vraiment calibrées : quelques poses RGB courtes (workflow RGB + SHO).")
+
 sho = pre_block() + nb_masters(['Sii', 'Ha', 'Oiii']) + [
     sho_combine,
     (M.bxt('BXT_NB', False, 0.25, 0.0, 0.60), D_BXT_NB),
     (M.sxt('SXT_lineaire', False), D_SXT_LIN + " Sur l'image SHO : GARDE LES DEUX images (fond et étoiles), les étoiles viennent ici du narrowband."),
 ] + extract([(0, 'Sii'), (1, 'Ha'), (2, 'Oiii')], "l'image SHO sans étoiles") + extract([(0, 'Sii_stars'), (1, 'Ha_stars'), (2, 'Oiii_stars')], "l'image d'étoiles SHO (linéaire)") + nb_noise + ghs_block(GHS_NB, STAT_NB) + sho_palette + finish_block(sho_finish) + [
     (note('NB_to_RGB_Stars', "ÉTOILES — méthode 1 : NB to RGB Star Combination (SetiAstro, script). Ha Stars et OIII Stars (linéaires, obligatoires), SII optionnel. "
-          "Green Channel Blend Ratio décoché par défaut (Ha to OIII ratio 0,3 si activé). Apply Star Stretch recommandé par l'auteur : Stretch Factor 5, Color Boost 1,0."), ''),
+          "Green Channel Blend Ratio décoché par défaut (Ha to OIII ratio 0,3 si activé). Apply Star Stretch recommandé par l'auteur : Stretch Factor 5, Color Boost 1,0. "
+          "Mélange du script (code v1.6) : R = 0,5·Ha + 0,5·SII (Ha seul sans SII), G = ratio·Ha + (1 − ratio)·OIII (0,3·Ha + 0,7·OIII par défaut), B = OIII ; monte le ratio si les étoiles bleues sont verdâtres ou les rouges trop rouges, baisse-le si les étoiles chaudes tirent vers le jaune-vert." + STARS_NB + STARS_NB_FIX), ''),
     (pm('Etoiles_HOO_synth', 'Ha_stars', '0.2*Ha_stars + 0.8*Oiii_stars', 'Oiii_stars', new_image=True, new_id='Stars_HOO', space='RGB'),
      "ÉTOILES — méthode 2 : étoiles HOO synthétiques (AIASTRO) sur les images d'étoiles linéaires 'Ha_stars' et 'Oiii_stars' : R = Ha, G = 20 % Ha + 80 % OIII, B = OIII. "
-     "Calibre ensuite la couleur, puis étire avec Star Stretch. Renomme le résultat étiré 'stars'."),
-    (note('Star_Stretch', T_STARSTRETCH), ''),
-] + stars_end(cms=True)
+     "Calibre ensuite la couleur, puis étire avec Star Stretch. Renomme le résultat étiré 'stars'. Rapport choisi par l'auteur en comparant à des étoiles RGB, propre à son matériel ; "
+     "une légère teinte verte peut rester sur les étoiles bleues (passe à 0,3·Ha + 0,7·OIII)." + STARS_NB),
+    (note('Star_Stretch', T_STARSTRETCH + " Étoiles narrowband : Color Boost plus bas si criardes, Stretch Amount plus bas si toutes blanches."), ''),
+] + stars_end(cms=True, cms_extra=' ' + STARS_NB + STARS_NB_FIX)
 
 # ---------------------------------------------------------------- HOO
 hoo = pre_block() + [
