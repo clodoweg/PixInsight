@@ -210,6 +210,12 @@ Légende :
 - Officiel — [Las Cumbres Observatory, corps noir](https://lco.global/spacebook/light/black-body-radiation/) : pas d'étoile verte.
 - Sens du réglage de a dans G = a·Ha + (1 − a)·OIII : calcul (monter a baisse G quand OIII > Ha, le monte quand Ha > OIII) ; les valeurs 0,3 à 0,4 indiquent le sens, non sourcées ; règles de lecture à la sonde déduites de la composition des couleurs. La page l'indique.
 
+## Standard des étoiles LRGB
+
+- Couleurs calibrées par SPCC et absence d'étoile verte : rubrique « Couleurs LRGB » (documentation SPCC, Las Cumbres Observatory).
+- Réglages Star Stretch (Stretch Amount, Color Boost) : rubrique Scripts (code SetiAstro) et fiche Star Stretch.
+- Lecture sur le halo (cœur saturé), variété des couleurs, contrôles après recombinaison (couleur identique à l'image d'étoiles seule, anneaux sombres, halos, taille, fond) : pratique de la fiche, sans chiffre sourcé ; la page l'indique.
+
 ## Standard des étoiles HOO
 
 - Mêmes sources que « Standard des étoiles sans RGB » (AIASTRO, `NBtoRGBStars.js`, Las Cumbres Observatory).
@@ -240,6 +246,7 @@ Les schémas ne reprennent que des faits déjà sourcés plus haut ; ils n'ajout
 
 - Frises des workflows, arbre de choix, comparaison large bande / narrowband, circuit des étoiles : ordre des étapes et phase linéaire ou étirée tirés des étapes de la fiche (sources des rubriques correspondantes).
 - Courbes GHS : calculées avec l'équation hyperbolique généralisée de David Payne (b > 0) telle qu'elle est codée dans les formules PixelMath de Bill Blanshan (`FromLukeAndBill.xpsm`, [theAstroShed](https://github.com/jamiesmith/pixinsight-icons)) ; D = 10, SP = 0,1, b = 10 et b = 1, sans LP ni HP. Lecture des paramètres d'après la [documentation GHS](https://www.ghsastro.co.uk/doc/tools/GeneralizedHyperbolicStretch/GeneralizedHyperbolicStretch.html).
+- Étoiles LRGB (section LRGB) : valeurs illustratives, rubrique « Standard des étoiles LRGB ».
 - Étoiles HOO (section HOO) : schéma calculé, rubrique « Standard des étoiles HOO ».
 - Étoiles sans RGB (section SHO sans RGB) : valeurs illustratives, rubrique « Standard des étoiles sans RGB ».
 - Calques RGB + SHO (section RGB + SHO) : schéma des deux calques et de leurs contrôles, rubrique « Couleurs RGB + SHO ».

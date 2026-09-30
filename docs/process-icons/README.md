@@ -83,7 +83,7 @@ Chaque fichier contient **tous les process du workflow, dans l'ordre**, numérot
 
 | Fichier | Icônes | Contenu |
 |---|---|---|
-| `Workflow-LRGB.xpsm` | 31 | Prétraitement, combinaison RGB, gradient, BXT Correct Only, SPCC, BXT, SXT linéaire, NXT, GHS, LRGBCombination, finition, étoiles |
+| `Workflow-LRGB.xpsm` | 31 | Prétraitement, combinaison RGB, gradient, BXT Correct Only, SPCC, BXT, SXT linéaire, NXT, GHS, LRGBCombination, finition, étoiles (standard de couleur et contrôle après recombinaison) |
 | `Workflow-LHaRGB.xpsm` | 37 | LRGB + soustraction du continuum, Ha dans le rouge et dans L, NBRGBCombination en alternative |
 | `Workflow-RGB-SHO.xpsm` | 44 | Masters narrowband, LinearFit, combinaison SHO simple, BXT, SXT, extraction des canaux, palettes (NarrowbandNormalization avec rendu visé et contrôle des couleurs, Foraxx, Perfect Palette Picker, NBColourMapper), étoiles RGB (couleurs attendues et contrôle de la recombinaison) |
 | `Workflow-SHO-sans-RGB.xpsm` | 43 | Idem sans RGB, avec étoiles narrowband (NB to RGB Star Combination, étoiles HOO synthétiques, CorrectMagentaStars) et leur standard de couleur (contrôle à la sonde, ajustements) |

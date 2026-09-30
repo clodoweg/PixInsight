@@ -221,6 +221,13 @@ T_SPCC = ("SPCC configuré pour ton matériel (" + MATERIEL + ") : White referen
 spcc = lambda: (spcc_perso('SPCC'), T_SPCC)
 
 # ---------------------------------------------------------------- LRGB
+STARS_LRGB = (" STANDARD DES ÉTOILES (RGB calibré par SPCC) : du bleu-blanc au jaune-orange, couleur visible mais pas criarde, une gamme de couleurs, JAMAIS vertes. "
+              "CONTRÔLE sur l'image d'étoiles seule, à la sonde 15x15 sur le HALO (le cœur est souvent saturé et blanc) : chaudes R >= G >= B, bleues B >= G >= R, aucune avec G au-dessus de R et B ; "
+              "une dizaine d'étoiles pas toutes identiques. Toutes blanches : Stretch Amount plus bas (ou GHS avec HP) ; criardes : Color Boost plus bas ; vertes, bleues ou jaunes en bloc : SPCC à revoir.")
+SCREEN_LRGB = (" LRGB — CONTRÔLE après recombinaison, à 100 % : étoiles de la même couleur que sur l'image d'étoiles seule (la combinaison L a été faite sans étoiles) ; "
+               "pas d'anneau sombre ni de halo coloré autour des étoiles ; étoiles ni grossies ni trop présentes (sinon réduction d'étoiles ou étirement plus doux) ; "
+               "fond toujours R = G = B (fond éclairci : fond de l'image d'étoiles pas à 0).")
+
 lrgb = pre_block() + [rgb_comb(), (note('ImageSolver', T_SOLVER), '')] + gradient_block('rgb') + [
     (M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), D_BXT_CO),
     spcc(),
@@ -230,13 +237,13 @@ lrgb = pre_block() + [rgb_comb(), (note('ImageSolver', T_SOLVER), '')] + gradien
     (M.nxt('NXT_RGB', 0.80, 1), "NoiseXTerminator sur RGB sans étoiles : Denoise 0,80 (0,70 à 0,90), Detail 0,15. Toujours après BXT. Fonctionne en linéaire ou après étirement (RC Astro)."),
     (M.nxt('NXT_L', 0.60, 1), "NoiseXTerminator sur L sans étoiles : Denoise 0,60 (0,50 à 0,70) pour garder le détail fin."),
 ] + ghs_block(" En LRGB : étire le RGB sans étoiles et L sans étoiles jusqu'au MÊME fond et à une médiane proche.") + [
-    (note('Star_Stretch', T_STARSTRETCH), ''),
+    (note('Star_Stretch', T_STARSTRETCH + STARS_LRGB), ''),
     (M.instance('LRGBCombination', 'LRGB_ajout_L', {'mL': '0.500', 'mc': '0.400', 'noiseReduction': True}, post=M.lrgb_post),
      "LRGBCombination sur les images étirées et SANS étoiles : seul L activé (renomme ta luminance 'L'), glisse le triangle sur le RGB. Lightness 0,5 ; Saturation 0,40 (plus bas = plus saturé) ; "
      "Chrominance noise reduction cochée. Couleurs délavées : L trop claire par rapport au RGB, étire-la moins. "
      "CONTRÔLE après combinaison (sonde 15x15) : cœur de galaxie R >= G, nettement au-dessus de B ; bras B au-dessus de R ; régions HII R > B > G ; aucune étoile verte ; toute une gamme d'étoiles bleues et jaune-orange ; fond R = G = B. "
      "Couleurs criardes ou bruit coloré : remonte la valeur de Saturation (plus haut = moins saturé), NXT sur le RGB. Étoiles toutes blanches : étire-les à part. Régions HII peu visibles : normal en LRGB pur, passe en LHaRGB."),
-] + finish_block() + stars_end()
+] + finish_block() + stars_end(screen_extra=SCREEN_LRGB)
 
 # ---------------------------------------------------------------- LHaRGB
 lhargb = pre_block() + [rgb_comb(), (note('ImageSolver', T_SOLVER), '')] + gradient_block('lha') + [
@@ -264,12 +271,12 @@ lhargb = pre_block() + [rgb_comb(), (note('ImageSolver', T_SOLVER), '')] + gradi
     (M.nxt('NXT_RGB', 0.80, 1), "NoiseXTerminator sur RGB sans étoiles : Denoise 0,80, Detail 0,15."),
     (M.nxt('NXT_L', 0.60, 1), "NoiseXTerminator sur L sans étoiles : Denoise 0,60."),
 ] + ghs_block(" Étire RGB et L sans étoiles jusqu'au même fond.") + [
-    (note('Star_Stretch', T_STARSTRETCH), ''),
+    (note('Star_Stretch', T_STARSTRETCH + STARS_LRGB), ''),
     (M.instance('LRGBCombination', 'LRGB_ajout_L', {'mL': '0.500', 'mc': '0.400', 'noiseReduction': True}, post=M.lrgb_post),
      "LRGBCombination sur les images étirées sans étoiles : seul L activé (vue 'L'), Lightness 0,5, Saturation 0,40, Chrominance noise reduction cochée. "
      "CONTRÔLE (sonde 15x15) : cœur de galaxie jaune (R >= G >> B), bras bleus, régions HII roses et bien visibles grâce au Ha (R > B > G), aucune étoile verte, fond R = G = B ; couleurs délavées : L trop claire, étire-la moins. "
      "Compare avec la copie LRGB sans Ha : seules les régions HII doivent changer ; si le cœur ou les étoiles ont rougi, reprends la soustraction du continuum (k)."),
-] + finish_block() + stars_end()
+] + finish_block() + stars_end(screen_extra=SCREEN_LRGB)
 
 # ---------------------------------------------------------------- narrowband communs
 def nb_masters(chans):
