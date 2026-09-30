@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Fiche PixInsight — icônes de process générées pour docs/pixinsight-workflow.html
+Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes images.
+-->
+<xpsm version="1.0" xmlns="http://www.pixinsight.com/xpsm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.pixinsight.com/xpsm http://pixinsight.com/xpsm/xpsm-1.0.xsd">
+<!-- Workflow LRGB — options et alternatives -->
+   <instance class="NoOperation" version="256" id="P2_Gradient_instance">
+      <description>PHASE 2 — Gradient : image linéaire : retrait du gradient. Colonne de repère, sans effet.</description>
+   </instance>
+   <instance class="Script" version="256" id="Opt_ImageSolver_instance">
+      <description>OPTION — si WBPP n'a pas résolu l'image. Double-clic sur l'icône puis Apply Global. PRÉRÉGLÉ : rien. À RÉGLER : nom de l'objet ; focale 2 939 mm ; pixel 3,76 µm ; Gaia DR3. SI WBPP a déjà résolu l'image -&gt; saute cette étape. Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/AdP/ImageSolver.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="0"/>
+      <parameter id="information"></parameter>
+   </instance>
+   <instance class="GradientCorrection" version="1" id="Opt_GradientCorrection_instance">
+      <description>ALTERNATIVE — GradientCorrection. PRÉRÉGLÉ : valeurs par défaut, Structure protection activée. À RÉGLER : rien ; contrôle le modèle de gradient. SI gradient dans les coins -&gt; baisse Gradient scale ; si nébuleuse assombrie -&gt; monte Protection amount. Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="reference" value="0.50"/>
+      <parameter id="lowThreshold" value="0.20"/>
+      <parameter id="lowTolerance" value="0.50"/>
+      <parameter id="highThreshold" value="0.05"/>
+      <parameter id="highTolerance" value="0.00"/>
+      <parameter id="iterations" value="15"/>
+      <parameter id="scale" value="5.00"/>
+      <parameter id="smoothness" value="0.60"/>
+      <parameter id="downsamplingFactor" value="16"/>
+      <parameter id="protection" value="true"/>
+      <parameter id="protectionThreshold" value="0.10"/>
+      <parameter id="protectionAmount" value="0.50"/>
+      <parameter id="protectionSmoothingFactor" value="16"/>
+      <parameter id="lowClippingLevel" value="0.000076"/>
+      <parameter id="automaticConvergence" value="true"/>
+      <parameter id="convergenceLimit" value="0.00001000"/>
+      <parameter id="maxIterations" value="10"/>
+      <parameter id="useSimplification" value="false"/>
+      <parameter id="simplificationDegree" value="1"/>
+      <parameter id="simplificationScale" value="1024"/>
+      <parameter id="generateSimpleModel" value="false"/>
+      <parameter id="generateGradientModel" value="true"/>
+      <parameter id="generateProtectionMasks" value="false"/>
+      <parameter id="gridSamplingDelta" value="16"/>
+   </instance>
+   <instance class="DynamicBackgroundExtraction" version="1" id="Opt_DBE_instance">
+      <description>ALTERNATIVE — DBE. PRÉRÉGLÉ : 15 points par ligne, rayon 15, Tolerance 0,5, Smoothing 0,25, Subtraction. À RÉGLER : Generate, retire les points sur l'objet, ajoute-en dans le fond vide. SI points rouges -&gt; Tolerance 1,0 à 1,5 ; si vignettage -&gt; Division. Détails : page docs/pixinsight-workflow.html.</description>
+      <table id="data" rows="0"/>
+      <parameter id="derivativeOrder" value="2"/>
+      <parameter id="smoothing" value="0.250"/>
+      <parameter id="ignoreWeights" value="false"/>
+      <parameter id="modelId"></parameter>
+      <parameter id="modelWidth" value="0"/>
+      <parameter id="modelHeight" value="0"/>
+      <parameter id="downsample" value="2"/>
+      <parameter id="modelSampleFormat" value="f32"/>
+      <parameter id="targetCorrection" value="Subtract"/>
+      <parameter id="normalize" value="true"/>
+      <parameter id="discardModel" value="true"/>
+      <parameter id="replaceTarget" value="true"/>
+      <parameter id="correctedImageId"></parameter>
+      <parameter id="correctedImageSampleFormat" value="SameAsTarget"/>
+      <table id="samples" rows="0"/>
+      <parameter id="imageWidth" value="0"/>
+      <parameter id="imageHeight" value="0"/>
+      <parameter id="symmetryCenterX" value="0.500000"/>
+      <parameter id="symmetryCenterY" value="0.500000"/>
+      <parameter id="tolerance" value="0.500"/>
+      <parameter id="shadowsRelaxation" value="3.000"/>
+      <parameter id="minSampleFraction" value="0.050"/>
+      <parameter id="defaultSampleRadius" value="15"/>
+      <parameter id="samplesPerRow" value="15"/>
+   </instance>
+   <instance class="NoOperation" version="256" id="P3_Lineaire_instance">
+      <description>PHASE 3 — Linéaire : image linéaire : couleur, déconvolution, retrait des étoiles, bruit. Colonne de repère, sans effet.</description>
+   </instance>
+   <instance class="Script" version="256" id="Opt_Find_Background_instance">
+      <description>OPTION — champ rempli de nébuleuse : fond de référence pour SPCC. Double-clic sur l'icône puis Apply Global. Si l'icône est bloquée après une mise à jour du script : efface son champ MD5. PRÉRÉGLÉ : rien. À RÉGLER : glisse sur l'image : crée l'aperçu Background ; dans SPCC, Region of Interest › From Preview. Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/FindBackground.js</parameter>
+      <parameter id="md5sum">4af61e322ea5149f93fdcfe6ef0e62bd</parameter>
+      <table id="parameters" rows="14">
+         <tr>
+            <td id="id">filterAvg</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">filterSdev</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">filterPoisonIndex</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">filterMAAD</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">filterObjects</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">printInformation</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">generatePreview</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">previewName</td>
+            <td id="value">Background</td>
+         </tr>
+         <tr>
+            <td id="id">slowSearch</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">fastSearch</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">size</td>
+            <td id="value">50</td>
+         </tr>
+         <tr>
+            <td id="id">spacingRate</td>
+            <td id="value">2</td>
+         </tr>
+         <tr>
+            <td id="id">searchGridSize</td>
+            <td id="value">100</td>
+         </tr>
+         <tr>
+            <td id="id">startingPoints</td>
+            <td id="value">40</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
+   </instance>
+   <instance class="NoOperation" version="256" id="P4_Etirement_instance">
+      <description>PHASE 4 — Étirement : passage en non linéaire, même fond pour toutes les images. Colonne de repère, sans effet.</description>
+   </instance>
+   <instance class="Script" version="256" id="Opt_Statistical_Stretch_instance">
+      <description>ALTERNATIVE — Statistical Stretch. Glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script : efface son champ MD5. PRÉRÉGLÉ : Target Median 0,25, Blackpoint Sigma 5, Linked coché, reste par défaut. À RÉGLER : rien ; alternative à GHS. SI cible compacte (galaxie) -&gt; Target Median 0,10 ; si fond trop clair -&gt; Blackpoint Sigma plus haut. Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/statisticalstretch.js</parameter>
+      <parameter id="md5sum">defab45bb4e2f33db39a7bb016cdefb0</parameter>
+      <table id="parameters" rows="15">
+         <tr>
+            <td id="id">targetMedian</td>
+            <td id="value">0.25</td>
+         </tr>
+         <tr>
+            <td id="id">curvesBoost</td>
+            <td id="value">0</td>
+         </tr>
+         <tr>
+            <td id="id">numIterations</td>
+            <td id="value">1</td>
+         </tr>
+         <tr>
+            <td id="id">normalizeImageRange</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">linkedStretch</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">openDialogbox</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">autoConvergence</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">blackpointSigma</td>
+            <td id="value">5</td>
+         </tr>
+         <tr>
+            <td id="id">noBlackClip</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">hdrCompress</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">hdrAmount</td>
+            <td id="value">0.25</td>
+         </tr>
+         <tr>
+            <td id="id">hdrKnee</td>
+            <td id="value">0.35</td>
+         </tr>
+         <tr>
+            <td id="id">lumaOnly</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">lumaMode</td>
+            <td id="value">rec709</td>
+         </tr>
+         <tr>
+            <td id="id">lumaBlend</td>
+            <td id="value">0.6</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
+   </instance>
+   <instance class="NoOperation" version="256" id="P6_Finition_instance">
+      <description>PHASE 6 — Finition : contraste et saturation sur l'image sans étoiles. Colonne de repère, sans effet.</description>
+   </instance>
+   <instance class="HDRMultiscaleTransform" version="256" id="Opt_HDRMT_instance">
+      <description>OPTION — cœur de galaxie ou nébuleuse brillante brûlé. PRÉRÉGLÉ : 6 couches, 1 itération, To lightness, Preserve hue, Lightness mask. À RÉGLER : rien. SI pas assez -&gt; 2 itérations ; si trop fort -&gt; mélange 50 % avec l'original. Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="numberOfLayers" value="6"/>
+      <parameter id="numberOfIterations" value="1"/>
+      <parameter id="invertedIterations" value="true"/>
+      <parameter id="overdrive" value="0.000"/>
+      <parameter id="medianTransform" value="false"/>
+      <parameter id="scalingFunctionData">0.003906,0.015625,0.023438,0.015625,0.003906,0.015625,0.0625,0.09375,0.0625,0.015625,0.023438,0.09375,0.140625,0.09375,0.023438,0.015625,0.0625,0.09375,0.0625,0.015625,0.003906,0.015625,0.023438,0.015625,0.003906</parameter>
+      <parameter id="scalingFunctionRowFilter">0.0625,0.25,0.375,0.25,0.0625</parameter>
+      <parameter id="scalingFunctionColFilter">0.0625,0.25,0.375,0.25,0.0625</parameter>
+      <parameter id="scalingFunctionName">B3 Spline (5)</parameter>
+      <parameter id="deringing" value="false"/>
+      <parameter id="smallScaleDeringing" value="0.000"/>
+      <parameter id="largeScaleDeringing" value="0.250"/>
+      <parameter id="outputDeringingMaps" value="false"/>
+      <parameter id="midtonesBalanceMode" value="Automatic"/>
+      <parameter id="midtonesBalance" value="0.500000"/>
+      <parameter id="toIntensity" value="false"/>
+      <parameter id="toLightness" value="true"/>
+      <parameter id="preserveHue" value="true"/>
+      <parameter id="lightnessMask" value="true"/>
+      <parameter id="intensity" value="1.00"/>
+   </instance>
+   <instance class="NoiseXTerminator" version="256" id="Opt_NXT_final_instance">
+      <description>OPTION — bruit visible sur l'image finale. PRÉRÉGLÉ : Denoise 0,40, 1 itération. À RÉGLER : seulement si du bruit reste sur l'image finale. SI aspect plastique -&gt; 0,30. Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="ml_version" value="0"/>
+      <parameter id="denoise" value="0.40"/>
+      <parameter id="enable_color_separation" value="false"/>
+      <parameter id="enable_frequency_separation" value="false"/>
+      <parameter id="denoise_intensity" value="0.90"/>
+      <parameter id="denoise_color" value="0.90"/>
+      <parameter id="denoise_high_freq" value="0.90"/>
+      <parameter id="denoise_low_freq" value="0.90"/>
+      <parameter id="denoise_intensity_high_freq" value="0.90"/>
+      <parameter id="denoise_intensity_low_freq" value="0.90"/>
+      <parameter id="denoise_color_high_freq" value="0.90"/>
+      <parameter id="denoise_color_low_freq" value="0.90"/>
+      <parameter id="frequency_scale" value="5.0"/>
+      <parameter id="iterations" value="1"/>
+      <parameter id="detail" value="0.15"/>
+      <parameter id="overlap" value="0.20"/>
+   </instance>
+   <instance class="NoOperation" version="256" id="P7_Etoiles_instance">
+      <description>PHASE 7 — Étoiles : étoiles : étirement, recombinaison, réduction. Colonne de repère, sans effet.</description>
+   </instance>
+   <instance class="MorphologicalTransformation" version="256" id="Opt_MT_etoiles_instance">
+      <description>OPTION — réduction d'étoiles supplémentaire. PRÉRÉGLÉ : Selection 0,25, Amount 0,60, 1 itération, 5×5 circulaire. À RÉGLER : sur l'image d'étoiles seule. SI trop fort -&gt; Amount 0,50. Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="operator" value="Selection"/>
+      <parameter id="interlacingDistance" value="1"/>
+      <parameter id="lowThreshold" value="0.000000"/>
+      <parameter id="highThreshold" value="0.000000"/>
+      <parameter id="numberOfIterations" value="1"/>
+      <parameter id="amount" value="0.60"/>
+      <parameter id="selectionPoint" value="0.25"/>
+      <parameter id="structureName"></parameter>
+      <parameter id="structureSize" value="5"/>
+      <table id="structureWayTable" rows="1">
+         <tr>
+            <td id="mask">0x00,0x01,0x01,0x01,0x00,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x00,0x01,0x01,0x01,0x00</td>
+         </tr>
+      </table>
+   </instance>
+   <instance class="Script" version="256" id="Opt_Halo_B_Gon_instance">
+      <description>OPTION — halos autour des étoiles brillantes. Double-clic sur l'icône puis Apply Global. Si l'icône est bloquée après une mise à jour du script : efface son champ MD5. PRÉRÉGLÉ : rien (réglages dans le dialogue). À RÉGLER : Reduction Amount Low ; Linear Data décoché sur une image étirée. SI pas assez -&gt; relance en Low (Med = 4 courbes, High = 9). Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/Halo-B-Gon.js</parameter>
+      <parameter id="md5sum">b9427e718e2b9760704c8c738e0893b7</parameter>
+      <table id="parameters" rows="0"/>
+      <parameter id="information"></parameter>
+   </instance>
+   <icon id="P2_Gradient" instance="P2_Gradient_instance" xpos="30" ypos="20" workspace="Workspace01"/>
+   <icon id="Opt_ImageSolver" instance="Opt_ImageSolver_instance" xpos="30" ypos="64" workspace="Workspace01"/>
+   <icon id="Opt_GradientCorrection" instance="Opt_GradientCorrection_instance" xpos="30" ypos="94" workspace="Workspace01"/>
+   <icon id="Opt_DBE" instance="Opt_DBE_instance" xpos="30" ypos="124" workspace="Workspace01"/>
+   <icon id="P3_Lineaire" instance="P3_Lineaire_instance" xpos="290" ypos="20" workspace="Workspace01"/>
+   <icon id="Opt_Find_Background" instance="Opt_Find_Background_instance" xpos="290" ypos="64" workspace="Workspace01"/>
+   <icon id="P4_Etirement" instance="P4_Etirement_instance" xpos="550" ypos="20" workspace="Workspace01"/>
+   <icon id="Opt_Statistical_Stretch" instance="Opt_Statistical_Stretch_instance" xpos="550" ypos="64" workspace="Workspace01"/>
+   <icon id="P6_Finition" instance="P6_Finition_instance" xpos="810" ypos="20" workspace="Workspace01"/>
+   <icon id="Opt_HDRMT" instance="Opt_HDRMT_instance" xpos="810" ypos="64" workspace="Workspace01"/>
+   <icon id="Opt_NXT_final" instance="Opt_NXT_final_instance" xpos="810" ypos="94" workspace="Workspace01"/>
+   <icon id="P7_Etoiles" instance="P7_Etoiles_instance" xpos="1070" ypos="20" workspace="Workspace01"/>
+   <icon id="Opt_MT_etoiles" instance="Opt_MT_etoiles_instance" xpos="1070" ypos="64" workspace="Workspace01"/>
+   <icon id="Opt_Halo_B_Gon" instance="Opt_Halo_B_Gon_instance" xpos="1070" ypos="94" workspace="Workspace01"/>
+</xpsm>

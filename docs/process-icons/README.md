@@ -81,17 +81,26 @@ Icônes SPCC et SPFC configurées pour **QHY600 (capteur Sony IMX455) + filtres 
 | `SPFC_L_QHY600_Antlia` | Master L : courbe approchée du filtre Antlia V Pro L (420 à 715 nm, 95 %, d'après les caractéristiques publiées, la vraie courbe n'étant pas dans ta base) ; QE IMX455 |
 | `SPFC_H/O/S_QHY600_Antlia` | Narrowband mode, 656,3 / 500,7 / 672,4 nm, bande passante 3 nm (filtres Antlia 3 nm) ; QE IMX455 |
 
-## Un fichier par workflow (dossier `workflows/`)
+## Workflows (dossier `workflows/`)
 
-Chaque fichier contient **tous les process du workflow, dans l'ordre**, numérotés (`LRGB_01_WBPP`, `LRGB_02_CC_auto`…) et disposés en colonnes de haut en bas. **Chaque icône porte une description courte** : `PRÉRÉGLÉ` (ce que l'icône règle déjà), `À RÉGLER` (ce qu'il te reste à faire) et `SI … ->` (quoi changer selon le symptôme), plus le mode de lancement pour les scripts. Textes dans `short_desc.py` ; explications complètes dans les fiches de la page. Pour la lire dans PixInsight, survole l'icône ou ouvre-la (champ *Description*).
+**Le plus simple : le préparateur de la page** (section « Préparer ma photo » de `docs/pixinsight-workflow.html`). Tu choisis tes filtres, tes méthodes (gradient, étirement, palette) et tes options ; il affiche les étapes de ta photo avec ce qu'il faut régler et télécharge un `.xpsm` qui ne contient qu'elles (dans la page publiée sur claude.ai, un `.zip` à décompresser). Ses données sont dans `preparer-data.json`, régénéré avec les icônes.
 
-| Fichier | Icônes | Contenu |
-|---|---|---|
-| `Workflow-LRGB.xpsm` | 33 | Prétraitement, combinaison RGB, gradient, BXT Correct Only, SPCC, BXT, SXT linéaire, NXT, GHS, LRGBCombination, finition, étoiles (standard de couleur et contrôle après recombinaison) |
-| `Workflow-LHaRGB.xpsm` | 40 | LRGB + soustraction du continuum, H dans le rouge et dans L, NBRGBCombination en alternative ; contrôles de couleur et des étoiles (option : étoiles prises avant injection) |
-| `Workflow-RGB-SHO.xpsm` | 48 | Masters narrowband, LinearFit, combinaison SHO simple, BXT, SXT, extraction des canaux, palettes (NarrowbandNormalization avec rendu visé et contrôle des couleurs, Foraxx, Perfect Palette Picker, NBColourMapper), étoiles RGB (couleurs attendues et contrôle de la recombinaison) |
-| `Workflow-SHO-sans-RGB.xpsm` | 46 | Idem sans RGB, avec étoiles narrowband (NB to RGB Star Combination, étoiles HOO synthétiques, CorrectMagentaStars) et leur standard de couleur (contrôle à la sonde, ajustements) |
-| `Workflow-HOO.xpsm` | 43 | Extraction dual-band pour caméra couleur, combinaison HOO, NarrowbandNormalization HOO (avec rendu visé et contrôle des couleurs), Foraxx HOO, variante Hubble, Perfect Palette Picker, H en luminance, standard des étoiles HOO (vert synthétique, contrôle à la sonde) |
+Sinon, deux fichiers par workflow :
+
+- **`Workflow-X.xpsm` — chemin principal** : les étapes standard seulement (MGC + MARS pour le gradient, GHS pour l'étirement, NarrowbandNormalization pour la palette), numérotées `E01_WBPP`, `E02_CC_auto`…
+- **`Options-X.xpsm` — options et alternatives** (`Opt_HDRMT`, `Opt_DBE`…) : à charger seulement si besoin ; la description de chaque icône commence par `OPTION — quand l'utiliser` ou `ALTERNATIVE — à la place de quoi`.
+
+Dans les deux, **une colonne par phase**, avec une icône-titre sans effet en haut (`P1_Preparation`, `P2_Gradient`, `P3_Lineaire`, `P4_Etirement`, `P5_Couleur`, `P6_Finition`, `P7_Etoiles`). **Chaque icône porte une description courte** : `PRÉRÉGLÉ` (ce que l'icône règle déjà), `À RÉGLER` (ce qu'il te reste à faire) et `SI … ->` (quoi changer selon le symptôme), plus le mode de lancement pour les scripts. Textes dans `short_desc.py`, phases et rôles dans `layout.py` ; explications complètes dans les fiches de la page.
+
+| Workflow | Principal | Options | Contenu |
+|---|---|---|---|
+| LRGB | 24 | 9 | Prétraitement, combinaison RGB, MGC, BXT Correct Only, SPCC, BXT, SXT linéaire, NXT, GHS, LRGBCombination, finition, étoiles |
+| LHaRGB | 28 | 12 | LRGB + soustraction du continuum et H dans le rouge ; options : calcul automatique de k, H dans L, NBRGBCombination |
+| RGB-SHO | 33 | 15 | Masters narrowband, combinaison SHO simple, BXT, SXT, extraction, NarrowbandNormalization, étoiles RGB ; options : Foraxx, Perfect Palette Picker, NBColourMapper, SCNR, LinearFit |
+| SHO-sans-RGB | 31 | 15 | Idem sans RGB, étoiles narrowband par NB to RGB Star Combination ; options : étoiles HOO synthétiques, CorrectMagentaStars |
+| HOO | 28 | 15 | Combinaison HOO, NarrowbandNormalization HOO ; options : extraction dual-band (caméra couleur), Foraxx HOO, variante Hubble, H en luminance |
+
+(Les nombres ne comptent pas les 7 icônes-titres.)
 
 **Trois sortes d'icônes :**
 

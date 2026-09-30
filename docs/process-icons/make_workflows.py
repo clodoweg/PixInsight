@@ -1,5 +1,6 @@
-"""Génère un fichier .xpsm par workflow de la fiche PixInsight, avec tous les process
-dans l'ordre et une description détaillée sur chaque icône.
+"""Génère, pour chaque workflow de la fiche PixInsight, un fichier .xpsm du chemin principal
+(une colonne par phase, icône-titre en haut) et un fichier d'options et d'alternatives,
+ainsi que les données du préparateur de la page (preparer-data.json).
 Réutilise les modèles et fonctions de make_icons.py (instances réelles PixInsight 1.9.3)."""
 import os, re, sys, tempfile
 from xml.sax.saxutils import escape
@@ -8,6 +9,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = sys.argv[1]
 sys.argv = [sys.argv[0], tempfile.mkdtemp()]
 import short_desc as SD  # noqa: E402
+import layout as L  # noqa: E402
+import json
+from html import unescape as html_unescape
 import make_icons as M  # noqa: E402  (génère les icônes unitaires dans un dossier temporaire)
 
 ALL = open(os.environ.get('ALL_XPSM', os.path.join(HERE, 'all.x')), encoding='utf-8').read()
@@ -124,21 +128,76 @@ def shorten(xml, prefix, base):
     short = escape(SD.text(prefix, base, drag, bool(md5)))
     return re.sub(r'<description>.*?</description>', lambda m: '<description>%s</description>' % short, xml, count=1, flags=re.S)
 
-def write(filename, prefix, title, steps):
-    """steps : liste de (item, description). Les icônes sont numérotées dans l'ordre."""
-    insts, icons = [], []
-    for i, (item, desc) in enumerate(steps, 1):
-        base = item[0]
-        name = '%s_%02d_%s' % (prefix, i, item[0])
-        item = renamed(item, name)
-        if 'class="NoOperation"' not in item[1] and '<description>' not in item[1]:
-            item = described(item, desc)
-        insts.append(shorten(item[1], prefix, base))
-        col, row = divmod(i - 1, 14)
-        icons.append('   <icon id="%s" instance="%s_instance" xpos="%d" ypos="%d" workspace="Workspace01"/>' % (name, name, 30 + 300 * col, 30 + 30 * row))
+ASCII = ['Preparation', 'Gradient', 'Lineaire', 'Etirement', 'Couleur', 'Finition', 'Etoiles']
+DATA = {'phases': L.PHASES, 'notes': L.PHASE_NOTE, 'ascii': ASCII, 'choices': L.CHOICES, 'defaults': L.DEFAULT, 'inst': {}, 'wf': []}
+
+def header_icon(n):
+    name = 'P%d_%s' % (n, ASCII[n - 1])
+    return name, ('   <instance class="NoOperation" version="256" id="%s_instance">\n      <description>%s</description>\n   </instance>'
+                  % (name, escape('PHASE %d — %s : %s. Colonne de repère, sans effet.' % (n, L.PHASES[n - 1], L.PHASE_NOTE[n - 1]))))
+
+def layout(entries, naming):
+    """entries : liste de (base, phase, xml avec id __ID__). Une colonne par phase, une icône-titre en haut."""
+    insts, icons, col, rows = [], [], -1, 0
+    phases = sorted({e[1] for e in entries})
+    for k, (base, ph, xml) in enumerate(entries, 1):
+        c = phases.index(ph)
+        if c != col:
+            col, rows = c, 0
+            hn, hx = header_icon(ph)
+            insts.append(hx)
+            icons.append('   <icon id="%s" instance="%s_instance" xpos="%d" ypos="20" workspace="Workspace01"/>' % (hn, hn, 30 + 260 * c))
+        name = naming(k, base)
+        insts.append(xml.replace('id="__ID___instance"', 'id="%s_instance"' % name, 1))
+        icons.append('   <icon id="%s" instance="%s_instance" xpos="%d" ypos="%d" workspace="Workspace01"/>' % (name, name, 30 + 260 * c, 64 + 30 * rows))
+        rows += 1
+    return insts, icons
+
+def save(filename, title, insts, icons):
     xml = M.HEADER + '<!-- ' + escape(title) + ' -->\n' + '\n'.join(insts) + '\n' + '\n'.join(icons) + '\n</xpsm>\n'
     open(os.path.join(OUT, filename), 'w', encoding='utf-8').write(xml)
-    return len(steps)
+
+def label(r):
+    g, vals = r.split(':')
+    names = dict(L.CHOICES[g][1])
+    return ' ou '.join(names[v].split(' (')[0] for v in vals.split('|'))
+
+def write(filename, prefix, title, steps):
+    """steps : liste de (item, description). Fichier principal (chemin par défaut) + fichier d'options."""
+    entries, prev = [], 1
+    for item, desc in steps:
+        base = item[0]
+        ph = max(L.PHASE[base], prev)
+        prev = ph
+        item = renamed(item, '__ID__')
+        if 'class="NoOperation"' not in item[1] and '<description>' not in item[1]:
+            item = described(item, desc)
+        xml = shorten(item[1], prefix, base)
+        r = L.role(prefix, base)
+        if r == 'opt':
+            tag = 'OPTION — %s. ' % L.WHEN[base]
+        elif not L.is_default(r):
+            tag = 'ALTERNATIVE — %s. ' % label(r)
+        else:
+            tag = ''
+        xml = xml.replace('<description>', '<description>' + escape(tag), 1)
+        entries.append((base, ph, r, xml, tag))
+    main = [(b, ph, x) for b, ph, r, x, t in entries if L.is_default(r)]
+    opts = [(b, ph, x) for b, ph, r, x, t in entries if not L.is_default(r)]
+    save(filename, title + ' — chemin principal', *layout(main, lambda k, b: 'E%02d_%s' % (k, b)))
+    save(filename.replace('Workflow-', 'Options-'), title + ' — options et alternatives', *layout(opts, lambda k, b: 'Opt_%s' % b))
+    wf = {'id': prefix, 'file': filename, 'title': title, 'steps': []}
+    for b, ph, r, x, t in entries:
+        key = 'i%d' % len(DATA['inst'])
+        for k2, v in DATA['inst'].items():
+            if v == x:
+                key = k2
+                break
+        DATA['inst'][key] = x
+        d = re.search(r'<description>(.*?)</description>', x, re.S)
+        wf['steps'].append({'b': b, 'p': ph, 'r': r, 'k': key, 'w': L.WHEN.get(b, ''), 'd': html_unescape(d.group(1)) if d else ''})
+    DATA['wf'].append(wf)
+    return len(main), len(opts)
 
 # ---------------------------------------------------------------- textes communs
 SRC = ' Détails et sources : docs/pixinsight-workflow.html et docs/sources.md (github.com/clodoweg/PixInsight).'
@@ -573,4 +632,6 @@ for fn, pre, title, steps in [
     ('Workflow-SHO-sans-RGB.xpsm', 'SHO', 'Workflow SHO sans RGB', sho),
     ('Workflow-HOO.xpsm', 'HOO', 'Workflow HOO', hoo),
 ]:
-    print(fn, write(fn, pre, title, steps), 'icônes')
+    print(fn, 'principal + options :', write(fn, pre, title, steps))
+DATA['header'] = M.HEADER
+json.dump(DATA, open(os.path.join(OUT, '..', 'preparer-data.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
