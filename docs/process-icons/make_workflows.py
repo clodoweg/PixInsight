@@ -311,7 +311,7 @@ lrgb = pre_block() + [rgb_comb(), (note('ImageSolver', T_SOLVER), '')] + gradien
     (note('Find_Background', T_FINDBG), ''),
     spcc(),
     (M.bxt('BXT_RGB', False, 0.25, 0.0, 0.50), "BlurXTerminator complet sur RGB, APRÈS SPCC : Sharpen Stars 0,25 (0 à 0,5), Adjust Star Halos 0, PSF automatique, Sharpen Nonstellar 0,50 (le détail viendra de L). Avant toute réduction de bruit."),
-    (M.bxt('BXT_L', False, 0.25, 0.0, 0.80), "BlurXTerminator complet sur L (linéaire, gradient retiré) : Sharpen Nonstellar 0,80 (0,70 à 0,90), plus fort que sur RGB car la luminance porte le détail. Si vers ou pores à 100 % : baisse Nonstellar."),
+    (M.bxt('BXT_L', False, 0.25, 0.0, 0.80), "BlurXTerminator complet sur L (linéaire, gradient retiré) : Sharpen Stars 0,25, Halos 0, Sharpen Nonstellar 0,80 (0,70 à 0,90), plus fort que sur RGB car la luminance porte le détail. Si vers ou pores à 100 % : baisse Nonstellar."),
     (M.sxt('SXT_lineaire', False), D_SXT_LIN + " Sur RGB (garde les étoiles : ce sont celles de l'image finale) et sur L (jette ses étoiles)."),
     (M.nxt('NXT_RGB', 0.80, 1), "NoiseXTerminator sur RGB sans étoiles : Denoise 0,80 (0,70 à 0,90), Detail 0,15. Toujours après BXT. Fonctionne en linéaire ou après étirement (RC Astro)."),
     (M.nxt('NXT_L', 0.60, 1), "NoiseXTerminator sur L sans étoiles : Denoise 0,60 (0,50 à 0,70) pour garder le détail fin."),
@@ -330,7 +330,7 @@ lhargb = pre_block() + [rgb_comb(), (note('ImageSolver', T_SOLVER), '')] + gradi
     (note('Find_Background', T_FINDBG), ''),
     spcc(),
     (M.bxt('BXT_RGB', False, 0.25, 0.0, 0.50), "BlurXTerminator complet sur RGB, après SPCC : Sharpen Stars 0,25, Halos 0, Nonstellar 0,50."),
-    (M.bxt('BXT_L_Ha', False, 0.25, 0.0, 0.80), "BlurXTerminator complet sur L et sur le master Ha (mono, linéaires) : Nonstellar 0,80. Déconvolue AVANT tout mélange (soustraction du continuum, injection)."),
+    (M.bxt('BXT_L_Ha', False, 0.25, 0.0, 0.80), "BlurXTerminator complet sur L et sur le master Ha (mono, linéaires) : Sharpen Stars 0,25, Halos 0, Nonstellar 0,80. Déconvolue AVANT tout mélange (soustraction du continuum, injection)."),
     (pm('Continuum_Ha', 'k = 0.9;\nHa - k*(R - med(R))', symbols='k', new_image=True, new_id='Ha_cs', space='Gray'),
      "Soustraction du continuum : Ha_cs = Ha - k*(R - med(R)). Vues 'Ha' et 'R' (master rouge linéaire, gradient retiré). Ajuste k (0,8 à 1) jusqu'à faire disparaître étoiles et disque galactique. "
      "med(R) garde le niveau du fond. Limite : résidus sur les étoiles (PSF différentes). "
@@ -493,7 +493,7 @@ hoo = pre_block() + [
     (note('Perfect_Palette_Picker', T_PPP), ''),
     (note('NBColourMapper', T_NBCM), ''),
     (M.instance('LRGBCombination', 'Ha_en_luminance', {'mL': '0.500', 'mc': '0.400', 'noiseReduction': True}, post=M.lrgb_post),
-     "Option — Ha en luminance : fais une copie de Ha étiré nommée 'L' (même fond et médiane proche que l'image HOO, sinon couleurs délavées), puis applique sur l'image HOO. Seul L activé, Saturation 0,40."),
+     "Option — Ha en luminance : fais une copie de Ha étiré nommée 'L' (même fond et médiane proche que l'image HOO, sinon couleurs délavées), puis applique sur l'image HOO. Seul L activé, Lightness 0,5, Saturation 0,40."),
 ] + finish_block() + [
     (note('Etoiles_HOO', "ÉTOILES — avec RGB : suis le bloc étoiles RGB du workflow RGB + SHO. Sans RGB : utilise l'image d'étoiles de SXT sur HOO (ou NB to RGB Star Combination), étire-la avec Star Stretch et renomme-la 'stars'. "
           "Les étoiles HOO tirent vers le rouge et le cyan : désature-les légèrement si besoin. "

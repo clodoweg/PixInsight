@@ -417,7 +417,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="overlap" value="0.20"/>
    </instance>
    <instance class="BlurXTerminator" version="256" id="LRGB_15_BXT_L_instance">
-      <description>BlurXTerminator complet sur L (linéaire, gradient retiré) : Sharpen Nonstellar 0,80 (0,70 à 0,90), plus fort que sur RGB car la luminance porte le détail. Si vers ou pores à 100 % : baisse Nonstellar.</description>
+      <description>BlurXTerminator complet sur L (linéaire, gradient retiré) : Sharpen Stars 0,25, Halos 0, Sharpen Nonstellar 0,80 (0,70 à 0,90), plus fort que sur RGB car la luminance porte le détail. Si vers ou pores à 100 % : baisse Nonstellar.</description>
       <parameter id="ml_version" value="4"/>
       <parameter id="correct_only" value="false"/>
       <parameter id="sharpen_stars" value="0.25"/>

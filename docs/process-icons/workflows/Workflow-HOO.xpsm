@@ -725,7 +725,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <description>OPTION — NBColourMapper (Mike Cranfield, script). Une couche par filtre sans étoiles : Ha rouge-orangé, OIII cyan-bleu, SII rouge profond ou or ; règle teinte et saturation avec l'aperçu.</description>
    </instance>
    <instance class="LRGBCombination" version="256" id="HOO_32_Ha_en_luminance_instance">
-      <description>Option — Ha en luminance : fais une copie de Ha étiré nommée 'L' (même fond et médiane proche que l'image HOO, sinon couleurs délavées), puis applique sur l'image HOO. Seul L activé, Saturation 0,40.</description>
+      <description>Option — Ha en luminance : fais une copie de Ha étiré nommée 'L' (même fond et médiane proche que l'image HOO, sinon couleurs délavées), puis applique sur l'image HOO. Seul L activé, Lightness 0,5, Saturation 0,40.</description>
       <table id="channels" rows="4">
          <tr>
             <td id="enabled" value="false"/>

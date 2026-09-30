@@ -485,7 +485,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="overlap" value="0.20"/>
    </instance>
    <instance class="BlurXTerminator" version="256" id="LHA_17_BXT_L_Ha_instance">
-      <description>BlurXTerminator complet sur L et sur le master Ha (mono, linéaires) : Nonstellar 0,80. Déconvolue AVANT tout mélange (soustraction du continuum, injection).</description>
+      <description>BlurXTerminator complet sur L et sur le master Ha (mono, linéaires) : Sharpen Stars 0,25, Halos 0, Nonstellar 0,80. Déconvolue AVANT tout mélange (soustraction du continuum, injection).</description>
       <parameter id="ml_version" value="4"/>
       <parameter id="correct_only" value="false"/>
       <parameter id="sharpen_stars" value="0.25"/>
