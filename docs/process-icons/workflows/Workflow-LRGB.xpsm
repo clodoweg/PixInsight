@@ -645,8 +645,39 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="layersProtected" value="2"/>
       <parameter id="inheritAstrometricSolution" value="true"/>
    </instance>
-   <instance class="CurvesTransformation" version="256" id="LRGB_25_Courbes_instance">
-      <description>CurvesTransformation — légère courbe en S sur RGB/K (0,25→0,22 ; 0,75→0,78) et saturation (canal S : milieu monté de 0,5 à 0,6). Ajuste à l'œil, idéalement sous un masque de luminance pour protéger le fond.</description>
+   <instance class="PixelMath" version="256" id="LRGB_25_Masque_L_instance">
+      <description>MASQUE DE LUMINANCE en un clic (optionnel, pour Courbes et LHE) : glisse l'icône sur l'image SANS ÉTOILES étirée ; elle crée la vue mono 'masque_L' = luminance Rec. 709 (0,2126 R + 0,7152 G + 0,0722 B) dont le fond est coupé : tout ce qui est sous s passe à 0 (protégé), le reste va de 0 à 1. s = 0,14 par défaut : fond final de la fiche 0,12-0,14 ; règle s = fond mesuré à la sonde 15x15 + 0,01 (vers 0,26 si le fond est encore à 0,20-0,25). Contrôle à la sonde sur masque_L : fond 0 à 0,05. Puis léger flou (Convolution gaussienne, quelques pixels) et Mask › Select Mask (Ctrl+M) sur l'image ; Mask › Invert Mask pour traiter le fond. Image mono : icône Masque_L_mono du fichier 01. HDRMT n'en a pas besoin (option Lightness mask).</description>
+      <parameter id="expression">s = 0.14;
+max(0, (0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2] - s) / (1 - s))</parameter>
+      <parameter id="expression1"></parameter>
+      <parameter id="expression2"></parameter>
+      <parameter id="expression3"></parameter>
+      <parameter id="useSingleExpression" value="true"/>
+      <parameter id="symbols">s</parameter>
+      <parameter id="clearImageCacheAndExit" value="false"/>
+      <parameter id="cacheGeneratedImages" value="false"/>
+      <parameter id="generateOutput" value="true"/>
+      <parameter id="singleThreaded" value="false"/>
+      <parameter id="optimization" value="true"/>
+      <parameter id="use64BitWorkingImage" value="false"/>
+      <parameter id="rescale" value="false"/>
+      <parameter id="rescaleLower" value="0"/>
+      <parameter id="rescaleUpper" value="1"/>
+      <parameter id="truncate" value="true"/>
+      <parameter id="truncateLower" value="0"/>
+      <parameter id="truncateUpper" value="1"/>
+      <parameter id="createNewImage" value="true"/>
+      <parameter id="showNewImage" value="true"/>
+      <parameter id="newImageId">masque_L</parameter>
+      <parameter id="newImageWidth" value="0"/>
+      <parameter id="newImageHeight" value="0"/>
+      <parameter id="newImageAlpha" value="false"/>
+      <parameter id="newImageColorSpace" value="Gray"/>
+      <parameter id="newImageSampleFormat" value="SameAsTarget"/>
+      <table id="outputData" rows="0"/>
+   </instance>
+   <instance class="CurvesTransformation" version="256" id="LRGB_26_Courbes_instance">
+      <description>CurvesTransformation — légère courbe en S sur RGB/K (0,25→0,22 ; 0,75→0,78) et saturation (canal S : milieu monté de 0,5 à 0,6). Ajuste à l'œil, idéalement sous un masque de luminance pour protéger le fond (icône Masque_L juste avant).</description>
       <table id="R" rows="2">
          <tr>
             <td id="x" value="0.00000"/>
@@ -781,15 +812,15 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </table>
       <parameter id="St" value="AkimaSubsplines"/>
    </instance>
-   <instance class="LocalHistogramEqualization" version="256" id="LRGB_26_LHE_instance">
-      <description>LocalHistogramEqualization sur l'image sans étoiles, sous masque de luminance : Kernel radius 150 (64 à 300 selon les structures), Contrast limit 2,0, Amount 0,35 (facile à exagérer).</description>
+   <instance class="LocalHistogramEqualization" version="256" id="LRGB_27_LHE_instance">
+      <description>LocalHistogramEqualization sur l'image sans étoiles, sous masque de luminance (icône Masque_L, masque attaché avec Ctrl+M) : Kernel radius 150 (64 à 300 selon les structures), Contrast limit 2,0, Amount 0,35 (facile à exagérer).</description>
       <parameter id="radius" value="150"/>
       <parameter id="histogramBins" value="Bit8"/>
       <parameter id="slopeLimit" value="2.0"/>
       <parameter id="amount" value="0.350"/>
       <parameter id="circularKernel" value="true"/>
    </instance>
-   <instance class="HDRMultiscaleTransform" version="256" id="LRGB_27_HDRMT_instance">
+   <instance class="HDRMultiscaleTransform" version="256" id="LRGB_28_HDRMT_instance">
       <description>HDRMultiscaleTransform sur l'image sans étoiles pour les zones brillantes : 6 couches, 1 itération (essaie 2), To lightness, Preserve hue et Lightness mask cochés. Trop fort : mélange à 50 % avec l'original.</description>
       <parameter id="numberOfLayers" value="6"/>
       <parameter id="numberOfIterations" value="1"/>
@@ -812,7 +843,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="lightnessMask" value="true"/>
       <parameter id="intensity" value="1.00"/>
    </instance>
-   <instance class="NoiseXTerminator" version="256" id="LRGB_28_NXT_final_instance">
+   <instance class="NoiseXTerminator" version="256" id="LRGB_29_NXT_final_instance">
       <description>NoiseXTerminator, passe finale légère sur l'image étirée : Denoise 0,40, Detail 0,15. Seulement si besoin.</description>
       <parameter id="ml_version" value="0"/>
       <parameter id="denoise" value="0.40"/>
@@ -831,7 +862,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="detail" value="0.15"/>
       <parameter id="overlap" value="0.20"/>
    </instance>
-   <instance class="PixelMath" version="256" id="LRGB_29_Etoiles_screen_instance">
+   <instance class="PixelMath" version="256" id="LRGB_30_Etoiles_screen_instance">
       <description>Recombinaison des étoiles en mode screen : ~((~starless) * (~stars)). Renomme la vue sans étoiles 'starless' et l'image d'étoiles 'stars', toutes deux étirées. Résultat : nouvelle image 'Final'. LRGB — CONTRÔLE après recombinaison, à 100 % : étoiles de la même couleur que sur l'image d'étoiles seule (la combinaison L a été faite sans étoiles) ; pas d'anneau sombre ni de halo coloré autour des étoiles ; étoiles ni grossies ni trop présentes (sinon réduction d'étoiles ou étirement plus doux) ; fond toujours R = G = B (fond éclairci : fond de l'image d'étoiles pas à 0).</description>
       <parameter id="expression">~((~starless) * (~stars))</parameter>
       <parameter id="expression1"></parameter>
@@ -861,7 +892,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
-   <instance class="PixelMath" version="256" id="LRGB_30_Blanshan_Transfer_instance">
+   <instance class="PixelMath" version="256" id="LRGB_31_Blanshan_Transfer_instance">
       <description>Réduction d'étoiles Bill Blanshan, méthode Transfer V2 : applique sur l'image AVEC étoiles, la version sans étoiles de la même image (étirée pareil) doit s'appeler 'starless'. S = 0,15 (plus bas = étoiles plus petites). Les versions V3 et les méthodes Halo/Star sont dans 01-PixelMath-formules.xpsm.</description>
       <parameter id="expression">S=0.15;
 Img1=starless;
@@ -894,7 +925,7 @@ max(Img1,f1)</parameter>
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
-   <instance class="MorphologicalTransformation" version="256" id="LRGB_31_MT_etoiles_instance">
+   <instance class="MorphologicalTransformation" version="256" id="LRGB_32_MT_etoiles_instance">
       <description>Alternative : MorphologicalTransformation sur l'image d'étoiles seule (ou avec un masque d'étoiles). Morphological Selection 0,25 (sous 0,5 = érosion), Amount 0,60, 1 itération, élément circulaire 5x5.</description>
       <parameter id="operator" value="Selection"/>
       <parameter id="interlacingDistance" value="1"/>
@@ -911,7 +942,7 @@ max(Img1,f1)</parameter>
          </tr>
       </table>
    </instance>
-   <instance class="Script" version="256" id="LRGB_32_Halo_B_Gon_instance">
+   <instance class="Script" version="256" id="LRGB_33_Halo_B_Gon_instance">
       <description>LANCEMENT : double-clique l'icône, puis clique sur le rond « Apply Global » (ou glisse-la sur une image) : le dialogue du script s'ouvre. Ce script ne lit pas de paramètres d'icône : les réglages se font dans son dialogue. SOMME DE CONTRÔLE : l'icône contient l'empreinte MD5 de la version actuelle du script ; après une mise à jour du script, PixInsight bloque l'icône : double-clique-la, efface le champ MD5 et réenregistre-la. SCRIPT — Halo-B-Gon (SetiAstro, script v2.1) sur l'image d'étoiles seule ; modifie l'image elle-même, garde une copie. Masque de luminosité inversé moins les petites structures (cœurs protégés), puis courbe qui assombrit les tons moyens (0,75 → 0,40). Reduction Amount, Low par défaut : Extra Low = 1 courbe douce (0,75 → 0,575) ; Low = 1 passe, 1 courbe ; Med = 2 passes × 2 courbes (4) ; High = 3 passes × 3 courbes (9). Commence par Extra Low ou Low. Linear Data décoché par défaut ; coché, le script étire (mtf 0,25^5), traite puis rend l'image linéaire : seulement si l'image est encore linéaire.</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/Halo-B-Gon.js</parameter>
       <parameter id="md5sum">b9427e718e2b9760704c8c738e0893b7</parameter>
@@ -942,12 +973,13 @@ max(Img1,f1)</parameter>
    <icon id="LRGB_22_Statistical_Stretch" instance="LRGB_22_Statistical_Stretch_instance" xpos="330" ypos="240" workspace="Workspace01"/>
    <icon id="LRGB_23_Star_Stretch" instance="LRGB_23_Star_Stretch_instance" xpos="330" ypos="270" workspace="Workspace01"/>
    <icon id="LRGB_24_LRGB_ajout_L" instance="LRGB_24_LRGB_ajout_L_instance" xpos="330" ypos="300" workspace="Workspace01"/>
-   <icon id="LRGB_25_Courbes" instance="LRGB_25_Courbes_instance" xpos="330" ypos="330" workspace="Workspace01"/>
-   <icon id="LRGB_26_LHE" instance="LRGB_26_LHE_instance" xpos="330" ypos="360" workspace="Workspace01"/>
-   <icon id="LRGB_27_HDRMT" instance="LRGB_27_HDRMT_instance" xpos="330" ypos="390" workspace="Workspace01"/>
-   <icon id="LRGB_28_NXT_final" instance="LRGB_28_NXT_final_instance" xpos="330" ypos="420" workspace="Workspace01"/>
-   <icon id="LRGB_29_Etoiles_screen" instance="LRGB_29_Etoiles_screen_instance" xpos="630" ypos="30" workspace="Workspace01"/>
-   <icon id="LRGB_30_Blanshan_Transfer" instance="LRGB_30_Blanshan_Transfer_instance" xpos="630" ypos="60" workspace="Workspace01"/>
-   <icon id="LRGB_31_MT_etoiles" instance="LRGB_31_MT_etoiles_instance" xpos="630" ypos="90" workspace="Workspace01"/>
-   <icon id="LRGB_32_Halo_B_Gon" instance="LRGB_32_Halo_B_Gon_instance" xpos="630" ypos="120" workspace="Workspace01"/>
+   <icon id="LRGB_25_Masque_L" instance="LRGB_25_Masque_L_instance" xpos="330" ypos="330" workspace="Workspace01"/>
+   <icon id="LRGB_26_Courbes" instance="LRGB_26_Courbes_instance" xpos="330" ypos="360" workspace="Workspace01"/>
+   <icon id="LRGB_27_LHE" instance="LRGB_27_LHE_instance" xpos="330" ypos="390" workspace="Workspace01"/>
+   <icon id="LRGB_28_HDRMT" instance="LRGB_28_HDRMT_instance" xpos="330" ypos="420" workspace="Workspace01"/>
+   <icon id="LRGB_29_NXT_final" instance="LRGB_29_NXT_final_instance" xpos="630" ypos="30" workspace="Workspace01"/>
+   <icon id="LRGB_30_Etoiles_screen" instance="LRGB_30_Etoiles_screen_instance" xpos="630" ypos="60" workspace="Workspace01"/>
+   <icon id="LRGB_31_Blanshan_Transfer" instance="LRGB_31_Blanshan_Transfer_instance" xpos="630" ypos="90" workspace="Workspace01"/>
+   <icon id="LRGB_32_MT_etoiles" instance="LRGB_32_MT_etoiles_instance" xpos="630" ypos="120" workspace="Workspace01"/>
+   <icon id="LRGB_33_Halo_B_Gon" instance="LRGB_33_Halo_B_Gon_instance" xpos="630" ypos="150" workspace="Workspace01"/>
 </xpsm>

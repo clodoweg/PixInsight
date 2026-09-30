@@ -268,6 +268,66 @@ R + w*H_cs</parameter>
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
+   <instance class="PixelMath" version="256" id="Masque_L_instance">
+      <parameter id="expression">s = 0.14;
+max(0, (0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2] - s) / (1 - s))</parameter>
+      <parameter id="expression1"></parameter>
+      <parameter id="expression2"></parameter>
+      <parameter id="expression3"></parameter>
+      <parameter id="useSingleExpression" value="true"/>
+      <parameter id="symbols">s</parameter>
+      <parameter id="clearImageCacheAndExit" value="false"/>
+      <parameter id="cacheGeneratedImages" value="false"/>
+      <parameter id="generateOutput" value="true"/>
+      <parameter id="singleThreaded" value="false"/>
+      <parameter id="optimization" value="true"/>
+      <parameter id="use64BitWorkingImage" value="false"/>
+      <parameter id="rescale" value="false"/>
+      <parameter id="rescaleLower" value="0"/>
+      <parameter id="rescaleUpper" value="1"/>
+      <parameter id="truncate" value="true"/>
+      <parameter id="truncateLower" value="0"/>
+      <parameter id="truncateUpper" value="1"/>
+      <parameter id="createNewImage" value="true"/>
+      <parameter id="showNewImage" value="true"/>
+      <parameter id="newImageId">masque_L</parameter>
+      <parameter id="newImageWidth" value="0"/>
+      <parameter id="newImageHeight" value="0"/>
+      <parameter id="newImageAlpha" value="false"/>
+      <parameter id="newImageColorSpace" value="Gray"/>
+      <parameter id="newImageSampleFormat" value="SameAsTarget"/>
+      <table id="outputData" rows="0"/>
+   </instance>
+   <instance class="PixelMath" version="256" id="Masque_L_mono_instance">
+      <parameter id="expression">s = 0.14;
+max(0, ($T - s) / (1 - s))</parameter>
+      <parameter id="expression1"></parameter>
+      <parameter id="expression2"></parameter>
+      <parameter id="expression3"></parameter>
+      <parameter id="useSingleExpression" value="true"/>
+      <parameter id="symbols">s</parameter>
+      <parameter id="clearImageCacheAndExit" value="false"/>
+      <parameter id="cacheGeneratedImages" value="false"/>
+      <parameter id="generateOutput" value="true"/>
+      <parameter id="singleThreaded" value="false"/>
+      <parameter id="optimization" value="true"/>
+      <parameter id="use64BitWorkingImage" value="false"/>
+      <parameter id="rescale" value="false"/>
+      <parameter id="rescaleLower" value="0"/>
+      <parameter id="rescaleUpper" value="1"/>
+      <parameter id="truncate" value="true"/>
+      <parameter id="truncateLower" value="0"/>
+      <parameter id="truncateUpper" value="1"/>
+      <parameter id="createNewImage" value="true"/>
+      <parameter id="showNewImage" value="true"/>
+      <parameter id="newImageId">masque_L</parameter>
+      <parameter id="newImageWidth" value="0"/>
+      <parameter id="newImageHeight" value="0"/>
+      <parameter id="newImageAlpha" value="false"/>
+      <parameter id="newImageColorSpace" value="Gray"/>
+      <parameter id="newImageSampleFormat" value="SameAsTarget"/>
+      <table id="outputData" rows="0"/>
+   </instance>
    <instance class="PixelMath" version="256" id="Etoiles_HOO_synth_instance">
       <parameter id="expression">H_stars</parameter>
       <parameter id="expression1">0.2*H_stars + 0.8*O_stars</parameter>
@@ -602,11 +662,13 @@ iif(M==1,E7,iif(M==2,E8,E9))</parameter>
    <icon id="Continuum_H" instance="Continuum_H_instance" xpos="40" ypos="232" workspace="Workspace01"/>
    <icon id="H_dans_R" instance="H_dans_R_instance" xpos="40" ypos="264" workspace="Workspace01"/>
    <icon id="Etoiles_screen" instance="Etoiles_screen_instance" xpos="40" ypos="296" workspace="Workspace01"/>
-   <icon id="Etoiles_HOO_synth" instance="Etoiles_HOO_synth_instance" xpos="40" ypos="328" workspace="Workspace01"/>
-   <icon id="Blanshan_Transfer" instance="Blanshan_Transfer_instance" xpos="40" ypos="360" workspace="Workspace01"/>
-   <icon id="Blanshan_Halo" instance="Blanshan_Halo_instance" xpos="40" ypos="392" workspace="Workspace01"/>
-   <icon id="Blanshan_Star" instance="Blanshan_Star_instance" xpos="270" ypos="40" workspace="Workspace01"/>
-   <icon id="Blanshan_Transfer_V3" instance="Blanshan_Transfer_V3_instance" xpos="270" ypos="72" workspace="Workspace01"/>
-   <icon id="Blanshan_Halo_V3" instance="Blanshan_Halo_V3_instance" xpos="270" ypos="104" workspace="Workspace01"/>
-   <icon id="Blanshan_Star_V3" instance="Blanshan_Star_V3_instance" xpos="270" ypos="136" workspace="Workspace01"/>
+   <icon id="Masque_L" instance="Masque_L_instance" xpos="40" ypos="328" workspace="Workspace01"/>
+   <icon id="Masque_L_mono" instance="Masque_L_mono_instance" xpos="40" ypos="360" workspace="Workspace01"/>
+   <icon id="Etoiles_HOO_synth" instance="Etoiles_HOO_synth_instance" xpos="40" ypos="392" workspace="Workspace01"/>
+   <icon id="Blanshan_Transfer" instance="Blanshan_Transfer_instance" xpos="270" ypos="40" workspace="Workspace01"/>
+   <icon id="Blanshan_Halo" instance="Blanshan_Halo_instance" xpos="270" ypos="72" workspace="Workspace01"/>
+   <icon id="Blanshan_Star" instance="Blanshan_Star_instance" xpos="270" ypos="104" workspace="Workspace01"/>
+   <icon id="Blanshan_Transfer_V3" instance="Blanshan_Transfer_V3_instance" xpos="270" ypos="136" workspace="Workspace01"/>
+   <icon id="Blanshan_Halo_V3" instance="Blanshan_Halo_V3_instance" xpos="270" ypos="168" workspace="Workspace01"/>
+   <icon id="Blanshan_Star_V3" instance="Blanshan_Star_V3_instance" xpos="270" ypos="200" workspace="Workspace01"/>
 </xpsm>

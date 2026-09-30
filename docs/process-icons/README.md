@@ -27,6 +27,7 @@ Les formules supposent des images nommées comme indiqué (renomme tes vues avec
 | `H_dans_R` | `R`, `H_cs` | `R_H` ; ajuste `w = 1.0` |
 | `Etoiles_screen` | `starless`, `stars` (étirées) | Nouvelle image `Final` |
 | `Etoiles_HOO_synth` | `H_stars`, `O_stars` (linéaires) | Étoiles RGB synthétiques, G = 20 % H + 80 % O |
+| `Masque_L` / `Masque_L_mono` | Image sans étoiles étirée (couleur / mono) ; glisser l'icône dessus | Nouvelle vue mono `masque_L` : luminance Rec. 709 avec le fond coupé, `s = 0.14` par défaut (fond + 0,01). Chaque workflow l'inclut avant les courbes et LHE |
 | `Blanshan_Transfer` / `_Halo` / `_Star` | Vue sans étoiles nommée `starless` ; appliquer sur l'image avec étoiles | Version 2, identique à la page (S = 0,15) |
 | `Blanshan_Transfer_V3` / `_Halo_V3` / `_Star_V3` | Idem | Version 3 d'origine, avec les commentaires de Bill Blanshan (S = 0,20 ; Star en mode doux M = 3) |
 
@@ -86,11 +87,11 @@ Chaque fichier contient **tous les process du workflow, dans l'ordre**, numérot
 
 | Fichier | Icônes | Contenu |
 |---|---|---|
-| `Workflow-LRGB.xpsm` | 32 | Prétraitement, combinaison RGB, gradient, BXT Correct Only, SPCC, BXT, SXT linéaire, NXT, GHS, LRGBCombination, finition, étoiles (standard de couleur et contrôle après recombinaison) |
-| `Workflow-LHaRGB.xpsm` | 39 | LRGB + soustraction du continuum, H dans le rouge et dans L, NBRGBCombination en alternative ; contrôles de couleur et des étoiles (option : étoiles prises avant injection) |
-| `Workflow-RGB-SHO.xpsm` | 47 | Masters narrowband, LinearFit, combinaison SHO simple, BXT, SXT, extraction des canaux, palettes (NarrowbandNormalization avec rendu visé et contrôle des couleurs, Foraxx, Perfect Palette Picker, NBColourMapper), étoiles RGB (couleurs attendues et contrôle de la recombinaison) |
-| `Workflow-SHO-sans-RGB.xpsm` | 45 | Idem sans RGB, avec étoiles narrowband (NB to RGB Star Combination, étoiles HOO synthétiques, CorrectMagentaStars) et leur standard de couleur (contrôle à la sonde, ajustements) |
-| `Workflow-HOO.xpsm` | 42 | Extraction dual-band pour caméra couleur, combinaison HOO, NarrowbandNormalization HOO (avec rendu visé et contrôle des couleurs), Foraxx HOO, variante Hubble, Perfect Palette Picker, H en luminance, standard des étoiles HOO (vert synthétique, contrôle à la sonde) |
+| `Workflow-LRGB.xpsm` | 33 | Prétraitement, combinaison RGB, gradient, BXT Correct Only, SPCC, BXT, SXT linéaire, NXT, GHS, LRGBCombination, finition, étoiles (standard de couleur et contrôle après recombinaison) |
+| `Workflow-LHaRGB.xpsm` | 40 | LRGB + soustraction du continuum, H dans le rouge et dans L, NBRGBCombination en alternative ; contrôles de couleur et des étoiles (option : étoiles prises avant injection) |
+| `Workflow-RGB-SHO.xpsm` | 48 | Masters narrowband, LinearFit, combinaison SHO simple, BXT, SXT, extraction des canaux, palettes (NarrowbandNormalization avec rendu visé et contrôle des couleurs, Foraxx, Perfect Palette Picker, NBColourMapper), étoiles RGB (couleurs attendues et contrôle de la recombinaison) |
+| `Workflow-SHO-sans-RGB.xpsm` | 46 | Idem sans RGB, avec étoiles narrowband (NB to RGB Star Combination, étoiles HOO synthétiques, CorrectMagentaStars) et leur standard de couleur (contrôle à la sonde, ajustements) |
+| `Workflow-HOO.xpsm` | 43 | Extraction dual-band pour caméra couleur, combinaison HOO, NarrowbandNormalization HOO (avec rendu visé et contrôle des couleurs), Foraxx HOO, variante Hubble, Perfect Palette Picker, H en luminance, standard des étoiles HOO (vert synthétique, contrôle à la sonde) |
 
 **Trois sortes d'icônes :**
 

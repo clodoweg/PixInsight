@@ -179,6 +179,8 @@ pm = [
     pixelmath('Continuum_H', 'k = 0.9;\nH - k*(R - med(R))', symbols='k', new_image=True, new_id='H_cs', space='Gray'),
     pixelmath('H_dans_R', 'w = 1.0;\nR + w*H_cs', symbols='w', new_image=True, new_id='R_H', space='Gray'),
     pixelmath('Etoiles_screen', '~((~starless) * (~stars))', new_image=True, new_id='Final', space='SameAsTarget'),
+    pixelmath('Masque_L', 's = 0.14;\nmax(0, (0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2] - s) / (1 - s))', symbols='s', new_image=True, new_id='masque_L', space='Gray'),
+    pixelmath('Masque_L_mono', 's = 0.14;\nmax(0, ($T - s) / (1 - s))', symbols='s', new_image=True, new_id='masque_L', space='Gray'),
     pixelmath('Etoiles_HOO_synth', 'H_stars', '0.2*H_stars + 0.8*O_stars', 'O_stars', new_image=True, new_id='Stars_HOO', space='RGB'),
     pixelmath('Blanshan_Transfer', blanshan_transfer, symbols='S, Img1, f1'),
     pixelmath('Blanshan_Halo', blanshan_halo, symbols='S, Img1, f2, f3'),
