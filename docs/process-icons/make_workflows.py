@@ -164,8 +164,10 @@ T_STAT = ("ÉTAPE MANUELLE — Statistical Stretch (SetiAstro, script v2.3). Alt
           "Luma Only décoché (Luma Mode rec709, Luma Blend 0,60 : 0 = lié, 1 = luminance seule). Normalize décoché (sinon la médiane dépasse la cible). "
           "Curves Boost 0 (0 à 0,50) : relève les tons au-dessus de la médiane après les passes. HDR Compress décoché (Amount 0,25, Knee 0,35) : comprime les hautes lumières. "
           "Dans l'icône seulement : numIterations 1 (5 au plus), autoConvergence false (jusqu'à 5 passes, arrêt à 0,001 de la cible).")
-T_STARSTRETCH = ("ÉTAPE MANUELLE — Star Stretch (SetiAstro, script) sur l'image d'étoiles LINÉAIRE issue de SXT. Stretch Amount 5 (défaut, prudence au-delà) ; Color Boost 1,0 (0 à 2) ; "
-                 "Remove Green via SCNR optionnel (décoché par défaut).")
+T_STARSTRETCH = ("ÉTAPE MANUELLE — Star Stretch (SetiAstro, script v2.6) sur l'image d'étoiles LINÉAIRE issue de SXT. Modifie l'image elle-même : garde une copie linéaire. "
+                 "Étirement y = 3^a·x / ((3^a − 1)·x + 1). Stretch Amount a = 5 par défaut (0 à 8, prudence au-delà de 5) : un pixel à 0,01 devient 0,45 à 4, 0,71 à 5, 0,88 à 6. "
+                 "Color Boost 1,0 (0 à 2) : saturation par teinte, 0,4 × Boost sur les rouges, 0,7 × Boost sur les cyans (couleur seulement). "
+                 "Remove Green via SCNR décoché par défaut (SCNR vert pleine force, Average Neutral). Show Preview décoché (aperçu + Refresh Preview).")
 T_HALO = "ÉTAPE MANUELLE — Halo-B-Gon (SetiAstro, script) sur l'image d'étoiles seule. Reduction Amount Low au départ (Extra Low / Low / Med / High) ; Linear Data coché seulement si l'image est encore linéaire."
 T_CMS = ("ÉTAPE MANUELLE — CorrectMagentaStars (Script › Utilities). Sur l'image SHO finale avec étoiles. Amount 0,8 (défaut, 0 à 1). "
          "Le script inverse l'image, retire le vert avec SCNR (le magenta inversé), puis réinverse.")
