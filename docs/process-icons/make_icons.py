@@ -168,18 +168,18 @@ $T*~($T-iif(I==1,E2,iif(I==2,E4,E6))));
 max(Img1,iif(M==1,E7,iif(M==2,E8,E9)))"""
 
 pm = [
-    pixelmath('Foraxx_SHO', '(Oiii^~Oiii)*Sii + ~(Oiii^~Oiii)*Ha',
-              '((Oiii*Ha)^~(Oiii*Ha))*Ha + ~((Oiii*Ha)^~(Oiii*Ha))*Oiii', 'Oiii', new_image=True, new_id='SHO_Foraxx', space='RGB'),
-    pixelmath('Foraxx_HOO', 'Ha', '((Oiii*Ha)^~(Oiii*Ha))*Ha + ~((Oiii*Ha)^~(Oiii*Ha))*Oiii', 'Oiii',
+    pixelmath('Foraxx_SHO', '(O^~O)*S + ~(O^~O)*H',
+              '((O*H)^~(O*H))*H + ~((O*H)^~(O*H))*O', 'O', new_image=True, new_id='SHO_Foraxx', space='RGB'),
+    pixelmath('Foraxx_HOO', 'H', '((O*H)^~(O*H))*H + ~((O*H)^~(O*H))*O', 'O',
               new_image=True, new_id='HOO_Foraxx', space='RGB'),
-    pixelmath('HOO_simple', 'Ha', 'Oiii', 'Oiii', new_image=True, new_id='HOO', space='RGB'),
-    pixelmath('HOO_Hubble', 'Ha', '0.6*Ha + 0.4*Oiii', 'Oiii', new_image=True, new_id='HOO_Hubble', space='RGB'),
-    pixelmath('DualBand_Ha', '$T[0]', new_image=True, new_id='Ha', space='Gray'),
-    pixelmath('DualBand_OIII', '($T[1] + $T[2]) / 2', new_image=True, new_id='Oiii', space='Gray'),
-    pixelmath('Continuum_Ha', 'k = 0.9;\nHa - k*(R - med(R))', symbols='k', new_image=True, new_id='Ha_cs', space='Gray'),
-    pixelmath('Ha_dans_R', 'w = 1.0;\nR + w*Ha_cs', symbols='w', new_image=True, new_id='R_Ha', space='Gray'),
+    pixelmath('HOO_simple', 'H', 'O', 'O', new_image=True, new_id='HOO', space='RGB'),
+    pixelmath('HOO_Hubble', 'H', '0.6*H + 0.4*O', 'O', new_image=True, new_id='HOO_Hubble', space='RGB'),
+    pixelmath('DualBand_Ha', '$T[0]', new_image=True, new_id='H', space='Gray'),
+    pixelmath('DualBand_OIII', '($T[1] + $T[2]) / 2', new_image=True, new_id='O', space='Gray'),
+    pixelmath('Continuum_Ha', 'k = 0.9;\nH - k*(R - med(R))', symbols='k', new_image=True, new_id='H_cs', space='Gray'),
+    pixelmath('Ha_dans_R', 'w = 1.0;\nR + w*H_cs', symbols='w', new_image=True, new_id='R_H', space='Gray'),
     pixelmath('Etoiles_screen', '~((~starless) * (~stars))', new_image=True, new_id='Final', space='SameAsTarget'),
-    pixelmath('Etoiles_HOO_synth', 'Ha_stars', '0.2*Ha_stars + 0.8*Oiii_stars', 'Oiii_stars', new_image=True, new_id='Stars_HOO', space='RGB'),
+    pixelmath('Etoiles_HOO_synth', 'H_stars', '0.2*H_stars + 0.8*O_stars', 'O_stars', new_image=True, new_id='Stars_HOO', space='RGB'),
     pixelmath('Blanshan_Transfer', blanshan_transfer, symbols='S, Img1, f1'),
     pixelmath('Blanshan_Halo', blanshan_halo, symbols='S, Img1, f2, f3'),
     pixelmath('Blanshan_Star', blanshan_star, symbols='I, M, Img1, E1, E2, E3, E4, E5, E6, E7, E8, E9'),
@@ -237,7 +237,7 @@ def mt_post(t):
 
 nat = [
     instance('LRGBCombination', 'LRGB_ajout_L', {'mL': '0.500', 'mc': '0.400', 'noiseReduction': True}, post=lrgb_post),
-    instance('LinearFit', 'LinearFit_ref_Ha', {'rejectLow': '0.000000', 'rejectHigh': '0.920000'}, {'referenceViewId': 'Ha'}),
+    instance('LinearFit', 'LinearFit_ref_H', {'rejectLow': '0.000000', 'rejectHigh': '0.920000'}, {'referenceViewId': 'H'}),
     instance('SCNR', 'SCNR_vert', {'amount': '1.00', 'protectionMethod': 'AverageNeutral', 'colorToRemove': 'Green'}),
     instance('SCNR', 'SCNR_SHO_partiel', {'amount': '0.70', 'protectionMethod': 'AverageNeutral', 'colorToRemove': 'Green'}),
     instance('LocalHistogramEqualization', 'LHE_150', {'radius': 150, 'slopeLimit': '2.0', 'amount': '0.350', 'circularKernel': True}),

@@ -36,8 +36,8 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="layersProtected" value="2"/>
       <parameter id="inheritAstrometricSolution" value="true"/>
    </instance>
-   <instance class="LinearFit" version="256" id="LinearFit_ref_Ha_instance">
-      <parameter id="referenceViewId">Ha</parameter>
+   <instance class="LinearFit" version="256" id="LinearFit_ref_H_instance">
+      <parameter id="referenceViewId">H</parameter>
       <parameter id="rejectLow" value="0.000000"/>
       <parameter id="rejectHigh" value="0.920000"/>
    </instance>
@@ -527,7 +527,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <table id="defects" rows="0"/>
    </instance>
    <icon id="LRGB_ajout_L" instance="LRGB_ajout_L_instance" xpos="40" ypos="40" workspace="Workspace01"/>
-   <icon id="LinearFit_ref_Ha" instance="LinearFit_ref_Ha_instance" xpos="40" ypos="72" workspace="Workspace01"/>
+   <icon id="LinearFit_ref_H" instance="LinearFit_ref_H_instance" xpos="40" ypos="72" workspace="Workspace01"/>
    <icon id="SCNR_vert" instance="SCNR_vert_instance" xpos="40" ypos="104" workspace="Workspace01"/>
    <icon id="SCNR_SHO_partiel" instance="SCNR_SHO_partiel_instance" xpos="40" ypos="136" workspace="Workspace01"/>
    <icon id="LHE_150" instance="LHE_150_instance" xpos="40" ypos="168" workspace="Workspace01"/>

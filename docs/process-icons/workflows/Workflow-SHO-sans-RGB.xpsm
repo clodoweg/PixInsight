@@ -64,8 +64,8 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="alpha" value="1.000000"/>
       <parameter id="noGUIMessages" value="false"/>
    </instance>
-   <instance class="NoOperation" version="256" id="SHO_04_Masters_Sii_Ha_Oiii_instance">
-      <description>Masters Sii et Ha et Oiii : même recadrage (icône DynamicCrop) et retrait du gradient sur CHAQUE master séparément (icônes suivantes). OIII est le plus sensible à la Lune : contrôle bien son modèle. Nomme les vues exactement 'Sii', 'Ha' et 'Oiii' : les formules en dépendent.</description>
+   <instance class="NoOperation" version="256" id="SHO_04_Masters_S_H_O_instance">
+      <description>Masters S et H et O : même recadrage (icône DynamicCrop) et retrait du gradient sur CHAQUE master séparément (icônes suivantes). OIII est le plus sensible à la Lune : contrôle bien son modèle. Nomme les vues exactement 'S', 'H' et 'O' : les formules en dépendent.</description>
    </instance>
    <instance class="SpectrophotometricFluxCalibration" version="1" id="SHO_05_SPFC_SII_instance">
       <description>SPFC sur le master SII : QE curve IMX455 ; Narrowband mode, 672,4 nm, bande passante 3 nm (filtres Antlia 3 nm). Prérequis : image LINÉAIRE et résolue (ImageSolver ou WBPP), base Gaia DR3/SP installée. Catalog Gaia DR3/SP, Automatic limit magnitude coché, détection PSF par défaut. SPFC ne modifie pas les pixels : il écrit les métadonnées de flux lues par MGC. Utilise ensuite les MÊMES filtres dans SPCC.</description>
@@ -226,7 +226,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="showGradientModel" value="true"/>
    </instance>
    <instance class="MultiscaleGradientCorrection" version="1" id="SHO_09_MGC_MARS_Ha_instance">
-      <description>MultiscaleGradientCorrection pour le master Ha : filtre MARS Gray = Ha (MARS DR2, juin 2026 : bandes Ha et OIII, couverture narrowband jusqu'à +75° de déclinaison ; valeur du paramètre relevée dans un outil qui pilote MGC sous PixInsight 1.9.5, texte du menu non vu dans l'interface). Applique juste après l'icône SPFC_Ha, sur le même master linéaire et résolu. Autres réglages identiques à MGC_MARS : Gradient scale 1024 (512 ou 256 si un gradient reste dans les coins), Structure separation 3, Model smoothness 1,0, Show gradient model coché (le modèle doit être lisse, sans structure de la nébuleuse). Base MARS DR2 à charger dans les préférences de MGC (clé à molette › Add › fichier .xmars). Hors couverture MARS : GradientCorrection ou DBE. SII : pas de bande SII dans MARS, utilise GradientCorrection ou DBE.</description>
+      <description>MultiscaleGradientCorrection pour le master H : filtre MARS Gray = Ha (MARS DR2, juin 2026 : bandes Ha et OIII, couverture narrowband jusqu'à +75° de déclinaison ; valeur du paramètre relevée dans un outil qui pilote MGC sous PixInsight 1.9.5, texte du menu non vu dans l'interface). Applique juste après l'icône SPFC_Ha, sur le même master linéaire et résolu. Autres réglages identiques à MGC_MARS : Gradient scale 1024 (512 ou 256 si un gradient reste dans les coins), Structure separation 3, Model smoothness 1,0, Show gradient model coché (le modèle doit être lisse, sans structure de la nébuleuse). Base MARS DR2 à charger dans les préférences de MGC (clé à molette › Add › fichier .xmars). Hors couverture MARS : GradientCorrection ou DBE. SII : pas de bande SII dans MARS, utilise GradientCorrection ou DBE.</description>
       <parameter id="command"></parameter>
       <parameter id="useMARSDatabase" value="true"/>
       <parameter id="grayMARSFilter">Ha</parameter>
@@ -246,7 +246,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="showGradientModel" value="true"/>
    </instance>
    <instance class="MultiscaleGradientCorrection" version="1" id="SHO_10_MGC_MARS_OIII_instance">
-      <description>MultiscaleGradientCorrection pour le master OIII : filtre MARS Gray = OIII (MARS DR2, juin 2026 : bandes Ha et OIII, couverture narrowband jusqu'à +75° de déclinaison ; valeur du paramètre relevée dans un outil qui pilote MGC sous PixInsight 1.9.5, texte du menu non vu dans l'interface). Applique juste après l'icône SPFC_OIII, sur le même master linéaire et résolu. Autres réglages identiques à MGC_MARS : Gradient scale 1024 (512 ou 256 si un gradient reste dans les coins), Structure separation 3, Model smoothness 1,0, Show gradient model coché (le modèle doit être lisse, sans structure de la nébuleuse). Base MARS DR2 à charger dans les préférences de MGC (clé à molette › Add › fichier .xmars). Hors couverture MARS : GradientCorrection ou DBE. SII : pas de bande SII dans MARS, utilise GradientCorrection ou DBE.</description>
+      <description>MultiscaleGradientCorrection pour le master O : filtre MARS Gray = OIII (MARS DR2, juin 2026 : bandes Ha et OIII, couverture narrowband jusqu'à +75° de déclinaison ; valeur du paramètre relevée dans un outil qui pilote MGC sous PixInsight 1.9.5, texte du menu non vu dans l'interface). Applique juste après l'icône SPFC_OIII, sur le même master linéaire et résolu. Autres réglages identiques à MGC_MARS : Gradient scale 1024 (512 ou 256 si un gradient reste dans les coins), Structure separation 3, Model smoothness 1,0, Show gradient model coché (le modèle doit être lisse, sans structure de la nébuleuse). Base MARS DR2 à charger dans les préférences de MGC (clé à molette › Add › fichier .xmars). Hors couverture MARS : GradientCorrection ou DBE. SII : pas de bande SII dans MARS, utilise GradientCorrection ou DBE.</description>
       <parameter id="command"></parameter>
       <parameter id="useMARSDatabase" value="true"/>
       <parameter id="grayMARSFilter">OIII</parameter>
@@ -320,17 +320,17 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="defaultSampleRadius" value="15"/>
       <parameter id="samplesPerRow" value="15"/>
    </instance>
-   <instance class="LinearFit" version="256" id="SHO_13_LinearFit_ref_Ha_instance">
-      <description>Option — LinearFit avec Ha comme référence : applique sur OIII (et SII). Rapproche fonds et niveaux, ce qu'exige Foraxx (theAstroShed, Galactic Hunter). Référence : vue nommée 'Ha'.</description>
-      <parameter id="referenceViewId">Ha</parameter>
+   <instance class="LinearFit" version="256" id="SHO_13_LinearFit_ref_H_instance">
+      <description>Option — LinearFit avec Ha comme référence : applique sur O (et S). Rapproche fonds et niveaux, ce qu'exige Foraxx (theAstroShed, Galactic Hunter). Référence : vue nommée 'H'.</description>
+      <parameter id="referenceViewId">H</parameter>
       <parameter id="rejectLow" value="0.000000"/>
       <parameter id="rejectHigh" value="0.920000"/>
    </instance>
    <instance class="PixelMath" version="256" id="SHO_14_Combinaison_SHO_instance">
-      <description>Combinaison SHO SIMPLE (équivalent de ChannelCombination) : R = Sii, G = Ha, B = Oiii, sans boost ni mélange. Sert à BXT et SXT. Crée l'image 'SHO'.</description>
-      <parameter id="expression">Sii</parameter>
-      <parameter id="expression1">Ha</parameter>
-      <parameter id="expression2">Oiii</parameter>
+      <description>Combinaison SHO SIMPLE (équivalent de ChannelCombination) : R = S, G = H, B = O, sans boost ni mélange. Sert à BXT et SXT. Crée l'image 'SHO'.</description>
+      <parameter id="expression">S</parameter>
+      <parameter id="expression1">H</parameter>
+      <parameter id="expression2">O</parameter>
       <parameter id="expression3"></parameter>
       <parameter id="useSingleExpression" value="false"/>
       <parameter id="symbols"></parameter>
@@ -379,8 +379,8 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="remove_reflections" value="false"/>
       <parameter id="overlap" value="0.20"/>
    </instance>
-   <instance class="PixelMath" version="256" id="SHO_17_Extraire_Sii_instance">
-      <description>Extraction du canal 0 (équivalent de ChannelExtraction) : applique sur l'image SHO sans étoiles. Crée la vue mono 'Sii'. AVANT : renomme les masters linéaires qui portent déjà ce nom (par exemple 'Sii_lin'), sinon PixInsight donnera un autre nom à la nouvelle vue et les formules suivantes ne la trouveront pas.</description>
+   <instance class="PixelMath" version="256" id="SHO_17_Extraire_S_instance">
+      <description>Extraction du canal 0 (équivalent de ChannelExtraction) : applique sur l'image SHO sans étoiles. Crée la vue mono 'S'. AVANT : renomme les masters linéaires qui portent déjà ce nom (par exemple 'S_lin'), sinon PixInsight donnera un autre nom à la nouvelle vue et les formules suivantes ne la trouveront pas.</description>
       <parameter id="expression">$T[0]</parameter>
       <parameter id="expression1"></parameter>
       <parameter id="expression2"></parameter>
@@ -401,7 +401,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="truncateUpper" value="1"/>
       <parameter id="createNewImage" value="true"/>
       <parameter id="showNewImage" value="true"/>
-      <parameter id="newImageId">Sii</parameter>
+      <parameter id="newImageId">S</parameter>
       <parameter id="newImageWidth" value="0"/>
       <parameter id="newImageHeight" value="0"/>
       <parameter id="newImageAlpha" value="false"/>
@@ -409,8 +409,8 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
-   <instance class="PixelMath" version="256" id="SHO_18_Extraire_Ha_instance">
-      <description>Extraction du canal 1 (équivalent de ChannelExtraction) : applique sur l'image SHO sans étoiles. Crée la vue mono 'Ha'. AVANT : renomme les masters linéaires qui portent déjà ce nom (par exemple 'Ha_lin'), sinon PixInsight donnera un autre nom à la nouvelle vue et les formules suivantes ne la trouveront pas.</description>
+   <instance class="PixelMath" version="256" id="SHO_18_Extraire_H_instance">
+      <description>Extraction du canal 1 (équivalent de ChannelExtraction) : applique sur l'image SHO sans étoiles. Crée la vue mono 'H'. AVANT : renomme les masters linéaires qui portent déjà ce nom (par exemple 'H_lin'), sinon PixInsight donnera un autre nom à la nouvelle vue et les formules suivantes ne la trouveront pas.</description>
       <parameter id="expression">$T[1]</parameter>
       <parameter id="expression1"></parameter>
       <parameter id="expression2"></parameter>
@@ -431,7 +431,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="truncateUpper" value="1"/>
       <parameter id="createNewImage" value="true"/>
       <parameter id="showNewImage" value="true"/>
-      <parameter id="newImageId">Ha</parameter>
+      <parameter id="newImageId">H</parameter>
       <parameter id="newImageWidth" value="0"/>
       <parameter id="newImageHeight" value="0"/>
       <parameter id="newImageAlpha" value="false"/>
@@ -439,8 +439,8 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
-   <instance class="PixelMath" version="256" id="SHO_19_Extraire_Oiii_instance">
-      <description>Extraction du canal 2 (équivalent de ChannelExtraction) : applique sur l'image SHO sans étoiles. Crée la vue mono 'Oiii'. AVANT : renomme les masters linéaires qui portent déjà ce nom (par exemple 'Oiii_lin'), sinon PixInsight donnera un autre nom à la nouvelle vue et les formules suivantes ne la trouveront pas.</description>
+   <instance class="PixelMath" version="256" id="SHO_19_Extraire_O_instance">
+      <description>Extraction du canal 2 (équivalent de ChannelExtraction) : applique sur l'image SHO sans étoiles. Crée la vue mono 'O'. AVANT : renomme les masters linéaires qui portent déjà ce nom (par exemple 'O_lin'), sinon PixInsight donnera un autre nom à la nouvelle vue et les formules suivantes ne la trouveront pas.</description>
       <parameter id="expression">$T[2]</parameter>
       <parameter id="expression1"></parameter>
       <parameter id="expression2"></parameter>
@@ -461,7 +461,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="truncateUpper" value="1"/>
       <parameter id="createNewImage" value="true"/>
       <parameter id="showNewImage" value="true"/>
-      <parameter id="newImageId">Oiii</parameter>
+      <parameter id="newImageId">O</parameter>
       <parameter id="newImageWidth" value="0"/>
       <parameter id="newImageHeight" value="0"/>
       <parameter id="newImageAlpha" value="false"/>
@@ -469,8 +469,8 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
-   <instance class="PixelMath" version="256" id="SHO_20_Extraire_Sii_stars_instance">
-      <description>Extraction du canal 0 (équivalent de ChannelExtraction) : applique sur l'image d'étoiles SHO (linéaire). Crée la vue mono 'Sii_stars'. AVANT : renomme les masters linéaires qui portent déjà ce nom (par exemple 'Sii_stars_lin'), sinon PixInsight donnera un autre nom à la nouvelle vue et les formules suivantes ne la trouveront pas.</description>
+   <instance class="PixelMath" version="256" id="SHO_20_Extraire_S_stars_instance">
+      <description>Extraction du canal 0 (équivalent de ChannelExtraction) : applique sur l'image d'étoiles SHO (linéaire). Crée la vue mono 'S_stars'. AVANT : renomme les masters linéaires qui portent déjà ce nom (par exemple 'S_stars_lin'), sinon PixInsight donnera un autre nom à la nouvelle vue et les formules suivantes ne la trouveront pas.</description>
       <parameter id="expression">$T[0]</parameter>
       <parameter id="expression1"></parameter>
       <parameter id="expression2"></parameter>
@@ -491,7 +491,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="truncateUpper" value="1"/>
       <parameter id="createNewImage" value="true"/>
       <parameter id="showNewImage" value="true"/>
-      <parameter id="newImageId">Sii_stars</parameter>
+      <parameter id="newImageId">S_stars</parameter>
       <parameter id="newImageWidth" value="0"/>
       <parameter id="newImageHeight" value="0"/>
       <parameter id="newImageAlpha" value="false"/>
@@ -499,8 +499,8 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
-   <instance class="PixelMath" version="256" id="SHO_21_Extraire_Ha_stars_instance">
-      <description>Extraction du canal 1 (équivalent de ChannelExtraction) : applique sur l'image d'étoiles SHO (linéaire). Crée la vue mono 'Ha_stars'. AVANT : renomme les masters linéaires qui portent déjà ce nom (par exemple 'Ha_stars_lin'), sinon PixInsight donnera un autre nom à la nouvelle vue et les formules suivantes ne la trouveront pas.</description>
+   <instance class="PixelMath" version="256" id="SHO_21_Extraire_H_stars_instance">
+      <description>Extraction du canal 1 (équivalent de ChannelExtraction) : applique sur l'image d'étoiles SHO (linéaire). Crée la vue mono 'H_stars'. AVANT : renomme les masters linéaires qui portent déjà ce nom (par exemple 'H_stars_lin'), sinon PixInsight donnera un autre nom à la nouvelle vue et les formules suivantes ne la trouveront pas.</description>
       <parameter id="expression">$T[1]</parameter>
       <parameter id="expression1"></parameter>
       <parameter id="expression2"></parameter>
@@ -521,7 +521,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="truncateUpper" value="1"/>
       <parameter id="createNewImage" value="true"/>
       <parameter id="showNewImage" value="true"/>
-      <parameter id="newImageId">Ha_stars</parameter>
+      <parameter id="newImageId">H_stars</parameter>
       <parameter id="newImageWidth" value="0"/>
       <parameter id="newImageHeight" value="0"/>
       <parameter id="newImageAlpha" value="false"/>
@@ -529,8 +529,8 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
-   <instance class="PixelMath" version="256" id="SHO_22_Extraire_Oiii_stars_instance">
-      <description>Extraction du canal 2 (équivalent de ChannelExtraction) : applique sur l'image d'étoiles SHO (linéaire). Crée la vue mono 'Oiii_stars'. AVANT : renomme les masters linéaires qui portent déjà ce nom (par exemple 'Oiii_stars_lin'), sinon PixInsight donnera un autre nom à la nouvelle vue et les formules suivantes ne la trouveront pas.</description>
+   <instance class="PixelMath" version="256" id="SHO_22_Extraire_O_stars_instance">
+      <description>Extraction du canal 2 (équivalent de ChannelExtraction) : applique sur l'image d'étoiles SHO (linéaire). Crée la vue mono 'O_stars'. AVANT : renomme les masters linéaires qui portent déjà ce nom (par exemple 'O_stars_lin'), sinon PixInsight donnera un autre nom à la nouvelle vue et les formules suivantes ne la trouveront pas.</description>
       <parameter id="expression">$T[2]</parameter>
       <parameter id="expression1"></parameter>
       <parameter id="expression2"></parameter>
@@ -551,7 +551,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="truncateUpper" value="1"/>
       <parameter id="createNewImage" value="true"/>
       <parameter id="showNewImage" value="true"/>
-      <parameter id="newImageId">Oiii_stars</parameter>
+      <parameter id="newImageId">O_stars</parameter>
       <parameter id="newImageWidth" value="0"/>
       <parameter id="newImageHeight" value="0"/>
       <parameter id="newImageAlpha" value="false"/>
@@ -714,7 +714,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="information"></parameter>
    </instance>
    <instance class="NarrowbandNormalization" version="256" id="SHO_29_NBN_SHO_instance">
-      <description>PALETTE — NarrowbandNormalization, palette SHO (valeurs par défaut ; nom interne Palette_SHO vérifié dans le module 1.1). Sur l'image SHO combinée (R = Sii, G = Ha, B = Oiii), ÉTIRÉE et sans étoiles, canaux étirés avec le même fond et la même médiane (recombine-les avec l'icône Combinaison_SHO). Active l'aperçu. Ordre de réglage conseillé (suggestion de la fiche, pas une consigne de l'auteur) : Lightness (Off, Preserve, Ha, OIII ou SII ; souvent Ha) ; Shadowpoint pour le fond, sans l'écrêter ; O3 boost puis S2 boost, progressivement (SII, le plus bruité, avec prudence) ; Highlight reduction ; Brightness ; SCNR partiel en dernier, si besoin. Pour comprendre un curseur, pousse-le à fond (0 ou maximum) puis reviens à une valeur raisonnable (astuce theAstroShed). Garde ton réglage en glissant le triangle du process sur le bureau. RENDU VISÉ (look Hubble) : zones Ha or / jaune orangé, zones OIII cyan à bleu, soufre en orange plus rouge, fond gris neutre foncé, pas de vert dominant (quelques touches acceptées), étoiles pas magenta (standard des étoiles : avec RGB, étoiles calibrées comme en LRGB, voir les icônes Etoiles_RGB et Star_Stretch ; sans RGB, étoiles plausibles, voir NB_to_RGB_Stars et Etoiles_HOO_synth). CONTRÔLE à la sonde 15x15 : zone Ha R &gt;= G, nettement au-dessus de B (si G &gt; R : trop vert) ; zone OIII G et B au-dessus de R, B &gt;= G ; fond R = G = B. AJUSTER : trop vert -&gt; SCNR partiel (ou SCNR 0,50-0,80 après) ; pas de bleu -&gt; O3 boost ; pas de nuances orange/rouge -&gt; S2 boost ; fond coloré -&gt; Shadowpoint, sinon reprends l'étirement des canaux ; cœur brûlé -&gt; Highlight reduction ; détail pâteux -&gt; Lightness Ha ; teinte à affiner -&gt; CurvesTransformation (canal H, puis S) sous masque de luminance. AUTRE PALETTE : SII très faible -&gt; HOO ; Ha dominant et OIII faible -&gt; HOO centré sur Ha ou HaRGB ; or et bleu sans vert -&gt; Foraxx ; teintes libres -&gt; NBColourMapper ; pour comparer -&gt; Perfect Palette Picker.</description>
+      <description>PALETTE — NarrowbandNormalization, palette SHO (valeurs par défaut ; nom interne Palette_SHO vérifié dans le module 1.1). Sur l'image SHO combinée (R = S, G = H, B = O), ÉTIRÉE et sans étoiles, canaux étirés avec le même fond et la même médiane (recombine-les avec l'icône Combinaison_SHO). Active l'aperçu. Ordre de réglage conseillé (suggestion de la fiche, pas une consigne de l'auteur) : Lightness (Off, Preserve, Ha, OIII ou SII ; souvent Ha) ; Shadowpoint pour le fond, sans l'écrêter ; O3 boost puis S2 boost, progressivement (SII, le plus bruité, avec prudence) ; Highlight reduction ; Brightness ; SCNR partiel en dernier, si besoin. Pour comprendre un curseur, pousse-le à fond (0 ou maximum) puis reviens à une valeur raisonnable (astuce theAstroShed). Garde ton réglage en glissant le triangle du process sur le bureau. RENDU VISÉ (look Hubble) : zones Ha or / jaune orangé, zones OIII cyan à bleu, soufre en orange plus rouge, fond gris neutre foncé, pas de vert dominant (quelques touches acceptées), étoiles pas magenta (standard des étoiles : avec RGB, étoiles calibrées comme en LRGB, voir les icônes Etoiles_RGB et Star_Stretch ; sans RGB, étoiles plausibles, voir NB_to_RGB_Stars et Etoiles_HOO_synth). CONTRÔLE à la sonde 15x15 : zone Ha R &gt;= G, nettement au-dessus de B (si G &gt; R : trop vert) ; zone OIII G et B au-dessus de R, B &gt;= G ; fond R = G = B. AJUSTER : trop vert -&gt; SCNR partiel (ou SCNR 0,50-0,80 après) ; pas de bleu -&gt; O3 boost ; pas de nuances orange/rouge -&gt; S2 boost ; fond coloré -&gt; Shadowpoint, sinon reprends l'étirement des canaux ; cœur brûlé -&gt; Highlight reduction ; détail pâteux -&gt; Lightness Ha ; teinte à affiner -&gt; CurvesTransformation (canal H, puis S) sous masque de luminance. AUTRE PALETTE : SII très faible -&gt; HOO ; Ha dominant et OIII faible -&gt; HOO centré sur Ha ou HaRGB ; or et bleu sans vert -&gt; Foraxx ; teintes libres -&gt; NBColourMapper ; pour comparer -&gt; Perfect Palette Picker.</description>
       <parameter id="palette" value="Palette_SHO"/>
       <parameter id="lightness" value="Lightness_Off"/>
       <parameter id="blendMode" value="Blend_Mode1"/>
@@ -727,10 +727,10 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="brightness" value="0.000"/>
    </instance>
    <instance class="PixelMath" version="256" id="SHO_30_Foraxx_SHO_instance">
-      <description>ALTERNATIVE — Palette Foraxx SHO dynamique (Ludo/ForaxX) : vues 'Sii', 'Ha', 'Oiii' ÉTIRÉES, sans étoiles, fonds proches. Crée 'SHO_Foraxx'. Tons or et bleu sans vert envahissant.</description>
-      <parameter id="expression">(Oiii^~Oiii)*Sii + ~(Oiii^~Oiii)*Ha</parameter>
-      <parameter id="expression1">((Oiii*Ha)^~(Oiii*Ha))*Ha + ~((Oiii*Ha)^~(Oiii*Ha))*Oiii</parameter>
-      <parameter id="expression2">Oiii</parameter>
+      <description>ALTERNATIVE — Palette Foraxx SHO dynamique (Ludo/ForaxX) : vues 'S', 'H', 'O' ÉTIRÉES, sans étoiles, fonds proches. Crée 'SHO_Foraxx'. Tons or et bleu sans vert envahissant.</description>
+      <parameter id="expression">(O^~O)*S + ~(O^~O)*H</parameter>
+      <parameter id="expression1">((O*H)^~(O*H))*H + ~((O*H)^~(O*H))*O</parameter>
+      <parameter id="expression2">O</parameter>
       <parameter id="expression3"></parameter>
       <parameter id="useSingleExpression" value="false"/>
       <parameter id="symbols"></parameter>
@@ -757,7 +757,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <table id="outputData" rows="0"/>
    </instance>
    <instance class="Script" version="256" id="SHO_31_Perfect_Palette_Picker_instance">
-      <description>LANCEMENT : double-clique l'icône, puis clique sur le rond « Apply Global » (ou glisse-la sur une image) : le dialogue du script s'ouvre. Ce script ne lit pas de paramètres d'icône : choisis les vues et Linear Input Data dans son dialogue. SOMME DE CONTRÔLE : l'icône contient l'empreinte MD5 de la version actuelle du script ; après une mise à jour du script, PixInsight bloque l'icône : double-clique-la, efface le champ MD5 et réenregistre-la. EXPLORER — Perfect Palette Picker (SetiAstro, script v1.3, Script › SetiAstro › Perfect Palette Picker). Choisis les vues Ha, OIII et SII (sans étoiles de préférence ; sans SII, Ha le remplace), ou jusqu'à deux images couleur dual-band (HaO3, S2O3). Linear Input Data coché par défaut : chaque canal est étiré à une médiane de 0,25 ; décoche si tes images sont déjà étirées. Create Palettes : 16 vignettes (HOO, HOS, HSO, HSS, OHH, OHS, OSH, OSS, SHH, SHO, SOH, SOO, Realistic1, Realistic2, Foraxx, Dynamic Inverse). Clique une vignette pour générer la palette en pleine taille. Sert à choisir : équilibre ensuite le résultat (NarrowbandNormalization, courbes) et vérifie les couleurs.</description>
+      <description>LANCEMENT : double-clique l'icône, puis clique sur le rond « Apply Global » (ou glisse-la sur une image) : le dialogue du script s'ouvre. Ce script ne lit pas de paramètres d'icône : choisis les vues et Linear Input Data dans son dialogue. SOMME DE CONTRÔLE : l'icône contient l'empreinte MD5 de la version actuelle du script ; après une mise à jour du script, PixInsight bloque l'icône : double-clique-la, efface le champ MD5 et réenregistre-la. EXPLORER — Perfect Palette Picker (SetiAstro, script v1.3, Script › SetiAstro › Perfect Palette Picker). Choisis les vues H, O et S (sans étoiles de préférence ; sans S, H le remplace), ou jusqu'à deux images couleur dual-band (HaO3, S2O3). Linear Input Data coché par défaut : chaque canal est étiré à une médiane de 0,25 ; décoche si tes images sont déjà étirées. Create Palettes : 16 vignettes (HOO, HOS, HSO, HSS, OHH, OHS, OSH, OSS, SHH, SHO, SOH, SOO, Realistic1, Realistic2, Foraxx, Dynamic Inverse). Clique une vignette pour générer la palette en pleine taille. Sert à choisir : équilibre ensuite le résultat (NarrowbandNormalization, courbes) et vérifie les couleurs.</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/PerfectPalettePicker.js</parameter>
       <parameter id="md5sum">0ffff6a0fb869acfc4f9ee3ad81b6338</parameter>
       <table id="parameters" rows="0"/>
@@ -960,17 +960,17 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="overlap" value="0.20"/>
    </instance>
    <instance class="Script" version="256" id="SHO_38_NB_to_RGB_Stars_instance">
-      <description>LANCEMENT : GLISSE cette icône sur l'image cible (le script refuse le mode global : un double-clic suivi de « Apply Global » n'aboutit pas). La version 1.6 du script ne relit pas les paramètres d'icône : choisis les vues Ha, OIII (et SII) et les réglages dans son dialogue. SOMME DE CONTRÔLE : l'icône contient l'empreinte MD5 de la version actuelle du script ; après une mise à jour du script, PixInsight bloque l'icône : double-clique-la, efface le champ MD5 et réenregistre-la. ÉTOILES — méthode 1 : NB to RGB Star Combination (SetiAstro, script). Ha Stars et OIII Stars (linéaires, obligatoires), SII optionnel. Green Channel Blend Ratio décoché par défaut (Ha to OIII ratio 0,3 si activé). Apply Star Stretch recommandé par l'auteur : Stretch Factor 5, Color Boost 1,0. Mélange du script (code v1.6) : R = 0,5·Ha + 0,5·SII (Ha seul sans SII), G = ratio·Ha + (1 − ratio)·OIII (0,3·Ha + 0,7·OIII par défaut), B = OIII ; monte le ratio si les étoiles bleues sont verdâtres ou les rouges trop rouges, baisse-le si les étoiles chaudes tirent vers le jaune-vert. STANDARD DES ÉTOILES SANS RGB : couleurs non calibrées, on vise des étoiles PLAUSIBLES, proches du RGB : du bleu-blanc au jaune-orange, peu saturées, une gamme de couleurs, JAMAIS magenta (R et B nettement au-dessus de G) ni vertes (G au-dessus de R et B). CONTRÔLE à la sonde 15x15 sur le halo (le cœur est souvent blanc) : étoiles chaudes R &gt;= G &gt;= B, bleues B &gt;= G &gt;= R ; parcours une dizaine d'étoiles, toutes identiques = couleurs écrasées. AJUSTER : magenta -&gt; NB to RGB ou étoiles HOO synthétiques, sinon CorrectMagentaStars ; bleues verdâtres ou étoiles trop rouges -&gt; plus de Ha dans le vert (G = a·Ha + (1 − a)·OIII : monter a rend les bleues moins vertes et les rouges plus jaunes) ; étoiles chaudes trop jaunes ou verdâtres -&gt; moins de Ha dans le vert ; criardes -&gt; Color Boost plus bas ; toutes blanches -&gt; étirement plus doux ; anneau cœur rouge / halo cyan -&gt; réduction d'étoiles ou désaturation des halos. Étoiles vraiment calibrées : quelques poses RGB courtes (workflow RGB + SHO).</description>
+      <description>LANCEMENT : GLISSE cette icône sur l'image cible (le script refuse le mode global : un double-clic suivi de « Apply Global » n'aboutit pas). La version 1.6 du script ne relit pas les paramètres d'icône : choisis les vues H, O (et S) et les réglages dans son dialogue. SOMME DE CONTRÔLE : l'icône contient l'empreinte MD5 de la version actuelle du script ; après une mise à jour du script, PixInsight bloque l'icône : double-clique-la, efface le champ MD5 et réenregistre-la. ÉTOILES — méthode 1 : NB to RGB Star Combination (SetiAstro, script). Ha Stars et OIII Stars (linéaires, obligatoires), SII optionnel. Green Channel Blend Ratio décoché par défaut (Ha to OIII ratio 0,3 si activé). Apply Star Stretch recommandé par l'auteur : Stretch Factor 5, Color Boost 1,0. Mélange du script (code v1.6) : R = 0,5·H + 0,5·S (H seul sans S), G = ratio·H + (1 − ratio)·O (0,3·H + 0,7·O par défaut), B = O ; monte le ratio si les étoiles bleues sont verdâtres ou les rouges trop rouges, baisse-le si les étoiles chaudes tirent vers le jaune-vert. STANDARD DES ÉTOILES SANS RGB : couleurs non calibrées, on vise des étoiles PLAUSIBLES, proches du RGB : du bleu-blanc au jaune-orange, peu saturées, une gamme de couleurs, JAMAIS magenta (R et B nettement au-dessus de G) ni vertes (G au-dessus de R et B). CONTRÔLE à la sonde 15x15 sur le halo (le cœur est souvent blanc) : étoiles chaudes R &gt;= G &gt;= B, bleues B &gt;= G &gt;= R ; parcours une dizaine d'étoiles, toutes identiques = couleurs écrasées. AJUSTER : magenta -&gt; NB to RGB ou étoiles HOO synthétiques, sinon CorrectMagentaStars ; bleues verdâtres ou étoiles trop rouges -&gt; plus de Ha dans le vert (G = a·H + (1 − a)·O : monter a rend les bleues moins vertes et les rouges plus jaunes) ; étoiles chaudes trop jaunes ou verdâtres -&gt; moins de Ha dans le vert ; criardes -&gt; Color Boost plus bas ; toutes blanches -&gt; étirement plus doux ; anneau cœur rouge / halo cyan -&gt; réduction d'étoiles ou désaturation des halos. Étoiles vraiment calibrées : quelques poses RGB courtes (workflow RGB + SHO).</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/NBtoRGBStars.js</parameter>
       <parameter id="md5sum">0fae2f23d6f23037fb118fd1ef749592</parameter>
       <table id="parameters" rows="0"/>
       <parameter id="information"></parameter>
    </instance>
    <instance class="PixelMath" version="256" id="SHO_39_Etoiles_HOO_synth_instance">
-      <description>ÉTOILES — méthode 2 : étoiles HOO synthétiques (AIASTRO) sur les images d'étoiles linéaires 'Ha_stars' et 'Oiii_stars' : R = Ha, G = 20 % Ha + 80 % OIII, B = OIII. Calibre ensuite la couleur, puis étire avec Star Stretch. Renomme le résultat étiré 'stars'. Rapport choisi par l'auteur en comparant à des étoiles RGB, propre à son matériel ; une légère teinte verte peut rester sur les étoiles bleues (passe à 0,3·Ha + 0,7·OIII). STANDARD DES ÉTOILES SANS RGB : couleurs non calibrées, on vise des étoiles PLAUSIBLES, proches du RGB : du bleu-blanc au jaune-orange, peu saturées, une gamme de couleurs, JAMAIS magenta (R et B nettement au-dessus de G) ni vertes (G au-dessus de R et B). CONTRÔLE à la sonde 15x15 sur le halo (le cœur est souvent blanc) : étoiles chaudes R &gt;= G &gt;= B, bleues B &gt;= G &gt;= R ; parcours une dizaine d'étoiles, toutes identiques = couleurs écrasées. </description>
-      <parameter id="expression">Ha_stars</parameter>
-      <parameter id="expression1">0.2*Ha_stars + 0.8*Oiii_stars</parameter>
-      <parameter id="expression2">Oiii_stars</parameter>
+      <description>ÉTOILES — méthode 2 : étoiles HOO synthétiques (AIASTRO) sur les images d'étoiles linéaires 'H_stars' et 'O_stars' : R = H, G = 20 % H + 80 % O, B = O. Calibre ensuite la couleur, puis étire avec Star Stretch. Renomme le résultat étiré 'stars'. Rapport choisi par l'auteur en comparant à des étoiles RGB, propre à son matériel ; une légère teinte verte peut rester sur les étoiles bleues (passe à 0,3·H + 0,7·O). STANDARD DES ÉTOILES SANS RGB : couleurs non calibrées, on vise des étoiles PLAUSIBLES, proches du RGB : du bleu-blanc au jaune-orange, peu saturées, une gamme de couleurs, JAMAIS magenta (R et B nettement au-dessus de G) ni vertes (G au-dessus de R et B). CONTRÔLE à la sonde 15x15 sur le halo (le cœur est souvent blanc) : étoiles chaudes R &gt;= G &gt;= B, bleues B &gt;= G &gt;= R ; parcours une dizaine d'étoiles, toutes identiques = couleurs écrasées. </description>
+      <parameter id="expression">H_stars</parameter>
+      <parameter id="expression1">0.2*H_stars + 0.8*O_stars</parameter>
+      <parameter id="expression2">O_stars</parameter>
       <parameter id="expression3"></parameter>
       <parameter id="useSingleExpression" value="false"/>
       <parameter id="symbols"></parameter>
@@ -1051,7 +1051,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <table id="outputData" rows="0"/>
    </instance>
    <instance class="Script" version="256" id="SHO_42_CorrectMagentaStars_instance">
-      <description>LANCEMENT : GLISSE l'icône sur l'image : la correction s'applique DIRECTEMENT, sans dialogue, avec Amount 0,8 (en global, elle s'applique à l'image active). Pour changer l'Amount, double-clique l'icône et modifie scnrAmount (0 à 1). Le champ MD5 est vide : PixInsight exécute le script installé sans vérifier sa version. SCRIPT — CorrectMagentaStars (Script › Utilities). Sur l'image SHO finale avec étoiles. Amount 0,8 (défaut, 0 à 1). Le script inverse l'image, retire le vert avec SCNR (le magenta inversé), puis réinverse.  STANDARD DES ÉTOILES SANS RGB : couleurs non calibrées, on vise des étoiles PLAUSIBLES, proches du RGB : du bleu-blanc au jaune-orange, peu saturées, une gamme de couleurs, JAMAIS magenta (R et B nettement au-dessus de G) ni vertes (G au-dessus de R et B). CONTRÔLE à la sonde 15x15 sur le halo (le cœur est souvent blanc) : étoiles chaudes R &gt;= G &gt;= B, bleues B &gt;= G &gt;= R ; parcours une dizaine d'étoiles, toutes identiques = couleurs écrasées. AJUSTER : magenta -&gt; NB to RGB ou étoiles HOO synthétiques, sinon CorrectMagentaStars ; bleues verdâtres ou étoiles trop rouges -&gt; plus de Ha dans le vert (G = a·Ha + (1 − a)·OIII : monter a rend les bleues moins vertes et les rouges plus jaunes) ; étoiles chaudes trop jaunes ou verdâtres -&gt; moins de Ha dans le vert ; criardes -&gt; Color Boost plus bas ; toutes blanches -&gt; étirement plus doux ; anneau cœur rouge / halo cyan -&gt; réduction d'étoiles ou désaturation des halos. Étoiles vraiment calibrées : quelques poses RGB courtes (workflow RGB + SHO).</description>
+      <description>LANCEMENT : GLISSE l'icône sur l'image : la correction s'applique DIRECTEMENT, sans dialogue, avec Amount 0,8 (en global, elle s'applique à l'image active). Pour changer l'Amount, double-clique l'icône et modifie scnrAmount (0 à 1). Le champ MD5 est vide : PixInsight exécute le script installé sans vérifier sa version. SCRIPT — CorrectMagentaStars (Script › Utilities). Sur l'image SHO finale avec étoiles. Amount 0,8 (défaut, 0 à 1). Le script inverse l'image, retire le vert avec SCNR (le magenta inversé), puis réinverse.  STANDARD DES ÉTOILES SANS RGB : couleurs non calibrées, on vise des étoiles PLAUSIBLES, proches du RGB : du bleu-blanc au jaune-orange, peu saturées, une gamme de couleurs, JAMAIS magenta (R et B nettement au-dessus de G) ni vertes (G au-dessus de R et B). CONTRÔLE à la sonde 15x15 sur le halo (le cœur est souvent blanc) : étoiles chaudes R &gt;= G &gt;= B, bleues B &gt;= G &gt;= R ; parcours une dizaine d'étoiles, toutes identiques = couleurs écrasées. AJUSTER : magenta -&gt; NB to RGB ou étoiles HOO synthétiques, sinon CorrectMagentaStars ; bleues verdâtres ou étoiles trop rouges -&gt; plus de Ha dans le vert (G = a·H + (1 − a)·O : monter a rend les bleues moins vertes et les rouges plus jaunes) ; étoiles chaudes trop jaunes ou verdâtres -&gt; moins de Ha dans le vert ; criardes -&gt; Color Boost plus bas ; toutes blanches -&gt; étirement plus doux ; anneau cœur rouge / halo cyan -&gt; réduction d'étoiles ou désaturation des halos. Étoiles vraiment calibrées : quelques poses RGB courtes (workflow RGB + SHO).</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/CorrectMagentaStars/CorrectMagentaStars.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="2">
@@ -1126,7 +1126,7 @@ max(Img1,f1)</parameter>
    <icon id="SHO_01_WBPP" instance="SHO_01_WBPP_instance" xpos="30" ypos="30" workspace="Workspace01"/>
    <icon id="SHO_02_CC_auto" instance="SHO_02_CC_auto_instance" xpos="30" ypos="60" workspace="Workspace01"/>
    <icon id="SHO_03_DynamicCrop" instance="SHO_03_DynamicCrop_instance" xpos="30" ypos="90" workspace="Workspace01"/>
-   <icon id="SHO_04_Masters_Sii_Ha_Oiii" instance="SHO_04_Masters_Sii_Ha_Oiii_instance" xpos="30" ypos="120" workspace="Workspace01"/>
+   <icon id="SHO_04_Masters_S_H_O" instance="SHO_04_Masters_S_H_O_instance" xpos="30" ypos="120" workspace="Workspace01"/>
    <icon id="SHO_05_SPFC_SII" instance="SHO_05_SPFC_SII_instance" xpos="30" ypos="150" workspace="Workspace01"/>
    <icon id="SHO_06_SPFC_Ha" instance="SHO_06_SPFC_Ha_instance" xpos="30" ypos="180" workspace="Workspace01"/>
    <icon id="SHO_07_SPFC_OIII" instance="SHO_07_SPFC_OIII_instance" xpos="30" ypos="210" workspace="Workspace01"/>
@@ -1135,16 +1135,16 @@ max(Img1,f1)</parameter>
    <icon id="SHO_10_MGC_MARS_OIII" instance="SHO_10_MGC_MARS_OIII_instance" xpos="30" ypos="300" workspace="Workspace01"/>
    <icon id="SHO_11_GradientCorrection" instance="SHO_11_GradientCorrection_instance" xpos="30" ypos="330" workspace="Workspace01"/>
    <icon id="SHO_12_DBE" instance="SHO_12_DBE_instance" xpos="30" ypos="360" workspace="Workspace01"/>
-   <icon id="SHO_13_LinearFit_ref_Ha" instance="SHO_13_LinearFit_ref_Ha_instance" xpos="30" ypos="390" workspace="Workspace01"/>
+   <icon id="SHO_13_LinearFit_ref_H" instance="SHO_13_LinearFit_ref_H_instance" xpos="30" ypos="390" workspace="Workspace01"/>
    <icon id="SHO_14_Combinaison_SHO" instance="SHO_14_Combinaison_SHO_instance" xpos="30" ypos="420" workspace="Workspace01"/>
    <icon id="SHO_15_BXT_NB" instance="SHO_15_BXT_NB_instance" xpos="330" ypos="30" workspace="Workspace01"/>
    <icon id="SHO_16_SXT_lineaire" instance="SHO_16_SXT_lineaire_instance" xpos="330" ypos="60" workspace="Workspace01"/>
-   <icon id="SHO_17_Extraire_Sii" instance="SHO_17_Extraire_Sii_instance" xpos="330" ypos="90" workspace="Workspace01"/>
-   <icon id="SHO_18_Extraire_Ha" instance="SHO_18_Extraire_Ha_instance" xpos="330" ypos="120" workspace="Workspace01"/>
-   <icon id="SHO_19_Extraire_Oiii" instance="SHO_19_Extraire_Oiii_instance" xpos="330" ypos="150" workspace="Workspace01"/>
-   <icon id="SHO_20_Extraire_Sii_stars" instance="SHO_20_Extraire_Sii_stars_instance" xpos="330" ypos="180" workspace="Workspace01"/>
-   <icon id="SHO_21_Extraire_Ha_stars" instance="SHO_21_Extraire_Ha_stars_instance" xpos="330" ypos="210" workspace="Workspace01"/>
-   <icon id="SHO_22_Extraire_Oiii_stars" instance="SHO_22_Extraire_Oiii_stars_instance" xpos="330" ypos="240" workspace="Workspace01"/>
+   <icon id="SHO_17_Extraire_S" instance="SHO_17_Extraire_S_instance" xpos="330" ypos="90" workspace="Workspace01"/>
+   <icon id="SHO_18_Extraire_H" instance="SHO_18_Extraire_H_instance" xpos="330" ypos="120" workspace="Workspace01"/>
+   <icon id="SHO_19_Extraire_O" instance="SHO_19_Extraire_O_instance" xpos="330" ypos="150" workspace="Workspace01"/>
+   <icon id="SHO_20_Extraire_S_stars" instance="SHO_20_Extraire_S_stars_instance" xpos="330" ypos="180" workspace="Workspace01"/>
+   <icon id="SHO_21_Extraire_H_stars" instance="SHO_21_Extraire_H_stars_instance" xpos="330" ypos="210" workspace="Workspace01"/>
+   <icon id="SHO_22_Extraire_O_stars" instance="SHO_22_Extraire_O_stars_instance" xpos="330" ypos="240" workspace="Workspace01"/>
    <icon id="SHO_23_NXT_Ha" instance="SHO_23_NXT_Ha_instance" xpos="330" ypos="270" workspace="Workspace01"/>
    <icon id="SHO_24_NXT_OIII_SII" instance="SHO_24_NXT_OIII_SII_instance" xpos="330" ypos="300" workspace="Workspace01"/>
    <icon id="SHO_25_GHS_1_premier" instance="SHO_25_GHS_1_premier_instance" xpos="330" ypos="330" workspace="Workspace01"/>

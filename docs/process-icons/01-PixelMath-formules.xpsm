@@ -6,9 +6,9 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
 <xpsm version="1.0" xmlns="http://www.pixinsight.com/xpsm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.pixinsight.com/xpsm http://pixinsight.com/xpsm/xpsm-1.0.xsd">
 <!-- Formules PixelMath -->
    <instance class="PixelMath" version="256" id="Foraxx_SHO_instance">
-      <parameter id="expression">(Oiii^~Oiii)*Sii + ~(Oiii^~Oiii)*Ha</parameter>
-      <parameter id="expression1">((Oiii*Ha)^~(Oiii*Ha))*Ha + ~((Oiii*Ha)^~(Oiii*Ha))*Oiii</parameter>
-      <parameter id="expression2">Oiii</parameter>
+      <parameter id="expression">(O^~O)*S + ~(O^~O)*H</parameter>
+      <parameter id="expression1">((O*H)^~(O*H))*H + ~((O*H)^~(O*H))*O</parameter>
+      <parameter id="expression2">O</parameter>
       <parameter id="expression3"></parameter>
       <parameter id="useSingleExpression" value="false"/>
       <parameter id="symbols"></parameter>
@@ -35,9 +35,9 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <table id="outputData" rows="0"/>
    </instance>
    <instance class="PixelMath" version="256" id="Foraxx_HOO_instance">
-      <parameter id="expression">Ha</parameter>
-      <parameter id="expression1">((Oiii*Ha)^~(Oiii*Ha))*Ha + ~((Oiii*Ha)^~(Oiii*Ha))*Oiii</parameter>
-      <parameter id="expression2">Oiii</parameter>
+      <parameter id="expression">H</parameter>
+      <parameter id="expression1">((O*H)^~(O*H))*H + ~((O*H)^~(O*H))*O</parameter>
+      <parameter id="expression2">O</parameter>
       <parameter id="expression3"></parameter>
       <parameter id="useSingleExpression" value="false"/>
       <parameter id="symbols"></parameter>
@@ -64,9 +64,9 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <table id="outputData" rows="0"/>
    </instance>
    <instance class="PixelMath" version="256" id="HOO_simple_instance">
-      <parameter id="expression">Ha</parameter>
-      <parameter id="expression1">Oiii</parameter>
-      <parameter id="expression2">Oiii</parameter>
+      <parameter id="expression">H</parameter>
+      <parameter id="expression1">O</parameter>
+      <parameter id="expression2">O</parameter>
       <parameter id="expression3"></parameter>
       <parameter id="useSingleExpression" value="false"/>
       <parameter id="symbols"></parameter>
@@ -93,9 +93,9 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <table id="outputData" rows="0"/>
    </instance>
    <instance class="PixelMath" version="256" id="HOO_Hubble_instance">
-      <parameter id="expression">Ha</parameter>
-      <parameter id="expression1">0.6*Ha + 0.4*Oiii</parameter>
-      <parameter id="expression2">Oiii</parameter>
+      <parameter id="expression">H</parameter>
+      <parameter id="expression1">0.6*H + 0.4*O</parameter>
+      <parameter id="expression2">O</parameter>
       <parameter id="expression3"></parameter>
       <parameter id="useSingleExpression" value="false"/>
       <parameter id="symbols"></parameter>
@@ -142,7 +142,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="truncateUpper" value="1"/>
       <parameter id="createNewImage" value="true"/>
       <parameter id="showNewImage" value="true"/>
-      <parameter id="newImageId">Ha</parameter>
+      <parameter id="newImageId">H</parameter>
       <parameter id="newImageWidth" value="0"/>
       <parameter id="newImageHeight" value="0"/>
       <parameter id="newImageAlpha" value="false"/>
@@ -171,7 +171,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="truncateUpper" value="1"/>
       <parameter id="createNewImage" value="true"/>
       <parameter id="showNewImage" value="true"/>
-      <parameter id="newImageId">Oiii</parameter>
+      <parameter id="newImageId">O</parameter>
       <parameter id="newImageWidth" value="0"/>
       <parameter id="newImageHeight" value="0"/>
       <parameter id="newImageAlpha" value="false"/>
@@ -181,7 +181,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
    </instance>
    <instance class="PixelMath" version="256" id="Continuum_Ha_instance">
       <parameter id="expression">k = 0.9;
-Ha - k*(R - med(R))</parameter>
+H - k*(R - med(R))</parameter>
       <parameter id="expression1"></parameter>
       <parameter id="expression2"></parameter>
       <parameter id="expression3"></parameter>
@@ -201,7 +201,7 @@ Ha - k*(R - med(R))</parameter>
       <parameter id="truncateUpper" value="1"/>
       <parameter id="createNewImage" value="true"/>
       <parameter id="showNewImage" value="true"/>
-      <parameter id="newImageId">Ha_cs</parameter>
+      <parameter id="newImageId">H_cs</parameter>
       <parameter id="newImageWidth" value="0"/>
       <parameter id="newImageHeight" value="0"/>
       <parameter id="newImageAlpha" value="false"/>
@@ -211,7 +211,7 @@ Ha - k*(R - med(R))</parameter>
    </instance>
    <instance class="PixelMath" version="256" id="Ha_dans_R_instance">
       <parameter id="expression">w = 1.0;
-R + w*Ha_cs</parameter>
+R + w*H_cs</parameter>
       <parameter id="expression1"></parameter>
       <parameter id="expression2"></parameter>
       <parameter id="expression3"></parameter>
@@ -231,7 +231,7 @@ R + w*Ha_cs</parameter>
       <parameter id="truncateUpper" value="1"/>
       <parameter id="createNewImage" value="true"/>
       <parameter id="showNewImage" value="true"/>
-      <parameter id="newImageId">R_Ha</parameter>
+      <parameter id="newImageId">R_H</parameter>
       <parameter id="newImageWidth" value="0"/>
       <parameter id="newImageHeight" value="0"/>
       <parameter id="newImageAlpha" value="false"/>
@@ -269,9 +269,9 @@ R + w*Ha_cs</parameter>
       <table id="outputData" rows="0"/>
    </instance>
    <instance class="PixelMath" version="256" id="Etoiles_HOO_synth_instance">
-      <parameter id="expression">Ha_stars</parameter>
-      <parameter id="expression1">0.2*Ha_stars + 0.8*Oiii_stars</parameter>
-      <parameter id="expression2">Oiii_stars</parameter>
+      <parameter id="expression">H_stars</parameter>
+      <parameter id="expression1">0.2*H_stars + 0.8*O_stars</parameter>
+      <parameter id="expression2">O_stars</parameter>
       <parameter id="expression3"></parameter>
       <parameter id="useSingleExpression" value="false"/>
       <parameter id="symbols"></parameter>

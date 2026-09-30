@@ -260,7 +260,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="showGradientModel" value="true"/>
    </instance>
    <instance class="MultiscaleGradientCorrection" version="1" id="LHA_10_MGC_MARS_Ha_instance">
-      <description>MultiscaleGradientCorrection pour le master Ha : filtre MARS Gray = Ha (MARS DR2, juin 2026 : bandes Ha et OIII, couverture narrowband jusqu'à +75° de déclinaison ; valeur du paramètre relevée dans un outil qui pilote MGC sous PixInsight 1.9.5, texte du menu non vu dans l'interface). Applique juste après l'icône SPFC_Ha, sur le même master linéaire et résolu. Autres réglages identiques à MGC_MARS : Gradient scale 1024 (512 ou 256 si un gradient reste dans les coins), Structure separation 3, Model smoothness 1,0, Show gradient model coché (le modèle doit être lisse, sans structure de la nébuleuse). Base MARS DR2 à charger dans les préférences de MGC (clé à molette › Add › fichier .xmars). Hors couverture MARS : GradientCorrection ou DBE. SII : pas de bande SII dans MARS, utilise GradientCorrection ou DBE.</description>
+      <description>MultiscaleGradientCorrection pour le master H : filtre MARS Gray = Ha (MARS DR2, juin 2026 : bandes Ha et OIII, couverture narrowband jusqu'à +75° de déclinaison ; valeur du paramètre relevée dans un outil qui pilote MGC sous PixInsight 1.9.5, texte du menu non vu dans l'interface). Applique juste après l'icône SPFC_Ha, sur le même master linéaire et résolu. Autres réglages identiques à MGC_MARS : Gradient scale 1024 (512 ou 256 si un gradient reste dans les coins), Structure separation 3, Model smoothness 1,0, Show gradient model coché (le modèle doit être lisse, sans structure de la nébuleuse). Base MARS DR2 à charger dans les préférences de MGC (clé à molette › Add › fichier .xmars). Hors couverture MARS : GradientCorrection ou DBE. SII : pas de bande SII dans MARS, utilise GradientCorrection ou DBE.</description>
       <parameter id="command"></parameter>
       <parameter id="useMARSDatabase" value="true"/>
       <parameter id="grayMARSFilter">Ha</parameter>
@@ -491,9 +491,9 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="overlap" value="0.20"/>
    </instance>
    <instance class="PixelMath" version="256" id="LHA_18_Continuum_Ha_instance">
-      <description>Soustraction du continuum : Ha_cs = Ha - k*(R - med(R)). Vues 'Ha' et 'R' (master rouge linéaire, gradient retiré). Ajuste k (0,8 à 1) jusqu'à faire disparaître étoiles et disque galactique. med(R) garde le niveau du fond. Limite : résidus sur les étoiles (PSF différentes). CONTRÔLE : dans Ha_cs, étoiles et disque galactique ont disparu, il ne reste que les taches HII sur un fond sombre proche de 0. Continuum mal soustrait = cœur et halo de la galaxie rougis et étoiles à halo rouge dans l'image finale : augmente k. NXT sur Ha_cs avant injection si son fond est granuleux.</description>
+      <description>Soustraction du continuum : H_cs = H - k*(R - med(R)). Vues 'H' et 'R' (master rouge linéaire, gradient retiré). Ajuste k (0,8 à 1) jusqu'à faire disparaître étoiles et disque galactique. med(R) garde le niveau du fond. Limite : résidus sur les étoiles (PSF différentes). CONTRÔLE : dans H_cs, étoiles et disque galactique ont disparu, il ne reste que les taches HII sur un fond sombre proche de 0. Continuum mal soustrait = cœur et halo de la galaxie rougis et étoiles à halo rouge dans l'image finale : augmente k. NXT sur H_cs avant injection si son fond est granuleux.</description>
       <parameter id="expression">k = 0.9;
-Ha - k*(R - med(R))</parameter>
+H - k*(R - med(R))</parameter>
       <parameter id="expression1"></parameter>
       <parameter id="expression2"></parameter>
       <parameter id="expression3"></parameter>
@@ -513,7 +513,7 @@ Ha - k*(R - med(R))</parameter>
       <parameter id="truncateUpper" value="1"/>
       <parameter id="createNewImage" value="true"/>
       <parameter id="showNewImage" value="true"/>
-      <parameter id="newImageId">Ha_cs</parameter>
+      <parameter id="newImageId">H_cs</parameter>
       <parameter id="newImageWidth" value="0"/>
       <parameter id="newImageHeight" value="0"/>
       <parameter id="newImageAlpha" value="false"/>
@@ -522,7 +522,7 @@ Ha - k*(R - med(R))</parameter>
       <table id="outputData" rows="0"/>
    </instance>
    <instance class="Script" version="256" id="LHA_19_Continuum_auto_instance">
-      <description>LANCEMENT : double-clique l'icône, puis clique sur le rond « Apply Global » (ou glisse-la sur une image) : le dialogue du script s'ouvre. Préréglé pour ce workflow : images avec étoiles (Starry), sortie linéaire seule (Output Linear Image Only, pour injecter Ha_cs en linéaire), sans réduction de bruit intégrée (NXT se fait à part). SOMME DE CONTRÔLE : l'icône contient l'empreinte MD5 de la version actuelle du script ; après une mise à jour du script, PixInsight bloque l'icône : double-clique-la, efface le champ MD5 et réenregistre-la. OPTION — Automatic Continuum Subtraction (SetiAstro, script) : choisis Ha et R ; le script calcule le coefficient. Contrôle que les étoiles disparaissent de Ha_cs.</description>
+      <description>LANCEMENT : double-clique l'icône, puis clique sur le rond « Apply Global » (ou glisse-la sur une image) : le dialogue du script s'ouvre. Préréglé pour ce workflow : images avec étoiles (Starry), sortie linéaire seule (Output Linear Image Only, pour injecter H_cs en linéaire), sans réduction de bruit intégrée (NXT se fait à part). SOMME DE CONTRÔLE : l'icône contient l'empreinte MD5 de la version actuelle du script ; après une mise à jour du script, PixInsight bloque l'icône : double-clique-la, efface le champ MD5 et réenregistre-la. OPTION — Automatic Continuum Subtraction (SetiAstro, script) : choisis H et R ; le script calcule le coefficient. Contrôle que les étoiles disparaissent de H_cs.</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/ContinuumSubtraction.js</parameter>
       <parameter id="md5sum">e795144823fb111101f269c22eaaf8cf</parameter>
       <table id="parameters" rows="5">
@@ -550,9 +550,9 @@ Ha - k*(R - med(R))</parameter>
       <parameter id="information"></parameter>
    </instance>
    <instance class="PixelMath" version="256" id="LHA_20_Ha_dans_RGB_instance">
-      <description>Injection de Ha_cs dans le rouge : applique sur l'image RGB (linéaire, calibrée) ; R' = R + w*Ha_cs, G et B inchangés. w de 0,5 à 2 selon l'effet voulu. Garde une copie du RGB avant injection pour comparer. RENDU VISÉ : identique au LRGB partout, sauf les régions HII, rose à rouge rosé (Hα + Hβ), plus visibles mais ponctuelles ; cœur, bras, étoiles et fond inchangés. CONTRÔLE à la sonde 15x15 : région HII R nettement au-dessus de G et B avec B &gt;= G ; cœur R &gt;= G &gt;&gt; B comme en LRGB ; fond R = G = B. Taches HII rouge vif : baisse w. Régions HII invisibles : monte w ou injecte aussi dans L. Fond rouge : bruit de Ha_cs injecté. Cœur ou étoiles rougis : continuum mal soustrait (icône précédente). ÉTOILES : l'injection se fait avant SXT, donc les étoiles gardées viennent du RGB injecté ; tout résidu d'étoile dans Ha_cs passe dans leur rouge. Défauts : étoiles rougies ou à halo rouge (k trop faible), anneaux clairs ou sombres (PSF différentes entre Ha et R, inévitable en partie), étoiles grossies (w trop fort). Standard : comme en LRGB, et pas plus rouges que sur la copie avant injection. OPTION la plus propre : SXT sur une copie du RGB AVANT injection, garde ces étoiles-là, et injecte le Ha seulement dans l'image sans étoiles.</description>
+      <description>Injection de H_cs dans le rouge : applique sur l'image RGB (linéaire, calibrée) ; R' = R + w*H_cs, G et B inchangés. w de 0,5 à 2 selon l'effet voulu. Garde une copie du RGB avant injection pour comparer. RENDU VISÉ : identique au LRGB partout, sauf les régions HII, rose à rouge rosé (Hα + Hβ), plus visibles mais ponctuelles ; cœur, bras, étoiles et fond inchangés. CONTRÔLE à la sonde 15x15 : région HII R nettement au-dessus de G et B avec B &gt;= G ; cœur R &gt;= G &gt;&gt; B comme en LRGB ; fond R = G = B. Taches HII rouge vif : baisse w. Régions HII invisibles : monte w ou injecte aussi dans L. Fond rouge : bruit de H_cs injecté. Cœur ou étoiles rougis : continuum mal soustrait (icône précédente). ÉTOILES : l'injection se fait avant SXT, donc les étoiles gardées viennent du RGB injecté ; tout résidu d'étoile dans H_cs passe dans leur rouge. Défauts : étoiles rougies ou à halo rouge (k trop faible), anneaux clairs ou sombres (PSF différentes entre Ha et R, inévitable en partie), étoiles grossies (w trop fort). Standard : comme en LRGB, et pas plus rouges que sur la copie avant injection. OPTION la plus propre : SXT sur une copie du RGB AVANT injection, garde ces étoiles-là, et injecte le Ha seulement dans l'image sans étoiles.</description>
       <parameter id="expression">w = 1.0;
-$T[0] + w*Ha_cs</parameter>
+$T[0] + w*H_cs</parameter>
       <parameter id="expression1">$T[1]</parameter>
       <parameter id="expression2">$T[2]</parameter>
       <parameter id="expression3"></parameter>
@@ -581,9 +581,9 @@ $T[0] + w*Ha_cs</parameter>
       <table id="outputData" rows="0"/>
    </instance>
    <instance class="PixelMath" version="256" id="LHA_21_Ha_dans_L_instance">
-      <description>Option : injection de Ha dans la luminance, L' = max(L, a*Ha_cs). Vues 'L' et 'Ha_cs'. Rend les régions HII plus nettes. Renomme ensuite 'L_Ha' en 'L' pour la suite. Régions HII nettes mais couleurs délavées après LRGBCombination : a trop fort, baisse-le ou fais un mélange léger.</description>
+      <description>Option : injection de Ha dans la luminance, L' = max(L, a*H_cs). Vues 'L' et 'H_cs'. Rend les régions HII plus nettes. Renomme ensuite 'L_H' en 'L' pour la suite. Régions HII nettes mais couleurs délavées après LRGBCombination : a trop fort, baisse-le ou fais un mélange léger.</description>
       <parameter id="expression">a = 1.0;
-max(L, Ha_cs*a)</parameter>
+max(L, H_cs*a)</parameter>
       <parameter id="expression1"></parameter>
       <parameter id="expression2"></parameter>
       <parameter id="expression3"></parameter>
@@ -603,7 +603,7 @@ max(L, Ha_cs*a)</parameter>
       <parameter id="truncateUpper" value="1"/>
       <parameter id="createNewImage" value="true"/>
       <parameter id="showNewImage" value="true"/>
-      <parameter id="newImageId">L_Ha</parameter>
+      <parameter id="newImageId">L_H</parameter>
       <parameter id="newImageWidth" value="0"/>
       <parameter id="newImageHeight" value="0"/>
       <parameter id="newImageAlpha" value="false"/>

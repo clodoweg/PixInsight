@@ -14,19 +14,19 @@ Les fichiers n'ont pas été testés dans PixInsight avant publication : ils ont
 
 ## 01-PixelMath-formules.xpsm
 
-Les formules supposent des images nommées comme indiqué (renomme tes vues avec le bon identifiant avant de les appliquer).
+Les formules supposent des images nommées comme indiqué (renomme tes vues avec le bon identifiant avant de les appliquer). Masters narrowband : `H` (Hα), `O` (OIII), `S` (SII). Les noms des filtres MARS (`Ha`, `OIII`) et des icônes SPFC restent ceux des filtres.
 
 | Icône | Images attendues | Résultat |
 |---|---|---|
-| `Foraxx_SHO` | `Sii`, `Ha`, `Oiii` (étirées, sans étoiles) | Nouvelle image RGB `SHO_Foraxx` |
-| `Foraxx_HOO` | `Ha`, `Oiii` | Nouvelle image RGB `HOO_Foraxx` |
-| `HOO_simple` | `Ha`, `Oiii` | R = Ha, G = OIII, B = OIII |
-| `HOO_Hubble` | `Ha`, `Oiii` | G = 0,6·Ha + 0,4·OIII (Galactic Hunter) |
-| `DualBand_Ha` / `DualBand_OIII` | À appliquer sur l'image couleur dual-band | Nouvelles images mono `Ha` et `Oiii` |
-| `Continuum_Ha` | `Ha`, `R` | `Ha_cs` ; ajuste `k = 0.9` dans la formule |
-| `Ha_dans_R` | `R`, `Ha_cs` | `R_Ha` ; ajuste `w = 1.0` |
+| `Foraxx_SHO` | `S`, `H`, `O` (étirées, sans étoiles) | Nouvelle image RGB `SHO_Foraxx` |
+| `Foraxx_HOO` | `H`, `O` | Nouvelle image RGB `HOO_Foraxx` |
+| `HOO_simple` | `H`, `O` | R = H, G = O, B = O |
+| `HOO_Hubble` | `H`, `O` | G = 0,6·H + 0,4·O (Galactic Hunter) |
+| `DualBand_Ha` / `DualBand_OIII` | À appliquer sur l'image couleur dual-band | Nouvelles images mono `H` et `O` |
+| `Continuum_Ha` | `H`, `R` | `H_cs` ; ajuste `k = 0.9` dans la formule |
+| `Ha_dans_R` | `R`, `H_cs` | `R_H` ; ajuste `w = 1.0` |
 | `Etoiles_screen` | `starless`, `stars` (étirées) | Nouvelle image `Final` |
-| `Etoiles_HOO_synth` | `Ha_stars`, `Oiii_stars` (linéaires) | Étoiles RGB synthétiques, G = 20 % Ha + 80 % OIII |
+| `Etoiles_HOO_synth` | `H_stars`, `O_stars` (linéaires) | Étoiles RGB synthétiques, G = 20 % H + 80 % O |
 | `Blanshan_Transfer` / `_Halo` / `_Star` | Vue sans étoiles nommée `starless` ; appliquer sur l'image avec étoiles | Version 2, identique à la page (S = 0,15) |
 | `Blanshan_Transfer_V3` / `_Halo_V3` / `_Star_V3` | Idem | Version 3 d'origine, avec les commentaires de Bill Blanshan (S = 0,20 ; Star en mode doux M = 3) |
 
@@ -50,7 +50,7 @@ Les formules supposent des images nommées comme indiqué (renomme tes vues avec
 | Icône | Réglages |
 |---|---|
 | `LRGB_ajout_L` | Seul L activé (vue nommée `L`), Lightness 0,5, Saturation 0,40, réduction du bruit de chrominance |
-| `LinearFit_ref_Ha` | Référence : vue nommée `Ha` |
+| `LinearFit_ref_H` | Référence : vue nommée `H` |
 | `SCNR_vert` | Green, Average Neutral, 1,0 |
 | `SCNR_SHO_partiel` | Green, Average Neutral, 0,70 |
 | `LHE_150` | Kernel radius 150, Contrast limit 2,0, Amount 0,35, noyau circulaire |

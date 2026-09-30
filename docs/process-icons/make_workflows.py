@@ -47,11 +47,11 @@ SCRIPTS = {
     'Halo_B_Gon': ('$PXI_SRCDIR/scripts/Halo-B-Gon.js', 'b9427e718e2b9760704c8c738e0893b7', [],
              L_GLOBAL + "Ce script ne lit pas de paramètres d'icône : les réglages se font dans son dialogue. "),
     'NB_to_RGB_Stars': ('$PXI_SRCDIR/scripts/NBtoRGBStars.js', '0fae2f23d6f23037fb118fd1ef749592', [],
-             L_DRAG + "La version 1.6 du script ne relit pas les paramètres d'icône : choisis les vues Ha, OIII (et SII) et les réglages dans son dialogue. "),
+             L_DRAG + "La version 1.6 du script ne relit pas les paramètres d'icône : choisis les vues H, O (et S) et les réglages dans son dialogue. "),
     'Continuum_auto': ('$PXI_SRCDIR/scripts/ContinuumSubtraction.js', 'e795144823fb111101f269c22eaaf8cf',
              [('applyNoiseReduction', 'false'), ('noiseReductionMethod', 'NoiseXterminator'), ('starrySelected', 'true'),
               ('outputLinearImageOnly', 'true'), ('aiModel', '2.0.0')],
-             L_GLOBAL + "Préréglé pour ce workflow : images avec étoiles (Starry), sortie linéaire seule (Output Linear Image Only, pour injecter Ha_cs en linéaire), "
+             L_GLOBAL + "Préréglé pour ce workflow : images avec étoiles (Starry), sortie linéaire seule (Output Linear Image Only, pour injecter H_cs en linéaire), "
              "sans réduction de bruit intégrée (NXT se fait à part). "),
     'Perfect_Palette_Picker': ('$PXI_SRCDIR/scripts/PerfectPalettePicker.js', '0ffff6a0fb869acfc4f9ee3ad81b6338', [],
              L_GLOBAL + "Ce script ne lit pas de paramètres d'icône : choisis les vues et Linear Input Data dans son dialogue. "),
@@ -164,7 +164,7 @@ T_HALO = "ÉTAPE MANUELLE — Halo-B-Gon (SetiAstro, script) sur l'image d'étoi
 T_CMS = ("ÉTAPE MANUELLE — CorrectMagentaStars (Script › Utilities). Sur l'image SHO finale avec étoiles. Amount 0,8 (défaut, 0 à 1). "
          "Le script inverse l'image, retire le vert avec SCNR (le magenta inversé), puis réinverse.")
 T_PPP = ("EXPLORER — Perfect Palette Picker (SetiAstro, script v1.3, Script › SetiAstro › Perfect Palette Picker). Icône-note : le chemin du script dépend de ton installation. "
-         "Choisis les vues Ha, OIII et SII (sans étoiles de préférence ; sans SII, Ha le remplace), ou jusqu'à deux images couleur dual-band (HaO3, S2O3). "
+         "Choisis les vues H, O et S (sans étoiles de préférence ; sans S, H le remplace), ou jusqu'à deux images couleur dual-band (HaO3, S2O3). "
          "Linear Input Data coché par défaut : chaque canal est étiré à une médiane de 0,25 ; décoche si tes images sont déjà étirées. Create Palettes : 16 vignettes "
          "(HOO, HOS, HSO, HSS, OHH, OHS, OSH, OSS, SHH, SHO, SOH, SOO, Realistic1, Realistic2, Foraxx, Dynamic Inverse). Clique une vignette pour générer la palette en pleine taille. "
          "Sert à choisir : équilibre ensuite le résultat (NarrowbandNormalization, courbes) et vérifie les couleurs.")
@@ -237,9 +237,9 @@ def gradient_block(kind='rgb'):
     b = [(M.spfc(n, **opts[n]), D_SPFC[n] + D_SPFC_COMMUN) for n in names]
     b += [(M.mgc('MGC_MARS'), D_MGC)]
     if kind in ('lha', 'sho', 'hoo'):
-        b += [(M.mgc('MGC_MARS_Ha', gray='Ha'), D_MGC_NB % ('Ha', 'Ha', 'SPFC_Ha'))]
+        b += [(M.mgc('MGC_MARS_Ha', gray='Ha'), D_MGC_NB % ('H', 'Ha', 'SPFC_Ha'))]
     if kind in ('sho', 'hoo'):
-        b += [(M.mgc('MGC_MARS_OIII', gray='OIII'), D_MGC_NB % ('OIII', 'OIII', 'SPFC_OIII'))]
+        b += [(M.mgc('MGC_MARS_OIII', gray='OIII'), D_MGC_NB % ('O', 'OIII', 'SPFC_OIII'))]
     b += [(M.instance('GradientCorrection', 'GradientCorrection'), T_GC),
           (M.dbe('DBE'), D_DBE)]
     return b
@@ -331,22 +331,22 @@ lhargb = pre_block() + [rgb_comb(), (note('ImageSolver', T_SOLVER), '')] + gradi
     spcc(),
     (M.bxt('BXT_RGB', False, 0.25, 0.0, 0.50), "BlurXTerminator complet sur RGB, après SPCC : Sharpen Stars 0,25, Halos 0, Nonstellar 0,50."),
     (M.bxt('BXT_L_Ha', False, 0.25, 0.0, 0.80), "BlurXTerminator complet sur L et sur le master Ha (mono, linéaires) : Sharpen Stars 0,25, Halos 0, Nonstellar 0,80. Déconvolue AVANT tout mélange (soustraction du continuum, injection)."),
-    (pm('Continuum_Ha', 'k = 0.9;\nHa - k*(R - med(R))', symbols='k', new_image=True, new_id='Ha_cs', space='Gray'),
-     "Soustraction du continuum : Ha_cs = Ha - k*(R - med(R)). Vues 'Ha' et 'R' (master rouge linéaire, gradient retiré). Ajuste k (0,8 à 1) jusqu'à faire disparaître étoiles et disque galactique. "
+    (pm('Continuum_Ha', 'k = 0.9;\nH - k*(R - med(R))', symbols='k', new_image=True, new_id='H_cs', space='Gray'),
+     "Soustraction du continuum : H_cs = H - k*(R - med(R)). Vues 'H' et 'R' (master rouge linéaire, gradient retiré). Ajuste k (0,8 à 1) jusqu'à faire disparaître étoiles et disque galactique. "
      "med(R) garde le niveau du fond. Limite : résidus sur les étoiles (PSF différentes). "
-     "CONTRÔLE : dans Ha_cs, étoiles et disque galactique ont disparu, il ne reste que les taches HII sur un fond sombre proche de 0. "
-     "Continuum mal soustrait = cœur et halo de la galaxie rougis et étoiles à halo rouge dans l'image finale : augmente k. NXT sur Ha_cs avant injection si son fond est granuleux."),
-    (note('Continuum_auto', "OPTION — Automatic Continuum Subtraction (SetiAstro, script) : choisis Ha et R ; le script calcule le coefficient. Contrôle que les étoiles disparaissent de Ha_cs."), ''),
-    (pm('Ha_dans_RGB', 'w = 1.0;\n$T[0] + w*Ha_cs', '$T[1]', '$T[2]', symbols='w'),
-     "Injection de Ha_cs dans le rouge : applique sur l'image RGB (linéaire, calibrée) ; R' = R + w*Ha_cs, G et B inchangés. w de 0,5 à 2 selon l'effet voulu. "
+     "CONTRÔLE : dans H_cs, étoiles et disque galactique ont disparu, il ne reste que les taches HII sur un fond sombre proche de 0. "
+     "Continuum mal soustrait = cœur et halo de la galaxie rougis et étoiles à halo rouge dans l'image finale : augmente k. NXT sur H_cs avant injection si son fond est granuleux."),
+    (note('Continuum_auto', "OPTION — Automatic Continuum Subtraction (SetiAstro, script) : choisis H et R ; le script calcule le coefficient. Contrôle que les étoiles disparaissent de H_cs."), ''),
+    (pm('Ha_dans_RGB', 'w = 1.0;\n$T[0] + w*H_cs', '$T[1]', '$T[2]', symbols='w'),
+     "Injection de H_cs dans le rouge : applique sur l'image RGB (linéaire, calibrée) ; R' = R + w*H_cs, G et B inchangés. w de 0,5 à 2 selon l'effet voulu. "
      "Garde une copie du RGB avant injection pour comparer. RENDU VISÉ : identique au LRGB partout, sauf les régions HII, rose à rouge rosé (Hα + Hβ), plus visibles mais ponctuelles ; cœur, bras, étoiles et fond inchangés. "
      "CONTRÔLE à la sonde 15x15 : région HII R nettement au-dessus de G et B avec B >= G ; cœur R >= G >> B comme en LRGB ; fond R = G = B. "
-     "Taches HII rouge vif : baisse w. Régions HII invisibles : monte w ou injecte aussi dans L. Fond rouge : bruit de Ha_cs injecté. Cœur ou étoiles rougis : continuum mal soustrait (icône précédente). "
-     "ÉTOILES : l'injection se fait avant SXT, donc les étoiles gardées viennent du RGB injecté ; tout résidu d'étoile dans Ha_cs passe dans leur rouge. Défauts : étoiles rougies ou à halo rouge (k trop faible), "
+     "Taches HII rouge vif : baisse w. Régions HII invisibles : monte w ou injecte aussi dans L. Fond rouge : bruit de H_cs injecté. Cœur ou étoiles rougis : continuum mal soustrait (icône précédente). "
+     "ÉTOILES : l'injection se fait avant SXT, donc les étoiles gardées viennent du RGB injecté ; tout résidu d'étoile dans H_cs passe dans leur rouge. Défauts : étoiles rougies ou à halo rouge (k trop faible), "
      "anneaux clairs ou sombres (PSF différentes entre Ha et R, inévitable en partie), étoiles grossies (w trop fort). Standard : comme en LRGB, et pas plus rouges que sur la copie avant injection. "
      "OPTION la plus propre : SXT sur une copie du RGB AVANT injection, garde ces étoiles-là, et injecte le Ha seulement dans l'image sans étoiles."),
-    (pm('Ha_dans_L', 'a = 1.0;\nmax(L, Ha_cs*a)', symbols='a', new_image=True, new_id='L_Ha', space='Gray'),
-     "Option : injection de Ha dans la luminance, L' = max(L, a*Ha_cs). Vues 'L' et 'Ha_cs'. Rend les régions HII plus nettes. Renomme ensuite 'L_Ha' en 'L' pour la suite. "
+    (pm('Ha_dans_L', 'a = 1.0;\nmax(L, H_cs*a)', symbols='a', new_image=True, new_id='L_H', space='Gray'),
+     "Option : injection de Ha dans la luminance, L' = max(L, a*H_cs). Vues 'L' et 'H_cs'. Rend les régions HII plus nettes. Renomme ensuite 'L_H' en 'L' pour la suite. "
      "Régions HII nettes mais couleurs délavées après LRGBCombination : a trop fort, baisse-le ou fais un mélange léger."),
     (note('NBRGBCombination', "ALTERNATIVE — NBRGBCombination (Script › Utilities) : image RGB et sa bande passante (~100 nm pour un filtre R mono), image Ha dans le canal R avec la bande passante de ton filtre (3, 5, 7 nm), "
           "Scale 1,2 par défaut (3 à 5 pour un Ha faible). Compare avec les aperçus RGB et NBRGB."), ''),
@@ -367,9 +367,9 @@ lhargb = pre_block() + [rgb_comb(), (note('ImageSolver', T_SOLVER), '')] + gradi
 def nb_masters(chans):
     names = ' et '.join(chans)
     return [(note('Masters_' + '_'.join(chans), "Masters %s : même recadrage (icône DynamicCrop) et retrait du gradient sur CHAQUE master séparément (icônes suivantes). OIII est le plus sensible à la Lune : contrôle bien son modèle. "
-                  "Nomme les vues exactement 'Sii', 'Ha' et 'Oiii' : les formules en dépendent." % names), '')] + gradient_block('sho' if 'Sii' in chans else 'hoo') + [
-        (M.instance('LinearFit', 'LinearFit_ref_Ha', {'rejectLow': '0.000000', 'rejectHigh': '0.920000'}, {'referenceViewId': 'Ha'}),
-         "Option — LinearFit avec Ha comme référence : applique sur OIII (et SII). Rapproche fonds et niveaux, ce qu'exige Foraxx (theAstroShed, Galactic Hunter). Référence : vue nommée 'Ha'.")]
+                  "Nomme les vues exactement 'S', 'H' et 'O' : les formules en dépendent." % names), '')] + gradient_block('sho' if 'S' in chans else 'hoo') + [
+        (M.instance('LinearFit', 'LinearFit_ref_H', {'rejectLow': '0.000000', 'rejectHigh': '0.920000'}, {'referenceViewId': 'H'}),
+         "Option — LinearFit avec Ha comme référence : applique sur O (et S). Rapproche fonds et niveaux, ce qu'exige Foraxx (theAstroShed, Galactic Hunter). Référence : vue nommée 'H'.")]
 
 D_BXT_NB = ("BlurXTerminator complet sur la combinaison narrowband SIMPLE (un filtre par canal, sans boost ni mélange) : Sharpen Stars 0,25, Halos 0, Nonstellar 0,60. "
             "Manuel RC Astro : mélanger ou booster un canal avant la déconvolution modifie la PSF (étoiles brillantes incohérentes). Baisse Nonstellar si artefacts dans OIII/SII.")
@@ -391,11 +391,11 @@ GHS_NB = (" En narrowband, étire chaque canal séparément. Règle : même nive
 STAT_NB = (" En narrowband : même Target Median (0,25) pour tous les masters narrowband (Ha, OIII et SII s'il y en a), les médianes sont alors identiques par construction ; "
            "sur une image couleur déjà combinée, décoche Linked Stretch pour étirer chaque canal séparément. Contrôle ensuite le fond neutre (combinaison simple).")
 
-sho_combine = (pm('Combinaison_SHO', 'Sii', 'Ha', 'Oiii', new_image=True, new_id='SHO', space='RGB'),
-               "Combinaison SHO SIMPLE (équivalent de ChannelCombination) : R = Sii, G = Ha, B = Oiii, sans boost ni mélange. Sert à BXT et SXT. Crée l'image 'SHO'.")
+sho_combine = (pm('Combinaison_SHO', 'S', 'H', 'O', new_image=True, new_id='SHO', space='RGB'),
+               "Combinaison SHO SIMPLE (équivalent de ChannelCombination) : R = S, G = H, B = O, sans boost ni mélange. Sert à BXT et SXT. Crée l'image 'SHO'.")
 sho_palette = [
     (M.instance('NarrowbandNormalization', 'NBN_SHO', {'palette': 'Palette_SHO'}),
-     "PALETTE — NarrowbandNormalization, palette SHO (valeurs par défaut ; nom interne Palette_SHO vérifié dans le module 1.1). Sur l'image SHO combinée (R = Sii, G = Ha, B = Oiii), "
+     "PALETTE — NarrowbandNormalization, palette SHO (valeurs par défaut ; nom interne Palette_SHO vérifié dans le module 1.1). Sur l'image SHO combinée (R = S, G = H, B = O), "
      "ÉTIRÉE et sans étoiles, canaux étirés avec le même fond et la même médiane (recombine-les avec l'icône Combinaison_SHO). Active l'aperçu. "
      "Ordre de réglage conseillé (suggestion de la fiche, pas une consigne de l'auteur) : Lightness (Off, Preserve, Ha, OIII ou SII ; souvent Ha) ; Shadowpoint pour le fond, sans l'écrêter ; "
      "O3 boost puis S2 boost, progressivement (SII, le plus bruité, avec prudence) ; Highlight reduction ; Brightness ; SCNR partiel en dernier, si besoin. "
@@ -406,8 +406,8 @@ sho_palette = [
      "AJUSTER : trop vert -> SCNR partiel (ou SCNR 0,50-0,80 après) ; pas de bleu -> O3 boost ; pas de nuances orange/rouge -> S2 boost ; fond coloré -> Shadowpoint, sinon reprends l'étirement des canaux ; "
      "cœur brûlé -> Highlight reduction ; détail pâteux -> Lightness Ha ; teinte à affiner -> CurvesTransformation (canal H, puis S) sous masque de luminance. "
      "AUTRE PALETTE : SII très faible -> HOO ; Ha dominant et OIII faible -> HOO centré sur Ha ou HaRGB ; or et bleu sans vert -> Foraxx ; teintes libres -> NBColourMapper ; pour comparer -> Perfect Palette Picker."),
-    (pm('Foraxx_SHO', '(Oiii^~Oiii)*Sii + ~(Oiii^~Oiii)*Ha', '((Oiii*Ha)^~(Oiii*Ha))*Ha + ~((Oiii*Ha)^~(Oiii*Ha))*Oiii', 'Oiii', new_image=True, new_id='SHO_Foraxx', space='RGB'),
-     "ALTERNATIVE — Palette Foraxx SHO dynamique (Ludo/ForaxX) : vues 'Sii', 'Ha', 'Oiii' ÉTIRÉES, sans étoiles, fonds proches. Crée 'SHO_Foraxx'. Tons or et bleu sans vert envahissant."),
+    (pm('Foraxx_SHO', '(O^~O)*S + ~(O^~O)*H', '((O*H)^~(O*H))*H + ~((O*H)^~(O*H))*O', 'O', new_image=True, new_id='SHO_Foraxx', space='RGB'),
+     "ALTERNATIVE — Palette Foraxx SHO dynamique (Ludo/ForaxX) : vues 'S', 'H', 'O' ÉTIRÉES, sans étoiles, fonds proches. Crée 'SHO_Foraxx'. Tons or et bleu sans vert envahissant."),
     (note('Perfect_Palette_Picker', T_PPP), ''),
     (note('NBColourMapper', T_NBCM), ''),
 ]
@@ -435,71 +435,71 @@ def rgb_stars_block():
     ]
 
 # ---------------------------------------------------------------- RGB + SHO
-rgbsho = pre_block() + nb_masters(['Sii', 'Ha', 'Oiii']) + [
+rgbsho = pre_block() + nb_masters(['S', 'H', 'O']) + [
     sho_combine,
     (M.bxt('BXT_NB', False, 0.25, 0.0, 0.60), D_BXT_NB),
     (M.sxt('SXT_lineaire', False), D_SXT_LIN + " Sur l'image SHO : garde le fond sans étoiles (les étoiles viendront du RGB)."),
-] + extract([(0, 'Sii'), (1, 'Ha'), (2, 'Oiii')], "l'image SHO sans étoiles") + nb_noise + ghs_block(GHS_NB, STAT_NB) + sho_palette + finish_block(sho_finish) + rgb_stars_block() + stars_end(cms=True, screen_extra=SCREEN_RGBSHO)
+] + extract([(0, 'S'), (1, 'H'), (2, 'O')], "l'image SHO sans étoiles") + nb_noise + ghs_block(GHS_NB, STAT_NB) + sho_palette + finish_block(sho_finish) + rgb_stars_block() + stars_end(cms=True, screen_extra=SCREEN_RGBSHO)
 
 # ---------------------------------------------------------------- SHO sans RGB
 STARS_NB = (" STANDARD DES ÉTOILES SANS RGB : couleurs non calibrées, on vise des étoiles PLAUSIBLES, proches du RGB : du bleu-blanc au jaune-orange, peu saturées, une gamme de couleurs, "
             "JAMAIS magenta (R et B nettement au-dessus de G) ni vertes (G au-dessus de R et B). CONTRÔLE à la sonde 15x15 sur le halo (le cœur est souvent blanc) : étoiles chaudes R >= G >= B, bleues B >= G >= R ; "
             "parcours une dizaine d'étoiles, toutes identiques = couleurs écrasées. ")
-STARS_NB_FIX = ("AJUSTER : magenta -> NB to RGB ou étoiles HOO synthétiques, sinon CorrectMagentaStars ; bleues verdâtres ou étoiles trop rouges -> plus de Ha dans le vert (G = a·Ha + (1 − a)·OIII : monter a rend les bleues moins vertes et les rouges plus jaunes) ; étoiles chaudes trop jaunes ou verdâtres -> moins de Ha dans le vert ; "
+STARS_NB_FIX = ("AJUSTER : magenta -> NB to RGB ou étoiles HOO synthétiques, sinon CorrectMagentaStars ; bleues verdâtres ou étoiles trop rouges -> plus de Ha dans le vert (G = a·H + (1 − a)·O : monter a rend les bleues moins vertes et les rouges plus jaunes) ; étoiles chaudes trop jaunes ou verdâtres -> moins de Ha dans le vert ; "
                 "criardes -> Color Boost plus bas ; toutes blanches -> étirement plus doux ; anneau cœur rouge / halo cyan -> réduction d'étoiles ou désaturation des halos. "
                 "Étoiles vraiment calibrées : quelques poses RGB courtes (workflow RGB + SHO).")
 
-sho = pre_block() + nb_masters(['Sii', 'Ha', 'Oiii']) + [
+sho = pre_block() + nb_masters(['S', 'H', 'O']) + [
     sho_combine,
     (M.bxt('BXT_NB', False, 0.25, 0.0, 0.60), D_BXT_NB),
     (M.sxt('SXT_lineaire', False), D_SXT_LIN + " Sur l'image SHO : GARDE LES DEUX images (fond et étoiles), les étoiles viennent ici du narrowband."),
-] + extract([(0, 'Sii'), (1, 'Ha'), (2, 'Oiii')], "l'image SHO sans étoiles") + extract([(0, 'Sii_stars'), (1, 'Ha_stars'), (2, 'Oiii_stars')], "l'image d'étoiles SHO (linéaire)") + nb_noise + ghs_block(GHS_NB, STAT_NB) + sho_palette + finish_block(sho_finish) + [
+] + extract([(0, 'S'), (1, 'H'), (2, 'O')], "l'image SHO sans étoiles") + extract([(0, 'S_stars'), (1, 'H_stars'), (2, 'O_stars')], "l'image d'étoiles SHO (linéaire)") + nb_noise + ghs_block(GHS_NB, STAT_NB) + sho_palette + finish_block(sho_finish) + [
     (note('NB_to_RGB_Stars', "ÉTOILES — méthode 1 : NB to RGB Star Combination (SetiAstro, script). Ha Stars et OIII Stars (linéaires, obligatoires), SII optionnel. "
           "Green Channel Blend Ratio décoché par défaut (Ha to OIII ratio 0,3 si activé). Apply Star Stretch recommandé par l'auteur : Stretch Factor 5, Color Boost 1,0. "
-          "Mélange du script (code v1.6) : R = 0,5·Ha + 0,5·SII (Ha seul sans SII), G = ratio·Ha + (1 − ratio)·OIII (0,3·Ha + 0,7·OIII par défaut), B = OIII ; monte le ratio si les étoiles bleues sont verdâtres ou les rouges trop rouges, baisse-le si les étoiles chaudes tirent vers le jaune-vert." + STARS_NB + STARS_NB_FIX), ''),
-    (pm('Etoiles_HOO_synth', 'Ha_stars', '0.2*Ha_stars + 0.8*Oiii_stars', 'Oiii_stars', new_image=True, new_id='Stars_HOO', space='RGB'),
-     "ÉTOILES — méthode 2 : étoiles HOO synthétiques (AIASTRO) sur les images d'étoiles linéaires 'Ha_stars' et 'Oiii_stars' : R = Ha, G = 20 % Ha + 80 % OIII, B = OIII. "
+          "Mélange du script (code v1.6) : R = 0,5·H + 0,5·S (H seul sans S), G = ratio·H + (1 − ratio)·O (0,3·H + 0,7·O par défaut), B = O ; monte le ratio si les étoiles bleues sont verdâtres ou les rouges trop rouges, baisse-le si les étoiles chaudes tirent vers le jaune-vert." + STARS_NB + STARS_NB_FIX), ''),
+    (pm('Etoiles_HOO_synth', 'H_stars', '0.2*H_stars + 0.8*O_stars', 'O_stars', new_image=True, new_id='Stars_HOO', space='RGB'),
+     "ÉTOILES — méthode 2 : étoiles HOO synthétiques (AIASTRO) sur les images d'étoiles linéaires 'H_stars' et 'O_stars' : R = H, G = 20 % H + 80 % O, B = O. "
      "Calibre ensuite la couleur, puis étire avec Star Stretch. Renomme le résultat étiré 'stars'. Rapport choisi par l'auteur en comparant à des étoiles RGB, propre à son matériel ; "
-     "une légère teinte verte peut rester sur les étoiles bleues (passe à 0,3·Ha + 0,7·OIII)." + STARS_NB),
+     "une légère teinte verte peut rester sur les étoiles bleues (passe à 0,3·H + 0,7·O)." + STARS_NB),
     (note('Star_Stretch', T_STARSTRETCH + " Étoiles narrowband : Color Boost plus bas si criardes, Stretch Amount plus bas si toutes blanches."), ''),
 ] + stars_end(cms=True, cms_extra=' ' + STARS_NB + STARS_NB_FIX)
 
 # ---------------------------------------------------------------- HOO
 hoo = pre_block() + [
-    (pm('DualBand_Ha', '$T[0]', new_image=True, new_id='Ha', space='Gray'),
+    (pm('DualBand_Ha', '$T[0]', new_image=True, new_id='H', space='Gray'),
      "CAMÉRA COULEUR + filtre dual-band seulement : applique sur l'image couleur (gradient retiré, BXT déjà appliqué) ; Ha = canal rouge. Caméra mono : ignore cette icône et la suivante."),
-    (pm('DualBand_OIII', '($T[1] + $T[2]) / 2', new_image=True, new_id='Oiii', space='Gray'),
+    (pm('DualBand_OIII', '($T[1] + $T[2]) / 2', new_image=True, new_id='O', space='Gray'),
      "CAMÉRA COULEUR + dual-band : OIII = moyenne de G et B. Le bleu est plus bruité et moins riche : donner plus de poids à G donne souvent un OIII plus propre (poids selon capteur et filtre). "
      "La fuite Bayer (OIII dans R, Ha dans B) ne peut pas être séparée parfaitement."),
-] + nb_masters(['Ha', 'Oiii']) + [
-    (pm('Combinaison_HOO', 'Ha', 'Oiii', 'Oiii', new_image=True, new_id='HOO', space='RGB'),
-     "Combinaison HOO SIMPLE : R = Ha, G = Oiii, B = Oiii, sans boost. Sert à BXT et SXT (en caméra couleur, BXT s'applique plutôt sur l'image d'origine avant extraction). Crée 'HOO'."),
+] + nb_masters(['H', 'O']) + [
+    (pm('Combinaison_HOO', 'H', 'O', 'O', new_image=True, new_id='HOO', space='RGB'),
+     "Combinaison HOO SIMPLE : R = H, G = O, B = O, sans boost. Sert à BXT et SXT (en caméra couleur, BXT s'applique plutôt sur l'image d'origine avant extraction). Crée 'HOO'."),
     (M.bxt('BXT_NB', False, 0.25, 0.0, 0.60), D_BXT_NB),
     (M.sxt('SXT_lineaire', False), D_SXT_LIN + " Sur l'image HOO : garde l'image d'étoiles si tu n'as pas d'étoiles RGB."),
-] + extract([(0, 'Ha'), (1, 'Oiii')], "l'image HOO sans étoiles") + nb_noise + ghs_block(GHS_NB, STAT_NB) + [
-    (pm('HOO_simple', 'Ha', 'Oiii', 'Oiii', new_image=True, new_id='HOO_etire', space='RGB'),
-     "PALETTE — combinaison simple sur 'Ha' et 'Oiii' étirés sans étoiles, à équilibrer ensuite avec NarrowbandNormalization (icône suivante)."),
+] + extract([(0, 'H'), (1, 'O')], "l'image HOO sans étoiles") + nb_noise + ghs_block(GHS_NB, STAT_NB) + [
+    (pm('HOO_simple', 'H', 'O', 'O', new_image=True, new_id='HOO_etire', space='RGB'),
+     "PALETTE — combinaison simple sur 'H' et 'O' étirés sans étoiles, à équilibrer ensuite avec NarrowbandNormalization (icône suivante)."),
     (M.instance('NarrowbandNormalization', 'NBN_HOO', {'palette': 'Palette_HOO'}),
      ("NarrowbandNormalization, palette HOO (valeurs par défaut) : applique sur l'image HOO étirée sans étoiles, active l'aperçu, monte O3 boost progressivement, Shadowpoint pour le fond, SCNR si besoin. "
-      "RENDU VISÉ (HOO classique R = Ha, G = B = OIII) : zones Ha rouge profond à rouge orangé, zones OIII cyan / turquoise, zones mixtes rose saumon à blanchâtre (or ou orange seulement si le vert reçoit du Ha : Foraxx HOO, variante Hubble), fond gris neutre foncé. "
+      "RENDU VISÉ (HOO classique R = H, G = B = O) : zones Ha rouge profond à rouge orangé, zones OIII cyan / turquoise, zones mixtes rose saumon à blanchâtre (or ou orange seulement si le vert reçoit du Ha : Foraxx HOO, variante Hubble), fond gris neutre foncé. "
       "CONTRÔLE à la sonde 15x15 : zone Ha R >> G = B ; zone OIII G = B, nettement au-dessus de R ; fond R = G = B (fond rouge : Ha trop étiré ; fond cyan : OIII trop étiré). G et B sont égaux avant NBN : un écart vient du module ou des courbes. "
-      "AJUSTER : tout rouge -> O3 boost, sinon reprends l'étirement d'OIII ; cyan trop froid -> baisse O3 boost ou mets un peu de Ha dans le vert (G = 0,85·OIII + 0,15·Ha) ; fond coloré -> Shadowpoint ; OIII granuleux -> NXT plus fort sur OIII, LP plus haut ; "
+      "AJUSTER : tout rouge -> O3 boost, sinon reprends l'étirement d'OIII ; cyan trop froid -> baisse O3 boost ou mets un peu de Ha dans le vert (G = 0,85·O + 0,15·H) ; fond coloré -> Shadowpoint ; OIII granuleux -> NXT plus fort sur OIII, LP plus haut ; "
       "détail pâteux -> Lightness Ha ou Ha en luminance ; SCNR souvent inutile en HOO. Étoiles cœur rouge / halo cyan : étoiles RGB, NB to RGB Star Combination ou étoiles HOO synthétiques, sinon désature. "
       "PAS DE HOO si la cible contient du SII (SHO) ou si OIII est quasi absent (HaRGB, Ha en noir et blanc).")),
-    (pm('Foraxx_HOO', 'Ha', '((Oiii*Ha)^~(Oiii*Ha))*Ha + ~((Oiii*Ha)^~(Oiii*Ha))*Oiii', 'Oiii', new_image=True, new_id='HOO_Foraxx', space='RGB'),
-     "ALTERNATIVE — Foraxx HOO : le vert varie selon le rapport Ha/OIII (transitions orangées). Vues 'Ha' et 'Oiii' étirées, sans étoiles, fonds proches."),
-    (pm('HOO_Hubble', 'Ha', '0.6*Ha + 0.4*Oiii', 'Oiii', new_image=True, new_id='HOO_Hubble', space='RGB'),
-     "ALTERNATIVE — variante « style Hubble » (Galactic Hunter) : G = 0,6·Ha + 0,4·OIII, tons plus dorés ; ajuste les coefficients."),
+    (pm('Foraxx_HOO', 'H', '((O*H)^~(O*H))*H + ~((O*H)^~(O*H))*O', 'O', new_image=True, new_id='HOO_Foraxx', space='RGB'),
+     "ALTERNATIVE — Foraxx HOO : le vert varie selon le rapport Ha/OIII (transitions orangées). Vues 'H' et 'O' étirées, sans étoiles, fonds proches."),
+    (pm('HOO_Hubble', 'H', '0.6*H + 0.4*O', 'O', new_image=True, new_id='HOO_Hubble', space='RGB'),
+     "ALTERNATIVE — variante « style Hubble » (Galactic Hunter) : G = 0,6·H + 0,4·O, tons plus dorés ; ajuste les coefficients."),
     (note('Perfect_Palette_Picker', T_PPP), ''),
     (note('NBColourMapper', T_NBCM), ''),
     (M.instance('LRGBCombination', 'Ha_en_luminance', {'mL': '0.500', 'mc': '0.400', 'noiseReduction': True}, post=M.lrgb_post),
-     "Option — Ha en luminance : fais une copie de Ha étiré nommée 'L' (même fond et médiane proche que l'image HOO, sinon couleurs délavées), puis applique sur l'image HOO. Seul L activé, Lightness 0,5, Saturation 0,40."),
+     "Option — Ha en luminance : fais une copie de H étiré nommée 'L' (même fond et médiane proche que l'image HOO, sinon couleurs délavées), puis applique sur l'image HOO. Seul L activé, Lightness 0,5, Saturation 0,40."),
 ] + finish_block() + [
     (note('Etoiles_HOO', "ÉTOILES — avec RGB : suis le bloc étoiles RGB du workflow RGB + SHO. Sans RGB : utilise l'image d'étoiles de SXT sur HOO (ou NB to RGB Star Combination), étire-la avec Star Stretch et renomme-la 'stars'. "
           "Les étoiles HOO tirent vers le rouge et le cyan : désature-les légèrement si besoin. "
           "STANDARD : étoiles plausibles, du bleu-blanc au jaune-orange, peu saturées, une gamme de couleurs, jamais vertes. En HOO classique (G = B = OIII), le magenta est impossible "
           "mais les étoiles chaudes sortent rouges ou saumon (jamais jaunes) et les froides cyan ; cœur rouge / halo cyan fréquent (étoiles OIII plus grosses). "
-          "MIEUX : vert synthétique, G = 0,2·Ha + 0,8·OIII (AIASTRO) ou NB to RGB Star Combination (sans SII : R = Ha, G = 0,3·Ha + 0,7·OIII, B = OIII) : étoile chaude G > B donc jaune-orange, froide G < B donc bleutée. "
+          "MIEUX : vert synthétique, G = 0,2·H + 0,8·O (AIASTRO) ou NB to RGB Star Combination (sans S : R = H, G = 0,3·H + 0,7·O, B = O) : étoile chaude G > B donc jaune-orange, froide G < B donc bleutée. "
           "Caméra couleur dual-band : NB to RGB accepte l'image couleur directement (Ha = canal rouge, OIII = canal vert seul). "
           "CONTRÔLE à la sonde 15x15 sur le halo : chaude R >= G >= B (G = B exactement = HOO classique, pas de jaune possible), froide B >= G >= R, pas de G au-dessus de R et B ; une dizaine d'étoiles pas toutes identiques. "
           "AJUSTER : bleues verdâtres ou chaudes trop rouges -> plus de Ha dans le vert ; chaudes jaune-vert -> moins ; cyan saturé -> désature ou Color Boost plus bas ; anneau rouge/cyan -> réduction d'étoiles ; toutes blanches -> étirement plus doux."), ''),
