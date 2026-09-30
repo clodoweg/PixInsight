@@ -156,8 +156,14 @@ T_DBE = ("ALTERNATIVE — DynamicBackgroundExtraction. Icône-note : les points 
 T_SPCC = ("SPCC — Average Spiral Galaxy, neutralisation du fond activée. ATTENTION : cette icône contient les filtres Astrodon E-series et le capteur Sony IMX571 de l'auteur du modèle : "
           "remplace-les par TES filtres et TON capteur. Crée une preview sur du fond vide et choisis-la comme référence de fond. Coche Generate graphs pour contrôler. "
           "Toujours en linéaire, après le gradient et BXT Correct Only, avant BXT complet.")
-T_STAT = ("ÉTAPE MANUELLE — Statistical Stretch (SetiAstro, script). Icône-note : le chemin du script dépend de ton installation. Alternative à GHS. "
-          "Target Median 0,25 (défaut, 0,15-0,25) ; Linked Stretch coché pour une image couleur calibrée ; Blackpoint Sigma 5,0 ; Normalize décoché ; Curves Boost 0 ; même Target Median pour les images à combiner.")
+T_STAT = ("ÉTAPE MANUELLE — Statistical Stretch (SetiAstro, script v2.3). Alternative à GHS. À chaque passe : point noir = médiane − Blackpoint Sigma × 1,4826 × MAD (jamais sous le minimum), "
+          "puis fonction de transfert qui place la médiane sur Target Median. "
+          "Target Median 0,25 par défaut (0 à 1) ; l'auteur conseille 0,10 pour une cible compacte (galaxie, nébuleuse planétaire), 0,25 pour une grande nébuleuse ; même valeur pour les images à combiner. "
+          "Blackpoint Sigma 5,0 (0 à 10) : plus haut = fond protégé et plus sombre, plus bas = plus de signal faible ; Calculate Clipped Pixels estime l'écrêtage. No Black Clip décoché. "
+          "Linked Stretch coché pour une image couleur calibrée (décoché : chaque canal séparément, les couleurs bougent) ; sans effet en mono. "
+          "Luma Only décoché (Luma Mode rec709, Luma Blend 0,60 : 0 = lié, 1 = luminance seule). Normalize décoché (sinon la médiane dépasse la cible). "
+          "Curves Boost 0 (0 à 0,50) : relève les tons au-dessus de la médiane après les passes. HDR Compress décoché (Amount 0,25, Knee 0,35) : comprime les hautes lumières. "
+          "Dans l'icône seulement : numIterations 1 (5 au plus), autoConvergence false (jusqu'à 5 passes, arrêt à 0,001 de la cible).")
 T_STARSTRETCH = ("ÉTAPE MANUELLE — Star Stretch (SetiAstro, script) sur l'image d'étoiles LINÉAIRE issue de SXT. Stretch Amount 5 (défaut, prudence au-delà) ; Color Boost 1,0 (0 à 2) ; "
                  "Remove Green via SCNR optionnel (décoché par défaut).")
 T_HALO = "ÉTAPE MANUELLE — Halo-B-Gon (SetiAstro, script) sur l'image d'étoiles seule. Reduction Amount Low au départ (Extra Low / Low / Med / High) ; Linear Data coché seulement si l'image est encore linéaire."
