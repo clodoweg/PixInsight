@@ -158,6 +158,14 @@ Légende :
 - Recherche — [nrStellar, workflow narrowband](https://nrstellar.com/blogs/articles/narrowband-editing-workflow-for-pixinsight) et [annonce officielle sur le forum PixInsight](https://pixinsight.com/forum/index.php?threads%2Fnew-process-narrowbandnormalization.21441%2F=) : NarrowbandNormalization de préférence sur une image étirée et sans étoiles ; en linéaire, l'équilibrage de luminosité et l'option Lightness sont limités.
 - Ordre de réglage de NarrowbandNormalization (Lightness, Shadowpoint, boosts, hautes lumières, Brightness, SCNR) : suggestion de la fiche, signalée comme telle sur la page ; aucune source ne fixe d'ordre.
 
+## Neutralisation du fond dans SPCC
+
+- Officiel — [Documentation SPCC](https://pixinsight.com/doc/docs/SPCC/SPCC.html) : limites d'échantillonnage du fond exprimées en écarts-types (sigma) et non en valeurs de pixel ; fond de référence choisi par une preview (Region of Interest). La documentation ne décrit pas explicitement le cas sans référence (image entière) : comportement de l'outil, confirmé par l'icône (vue de référence vide, backgroundUseROI = false).
+- Officiel — [Seti Astro, scripts PixInsight](https://www.setiastro.com/pjsr-scripts) : Find Background Preview trouve automatiquement l'aperçu de fond pour BackgroundNeutralization, ColorCalibration, SPCC et la soustraction du continuum. Emplacement exact dans le menu non vérifié.
+- Forum — [AstroBin, script qui trouve automatiquement la zone de fond](https://app.astrobin.com/forum/topic/121048/new-script-to-automatically-find-the-background-roi-in-pixinsight)
+- Forum — [PixInsight, NeutralizeBackground (AstroGerdt)](https://pixinsight.com/forum/index.php?threads/rudimentary-script-to-optimize-background-neutralization-in-spcc.21398/) : alternative (pièce jointe du forum, sans dépôt) ; cherche les zones les plus sombres et recommande une limite haute pour SPCC.
+- Forum — [PixInsight, difficultés de neutralisation du fond dans SPCC](https://pixinsight.com/forum/index.php?threads/struggles-with-background-neutralization-in-spcc.20388/) et [Cloudy Nights, SPCC ou BackgroundNeutralization](https://www.cloudynights.com/forums/topic/938201-spcc-background-neutralization-vs-bn-tool/) : limites par défaut −2,80 / +2,00 ; la limite basse sert surtout à éviter un fond artificiellement sombre.
+
 ## Schémas de la fiche
 
 Les schémas ne reprennent que des faits déjà sourcés plus haut ; ils n'ajoutent aucun réglage.

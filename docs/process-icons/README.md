@@ -72,7 +72,7 @@ Icônes SPCC et SPFC configurées pour **QHY600 (capteur Sony IMX455) + filtres 
 
 | Icône | Réglages |
 |---|---|
-| `SPCC_QHY600_Antlia` | Average Spiral Galaxy ; QE Sony IMX411/455/461/533/571 ; Antlia V Pro Series R, G, B ; neutralisation du fond (−2,80 / +2,00) ; graphes |
+| `SPCC_QHY600_Antlia` | Average Spiral Galaxy ; QE Sony IMX411/455/461/533/571 ; Antlia V Pro Series R, G, B ; neutralisation du fond (−2,80 / +2,00) sur l'image entière (ou aperçu de Find Background Preview, voir la description) ; graphes |
 | `SPFC_RGB_QHY600_Antlia` | Image RGB combinée : Antlia V Pro R, G, B ; QE IMX455 |
 | `SPFC_L_QHY600_Antlia` | Master L : courbe approchée du filtre Antlia V Pro L (420 à 715 nm, 95 %, d'après les caractéristiques publiées, la vraie courbe n'étant pas dans ta base) ; QE IMX455 |
 | `SPFC_Ha/OIII/SII_QHY600_Antlia` | Narrowband mode, 656,3 / 500,7 / 672,4 nm, bande passante 3 nm (filtres Antlia 3 nm) ; QE IMX455 |

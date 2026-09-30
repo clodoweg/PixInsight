@@ -199,7 +199,10 @@ def spcc_perso(name):
 
 T_SPCC = ("SPCC configuré pour ton matériel (" + MATERIEL + ") : White reference Average Spiral Galaxy ; QE curve Sony IMX411/455/461/533/571 ; filtres Antlia V Pro Series R, G, B "
           "(courbes issues de ta base de filtres PixInsight) ; neutralisation du fond activée (limites -2,80 / +2,00) ; Generate graphs coché. "
-          "Crée une preview sur du fond vide et choisis-la comme référence de fond. Toujours en linéaire, après le gradient et BXT Correct Only, avant BXT complet.")
+          "FOND DE RÉFÉRENCE : l'icône n'a ni vue de référence ni Region of Interest, donc SPCC prend l'image entière ; les limites sont en écarts-types autour de la médiane et écartent étoiles et nébuleuse. "
+          "Suffisant après le retrait du gradient sur une galaxie ou un champ avec du ciel libre. Champ rempli de nébuleuse : baisse la limite haute, ou lance le script Find Background Preview (SetiAstro, "
+          "dépôt https://updates.setiastro.com/) qui crée automatiquement un aperçu de fond, puis coche Region of Interest et clique From Preview (ou crée toi-même une preview sur du fond vide). "
+          "Après SPCC, vérifie que le fond est gris neutre. Toujours en linéaire, après le gradient et BXT Correct Only, avant BXT complet.")
 spcc = lambda: (spcc_perso('SPCC'), T_SPCC)
 
 # ---------------------------------------------------------------- LRGB
