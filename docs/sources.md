@@ -246,6 +246,14 @@ Légende :
 - Tutoriel — [Galactic Hunter, combinaison bicolore](https://www.galactic-hunter.com/post/pixinsight-bi-color-combination-tutorial) : Ha et OIII ensemble dans le vert pour s'approcher du style Hubble.
 - Règles de lecture à la sonde (Ha : R ≫ G ≈ B ; OIII : G ≈ B ≫ R ; mixte : R haut, G ≈ B ; fond R = G = B) et couleur des zones mixtes en HOO classique : déduites de la composition des couleurs ; aucune source ne les chiffre, la page l'indique.
 
+## PixInsight 1.9.4 et 1.9.5
+
+- Officiel — [PixInsight 1.9.5 Lockhart](https://pixinsight.net/dev/index.php?articles/pixinsight-1-9-5-lockhart-released.21/) : module MachineLearning (MLDenoise) ; ImageIntegration avec normalisation locale environ 9 fois plus rapide (183 images : 25 min → moins de 3 min) ; DrizzleIntegration plusieurs fois plus rapide, sans tables de gouttes ; Real-Time Preview en 32 bits flottants ; ImageSolver, option *Recursive surface splines* ; solutions astrométriques 1.9.5 illisibles par les versions précédentes (la 1.9.5 lit les anciennes) ; lancer *Process › Thread Performance Analysis* après installation ; modules à recompiler avec PCL 1.9.5 « pour bénéficier » des nouvelles routines ; macOS 15+, Windows 11, Linux GLIBC 2.35+, AVX2/FMA3 sur x64.
+- Officiel — [PixInsight 1.9.4 Lockhart](https://pixinsight.net/dev/index.php?ams/pixinsight-1-9-4-lockhart-released.15/) : moteur JavaScript V8 ; instances d'AutomaticBackgroundExtractor et de SubframeSelector à recréer ; première version native Apple Silicon ; macOS 15 et 26 testés, 11 à 13 non pris en charge.
+- Dépôts (fichiers `updates.xri` lus le 30 septembre 2026) : [RC Astro](https://www.rc-astro.com/PixInsight) 1.9.4:1.9.5 ; [GHS](https://www.ghsastro.co.uk/updates/) macOS 1.9.4:1.9.99, Windows 1.9.0:1.9.99 ; [NarrowbandNormalization](https://www.cosmicphotons.com/pi-modules/narrowbandnormalization/) macOS 1.9.4:1.9.99, Windows et Linux 1.9.0:1.9.99 ; [GraXpert](https://pixinsight.deepskyforge.com/update/graxpert-process/) 1.9.0:1.9.10 ; [SetiAstro](https://updates.setiastro.com/) 1.9.4:1.9.5 ; NBColourMapper, StarReduction, ScreenStars 1.9.4:1.9.99. ImageBlend : réponse anti-robots, non contrôlé.
+- Recherche — [NixOS, paquet PixInsight 1.9.5-20260917](https://github.com/NixOS/nixpkgs/pull/564758) : date de version.
+- Officiel — [ScopeTrader, MARS DR2](https://scopetrader.com/mars-dr2-for-pixinsight-dropped/) (29 juin 2026) : filtres R, G, B, Ha et OIII ; hémisphère nord complet en large bande, narrowband jusqu'à +75° de déclinaison, extension sud jusqu'à −15° ; base 2 à 6 fois plus profonde. Fichier .xmars d'environ 1,35 Go et installation par la clé à molette de MGC : résumé de recherche (AstroBin, Cloudy Nights), non relu directement.
+
 ## Schémas de la fiche
 
 Les schémas ne reprennent que des faits déjà sourcés plus haut ; ils n'ajoutent aucun réglage.
@@ -278,6 +286,8 @@ Les schémas ne reprennent que des faits déjà sourcés plus haut ; ils n'ajout
 
 Points sans source directe :
 
+- MGC en narrowband avec MARS DR2 : libellé exact des bandes Ha et OIII dans le menu des filtres MARS de MGC non vérifié (l'icône MGC_MARS reste réglée sur L, R, G, B).
+- MLDenoise contre NoiseXTerminator : aucune comparaison sourcée ; la fiche garde NXT.
 - LHaRGB, part du Ha à ajouter au bleu pour imiter Hβ : la répartition « 80 % rouge / 20 % bleu » n'apparaît que dans un résumé de recherche d'un fil [AstroBin](https://ssr.app.astrobin.com/forum/topic/201571/pleiades-astrophoto-pixinsight/incorporating-ha-into-rgb-images) inaccessible ; la page la mentionne comme piste sans chiffre, rien n'est dans les icônes.
 - Ha en luminance en HOO : Saturation 0,40 reprise du réglage LRGBCombination sourcé (Chaotic Nebula : Lightness 0,55, Saturation 0,40) ; aucune valeur propre au HOO publiée.
 - Icônes de process : format vérifié sur des fichiers réels générés par PixInsight 1.9.3 et noms d'énumération vérifiés, mais chargement non testé dans PixInsight (le schéma XPSM officiel n'est plus en ligne à son adresse d'origine).

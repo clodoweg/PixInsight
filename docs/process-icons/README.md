@@ -10,6 +10,8 @@ Icônes prêtes à charger, avec les réglages de la fiche `docs/pixinsight-work
 
 Les fichiers n'ont pas été testés dans PixInsight avant publication : ils ont été construits à partir d'icônes réelles générées par PixInsight 1.9.3 (voir Sources), en ne changeant que les valeurs. Si une icône ne se charge pas, signale-le.
 
+**PixInsight 1.9.5** : les icônes n'ont pas non plus été testées dans cette version. Elles n'utilisent ni AutomaticBackgroundExtractor ni SubframeSelector, les deux process dont les instances antérieures à la 1.9.4 doivent être recréées. Les icônes-notes (scripts) ne dépendent pas de la version.
+
 ## 01-PixelMath-formules.xpsm
 
 Les formules supposent des images nommées comme indiqué (renomme tes vues avec le bon identifiant avant de les appliquer).

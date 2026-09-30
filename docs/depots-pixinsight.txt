@@ -1,5 +1,5 @@
 DÉPÔTS PIXINSIGHT À AJOUTER
-Fiche de référence PixInsight — vérifiés le 29 septembre 2026
+Fiche de référence PixInsight — vérifiés le 29 septembre 2026, compatibilité PixInsight 1.9.5 vérifiée le 30 septembre 2026
 ==========================================================
 
 COMMENT LES AJOUTER
@@ -65,5 +65,15 @@ DÉJÀ INCLUS DANS PIXINSIGHT (rien à ajouter)
 WBPP, SPCC, SPFC, MultiscaleGradientCorrection, GradientCorrection, DBE,
 ImageSolver, LRGBCombination, NBRGBCombination, CorrectMagentaStars,
 LocalHistogramEqualization, HDRMultiscaleTransform, SCNR, PixelMath...
-MGC demande en plus la base MARS (fichier .xmars, depuis les téléchargements
-PixInsight) : clé à molette de MGC > Add.
+MGC demande en plus la base MARS : prends MARS DR2 (juin 2026, fichier .xmars
+d'environ 1,35 Go, depuis le Software Distribution System de PixInsight ;
+R, G, B, Ha et OIII) : clé à molette de MGC > Add.
+
+
+PIXINSIGHT 1.9.5
+Chaque dépôt ci-dessus sert une version compatible avec la 1.9.5 (index des dépôts
+lus le 30 septembre 2026) : RC Astro 1.9.4 à 1.9.5, GHS 1.9.4 à 1.9.99 (macOS)
+et 1.9.0 à 1.9.99 (Windows), NarrowbandNormalization 1.9.4 à 1.9.99 (macOS),
+GraXpert 1.9.0 à 1.9.10, SetiAstro 1.9.4 à 1.9.5, NBColourMapper, StarReduction et
+ScreenStars 1.9.4 à 1.9.99. ImageBlend : non contrôlé (serveur anti-robots).
+Après l'installation de la 1.9.5 : Process > Thread Performance Analysis.
