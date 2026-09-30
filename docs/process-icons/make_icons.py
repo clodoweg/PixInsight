@@ -114,9 +114,8 @@ def spfc(name, rgb='ai', gray='ai_gray', qe=None, nb=None):
          ('saturationShrinkFactor', '0.10', 'v'), ('psfNoiseLayers', '1', 'v'), ('psfHotPixelFilterRadius', '1', 'v'),
          ('psfNoiseReductionFilterRadius', '0', 'v'), ('psfMinStructureSize', '0', 'v'), ('psfMinSNR', '40.00', 'v'),
          ('psfAllowClusteredSources', False, 'v'), ('psfType', 'PSFType_Auto', 'v'), ('psfGrowth', '1.75', 'v'),
-         ('psfMaxStars', '24576', 'v'), ('psfSearchTolerance', '4.00', 'v'), ('psfChannelSearchTolerance', '2.00', 'v'),
-         ('generateGraphs', False, 'v'), ('generateStarMaps', False, 'v'), ('generateTextFiles', False, 'v'),
-         ('outputDirectory', '', 't')]
+         ('psfMaxStars', '24576', 'v'), ('psfSearchTolerance', '4.00', 'v'),
+         ('generateGraphs', False, 'v'), ('generateStarMaps', False, 'v'), ('generateTextFiles', False, 'v')]
     return build('SpectrophotometricFluxCalibration', 1, name, p)
 
 def mgc(name, scale=1024, gray='L'):

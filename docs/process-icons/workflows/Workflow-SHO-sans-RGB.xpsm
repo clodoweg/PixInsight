@@ -109,11 +109,9 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="psfGrowth" value="1.75"/>
       <parameter id="psfMaxStars" value="24576"/>
       <parameter id="psfSearchTolerance" value="4.00"/>
-      <parameter id="psfChannelSearchTolerance" value="2.00"/>
       <parameter id="generateGraphs" value="false"/>
       <parameter id="generateStarMaps" value="false"/>
       <parameter id="generateTextFiles" value="false"/>
-      <parameter id="outputDirectory"></parameter>
    </instance>
    <instance class="SpectrophotometricFluxCalibration" version="1" id="SHO_06_SPFC_Ha_instance">
       <description>SPFC sur le master Ha : QE curve IMX455 ; Narrowband mode, 656,3 nm, bande passante 3 nm (filtres Antlia 3 nm). Prérequis : image LINÉAIRE et résolue (ImageSolver ou WBPP), base Gaia DR3/SP installée. Catalog Gaia DR3/SP, Automatic limit magnitude coché, détection PSF par défaut. SPFC ne modifie pas les pixels : il écrit les métadonnées de flux lues par MGC. Utilise ensuite les MÊMES filtres dans SPCC.</description>
@@ -157,11 +155,9 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="psfGrowth" value="1.75"/>
       <parameter id="psfMaxStars" value="24576"/>
       <parameter id="psfSearchTolerance" value="4.00"/>
-      <parameter id="psfChannelSearchTolerance" value="2.00"/>
       <parameter id="generateGraphs" value="false"/>
       <parameter id="generateStarMaps" value="false"/>
       <parameter id="generateTextFiles" value="false"/>
-      <parameter id="outputDirectory"></parameter>
    </instance>
    <instance class="SpectrophotometricFluxCalibration" version="1" id="SHO_07_SPFC_OIII_instance">
       <description>SPFC sur le master OIII : QE curve IMX455 ; Narrowband mode, 500,7 nm, bande passante 3 nm (filtres Antlia 3 nm). Prérequis : image LINÉAIRE et résolue (ImageSolver ou WBPP), base Gaia DR3/SP installée. Catalog Gaia DR3/SP, Automatic limit magnitude coché, détection PSF par défaut. SPFC ne modifie pas les pixels : il écrit les métadonnées de flux lues par MGC. Utilise ensuite les MÊMES filtres dans SPCC.</description>
@@ -205,14 +201,12 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="psfGrowth" value="1.75"/>
       <parameter id="psfMaxStars" value="24576"/>
       <parameter id="psfSearchTolerance" value="4.00"/>
-      <parameter id="psfChannelSearchTolerance" value="2.00"/>
       <parameter id="generateGraphs" value="false"/>
       <parameter id="generateStarMaps" value="false"/>
       <parameter id="generateTextFiles" value="false"/>
-      <parameter id="outputDirectory"></parameter>
    </instance>
    <instance class="MultiscaleGradientCorrection" version="1" id="SHO_08_MGC_MARS_instance">
-      <description>MultiscaleGradientCorrection, juste après SPFC, sur la même image. Use MARS database coché ; filtres MARS Gray = L (image mono), Red = R, Green = G, Blue = B (image couleur) ; Gradient scale 1024 (512 ou 256 si un gradient reste dans les coins), Structure separation 3 (1-2 pour les bords), Model smoothness 1,0 (3-5 si le modèle ondule), Scale factors 1,0, Show gradient model coché. La base MARS se charge dans les préférences de MGC (clé à molette › Add › fichier .xmars) : si MGC signale qu'aucune base n'est chargée, ajoute-la là. Narrowband : MARS DR2 (juin 2026, fichier .xmars d'environ 1,35 Go) couvre Ha et OIII jusqu'à +75° de déclinaison : utilise les icônes MGC_MARS_Ha et MGC_MARS_OIII (filtre MARS Gray = Ha ou OIII) ; cette icône-ci est réglée sur L. SII absent de DR2 : GradientCorrection ou DBE.</description>
+      <description>MultiscaleGradientCorrection, juste après SPFC, sur la même image. Use MARS database coché ; filtres MARS Gray = L (image mono), Red = R, Green = G, Blue = B (image couleur) ; Gradient scale 1024 (512 ou 256 si un gradient reste dans les coins), Structure separation 3 (1-2 pour les bords), Model smoothness 1,0 (3-5 si le modèle ondule), Scale factors 1,0, Show gradient model coché. La base MARS se charge dans les préférences de MGC (clé à molette › Add › fichier .xmars) : si MGC signale qu'aucune base n'est chargée, ajoute-la là. Narrowband : MARS DR2 (21 juin 2026) couvre Ha et OIII jusqu'à +75° de déclinaison : utilise les icônes MGC_MARS_Ha et MGC_MARS_OIII (filtre MARS Gray = Ha ou OIII) ; cette icône-ci est réglée sur L. SII absent de DR2 : GradientCorrection ou DBE.</description>
       <parameter id="command"></parameter>
       <parameter id="useMARSDatabase" value="true"/>
       <parameter id="grayMARSFilter">L</parameter>

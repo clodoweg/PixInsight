@@ -139,11 +139,9 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="psfGrowth" value="1.75"/>
       <parameter id="psfMaxStars" value="24576"/>
       <parameter id="psfSearchTolerance" value="4.00"/>
-      <parameter id="psfChannelSearchTolerance" value="2.00"/>
       <parameter id="generateGraphs" value="false"/>
       <parameter id="generateStarMaps" value="false"/>
       <parameter id="generateTextFiles" value="false"/>
-      <parameter id="outputDirectory"></parameter>
    </instance>
    <instance class="SpectrophotometricFluxCalibration" version="1" id="SPFC_couleur_OSC_instance">
       <parameter id="narrowbandMode" value="false"/>
@@ -186,11 +184,9 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="psfGrowth" value="1.75"/>
       <parameter id="psfMaxStars" value="24576"/>
       <parameter id="psfSearchTolerance" value="4.00"/>
-      <parameter id="psfChannelSearchTolerance" value="2.00"/>
       <parameter id="generateGraphs" value="false"/>
       <parameter id="generateStarMaps" value="false"/>
       <parameter id="generateTextFiles" value="false"/>
-      <parameter id="outputDirectory"></parameter>
    </instance>
    <instance class="SpectrophotometricFluxCalibration" version="1" id="SPFC_L_instance">
       <parameter id="narrowbandMode" value="false"/>
@@ -233,11 +229,9 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="psfGrowth" value="1.75"/>
       <parameter id="psfMaxStars" value="24576"/>
       <parameter id="psfSearchTolerance" value="4.00"/>
-      <parameter id="psfChannelSearchTolerance" value="2.00"/>
       <parameter id="generateGraphs" value="false"/>
       <parameter id="generateStarMaps" value="false"/>
       <parameter id="generateTextFiles" value="false"/>
-      <parameter id="outputDirectory"></parameter>
    </instance>
    <instance class="SpectrophotometricFluxCalibration" version="1" id="SPFC_Ha_instance">
       <parameter id="narrowbandMode" value="true"/>
@@ -280,11 +274,9 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="psfGrowth" value="1.75"/>
       <parameter id="psfMaxStars" value="24576"/>
       <parameter id="psfSearchTolerance" value="4.00"/>
-      <parameter id="psfChannelSearchTolerance" value="2.00"/>
       <parameter id="generateGraphs" value="false"/>
       <parameter id="generateStarMaps" value="false"/>
       <parameter id="generateTextFiles" value="false"/>
-      <parameter id="outputDirectory"></parameter>
    </instance>
    <instance class="SpectrophotometricFluxCalibration" version="1" id="SPFC_OIII_instance">
       <parameter id="narrowbandMode" value="true"/>
@@ -327,11 +319,9 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="psfGrowth" value="1.75"/>
       <parameter id="psfMaxStars" value="24576"/>
       <parameter id="psfSearchTolerance" value="4.00"/>
-      <parameter id="psfChannelSearchTolerance" value="2.00"/>
       <parameter id="generateGraphs" value="false"/>
       <parameter id="generateStarMaps" value="false"/>
       <parameter id="generateTextFiles" value="false"/>
-      <parameter id="outputDirectory"></parameter>
    </instance>
    <instance class="SpectrophotometricFluxCalibration" version="1" id="SPFC_SII_instance">
       <parameter id="narrowbandMode" value="true"/>
@@ -374,11 +364,9 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="psfGrowth" value="1.75"/>
       <parameter id="psfMaxStars" value="24576"/>
       <parameter id="psfSearchTolerance" value="4.00"/>
-      <parameter id="psfChannelSearchTolerance" value="2.00"/>
       <parameter id="generateGraphs" value="false"/>
       <parameter id="generateStarMaps" value="false"/>
       <parameter id="generateTextFiles" value="false"/>
-      <parameter id="outputDirectory"></parameter>
    </instance>
    <instance class="MultiscaleGradientCorrection" version="1" id="MGC_MARS_instance">
       <parameter id="command"></parameter>

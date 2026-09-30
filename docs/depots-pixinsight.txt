@@ -65,8 +65,8 @@ DÉJÀ INCLUS DANS PIXINSIGHT (rien à ajouter)
 WBPP, SPCC, SPFC, MultiscaleGradientCorrection, GradientCorrection, DBE,
 ImageSolver, LRGBCombination, NBRGBCombination, CorrectMagentaStars,
 LocalHistogramEqualization, HDRMultiscaleTransform, SCNR, PixelMath...
-MGC demande en plus la base MARS : prends MARS DR2 (juin 2026, fichier .xmars
-d'environ 1,35 Go, depuis le Software Distribution System de PixInsight ;
+MGC demande en plus la base MARS : prends MARS DR2 (21 juin 2026, fichiers .xmars
+MARS DR2 et MARS-u DR1, depuis le Software Distribution System de PixInsight ;
 R, G, B, Ha et OIII) : clé à molette de MGC > Add.
 
 

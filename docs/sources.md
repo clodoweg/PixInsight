@@ -254,7 +254,9 @@ Légende :
 - Dépôts (fichiers `updates.xri` lus le 30 septembre 2026) : [RC Astro](https://www.rc-astro.com/PixInsight) 1.9.4:1.9.5 ; [GHS](https://www.ghsastro.co.uk/updates/) macOS 1.9.4:1.9.99, Windows 1.9.0:1.9.99 ; [NarrowbandNormalization](https://www.cosmicphotons.com/pi-modules/narrowbandnormalization/) macOS 1.9.4:1.9.99, Windows et Linux 1.9.0:1.9.99 ; [GraXpert](https://pixinsight.deepskyforge.com/update/graxpert-process/) 1.9.0:1.9.10 ; [SetiAstro](https://updates.setiastro.com/) 1.9.4:1.9.5 ; NBColourMapper, StarReduction, ScreenStars 1.9.4:1.9.99. ImageBlend : réponse anti-robots, non contrôlé.
 - Code — [pixinsight-connector 2.3.0](https://www.npmjs.com/package/pixinsight-connector) (Min Xie, npm, 28 septembre 2026 ; exige PixInsight 1.9.5+), `src/tools/processes.mjs` : MGC piloté par script avec `P.useMARSDatabase = true` et `P.grayMARSFilter` = `L`, `R`, `G`, `B`, `Ha` ou `OIII` selon le filtre du master mono ; commentaire « the MARS database has no SII band » (l'outil utilise alors `Ha` ; la fiche préfère GradientCorrection ou DBE pour SII). Valeurs du paramètre confirmées ; texte affiché dans le menu de MGC non vu dans l'interface. Base des icônes `MGC_MARS_Ha` et `MGC_MARS_OIII` (identiques à `MGC_MARS` sauf `grayMARSFilter`).
 - Recherche — [NixOS, paquet PixInsight 1.9.5-20260917](https://github.com/NixOS/nixpkgs/pull/564758) : date de version.
-- Officiel — [ScopeTrader, MARS DR2](https://scopetrader.com/mars-dr2-for-pixinsight-dropped/) (29 juin 2026) : filtres R, G, B, Ha et OIII ; hémisphère nord complet en large bande, narrowband jusqu'à +75° de déclinaison, extension sud jusqu'à −15° ; base 2 à 6 fois plus profonde. Fichier .xmars d'environ 1,35 Go et installation par la clé à molette de MGC : résumé de recherche (AstroBin, Cloudy Nights), non relu directement.
+- Officiel — [PixInsight, MARS DR2](https://pixinsight.net/dev/index.php?articles/mars-dr2.18/) (21 juin 2026) : couverture large bande de tout l'hémisphère nord, narrowband Ha et [O III] jusqu'à +75°, sud jusqu'à −15° ; sélection de la base dans MGC ; exemple de configuration avec « MARS DR2 1.0.3 » et « MARS-u DR1 1.0.1 ».
+- Tutoriel — [Stirling Astrophoto, MGC](https://stirlingastrophoto.com/posts/multiscale-gradient-correction/) : installation par la clé à molette de MGC › Add › fichier .xmars ; les « 1,35 Go » concernent l'ancienne base MARS 1.1.1 (août 2025), pas DR2 : taille retirée de la fiche.
+- Presse — [ScopeTrader, MARS DR2](https://scopetrader.com/mars-dr2-for-pixinsight-dropped/) (article du 29 juin 2026) : filtres R, G, B, Ha et OIII ; hémisphère nord complet en large bande, narrowband jusqu'à +75° de déclinaison, extension sud jusqu'à −15° ; base 2 à 6 fois plus profonde. Fichier .xmars d'environ 1,35 Go et installation par la clé à molette de MGC : résumé de recherche (AstroBin, Cloudy Nights), non relu directement.
 
 ## Icônes de script (process Script)
 
@@ -299,15 +301,20 @@ Les schémas ne reprennent que des faits déjà sourcés plus haut ; ils n'ajout
 
 ## Non vérifié
 
-Points sans source directe :
+Points toujours sans source directe (contrôle du 30 septembre 2026) :
 
-- MLDenoise contre NoiseXTerminator : aucune comparaison sourcée ; la fiche garde NXT.
-- LHaRGB, part du Ha à ajouter au bleu pour imiter Hβ : la répartition « 80 % rouge / 20 % bleu » n'apparaît que dans un résumé de recherche d'un fil [AstroBin](https://ssr.app.astrobin.com/forum/topic/201571/pleiades-astrophoto-pixinsight/incorporating-ha-into-rgb-images) inaccessible ; la page la mentionne comme piste sans chiffre, rien n'est dans les icônes.
-- Ha en luminance en HOO : Saturation 0,40 reprise du réglage LRGBCombination sourcé (Chaotic Nebula : Lightness 0,55, Saturation 0,40) ; aucune valeur propre au HOO publiée.
-- Icônes de process : format vérifié sur des fichiers réels générés par PixInsight 1.9.3 et noms d'énumération vérifiés, mais chargement non testé dans PixInsight (le schéma XPSM officiel n'est plus en ligne à son adresse d'origine).
+- Ha en luminance en HOO : aucune valeur de Saturation propre au HOO dans une source lisible ; la fiche garde 0,40 (réglage LRGBCombination de Chaotic Nebula). Un résumé de recherche cite Lightness 0,5 / Saturation 0,25 pour ajouter Ha à une image HOO ou SHO, sans source retrouvée ; les tutoriels lus disent seulement « ajuste la saturation au besoin » (The Astro Geek, Madratter).
+- MLDenoise contre NoiseXTerminator : pas de comparaison rigoureuse. Usage officiel vérifié (images linéaires calibrées en couleur, modèle .xmlm, [annonce PixInsight](https://pixinsight.net/dev/index.php?articles/technology-preview-mldenoise-for-macos-arm64.19/)) ; avis « très prometteur » de [ScopeTrader](https://scopetrader.com/pixinsight-mldenoise-technology-preview-for-macos-arm64-released/) ; retours d'utilisateurs mitigés (fil AstroBin inaccessible, contenu connu par un résumé). La fiche garde NXT.
+- Chargement des icônes dans PixInsight : impossible à tester ici ; schéma XPSM officiel introuvable (404 à l'adresse déclarée dans les fichiers, jamais archivé). Contrôle de substitution : 213 icônes sur 258 ont exactement la structure d'icônes réelles du même process ; les 45 icônes SPFC, MGC et DBE (sans modèle réel) utilisent les noms de paramètres employés en 2026 par AutoIntegrate (SPFC, MGC), pixinsight-connector (SPFC, MGC) et pixinsight-mcp d'iftahs (DBE). Deux paramètres SPFC non confirmés (psfChannelSearchTolerance, outputDirectory, copiés du modèle SPCC) ont été retirés par prudence.
+- Libellé affiché dans le menu MARS de MGC : valeurs du paramètre `Ha` et `OIII` confirmées par du code, texte de l'interface non vu.
+- NBColourMapper et NBRGBCombination : chemin d'installation non vérifiable (paquet derrière une protection anti-robots ; script livré avec PixInsight), d'où des icônes-notes.
 
-Points clos au dernier contrôle :
+Points clos au dernier contrôle (30 septembre 2026) :
 
+- Part du Ha à ajouter au bleu en LHaRGB : rapport intrinsèque Hα/Hβ = 2,86 (cas B, 10⁴ K, 10² cm⁻³, Osterbrock 1989), relu dans [Momcheva et al. 2013, arXiv 1207.5479](https://arxiv.org/abs/1207.5479) ; Hβ ≈ 0,35 × Hα, plafond physique indiqué sur la page ; les « 80 % / 20 % » des tutoriels en sont une approximation (tutoriel d'origine, arciereceleste.it, désormais en 404).
+- SPCC : noms et valeurs de l'icône (neutralizeBackground, −2,80 / +2,00, backgroundUseROI) identiques à ceux d'AutoIntegrate (28 septembre 2026, compatible 1.9.5). Le nom `backgroundNeutralizationEnabled` utilisé par pixinsight-connector ne correspond à aucune icône réelle : erreur probable de cet outil (une propriété inconnue ne provoque pas d'erreur en JavaScript).
+- MARS DR2 : date officielle 21 juin 2026 ([annonce PixInsight](https://pixinsight.net/dev/index.php?articles/mars-dr2.18/)) ; la taille « 1,35 Go » concernait l'ancienne base 1.1.1 et a été retirée ; installation par la clé à molette de MGC confirmée (Stirling Astrophoto).
+- Emplacement du script Find Background dans le menu : `Script › SetiAstro › Find Background` (code v1.2.2).
 - GHS par filtre : pas de valeur fixe de Stretch factor, par conception ; la méthode officielle vise un pic d'histogramme vers 0,20–0,25 et le même fond pour tous les canaux, ce que suivent la fiche et les icônes.
 - NarrowbandNormalization : Palette_SHO confirmée dans le module ; icônes réelles ajoutées.
 - Icône SPFC L : courbe du filtre Antlia V Pro L approchée par un plateau de 95 % entre 420 et 715 nm, d'après les caractéristiques publiées ; la courbe mesurée n'est pas disponible.

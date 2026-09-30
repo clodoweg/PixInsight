@@ -215,7 +215,7 @@ D_SPFC = {
 D_MGC = ("MultiscaleGradientCorrection, juste après SPFC, sur la même image. Use MARS database coché ; filtres MARS Gray = L (image mono), Red = R, Green = G, Blue = B (image couleur) ; "
          "Gradient scale 1024 (512 ou 256 si un gradient reste dans les coins), Structure separation 3 (1-2 pour les bords), Model smoothness 1,0 (3-5 si le modèle ondule), Scale factors 1,0, Show gradient model coché. "
          "La base MARS se charge dans les préférences de MGC (clé à molette › Add › fichier .xmars) : si MGC signale qu'aucune base n'est chargée, ajoute-la là. "
-         "Narrowband : MARS DR2 (juin 2026, fichier .xmars d'environ 1,35 Go) couvre Ha et OIII jusqu'à +75° de déclinaison : utilise les icônes MGC_MARS_Ha et MGC_MARS_OIII (filtre MARS Gray = Ha ou OIII) ; cette icône-ci est réglée sur L. SII absent de DR2 : GradientCorrection ou DBE.")
+         "Narrowband : MARS DR2 (21 juin 2026) couvre Ha et OIII jusqu'à +75° de déclinaison : utilise les icônes MGC_MARS_Ha et MGC_MARS_OIII (filtre MARS Gray = Ha ou OIII) ; cette icône-ci est réglée sur L. SII absent de DR2 : GradientCorrection ou DBE.")
 D_DBE = ("ALTERNATIVE — DynamicBackgroundExtraction, sans points (ils dépendent de l'image) : ouvre l'icône, clique sur l'image, puis Generate. Samples per row 15, Sample radius 15 (10 à 50), "
          "Tolerance 0,5 (1,0-1,5 si des points sont rejetés), Shadows relaxation 3, Smoothing 0,25 (0,5-1,0 champs nébuleux), Correction Subtract (Division seulement pour le vignettage), "
          "Normalize, Discard model et Replace target cochés. Retire les points posés sur la nébuleuse ; d'un filtre à l'autre, garde les points et ajuste Tolerance.")

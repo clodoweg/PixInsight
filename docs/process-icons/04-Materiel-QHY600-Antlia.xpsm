@@ -103,11 +103,9 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="psfGrowth" value="1.75"/>
       <parameter id="psfMaxStars" value="24576"/>
       <parameter id="psfSearchTolerance" value="4.00"/>
-      <parameter id="psfChannelSearchTolerance" value="2.00"/>
       <parameter id="generateGraphs" value="false"/>
       <parameter id="generateStarMaps" value="false"/>
       <parameter id="generateTextFiles" value="false"/>
-      <parameter id="outputDirectory"></parameter>
    </instance>
    <instance class="SpectrophotometricFluxCalibration" version="1" id="SPFC_L_QHY600_Antlia_instance">
       <description>SPFC sur le master L : QE curve IMX455 ; Gray filter = courbe approchée du filtre Antlia V Pro L (420 à 715 nm, transmission 95 %, d'après les caractéristiques publiées : la vraie courbe n'est pas dans ta base de filtres). Prérequis : image LINÉAIRE et résolue (ImageSolver ou WBPP), base Gaia DR3/SP installée. Catalog Gaia DR3/SP, Automatic limit magnitude coché, détection PSF par défaut. SPFC ne modifie pas les pixels : il écrit les métadonnées de flux lues par MGC. Utilise ensuite les MÊMES filtres dans SPCC.</description>
@@ -151,11 +149,9 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="psfGrowth" value="1.75"/>
       <parameter id="psfMaxStars" value="24576"/>
       <parameter id="psfSearchTolerance" value="4.00"/>
-      <parameter id="psfChannelSearchTolerance" value="2.00"/>
       <parameter id="generateGraphs" value="false"/>
       <parameter id="generateStarMaps" value="false"/>
       <parameter id="generateTextFiles" value="false"/>
-      <parameter id="outputDirectory"></parameter>
    </instance>
    <instance class="SpectrophotometricFluxCalibration" version="1" id="SPFC_Ha_QHY600_Antlia_instance">
       <description>SPFC sur le master Ha : QE curve IMX455 ; Narrowband mode, 656,3 nm, bande passante 3 nm (filtres Antlia 3 nm). Prérequis : image LINÉAIRE et résolue (ImageSolver ou WBPP), base Gaia DR3/SP installée. Catalog Gaia DR3/SP, Automatic limit magnitude coché, détection PSF par défaut. SPFC ne modifie pas les pixels : il écrit les métadonnées de flux lues par MGC. Utilise ensuite les MÊMES filtres dans SPCC.</description>
@@ -199,11 +195,9 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="psfGrowth" value="1.75"/>
       <parameter id="psfMaxStars" value="24576"/>
       <parameter id="psfSearchTolerance" value="4.00"/>
-      <parameter id="psfChannelSearchTolerance" value="2.00"/>
       <parameter id="generateGraphs" value="false"/>
       <parameter id="generateStarMaps" value="false"/>
       <parameter id="generateTextFiles" value="false"/>
-      <parameter id="outputDirectory"></parameter>
    </instance>
    <instance class="SpectrophotometricFluxCalibration" version="1" id="SPFC_OIII_QHY600_Antlia_instance">
       <description>SPFC sur le master OIII : QE curve IMX455 ; Narrowband mode, 500,7 nm, bande passante 3 nm (filtres Antlia 3 nm). Prérequis : image LINÉAIRE et résolue (ImageSolver ou WBPP), base Gaia DR3/SP installée. Catalog Gaia DR3/SP, Automatic limit magnitude coché, détection PSF par défaut. SPFC ne modifie pas les pixels : il écrit les métadonnées de flux lues par MGC. Utilise ensuite les MÊMES filtres dans SPCC.</description>
@@ -247,11 +241,9 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="psfGrowth" value="1.75"/>
       <parameter id="psfMaxStars" value="24576"/>
       <parameter id="psfSearchTolerance" value="4.00"/>
-      <parameter id="psfChannelSearchTolerance" value="2.00"/>
       <parameter id="generateGraphs" value="false"/>
       <parameter id="generateStarMaps" value="false"/>
       <parameter id="generateTextFiles" value="false"/>
-      <parameter id="outputDirectory"></parameter>
    </instance>
    <instance class="SpectrophotometricFluxCalibration" version="1" id="SPFC_SII_QHY600_Antlia_instance">
       <description>SPFC sur le master SII : QE curve IMX455 ; Narrowband mode, 672,4 nm, bande passante 3 nm (filtres Antlia 3 nm). Prérequis : image LINÉAIRE et résolue (ImageSolver ou WBPP), base Gaia DR3/SP installée. Catalog Gaia DR3/SP, Automatic limit magnitude coché, détection PSF par défaut. SPFC ne modifie pas les pixels : il écrit les métadonnées de flux lues par MGC. Utilise ensuite les MÊMES filtres dans SPCC.</description>
@@ -295,11 +287,9 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="psfGrowth" value="1.75"/>
       <parameter id="psfMaxStars" value="24576"/>
       <parameter id="psfSearchTolerance" value="4.00"/>
-      <parameter id="psfChannelSearchTolerance" value="2.00"/>
       <parameter id="generateGraphs" value="false"/>
       <parameter id="generateStarMaps" value="false"/>
       <parameter id="generateTextFiles" value="false"/>
-      <parameter id="outputDirectory"></parameter>
    </instance>
    <icon id="SPCC_QHY600_Antlia" instance="SPCC_QHY600_Antlia_instance" xpos="30" ypos="30" workspace="Workspace01"/>
    <icon id="SPFC_RGB_QHY600_Antlia" instance="SPFC_RGB_QHY600_Antlia_instance" xpos="30" ypos="60" workspace="Workspace01"/>
