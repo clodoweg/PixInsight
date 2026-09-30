@@ -274,22 +274,22 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
 <a href="#lrgb"><g class="wfbox"><rect class="f-acc s-acc" x="370" y="26" width="370" height="38" rx="6"/>
 <text class="wf" x="386" y="50">LRGB</text><text class="why" x="516" y="50">Galaxies, réflexion, amas</text></g></a>
 <rect class="f-surf s-line" x="20" y="78" width="250" height="38" rx="6"/>
-<text class="lab" x="36" y="102">L + R, G, B + Ha</text>
+<text class="lab" x="36" y="102">L + R, G, B + H</text>
 <line x1="274" y1="97" x2="364" y2="97" stroke="currentColor" stroke-width="1.4" marker-end="url(#arr-dec)"/>
 <a href="#lhargb"><g class="wfbox"><rect class="f-acc s-acc" x="370" y="78" width="370" height="38" rx="6"/>
 <text class="wf" x="386" y="102">LHaRGB</text><text class="why" x="516" y="102">Galaxies avec régions HII</text></g></a>
 <rect class="f-surf s-line" x="20" y="130" width="250" height="38" rx="6"/>
-<text class="lab" x="36" y="154">SII, Ha, OIII + R, G, B</text>
+<text class="lab" x="36" y="154">S, H, O + R, G, B</text>
 <line x1="274" y1="149" x2="364" y2="149" stroke="currentColor" stroke-width="1.4" marker-end="url(#arr-dec)"/>
 <a href="#rgbsho"><g class="wfbox"><rect class="f-acc s-acc" x="370" y="130" width="370" height="38" rx="6"/>
 <text class="wf" x="386" y="154">RGB + SHO</text><text class="why" x="516" y="154">Palette SHO, étoiles naturelles</text></g></a>
 <rect class="f-surf s-line" x="20" y="182" width="250" height="38" rx="6"/>
-<text class="lab" x="36" y="206">SII, Ha, OIII seuls</text>
+<text class="lab" x="36" y="206">S, H, O seuls</text>
 <line x1="274" y1="201" x2="364" y2="201" stroke="currentColor" stroke-width="1.4" marker-end="url(#arr-dec)"/>
 <a href="#sho"><g class="wfbox"><rect class="f-acc s-acc" x="370" y="182" width="370" height="38" rx="6"/>
 <text class="wf" x="386" y="206">SHO sans RGB</text><text class="why" x="516" y="206">Fond et étoiles en narrowband</text></g></a>
 <rect class="f-surf s-line" x="20" y="234" width="250" height="38" rx="6"/>
-<text class="lab" x="36" y="258">Ha + OIII (mono ou dual-band)</text>
+<text class="lab" x="36" y="258">H + O (mono ou dual-band)</text>
 <line x1="274" y1="253" x2="364" y2="253" stroke="currentColor" stroke-width="1.4" marker-end="url(#arr-dec)"/>
 <a href="#hoo"><g class="wfbox"><rect class="f-acc s-acc" x="370" y="234" width="370" height="38" rx="6"/>
 <text class="wf" x="386" y="258">HOO</text><text class="why" x="516" y="258">Planétaires, rémanents, HII</text></g></a>
@@ -375,7 +375,7 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
   <section id="outils">
     <h2>Outils à installer</h2>
     <p class="sec-intro">Ajoute les dépôts via <em>Resources › Updates › Manage Repositories</em>, puis <em>Check for Updates</em>. Les URL de dépôt des scripts gratuits sont listées plus bas.</p>
-    <div class="note"><strong>Icônes de process prêtes à charger</strong>, dans le dossier <a href="https://github.com/clodoweg/PixInsight/tree/main/docs/process-icons" style="color:var(--accent)">docs/process-icons</a> :<br>• <strong>un fichier par workflow</strong> (<a href="https://github.com/clodoweg/PixInsight/tree/main/docs/process-icons/workflows" style="color:var(--accent)">workflows/</a> : LRGB, LHaRGB, RGB + SHO, SHO sans RGB, HOO), avec tous les process dans l'ordre, numérotés, et une description détaillée sur chaque icône ;<br>• 47 icônes unitaires (formules PixelMath, RC Astro, process natifs, dont SPFC, MGC en L/RGB, Ha et OIII, DBE et DynamicCrop).<br>Dans PixInsight : clic droit sur l'espace de travail › <em>Process Icons</em> › <em>Load Process Icons</em>. Les icônes SPCC et SPFC sont configurées pour ton matériel, QHY600 et filtres Antlia V Pro (fichier <code style="font-family:var(--mono)">04-Materiel-QHY600-Antlia.xpsm</code>) ; GHS, DBE et DynamicCrop restent à régler sur ton image (voir leur description). Les scripts ont de vraies icônes de lancement (WBPP, ImageSolver, Statistical Stretch, Star Stretch, Find Background, Continuum Subtraction, NB to RGB Star Combination, Halo-B-Gon, Perfect Palette Picker, CorrectMagentaStars), avec leurs paramètres préréglés quand le script les lit ; la plupart des scripts SetiAstro refusent le mode global : <strong>glisse leur icône sur l'image</strong> (la description de chaque icône précise comment la lancer). Seuls NBColourMapper et NBRGBCombination, dont le chemin d'installation n'a pas pu être vérifié, restent des icônes-notes.<br><strong>Noms des vues</strong> : les formules et les icônes attendent les masters narrowband nommés <strong>H</strong> (Hα), <strong>O</strong> (OIII) et <strong>S</strong> (SII), et leurs dérivés <code style="font-family:var(--mono)">H_cs</code>, <code style="font-family:var(--mono)">H_stars</code>, <code style="font-family:var(--mono)">O_stars</code>. Les icônes suivent la même convention (SPFC_H, MGC_MARS_O, NXT_O_S…). Seules les valeurs de filtre MARS dans MGC (<code style="font-family:var(--mono)">Ha</code>, <code style="font-family:var(--mono)">OIII</code>) restent inchangées : ce sont les noms imposés par la base.</div>
+    <div class="note"><strong>Icônes de process prêtes à charger</strong>, dans le dossier <a href="https://github.com/clodoweg/PixInsight/tree/main/docs/process-icons" style="color:var(--accent)">docs/process-icons</a> :<br>• <strong>un fichier par workflow</strong> (<a href="https://github.com/clodoweg/PixInsight/tree/main/docs/process-icons/workflows" style="color:var(--accent)">workflows/</a> : LRGB, LHaRGB, RGB + SHO, SHO sans RGB, HOO), avec tous les process dans l'ordre, numérotés, et une description détaillée sur chaque icône ;<br>• 47 icônes unitaires (formules PixelMath, RC Astro, process natifs, dont SPFC, MGC en L/RGB, H et O, DBE et DynamicCrop).<br>Dans PixInsight : clic droit sur l'espace de travail › <em>Process Icons</em> › <em>Load Process Icons</em>. Les icônes SPCC et SPFC sont configurées pour ton matériel, QHY600 et filtres Antlia V Pro (fichier <code style="font-family:var(--mono)">04-Materiel-QHY600-Antlia.xpsm</code>) ; GHS, DBE et DynamicCrop restent à régler sur ton image (voir leur description). Les scripts ont de vraies icônes de lancement (WBPP, ImageSolver, Statistical Stretch, Star Stretch, Find Background, Continuum Subtraction, NB to RGB Star Combination, Halo-B-Gon, Perfect Palette Picker, CorrectMagentaStars), avec leurs paramètres préréglés quand le script les lit ; la plupart des scripts SetiAstro refusent le mode global : <strong>glisse leur icône sur l'image</strong> (la description de chaque icône précise comment la lancer). Seuls NBColourMapper et NBRGBCombination, dont le chemin d'installation n'a pas pu être vérifié, restent des icônes-notes.<br><strong>Notation</strong> : dans toute la fiche, <strong>H</strong> désigne le filtre Hα, <strong>O</strong> l'OIII et <strong>S</strong> le SII. Les formules et les icônes attendent les masters narrowband nommés <strong>H</strong> (Hα), <strong>O</strong> (OIII) et <strong>S</strong> (SII), et leurs dérivés <code style="font-family:var(--mono)">H_cs</code>, <code style="font-family:var(--mono)">H_stars</code>, <code style="font-family:var(--mono)">O_stars</code>. Les icônes suivent la même convention (SPFC_H, MGC_MARS_O, NXT_O_S…). Seules les valeurs de filtre MARS dans MGC (<code style="font-family:var(--mono)">Ha</code>, <code style="font-family:var(--mono)">OIII</code>) restent inchangées, comme les libellés des modules et scripts (Lightness = Ha, Ha / OIII Stars Image…) : ce sont les noms affichés par PixInsight.</div>
     <div class="note" id="pi-195"><strong>PixInsight 1.9.5 : ce qui change pour cette fiche</strong> (vérifié le 30 septembre 2026)
       <ul>
         <li><strong>Modules et scripts tiers compatibles</strong> : les dépôts RC Astro (1.9.4 à 1.9.5), GHS, NarrowbandNormalization, GraXpert, SetiAstro (paquet 1.9.4 à 1.9.5), NBColourMapper, StarReduction et ScreenStars servent tous une version pour la 1.9.5. Seul ImageBlend n'a pas pu être contrôlé (protection anti-robots de son serveur).</li>
@@ -386,7 +386,7 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
         <li><strong>Nouveau process MLDenoise</strong> (module MachineLearning) : réduction du bruit par réseau de neurones. Selon PixInsight, à utiliser sur des images <strong>linéaires, calibrées en couleur</strong> (donc après SPCC), en réglant sur des aperçus réduits ; le modèle (.xmlm) se télécharge par le Software Distribution System et se choisit dans ses préférences. Les premiers retours sont partagés : « très prometteur » face à NXT selon ScopeTrader, résultats inégaux selon des utilisateurs (zones restées granuleuses, pas de réglage séparé de la chrominance). La fiche garde NoiseXTerminator, que tu as sous licence.</li>
         <li><strong>Depuis la 1.9.4</strong> (si tu venais de la 1.9.3) : nouveau moteur JavaScript V8, d'où des versions de scripts dédiées (les dépôts les servent automatiquement) ; les instances d'AutomaticBackgroundExtractor et de SubframeSelector enregistrées avant doivent être recréées (la fiche n'en utilise pas) ; version native Apple Silicon.</li>
         <li><strong>Icônes de process de la fiche</strong> : construites à partir d'icônes générées par PixInsight 1.9.3, non testées en 1.9.5. Si une icône refuse de se charger, signale-la. Les icônes de scripts SetiAstro portent l'empreinte des versions servies pour la 1.9.5 (archive du 19 septembre 2026).</li>
-        <li><strong>Base MARS DR2</strong> (21 juin 2026, indépendante de la 1.9.5) : elle ajoute Ha et OIII (filtres MARS <code style="font-family:var(--mono)">Ha</code> et <code style="font-family:var(--mono)">OIII</code> dans MGC), voir <a href="#t-mgc" style="color:var(--accent)">MGC</a>.</li>
+        <li><strong>Base MARS DR2</strong> (21 juin 2026, indépendante de la 1.9.5) : elle ajoute H et O (filtres MARS <code style="font-family:var(--mono)">Ha</code> et <code style="font-family:var(--mono)">OIII</code> dans MGC), voir <a href="#t-mgc" style="color:var(--accent)">MGC</a>.</li>
       </ul>
     </div>
 
@@ -416,11 +416,11 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
         <tbody>
           <tr><td>NarrowbandNormalization<div class="kind">Module (process)</div></td><td>Bill Blanshan &amp; Mike Cranfield</td><td>Palettes SHO et HOO, équilibre des canaux</td><td><code class="repo">https://www.cosmicphotons.com/pi-modules/narrowbandnormalization/</code></td></tr>
           <tr><td>NBColourMapper<div class="kind">Script</div></td><td>Mike Cranfield</td><td>Palettes narrowband sur mesure, avec aperçu</td><td><code class="repo">https://www.cosmicphotons.com/pi-scripts/nbcolourmapper/</code></td></tr>
-          <tr><td>ImageBlend<div class="kind">Script</div></td><td>Mike Cranfield</td><td>Mélanges : Ha dans RGB, étoiles, masques</td><td><code class="repo">https://www.cosmicphotons.com/pi-scripts/imageblend/</code></td></tr>
+          <tr><td>ImageBlend<div class="kind">Script</div></td><td>Mike Cranfield</td><td>Mélanges : H dans RGB, étoiles, masques</td><td><code class="repo">https://www.cosmicphotons.com/pi-scripts/imageblend/</code></td></tr>
           <tr><td>StarReduction<div class="kind">Script</div></td><td>Mike Cranfield (méthodes Bill Blanshan)</td><td>Réduction d'étoiles</td><td><code class="repo">https://www.cosmicphotons.com/pi-scripts/starreduction/</code></td></tr>
           <tr><td>ScreenStars<div class="kind">Script</div></td><td>Mike Cranfield</td><td>Réintégration des étoiles en mode screen</td><td><code class="repo">https://www.cosmicphotons.com/pi-scripts/screenstars/</code></td></tr>
           <tr><td>GeneralizedHyperbolicStretch<div class="kind">Module (process)</div></td><td>Mike Cranfield &amp; David Payne</td><td>Étirement GHS (dépôt utile seulement s'il manque dans ta version)</td><td><code class="repo">https://www.ghsastro.co.uk/updates/</code></td></tr>
-          <tr><td>Statistical Stretch, Star Stretch, Halo-B-Gon, Automatic Continuum Subtraction, NB to RGB Star Combination, Perfect Palette Picker, Find Background<div class="kind">Scripts</div></td><td>SetiAstro (Franklin Marek)</td><td>Étirement, étoiles, halos, continuum Ha, palettes, aperçu de fond automatique (SPCC). Dépôt de secours : https://raw.githubusercontent.com/setiastro/pixinsight-updates-194/main/</td><td><code class="repo">https://updates.setiastro.com/</code></td></tr>
+          <tr><td>Statistical Stretch, Star Stretch, Halo-B-Gon, Automatic Continuum Subtraction, NB to RGB Star Combination, Perfect Palette Picker, Find Background<div class="kind">Scripts</div></td><td>SetiAstro (Franklin Marek)</td><td>Étirement, étoiles, halos, continuum H, palettes, aperçu de fond automatique (SPCC). Dépôt de secours : https://raw.githubusercontent.com/setiastro/pixinsight-updates-194/main/</td><td><code class="repo">https://updates.setiastro.com/</code></td></tr>
           <tr><td>GraXpert<div class="kind">Module (process)</div></td><td>DeepSkyForge (pont vers GraXpert)</td><td>Retrait du gradient par IA dans PixInsight. Nécessite le logiciel GraXpert installé. Garder la barre oblique finale.</td><td><code class="repo">https://pixinsight.deepskyforge.com/update/graxpert-process/</code></td></tr>
           <tr><td>CorrectMagentaStars<div class="kind">Script</div></td><td>Roberto Sartori &amp; Edoardo Luca Radice</td><td>Étoiles magenta en SHO. Déjà livré avec PixInsight : Script › Utilities</td><td><span class="norepo">Aucun dépôt à ajouter</span></td></tr>
           <tr><td>Foraxx dynamique<div class="kind">Formule PixelMath</div></td><td>Communauté</td><td>Palette SHO dynamique</td><td><span class="norepo">Aucun dépôt (formule à copier)</span></td></tr>
@@ -430,7 +430,7 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
   </section>
 
   <section id="pretraitement">
-    <h2>Prétraitement <span class="filters"><span class="flt L">L</span><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span><span class="flt Ha">Ha</span><span class="flt OIII">OIII</span><span class="flt SII">SII</span></span></h2>
+    <h2>Prétraitement <span class="filters"><span class="flt L">L</span><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span><span class="flt Ha">H</span><span class="flt OIII">O</span><span class="flt SII">S</span></span></h2>
     <p class="sec-intro">Commun à tous les workflows : configuration de WeightedBatchPreprocessing (WBPP) version 3.1, sous PixInsight 1.9.5. Le résultat attendu : un master par filtre, tous alignés sur la même référence.</p>
     <figure class="dg"><div class="dg-scroll"><div style="min-width:760px"><svg class="dg" viewBox="0 0 790 154" role="img" aria-label="Enchaînement des 6 étapes, de la phase linéaire à la phase étirée">
 <defs><marker id="arr-pretraitement" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
@@ -678,7 +678,7 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
           <tr><td>Régions HII dans les bras</td><td><strong>Rose</strong></td><td>UNLV (Jeffery), NASA (NGC 3982)</td></tr>
           <tr><td>Bandes de poussière</td><td><strong>Brun sombre</strong></td><td>UNLV (Jeffery)</td></tr>
           <tr><td>Nébuleuse par réflexion</td><td><strong>Bleu</strong> (la poussière diffuse mieux le bleu)</td><td>Wikipédia</td></tr>
-          <tr><td>Nébuleuse en émission</td><td><strong>Rouge</strong> (raies de Balmer de l'hydrogène, surtout Ha)</td><td>Wikipédia</td></tr>
+          <tr><td>Nébuleuse en émission</td><td><strong>Rouge</strong> (raies de Balmer de l'hydrogène, surtout Hα)</td><td>Wikipédia</td></tr>
           <tr><td>Étoiles</td><td>Du <strong>bleu-blanc</strong> au <strong>jaune-orange</strong>, <strong>jamais vertes</strong></td><td>Las Cumbres Observatory (corps noir)</td></tr>
           <tr><td>Fond de ciel</td><td><strong>Gris neutre foncé</strong> (0,12–0,14, R = G = B)</td><td><a href="#ghs-reperes" style="color:var(--accent)">Repères d'étirement</a></td></tr>
         </tbody>
@@ -837,8 +837,8 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
   </section>
 
   <section id="lhargb">
-    <h2>LHaRGB <span class="filters"><span class="flt L">L</span><span class="flt Ha">Ha<small>656,3 nm</small></span><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span></span></h2>
-    <p class="sec-intro">Galaxies avec régions HII, ou nébuleuses en émission. Le Ha s'ajoute au rouge et, en option, à la luminance.</p>
+    <h2>LHaRGB <span class="filters"><span class="flt L">L</span><span class="flt Ha">H<small>656,3 nm</small></span><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span></span></h2>
+    <p class="sec-intro">Galaxies avec régions HII, ou nébuleuses en émission. Le H s'ajoute au rouge et, en option, à la luminance.</p>
     <figure class="dg"><div class="dg-scroll"><div style="min-width:660px"><svg class="dg" viewBox="0 0 660 154" role="img" aria-label="Enchaînement des 5 étapes, de la phase linéaire à la phase étirée">
 <defs><marker id="arr-lhargb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
 <rect class="f-lin" x="8" y="18" width="582" height="82" rx="8"/>
@@ -852,23 +852,23 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
 <a href="#lhargb-e1"><g class="node node-lin">
 <circle cx="70" cy="58" r="17"/>
 <text class="num" x="70" y="62" text-anchor="middle">1</text>
-<text class="lab" x="70" y="116" text-anchor="middle">RGB, L, Ha</text>
+<text class="lab" x="70" y="116" text-anchor="middle">RGB, L, H</text>
 <text class="lab" x="70" y="130" text-anchor="middle">jusqu&#x27;à BXT</text>
 </g></a>
 <a href="#lhargb-e2"><g class="node node-lin">
 <circle cx="200" cy="58" r="17"/>
 <text class="num" x="200" y="62" text-anchor="middle">2</text>
-<text class="lab" x="200" y="116" text-anchor="middle">Continuum Ha</text>
+<text class="lab" x="200" y="116" text-anchor="middle">Continuum H</text>
 </g></a>
 <a href="#lhargb-e3"><g class="node node-lin">
 <circle cx="330" cy="58" r="17"/>
 <text class="num" x="330" y="62" text-anchor="middle">3</text>
-<text class="lab" x="330" y="116" text-anchor="middle">Ha → R</text>
+<text class="lab" x="330" y="116" text-anchor="middle">H → R</text>
 </g></a>
 <a href="#lhargb-e4"><g class="node node-lin">
 <circle cx="460" cy="58" r="17"/>
 <text class="num" x="460" y="62" text-anchor="middle">4</text>
-<text class="lab" x="460" y="116" text-anchor="middle">Ha → L</text>
+<text class="lab" x="460" y="116" text-anchor="middle">H → L</text>
 <text class="lab" x="460" y="130" text-anchor="middle">(option)</text>
 </g></a>
 <a href="#lhargb-e5"><g class="node node-both">
@@ -879,14 +879,14 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
 </g></a>
 </svg></div></div><figcaption>Les 5 étapes dans l'ordre, sur fond bleu pour la phase linéaire et orange pour la phase étirée ; un cercle à deux couleurs se fait dans l'une ou l'autre. Clique sur une étape pour aller à son détail.</figcaption></figure>
     <h3>Le continuum, en une image</h3>
-    <figure class="dg" id="continuum"><div class="dg-scroll"><div style="min-width:560px"><svg class="dg" viewBox="0 0 720 250" role="img" aria-label="Le filtre R capte surtout du continuum, le filtre Ha capte la raie et une fine tranche de continuum">
+    <figure class="dg" id="continuum"><div class="dg-scroll"><div style="min-width:560px"><svg class="dg" viewBox="0 0 720 250" role="img" aria-label="Le filtre R capte surtout du continuum, le filtre H capte la raie et une fine tranche de continuum">
 <rect class="f-nl" x="111.7" y="30" width="516.7" height="160"/>
 <text class="lab s-nlc" x="122.0" y="46">Filtre R (≈ 600-700 nm)</text>
 <rect class="f-acc s-acc" x="394.8" y="30" width="15.5" height="160"/>
-<text class="lab s-accc" x="402.5" y="24" text-anchor="middle">Filtre Ha (3 nm)</text>
+<text class="lab s-accc" x="402.5" y="24" text-anchor="middle">Filtre H (3 nm)</text>
 <polyline points="60.0,150.0 85.8,149.6 111.7,149.2 137.5,148.8 163.3,148.4 189.2,148.0 215.0,147.6 240.8,147.2 266.7,146.8 292.5,146.4 318.3,146.0 344.2,145.6 370.0,145.2 395.8,144.8 421.7,144.4 447.5,144.0 473.3,143.6 499.2,143.2 525.0,142.8 550.8,142.4 576.7,142.0 602.5,141.6 628.3,141.2 654.2,140.8 680.0,140.4" fill="none" stroke="currentColor" stroke-width="1.6"/>
 <path d="M397.5,144.7 L402.5,58.0 L407.5,144.7" fill="none" stroke="currentColor" stroke-width="2.2"/>
-<text class="lab" x="412.5" y="70.0">Raie Ha 656,3 nm (nébuleuse)</text>
+<text class="lab" x="412.5" y="70.0">Raie Hα 656,3 nm (nébuleuse)</text>
 <text class="lab" x="463.0" y="133.8">Continuum (étoiles, galaxie)</text>
 <line x1="60" y1="190" x2="680" y2="190" stroke="currentColor" stroke-width="1"/>
 <line x1="111.7" y1="190" x2="111.7" y2="195" stroke="currentColor"/><text class="tick" x="111.7" y="210" text-anchor="middle">600</text>
@@ -895,22 +895,22 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
 <line x1="499.2" y1="190" x2="499.2" y2="195" stroke="currentColor"/><text class="tick" x="499.2" y="210" text-anchor="middle">675</text>
 <line x1="628.3" y1="190" x2="628.3" y2="195" stroke="currentColor"/><text class="tick" x="628.3" y="210" text-anchor="middle">700</text>
 <text class="tick" x="680" y="228" text-anchor="end">longueur d'onde (nm)</text>
-</svg></div></div><figcaption>Schéma (hauteurs non à l'échelle). La raie Ha est fine ; le continuum couvre tout le spectre. Le filtre Ha de 3 nm capte la raie plus une fine tranche de continuum ; le filtre R en capte surtout le continuum. D'où <code style="font-family:var(--mono)">H_cs = H − k·(R − med(R))</code> : on retire la part de continuum mise à l'échelle par k, med(R) conserve le fond. Il reste l'émission pure, que l'on peut injecter sans rougir les étoiles.</figcaption></figure>
+</svg></div></div><figcaption>Schéma (hauteurs non à l'échelle). La raie Hα est fine ; le continuum couvre tout le spectre. Le filtre H de 3 nm capte la raie plus une fine tranche de continuum ; le filtre R en capte surtout le continuum. D'où <code style="font-family:var(--mono)">H_cs = H − k·(R − med(R))</code> : on retire la part de continuum mise à l'échelle par k, med(R) conserve le fond. Il reste l'émission pure, que l'on peut injecter sans rougir les étoiles.</figcaption></figure>
     <ol class="steps">
       <li id="lhargb-e1">
-        <div class="step-head"><h4>RGB, L et Ha jusqu'à la déconvolution</h4><span class="phase lin">Linéaire</span></div>
-        <p>RGB comme dans le workflow LRGB : combinaison, gradient, BXT <em>Correct Only</em>, SPCC, puis BXT complet. Retire aussi le gradient de L et de Ha, et applique BXT complet à L et à Ha. Toute la déconvolution se fait <strong>avant</strong> la soustraction du continuum et les injections, qui mélangent des canaux.</p>
+        <div class="step-head"><h4>RGB, L et H jusqu'à la déconvolution</h4><span class="phase lin">Linéaire</span></div>
+        <p>RGB comme dans le workflow LRGB : combinaison, gradient, BXT <em>Correct Only</em>, SPCC, puis BXT complet. Retire aussi le gradient de L et de H, et applique BXT complet à L et à H. Toute la déconvolution se fait <strong>avant</strong> la soustraction du continuum et les injections, qui mélangent des canaux.</p>
         <div class="tools"><a class="tool nat" href="#t-chcomb">ChannelCombination</a><a class="tool rc" href="#t-bxt">BlurXTerminator</a><a class="tool nat" href="#t-spcc">SPCC</a></div>
       </li>
       <li id="lhargb-e2">
-        <div class="step-head"><h4>Soustraction du continuum sur Ha</h4><span class="phase lin">Linéaire</span></div>
+        <div class="step-head"><h4>Soustraction du continuum sur H</h4><span class="phase lin">Linéaire</span></div>
         <p>Ajuste <strong>k</strong> (environ 0,8 à 1) jusqu'à ce que les étoiles et le disque galactique disparaissent de H_cs.</p>
         <div class="formula"><span class="lbl">H_cs</span><code>H - k * (R - med(R))</code><button type="button" data-copy>Copier</button></div>
         <div class="tools"><a class="tool nat" href="#t-pixelmath">PixelMath</a><a class="tool nat" href="#t-nbrgb">NBRGBCombination</a><a class="tool free" href="#t-acs">Automatic Continuum Subtraction</a></div>
       </li>
       <li id="lhargb-e3">
         <div class="step-head"><h4>Injection dans R</h4><span class="phase lin">Linéaire</span></div>
-        <p>Sur le canal rouge de l'image RGB calibrée. <strong>w</strong> entre 0,5 et 2 selon l'effet voulu. ImageBlend permet de faire ce mélange avec aperçu. Garde une copie du RGB avant injection pour comparer (<a href="#couleurs-lhargb" style="color:var(--accent)">couleurs LHaRGB</a>). <strong>Option</strong> : passe SXT sur cette copie et garde ses étoiles, pour que le Ha ne touche pas les étoiles (<a href="#etoiles-lhargb" style="color:var(--accent)">étoiles en LHaRGB</a>).</p>
+        <p>Sur le canal rouge de l'image RGB calibrée. <strong>w</strong> entre 0,5 et 2 selon l'effet voulu. ImageBlend permet de faire ce mélange avec aperçu. Garde une copie du RGB avant injection pour comparer (<a href="#couleurs-lhargb" style="color:var(--accent)">couleurs LHaRGB</a>). <strong>Option</strong> : passe SXT sur cette copie et garde ses étoiles, pour que le H ne touche pas les étoiles (<a href="#etoiles-lhargb" style="color:var(--accent)">étoiles en LHaRGB</a>).</p>
         <div class="formula"><span class="lbl">R'</span><code>R + w * H_cs</code><button type="button" data-copy>Copier</button></div>
         <div class="tools"><a class="tool nat" href="#t-pixelmath">PixelMath</a><a class="tool free" href="#t-imageblend">ImageBlend</a></div>
       </li>
@@ -926,10 +926,10 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
         <div class="tools"><a class="tool rc" href="#t-sxt">SXT</a><a class="tool rc" href="#t-nxt">NXT</a><a class="tool nat" href="#t-ghs">GeneralizedHyperbolicStretch</a><a class="tool nat" href="#t-lrgb">LRGBCombination</a></div>
       </li>
     </ol>
-    <div class="note"><strong>Pour une nébuleuse sans galaxie,</strong> une version plus simple suffit : fais l'image HaRGB en linéaire (Ha dans R, un peu de Ha dans L), puis applique le workflow LRGB classique.</div>
+    <div class="note"><strong>Pour une nébuleuse sans galaxie,</strong> une version plus simple suffit : fais l'image HaRGB en linéaire (H dans R, un peu de H dans L), puis applique le workflow LRGB classique.</div>
 
     <h3 id="couleurs-lhargb">Couleurs LHaRGB : le rendu de référence et comment le vérifier</h3>
-    <p>Le standard est <strong>celui du LRGB calibré</strong> (<a href="#couleurs-lrgb" style="color:var(--accent)">couleurs LRGB</a>), avec une seule différence : les <strong>régions HII ressortent davantage</strong>. Le piège principal est l'excès de Ha, qui rougit toute l'image.</p>
+    <p>Le standard est <strong>celui du LRGB calibré</strong> (<a href="#couleurs-lrgb" style="color:var(--accent)">couleurs LRGB</a>), avec une seule différence : les <strong>régions HII ressortent davantage</strong>. Le piège principal est l'excès de H, qui rougit toute l'image.</p>
     <div class="tbl-wrap">
       <table>
         <thead><tr><th>Zone</th><th>Couleur attendue</th><th>Source</th></tr></thead>
@@ -942,13 +942,13 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
         </tbody>
       </table>
     </div>
-    <p><strong>Pourquoi rose et pas rouge vif :</strong> l'hydrogène émet surtout Hα (rouge, 656 nm), mais aussi Hβ (bleu-vert, 486 nm) ; une région HII réelle est donc rose. Injecté seulement dans le rouge, le Ha rend les régions HII d'un rouge plus pur et plus saturé que nature. Le rapport physique est connu : dans une région HII sans poussière, Hα/Hβ = 2,86 (recombinaison « cas B », 10 000 K, Osterbrock 1989), donc Hβ ≈ 0,35 × Hα. Pour imiter Hβ, on peut ajouter au bleu <strong>au plus</strong> 0,35 × ce qu'on ajoute au rouge (B' = B + 0,35 × w × H_cs) ; la poussière affaiblit Hβ, d'où les valeurs plus basses (vers 0,2) souvent citées par les tutoriels. C'est un plafond physique, pas un réglage publié : ajuste à l'œil.</p>
+    <p><strong>Pourquoi rose et pas rouge vif :</strong> l'hydrogène émet surtout Hα (rouge, 656 nm), mais aussi Hβ (bleu-vert, 486 nm) ; une région HII réelle est donc rose. Injecté seulement dans le rouge, le H rend les régions HII d'un rouge plus pur et plus saturé que nature. Le rapport physique est connu : dans une région HII sans poussière, Hα/Hβ = 2,86 (recombinaison « cas B », 10 000 K, Osterbrock 1989), donc Hβ ≈ 0,35 × Hα. Pour imiter Hβ, on peut ajouter au bleu <strong>au plus</strong> 0,35 × ce qu'on ajoute au rouge (B' = B + 0,35 × w × H_cs) ; la poussière affaiblit Hβ, d'où les valeurs plus basses (vers 0,2) souvent citées par les tutoriels. C'est un plafond physique, pas un réglage publié : ajuste à l'œil.</p>
 
     <h4>Vérifier que tu es dedans</h4>
     <ol>
-      <li><strong>Compare avec ton LRGB sans Ha</strong> (garde une copie avant injection) : hors des régions HII, les couleurs doivent être <strong>identiques</strong> (cœur, bras, étoiles, fond). Seules les régions HII changent.</li>
+      <li><strong>Compare avec ton LRGB sans H</strong> (garde une copie avant injection) : hors des régions HII, les couleurs doivent être <strong>identiques</strong> (cœur, bras, étoiles, fond). Seules les régions HII changent.</li>
       <li><strong>Contrôle de H_cs</strong> : étoiles et disque galactique ont <strong>disparu</strong>, il ne reste que les taches HII sur un fond sombre (critère de réglage de k, <a href="#lhargb-e2" style="color:var(--accent)">étape 2</a>).</li>
-      <li><strong>Sonde 15×15</strong> : région HII, R nettement au-dessus de G et B, avec B ≥ G (rose ; si B ≪ G, le rose vire à l'orange-rouge) ; cœur, mêmes valeurs qu'en LRGB (R ≥ G ≫ B) ; étoiles, R pas franchement plus haut qu'en LRGB ; fond, R ≈ G ≈ B (fond rouge : bruit de Ha injecté).</li>
+      <li><strong>Sonde 15×15</strong> : région HII, R nettement au-dessus de G et B, avec B ≥ G (rose ; si B ≪ G, le rose vire à l'orange-rouge) ; cœur, mêmes valeurs qu'en LRGB (R ≥ G ≫ B) ; étoiles, R pas franchement plus haut qu'en LRGB ; fond, R ≈ G ≈ B (fond rouge : bruit de H injecté).</li>
     </ol>
     <figure class="dg"><div class="dg-scroll"><div style="min-width:620px"><svg class="dg" viewBox="0 0 760 250" role="img" aria-label="LRGB contre LHaRGB à la sonde : seule la région HII change et devient plus rose, le cœur de galaxie et les étoiles restent identiques ; un rouge en hausse sur le cœur signale un continuum mal soustrait">
 <text class="lab" x="95" y="22" text-anchor="middle">Région HII</text>
@@ -1019,7 +1019,7 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
 <text class="tick" x="709" y="228" text-anchor="middle">LHaRGB</text>
 <line x1="590" y1="200" x2="744" y2="200" stroke="currentColor" stroke-width="1"/>
 <text class="lab curve-a-t" x="665" y="46" text-anchor="middle">R en hausse : à corriger</text>
-</svg></div></div><figcaption>Schéma (valeurs illustratives) : la même zone lue à la sonde avant (LRGB) et après injection du Ha (LHaRGB). Seule la région HII doit changer ; si le rouge monte aussi sur le cœur de la galaxie ou sur les étoiles, le continuum a été mal soustrait. Règles déduites de la composition des couleurs et du principe de la soustraction du continuum ; aucune source ne les chiffre.</figcaption></figure>
+</svg></div></div><figcaption>Schéma (valeurs illustratives) : la même zone lue à la sonde avant (LRGB) et après injection du H (LHaRGB). Seule la région HII doit changer ; si le rouge monte aussi sur le cœur de la galaxie ou sur les étoiles, le continuum a été mal soustrait. Règles déduites de la composition des couleurs et du principe de la soustraction du continuum ; aucune source ne les chiffre.</figcaption></figure>
 
     <h4>Quoi ajuster</h4>
     <div class="tbl-wrap">
@@ -1031,30 +1031,30 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
           <tr><td>Régions HII invisibles</td><td>w trop faible ou H_cs trop sombre : monte w, ou injecte aussi dans L</td></tr>
           <tr><td>Fond rouge ou granuleux</td><td>Bruit de H_cs injecté : NXT sur H_cs avant injection ; vérifie que le fond de H_cs reste près de 0</td></tr>
           <tr><td>Régions HII nettes mais couleurs délavées</td><td>Injection dans L trop forte (<code style="font-family:var(--mono)">max(L, H_cs·a)</code>) : baisse a, ou mélange léger</td></tr>
-          <tr><td>Étoiles grossies</td><td>Ha trop fort ou continuum mal soustrait</td></tr>
+          <tr><td>Étoiles grossies</td><td>H trop fort ou continuum mal soustrait</td></tr>
         </tbody>
       </table>
     </div>
     <h4 id="etoiles-lhargb">Étoiles en LHaRGB</h4>
-    <p>Le standard des étoiles est celui du LRGB (<a href="#etoiles-lrgb" style="color:var(--accent)">étoiles LRGB</a>) : du bleu-blanc au jaune-orange, jamais vertes, <strong>et pas plus rouges qu'avant l'injection du Ha</strong>. Dans ce workflow, le Ha est injecté dans le rouge <strong>avant</strong> SXT : les étoiles gardées viennent donc du RGB injecté, et tout résidu d'étoile dans H_cs passe dans leur canal rouge.</p>
+    <p>Le standard des étoiles est celui du LRGB (<a href="#etoiles-lrgb" style="color:var(--accent)">étoiles LRGB</a>) : du bleu-blanc au jaune-orange, jamais vertes, <strong>et pas plus rouges qu'avant l'injection du H</strong>. Dans ce workflow, le H est injecté dans le rouge <strong>avant</strong> SXT : les étoiles gardées viennent donc du RGB injecté, et tout résidu d'étoile dans H_cs passe dans leur canal rouge.</p>
     <div class="tbl-wrap">
       <table>
         <thead><tr><th>Défaut</th><th>Cause</th><th>Réglage</th></tr></thead>
         <tbody>
-          <tr><td>Étoiles rougies, halo rouge</td><td>Continuum mal soustrait (k trop faible) : un reste de Ha stellaire est injecté</td><td>Monte k jusqu'à ce que les étoiles disparaissent de H_cs</td></tr>
-          <tr><td>Anneaux clairs ou sombres autour des étoiles</td><td>PSF différentes entre Ha et R : la soustraction laisse des résidus, même avec un bon k (exemple M31 de PixInsight)</td><td>Prends les étoiles avant injection (ci-dessous)</td></tr>
-          <tr><td>Étoiles grossies</td><td>Ha trop fort (AstroBackyard)</td><td>Baisse w</td></tr>
+          <tr><td>Étoiles rougies, halo rouge</td><td>Continuum mal soustrait (k trop faible) : un reste de H stellaire est injecté</td><td>Monte k jusqu'à ce que les étoiles disparaissent de H_cs</td></tr>
+          <tr><td>Anneaux clairs ou sombres autour des étoiles</td><td>PSF différentes entre H et R : la soustraction laisse des résidus, même avec un bon k (exemple M31 de PixInsight)</td><td>Prends les étoiles avant injection (ci-dessous)</td></tr>
+          <tr><td>Étoiles grossies</td><td>H trop fort (AstroBackyard)</td><td>Baisse w</td></tr>
         </tbody>
       </table>
     </div>
     <p><strong>Contrôle :</strong> compare avec ta copie du RGB <strong>avant</strong> injection. À la sonde sur le halo, R n'est pas franchement plus haut sur les étoiles, sans anneau ni halo rouge ; seules les régions HII changent.</p>
-    <div class="note"><strong>Option la plus propre : les étoiles d'avant injection.</strong> Passe SXT (Unscreen décoché) sur une <strong>copie du RGB non injecté</strong> et garde ces étoiles-là ; injecte ensuite le Ha seulement dans l'image sans étoiles, puis continue le workflow. Les étoiles ne voient jamais H_cs. C'est le même principe que dans l'exemple M31 de PixInsight, où les étoiles abîmées par la soustraction ont été restaurées à partir de poses rouges ; la variante elle-même est une déduction de la fiche, pas une procédure publiée telle quelle.</div>
+    <div class="note"><strong>Option la plus propre : les étoiles d'avant injection.</strong> Passe SXT (Unscreen décoché) sur une <strong>copie du RGB non injecté</strong> et garde ces étoiles-là ; injecte ensuite le H seulement dans l'image sans étoiles, puis continue le workflow. Les étoiles ne voient jamais H_cs. C'est le même principe que dans l'exemple M31 de PixInsight, où les étoiles abîmées par la soustraction ont été restaurées à partir de poses rouges ; la variante elle-même est une déduction de la fiche, pas une procédure publiée telle quelle.</div>
 
-    <p><strong>Quand choisir autre chose :</strong> galaxie sans régions HII marquées (elliptique, lenticulaire) : <a href="#lrgb" style="color:var(--accent)">LRGB</a> ; nébuleuse en émission sans galaxie : la version HaRGB simple ci-dessus, ou le narrowband (<a href="#hoo" style="color:var(--accent)">HOO</a>, <a href="#sho" style="color:var(--accent)">SHO</a>) ; avec aussi de l'OIII (nébuleuses planétaires) : <a href="#rgbsho" style="color:var(--accent)">RGB + SHO</a>.</p>
+    <p><strong>Quand choisir autre chose :</strong> galaxie sans régions HII marquées (elliptique, lenticulaire) : <a href="#lrgb" style="color:var(--accent)">LRGB</a> ; nébuleuse en émission sans galaxie : la version HaRGB simple ci-dessus, ou le narrowband (<a href="#hoo" style="color:var(--accent)">HOO</a>, <a href="#sho" style="color:var(--accent)">SHO</a>) ; avec aussi de l'O (nébuleuses planétaires) : <a href="#rgbsho" style="color:var(--accent)">RGB + SHO</a>.</p>
   </section>
 
   <section id="rgbsho">
-    <h2>RGB + SHO <span class="filters"><span class="flt SII">SII<small>672,4 nm</small></span><span class="flt Ha">Ha<small>656,3 nm</small></span><span class="flt OIII">OIII<small>500,7 nm</small></span><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span></span></h2>
+    <h2>RGB + SHO <span class="filters"><span class="flt SII">S<small>672,4 nm</small></span><span class="flt Ha">H<small>656,3 nm</small></span><span class="flt OIII">O<small>500,7 nm</small></span><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span></span></h2>
     <p class="sec-intro">La nébuleuse en palette SHO, les étoiles en couleurs naturelles issues du RGB.</p>
     <figure class="dg"><div class="dg-scroll"><div style="min-width:660px"><svg class="dg" viewBox="0 0 660 314" role="img" aria-label="Enchaînement des 9 étapes, de la phase linéaire à la phase étirée">
 <defs><marker id="arr-rgbsho" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
@@ -1127,34 +1127,34 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
     <ol class="steps">
       <li id="rgbsho-e1">
         <div class="step-head"><h4>Masters narrowband</h4><span class="phase lin">Linéaire</span></div>
-        <p>Pour Ha, OIII et SII séparément : recadrage identique et retrait du gradient.</p>
+        <p>Pour H, O et S séparément : recadrage identique et retrait du gradient.</p>
         <div class="tools"><a class="tool nat" href="#t-gc">GradientCorrection</a><a class="tool nat" href="#t-dbe">DBE</a><a class="tool nat" href="#t-mgc">MGC</a></div>
       </li>
       <li id="rgbsho-e2">
         <div class="step-head"><h4>Égaliser les canaux (option)</h4><span class="phase lin">Linéaire</span></div>
-        <p>LinearFit sur OIII et SII, avec Ha comme référence : les fonds et niveaux se rapprochent, ce qui aide Foraxx et NarrowbandNormalization. Pratique courante (theAstroShed, nrStellar), pas une obligation.</p>
+        <p>LinearFit sur O et S, avec H comme référence : les fonds et niveaux se rapprochent, ce qui aide Foraxx et NarrowbandNormalization. Pratique courante (theAstroShed, nrStellar), pas une obligation.</p>
         <div class="tools"><a class="tool nat" href="#t-linfit">LinearFit</a></div>
       </li>
       <li id="rgbsho-e3">
         <div class="step-head"><h4>Combinaison simple, puis BXT</h4><span class="phase lin">Linéaire</span></div>
-        <p>ChannelCombination avec R = S, G = H, B = O, <strong>sans boost ni mélange</strong> (un filtre par canal, poids proches). Applique BXT sur cette image couleur. C'est la méthode du manuel RC Astro : mélanger les canaux ou booster fortement un canal (SII par exemple) avant la déconvolution modifie la PSF et donne des résultats incohérents, surtout sur les étoiles brillantes. Si les aberrations diffèrent d'un filtre à l'autre, fais d'abord BXT <em>Correct Only</em> sur chaque master.</p>
+        <p>ChannelCombination avec R = S, G = H, B = O, <strong>sans boost ni mélange</strong> (un filtre par canal, poids proches). Applique BXT sur cette image couleur. C'est la méthode du manuel RC Astro : mélanger les canaux ou booster fortement un canal (S par exemple) avant la déconvolution modifie la PSF et donne des résultats incohérents, surtout sur les étoiles brillantes. Si les aberrations diffèrent d'un filtre à l'autre, fais d'abord BXT <em>Correct Only</em> sur chaque master.</p>
         <div class="tools"><a class="tool nat" href="#t-chcomb">ChannelCombination</a><a class="tool rc" href="#t-bxt">BlurXTerminator</a></div>
       </li>
       <li id="rgbsho-e4">
         <div class="step-head"><h4>Retrait des étoiles</h4><span class="phase lin">Linéaire</span></div>
-        <p>SXT sur l'image SHO combinée, <em>Unscreen</em> décoché (données linéaires). Ne garde que le <strong>fond sans étoiles</strong>. Pour Foraxx ou NBColourMapper, sépare ensuite les trois canaux avec ChannelExtraction (SII = R, Ha = G, OIII = B).</p>
+        <p>SXT sur l'image SHO combinée, <em>Unscreen</em> décoché (données linéaires). Ne garde que le <strong>fond sans étoiles</strong>. Pour Foraxx ou NBColourMapper, sépare ensuite les trois canaux avec ChannelExtraction (S = R, H = G, O = B).</p>
         <div class="tools"><a class="tool rc" href="#t-sxt">StarXTerminator</a><a class="tool nat" href="#t-chcomb">ChannelCombination</a></div>
       </li>
       <li id="rgbsho-e5">
         <div class="step-head"><h4>Bruit et étirement des canaux</h4><span class="phase lin">Linéaire</span><span class="phase nl">Étiré</span></div>
-        <p>NXT sur chaque canal (en linéaire ou après étirement), plus fort sur OIII et SII. Puis étire <strong>chaque canal séparément</strong> : OIII et SII, plus faibles, demandent un étirement plus fort que Ha.</p>
+        <p>NXT sur chaque canal (en linéaire ou après étirement), plus fort sur O et S. Puis étire <strong>chaque canal séparément</strong> : O et S, plus faibles, demandent un étirement plus fort que H.</p>
         <p>La règle : <strong>les trois canaux doivent avoir le même niveau de fond et une médiane proche</strong> avant la palette. On n'égalise pas la nébuleuse : l'écart de signal entre filtres, c'est la couleur, et NarrowbandNormalization l'équilibre ensuite.</p>
         <ul>
-          <li><strong>Méthode A, GHS canal par canal</strong> : étire <strong>Ha d'abord</strong> (SP sur le fond, b vers 10, Stretch factor jusqu'à un pic d'histogramme vers 0,20 à 0,25) et note ce niveau : c'est la référence. Étire ensuite OIII et SII de la même façon, avec un Stretch factor plus élevé, jusqu'au même fond et à la même médiane que Ha ; monte LP pour ne pas faire ressortir le bruit du fond. Vérifie le fond avec le process Statistics ou la lecture de pixel.</li>
+          <li><strong>Méthode A, GHS canal par canal</strong> : étire <strong>H d'abord</strong> (SP sur le fond, b vers 10, Stretch factor jusqu'à un pic d'histogramme vers 0,20 à 0,25) et note ce niveau : c'est la référence. Étire ensuite O et S de la même façon, avec un Stretch factor plus élevé, jusqu'au même fond et à la même médiane que H ; monte LP pour ne pas faire ressortir le bruit du fond. Vérifie le fond avec le process Statistics ou la lecture de pixel.</li>
           <li><strong>Méthode B, Statistical Stretch</strong> : le script place la médiane de l'image sur une valeur cible. Avec la <strong>même Target median</strong> (0,25 par défaut) pour les trois masters, les médianes sont identiques par construction. Sur une image couleur déjà combinée, décoche <em>Linked Stretch</em> pour étirer chaque canal séparément.</li>
           <li><strong>Contrôle</strong> : ChannelCombination simple (R = S, G = H, B = O). Le fond doit être gris neutre ; s'il tire vers une couleur, le fond de ce canal est trop clair : reprends son étirement.</li>
         </ul>
-        <p>Variante (theAstroShed) : combiner d'abord en linéaire, passer AutoLinearFit sur l'image SHO avec le vert (Ha) comme référence, puis étirer avant ou après la combinaison.</p>
+        <p>Variante (theAstroShed) : combiner d'abord en linéaire, passer AutoLinearFit sur l'image SHO avec le vert (H) comme référence, puis étirer avant ou après la combinaison.</p>
         <div class="tools"><a class="tool rc" href="#t-nxt">NoiseXTerminator</a><a class="tool nat" href="#t-ghs">GeneralizedHyperbolicStretch</a><a class="tool free" href="#t-statstretch">Statistical Stretch</a></div>
       </li>
       <li id="rgbsho-e6">
@@ -1192,8 +1192,8 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
 <defs><marker id="arr-rgbsho-col" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
 <rect class="f-surf s-line" x="10" y="10" width="250" height="120" rx="8"/>
 <text class="lab" x="22" y="30">Nébuleuse SHO sans étoiles</text><text class="tick" x="22" y="46">fausses couleurs (look Hubble)</text>
-<rect x="22" y="58" width="22" height="16" rx="3" fill="#d9a441" stroke="currentColor" stroke-opacity="0.35"/><text class="lab small" x="52" y="70">zones Ha : or</text>
-<rect x="22" y="80" width="22" height="16" rx="3" fill="#3fa7c9" stroke="currentColor" stroke-opacity="0.35"/><text class="lab small" x="52" y="92">zones OIII : cyan à bleu</text>
+<rect x="22" y="58" width="22" height="16" rx="3" fill="#d9a441" stroke="currentColor" stroke-opacity="0.35"/><text class="lab small" x="52" y="70">zones H : or</text>
+<rect x="22" y="80" width="22" height="16" rx="3" fill="#3fa7c9" stroke="currentColor" stroke-opacity="0.35"/><text class="lab small" x="52" y="92">zones O : cyan à bleu</text>
 <rect x="22" y="102" width="22" height="16" rx="3" fill="#3b3b3b" stroke="currentColor" stroke-opacity="0.35"/><text class="lab small" x="52" y="114">fond : R = G = B</text>
 <rect class="f-surf s-line" x="10" y="150" width="250" height="130" rx="8"/>
 <text class="lab" x="22" y="170">Étoiles RGB (SPCC)</text><text class="tick" x="22" y="186">vraies couleurs</text>
@@ -1218,8 +1218,8 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
       <table>
         <thead><tr><th>Élément</th><th>Couleur attendue</th><th>Référence</th></tr></thead>
         <tbody>
-          <tr><td>Nébuleuse, zones Ha</td><td><strong>Or, jaune orangé</strong></td><td><a href="#couleurs-sho" style="color:var(--accent)">Couleurs SHO</a></td></tr>
-          <tr><td>Nébuleuse, zones OIII</td><td><strong>Cyan à bleu</strong></td><td>Idem</td></tr>
+          <tr><td>Nébuleuse, zones H</td><td><strong>Or, jaune orangé</strong></td><td><a href="#couleurs-sho" style="color:var(--accent)">Couleurs SHO</a></td></tr>
+          <tr><td>Nébuleuse, zones O</td><td><strong>Cyan à bleu</strong></td><td>Idem</td></tr>
           <tr><td>Nébuleuse, soufre</td><td>Orange plus rouge ; vert en touches seulement</td><td>Idem</td></tr>
           <tr><td>Étoiles</td><td><strong>Couleurs naturelles calibrées</strong>, du bleu-blanc au jaune-orange, <strong>jamais vertes ni magenta</strong></td><td><a href="#etoiles-lrgb" style="color:var(--accent)">Étoiles LRGB</a> (même standard) ; Optical Mechanics</td></tr>
           <tr><td>Fond de ciel</td><td><strong>Gris neutre foncé</strong> (0,12–0,14, R = G = B)</td><td><a href="#ghs-reperes" style="color:var(--accent)">Repères d'étirement</a></td></tr>
@@ -1229,7 +1229,7 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
 
     <h4>Vérifier que tu es dedans</h4>
     <ol>
-      <li><strong>Nébuleuse</strong>, avant de remettre les étoiles : contrôles SHO à la sonde 15×15 (zones Ha R ≥ G ≫ B, zones OIII B ≥ G ≫ R, fond R ≈ G ≈ B).</li>
+      <li><strong>Nébuleuse</strong>, avant de remettre les étoiles : contrôles SHO à la sonde 15×15 (zones H R ≥ G ≫ B, zones O B ≥ G ≫ R, fond R ≈ G ≈ B).</li>
       <li><strong>Étoiles RGB</strong>, sur l'image d'étoiles seule : graphes SPCC corrects ; toute une gamme bleue et jaune-orange ; aucune étoile avec G au-dessus de R et de B (verte), ni avec R et B nettement au-dessus de G (magenta). Lis la couleur à la sonde sur le <strong>halo</strong> de l'étoile : le cœur des étoiles brillantes est souvent saturé et blanc. Schéma de lecture et réglages de l'image d'étoiles : <a href="#etoiles-lrgb" style="color:var(--accent)">étoiles LRGB</a>, même standard.</li>
       <li><strong>Après recombinaison</strong>, à 100 % : pas de restes d'étoiles SHO sous les étoiles RGB (anneaux ou points magenta, trous sombres : extraction SXT incomplète de l'image SHO) ; pas d'étoiles « collées », plus grosses ou plus brillantes que la nébuleuse ne le laisse attendre ; pas de décalage entre les étoiles RGB et leurs traces dans la nébuleuse.</li>
       <li><strong>Fond</strong> : toujours R ≈ G ≈ B après ajout des étoiles.</li>
@@ -1251,28 +1251,28 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
         </tbody>
       </table>
     </div>
-    <p><strong>Quand choisir autre chose :</strong> pas de poses RGB : <a href="#sho" style="color:var(--accent)">SHO sans RGB</a> (étoiles narrowband) ; couleurs naturelles partout, nébuleuse comprise : <a href="#lhargb" style="color:var(--accent)">LHaRGB</a> ou la variante « RGB enrichi par le narrowband » plus bas ; SII faible : <a href="#hoo" style="color:var(--accent)">HOO</a> avec étoiles RGB, même principe.</p>
+    <p><strong>Quand choisir autre chose :</strong> pas de poses RGB : <a href="#sho" style="color:var(--accent)">SHO sans RGB</a> (étoiles narrowband) ; couleurs naturelles partout, nébuleuse comprise : <a href="#lhargb" style="color:var(--accent)">LHaRGB</a> ou la variante « RGB enrichi par le narrowband » plus bas ; S faible : <a href="#hoo" style="color:var(--accent)">HOO</a> avec étoiles RGB, même principe.</p>
 
     <h3 id="couleurs-sho">Couleurs SHO : le rendu de référence et comment le vérifier</h3>
-    <p>Il n'existe pas de norme officielle, mais un rendu de référence, le « look Hubble » : <strong>or et bleu</strong>. Une combinaison SHO brute sort très verte, car Ha, placé dans le vert, domine presque toutes les nébuleuses ; tout le travail consiste à repousser ce vert vers le jaune et l'or. Beaucoup d'images publiées sont très orange et bleu ; un soupçon de vert reste acceptable.</p>
+    <p>Il n'existe pas de norme officielle, mais un rendu de référence, le « look Hubble » : <strong>or et bleu</strong>. Une combinaison SHO brute sort très verte, car H, placé dans le vert, domine presque toutes les nébuleuses ; tout le travail consiste à repousser ce vert vers le jaune et l'or. Beaucoup d'images publiées sont très orange et bleu ; un soupçon de vert reste acceptable.</p>
     <div class="tbl-wrap">
       <table>
         <thead><tr><th>Zone</th><th>Couleur attendue</th><th>Pourquoi</th></tr></thead>
         <tbody>
-          <tr><td>Régions dominées par Ha (et SII)</td><td><strong>Or, jaune orangé</strong></td><td>Le vert de Ha repoussé vers le jaune, plus le rouge de SII</td></tr>
-          <tr><td>Régions riches en OIII</td><td><strong>Cyan, bleu-vert, bleu</strong></td><td>OIII dans le bleu, un peu de Ha ajoute du vert</td></tr>
-          <tr><td>Structures de soufre</td><td>Orange plus rouge, visible dans l'or</td><td>SII apporte le rouge</td></tr>
+          <tr><td>Régions dominées par H (et S)</td><td><strong>Or, jaune orangé</strong></td><td>Le vert de H repoussé vers le jaune, plus le rouge de S</td></tr>
+          <tr><td>Régions riches en O</td><td><strong>Cyan, bleu-vert, bleu</strong></td><td>O dans le bleu, un peu de H ajoute du vert</td></tr>
+          <tr><td>Structures de soufre</td><td>Orange plus rouge, visible dans l'or</td><td>S apporte le rouge</td></tr>
           <tr><td>Fond de ciel</td><td><strong>Gris neutre foncé</strong> (0,12–0,14, R = G = B)</td><td><a href="#ghs-reperes" style="color:var(--accent)">Repères d'étirement</a></td></tr>
           <tr><td>Étoiles</td><td><strong>Pas magenta</strong>, couleurs naturelles si possible</td><td>Avec RGB : <a href="#couleurs-rgbsho" style="color:var(--accent)">couleurs RGB + SHO</a> ; sans RGB : <a href="#etoiles-sho" style="color:var(--accent)">étoiles sans RGB</a></td></tr>
-          <tr><td>Vert</td><td>Quelques touches, <strong>pas de vert dominant</strong></td><td>Ha domine : un SHO brut sort vert</td></tr>
+          <tr><td>Vert</td><td>Quelques touches, <strong>pas de vert dominant</strong></td><td>H domine : un SHO brut sort vert</td></tr>
         </tbody>
       </table>
     </div>
 
     <h4>Vérifier avec la sonde de lecture (15×15)</h4>
-    <figure class="dg"><div class="dg-scroll"><div style="min-width:600px"><svg class="dg" viewBox="0 0 760 250" role="img" aria-label="Ce que la sonde doit lire en SHO : zone Ha or avec R au moins égal à G et B faible, zone OIII cyan avec B et G forts et R faible, fond gris avec R, G, B égaux ; G supérieur à R signale un excès de vert">
+    <figure class="dg"><div class="dg-scroll"><div style="min-width:600px"><svg class="dg" viewBox="0 0 760 250" role="img" aria-label="Ce que la sonde doit lire en SHO : zone H or avec R au moins égal à G et B faible, zone O cyan avec B et G forts et R faible, fond gris avec R, G, B égaux ; G supérieur à R signale un excès de vert">
 <rect x="14" y="10" width="162" height="34" rx="6" fill="#d9a441" stroke="currentColor" stroke-opacity="0.35"/>
-<text class="lab" x="95" y="62" text-anchor="middle">Zone Ha (or)</text>
+<text class="lab" x="95" y="62" text-anchor="middle">Zone H (or)</text>
 <rect class="f-surf s-line" x="36" y="98" width="30" height="102"/>
 <text class="tick" x="51" y="214" text-anchor="middle">R</text>
 <rect class="f-surf s-line" x="78" y="126" width="30" height="74"/>
@@ -1282,7 +1282,7 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
 <line x1="28" y1="200" x2="162" y2="200" stroke="currentColor" stroke-width="1"/>
 <text class="lab" x="95" y="238" text-anchor="middle">R ≥ G ≫ B</text>
 <rect x="204" y="10" width="162" height="34" rx="6" fill="#3fa7c9" stroke="currentColor" stroke-opacity="0.35"/>
-<text class="lab" x="285" y="62" text-anchor="middle">Zone OIII (cyan)</text>
+<text class="lab" x="285" y="62" text-anchor="middle">Zone O (cyan)</text>
 <rect class="f-surf s-line" x="226" y="170" width="30" height="30"/>
 <text class="tick" x="241" y="214" text-anchor="middle">R</text>
 <rect class="f-surf s-line" x="268" y="126" width="30" height="74"/>
@@ -1311,10 +1311,10 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
 <text class="tick" x="705" y="214" text-anchor="middle">B</text>
 <line x1="598" y1="200" x2="732" y2="200" stroke="currentColor" stroke-width="1"/>
 <text class="lab curve-a-t" x="665" y="238" text-anchor="middle">G > R : à corriger</text>
-</svg></div></div><figcaption>Schéma (valeurs illustratives, pas des cibles chiffrées) : ce que la sonde doit lire sur trois types de zones. Un or a beaucoup de rouge, du vert et peu de bleu ; un cyan beaucoup de bleu et de vert, peu de rouge ; le fond a trois valeurs égales. Si G dépasse R dans les zones Ha, l'image est trop verte. Ces règles découlent de la composition des couleurs ; aucune source ne les chiffre.</figcaption></figure>
+</svg></div></div><figcaption>Schéma (valeurs illustratives, pas des cibles chiffrées) : ce que la sonde doit lire sur trois types de zones. Un or a beaucoup de rouge, du vert et peu de bleu ; un cyan beaucoup de bleu et de vert, peu de rouge ; le fond a trois valeurs égales. Si G dépasse R dans les zones H, l'image est trop verte. Ces règles découlent de la composition des couleurs ; aucune source ne les chiffre.</figcaption></figure>
     <ul>
-      <li><strong>Zone Ha brillante</strong> : R ≥ G, nettement au-dessus de B. Si G &gt; R : trop vert.</li>
-      <li><strong>Zone OIII</strong> : G et B nettement au-dessus de R, B ≥ G. Si R est proche de B : violet ou délavé.</li>
+      <li><strong>Zone H brillante</strong> : R ≥ G, nettement au-dessus de B. Si G &gt; R : trop vert.</li>
+      <li><strong>Zone O</strong> : G et B nettement au-dessus de R, B ≥ G. Si R est proche de B : violet ou délavé.</li>
       <li><strong>Fond</strong> : R ≈ G ≈ B. S'il tire vers une couleur, un canal a été trop étiré (<a href="#sho-e5" style="color:var(--accent)">étirement cohérent des canaux</a>).</li>
     </ul>
 
@@ -1324,11 +1324,11 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
         <thead><tr><th>Constat</th><th>Réglage</th></tr></thead>
         <tbody>
           <tr><td>Tout est vert ou vert-jaune</td><td><strong>SCNR</strong> du module en partiel, ou SCNR après coup (Amount 0,50 à 0,80)</td></tr>
-          <tr><td>Pas de bleu, OIII invisible</td><td>Monte <strong>O3 boost</strong></td></tr>
-          <tr><td>Pas de nuances orange ou rouges, soufre absent</td><td>Monte <strong>S2 boost</strong>, avec prudence (SII est le plus bruité)</td></tr>
+          <tr><td>Pas de bleu, O invisible</td><td>Monte <strong>O3 boost</strong></td></tr>
+          <tr><td>Pas de nuances orange ou rouges, soufre absent</td><td>Monte <strong>S2 boost</strong>, avec prudence (S est le plus bruité)</td></tr>
           <tr><td>Fond coloré ou trop clair</td><td><strong>Shadowpoint</strong> ; si ça ne suffit pas, le problème vient de l'étirement des canaux, pas de NBN</td></tr>
           <tr><td>Cœur brûlé ou blanc</td><td><strong>Highlight reduction</strong></td></tr>
-          <tr><td>Détail pâteux</td><td><strong>Lightness = Ha</strong> (Ha porte le détail)</td></tr>
+          <tr><td>Détail pâteux</td><td><strong>Lightness = Ha</strong> (H porte le détail)</td></tr>
           <tr><td>Presque bon, teinte à affiner</td><td>Après NBN : <strong>CurvesTransformation</strong>, canal teinte (H) pour déplacer or et cyan, canal S pour la saturation, sous masque de luminance</td></tr>
         </tbody>
       </table>
@@ -1336,17 +1336,17 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
 
     <h4>Quand utiliser une autre palette ou un autre outil</h4>
     <ul>
-      <li><strong>SII très faible</strong> (nébuleuses planétaires, beaucoup de rémanents, cibles riches en OIII) : <a href="#hoo" style="color:var(--accent)">HOO</a>, sans le signal le plus faible.</li>
-      <li><strong>Cible dominée par Ha, OIII faible</strong> (California par exemple) : HOO centré sur Ha, ou HaRGB, plutôt que SHO.</li>
+      <li><strong>S très faible</strong> (nébuleuses planétaires, beaucoup de rémanents, cibles riches en O) : <a href="#hoo" style="color:var(--accent)">HOO</a>, sans le signal le plus faible.</li>
+      <li><strong>Cible dominée par H, O faible</strong> (California par exemple) : HOO centré sur H, ou HaRGB, plutôt que SHO.</li>
       <li><strong>Galaxie avec régions HII</strong> : workflow <a href="#lhargb" style="color:var(--accent)">LHaRGB</a>, pas une palette SHO.</li>
-      <li><strong>Or et bleu sans lutter contre le vert</strong> : <a href="#foraxx" style="color:var(--accent)">formule Foraxx</a>, qui choisit le rouge (SII ou Ha) selon la force de l'OIII.</li>
+      <li><strong>Or et bleu sans lutter contre le vert</strong> : <a href="#foraxx" style="color:var(--accent)">formule Foraxx</a>, qui choisit le rouge (S ou H) selon la force de l'O.</li>
       <li><strong>Palette créative, teintes choisies, plus de 3 filtres</strong> : <a href="#t-nbcm" style="color:var(--accent)">NBColourMapper</a>.</li>
       <li><strong>Tu hésites</strong> : <a href="#t-ppp" style="color:var(--accent)">Perfect Palette Picker</a> affiche 16 palettes en vignettes (dont SHO, HSO, HOS, HOO, Foraxx) avant de choisir.</li>
-      <li><strong>Autres correspondances de NBN</strong> : HSO (R = H, G = S, B = O) ou HOS ; Ha dans le rouge donne un rendu plus proche du naturel.</li>
+      <li><strong>Autres correspondances de NBN</strong> : HSO (R = H, G = S, B = O) ou HOS ; H dans le rouge donne un rendu plus proche du naturel.</li>
     </ul>
 
     <h3 id="foraxx">Formules Foraxx (palette dynamique)</h3>
-    <p>La couleur de chaque pixel dépend de la force relative des signaux : là où l'OIII domine, le rouge vient du SII, ailleurs du Ha. On obtient des tons or et bleu sans vert envahissant.</p>
+    <p>La couleur de chaque pixel dépend de la force relative des signaux : là où l'O domine, le rouge vient du S, ailleurs du H. On obtient des tons or et bleu sans vert envahissant.</p>
     <ul>
       <li>Renomme les vues <strong>H</strong> (Hα), <strong>O</strong> (OIII) et <strong>S</strong> (SII). Les formules utilisent ces identifiants.</li>
       <li>Travaille sur des images <strong>étirées et sans étoiles</strong>, avec des niveaux de fond proches entre les trois canaux.</li>
@@ -1374,8 +1374,8 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
   </section>
 
   <section id="sho">
-    <h2>SHO sans RGB <span class="filters"><span class="flt SII">SII<small>672,4 nm</small></span><span class="flt Ha">Ha<small>656,3 nm</small></span><span class="flt OIII">OIII<small>500,7 nm</small></span></span></h2>
-    <p class="sec-intro">Palette Hubble avec uniquement des poses narrowband : le fond et les étoiles viennent tous deux de SII, Ha et OIII.</p>
+    <h2>SHO sans RGB <span class="filters"><span class="flt SII">S<small>672,4 nm</small></span><span class="flt Ha">H<small>656,3 nm</small></span><span class="flt OIII">O<small>500,7 nm</small></span></span></h2>
+    <p class="sec-intro">Palette Hubble avec uniquement des poses narrowband : le fond et les étoiles viennent tous deux de S, H et O.</p>
     <figure class="dg"><div class="dg-scroll"><div style="min-width:530px"><svg class="dg" viewBox="0 0 530 314" role="img" aria-label="Enchaînement des 8 étapes, de la phase linéaire à la phase étirée">
 <defs><marker id="arr-sho" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
 <rect class="f-lin" x="8" y="18" width="514" height="82" rx="8"/>
@@ -1441,12 +1441,12 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
     <ol class="steps">
       <li id="sho-e1">
         <div class="step-head"><h4>Masters narrowband</h4><span class="phase lin">Linéaire</span></div>
-        <p>Pour SII, Ha et OIII séparément : recadrage identique et retrait du gradient. Surveille OIII, le plus sensible à la Lune.</p>
+        <p>Pour S, H et O séparément : recadrage identique et retrait du gradient. Surveille O, le plus sensible à la Lune.</p>
         <div class="tools"><a class="tool nat" href="#t-gc">GradientCorrection</a><a class="tool nat" href="#t-dbe">DBE</a><a class="tool nat" href="#t-mgc">MGC</a></div>
       </li>
       <li id="sho-e2">
         <div class="step-head"><h4>Égaliser les canaux (option)</h4><span class="phase lin">Linéaire</span></div>
-        <p>LinearFit sur OIII et SII, avec Ha comme référence, pour rapprocher les fonds.</p>
+        <p>LinearFit sur O et S, avec H comme référence, pour rapprocher les fonds.</p>
         <div class="tools"><a class="tool nat" href="#t-linfit">LinearFit</a></div>
       </li>
       <li id="sho-e3">
@@ -1456,19 +1456,19 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
       </li>
       <li id="sho-e4">
         <div class="step-head"><h4>Séparer fond et étoiles</h4><span class="phase lin">Linéaire</span></div>
-        <p>SXT sur l'image SHO combinée, <em>Generate star image</em> coché, <em>Unscreen</em> décoché. <strong>Garde les deux images</strong> : ici, les étoiles viennent du narrowband. Sépare ensuite chacune en trois canaux avec ChannelExtraction (SII = R, Ha = G, OIII = B) : tu obtiens SII, Ha et OIII sans étoiles, et les étoiles de chaque filtre.</p>
+        <p>SXT sur l'image SHO combinée, <em>Generate star image</em> coché, <em>Unscreen</em> décoché. <strong>Garde les deux images</strong> : ici, les étoiles viennent du narrowband. Sépare ensuite chacune en trois canaux avec ChannelExtraction (S = R, H = G, O = B) : tu obtiens S, H et O sans étoiles, et les étoiles de chaque filtre.</p>
         <div class="tools"><a class="tool rc" href="#t-sxt">StarXTerminator</a><a class="tool nat" href="#t-chcomb">ChannelCombination</a></div>
       </li>
       <li id="sho-e5">
         <div class="step-head"><h4>Bruit et étirement du fond</h4><span class="phase lin">Linéaire</span><span class="phase nl">Étiré</span></div>
-        <p>NXT sur chaque canal sans étoiles, plus fort sur OIII et SII (0,60 à 0,85) que sur Ha (0,50 à 0,70). Puis étire <strong>chaque canal séparément</strong> : OIII et SII demandent un étirement plus fort que Ha.</p>
+        <p>NXT sur chaque canal sans étoiles, plus fort sur O et S (0,60 à 0,85) que sur H (0,50 à 0,70). Puis étire <strong>chaque canal séparément</strong> : O et S demandent un étirement plus fort que H.</p>
         <p>La règle : <strong>les trois canaux doivent avoir le même niveau de fond et une médiane proche</strong> avant la palette. On n'égalise pas la nébuleuse : l'écart de signal entre filtres, c'est la couleur, et NarrowbandNormalization l'équilibre ensuite.</p>
         <ul>
-          <li><strong>Méthode A, GHS canal par canal</strong> : étire <strong>Ha d'abord</strong> (SP sur le fond, b vers 10, Stretch factor jusqu'à un pic d'histogramme vers 0,20 à 0,25) et note ce niveau : c'est la référence. Étire ensuite OIII et SII de la même façon, avec un Stretch factor plus élevé, jusqu'au même fond et à la même médiane que Ha ; monte LP pour ne pas faire ressortir le bruit du fond. Vérifie le fond avec le process Statistics ou la lecture de pixel.</li>
+          <li><strong>Méthode A, GHS canal par canal</strong> : étire <strong>H d'abord</strong> (SP sur le fond, b vers 10, Stretch factor jusqu'à un pic d'histogramme vers 0,20 à 0,25) et note ce niveau : c'est la référence. Étire ensuite O et S de la même façon, avec un Stretch factor plus élevé, jusqu'au même fond et à la même médiane que H ; monte LP pour ne pas faire ressortir le bruit du fond. Vérifie le fond avec le process Statistics ou la lecture de pixel.</li>
           <li><strong>Méthode B, Statistical Stretch</strong> : le script place la médiane de l'image sur une valeur cible. Avec la <strong>même Target median</strong> (0,25 par défaut) pour les trois masters, les médianes sont identiques par construction. Sur une image couleur déjà combinée, décoche <em>Linked Stretch</em> pour étirer chaque canal séparément.</li>
           <li><strong>Contrôle</strong> : ChannelCombination simple (R = S, G = H, B = O). Le fond doit être gris neutre ; s'il tire vers une couleur, le fond de ce canal est trop clair : reprends son étirement.</li>
         </ul>
-        <p>Variante (theAstroShed) : combiner d'abord en linéaire, passer AutoLinearFit sur l'image SHO avec le vert (Ha) comme référence, puis étirer avant ou après la combinaison.</p>
+        <p>Variante (theAstroShed) : combiner d'abord en linéaire, passer AutoLinearFit sur l'image SHO avec le vert (H) comme référence, puis étirer avant ou après la combinaison.</p>
         <div class="tools"><a class="tool rc" href="#t-nxt">NoiseXTerminator</a><a class="tool nat" href="#t-ghs">GeneralizedHyperbolicStretch</a><a class="tool free" href="#t-statstretch">Statistical Stretch</a></div>
       </li>
       <li id="sho-e6">
@@ -1478,10 +1478,10 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
       </li>
       <li id="sho-e7">
         <div class="step-head"><h4>Étoiles sans RGB</h4><span class="phase lin">Linéaire</span><span class="phase nl">Étiré</span></div>
-        <p>Sans poses RGB, les étoiles d'une palette SHO sortent souvent magenta : Ha est bien plus fort que SII et OIII, qu'il faut étirer davantage (couleurs à viser et contrôle : <a href="#etoiles-sho" style="color:var(--accent)">étoiles sans RGB</a>). Trois méthodes, de la plus naturelle à la plus simple :</p>
+        <p>Sans poses RGB, les étoiles d'une palette SHO sortent souvent magenta : H est bien plus fort que S et O, qu'il faut étirer davantage (couleurs à viser et contrôle : <a href="#etoiles-sho" style="color:var(--accent)">étoiles sans RGB</a>). Trois méthodes, de la plus naturelle à la plus simple :</p>
         <ul>
-          <li><strong>NB to RGB Star Combination (SetiAstro)</strong> : donne au script les étoiles Ha et OIII (SII en option), linéaires. Il fabrique des étoiles aux couleurs réalistes. Option <em>Green Channel Blend Ratio</em> : rapport Ha/OIII du vert, 0,3 par défaut. Option <em>Apply Star Stretch</em> (recommandée par l'auteur) : Stretch Factor 5, Color Boost 1,0.</li>
-          <li><strong>Étoiles HOO synthétiques en PixelMath</strong> : sur les images d'étoiles linéaires <strong>H_stars</strong> et <strong>O_stars</strong> (Ha et OIII). Le vert mélange 20 % de Ha et 80 % d'OIII : c'est le rapport qui a donné les couleurs les plus proches du RGB dans les essais d'AIASTRO (à ajuster selon ton matériel). L'auteur calibre ensuite la couleur (calibration photométrique) ; étire enfin avec Star Stretch.</li>
+          <li><strong>NB to RGB Star Combination (SetiAstro)</strong> : donne au script les étoiles H et O (S en option), linéaires. Il fabrique des étoiles aux couleurs réalistes. Option <em>Green Channel Blend Ratio</em> : rapport H/OIII du vert, 0,3 par défaut. Option <em>Apply Star Stretch</em> (recommandée par l'auteur) : Stretch Factor 5, Color Boost 1,0.</li>
+          <li><strong>Étoiles HOO synthétiques en PixelMath</strong> : sur les images d'étoiles linéaires <strong>H_stars</strong> et <strong>O_stars</strong> (H et O). Le vert mélange 20 % de H et 80 % d'O : c'est le rapport qui a donné les couleurs les plus proches du RGB dans les essais d'AIASTRO (à ajuster selon ton matériel). L'auteur calibre ensuite la couleur (calibration photométrique) ; étire enfin avec Star Stretch.</li>
         </ul>
         <div class="formula"><span class="lbl">R</span><code>H_stars</code><button type="button" data-copy>Copier</button></div>
         <div class="formula"><span class="lbl">G</span><code>0.2*H_stars + 0.8*O_stars</code><button type="button" data-copy>Copier</button></div>
@@ -1507,7 +1507,7 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
         <tbody>
           <tr><td>Couleur</td><td>Proche du RGB : du <strong>bleu-blanc</strong> au <strong>jaune-orange</strong>, peu saturée</td><td>AIASTRO (réglage choisi en comparant à des étoiles RGB) ; SetiAstro (« étoiles RGB réalistes »)</td></tr>
           <tr><td>Variété</td><td><strong>Une gamme de couleurs</strong>, pas toutes identiques</td><td>AIASTRO : en SHO/HOO brut, étoiles bleues trop vertes, oranges trop rouges</td></tr>
-          <tr><td>Magenta</td><td><strong>Aucun</strong> : défaut typique du SHO, car Ha domine</td><td>Telescope Live</td></tr>
+          <tr><td>Magenta</td><td><strong>Aucun</strong> : défaut typique du SHO, car H domine</td><td>Telescope Live</td></tr>
           <tr><td>Vert</td><td><strong>Aucun</strong> ; une légère teinte verte peut rester sur les étoiles bleues</td><td>Las Cumbres Observatory ; AIASTRO (défaut résiduel)</td></tr>
           <tr><td>Halos</td><td>Pas d'anneau coloré (cœur rouge, halo cyan)</td><td>Pratique de la fiche</td></tr>
           <tr><td>Fond</td><td>Inchangé après recombinaison (R = G = B)</td><td><a href="#ghs-reperes" style="color:var(--accent)">Repères d'étirement</a></td></tr>
@@ -1582,11 +1582,11 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
         <thead><tr><th>Constat</th><th>Réglage</th></tr></thead>
         <tbody>
           <tr><td>Étoiles magenta</td><td>NB to RGB Star Combination ou étoiles HOO synthétiques ; sinon <a href="#t-cms" style="color:var(--accent)">CorrectMagentaStars</a> (Amount 0,8, jusqu'à 1)</td></tr>
-          <tr><td>Étoiles bleues verdâtres, ou étoiles rouges trop rouges</td><td><strong>Plus de Ha dans le vert</strong> : monte a (ratio Ha/OIII de NB to RGB, ou 0,3·H au lieu de 0,2 dans la formule HOO). Dans G = a·H + (1 − a)·O, monter a baisse G sur les étoiles bleues (OIII &gt; Ha) et le monte sur les rouges (Ha &gt; OIII), qui jaunissent</td></tr>
-          <tr><td>Étoiles chaudes qui tirent vers le jaune-vert</td><td><strong>Moins de Ha dans le vert</strong> : baisse a</td></tr>
+          <tr><td>Étoiles bleues verdâtres, ou étoiles rouges trop rouges</td><td><strong>Plus de H dans le vert</strong> : monte a (ratio H/OIII de NB to RGB, ou 0,3·H au lieu de 0,2 dans la formule HOO). Dans G = a·H + (1 − a)·O, monter a baisse G sur les étoiles bleues (O &gt; H) et le monte sur les rouges (H &gt; O), qui jaunissent</td></tr>
+          <tr><td>Étoiles chaudes qui tirent vers le jaune-vert</td><td><strong>Moins de H dans le vert</strong> : baisse a</td></tr>
           <tr><td>Couleurs criardes</td><td>Color Boost plus bas (Star Stretch ou NB to RGB), ou légère désaturation</td></tr>
           <tr><td>Toutes blanches</td><td>Étirement trop fort : Stretch Factor plus bas, ou GHS avec HP</td></tr>
-          <tr><td>Anneau cœur rouge / halo cyan</td><td>Étoiles OIII plus grosses que Ha : <a href="#etoiles" style="color:var(--accent)">réduction d'étoiles</a>, ou légère désaturation des halos</td></tr>
+          <tr><td>Anneau cœur rouge / halo cyan</td><td>Étoiles O plus grosses que H : <a href="#etoiles" style="color:var(--accent)">réduction d'étoiles</a>, ou légère désaturation des halos</td></tr>
           <tr><td>Étoiles trop présentes</td><td>Réduction d'étoiles après recombinaison</td></tr>
         </tbody>
       </table>
@@ -1595,8 +1595,8 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
   </section>
 
   <section id="hoo">
-    <h2>HOO <span class="filters"><span class="flt Ha">Ha<small>656,3 nm</small></span><span class="flt OIII">OIII<small>500,7 nm</small></span></span></h2>
-    <p class="sec-intro">Palette bicolore : Ha en rouge, OIII en cyan. Idéale pour les nébuleuses planétaires, les rémanents de supernova et les régions HII riches en OIII, avec une caméra mono (filtres Ha et OIII) ou une caméra couleur avec un filtre dual-band.</p>
+    <h2>HOO <span class="filters"><span class="flt Ha">H<small>656,3 nm</small></span><span class="flt OIII">O<small>500,7 nm</small></span></span></h2>
+    <p class="sec-intro">Palette bicolore : H en rouge, O en cyan. Idéale pour les nébuleuses planétaires, les rémanents de supernova et les régions HII riches en O, avec une caméra mono (filtres H et O) ou une caméra couleur avec un filtre dual-band.</p>
     <figure class="dg"><div class="dg-scroll"><div style="min-width:760px"><svg class="dg" viewBox="0 0 790 314" role="img" aria-label="Enchaînement des 12 étapes, de la phase linéaire à la phase étirée">
 <defs><marker id="arr-hoo" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
 <rect class="f-lin" x="8" y="18" width="712" height="82" rx="8"/>
@@ -1664,7 +1664,7 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
 <a href="#hoo-e9"><g class="node node-nl">
 <circle cx="330" cy="218" r="17"/>
 <text class="num" x="330" y="222" text-anchor="middle">9</text>
-<text class="lab" x="330" y="276" text-anchor="middle">Ha en L</text>
+<text class="lab" x="330" y="276" text-anchor="middle">H en L</text>
 <text class="lab" x="330" y="290" text-anchor="middle">(option)</text>
 </g></a>
 <a href="#hoo-e10"><g class="node node-nl">
@@ -1687,21 +1687,21 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
 </svg></div></div><figcaption>Les 12 étapes dans l'ordre, sur fond bleu pour la phase linéaire et orange pour la phase étirée ; un cercle à deux couleurs se fait dans l'une ou l'autre. Clique sur une étape pour aller à son détail.</figcaption></figure>
     <ol class="steps">
       <li id="hoo-e1">
-        <div class="step-head"><h4>Caméra couleur dual-band : extraire Ha et OIII</h4><span class="phase lin">Linéaire</span></div>
-        <p>Avec un filtre dual-band, Ha tombe dans le canal rouge et OIII dans les canaux vert et bleu. Retire d'abord le gradient sur l'image couleur et applique BXT (image couleur, avant tout mélange), puis crée deux images mono avec PixelMath (<em>Create new image</em>, espace <em>Grayscale</em>). Caméra mono : passe directement à l'étape suivante.</p>
-        <p>La moyenne de G et B est la méthode la plus simple. Le canal bleu est cependant plus bruité et moins riche en OIII que le vert : donner plus de poids à G donne souvent un OIII plus propre. Les poids exacts dépendent du capteur et du filtre (un exemple publié pour un filtre L-eNhance et un capteur Sony : 0,05·R + 0,60·G + 0,51·B). La matrice de Bayer laisse aussi fuir un peu d'OIII dans le rouge et du Ha dans le bleu : cette fuite ne peut pas être séparée parfaitement.</p>
-        <div class="formula"><span class="lbl">Ha</span><code>$T[0]</code><button type="button" data-copy>Copier</button></div>
-        <div class="formula"><span class="lbl">OIII</span><code>($T[1] + $T[2]) / 2</code><button type="button" data-copy>Copier</button></div>
+        <div class="step-head"><h4>Caméra couleur dual-band : extraire H et O</h4><span class="phase lin">Linéaire</span></div>
+        <p>Avec un filtre dual-band, H tombe dans le canal rouge et O dans les canaux vert et bleu. Retire d'abord le gradient sur l'image couleur et applique BXT (image couleur, avant tout mélange), puis crée deux images mono avec PixelMath (<em>Create new image</em>, espace <em>Grayscale</em>). Caméra mono : passe directement à l'étape suivante.</p>
+        <p>La moyenne de G et B est la méthode la plus simple. Le canal bleu est cependant plus bruité et moins riche en O que le vert : donner plus de poids à G donne souvent un O plus propre. Les poids exacts dépendent du capteur et du filtre (un exemple publié pour un filtre L-eNhance et un capteur Sony : 0,05·R + 0,60·G + 0,51·B). La matrice de Bayer laisse aussi fuir un peu d'O dans le rouge et du H dans le bleu : cette fuite ne peut pas être séparée parfaitement.</p>
+        <div class="formula"><span class="lbl">H</span><code>$T[0]</code><button type="button" data-copy>Copier</button></div>
+        <div class="formula"><span class="lbl">O</span><code>($T[1] + $T[2]) / 2</code><button type="button" data-copy>Copier</button></div>
         <div class="tools"><a class="tool nat" href="#t-pixelmath">PixelMath</a><a class="tool nat" href="#t-dbe">DBE</a><a class="tool free" href="#t-graxpert">GraXpert</a></div>
       </li>
       <li id="hoo-e2">
-        <div class="step-head"><h4>Masters Ha et OIII</h4><span class="phase lin">Linéaire</span></div>
-        <p>Sur chaque master séparément : recadrage identique et retrait du gradient. OIII est nettement plus sensible à la Lune que Ha : contrôle bien son modèle de gradient.</p>
+        <div class="step-head"><h4>Masters H et O</h4><span class="phase lin">Linéaire</span></div>
+        <p>Sur chaque master séparément : recadrage identique et retrait du gradient. O est nettement plus sensible à la Lune que H : contrôle bien son modèle de gradient.</p>
         <div class="tools"><a class="tool nat" href="#t-gc">GradientCorrection</a><a class="tool nat" href="#t-dbe">DBE</a><a class="tool nat" href="#t-mgc">MGC</a></div>
       </li>
       <li id="hoo-e3">
-        <div class="step-head"><h4>Égaliser OIII sur Ha (option)</h4><span class="phase lin">Linéaire</span></div>
-        <p>LinearFit sur OIII, avec Ha comme référence (méthode de Galactic Hunter) : les fonds doivent avoir la même luminosité pour que la combinaison ne paraisse pas étrange. Cela facilite la palette, surtout avec Foraxx.</p>
+        <div class="step-head"><h4>Égaliser O sur H (option)</h4><span class="phase lin">Linéaire</span></div>
+        <p>LinearFit sur O, avec H comme référence (méthode de Galactic Hunter) : les fonds doivent avoir la même luminosité pour que la combinaison ne paraisse pas étrange. Cela facilite la palette, surtout avec Foraxx.</p>
         <div class="tools"><a class="tool nat" href="#t-linfit">LinearFit</a></div>
       </li>
       <li id="hoo-e4">
@@ -1711,27 +1711,27 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
       </li>
       <li id="hoo-e5">
         <div class="step-head"><h4>Retrait des étoiles</h4><span class="phase lin">Linéaire</span></div>
-        <p>SXT sur l'image HOO combinée, <em>Unscreen</em> décoché. Garde l'image d'étoiles si tu n'as pas d'étoiles RGB. Sépare ensuite Ha (canal R) et OIII (canal G) sans étoiles avec ChannelExtraction pour les étapes suivantes.</p>
+        <p>SXT sur l'image HOO combinée, <em>Unscreen</em> décoché. Garde l'image d'étoiles si tu n'as pas d'étoiles RGB. Sépare ensuite H (canal R) et O (canal G) sans étoiles avec ChannelExtraction pour les étapes suivantes.</p>
         <div class="tools"><a class="tool rc" href="#t-sxt">StarXTerminator</a></div>
       </li>
       <li id="hoo-e6">
         <div class="step-head"><h4>Bruit</h4><span class="phase lin">Linéaire</span><span class="phase nl">Étiré</span></div>
-        <p>NXT sur chaque canal sans étoiles. OIII est presque toujours le plus bruité : Denoise 0,60 à 0,85 sur OIII, 0,50 à 0,70 sur Ha. Ne pousse pas OIII au-delà : le fond devient vite plastique.</p>
+        <p>NXT sur chaque canal sans étoiles. O est presque toujours le plus bruité : Denoise 0,60 à 0,85 sur O, 0,50 à 0,70 sur H. Ne pousse pas O au-delà : le fond devient vite plastique.</p>
         <div class="tools"><a class="tool rc" href="#t-nxt">NoiseXTerminator</a></div>
       </li>
       <li id="hoo-e7">
         <div class="step-head"><h4>Étirement des deux canaux</h4><span class="phase nl">Étiré</span></div>
-        <p>GHS sur Ha d'abord, puis sur OIII jusqu'au même niveau de fond et à une médiane proche. OIII demande en général un Stretch factor plus élevé : monte LP pour ne pas faire ressortir son bruit de fond.</p>
+        <p>GHS sur H d'abord, puis sur O jusqu'au même niveau de fond et à une médiane proche. O demande en général un Stretch factor plus élevé : monte LP pour ne pas faire ressortir son bruit de fond.</p>
         <div class="tools"><a class="tool nat" href="#t-ghs">GeneralizedHyperbolicStretch</a><a class="tool free" href="#t-statstretch">Statistical Stretch</a></div>
       </li>
       <li id="hoo-e8">
         <div class="step-head"><h4>Palette HOO</h4><span class="phase nl">Étiré</span></div>
         <p>Trois méthodes, sur les images étirées et sans étoiles (couleurs à viser et contrôle : <a href="#couleurs-hoo" style="color:var(--accent)">couleurs HOO</a>) :</p>
         <ul>
-          <li><strong>Combinaison simple + NarrowbandNormalization</strong> : ChannelCombination avec R = H, G = O, B = O, puis NarrowbandNormalization avec la palette HOO pour équilibrer OIII (OIIIBoost) et le fond.</li>
-          <li><strong>Foraxx HOO</strong> : le vert varie selon le rapport Ha/OIII, ce qui donne des transitions orangées naturelles (<a href="#foraxx" style="color:var(--accent)">formule HOO</a>).</li>
-          <li><strong>NBColourMapper</strong> : deux couches, Ha en rouge orangé et OIII en cyan, pour choisir les teintes exactes.</li>
-          <li><strong>Perfect Palette Picker</strong> : sans SII, il remplace SII par Ha ; compare HOO, OHH et les autres correspondances en vignettes.</li>
+          <li><strong>Combinaison simple + NarrowbandNormalization</strong> : ChannelCombination avec R = H, G = O, B = O, puis NarrowbandNormalization avec la palette HOO pour équilibrer O (OIIIBoost) et le fond.</li>
+          <li><strong>Foraxx HOO</strong> : le vert varie selon le rapport H/OIII, ce qui donne des transitions orangées naturelles (<a href="#foraxx" style="color:var(--accent)">formule HOO</a>).</li>
+          <li><strong>NBColourMapper</strong> : deux couches, H en rouge orangé et O en cyan, pour choisir les teintes exactes.</li>
+          <li><strong>Perfect Palette Picker</strong> : sans S, il remplace S par H ; compare HOO, OHH et les autres correspondances en vignettes.</li>
           <li><strong>Variante « style Hubble »</strong> (Galactic Hunter) : R = H, G = 0,6·H + 0,4·O, B = O. Le vert mélange les deux gaz et donne des tons plus dorés ; ajuste les coefficients à ton goût.</li>
         </ul>
         <p>Combinaison simple en PixelMath (canal par canal, <em>Create new image</em>, <em>RGB Color</em>) :</p>
@@ -1742,8 +1742,8 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
         <div class="tools"><a class="tool nat" href="#t-chcomb">ChannelCombination</a><a class="tool free" href="#t-nbn">NarrowbandNormalization</a><a class="tool nat" href="#t-pixelmath">PixelMath (Foraxx)</a><a class="tool free" href="#t-nbcm">NBColourMapper</a></div>
       </li>
       <li id="hoo-e9">
-        <div class="step-head"><h4>Ha en luminance (option)</h4><span class="phase nl">Étiré</span></div>
-        <p>Ha porte presque tout le détail. Pour plus de netteté, applique Ha comme luminance sur l'image HOO avec LRGBCombination (seul L coché, Saturation vers 0,40), comme dans le workflow LRGB. Condition, rappelée par PixInsight : la luminosité de Ha doit correspondre à celle de l'image HOO, sinon les couleurs se délavent. Étire Ha pour qu'il ait le même fond et une médiane proche.</p>
+        <div class="step-head"><h4>H en luminance (option)</h4><span class="phase nl">Étiré</span></div>
+        <p>H porte presque tout le détail. Pour plus de netteté, applique H comme luminance sur l'image HOO avec LRGBCombination (seul L coché, Saturation vers 0,40), comme dans le workflow LRGB. Condition, rappelée par PixInsight : la luminosité de H doit correspondre à celle de l'image HOO, sinon les couleurs se délavent. Étire H pour qu'il ait le même fond et une médiane proche.</p>
         <div class="tools"><a class="tool nat" href="#t-lrgb">LRGBCombination</a></div>
       </li>
       <li id="hoo-e10">
@@ -1768,25 +1768,25 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
     </ol>
 
     <h3 id="couleurs-hoo">Couleurs HOO : le rendu de référence et comment le vérifier</h3>
-    <p>En HOO, le rendu de référence est <strong>rouge et cyan (turquoise)</strong> : Ha en rouge, OIII en vert et en bleu. Il n'y a que deux signaux, c'est donc plus simple qu'en SHO (<a href="#couleurs-sho" style="color:var(--accent)">couleurs SHO</a>).</p>
+    <p>En HOO, le rendu de référence est <strong>rouge et cyan (turquoise)</strong> : H en rouge, O en vert et en bleu. Il n'y a que deux signaux, c'est donc plus simple qu'en SHO (<a href="#couleurs-sho" style="color:var(--accent)">couleurs SHO</a>).</p>
     <div class="tbl-wrap">
       <table>
         <thead><tr><th>Zone</th><th>Couleur attendue (HOO classique : R = H, G = B = O)</th><th>Source</th></tr></thead>
         <tbody>
-          <tr><td>Régions dominées par Ha</td><td><strong>Rouge profond à rouge orangé</strong></td><td>StarTools, Bortle 9, Optical Mechanics</td></tr>
-          <tr><td>Régions riches en OIII</td><td><strong>Cyan, turquoise, bleu-vert</strong></td><td>Mêmes sources</td></tr>
-          <tr><td>Ha et OIII forts tous les deux</td><td><strong>Rose saumon à blanchâtre</strong> en HOO classique ; <strong>or, orange</strong> seulement si le vert reçoit du Ha</td><td>Voir la divergence ci-dessous</td></tr>
+          <tr><td>Régions dominées par H</td><td><strong>Rouge profond à rouge orangé</strong></td><td>StarTools, Bortle 9, Optical Mechanics</td></tr>
+          <tr><td>Régions riches en O</td><td><strong>Cyan, turquoise, bleu-vert</strong></td><td>Mêmes sources</td></tr>
+          <tr><td>H et O forts tous les deux</td><td><strong>Rose saumon à blanchâtre</strong> en HOO classique ; <strong>or, orange</strong> seulement si le vert reçoit du H</td><td>Voir la divergence ci-dessous</td></tr>
           <tr><td>Fond de ciel</td><td><strong>Gris neutre foncé</strong> (0,12–0,14, R = G = B)</td><td><a href="#ghs-reperes" style="color:var(--accent)">Repères d'étirement</a></td></tr>
           <tr><td>Étoiles</td><td>Sans halos rouges ou cyan marqués</td><td>Voir plus bas</td></tr>
         </tbody>
       </table>
     </div>
-    <div class="note"><strong>Divergence sur les zones mixtes.</strong> Bortle 9 les décrit dorées. En HOO strictement classique, le vert et le bleu reçoivent le même OIII : une zone mixte a beaucoup de rouge et autant de vert que de bleu, donc elle sort rose saumon à blanchâtre. L'or ou l'orange n'apparaît que si le vert reçoit une part de Ha : Foraxx HOO, variante « style Hubble » (G = 0,6·H + 0,4·O, Galactic Hunter) ou G = 0,85·O + 0,15·H (Optical Mechanics). Choisis la variante selon le rendu voulu : <strong>rouge / cyan / rose</strong> (classique) ou <strong>rouge / cyan / or</strong> (Foraxx HOO, variante Hubble).</div>
+    <div class="note"><strong>Divergence sur les zones mixtes.</strong> Bortle 9 les décrit dorées. En HOO strictement classique, le vert et le bleu reçoivent le même O : une zone mixte a beaucoup de rouge et autant de vert que de bleu, donc elle sort rose saumon à blanchâtre. L'or ou l'orange n'apparaît que si le vert reçoit une part de H : Foraxx HOO, variante « style Hubble » (G = 0,6·H + 0,4·O, Galactic Hunter) ou G = 0,85·O + 0,15·H (Optical Mechanics). Choisis la variante selon le rendu voulu : <strong>rouge / cyan / rose</strong> (classique) ou <strong>rouge / cyan / or</strong> (Foraxx HOO, variante Hubble).</div>
 
     <h4>Vérifier avec la sonde de lecture (15×15)</h4>
-    <figure class="dg"><div class="dg-scroll"><div style="min-width:600px"><svg class="dg" viewBox="0 0 760 250" role="img" aria-label="Ce que la sonde doit lire en HOO classique : zone Ha rouge avec R bien au-dessus de G et B égaux, zone OIII cyan avec G et B égaux au-dessus de R, zone mixte saumon avec R élevé et G égal à B, fond gris avec R, G, B égaux">
+    <figure class="dg"><div class="dg-scroll"><div style="min-width:600px"><svg class="dg" viewBox="0 0 760 250" role="img" aria-label="Ce que la sonde doit lire en HOO classique : zone H rouge avec R bien au-dessus de G et B égaux, zone O cyan avec G et B égaux au-dessus de R, zone mixte saumon avec R élevé et G égal à B, fond gris avec R, G, B égaux">
 <rect x="14" y="10" width="162" height="34" rx="6" fill="#c8453a" stroke="currentColor" stroke-opacity="0.35"/>
-<text class="lab" x="95" y="62" text-anchor="middle">Zone Ha (rouge)</text>
+<text class="lab" x="95" y="62" text-anchor="middle">Zone H (rouge)</text>
 <rect class="f-surf s-line" x="36" y="98" width="30" height="102"/>
 <text class="tick" x="51" y="214" text-anchor="middle">R</text>
 <rect class="f-surf s-line" x="78" y="174" width="30" height="26"/>
@@ -1796,7 +1796,7 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
 <line x1="28" y1="200" x2="162" y2="200" stroke="currentColor" stroke-width="1"/>
 <text class="lab" x="95" y="238" text-anchor="middle">R ≫ G ≈ B</text>
 <rect x="204" y="10" width="162" height="34" rx="6" fill="#3fb3b8" stroke="currentColor" stroke-opacity="0.35"/>
-<text class="lab" x="285" y="62" text-anchor="middle">Zone OIII (cyan)</text>
+<text class="lab" x="285" y="62" text-anchor="middle">Zone O (cyan)</text>
 <rect class="f-surf s-line" x="226" y="174" width="30" height="26"/>
 <text class="tick" x="241" y="214" text-anchor="middle">R</text>
 <rect class="f-surf s-line" x="268" y="116" width="30" height="84"/>
@@ -1830,10 +1830,10 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
       <table>
         <thead><tr><th>Zone</th><th>À lire</th><th>Problème si…</th></tr></thead>
         <tbody>
-          <tr><td>Zone Ha</td><td><strong>R ≫ G ≈ B</strong></td><td>R à peine au-dessus : Ha trop faible ou OIII trop étiré</td></tr>
-          <tr><td>Zone OIII</td><td><strong>G ≈ B, nettement au-dessus de R</strong></td><td>R proche de G et B : zone délavée, blanchâtre</td></tr>
-          <tr><td>Zone mixte (classique)</td><td>R élevé, G ≈ B moyens</td><td>G ≫ B : ce n'est plus du HOO classique (Ha dans le vert)</td></tr>
-          <tr><td>Fond</td><td><strong>R ≈ G ≈ B</strong></td><td>Fond rouge : Ha trop étiré ; fond cyan : OIII trop étiré</td></tr>
+          <tr><td>Zone H</td><td><strong>R ≫ G ≈ B</strong></td><td>R à peine au-dessus : H trop faible ou O trop étiré</td></tr>
+          <tr><td>Zone O</td><td><strong>G ≈ B, nettement au-dessus de R</strong></td><td>R proche de G et B : zone délavée, blanchâtre</td></tr>
+          <tr><td>Zone mixte (classique)</td><td>R élevé, G ≈ B moyens</td><td>G ≫ B : ce n'est plus du HOO classique (H dans le vert)</td></tr>
+          <tr><td>Fond</td><td><strong>R ≈ G ≈ B</strong></td><td>Fond rouge : H trop étiré ; fond cyan : O trop étiré</td></tr>
         </tbody>
       </table>
     </div>
@@ -1843,22 +1843,22 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
       <table>
         <thead><tr><th>Constat</th><th>Réglage</th></tr></thead>
         <tbody>
-          <tr><td>Tout est rouge, OIII invisible</td><td>Monte <strong>O3 boost</strong> ; si OIII reste noyé, reprends son étirement (même fond et même médiane que Ha)</td></tr>
-          <tr><td>Cyan trop saturé, froid</td><td>Baisse O3 boost, ou mets un peu de Ha dans le vert (variante Hubble ou Optical Mechanics) pour réchauffer</td></tr>
+          <tr><td>Tout est rouge, O invisible</td><td>Monte <strong>O3 boost</strong> ; si O reste noyé, reprends son étirement (même fond et même médiane que H)</td></tr>
+          <tr><td>Cyan trop saturé, froid</td><td>Baisse O3 boost, ou mets un peu de H dans le vert (variante Hubble ou Optical Mechanics) pour réchauffer</td></tr>
           <tr><td>Fond rouge ou cyan</td><td><strong>Shadowpoint</strong>, sinon reprends l'étirement des canaux</td></tr>
-          <tr><td>OIII bruité, fond granuleux cyan</td><td>NXT plus fort sur OIII (0,60 à 0,85), LP plus haut dans GHS</td></tr>
-          <tr><td>Détail pâteux</td><td><strong>Lightness = Ha</strong>, ou Ha en luminance (<a href="#hoo-e9" style="color:var(--accent)">étape 9</a>)</td></tr>
+          <tr><td>O bruité, fond granuleux cyan</td><td>NXT plus fort sur O (0,60 à 0,85), LP plus haut dans GHS</td></tr>
+          <tr><td>Détail pâteux</td><td><strong>Lightness = Ha</strong>, ou H en luminance (<a href="#hoo-e9" style="color:var(--accent)">étape 9</a>)</td></tr>
           <tr><td>Vert parasite</td><td>Rare en HOO, où le SCNR est souvent inutile ; sinon SCNR léger</td></tr>
         </tbody>
       </table>
     </div>
-    <p><strong>Étoiles :</strong> en HOO, elles ont souvent un cœur rouge et un halo cyan, car les étoiles OIII sont plus grosses. Utilise des étoiles RGB si tu en as, NB to RGB Star Combination ou les étoiles HOO synthétiques (G = 0,2·H + 0,8·O) ; sinon, désature-les légèrement.</p>
-    <p><strong>Quand ne pas choisir le HOO :</strong> tu as du SII et la cible en contient (<a href="#sho" style="color:var(--accent)">SHO</a>, plus riche en nuances) ; Ha très dominant et OIII quasi absent, comme la California (le HOO sort presque tout rouge : HaRGB, HOO centré sur Ha, voire Ha en noir et blanc) ; tu veux de l'or sans vert (Foraxx HOO) ; tu veux comparer (<a href="#t-ppp" style="color:var(--accent)">Perfect Palette Picker</a>).</p>
+    <p><strong>Étoiles :</strong> en HOO, elles ont souvent un cœur rouge et un halo cyan, car les étoiles O sont plus grosses. Utilise des étoiles RGB si tu en as, NB to RGB Star Combination ou les étoiles HOO synthétiques (G = 0,2·H + 0,8·O) ; sinon, désature-les légèrement.</p>
+    <p><strong>Quand ne pas choisir le HOO :</strong> tu as du S et la cible en contient (<a href="#sho" style="color:var(--accent)">SHO</a>, plus riche en nuances) ; H très dominant et O quasi absent, comme la California (le HOO sort presque tout rouge : HaRGB, HOO centré sur H, voire H en noir et blanc) ; tu veux de l'or sans vert (Foraxx HOO) ; tu veux comparer (<a href="#t-ppp" style="color:var(--accent)">Perfect Palette Picker</a>).</p>
 
     <h3 id="etoiles-hoo">Étoiles HOO : le standard et comment le vérifier</h3>
     <p>Le standard est <strong>le même qu'en SHO sans RGB</strong> (<a href="#etoiles-sho" style="color:var(--accent)">étoiles sans RGB</a>) : des étoiles plausibles, du bleu-blanc au jaune-orange, peu saturées, une gamme de couleurs, jamais vertes. Le défaut typique, lui, est différent.</p>
-    <div class="note"><strong>Le défaut propre au HOO : rouge et cyan, pas magenta.</strong> En HOO classique (R = H, G = B = O), le vert et le bleu sont toujours égaux. Le <strong>magenta est donc impossible</strong> (il faudrait B nettement au-dessus de G), et CorrectMagentaStars est rarement utile. En revanche, les étoiles où Ha domine sortent <strong>rouges ou saumon, jamais jaunes</strong> (le jaune demande G &gt; B), et celles où OIII domine sortent <strong>cyan</strong>. Les étoiles OIII étant souvent plus grosses, on voit aussi des <strong>cœurs rouges à halo cyan</strong>. Ces points se déduisent du calcul des canaux ; aucune source ne les formule ainsi.</div>
-    <figure class="dg"><div class="dg-scroll"><div style="min-width:620px"><svg class="dg" viewBox="0 0 760 250" role="img" aria-label="Étoiles HOO : en HOO classique le vert égale le bleu, donc une étoile chaude sort saumon et une étoile froide cyan ; avec un vert synthétique 0,2 Ha plus 0,8 OIII, l'étoile chaude devient jaune-orange et la froide bleutée">
+    <div class="note"><strong>Le défaut propre au HOO : rouge et cyan, pas magenta.</strong> En HOO classique (R = H, G = B = O), le vert et le bleu sont toujours égaux. Le <strong>magenta est donc impossible</strong> (il faudrait B nettement au-dessus de G), et CorrectMagentaStars est rarement utile. En revanche, les étoiles où H domine sortent <strong>rouges ou saumon, jamais jaunes</strong> (le jaune demande G &gt; B), et celles où O domine sortent <strong>cyan</strong>. Les étoiles O étant souvent plus grosses, on voit aussi des <strong>cœurs rouges à halo cyan</strong>. Ces points se déduisent du calcul des canaux ; aucune source ne les formule ainsi.</div>
+    <figure class="dg"><div class="dg-scroll"><div style="min-width:620px"><svg class="dg" viewBox="0 0 760 250" role="img" aria-label="Étoiles HOO : en HOO classique le vert égale le bleu, donc une étoile chaude sort saumon et une étoile froide cyan ; avec un vert synthétique 0,2 H plus 0,8 O, l'étoile chaude devient jaune-orange et la froide bleutée">
 <circle cx="95" cy="26" r="16" fill="#d96666" stroke="currentColor" stroke-opacity="0.35"/>
 <text class="lab small" x="95" y="62" text-anchor="middle">Chaude, HOO classique</text>
 <rect class="f-surf s-line" x="36" y="98" width="30" height="102"/>
@@ -1899,7 +1899,7 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
 <text class="tick" x="705" y="214" text-anchor="middle">B</text>
 <line x1="598" y1="200" x2="732" y2="200" stroke="currentColor" stroke-width="1"/>
 <text class="lab small" x="665" y="238" text-anchor="middle">G < B : bleutée</text>
-</svg></div></div><figcaption>Schéma calculé (valeurs illustratives de Ha et OIII) : une étoile chaude (Ha &gt; OIII) et une étoile froide (OIII &gt; Ha), en HOO classique puis avec le vert synthétique G = 0,2·H + 0,8·O d'AIASTRO. Mettre un peu de Ha dans le vert rend G supérieur à B sur l'étoile chaude, qui tire vers l'orange et le jaune au lieu du saumon, et inférieur à B sur l'étoile froide, qui devient bleutée : ce que le HOO classique ne peut pas donner.</figcaption></figure>
+</svg></div></div><figcaption>Schéma calculé (valeurs illustratives de H et O) : une étoile chaude (H &gt; O) et une étoile froide (O &gt; H), en HOO classique puis avec le vert synthétique G = 0,2·H + 0,8·O d'AIASTRO. Mettre un peu de H dans le vert rend G supérieur à B sur l'étoile chaude, qui tire vers l'orange et le jaune au lieu du saumon, et inférieur à B sur l'étoile froide, qui devient bleutée : ce que le HOO classique ne peut pas donner.</figcaption></figure>
     <div class="tbl-wrap">
       <table>
         <thead><tr><th>Élément</th><th>Attendu</th><th>Source</th></tr></thead>
@@ -1917,7 +1917,7 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
     <h4>Méthodes, de la plus naturelle à la plus simple</h4>
     <ol>
       <li><strong>Étoiles RGB</strong>, si tu en as : couleurs calibrées (bloc étoiles RGB du <a href="#rgbsho-e8" style="color:var(--accent)">workflow RGB + SHO</a>).</li>
-      <li><strong>NB to RGB Star Combination</strong> : étoiles Ha et OIII ; sans SII, le code donne R = H, G = 0,3·H + 0,7·O, B = O. <strong>Caméra couleur dual-band</strong> : le script accepte l'image couleur directement et prend, d'après son code, Ha dans le canal rouge et OIII dans le <strong>canal vert seul</strong> (sans moyenne avec le bleu, contrairement à l'extraction de l'étape 1).</li>
+      <li><strong>NB to RGB Star Combination</strong> : étoiles H et O ; sans S, le code donne R = H, G = 0,3·H + 0,7·O, B = O. <strong>Caméra couleur dual-band</strong> : le script accepte l'image couleur directement et prend, d'après son code, H dans le canal rouge et O dans le <strong>canal vert seul</strong> (sans moyenne avec le bleu, contrairement à l'extraction de l'étape 1).</li>
       <li><strong>Étoiles HOO synthétiques</strong> (AIASTRO) : R = H, G = 0,2·H + 0,8·O, B = O.</li>
       <li><strong>Étoiles HOO telles quelles</strong> : image d'étoiles de SXT sur l'image HOO, légèrement désaturée.</li>
     </ol>
@@ -1936,8 +1936,8 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
         <thead><tr><th>Constat</th><th>Réglage</th></tr></thead>
         <tbody>
           <tr><td>Étoiles chaudes rouges ou saumon, jamais jaunes</td><td>Vert synthétique (NB to RGB ou formule AIASTRO) au lieu des étoiles HOO telles quelles</td></tr>
-          <tr><td>Étoiles bleues verdâtres, ou chaudes encore trop rouges</td><td><strong>Plus de Ha dans le vert</strong> : monte a dans G = a·H + (1 − a)·O (même mécanisme qu'en <a href="#etoiles-sho" style="color:var(--accent)">SHO sans RGB</a>)</td></tr>
-          <tr><td>Étoiles chaudes qui tirent vers le jaune-vert</td><td><strong>Moins de Ha dans le vert</strong> : baisse a</td></tr>
+          <tr><td>Étoiles bleues verdâtres, ou chaudes encore trop rouges</td><td><strong>Plus de H dans le vert</strong> : monte a dans G = a·H + (1 − a)·O (même mécanisme qu'en <a href="#etoiles-sho" style="color:var(--accent)">SHO sans RGB</a>)</td></tr>
+          <tr><td>Étoiles chaudes qui tirent vers le jaune-vert</td><td><strong>Moins de H dans le vert</strong> : baisse a</td></tr>
           <tr><td>Cyan saturé</td><td>Légère désaturation, ou Color Boost plus bas (Star Stretch, NB to RGB)</td></tr>
           <tr><td>Anneau cœur rouge / halo cyan</td><td><a href="#etoiles" style="color:var(--accent)">Réduction d'étoiles</a>, ou désaturation des halos</td></tr>
           <tr><td>Toutes blanches</td><td>Étirement trop fort : Stretch Factor plus bas, ou GHS avec HP</td></tr>
@@ -2197,7 +2197,7 @@ max(Img1,iif(M==1,E7,iif(M==2,E8,E9)))</code><button type="button" data-copy>Cop
 
   <section id="parametres">
     <h2>Paramètres des outils</h2>
-    <p class="sec-intro">Pour chaque outil : la méthode, des valeurs de départ, et les différences entre filtres (SII, Ha, OIII, L, R, G, B) quand il y en a. Ce sont des points de départ à ajuster à l'œil sur tes données, pas des valeurs absolues. Clique sur une étiquette d'outil dans les workflows pour arriver directement à sa fiche.</p>
+    <p class="sec-intro">Pour chaque outil : la méthode, des valeurs de départ, et les différences entre filtres (S, H, O, L, R, G, B) quand il y en a. Ce sont des points de départ à ajuster à l'œil sur tes données, pas des valeurs absolues. Clique sur une étiquette d'outil dans les workflows pour arriver directement à sa fiche.</p>
     <div class="chips" role="group" aria-label="Filtrer les fiches"><button type="button" class="chip on" data-g="*">Toutes</button><button type="button" class="chip" data-g="Prétraitement">Prétraitement</button><button type="button" class="chip" data-g="Recadrage et gradient">Recadrage et gradient</button><button type="button" class="chip" data-g="Couleur et astrométrie">Couleur et astrométrie</button><button type="button" class="chip" data-g="RC Astro">RC Astro</button><button type="button" class="chip" data-g="Étirement">Étirement</button><button type="button" class="chip" data-g="Combinaison">Combinaison</button><button type="button" class="chip" data-g="Narrowband">Narrowband</button><button type="button" class="chip" data-g="Étoiles">Étoiles</button><button type="button" class="chip" data-g="Finition">Finition</button></div>
     <div class="toc">
       <div class="toc-g"><span>Prétraitement</span><a href="#t-wbpp">WBPP</a><a href="#t-fbpp">FastBatchPreprocessing</a><a href="#t-cc">CosmeticCorrection</a><a href="#t-ln">LocalNormalization</a></div>
@@ -2219,7 +2219,7 @@ max(Img1,iif(M==1,E7,iif(M==2,E8,E9)))</code><button type="button" data-copy>Cop
         <div class="tlabel">Paramètres</div>
         <dl class="tparams"><div><dt>Version</dt><dd>WBPP 3.1 (PixInsight 1.9.5)</dd></div><div><dt>Préréglage de qualité</dt><dd>Maximum quality (défaut)</dd></div><div><dt>Output pedestal</dt><dd>Automatic</dd></div><div><dt>Optimize dark frames</dt><dd>Décoché (caméra refroidie, darks de même durée et température) ; ne calibre jamais les darks avec les bias</dd></div><div><dt>Cosmetic correction</dt><dd>Icône CC_auto : Auto detect, Hot sigma 2,2 à 3,0, Cold désactivé</dd></div><div><dt>Caméra couleur</dt><dd>CFA images coché, motif Auto, Debayer VNG</dd></div><div><dt>Subframe weighting</dt><dd>PSF Signal Weight</dd></div><div><dt>Registration</dt><dd>Référence Auto ; Distortion correction pour les grands champs</dd></div><div><dt>Local normalization</dt><dd>Activée, référence : intégration des meilleures images</dd></div><div><dt>Rejection</dt><dd>Auto ; sinon Percentile (moins de 10 images), Winsorized (plus de 10), ESD (grands lots)</dd></div><div><dt>Large-scale pixel rejection (High)</dt><dd>Activé contre les satellites</dd></div><div><dt>Fast Integration</dt><dd>Automatique dès 150 images par groupe ; à décocher pour l'intégration pondérée complète</dd></div><div><dt>Drizzle</dt><dd>Par groupe : ×2 si FWHM &lt; 2 px et 15 à 20 poses dithérées ; caméra couleur : drizzle CFA Scale 1, Drop shrink 1,0</dd></div><div><dt>Autocrop / Astrometric solution</dt><dd>Activés</dd></div><div><dt>Grouping keywords</dt><dd>Mot-clé de nuit (par ex. SESSION) si les flats changent d'une nuit à l'autre</dd></div></dl>
         <div class="tlabel">Par filtre</div>
-        <div class="pf"><div><span class="filters"><span class="flt L">L</span><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span></span><p>Poses courtes (60 à 180 s). Darks de même durée. Flats refaits pour chaque filtre à chaque session si le train optique a bougé.</p></div><div><span class="filters"><span class="flt SII">SII</span><span class="flt Ha">Ha</span><span class="flt OIII">OIII</span></span><p>Poses longues (180 à 600 s). Darks de même durée et même température. Flats pour chaque filtre, avec des poses plus longues (plusieurs secondes).</p></div><div><span class="filters"><span class="flt L">L</span><span class="flt Ha">Ha</span></span><p>Bons candidats comme référence d'alignement commune : les plus nets et les plus riches en étoiles.</p></div><div><span class="filters"><span class="flt OIII">OIII</span><span class="flt SII">SII</span></span><p>Souvent moins de brutes utiles : si un filtre a moins de 8 images, laisse la réjection en Auto (WBPP choisit une méthode adaptée).</p></div></div>
+        <div class="pf"><div><span class="filters"><span class="flt L">L</span><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span></span><p>Poses courtes (60 à 180 s). Darks de même durée. Flats refaits pour chaque filtre à chaque session si le train optique a bougé.</p></div><div><span class="filters"><span class="flt SII">S</span><span class="flt Ha">H</span><span class="flt OIII">O</span></span><p>Poses longues (180 à 600 s). Darks de même durée et même température. Flats pour chaque filtre, avec des poses plus longues (plusieurs secondes).</p></div><div><span class="filters"><span class="flt L">L</span><span class="flt Ha">H</span></span><p>Bons candidats comme référence d'alignement commune : les plus nets et les plus riches en étoiles.</p></div><div><span class="filters"><span class="flt OIII">O</span><span class="flt SII">S</span></span><p>Souvent moins de brutes utiles : si un filtre a moins de 8 images, laisse la réjection en Auto (WBPP choisit une méthode adaptée).</p></div></div>
         <p class="tnote">Aligne tous les filtres sur la même référence : les combinaisons de canaux et les formules PixelMath en dépendent.</p>
       </article>
       <article class="tcard" id="t-fbpp">
@@ -2236,7 +2236,7 @@ max(Img1,iif(M==1,E7,iif(M==2,E8,E9)))</code><button type="button" data-copy>Cop
         <div class="tlabel">Paramètres</div>
         <dl class="tparams"><div><dt>Use Auto detect</dt><dd>Activé</dd></div><div><dt>Hot sigma</dt><dd>2,2 à 3,0 (Telescope Live : 2,2 à 2,5). Ne descends pas trop bas, sinon du vrai signal est modifié</dd></div><div><dt>Cold sigma</dt><dd>3,0, ou désactivé (Telescope Live le laisse à 0)</dd></div><div><dt>CFA</dt><dd>Coché pour une caméra couleur</dd></div></dl>
               <div class="tlabel">Par filtre</div>
-        <div class="pf"><div><span class="filters"><span class="flt L">L</span><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span></span><p>Hot sigma 2,5 à 3,0.</p></div><div><span class="filters"><span class="flt SII">SII</span><span class="flt Ha">Ha</span><span class="flt OIII">OIII</span></span><p>Poses longues : les pixels chauds viennent du courant d'obscurité et sont plus nombreux. Hot sigma 2,2 à 2,5, et des darks de même durée que les brutes.</p></div></div>
+        <div class="pf"><div><span class="filters"><span class="flt L">L</span><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span></span><p>Hot sigma 2,5 à 3,0.</p></div><div><span class="filters"><span class="flt SII">S</span><span class="flt Ha">H</span><span class="flt OIII">O</span></span><p>Poses longues : les pixels chauds viennent du courant d'obscurité et sont plus nombreux. Hot sigma 2,2 à 2,5, et des darks de même durée que les brutes.</p></div></div>
       </article>
       <article class="tcard" id="t-ln">
         <div class="tcard-head"><h4>LocalNormalization</h4><span class="ttag nat" title="Natif PixInsight">PI</span><span class="phase lin">Linéaire</span></div>
@@ -2263,7 +2263,7 @@ max(Img1,iif(M==1,E7,iif(M==2,E8,E9)))</code><button type="button" data-copy>Cop
         <div class="tlabel">Paramètres</div>
         <dl class="tparams"><div><dt>Gradient scale</dt><dd>1024 au départ ; 512 ou 256 si un gradient reste dans les coins (plus bas = plus agressif)</dd></div><div><dt>Structure separation</dt><dd>3 ; 1 ou 2 pour mieux corriger bords et coins</dd></div><div><dt>Model smoothness</dt><dd>1,0 ; 3 à 5 si le modèle ondule</dd></div><div><dt>Scale factors R/G/B</dt><dd>1,0</dd></div><div><dt>Show gradient model</dt><dd>Coché</dd></div><div><dt>Use MARS database / filtres MARS</dt><dd>Coché ; bandes MARS : Gray = L (image mono), Red = R, Green = G, Blue = B (image couleur) ; masters narrowband : Gray = Ha ou OIII (MARS DR2, icônes MGC_MARS_H et MGC_MARS_O)</dd></div><div><dt>Reference image</dt><dd>Vide (la base MARS sert de référence)</dd></div></dl>
         <div class="tlabel">Par filtre</div>
-        <div class="pf"><div><span class="filters"><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span></span><p>Sur l'image couleur combinée : ImageSolver, SPFC, MGC, puis SPCC.</p></div><div><span class="filters"><span class="flt L">L</span></span><p>Sur le master mono : SPFC avec le filtre L, puis MGC.</p></div><div><span class="filters"><span class="flt SII">SII</span><span class="flt Ha">Ha</span><span class="flt OIII">OIII</span></span><p><strong>Ha et OIII</strong> : couverts par MARS DR2 (juin 2026) jusqu'à +75° de déclinaison ; SPFC en Narrowband mode, puis MGC avec le filtre MARS <strong>Gray = <code style="font-family:var(--mono)">Ha</code></strong> pour le master Ha, <strong><code style="font-family:var(--mono)">OIII</code></strong> pour le master OIII (valeurs du paramètre relevées dans un outil qui pilote MGC sous PixInsight 1.9.5 ; le texte affiché dans le menu n'a pas été vu dans l'interface). Icônes prêtes : <code style="font-family:var(--mono)">MGC_MARS_H</code> et <code style="font-family:var(--mono)">MGC_MARS_O</code>. <strong>SII</strong> : absent de DR2, donc GradientCorrection ou DBE. Hors couverture : GradientCorrection ou DBE.</p></div></div>
+        <div class="pf"><div><span class="filters"><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span></span><p>Sur l'image couleur combinée : ImageSolver, SPFC, MGC, puis SPCC.</p></div><div><span class="filters"><span class="flt L">L</span></span><p>Sur le master mono : SPFC avec le filtre L, puis MGC.</p></div><div><span class="filters"><span class="flt SII">S</span><span class="flt Ha">H</span><span class="flt OIII">O</span></span><p><strong>H et O</strong> : couverts par MARS DR2 (juin 2026) jusqu'à +75° de déclinaison ; SPFC en Narrowband mode, puis MGC avec le filtre MARS <strong>Gray = <code style="font-family:var(--mono)">Ha</code></strong> pour le master H, <strong><code style="font-family:var(--mono)">OIII</code></strong> pour le master O (valeurs du paramètre relevées dans un outil qui pilote MGC sous PixInsight 1.9.5 ; le texte affiché dans le menu n'a pas été vu dans l'interface). Icônes prêtes : <code style="font-family:var(--mono)">MGC_MARS_H</code> et <code style="font-family:var(--mono)">MGC_MARS_O</code>. <strong>S</strong> : absent de DR2, donc GradientCorrection ou DBE. Hors couverture : GradientCorrection ou DBE.</p></div></div>
         <p class="tnote">Prérequis : image linéaire, solution astrométrique, calibration SPFC, bases Gaia DR3/SP et MARS installées. Si ta base MARS ne couvre pas un filtre, passe à GradientCorrection ou DBE.</p>
       </article>
       <article class="tcard" id="t-gc">
@@ -2273,7 +2273,7 @@ max(Img1,iif(M==1,E7,iif(M==2,E8,E9)))</code><button type="button" data-copy>Cop
         <div class="tlabel">Paramètres</div>
         <dl class="tparams"><div><dt>Gradient scale</dt><dd>Défaut ; baisser si un gradient reste dans les coins</dd></div><div><dt>Structure protection</dt><dd>Activé</dd></div><div><dt>Protection threshold</dt><dd>Plus bas = protège aussi les zones faibles de la nébuleuse</dd></div><div><dt>Protection amount</dt><dd>Monter si la nébuleuse est assombrie</dd></div><div><dt>Low threshold</dt><dd>Monter si des zones claires apparaissent autour des structures sombres</dd></div><div><dt>Bords nets dans le modèle</dt><dd>Désactive temporairement la protection, baisse Scale et Smoothness, puis réactive</dd></div></dl>
               <div class="tlabel">Par filtre</div>
-        <div class="pf"><div><span class="filters"><span class="flt L">L</span></span><p>Filtre le plus large, donc le gradient le plus fort : correction la plus soignée, contrôle du modèle obligatoire.</p></div><div><span class="filters"><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span></span><p>B est souvent le plus touché (pollution lumineuse, Lune). Corrige chaque master ou l'image combinée.</p></div><div><span class="filters"><span class="flt Ha">Ha</span><span class="flt SII">SII</span></span><p>Gradient faible sauf Lune proche : correction légère.</p></div><div><span class="filters"><span class="flt OIII">OIII</span></span><p>Proche de 500 nm, sensible à la Lune et au fond de ciel : gradient plus marqué que Ha, à surveiller.</p></div></div>
+        <div class="pf"><div><span class="filters"><span class="flt L">L</span></span><p>Filtre le plus large, donc le gradient le plus fort : correction la plus soignée, contrôle du modèle obligatoire.</p></div><div><span class="filters"><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span></span><p>B est souvent le plus touché (pollution lumineuse, Lune). Corrige chaque master ou l'image combinée.</p></div><div><span class="filters"><span class="flt Ha">H</span><span class="flt SII">S</span></span><p>Gradient faible sauf Lune proche : correction légère.</p></div><div><span class="filters"><span class="flt OIII">O</span></span><p>Proche de 500 nm, sensible à la Lune et au fond de ciel : gradient plus marqué que H, à surveiller.</p></div></div>
       </article>
       <article class="tcard" id="t-dbe">
         <div class="tcard-head"><h4>DBE (DynamicBackgroundExtraction)</h4><span class="ttag nat" title="Natif PixInsight">PI</span><span class="phase lin">Linéaire</span></div>
@@ -2282,7 +2282,7 @@ max(Img1,iif(M==1,E7,iif(M==2,E8,E9)))</code><button type="button" data-copy>Cop
         <div class="tlabel">Paramètres</div>
         <dl class="tparams"><div><dt>Samples per row</dt><dd>10 à 20 (Jon Rista : 20 à 25 pour un capteur 4:3 ou 3:2)</dd></div><div><dt>Sample radius</dt><dd>10 à 50 selon l'échantillonnage</dd></div><div><dt>Tolerance</dt><dd>0,5 (défaut) ; monter à 1,0 à 1,5 si des points sont rejetés (rouges)</dd></div><div><dt>Shadows relaxation</dt><dd>3,0 (défaut) ; monter si des points sombres sont rejetés</dd></div><div><dt>Smoothing factor</dt><dd>0,25 (défaut) ; 0,5 à 1,0 pour les champs nébuleux complexes</dd></div><div><dt>Correction</dt><dd>Subtraction pour la pollution lumineuse ; Division pour le vignettage</dd></div><div><dt>Normalize</dt><dd>Coché (conseillé par nrStellar)</dd></div><div><dt>Discard background model</dt><dd>Coché</dd></div><div><dt>Replace target image</dt><dd>Coché</dd></div></dl>
         <div class="tlabel">Par filtre</div>
-        <div class="pf"><div><span class="filters"><span class="flt L">L</span></span><p>Gradient le plus fort : beaucoup de points bien répartis (18 à 20 par ligne).</p></div><div><span class="filters"><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span></span><p>Même grille sur les trois masters, ou DBE sur l'image couleur combinée. D'un filtre à l'autre, garde les points et ajuste plutôt Tolerance (conseil de Chaotic Nebula).</p></div><div><span class="filters"><span class="flt Ha">Ha</span><span class="flt SII">SII</span></span><p>Peu de gradient : grille légère (10 à 12 par ligne). Attention, la nébulosité Ha couvre souvent tout le champ : place les points à la main.</p></div><div><span class="filters"><span class="flt OIII">OIII</span></span><p>Signal faible : monte Tolerance (1,0 à 1,5) pour que les points du fond ne soient pas rejetés.</p></div></div>
+        <div class="pf"><div><span class="filters"><span class="flt L">L</span></span><p>Gradient le plus fort : beaucoup de points bien répartis (18 à 20 par ligne).</p></div><div><span class="filters"><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span></span><p>Même grille sur les trois masters, ou DBE sur l'image couleur combinée. D'un filtre à l'autre, garde les points et ajuste plutôt Tolerance (conseil de Chaotic Nebula).</p></div><div><span class="filters"><span class="flt Ha">H</span><span class="flt SII">S</span></span><p>Peu de gradient : grille légère (10 à 12 par ligne). Attention, la nébulosité H couvre souvent tout le champ : place les points à la main.</p></div><div><span class="filters"><span class="flt OIII">O</span></span><p>Signal faible : monte Tolerance (1,0 à 1,5) pour que les points du fond ne soient pas rejetés.</p></div></div>
         <p class="tnote">Meilleur choix que les outils automatiques quand la nébulosité remplit presque tout le champ. Les sources divergent sur la correction : Jon Rista et la majorité réservent Division au vignettage, Chaotic Nebula l'utilise aussi pour les gradients.</p>
       </article>
       <article class="tcard" id="t-graxpert">
@@ -2292,7 +2292,7 @@ max(Img1,iif(M==1,E7,iif(M==2,E8,E9)))</code><button type="button" data-copy>Cop
         <div class="tlabel">Paramètres</div>
         <dl class="tparams"><div><dt>Correction</dt><dd>Subtraction ; Division seulement pour un vignettage ou un gradient très fort</dd></div><div><dt>Smoothing</dt><dd>0,0 (défaut) : n'influence pas le résultat du modèle IA</dd></div><div><dt>Modèle IA</dt><dd>Dernière version disponible</dd></div></dl>
               <div class="tlabel">Par filtre</div>
-        <div class="pf"><div><span class="filters"><span class="flt L">L</span><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span><span class="flt SII">SII</span><span class="flt Ha">Ha</span><span class="flt OIII">OIII</span></span><p>Mêmes réglages. En narrowband, le signal étendu peut être pris pour du gradient : contrôle le modèle et passe à DBE si la nébuleuse remplit le champ.</p></div></div>
+        <div class="pf"><div><span class="filters"><span class="flt L">L</span><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span><span class="flt SII">S</span><span class="flt Ha">H</span><span class="flt OIII">O</span></span><p>Mêmes réglages. En narrowband, le signal étendu peut être pris pour du gradient : contrôle le modèle et passe à DBE si la nébuleuse remplit le champ.</p></div></div>
       </article>
     </div>
     <h3 class="tgroup" data-g="Couleur et astrométrie">Couleur et astrométrie</h3>
@@ -2309,9 +2309,9 @@ max(Img1,iif(M==1,E7,iif(M==2,E8,E9)))</code><button type="button" data-copy>Cop
         <div class="tlabel">Méthode</div>
         <ol class="tsteps"><li>Choisis le canal de référence, puis applique LinearFit à chacun des autres canaux.</li><li>À faire après le retrait du gradient, avant de combiner ou d'étirer.</li></ol>
         <div class="tlabel">Paramètres</div>
-        <dl class="tparams"><div><dt>Reference image</dt><dd>Ha en narrowband (theAstroShed) ; certains préfèrent le canal le plus faible</dd></div><div><dt>Reject low / high</dt><dd>Valeurs par défaut</dd></div></dl>
+        <dl class="tparams"><div><dt>Reference image</dt><dd>H en narrowband (theAstroShed) ; certains préfèrent le canal le plus faible</dd></div><div><dt>Reject low / high</dt><dd>Valeurs par défaut</dd></div></dl>
         <div class="tlabel">Par filtre</div>
-        <div class="pf"><div><span class="filters"><span class="flt SII">SII</span><span class="flt OIII">OIII</span></span><p>Ajustés sur Ha : fonds et niveaux proches, ce qu'exige Foraxx.</p></div><div><span class="filters"><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span></span><p>Inutile si tu fais SPCC, qui équilibre déjà les canaux.</p></div></div>
+        <div class="pf"><div><span class="filters"><span class="flt SII">S</span><span class="flt OIII">O</span></span><p>Ajustés sur H : fonds et niveaux proches, ce qu'exige Foraxx.</p></div><div><span class="filters"><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span></span><p>Inutile si tu fais SPCC, qui équilibre déjà les canaux.</p></div></div>
       </article>
       <article class="tcard" id="t-solver">
         <div class="tcard-head"><h4>ImageSolver</h4><span class="ttag nat" title="Natif PixInsight">PI</span><span class="phase lin">Linéaire</span></div>
@@ -2327,7 +2327,7 @@ max(Img1,iif(M==1,E7,iif(M==2,E8,E9)))</code><button type="button" data-copy>Cop
         <div class="tlabel">Paramètres</div>
         <dl class="tparams"><div><dt>White reference</dt><dd>Average Spiral Galaxy</dd></div><div><dt>QE curve</dt><dd>Ton capteur (ex. Sony IMX571) ; Ideal QE si absent</dd></div><div><dt>Filters (mono)</dt><dd>Ton jeu RGB (Astronomik, Baader, Antlia, Chroma…)</dd></div><div><dt>Filters (couleur)</dt><dd>Filtres Bayer de ta caméra</dd></div><div><dt>Narrowband filters mode</dt><dd>Pour une image composée de filtres étroits (longueurs d'onde et bandes passantes)</dd></div><div><dt>Catalogue</dt><dd>Gaia DR3/SP</dd></div><div><dt>Background neutralization</dt><dd>Activé ; référence = image entière (défaut de l'icône) ou aperçu de fond (script Find Background ou preview manuelle) ; limites basse et haute −2,80 et +2,00 en écarts-types (valeurs par défaut)</dd></div><div><dt>Generate graphs</dt><dd>Coché</dd></div></dl>
         <div class="tlabel">Par filtre</div>
-        <div class="pf"><div><span class="filters"><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span></span><p>Calibration normale, avec tes filtres RGB. Indispensable aussi pour les étoiles RGB du workflow RGB + SHO.</p></div><div><span class="filters"><span class="flt L">L</span></span><p>Non applicable : la couleur vient du RGB.</p></div><div><span class="filters"><span class="flt SII">SII</span><span class="flt Ha">Ha</span><span class="flt OIII">OIII</span></span><p>Pas de SPCC sur une palette SHO/HOO : l'équilibre se fait avec NarrowbandNormalization ou la formule Foraxx. Le mode Narrowband filters sert seulement pour une couleur « calibrée ».</p></div></div>
+        <div class="pf"><div><span class="filters"><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span></span><p>Calibration normale, avec tes filtres RGB. Indispensable aussi pour les étoiles RGB du workflow RGB + SHO.</p></div><div><span class="filters"><span class="flt L">L</span></span><p>Non applicable : la couleur vient du RGB.</p></div><div><span class="filters"><span class="flt SII">S</span><span class="flt Ha">H</span><span class="flt OIII">O</span></span><p>Pas de SPCC sur une palette SHO/HOO : l'équilibre se fait avec NarrowbandNormalization ou la formule Foraxx. Le mode Narrowband filters sert seulement pour une couleur « calibrée ».</p></div></div>
         <p class="tnote">Toujours sur l'image linéaire, après le retrait du gradient et BXT Correct Only, avant BXT complet.</p>
       </article>
       <article class="tcard" id="t-spfc">
@@ -2335,9 +2335,9 @@ max(Img1,iif(M==1,E7,iif(M==2,E8,E9)))</code><button type="button" data-copy>Cop
         <div class="tlabel">Méthode</div>
         <ol class="tsteps"><li>Prérequis : image <strong>linéaire</strong>, gradient non encore retiré, <strong>résolue</strong> (ImageSolver ou WBPP), base Gaia DR3/SP installée.</li><li>Ouvre <em>Process › ColorCalibration › SpectrophotometricFluxCalibration</em> et règle capteur, filtres et catalogue (ci-dessous).</li><li>Applique sur l'image. Elle ne change pas visuellement : SPFC écrit seulement dans le fichier les métadonnées de flux que MGC lit ensuite.</li><li>Enchaîne directement avec MGC, puis SPCC avec <strong>les mêmes filtres</strong> que dans SPFC.</li></ol>
         <div class="tlabel">Paramètres</div>
-        <dl class="tparams"><div><dt>QE curve</dt><dd>Ton capteur s'il est dans la liste ; sinon <em>Ideal QE curve</em> (défaut), qui suppose une sensibilité égale à toutes les longueurs d'onde</dd></div><div><dt>Gray filter (image mono)</dt><dd>Le filtre du master : courbe mesurée de ton filtre si elle est dans la liste (par ex. Astronomik L-2 pour L), sinon une bande plate définie par longueur d'onde et bande passante</dd></div><div><dt>Red / Green / Blue filter (image couleur)</dt><dd>Pour un RGB combiné : tes filtres R, G, B. Pour une caméra couleur : les filtres Bayer de ton capteur (par ex. <em>Sony Color Sensor R/G/B-UVIRcut</em>). Le Gray filter est alors ignoré</dd></div><div><dt>Narrowband mode</dt><dd>Coché pour un master Ha, OIII ou SII : longueur d'onde 656,3 / 500,7 / 672,4 nm et bande passante de ton filtre (3, 5, 7 nm…)</dd></div><div><dt>Catalog</dt><dd>Gaia DR3/SP</dd></div><div><dt>Automatic limit magnitude</dt><dd>Coché</dd></div><div><dt>Détection des étoiles (PSF)</dt><dd>Valeurs par défaut : PSF type Auto, saturation threshold 0,75 relatif</dd></div><div><dt>Generate graphs / star maps</dt><dd>Optionnels (décochés par défaut)</dd></div></dl>
+        <dl class="tparams"><div><dt>QE curve</dt><dd>Ton capteur s'il est dans la liste ; sinon <em>Ideal QE curve</em> (défaut), qui suppose une sensibilité égale à toutes les longueurs d'onde</dd></div><div><dt>Gray filter (image mono)</dt><dd>Le filtre du master : courbe mesurée de ton filtre si elle est dans la liste (par ex. Astronomik L-2 pour L), sinon une bande plate définie par longueur d'onde et bande passante</dd></div><div><dt>Red / Green / Blue filter (image couleur)</dt><dd>Pour un RGB combiné : tes filtres R, G, B. Pour une caméra couleur : les filtres Bayer de ton capteur (par ex. <em>Sony Color Sensor R/G/B-UVIRcut</em>). Le Gray filter est alors ignoré</dd></div><div><dt>Narrowband mode</dt><dd>Coché pour un master H, O ou S : longueur d'onde 656,3 / 500,7 / 672,4 nm et bande passante de ton filtre (3, 5, 7 nm…)</dd></div><div><dt>Catalog</dt><dd>Gaia DR3/SP</dd></div><div><dt>Automatic limit magnitude</dt><dd>Coché</dd></div><div><dt>Détection des étoiles (PSF)</dt><dd>Valeurs par défaut : PSF type Auto, saturation threshold 0,75 relatif</dd></div><div><dt>Generate graphs / star maps</dt><dd>Optionnels (décochés par défaut)</dd></div></dl>
               <div class="tlabel">Par filtre</div>
-        <div class="pf"><div><span class="filters"><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span></span><p>Sur l'image couleur combinée : Red, Green, Blue filter = tes filtres (ou filtres Bayer en caméra couleur).</p></div><div><span class="filters"><span class="flt L">L</span></span><p>Master mono : Gray filter = ton filtre L.</p></div><div><span class="filters"><span class="flt SII">SII</span><span class="flt Ha">Ha</span><span class="flt OIII">OIII</span></span><p>Master mono : Narrowband mode, longueur d'onde de la raie et bande passante du filtre. Utile seulement si MGC est possible pour ce filtre (voir MGC).</p></div></div>
+        <div class="pf"><div><span class="filters"><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span></span><p>Sur l'image couleur combinée : Red, Green, Blue filter = tes filtres (ou filtres Bayer en caméra couleur).</p></div><div><span class="filters"><span class="flt L">L</span></span><p>Master mono : Gray filter = ton filtre L.</p></div><div><span class="filters"><span class="flt SII">S</span><span class="flt Ha">H</span><span class="flt OIII">O</span></span><p>Master mono : Narrowband mode, longueur d'onde de la raie et bande passante du filtre. Utile seulement si MGC est possible pour ce filtre (voir MGC).</p></div></div>
               <p class="tnote">Paramètres relevés dans le code d'AutoIntegrate (qui crée ce process) et le guide MGC de Stirling Astrophoto.</p>
       </article>
     </div>
@@ -2350,7 +2350,7 @@ max(Img1,iif(M==1,E7,iif(M==2,E8,E9)))</code><button type="button" data-copy>Cop
         <div class="tlabel">Paramètres</div>
         <dl class="tparams"><div><dt>Sharpen Stars</dt><dd>0,25 (défaut) à 0,50 ; plage 0 à 0,5</dd></div><div><dt>Adjust Star Halos</dt><dd>−0,10 à 0,00 (défaut 0)</dd></div><div><dt>Automatic PSF</dt><dd>Coché</dd></div><div><dt>Sharpen Nonstellar</dt><dd>0,40 à 0,90 selon le filtre (0,9 par défaut en PSF manuel ; plus fort sur L que sur RGB, voir ci-dessous)</dd></div><div><dt>Modèle IA</dt><dd>Dernier (AI4 ou plus récent)</dd></div></dl>
         <div class="tlabel">Par filtre</div>
-        <div class="pf"><div><span class="filters"><span class="flt L">L</span></span><p>Sharpen Nonstellar 0,70 à 0,90 : c'est la luminance qui porte le détail.</p></div><div><span class="filters"><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span></span><p>Sur l'image RGB combinée (conseillé par RC Astro) : Sharpen Nonstellar 0,40 à 0,60, le détail vient de L.</p></div><div><span class="filters"><span class="flt SII">SII</span><span class="flt Ha">Ha</span><span class="flt OIII">OIII</span></span><p>Sur la combinaison simple SHO ou HOO (un filtre par canal, poids proches), pas sur chaque master. Baisse Sharpen Nonstellar si des artefacts apparaissent dans les zones bruitées (souvent OIII et SII).</p></div><div><span class="filters"><span class="flt L">L</span><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span><span class="flt SII">SII</span><span class="flt Ha">Ha</span><span class="flt OIII">OIII</span></span><p>Sharpen Stars 0,25 à 0,50 et Adjust Star Halos −0,10 à 0 pour tous les filtres, pour des étoiles cohérentes.</p></div></div>
+        <div class="pf"><div><span class="filters"><span class="flt L">L</span></span><p>Sharpen Nonstellar 0,70 à 0,90 : c'est la luminance qui porte le détail.</p></div><div><span class="filters"><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span></span><p>Sur l'image RGB combinée (conseillé par RC Astro) : Sharpen Nonstellar 0,40 à 0,60, le détail vient de L.</p></div><div><span class="filters"><span class="flt SII">S</span><span class="flt Ha">H</span><span class="flt OIII">O</span></span><p>Sur la combinaison simple SHO ou HOO (un filtre par canal, poids proches), pas sur chaque master. Baisse Sharpen Nonstellar si des artefacts apparaissent dans les zones bruitées (souvent O et S).</p></div><div><span class="filters"><span class="flt L">L</span><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span><span class="flt SII">S</span><span class="flt Ha">H</span><span class="flt OIII">O</span></span><p>Sharpen Stars 0,25 à 0,50 et Adjust Star Halos −0,10 à 0 pour tous les filtres, pour des étoiles cohérentes.</p></div></div>
         <p class="tnote">RC Astro : meilleurs résultats sur l'image RGB combinée que sur R, G, B séparés. Si les aberrations diffèrent d'un filtre à l'autre, fais Correct Only sur chaque canal avant de combiner. En narrowband, fais une combinaison SHO simple (un filtre par canal, poids proches), applique BXT, puis seulement ensuite les mélanges et les boosts de canaux. Ne combine pas BXT avec une déconvolution classique. Si des vers ou des pores apparaissent à 100 %, baisse Sharpen Nonstellar.</p>
       </article>
       <article class="tcard" id="t-nxt">
@@ -2360,7 +2360,7 @@ max(Img1,iif(M==1,E7,iif(M==2,E8,E9)))</code><button type="button" data-copy>Cop
         <div class="tlabel">Paramètres</div>
         <dl class="tparams"><div><dt>Denoise</dt><dd>0,50 à 0,85 (RC Astro montre 0,85 en exemple ; AstroBackyard utilise 0,5)</dd></div><div><dt>Detail</dt><dd>0,15 (modèle AI2 seulement)</dd></div><div><dt>Iterations</dt><dd>1 ; 2 sur une image très bruitée (AstroBackyard : 0,5 × 2)</dd></div><div><dt>Denoise (passe finale étirée)</dt><dd>0,30 à 0,50</dd></div><div><dt>Color separation</dt><dd>Réduire davantage la couleur que l'intensité : le bruit de couleur est le plus gênant</dd></div><div><dt>Frequency separation</dt><dd>HF intensité 80–90 %, HF couleur 90–100 %, LF intensité 50–70 %, LF couleur 100 % (exemple RC Astro) ; LF plus bas sur les nuages de poussière</dd></div></dl>
         <div class="tlabel">Par filtre</div>
-        <div class="pf"><div><span class="filters"><span class="flt L">L</span></span><p>Denoise 0,50 à 0,70 : garde le détail fin.</p></div><div><span class="filters"><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span></span><p>Denoise 0,70 à 0,90 : le bruit de couleur peut être traité fort, le détail vient de L.</p></div><div><span class="filters"><span class="flt Ha">Ha</span></span><p>Denoise 0,50 à 0,70 (valeurs rapportées : 0,50 à 0,55, Detail 0,10 à 0,20).</p></div><div><span class="filters"><span class="flt OIII">OIII</span><span class="flt SII">SII</span></span><p>Denoise 0,60 à 0,85 (valeurs rapportées : 0,60 à 0,75, Detail 0,15 à 0,25). Deux itérations si le master est très bruité.</p></div></div>
+        <div class="pf"><div><span class="filters"><span class="flt L">L</span></span><p>Denoise 0,50 à 0,70 : garde le détail fin.</p></div><div><span class="filters"><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span></span><p>Denoise 0,70 à 0,90 : le bruit de couleur peut être traité fort, le détail vient de L.</p></div><div><span class="filters"><span class="flt Ha">H</span></span><p>Denoise 0,50 à 0,70 (valeurs rapportées : 0,50 à 0,55, Detail 0,10 à 0,20).</p></div><div><span class="filters"><span class="flt OIII">O</span><span class="flt SII">S</span></span><p>Denoise 0,60 à 0,85 (valeurs rapportées : 0,60 à 0,75, Detail 0,15 à 0,25). Deux itérations si le master est très bruité.</p></div></div>
         <p class="tnote">Mieux vaut un peu de grain qu'un aspect plastique : garde la texture fine.</p>
       </article>
       <article class="tcard" id="t-sxt">
@@ -2370,7 +2370,7 @@ max(Img1,iif(M==1,E7,iif(M==2,E8,E9)))</code><button type="button" data-copy>Cop
         <div class="tlabel">Paramètres</div>
         <dl class="tparams"><div><dt>Generate star image</dt><dd>Coché</dd></div><div><dt>Unscreen stars</dt><dd><strong>Décoché</strong> sur une image linéaire ; coché seulement sur une image déjà étirée</dd></div><div><dt>Large overlap</dt><dd>Décoché par défaut ; coche-le si un quadrillage apparaît dans l'image sans étoiles (environ deux fois plus lent, peut parfois créer d'autres artefacts)</dd></div><div><dt>Modèle IA</dt><dd>Dernier (AI11 ou plus récent)</dd></div></dl>
               <div class="tlabel">Par filtre</div>
-        <div class="pf"><div><span class="filters"><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span></span><p>Garde l'image d'étoiles : ce sont les étoiles de l'image finale (LRGB, LHaRGB et RGB + SHO).</p></div><div><span class="filters"><span class="flt L">L</span></span><p>Jette l'image d'étoiles.</p></div><div><span class="filters"><span class="flt SII">SII</span><span class="flt Ha">Ha</span><span class="flt OIII">OIII</span></span><p>Jette les étoiles, sauf si tu n'as pas de RGB : garde-les alors pour NB to RGB Star Combination.</p></div></div>
+        <div class="pf"><div><span class="filters"><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span></span><p>Garde l'image d'étoiles : ce sont les étoiles de l'image finale (LRGB, LHaRGB et RGB + SHO).</p></div><div><span class="filters"><span class="flt L">L</span></span><p>Jette l'image d'étoiles.</p></div><div><span class="filters"><span class="flt SII">S</span><span class="flt Ha">H</span><span class="flt OIII">O</span></span><p>Jette les étoiles, sauf si tu n'as pas de RGB : garde-les alors pour NB to RGB Star Combination.</p></div></div>
               <p class="tnote">Après un étirement GHS, arcsinh ou HDR, le profil des étoiles change et le retrait devient moins complet : c'est la raison de le faire en linéaire.</p>
       </article>
     </div>
@@ -2383,7 +2383,7 @@ max(Img1,iif(M==1,E7,iif(M==2,E8,E9)))</code><button type="button" data-copy>Cop
         <div class="tlabel">Paramètres</div>
         <dl class="tparams"><div><dt>Transformation type</dt><dd>Generalized Hyperbolic</dd></div><div><dt>Stretch factor (ln(D+1))</dt><dd>0 à 20 ; 0 = aucun effet. Monte-le en regardant l'histogramme</dd></div><div><dt>Local intensity (b)</dt><dd>≈ 10 au premier étirement, 3 à 5 ensuite</dd></div><div><dt>Symmetry point (SP)</dt><dd>Clic dans l'image, puis bouton Send to SP</dd></div><div><dt>Protect shadows (LP)</dt><dd>0 au départ ; monter pour garder le fond sombre</dd></div><div><dt>Protect highlights (HP)</dt><dd>1 au départ ; baisser pour protéger les étoiles</dd></div><div><dt>Colour mode</dt><dd>Colour pour une image couleur, avec la clip mode RGBBlend</dd></div></dl>
         <div class="tlabel">Par filtre</div>
-        <div class="pf"><div><span class="filters"><span class="flt L">L</span></span><p>Étire jusqu'au même niveau de fond et à la même médiane que le RGB.</p></div><div><span class="filters"><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span></span><p>Colour mode : Colour, clip mode RGBBlend.</p></div><div><span class="filters"><span class="flt Ha">Ha</span></span><p>Étire-le en premier : il sert de référence de niveau pour OIII et SII.</p></div><div><span class="filters"><span class="flt OIII">OIII</span><span class="flt SII">SII</span></span><p>Signal plus faible : Stretch factor plus élevé pour atteindre le même fond et la même médiane que Ha. Monte LP pour ne pas faire ressortir le bruit du fond.</p></div></div>
+        <div class="pf"><div><span class="filters"><span class="flt L">L</span></span><p>Étire jusqu'au même niveau de fond et à la même médiane que le RGB.</p></div><div><span class="filters"><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span></span><p>Colour mode : Colour, clip mode RGBBlend.</p></div><div><span class="filters"><span class="flt Ha">H</span></span><p>Étire-le en premier : il sert de référence de niveau pour O et S.</p></div><div><span class="filters"><span class="flt OIII">O</span><span class="flt SII">S</span></span><p>Signal plus faible : Stretch factor plus élevé pour atteindre le même fond et la même médiane que H. Monte LP pour ne pas faire ressortir le bruit du fond.</p></div></div>
         <p class="tnote">Le pas à pas complet, avec tous les réglages, est dans la section <a href="#ghs" style="color:var(--accent)">Méthode GHS en détail</a>.</p>
       </article>
       <article class="tcard" id="t-statstretch">
@@ -2393,7 +2393,7 @@ max(Img1,iif(M==1,E7,iif(M==2,E8,E9)))</code><button type="button" data-copy>Cop
         <div class="tlabel">Paramètres</div>
         <dl class="tparams"><div><dt>Target Median</dt><dd>0,25 (défaut) ; 0,15 à 0,25</dd></div><div><dt>Linked Stretch</dt><dd>Coché par défaut ; décocher pour un étirement non lié</dd></div><div><dt>Blackpoint Sigma</dt><dd>5,0 (défaut)</dd></div><div><dt>Normalize Image Range to [0,1]</dt><dd>Décoché (défaut)</dd></div><div><dt>Curves Boost</dt><dd>0 (défaut) ; boost léger optionnel</dd></div><div><dt>HDR Compress</dt><dd>Décoché (défaut) ; Amount 0,25, Knee 0,35 si activé</dd></div></dl>
               <div class="tlabel">Par filtre</div>
-        <div class="pf"><div><span class="filters"><span class="flt L">L</span><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span></span><p>Même Target median pour L et RGB. Linked stretch coché pour l'image couleur.</p></div><div><span class="filters"><span class="flt SII">SII</span><span class="flt Ha">Ha</span><span class="flt OIII">OIII</span></span><p>Même Target median pour les trois masters : des fonds équilibrés sont indispensables pour Foraxx et les palettes.</p></div></div>
+        <div class="pf"><div><span class="filters"><span class="flt L">L</span><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span></span><p>Même Target median pour L et RGB. Linked stretch coché pour l'image couleur.</p></div><div><span class="filters"><span class="flt SII">S</span><span class="flt Ha">H</span><span class="flt OIII">O</span></span><p>Même Target median pour les trois masters : des fonds équilibrés sont indispensables pour Foraxx et les palettes.</p></div></div>
       </article>
     </div>
     <h3 class="tgroup" data-g="Combinaison">Combinaison</h3>
@@ -2413,28 +2413,28 @@ max(Img1,iif(M==1,E7,iif(M==2,E8,E9)))</code><button type="button" data-copy>Cop
         <div class="tlabel">Méthode</div>
         <ol class="tsteps"><li>Menu Script › Utilities › NBRGBCombination (script livré avec PixInsight).</li><li>Choisis l'image RGB et sa bande passante, puis l'image narrowband de chaque canal concerné et la bande passante de son filtre.</li><li>Compare avec les boutons d'aperçu RGB et NBRGB, ajuste Scale, puis applique. Compare aussi avec la soustraction du continuum en PixelMath.</li></ol>
         <div class="tlabel">Paramètres</div>
-        <dl class="tparams"><div><dt>RGB</dt><dd>Ton image RGB et sa bande passante : ≈ 100 nm pour un filtre R mono (Chroma R : 600 à 700 nm) ; un tutoriel utilise 200 nm pour un capteur couleur</dd></div><div><dt>R Channel</dt><dd>Image Ha et bande passante de ton filtre (3, 5, 7 nm…)</dd></div><div><dt>G / B Channel</dt><dd>Image OIII et sa bande passante, si tu l'injectes</dd></div><div><dt>Scale</dt><dd>1,2 (défaut) ; jusqu'à 3 à 5 pour faire ressortir un Ha faible</dd></div></dl>
+        <dl class="tparams"><div><dt>RGB</dt><dd>Ton image RGB et sa bande passante : ≈ 100 nm pour un filtre R mono (Chroma R : 600 à 700 nm) ; un tutoriel utilise 200 nm pour un capteur couleur</dd></div><div><dt>R Channel</dt><dd>Image H et bande passante de ton filtre (3, 5, 7 nm…)</dd></div><div><dt>G / B Channel</dt><dd>Image O et sa bande passante, si tu l'injectes</dd></div><div><dt>Scale</dt><dd>1,2 (défaut) ; jusqu'à 3 à 5 pour faire ressortir un H faible</dd></div></dl>
         <div class="tlabel">Par filtre</div>
-        <div class="pf"><div><span class="filters"><span class="flt Ha">Ha</span></span><p>Canal R. Continuum : le master R.</p></div><div><span class="filters"><span class="flt OIII">OIII</span></span><p>Canaux G et B. Continuum : G, éventuellement B.</p></div><div><span class="filters"><span class="flt SII">SII</span></span><p>En général pas injecté dans un RGB naturel : faible, et même teinte rouge que Ha.</p></div></div>
+        <div class="pf"><div><span class="filters"><span class="flt Ha">H</span></span><p>Canal R. Continuum : le master R.</p></div><div><span class="filters"><span class="flt OIII">O</span></span><p>Canaux G et B. Continuum : G, éventuellement B.</p></div><div><span class="filters"><span class="flt SII">S</span></span><p>En général pas injecté dans un RGB naturel : faible, et même teinte rouge que H.</p></div></div>
         <p class="tnote">Aperçus par canal (R, G, B), RGB (sans remplacement) et NBRGB (résultat) avant d'appliquer.</p>
       </article>
       <article class="tcard" id="t-acs">
         <div class="tcard-head"><h4>Automatic Continuum Subtraction (SetiAstro)</h4><span class="ttag free" title="Script ou module gratuit">GRATUIT</span><span class="phase lin">Linéaire</span></div>
         <div class="tlabel">Méthode</div>
-        <ol class="tsteps"><li>Choisis le master Ha et le master R (ou OIII et G).</li><li>Le script calcule le coefficient et produit H_cs sans continuum.</li></ol>
+        <ol class="tsteps"><li>Choisis le master H et le master R (ou O et G).</li><li>Le script calcule le coefficient et produit H_cs sans continuum.</li></ol>
         <div class="tlabel">Paramètres</div>
         <dl class="tparams"><div><dt>Entrées</dt><dd>Masters linéaires, alignés, gradient retiré</dd></div><div><dt>Contrôle</dt><dd>Les étoiles et le disque galactique doivent disparaître de H_cs</dd></div><div><dt>Starry / Starless</dt><dd>Starry (images avec étoiles), dans ce workflow où la soustraction se fait avant SXT</dd></div><div><dt>Output Linear Image Only</dt><dd>Coché : sortie linéaire seule, pour injecter H_cs en linéaire (sinon le script étire et extrait le signal pur)</dd></div><div><dt>Noise reduction</dt><dd>Décochée (NXT se fait à part) ; préréglé ainsi dans l'icône Continuum_auto</dd></div></dl>
               <div class="tlabel">Par filtre</div>
-        <div class="pf"><div><span class="filters"><span class="flt Ha">Ha</span></span><p>Continuum : R.</p></div><div><span class="filters"><span class="flt OIII">OIII</span></span><p>Continuum : G (ou B).</p></div></div>
+        <div class="pf"><div><span class="filters"><span class="flt Ha">H</span></span><p>Continuum : R.</p></div><div><span class="filters"><span class="flt OIII">O</span></span><p>Continuum : G (ou B).</p></div></div>
       </article>
       <article class="tcard" id="t-imageblend">
         <div class="tcard-head"><h4>ImageBlend (Mike Cranfield)</h4><span class="ttag free" title="Script ou module gratuit">GRATUIT</span><span class="phase lin">Linéaire</span><span class="phase nl">Étiré</span></div>
         <div class="tlabel">Méthode</div>
         <ol class="tsteps"><li>Choisis l'image de base et l'image à mélanger.</li><li>Choisis le mode et l'opacité en regardant l'aperçu, puis applique.</li></ol>
         <div class="tlabel">Paramètres</div>
-        <dl class="tparams"><div><dt>Ha dans R ou L</dt><dd>Mode Lighten ou Screen, opacité 20 à 60 %</dd></div><div><dt>Étoiles</dt><dd>Mode Screen</dd></div><div><dt>Étirement ou filtre par image</dt><dd>Optionnel, pour équilibrer les intensités</dd></div></dl>
+        <dl class="tparams"><div><dt>H dans R ou L</dt><dd>Mode Lighten ou Screen, opacité 20 à 60 %</dd></div><div><dt>Étoiles</dt><dd>Mode Screen</dd></div><div><dt>Étirement ou filtre par image</dt><dd>Optionnel, pour équilibrer les intensités</dd></div></dl>
               <div class="tlabel">Par filtre</div>
-        <div class="pf"><div><span class="filters"><span class="flt Ha">Ha</span></span><p>Dans R et dans L : opacité 20 à 60 %.</p></div><div><span class="filters"><span class="flt OIII">OIII</span></span><p>Dans G et B : opacité 20 à 40 %, plus faible dans G pour éviter le vert.</p></div></div>
+        <div class="pf"><div><span class="filters"><span class="flt Ha">H</span></span><p>Dans R et dans L : opacité 20 à 60 %.</p></div><div><span class="filters"><span class="flt OIII">O</span></span><p>Dans G et B : opacité 20 à 40 %, plus faible dans G pour éviter le vert.</p></div></div>
       </article>
     </div>
     <h3 class="tgroup" data-g="Narrowband">Narrowband</h3>
@@ -2442,11 +2442,11 @@ max(Img1,iif(M==1,E7,iif(M==2,E8,E9)))</code><button type="button" data-copy>Cop
       <article class="tcard" id="t-nbn">
         <div class="tcard-head"><h4>NarrowbandNormalization (module)</h4><span class="ttag free" title="Script ou module gratuit">GRATUIT</span><span class="phase nl">Étiré</span></div>
         <div class="tlabel">Méthode</div>
-        <ol class="tsteps"><li>Étire les canaux avec le même fond et la même médiane (<a href="#sho-e5" style="color:var(--accent)">méthode</a>), puis combine SII, Ha et OIII en une image RGB selon la palette (ChannelCombination), de préférence <strong>étirée et sans étoiles</strong>.</li><li>Choisis la palette correspondante (SHO, HOO…).</li><li>Active l'aperçu en temps réel. Ordre de réglage conseillé (suggestion de la fiche, pas une consigne de l'auteur) : Lightness, Shadowpoint, O3 boost, S2 boost, hautes lumières, Brightness, SCNR en dernier.</li><li>Pour comprendre un curseur, pousse-le à fond (0 ou maximum), observe, puis reviens à une valeur raisonnable (astuce theAstroShed).</li><li>Utilise le SCNR intégré si un reste de vert apparaît. Garde le réglage en glissant le triangle du process sur le bureau (icône).</li></ol>
+        <ol class="tsteps"><li>Étire les canaux avec le même fond et la même médiane (<a href="#sho-e5" style="color:var(--accent)">méthode</a>), puis combine S, H et O en une image RGB selon la palette (ChannelCombination), de préférence <strong>étirée et sans étoiles</strong>.</li><li>Choisis la palette correspondante (SHO, HOO…).</li><li>Active l'aperçu en temps réel. Ordre de réglage conseillé (suggestion de la fiche, pas une consigne de l'auteur) : Lightness, Shadowpoint, O3 boost, S2 boost, hautes lumières, Brightness, SCNR en dernier.</li><li>Pour comprendre un curseur, pousse-le à fond (0 ou maximum), observe, puis reviens à une valeur raisonnable (astuce theAstroShed).</li><li>Utilise le SCNR intégré si un reste de vert apparaît. Garde le réglage en glissant le triangle du process sur le bureau (icône).</li></ol>
         <div class="tlabel">Paramètres</div>
-        <dl class="tparams"><div><dt>Palette</dt><dd>Celle de ta combinaison : HOO, SHO, HSO ou HOS</dd></div><div><dt>O3 boost / S2 boost</dt><dd>0 par défaut ; monter progressivement jusqu'à l'équilibre voulu</dd></div><div><dt>Shadowpoint</dt><dd>Point noir : ajuster le fond sans l'écrêter</dd></div><div><dt>Highlight reduction</dt><dd>Atténuer les hautes lumières</dd></div><div><dt>Brightness</dt><dd>Luminosité globale</dd></div><div><dt>Lightness</dt><dd>Off (défaut), Preserve, Ha, OIII ou SII : canal qui porte la luminance, souvent Ha</dd></div><div><dt>Blend mode / Ha blend</dt><dd>Mode de mélange du vert, surtout pour les données de caméra couleur</dd></div><div><dt>SCNR</dt><dd>0 par défaut ; partiel, seulement si nécessaire</dd></div></dl>
+        <dl class="tparams"><div><dt>Palette</dt><dd>Celle de ta combinaison : HOO, SHO, HSO ou HOS</dd></div><div><dt>O3 boost / S2 boost</dt><dd>0 par défaut ; monter progressivement jusqu'à l'équilibre voulu</dd></div><div><dt>Shadowpoint</dt><dd>Point noir : ajuster le fond sans l'écrêter</dd></div><div><dt>Highlight reduction</dt><dd>Atténuer les hautes lumières</dd></div><div><dt>Brightness</dt><dd>Luminosité globale</dd></div><div><dt>Lightness</dt><dd>Off (défaut), Preserve, H, O ou S : canal qui porte la luminance, souvent H</dd></div><div><dt>Blend mode / Ha blend</dt><dd>Mode de mélange du vert, surtout pour les données de caméra couleur</dd></div><div><dt>SCNR</dt><dd>0 par défaut ; partiel, seulement si nécessaire</dd></div></dl>
         <div class="tlabel">Par filtre</div>
-        <div class="pf"><div><span class="filters"><span class="flt Ha">Ha</span></span><p>Porte en général la luminance et le détail.</p></div><div><span class="filters"><span class="flt OIII">OIII</span></span><p>Souvent à renforcer pour faire ressortir les bleus.</p></div><div><span class="filters"><span class="flt SII">SII</span></span><p>Le plus faible et le plus bruité : renforce avec prudence.</p></div></div>
+        <div class="pf"><div><span class="filters"><span class="flt Ha">H</span></span><p>Porte en général la luminance et le détail.</p></div><div><span class="filters"><span class="flt OIII">O</span></span><p>Souvent à renforcer pour faire ressortir les bleus.</p></div><div><span class="filters"><span class="flt SII">S</span></span><p>Le plus faible et le plus bruité : renforce avec prudence.</p></div></div>
         <p class="tnote">Noms des réglages relevés dans des icônes générées par PixInsight 1.9.3, palettes et options de luminance vérifiées dans le module 1.1 lui-même ; les libellés affichés peuvent différer légèrement. En linéaire, le module équilibre mal la luminosité entre canaux. L'aide intégrée détaille chaque réglage.</p>
       </article>
       <article class="tcard" id="t-nbcm">
@@ -2454,14 +2454,14 @@ max(Img1,iif(M==1,E7,iif(M==2,E8,E9)))</code><button type="button" data-copy>Cop
         <div class="tlabel">Méthode</div>
         <ol class="tsteps"><li>Ajoute chaque image narrowband sans étoiles comme une couche.</li><li>Assigne une teinte et une saturation à chaque couche, puis règle le mélange avec l'aperçu.</li></ol>
         <div class="tlabel">Paramètres</div>
-        <dl class="tparams"><div><dt>Ha</dt><dd>Teinte rouge à orange</dd></div><div><dt>OIII</dt><dd>Teinte cyan à bleu</dd></div><div><dt>SII</dt><dd>Teinte rouge profond ou or selon la palette</dd></div><div><dt>Nombre de couches</dt><dd>Illimité : tu peux ajouter d'autres filtres</dd></div></dl>
+        <dl class="tparams"><div><dt>H</dt><dd>Teinte rouge à orange</dd></div><div><dt>O</dt><dd>Teinte cyan à bleu</dd></div><div><dt>S</dt><dd>Teinte rouge profond ou or selon la palette</dd></div><div><dt>Nombre de couches</dt><dd>Illimité : tu peux ajouter d'autres filtres</dd></div></dl>
       </article>
       <article class="tcard" id="t-ppp">
         <div class="tcard-head"><h4>Perfect Palette Picker (SetiAstro)</h4><span class="ttag free" title="Script ou module gratuit">GRATUIT</span><span class="phase lin">Linéaire</span><span class="phase nl">Étiré</span></div>
         <div class="tlabel">Méthode</div>
-        <ol class="tsteps"><li><em>Script › SetiAstro › Perfect Palette Picker</em> (version 1.3).</li><li>Choisis tes vues Ha, OIII et SII (masters mono, de préférence sans étoiles), ou jusqu'à deux images couleur dual-band (HaO3 et S2O3).</li><li>Coche ou décoche <em>Linear Input Data</em> selon l'état de tes images, puis <em>Create Palettes</em> : 16 vignettes s'affichent.</li><li>Clique sur une vignette pour générer cette palette en pleine taille ; tu peux en générer plusieurs.</li><li>Garde la meilleure, puis équilibre-la (NarrowbandNormalization, courbes) et vérifie les <a href="#couleurs-sho" style="color:var(--accent)">couleurs SHO</a>.</li></ol>
+        <ol class="tsteps"><li><em>Script › SetiAstro › Perfect Palette Picker</em> (version 1.3).</li><li>Choisis tes vues H, O et S (masters mono, de préférence sans étoiles), ou jusqu'à deux images couleur dual-band (HaO3 et S2O3).</li><li>Coche ou décoche <em>Linear Input Data</em> selon l'état de tes images, puis <em>Create Palettes</em> : 16 vignettes s'affichent.</li><li>Clique sur une vignette pour générer cette palette en pleine taille ; tu peux en générer plusieurs.</li><li>Garde la meilleure, puis équilibre-la (NarrowbandNormalization, courbes) et vérifie les <a href="#couleurs-sho" style="color:var(--accent)">couleurs SHO</a>.</li></ol>
         <div class="tlabel">Paramètres</div>
-        <dl class="tparams"><div><dt>Linear Input Data</dt><dd>Coché par défaut : chaque canal est étiré à une médiane de 0,25 (point noir à médiane − 2,7 σ), donc avec des niveaux comparables. Décoche si tes images sont déjà étirées</dd></div><div><dt>Palettes (16)</dt><dd>12 correspondances : HOO, HOS, HSO, HSS, OHH, OHS, OSH, OSS, SHH, SHO, SOH, SOO ; plus Realistic1, Realistic2, Foraxx et Dynamic Inverse</dd></div><div><dt>Canaux manquants</dt><dd>Sans SII, Ha le remplace (et inversement) ; Dynamic Inverse demande les trois canaux, sinon retour à SHO</dd></div><div><dt>Caméra couleur</dt><dd>OSC HaO3 Dual : Ha = rouge, OIII = moyenne de G et B ; OSC S2O3 Dual : SII = rouge ; l'OIII des deux images est moyenné</dd></div><div><dt>Usage</dt><dd>Explorer les palettes avant de choisir la méthode finale ; le résultat reste à équilibrer</dd></div></dl>
+        <dl class="tparams"><div><dt>Linear Input Data</dt><dd>Coché par défaut : chaque canal est étiré à une médiane de 0,25 (point noir à médiane − 2,7 σ), donc avec des niveaux comparables. Décoche si tes images sont déjà étirées</dd></div><div><dt>Palettes (16)</dt><dd>12 correspondances : HOO, HOS, HSO, HSS, OHH, OHS, OSH, OSS, SHH, SHO, SOH, SOO ; plus Realistic1, Realistic2, Foraxx et Dynamic Inverse</dd></div><div><dt>Canaux manquants</dt><dd>Sans S, H le remplace (et inversement) ; Dynamic Inverse demande les trois canaux, sinon retour à SHO</dd></div><div><dt>Caméra couleur</dt><dd>OSC HaO3 Dual : H = rouge, O = moyenne de G et B ; OSC S2O3 Dual : S = rouge ; l'O des deux images est moyenné</dd></div><div><dt>Usage</dt><dd>Explorer les palettes avant de choisir la méthode finale ; le résultat reste à équilibrer</dd></div></dl>
       </article>
       <article class="tcard" id="t-pixelmath">
         <div class="tcard-head"><h4>PixelMath</h4><span class="ttag nat" title="Natif PixInsight">PI</span><span class="phase lin">Linéaire</span><span class="phase nl">Étiré</span></div>
@@ -2480,12 +2480,12 @@ max(Img1,iif(M==1,E7,iif(M==2,E8,E9)))</code><button type="button" data-copy>Cop
         <div class="tlabel">Paramètres</div>
         <dl class="tparams"><div><dt>Stretch Amount</dt><dd>5 (défaut) ; plage 0 à 8, au-delà de 5 avec prudence</dd></div><div><dt>Color Boost Amount</dt><dd>1,0 (défaut) ; plage 0 à 2</dd></div><div><dt>Remove Green via SCNR</dt><dd>Optionnel, décoché par défaut ; utile si les étoiles tirent vers le vert</dd></div></dl>
               <div class="tlabel">Par filtre</div>
-        <div class="pf"><div><span class="filters"><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span></span><p>Source préférée : étoiles de couleur naturelle.</p></div><div><span class="filters"><span class="flt SII">SII</span><span class="flt Ha">Ha</span><span class="flt OIII">OIII</span></span><p>Seulement si tu n'as pas de RGB, après NB to RGB Star Combination.</p></div></div>
+        <div class="pf"><div><span class="filters"><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span></span><p>Source préférée : étoiles de couleur naturelle.</p></div><div><span class="filters"><span class="flt SII">S</span><span class="flt Ha">H</span><span class="flt OIII">O</span></span><p>Seulement si tu n'as pas de RGB, après NB to RGB Star Combination.</p></div></div>
       </article>
       <article class="tcard" id="t-nbrgbstars">
         <div class="tcard-head"><h4>NB to RGB Star Combination (SetiAstro)</h4><span class="ttag free" title="Script ou module gratuit">GRATUIT</span><span class="phase lin">Linéaire</span><span class="phase nl">Étiré</span></div>
         <div class="tlabel">Méthode</div>
-        <ol class="tsteps"><li>Combine les images d'étoiles Ha, OIII et SII en étoiles de couleur naturelle.</li><li>Utile quand tu n'as pas de poses RGB pour les étoiles.</li></ol>
+        <ol class="tsteps"><li>Combine les images d'étoiles H, O et S en étoiles de couleur naturelle.</li><li>Utile quand tu n'as pas de poses RGB pour les étoiles.</li></ol>
         <div class="tlabel">Paramètres</div>
         <dl class="tparams"><div><dt>Ha / OIII Stars Image</dt><dd>Images d'étoiles linéaires issues de SXT (obligatoires)</dd></div><div><dt>SII Stars Image</dt><dd>Optionnelle</dd></div><div><dt>OSC Image</dt><dd>Alternative pour une caméra couleur avec filtre dual-band</dd></div><div><dt>Green Channel Blend Ratio</dt><dd>Décoché par défaut ; Ha to OIII ratio 0,3 si activé</dd></div><div><dt>Apply Star Stretch</dt><dd>Recommandé par l'auteur ; Stretch Factor 5, Color Boost 1,0</dd></div></dl>
       </article>
@@ -2549,7 +2549,7 @@ max(Img1,iif(M==1,E7,iif(M==2,E8,E9)))</code><button type="button" data-copy>Cop
         <div class="tlabel">Paramètres</div>
         <dl class="tparams"><div><dt>Color to remove</dt><dd>Green</dd></div><div><dt>Protection method</dt><dd>Average Neutral</dd></div><div><dt>Amount</dt><dd>1,0 (défaut) convient dans la plupart des cas ; 0,50 à 0,80 pour garder un peu de vert en SHO</dd></div></dl>
               <div class="tlabel">Par filtre</div>
-        <div class="pf"><div><span class="filters"><span class="flt L">L</span><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span></span><p>Rarement utile après SPCC. Amount 1,0 seulement si un vert franc reste (souvent sur les galaxies).</p></div><div><span class="filters"><span class="flt SII">SII</span><span class="flt Ha">Ha</span><span class="flt OIII">OIII</span></span><p>SHO : Amount 0,50 à 0,80. HOO : souvent inutile.</p></div></div>
+        <div class="pf"><div><span class="filters"><span class="flt L">L</span><span class="flt R">R</span><span class="flt G">G</span><span class="flt B">B</span></span><p>Rarement utile après SPCC. Amount 1,0 seulement si un vert franc reste (souvent sur les galaxies).</p></div><div><span class="filters"><span class="flt SII">S</span><span class="flt Ha">H</span><span class="flt OIII">O</span></span><p>SHO : Amount 0,50 à 0,80. HOO : souvent inutile.</p></div></div>
       </article>
     </div>
   </section>
