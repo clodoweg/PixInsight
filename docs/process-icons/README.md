@@ -90,7 +90,7 @@ Sinon, deux fichiers par workflow :
 - **`Workflow-X.xpsm` — chemin principal** : les étapes standard seulement (MGC + MARS pour le gradient, GHS pour l'étirement, NarrowbandNormalization pour la palette), numérotées `E01_WBPP`, `E02_CC_auto`…
 - **`Options-X.xpsm` — options et alternatives** (`Opt_HDRMT`, `Opt_DBE`…) : à charger seulement si besoin ; la description de chaque icône commence par `OPTION — quand l'utiliser` ou `ALTERNATIVE — à la place de quoi`.
 
-- **`Conteneurs-X.xpsm` — chemin principal complet avec conteneurs (à tester)** : le même chemin que `Workflow-X`, mais chaque suite d'étapes sans réglage intermédiaire, appliquée à la même image, est remplacée par une icône *ProcessContainer* (un clic au lieu de trois à cinq) : LRGB 18 icônes au lieu de 24, LHaRGB 24 au lieu de 28, RGB-SHO 26 au lieu de 33, SHO sans RGB 25 au lieu de 31, HOO 25 au lieu de 28. Chaque étape garde les réglages de son icône. Le préparateur fait la même chose avec la case « Regrouper en conteneurs ».
+- **`Conteneurs-X.xpsm` — le fichier unique conseillé (à tester)** : le chemin principal complet ET toutes les options, rangées dans la colonne de leur phase sous une icône-titre `P#_options` (`Opt_HDRMT` en Finition, `Opt_DBE` en Gradient…). Dans le chemin principal, chaque suite d'étapes sans réglage intermédiaire, appliquée à la même image, est remplacée par une icône *ProcessContainer* (un clic au lieu de trois à cinq) : LRGB 18 icônes au lieu de 24, LHaRGB 24 au lieu de 28, RGB-SHO 26 au lieu de 33, SHO sans RGB 25 au lieu de 31, HOO 25 au lieu de 28. Chaque étape garde les réglages de son icône. Le préparateur fait la même chose avec la case « Regrouper en conteneurs ».
 
 | Conteneur | Image cible | Étapes |
 |---|---|---|

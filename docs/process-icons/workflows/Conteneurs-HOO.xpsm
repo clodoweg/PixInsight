@@ -4,7 +4,7 @@ Fiche PixInsight — icônes de process générées pour docs/pixinsight-workflo
 Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes images.
 -->
 <xpsm version="1.0" xmlns="http://www.pixinsight.com/xpsm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.pixinsight.com/xpsm http://pixinsight.com/xpsm/xpsm-1.0.xsd">
-<!-- Workflow HOO — chemin principal avec conteneurs -->
+<!-- Workflow HOO — chemin principal avec conteneurs, options dans leur phase -->
    <instance class="NoOperation" version="256" id="P1_Preparation_instance">
       <description>PHASE 1 — Préparation : masters intégrés, recadrés et combinés. Colonne de repère, sans effet.</description>
    </instance>
@@ -69,6 +69,69 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
    </instance>
    <instance class="NoOperation" version="256" id="E04_Masters_H_O_instance">
       <description>PRÉRÉGLÉ : rien (icône-note). À RÉGLER : renomme tes masters H et O ; même recadrage. Détails : page docs/pixinsight-workflow.html.</description>
+   </instance>
+   <instance class="NoOperation" version="256" id="P1_options_instance">
+      <description>OPTIONS de la phase 1 — Préparation : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
+   </instance>
+   <instance class="PixelMath" version="256" id="Opt_DualBand_H_instance">
+      <description>OPTION — caméra couleur avec filtre dual-band. PRÉRÉGLÉ : H = canal rouge de l'image couleur. À RÉGLER : glisse sur l'image dual-band (caméra couleur seulement). Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="expression">$T[0]</parameter>
+      <parameter id="expression1"></parameter>
+      <parameter id="expression2"></parameter>
+      <parameter id="expression3"></parameter>
+      <parameter id="useSingleExpression" value="true"/>
+      <parameter id="symbols"></parameter>
+      <parameter id="clearImageCacheAndExit" value="false"/>
+      <parameter id="cacheGeneratedImages" value="false"/>
+      <parameter id="generateOutput" value="true"/>
+      <parameter id="singleThreaded" value="false"/>
+      <parameter id="optimization" value="true"/>
+      <parameter id="use64BitWorkingImage" value="false"/>
+      <parameter id="rescale" value="false"/>
+      <parameter id="rescaleLower" value="0"/>
+      <parameter id="rescaleUpper" value="1"/>
+      <parameter id="truncate" value="true"/>
+      <parameter id="truncateLower" value="0"/>
+      <parameter id="truncateUpper" value="1"/>
+      <parameter id="createNewImage" value="true"/>
+      <parameter id="showNewImage" value="true"/>
+      <parameter id="newImageId">H</parameter>
+      <parameter id="newImageWidth" value="0"/>
+      <parameter id="newImageHeight" value="0"/>
+      <parameter id="newImageAlpha" value="false"/>
+      <parameter id="newImageColorSpace" value="Gray"/>
+      <parameter id="newImageSampleFormat" value="SameAsTarget"/>
+      <table id="outputData" rows="0"/>
+   </instance>
+   <instance class="PixelMath" version="256" id="Opt_DualBand_O_instance">
+      <description>OPTION — caméra couleur avec filtre dual-band. PRÉRÉGLÉ : O = moyenne de G et B. À RÉGLER : glisse sur l'image dual-band (caméra couleur seulement). Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="expression">($T[1] + $T[2]) / 2</parameter>
+      <parameter id="expression1"></parameter>
+      <parameter id="expression2"></parameter>
+      <parameter id="expression3"></parameter>
+      <parameter id="useSingleExpression" value="true"/>
+      <parameter id="symbols"></parameter>
+      <parameter id="clearImageCacheAndExit" value="false"/>
+      <parameter id="cacheGeneratedImages" value="false"/>
+      <parameter id="generateOutput" value="true"/>
+      <parameter id="singleThreaded" value="false"/>
+      <parameter id="optimization" value="true"/>
+      <parameter id="use64BitWorkingImage" value="false"/>
+      <parameter id="rescale" value="false"/>
+      <parameter id="rescaleLower" value="0"/>
+      <parameter id="rescaleUpper" value="1"/>
+      <parameter id="truncate" value="true"/>
+      <parameter id="truncateLower" value="0"/>
+      <parameter id="truncateUpper" value="1"/>
+      <parameter id="createNewImage" value="true"/>
+      <parameter id="showNewImage" value="true"/>
+      <parameter id="newImageId">O</parameter>
+      <parameter id="newImageWidth" value="0"/>
+      <parameter id="newImageHeight" value="0"/>
+      <parameter id="newImageAlpha" value="false"/>
+      <parameter id="newImageColorSpace" value="Gray"/>
+      <parameter id="newImageSampleFormat" value="SameAsTarget"/>
+      <table id="outputData" rows="0"/>
    </instance>
    <instance class="NoOperation" version="256" id="P2_Gradient_instance">
       <description>PHASE 2 — Gradient : image linéaire : retrait du gradient. Colonne de repère, sans effet.</description>
@@ -231,6 +294,63 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="generateGradientModel" value="true"/>
       <parameter id="generateProtectionMasks" value="false"/>
       <parameter id="gridSamplingDelta" value="16"/>
+   </instance>
+   <instance class="NoOperation" version="256" id="P2_options_instance">
+      <description>OPTIONS de la phase 2 — Gradient : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
+   </instance>
+   <instance class="MultiscaleGradientCorrection" version="1" id="Opt_MGC_MARS_instance">
+      <description>OPTION — image RGB (étoiles du workflow RGB + SHO) ou master L. PRÉRÉGLÉ : Gradient scale 1024, Structure separation 3, Smoothness 1,0, MARS Gray = L, modèle affiché. À RÉGLER : rien ; après SPFC, sur l'image linéaire. SI gradient restant dans les coins -&gt; Gradient scale 512 puis 256 ; si modèle qui ondule -&gt; Smoothness 3 à 5 ; si image couleur -&gt; filtres MARS R, G, B. Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="command"></parameter>
+      <parameter id="useMARSDatabase" value="true"/>
+      <parameter id="grayMARSFilter">L</parameter>
+      <parameter id="redMARSFilter">R</parameter>
+      <parameter id="greenMARSFilter">G</parameter>
+      <parameter id="blueMARSFilter">B</parameter>
+      <parameter id="referenceImageId"></parameter>
+      <parameter id="gradientScale" value="1024"/>
+      <parameter id="structureSeparation" value="3"/>
+      <parameter id="modelSmoothness" value="1.00"/>
+      <parameter id="minFieldRatio" value="0.017"/>
+      <parameter id="maxFieldRatio" value="0.167"/>
+      <parameter id="enforceFieldLimits" value="true"/>
+      <parameter id="scaleFactorRK" value="1.00"/>
+      <parameter id="scaleFactorG" value="1.00"/>
+      <parameter id="scaleFactorB" value="1.00"/>
+      <parameter id="showGradientModel" value="true"/>
+   </instance>
+   <instance class="DynamicBackgroundExtraction" version="1" id="Opt_DBE_instance">
+      <description>ALTERNATIVE — DBE. PRÉRÉGLÉ : 15 points par ligne, rayon 15, Tolerance 0,5, Smoothing 0,25, Subtraction. À RÉGLER : Generate, retire les points sur l'objet, ajoute-en dans le fond vide. SI points rouges -&gt; Tolerance 1,0 à 1,5 ; si vignettage -&gt; Division. Détails : page docs/pixinsight-workflow.html.</description>
+      <table id="data" rows="0"/>
+      <parameter id="derivativeOrder" value="2"/>
+      <parameter id="smoothing" value="0.250"/>
+      <parameter id="ignoreWeights" value="false"/>
+      <parameter id="modelId"></parameter>
+      <parameter id="modelWidth" value="0"/>
+      <parameter id="modelHeight" value="0"/>
+      <parameter id="downsample" value="2"/>
+      <parameter id="modelSampleFormat" value="f32"/>
+      <parameter id="targetCorrection" value="Subtract"/>
+      <parameter id="normalize" value="true"/>
+      <parameter id="discardModel" value="true"/>
+      <parameter id="replaceTarget" value="true"/>
+      <parameter id="correctedImageId"></parameter>
+      <parameter id="correctedImageSampleFormat" value="SameAsTarget"/>
+      <table id="samples" rows="0"/>
+      <parameter id="imageWidth" value="0"/>
+      <parameter id="imageHeight" value="0"/>
+      <parameter id="symmetryCenterX" value="0.500000"/>
+      <parameter id="symmetryCenterY" value="0.500000"/>
+      <parameter id="tolerance" value="0.500"/>
+      <parameter id="shadowsRelaxation" value="3.000"/>
+      <parameter id="minSampleFraction" value="0.050"/>
+      <parameter id="defaultSampleRadius" value="15"/>
+      <parameter id="samplesPerRow" value="15"/>
+   </instance>
+   <instance class="LinearFit" version="256" id="Opt_LinearFit_ref_H_instance">
+      <description>OPTION — fonds très différents entre H, O et S (conseillé avec Foraxx). PRÉRÉGLÉ : référence = vue H. À RÉGLER : applique sur O puis sur S. Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="referenceViewId">H</parameter>
+      <parameter id="rejectLow" value="0.000000"/>
+      <parameter id="rejectHigh" value="0.920000"/>
    </instance>
    <instance class="NoOperation" version="256" id="P3_Lineaire_instance">
       <description>PHASE 3 — Linéaire : image linéaire : couleur, déconvolution, retrait des étoiles, bruit. Colonne de repère, sans effet.</description>
@@ -437,6 +557,77 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="clipType" value="CT_RGBBlend"/>
       <parameter id="useRGBWorkingSpace" value="false"/>
    </instance>
+   <instance class="NoOperation" version="256" id="P4_options_instance">
+      <description>OPTIONS de la phase 4 — Étirement : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
+   </instance>
+   <instance class="Script" version="256" id="Opt_Statistical_Stretch_instance">
+      <description>ALTERNATIVE — Statistical Stretch. Glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script : efface son champ MD5. PRÉRÉGLÉ : Target Median 0,25, Blackpoint Sigma 5. À RÉGLER : rien ; même Target Median pour tous les masters. Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/statisticalstretch.js</parameter>
+      <parameter id="md5sum">defab45bb4e2f33db39a7bb016cdefb0</parameter>
+      <table id="parameters" rows="15">
+         <tr>
+            <td id="id">targetMedian</td>
+            <td id="value">0.25</td>
+         </tr>
+         <tr>
+            <td id="id">curvesBoost</td>
+            <td id="value">0</td>
+         </tr>
+         <tr>
+            <td id="id">numIterations</td>
+            <td id="value">1</td>
+         </tr>
+         <tr>
+            <td id="id">normalizeImageRange</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">linkedStretch</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">openDialogbox</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">autoConvergence</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">blackpointSigma</td>
+            <td id="value">5</td>
+         </tr>
+         <tr>
+            <td id="id">noBlackClip</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">hdrCompress</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">hdrAmount</td>
+            <td id="value">0.25</td>
+         </tr>
+         <tr>
+            <td id="id">hdrKnee</td>
+            <td id="value">0.35</td>
+         </tr>
+         <tr>
+            <td id="id">lumaOnly</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">lumaMode</td>
+            <td id="value">rec709</td>
+         </tr>
+         <tr>
+            <td id="id">lumaBlend</td>
+            <td id="value">0.6</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
+   </instance>
    <instance class="NoOperation" version="256" id="P5_Couleur_instance">
       <description>PHASE 5 — Couleur : combinaison finale et palette. Colonne de repère, sans effet.</description>
    </instance>
@@ -482,6 +673,111 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="shadowpoint" value="1.000"/>
       <parameter id="highlightReduction" value="0.000"/>
       <parameter id="brightness" value="0.000"/>
+   </instance>
+   <instance class="NoOperation" version="256" id="P5_options_instance">
+      <description>OPTIONS de la phase 5 — Couleur : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
+   </instance>
+   <instance class="PixelMath" version="256" id="Opt_Foraxx_HOO_instance">
+      <description>ALTERNATIVE — Foraxx. PRÉRÉGLÉ : formule Foraxx HOO, image 'HOO_Foraxx'. À RÉGLER : vues H et O étirées, sans étoiles. Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="expression">H</parameter>
+      <parameter id="expression1">((O*H)^~(O*H))*H + ~((O*H)^~(O*H))*O</parameter>
+      <parameter id="expression2">O</parameter>
+      <parameter id="expression3"></parameter>
+      <parameter id="useSingleExpression" value="false"/>
+      <parameter id="symbols"></parameter>
+      <parameter id="clearImageCacheAndExit" value="false"/>
+      <parameter id="cacheGeneratedImages" value="false"/>
+      <parameter id="generateOutput" value="true"/>
+      <parameter id="singleThreaded" value="false"/>
+      <parameter id="optimization" value="true"/>
+      <parameter id="use64BitWorkingImage" value="false"/>
+      <parameter id="rescale" value="false"/>
+      <parameter id="rescaleLower" value="0"/>
+      <parameter id="rescaleUpper" value="1"/>
+      <parameter id="truncate" value="true"/>
+      <parameter id="truncateLower" value="0"/>
+      <parameter id="truncateUpper" value="1"/>
+      <parameter id="createNewImage" value="true"/>
+      <parameter id="showNewImage" value="true"/>
+      <parameter id="newImageId">HOO_Foraxx</parameter>
+      <parameter id="newImageWidth" value="0"/>
+      <parameter id="newImageHeight" value="0"/>
+      <parameter id="newImageAlpha" value="false"/>
+      <parameter id="newImageColorSpace" value="RGB"/>
+      <parameter id="newImageSampleFormat" value="SameAsTarget"/>
+      <table id="outputData" rows="0"/>
+   </instance>
+   <instance class="PixelMath" version="256" id="Opt_HOO_Hubble_instance">
+      <description>ALTERNATIVE — Variante Hubble. PRÉRÉGLÉ : G = 0,6·H + 0,4·O. À RÉGLER : vues H et O étirées ; ajuste les coefficients. Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="expression">H</parameter>
+      <parameter id="expression1">0.6*H + 0.4*O</parameter>
+      <parameter id="expression2">O</parameter>
+      <parameter id="expression3"></parameter>
+      <parameter id="useSingleExpression" value="false"/>
+      <parameter id="symbols"></parameter>
+      <parameter id="clearImageCacheAndExit" value="false"/>
+      <parameter id="cacheGeneratedImages" value="false"/>
+      <parameter id="generateOutput" value="true"/>
+      <parameter id="singleThreaded" value="false"/>
+      <parameter id="optimization" value="true"/>
+      <parameter id="use64BitWorkingImage" value="false"/>
+      <parameter id="rescale" value="false"/>
+      <parameter id="rescaleLower" value="0"/>
+      <parameter id="rescaleUpper" value="1"/>
+      <parameter id="truncate" value="true"/>
+      <parameter id="truncateLower" value="0"/>
+      <parameter id="truncateUpper" value="1"/>
+      <parameter id="createNewImage" value="true"/>
+      <parameter id="showNewImage" value="true"/>
+      <parameter id="newImageId">HOO_Hubble</parameter>
+      <parameter id="newImageWidth" value="0"/>
+      <parameter id="newImageHeight" value="0"/>
+      <parameter id="newImageAlpha" value="false"/>
+      <parameter id="newImageColorSpace" value="RGB"/>
+      <parameter id="newImageSampleFormat" value="SameAsTarget"/>
+      <table id="outputData" rows="0"/>
+   </instance>
+   <instance class="Script" version="256" id="Opt_Perfect_Palette_Picker_instance">
+      <description>OPTION — comparer 16 palettes avant de choisir. Double-clic sur l'icône puis Apply Global. Si l'icône est bloquée après une mise à jour du script : efface son champ MD5. PRÉRÉGLÉ : rien (le script ne lit pas l'icône). À RÉGLER : choisis H, O, S ; Linear Input Data selon tes images ; compare les 16 vignettes. Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/PerfectPalettePicker.js</parameter>
+      <parameter id="md5sum">0ffff6a0fb869acfc4f9ee3ad81b6338</parameter>
+      <table id="parameters" rows="0"/>
+      <parameter id="information"></parameter>
+   </instance>
+   <instance class="NoOperation" version="256" id="Opt_NBColourMapper_instance">
+      <description>OPTION — teintes libres, filtre par filtre. PRÉRÉGLÉ : rien (icône-note). À RÉGLER : H rouge-orangé, O cyan-bleu, S rouge profond ou or. Détails : page docs/pixinsight-workflow.html.</description>
+   </instance>
+   <instance class="LRGBCombination" version="256" id="Opt_H_en_luminance_instance">
+      <description>OPTION — détail plus net en HOO (H en luminance). PRÉRÉGLÉ : seul L coché, Lightness 0,5, Saturation 0,40. À RÉGLER : copie de H étiré nommée 'L' ; glisse sur l'image HOO. Détails : page docs/pixinsight-workflow.html.</description>
+      <table id="channels" rows="4">
+         <tr>
+            <td id="enabled" value="false"/>
+            <td id="id"></td>
+            <td id="k" value="1.00000"/>
+         </tr>
+         <tr>
+            <td id="enabled" value="false"/>
+            <td id="id"></td>
+            <td id="k" value="1.00000"/>
+         </tr>
+         <tr>
+            <td id="enabled" value="false"/>
+            <td id="id"></td>
+            <td id="k" value="1.00000"/>
+         </tr>
+         <tr>
+            <td id="enabled" value="true"/>
+            <td id="id">L</td>
+            <td id="k" value="1.00000"/>
+         </tr>
+      </table>
+      <parameter id="mL" value="0.500"/>
+      <parameter id="mc" value="0.400"/>
+      <parameter id="clipHighlights" value="false"/>
+      <parameter id="noiseReduction" value="true"/>
+      <parameter id="layersRemoved" value="4"/>
+      <parameter id="layersProtected" value="2"/>
+      <parameter id="inheritAstrometricSolution" value="true"/>
    </instance>
    <instance class="NoOperation" version="256" id="P6_Finition_instance">
       <description>PHASE 6 — Finition : contraste et saturation sur l'image sans étoiles. Colonne de repère, sans effet.</description>
@@ -661,6 +957,51 @@ max(0, (0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2] - s) / (1 - s))</parameter>
          <parameter id="circularKernel" value="true"/>
       </instance>
    </instance>
+   <instance class="NoOperation" version="256" id="P6_options_instance">
+      <description>OPTIONS de la phase 6 — Finition : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
+   </instance>
+   <instance class="HDRMultiscaleTransform" version="256" id="Opt_HDRMT_instance">
+      <description>OPTION — cœur de galaxie ou nébuleuse brillante brûlé. PRÉRÉGLÉ : 6 couches, 1 itération, To lightness, Preserve hue, Lightness mask. À RÉGLER : rien. SI pas assez -&gt; 2 itérations ; si trop fort -&gt; mélange 50 % avec l'original. Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="numberOfLayers" value="6"/>
+      <parameter id="numberOfIterations" value="1"/>
+      <parameter id="invertedIterations" value="true"/>
+      <parameter id="overdrive" value="0.000"/>
+      <parameter id="medianTransform" value="false"/>
+      <parameter id="scalingFunctionData">0.003906,0.015625,0.023438,0.015625,0.003906,0.015625,0.0625,0.09375,0.0625,0.015625,0.023438,0.09375,0.140625,0.09375,0.023438,0.015625,0.0625,0.09375,0.0625,0.015625,0.003906,0.015625,0.023438,0.015625,0.003906</parameter>
+      <parameter id="scalingFunctionRowFilter">0.0625,0.25,0.375,0.25,0.0625</parameter>
+      <parameter id="scalingFunctionColFilter">0.0625,0.25,0.375,0.25,0.0625</parameter>
+      <parameter id="scalingFunctionName">B3 Spline (5)</parameter>
+      <parameter id="deringing" value="false"/>
+      <parameter id="smallScaleDeringing" value="0.000"/>
+      <parameter id="largeScaleDeringing" value="0.250"/>
+      <parameter id="outputDeringingMaps" value="false"/>
+      <parameter id="midtonesBalanceMode" value="Automatic"/>
+      <parameter id="midtonesBalance" value="0.500000"/>
+      <parameter id="toIntensity" value="false"/>
+      <parameter id="toLightness" value="true"/>
+      <parameter id="preserveHue" value="true"/>
+      <parameter id="lightnessMask" value="true"/>
+      <parameter id="intensity" value="1.00"/>
+   </instance>
+   <instance class="NoiseXTerminator" version="256" id="Opt_NXT_final_instance">
+      <description>OPTION — bruit visible sur l'image finale. PRÉRÉGLÉ : Denoise 0,40, 1 itération. À RÉGLER : seulement si du bruit reste sur l'image finale. SI aspect plastique -&gt; 0,30. Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="ml_version" value="0"/>
+      <parameter id="denoise" value="0.40"/>
+      <parameter id="enable_color_separation" value="false"/>
+      <parameter id="enable_frequency_separation" value="false"/>
+      <parameter id="denoise_intensity" value="0.90"/>
+      <parameter id="denoise_color" value="0.90"/>
+      <parameter id="denoise_high_freq" value="0.90"/>
+      <parameter id="denoise_low_freq" value="0.90"/>
+      <parameter id="denoise_intensity_high_freq" value="0.90"/>
+      <parameter id="denoise_intensity_low_freq" value="0.90"/>
+      <parameter id="denoise_color_high_freq" value="0.90"/>
+      <parameter id="denoise_color_low_freq" value="0.90"/>
+      <parameter id="frequency_scale" value="5.0"/>
+      <parameter id="iterations" value="1"/>
+      <parameter id="detail" value="0.15"/>
+      <parameter id="overlap" value="0.20"/>
+   </instance>
    <instance class="NoOperation" version="256" id="P7_Etoiles_instance">
       <description>PHASE 7 — Étoiles : étoiles : étirement, recombinaison, réduction. Colonne de repère, sans effet.</description>
    </instance>
@@ -754,17 +1095,51 @@ max(Img1,f1)</parameter>
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
+   <instance class="NoOperation" version="256" id="P7_options_instance">
+      <description>OPTIONS de la phase 7 — Étoiles : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
+   </instance>
+   <instance class="MorphologicalTransformation" version="256" id="Opt_MT_etoiles_instance">
+      <description>OPTION — réduction d'étoiles supplémentaire. PRÉRÉGLÉ : Selection 0,25, Amount 0,60, 1 itération, 5×5 circulaire. À RÉGLER : sur l'image d'étoiles seule. SI trop fort -&gt; Amount 0,50. Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="operator" value="Selection"/>
+      <parameter id="interlacingDistance" value="1"/>
+      <parameter id="lowThreshold" value="0.000000"/>
+      <parameter id="highThreshold" value="0.000000"/>
+      <parameter id="numberOfIterations" value="1"/>
+      <parameter id="amount" value="0.60"/>
+      <parameter id="selectionPoint" value="0.25"/>
+      <parameter id="structureName"></parameter>
+      <parameter id="structureSize" value="5"/>
+      <table id="structureWayTable" rows="1">
+         <tr>
+            <td id="mask">0x00,0x01,0x01,0x01,0x00,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x00,0x01,0x01,0x01,0x00</td>
+         </tr>
+      </table>
+   </instance>
+   <instance class="Script" version="256" id="Opt_Halo_B_Gon_instance">
+      <description>OPTION — halos autour des étoiles brillantes. Double-clic sur l'icône puis Apply Global. Si l'icône est bloquée après une mise à jour du script : efface son champ MD5. PRÉRÉGLÉ : rien (réglages dans le dialogue). À RÉGLER : Reduction Amount Low ; Linear Data décoché sur une image étirée. SI pas assez -&gt; relance en Low (Med = 4 courbes, High = 9). Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/Halo-B-Gon.js</parameter>
+      <parameter id="md5sum">b9427e718e2b9760704c8c738e0893b7</parameter>
+      <table id="parameters" rows="0"/>
+      <parameter id="information"></parameter>
+   </instance>
    <icon id="P1_Preparation" instance="P1_Preparation_instance" xpos="30" ypos="20" workspace="Workspace01"/>
    <icon id="E01_WBPP" instance="E01_WBPP_instance" xpos="30" ypos="64" workspace="Workspace01"/>
    <icon id="E02_CC_auto" instance="E02_CC_auto_instance" xpos="30" ypos="94" workspace="Workspace01"/>
    <icon id="E03_DynamicCrop" instance="E03_DynamicCrop_instance" xpos="30" ypos="124" workspace="Workspace01"/>
    <icon id="E04_Masters_H_O" instance="E04_Masters_H_O_instance" xpos="30" ypos="154" workspace="Workspace01"/>
+   <icon id="P1_options" instance="P1_options_instance" xpos="30" ypos="200" workspace="Workspace01"/>
+   <icon id="Opt_DualBand_H" instance="Opt_DualBand_H_instance" xpos="30" ypos="234" workspace="Workspace01"/>
+   <icon id="Opt_DualBand_O" instance="Opt_DualBand_O_instance" xpos="30" ypos="264" workspace="Workspace01"/>
    <icon id="P2_Gradient" instance="P2_Gradient_instance" xpos="290" ypos="20" workspace="Workspace01"/>
    <icon id="E05_SPFC_H" instance="E05_SPFC_H_instance" xpos="290" ypos="64" workspace="Workspace01"/>
    <icon id="E06_SPFC_O" instance="E06_SPFC_O_instance" xpos="290" ypos="94" workspace="Workspace01"/>
    <icon id="E07_MGC_MARS_H" instance="E07_MGC_MARS_H_instance" xpos="290" ypos="124" workspace="Workspace01"/>
    <icon id="E08_MGC_MARS_O" instance="E08_MGC_MARS_O_instance" xpos="290" ypos="154" workspace="Workspace01"/>
    <icon id="E09_GradientCorrection" instance="E09_GradientCorrection_instance" xpos="290" ypos="184" workspace="Workspace01"/>
+   <icon id="P2_options" instance="P2_options_instance" xpos="290" ypos="230" workspace="Workspace01"/>
+   <icon id="Opt_MGC_MARS" instance="Opt_MGC_MARS_instance" xpos="290" ypos="264" workspace="Workspace01"/>
+   <icon id="Opt_DBE" instance="Opt_DBE_instance" xpos="290" ypos="294" workspace="Workspace01"/>
+   <icon id="Opt_LinearFit_ref_H" instance="Opt_LinearFit_ref_H_instance" xpos="290" ypos="324" workspace="Workspace01"/>
    <icon id="P3_Lineaire" instance="P3_Lineaire_instance" xpos="550" ypos="20" workspace="Workspace01"/>
    <icon id="E10_Combinaison_HOO" instance="E10_Combinaison_HOO_instance" xpos="550" ypos="64" workspace="Workspace01"/>
    <icon id="E11_C_HOO_lineaire" instance="E11_C_HOO_lineaire_instance" xpos="550" ypos="94" workspace="Workspace01"/>
@@ -775,15 +1150,29 @@ max(Img1,f1)</parameter>
    <icon id="E15_GHS_1_premier" instance="E15_GHS_1_premier_instance" xpos="810" ypos="64" workspace="Workspace01"/>
    <icon id="E16_GHS_2_contraste" instance="E16_GHS_2_contraste_instance" xpos="810" ypos="94" workspace="Workspace01"/>
    <icon id="E17_GHS_3_fond" instance="E17_GHS_3_fond_instance" xpos="810" ypos="124" workspace="Workspace01"/>
+   <icon id="P4_options" instance="P4_options_instance" xpos="810" ypos="170" workspace="Workspace01"/>
+   <icon id="Opt_Statistical_Stretch" instance="Opt_Statistical_Stretch_instance" xpos="810" ypos="204" workspace="Workspace01"/>
    <icon id="P5_Couleur" instance="P5_Couleur_instance" xpos="1070" ypos="20" workspace="Workspace01"/>
    <icon id="E18_HOO_simple" instance="E18_HOO_simple_instance" xpos="1070" ypos="64" workspace="Workspace01"/>
    <icon id="E19_NBN_HOO" instance="E19_NBN_HOO_instance" xpos="1070" ypos="94" workspace="Workspace01"/>
+   <icon id="P5_options" instance="P5_options_instance" xpos="1070" ypos="140" workspace="Workspace01"/>
+   <icon id="Opt_Foraxx_HOO" instance="Opt_Foraxx_HOO_instance" xpos="1070" ypos="174" workspace="Workspace01"/>
+   <icon id="Opt_HOO_Hubble" instance="Opt_HOO_Hubble_instance" xpos="1070" ypos="204" workspace="Workspace01"/>
+   <icon id="Opt_Perfect_Palette_Picker" instance="Opt_Perfect_Palette_Picker_instance" xpos="1070" ypos="234" workspace="Workspace01"/>
+   <icon id="Opt_NBColourMapper" instance="Opt_NBColourMapper_instance" xpos="1070" ypos="264" workspace="Workspace01"/>
+   <icon id="Opt_H_en_luminance" instance="Opt_H_en_luminance_instance" xpos="1070" ypos="294" workspace="Workspace01"/>
    <icon id="P6_Finition" instance="P6_Finition_instance" xpos="1330" ypos="20" workspace="Workspace01"/>
    <icon id="E20_Masque_L" instance="E20_Masque_L_instance" xpos="1330" ypos="64" workspace="Workspace01"/>
    <icon id="E21_C_Finition" instance="E21_C_Finition_instance" xpos="1330" ypos="94" workspace="Workspace01"/>
+   <icon id="P6_options" instance="P6_options_instance" xpos="1330" ypos="140" workspace="Workspace01"/>
+   <icon id="Opt_HDRMT" instance="Opt_HDRMT_instance" xpos="1330" ypos="174" workspace="Workspace01"/>
+   <icon id="Opt_NXT_final" instance="Opt_NXT_final_instance" xpos="1330" ypos="204" workspace="Workspace01"/>
    <icon id="P7_Etoiles" instance="P7_Etoiles_instance" xpos="1590" ypos="20" workspace="Workspace01"/>
    <icon id="E22_Etoiles_HOO" instance="E22_Etoiles_HOO_instance" xpos="1590" ypos="64" workspace="Workspace01"/>
    <icon id="E23_Star_Stretch" instance="E23_Star_Stretch_instance" xpos="1590" ypos="94" workspace="Workspace01"/>
    <icon id="E24_Etoiles_screen" instance="E24_Etoiles_screen_instance" xpos="1590" ypos="124" workspace="Workspace01"/>
    <icon id="E25_Blanshan_Transfer" instance="E25_Blanshan_Transfer_instance" xpos="1590" ypos="154" workspace="Workspace01"/>
+   <icon id="P7_options" instance="P7_options_instance" xpos="1590" ypos="200" workspace="Workspace01"/>
+   <icon id="Opt_MT_etoiles" instance="Opt_MT_etoiles_instance" xpos="1590" ypos="234" workspace="Workspace01"/>
+   <icon id="Opt_Halo_B_Gon" instance="Opt_Halo_B_Gon_instance" xpos="1590" ypos="264" workspace="Workspace01"/>
 </xpsm>

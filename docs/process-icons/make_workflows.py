@@ -153,6 +153,40 @@ def layout(entries, naming):
         rows += 1
     return insts, icons
 
+def layout_all(main, opts):
+    """Une colonne par phase : icône-titre, étapes du chemin principal (E01…), puis icône « options » et options (Opt_…)."""
+    insts, icons = [], []
+    phases = sorted({e[1] for e in main} | {e[1] for e in opts})
+    k = 0
+    for c, ph in enumerate(phases):
+        x = 30 + 260 * c
+        hn, hx = header_icon(ph)
+        insts.append(hx)
+        icons.append('   <icon id="%s" instance="%s_instance" xpos="%d" ypos="20" workspace="Workspace01"/>' % (hn, hn, x))
+        y = 64
+        for b, p, xml in main:
+            if p != ph:
+                continue
+            k += 1
+            name = 'E%02d_%s' % (k, b)
+            insts.append(xml.replace('id="__ID___instance"', 'id="%s_instance"' % name, 1))
+            icons.append('   <icon id="%s" instance="%s_instance" xpos="%d" ypos="%d" workspace="Workspace01"/>' % (name, name, x, y))
+            y += 30
+        mine = [e for e in opts if e[1] == ph]
+        if mine:
+            y += 16
+            on = 'P%d_options' % ph
+            insts.append('   <instance class="NoOperation" version="256" id="%s_instance">\n      <description>%s</description>\n   </instance>'
+                         % (on, escape('OPTIONS de la phase %d — %s : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.' % (ph, L.PHASES[ph - 1]))))
+            icons.append('   <icon id="%s" instance="%s_instance" xpos="%d" ypos="%d" workspace="Workspace01"/>' % (on, on, x, y))
+            y += 34
+            for b, p, xml in mine:
+                name = 'Opt_%s' % b
+                insts.append(xml.replace('id="__ID___instance"', 'id="%s_instance"' % name, 1))
+                icons.append('   <icon id="%s" instance="%s_instance" xpos="%d" ypos="%d" workspace="Workspace01"/>' % (name, name, x, y))
+                y += 30
+    return insts, icons
+
 def save(filename, title, insts, icons):
     xml = M.HEADER + '<!-- ' + escape(title) + ' -->\n' + '\n'.join(insts) + '\n' + '\n'.join(icons) + '\n</xpsm>\n'
     open(os.path.join(OUT, filename), 'w', encoding='utf-8').write(xml)
@@ -208,7 +242,7 @@ def write(filename, prefix, title, steps):
             if cn not in done and members[0] == b:
                 done.add(cn)
                 cmain.append((cn, ph, container('__ID__', [byb[m] for m in members])))
-    save(filename.replace('Workflow-', 'Conteneurs-'), title + ' — chemin principal avec conteneurs', *layout(cmain, lambda k, b: 'E%02d_%s' % (k, b)))
+    save(filename.replace('Workflow-', 'Conteneurs-'), title + ' — chemin principal avec conteneurs, options dans leur phase', *layout_all(cmain, opts))
     conts = [{'n': cn, 't': target, 'm': members} for cn, target, members in L.CONTAINERS.get(prefix, [])]
     wf = {'id': prefix, 'file': filename, 'title': title, 'steps': [], 'containers': conts}
     for b, ph, r, x, t in entries:
