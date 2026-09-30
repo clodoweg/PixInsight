@@ -5,8 +5,12 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
 -->
 <xpsm version="1.0" xmlns="http://www.pixinsight.com/xpsm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.pixinsight.com/xpsm http://pixinsight.com/xpsm/xpsm-1.0.xsd">
 <!-- Workflow HOO -->
-   <instance class="NoOperation" version="256" id="HOO_01_WBPP_instance">
-      <description>ÉTAPE MANUELLE — WBPP 3.1 (Script › Batch Processing › WeightedBatchPreprocessing). Icône-note : WBPP dépend de tes fichiers et de ton dossier de sortie. Fichiers : mêmes gain/offset/température/driver/format ; darks de même durée et température (jamais pré-calibrés avec les bias) ; flats par filtre et par session, flat-darks de même durée ; plusieurs nuits : dossiers SESSION_&lt;date&gt; et Grouping keywords = SESSION. Add Directory, puis vérifie dans l'onglet Calibration que chaque groupe de lights a son dark et son flat. Réglages : préréglage Maximum quality ; Output pedestal Automatic ; Optimize dark frames décoché ; CosmeticCorrection avec l'icône CC_auto ; caméra couleur : CFA images, motif Auto, Debayer VNG ; Subframe weighting PSF Signal Weight ; Registration reference Auto, Distortion correction pour les grands champs ; Local normalization activée ; Rejection Auto (sinon Percentile &lt; 10 images, Winsorized &gt; 10, ESD pour les grands lots) ; Large-scale pixel rejection High ; Fast Integration automatique dès 150 images par groupe (à décocher pour l'intégration pondérée complète) ; Drizzle par groupe x2 seulement si FWHM &lt; 2 px et 15-20 poses dithérées (caméra couleur : drizzle CFA Scale 1, Drop shrink 1,0) ; Autocrop et Astrometric solution activés. Contrôle ensuite le journal et les cartes de réjection. Détails et sources : docs/pixinsight-workflow.html et docs/sources.md (github.com/clodoweg/PixInsight).</description>
+   <instance class="Script" version="256" id="HOO_01_WBPP_instance">
+      <description>LANCEMENT : double-clique l'icône, puis clique sur le rond « Apply Global » (ou glisse-la sur une image) : le dialogue du script s'ouvre. WBPP 3.x lit ses réglages dans sa propre mémoire (dernière session) et sur la ligne de commande, pas dans les paramètres d'une icône : cette icône ouvre WBPP, les réglages ci-dessous se font dans son dialogue. Chemin relevé pour WBPP 3.1.0 sous PixInsight 1.9.5 (psf-guard). Le champ MD5 est vide : PixInsight exécute le script installé sans vérifier sa version. SCRIPT — WBPP 3.1 (Script › Batch Processing › WeightedBatchPreprocessing). Fichiers : mêmes gain/offset/température/driver/format ; darks de même durée et température (jamais pré-calibrés avec les bias) ; flats par filtre et par session, flat-darks de même durée ; plusieurs nuits : dossiers SESSION_&lt;date&gt; et Grouping keywords = SESSION. Add Directory, puis vérifie dans l'onglet Calibration que chaque groupe de lights a son dark et son flat. Réglages : préréglage Maximum quality ; Output pedestal Automatic ; Optimize dark frames décoché ; CosmeticCorrection avec l'icône CC_auto ; caméra couleur : CFA images, motif Auto, Debayer VNG ; Subframe weighting PSF Signal Weight ; Registration reference Auto, Distortion correction pour les grands champs ; Local normalization activée ; Rejection Auto (sinon Percentile &lt; 10 images, Winsorized &gt; 10, ESD pour les grands lots) ; Large-scale pixel rejection High ; Fast Integration automatique dès 150 images par groupe (à décocher pour l'intégration pondérée complète) ; Drizzle par groupe x2 seulement si FWHM &lt; 2 px et 15-20 poses dithérées (caméra couleur : drizzle CFA Scale 1, Drop shrink 1,0) ; Autocrop et Astrometric solution activés. Contrôle ensuite le journal et les cartes de réjection. Détails et sources : docs/pixinsight-workflow.html et docs/sources.md (github.com/clodoweg/PixInsight).</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/BatchPreprocessing/BPP-Main.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="0"/>
+      <parameter id="information"></parameter>
    </instance>
    <instance class="CosmeticCorrection" version="256" id="HOO_02_CC_auto_instance">
       <description>CosmeticCorrection pour WBPP : Auto detect, Hot sigma 2,5 (2,2 à 3,0 ; 2,2-2,5 en narrowband, poses longues), Cold désactivé. Coche CFA si caméra couleur. Ne l'applique pas directement : dans WBPP, sélectionne cette icône comme modèle de correction cosmétique.</description>
@@ -539,8 +543,73 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="clipType" value="CT_RGBBlend"/>
       <parameter id="useRGBWorkingSpace" value="false"/>
    </instance>
-   <instance class="NoOperation" version="256" id="HOO_25_Statistical_Stretch_instance">
-      <description>ÉTAPE MANUELLE — Statistical Stretch (SetiAstro, script). Icône-note : le chemin du script dépend de ton installation. Alternative à GHS. Target Median 0,25 (défaut, 0,15-0,25) ; Linked Stretch coché pour une image couleur calibrée ; Blackpoint Sigma 5,0 ; Normalize décoché ; Curves Boost 0 ; même Target Median pour les images à combiner. En narrowband : même Target Median (0,25) pour tous les masters narrowband (Ha, OIII et SII s'il y en a), les médianes sont alors identiques par construction ; sur une image couleur déjà combinée, décoche Linked Stretch pour étirer chaque canal séparément. Contrôle ensuite le fond neutre (combinaison simple).</description>
+   <instance class="Script" version="256" id="HOO_25_Statistical_Stretch_instance">
+      <description>LANCEMENT : GLISSE cette icône sur l'image cible (le script refuse le mode global : un double-clic suivi de « Apply Global » n'aboutit pas). Le dialogue s'ouvre avec les valeurs de l'icône (openDialogbox = true) ; pour étirer directement sans dialogue, mets openDialogbox à false. SOMME DE CONTRÔLE : l'icône contient l'empreinte MD5 de la version actuelle du script ; après une mise à jour du script, PixInsight bloque l'icône : double-clique-la, efface le champ MD5 et réenregistre-la. SCRIPT — Statistical Stretch (SetiAstro, script). Alternative à GHS. Target Median 0,25 (défaut, 0,15-0,25) ; Linked Stretch coché pour une image couleur calibrée ; Blackpoint Sigma 5,0 ; Normalize décoché ; Curves Boost 0 ; même Target Median pour les images à combiner. En narrowband : même Target Median (0,25) pour tous les masters narrowband (Ha, OIII et SII s'il y en a), les médianes sont alors identiques par construction ; sur une image couleur déjà combinée, décoche Linked Stretch pour étirer chaque canal séparément. Contrôle ensuite le fond neutre (combinaison simple).</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/statisticalstretch.js</parameter>
+      <parameter id="md5sum">defab45bb4e2f33db39a7bb016cdefb0</parameter>
+      <table id="parameters" rows="15">
+         <tr>
+            <td id="id">targetMedian</td>
+            <td id="value">0.25</td>
+         </tr>
+         <tr>
+            <td id="id">curvesBoost</td>
+            <td id="value">0</td>
+         </tr>
+         <tr>
+            <td id="id">numIterations</td>
+            <td id="value">1</td>
+         </tr>
+         <tr>
+            <td id="id">normalizeImageRange</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">linkedStretch</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">openDialogbox</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">autoConvergence</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">blackpointSigma</td>
+            <td id="value">5</td>
+         </tr>
+         <tr>
+            <td id="id">noBlackClip</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">hdrCompress</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">hdrAmount</td>
+            <td id="value">0.25</td>
+         </tr>
+         <tr>
+            <td id="id">hdrKnee</td>
+            <td id="value">0.35</td>
+         </tr>
+         <tr>
+            <td id="id">lumaOnly</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">lumaMode</td>
+            <td id="value">rec709</td>
+         </tr>
+         <tr>
+            <td id="id">lumaBlend</td>
+            <td id="value">0.6</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
    </instance>
    <instance class="PixelMath" version="256" id="HOO_26_HOO_simple_instance">
       <description>PALETTE — combinaison simple sur 'Ha' et 'Oiii' étirés sans étoiles, à équilibrer ensuite avec NarrowbandNormalization (icône suivante).</description>
@@ -645,8 +714,12 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
-   <instance class="NoOperation" version="256" id="HOO_30_Perfect_Palette_Picker_instance">
-      <description>EXPLORER — Perfect Palette Picker (SetiAstro, script v1.3, Script › SetiAstro › Perfect Palette Picker). Icône-note : le chemin du script dépend de ton installation. Choisis les vues Ha, OIII et SII (sans étoiles de préférence ; sans SII, Ha le remplace), ou jusqu'à deux images couleur dual-band (HaO3, S2O3). Linear Input Data coché par défaut : chaque canal est étiré à une médiane de 0,25 ; décoche si tes images sont déjà étirées. Create Palettes : 16 vignettes (HOO, HOS, HSO, HSS, OHH, OHS, OSH, OSS, SHH, SHO, SOH, SOO, Realistic1, Realistic2, Foraxx, Dynamic Inverse). Clique une vignette pour générer la palette en pleine taille. Sert à choisir : équilibre ensuite le résultat (NarrowbandNormalization, courbes) et vérifie les couleurs.</description>
+   <instance class="Script" version="256" id="HOO_30_Perfect_Palette_Picker_instance">
+      <description>LANCEMENT : double-clique l'icône, puis clique sur le rond « Apply Global » (ou glisse-la sur une image) : le dialogue du script s'ouvre. Ce script ne lit pas de paramètres d'icône : choisis les vues et Linear Input Data dans son dialogue. SOMME DE CONTRÔLE : l'icône contient l'empreinte MD5 de la version actuelle du script ; après une mise à jour du script, PixInsight bloque l'icône : double-clique-la, efface le champ MD5 et réenregistre-la. EXPLORER — Perfect Palette Picker (SetiAstro, script v1.3, Script › SetiAstro › Perfect Palette Picker). Choisis les vues Ha, OIII et SII (sans étoiles de préférence ; sans SII, Ha le remplace), ou jusqu'à deux images couleur dual-band (HaO3, S2O3). Linear Input Data coché par défaut : chaque canal est étiré à une médiane de 0,25 ; décoche si tes images sont déjà étirées. Create Palettes : 16 vignettes (HOO, HOS, HSO, HSS, OHH, OHS, OSH, OSS, SHH, SHO, SOH, SOO, Realistic1, Realistic2, Foraxx, Dynamic Inverse). Clique une vignette pour générer la palette en pleine taille. Sert à choisir : équilibre ensuite le résultat (NarrowbandNormalization, courbes) et vérifie les couleurs.</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/PerfectPalettePicker.js</parameter>
+      <parameter id="md5sum">0ffff6a0fb869acfc4f9ee3ad81b6338</parameter>
+      <table id="parameters" rows="0"/>
+      <parameter id="information"></parameter>
    </instance>
    <instance class="NoOperation" version="256" id="HOO_31_NBColourMapper_instance">
       <description>OPTION — NBColourMapper (Mike Cranfield, script). Une couche par filtre sans étoiles : Ha rouge-orangé, OIII cyan-bleu, SII rouge profond ou or ; règle teinte et saturation avec l'aperçu.</description>
@@ -872,8 +945,29 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
    <instance class="NoOperation" version="256" id="HOO_37_Etoiles_HOO_instance">
       <description>ÉTOILES — avec RGB : suis le bloc étoiles RGB du workflow RGB + SHO. Sans RGB : utilise l'image d'étoiles de SXT sur HOO (ou NB to RGB Star Combination), étire-la avec Star Stretch et renomme-la 'stars'. Les étoiles HOO tirent vers le rouge et le cyan : désature-les légèrement si besoin. STANDARD : étoiles plausibles, du bleu-blanc au jaune-orange, peu saturées, une gamme de couleurs, jamais vertes. En HOO classique (G = B = OIII), le magenta est impossible mais les étoiles chaudes sortent rouges ou saumon (jamais jaunes) et les froides cyan ; cœur rouge / halo cyan fréquent (étoiles OIII plus grosses). MIEUX : vert synthétique, G = 0,2·Ha + 0,8·OIII (AIASTRO) ou NB to RGB Star Combination (sans SII : R = Ha, G = 0,3·Ha + 0,7·OIII, B = OIII) : étoile chaude G &gt; B donc jaune-orange, froide G &lt; B donc bleutée. Caméra couleur dual-band : NB to RGB accepte l'image couleur directement (Ha = canal rouge, OIII = canal vert seul). CONTRÔLE à la sonde 15x15 sur le halo : chaude R &gt;= G &gt;= B (G = B exactement = HOO classique, pas de jaune possible), froide B &gt;= G &gt;= R, pas de G au-dessus de R et B ; une dizaine d'étoiles pas toutes identiques. AJUSTER : bleues verdâtres ou chaudes trop rouges -&gt; plus de Ha dans le vert ; chaudes jaune-vert -&gt; moins ; cyan saturé -&gt; désature ou Color Boost plus bas ; anneau rouge/cyan -&gt; réduction d'étoiles ; toutes blanches -&gt; étirement plus doux.</description>
    </instance>
-   <instance class="NoOperation" version="256" id="HOO_38_Star_Stretch_instance">
-      <description>ÉTAPE MANUELLE — Star Stretch (SetiAstro, script) sur l'image d'étoiles LINÉAIRE issue de SXT. Stretch Amount 5 (défaut, prudence au-delà) ; Color Boost 1,0 (0 à 2) ; Remove Green via SCNR optionnel (décoché par défaut). Étoiles HOO : Color Boost plus bas si le cyan ou le rouge est criard, Stretch Amount plus bas si toutes blanches.</description>
+   <instance class="Script" version="256" id="HOO_38_Star_Stretch_instance">
+      <description>LANCEMENT : GLISSE cette icône sur l'image cible (le script refuse le mode global : un double-clic suivi de « Apply Global » n'aboutit pas). Glisse-la sur l'image d'étoiles linéaire : le dialogue s'ouvre avec Stretch Amount 5 et Color Boost 1,0. SOMME DE CONTRÔLE : l'icône contient l'empreinte MD5 de la version actuelle du script ; après une mise à jour du script, PixInsight bloque l'icône : double-clique-la, efface le champ MD5 et réenregistre-la. SCRIPT — Star Stretch (SetiAstro, script) sur l'image d'étoiles LINÉAIRE issue de SXT. Stretch Amount 5 (défaut, prudence au-delà) ; Color Boost 1,0 (0 à 2) ; Remove Green via SCNR optionnel (décoché par défaut). Étoiles HOO : Color Boost plus bas si le cyan ou le rouge est criard, Stretch Amount plus bas si toutes blanches.</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/star_stretch.js</parameter>
+      <parameter id="md5sum">69a1ee6db4e9f5374c2cddb1e5a7f4ae</parameter>
+      <table id="parameters" rows="4">
+         <tr>
+            <td id="id">amount</td>
+            <td id="value">5</td>
+         </tr>
+         <tr>
+            <td id="id">satAmount</td>
+            <td id="value">1</td>
+         </tr>
+         <tr>
+            <td id="id">removeGreen</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">showPreview</td>
+            <td id="value">false</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
    </instance>
    <instance class="PixelMath" version="256" id="HOO_39_Etoiles_screen_instance">
       <description>Recombinaison des étoiles en mode screen : ~((~starless) * (~stars)). Renomme la vue sans étoiles 'starless' et l'image d'étoiles 'stars', toutes deux étirées. Résultat : nouvelle image 'Final'.</description>
@@ -955,8 +1049,12 @@ max(Img1,f1)</parameter>
          </tr>
       </table>
    </instance>
-   <instance class="NoOperation" version="256" id="HOO_42_Halo_B_Gon_instance">
-      <description>ÉTAPE MANUELLE — Halo-B-Gon (SetiAstro, script) sur l'image d'étoiles seule. Reduction Amount Low au départ (Extra Low / Low / Med / High) ; Linear Data coché seulement si l'image est encore linéaire.</description>
+   <instance class="Script" version="256" id="HOO_42_Halo_B_Gon_instance">
+      <description>LANCEMENT : double-clique l'icône, puis clique sur le rond « Apply Global » (ou glisse-la sur une image) : le dialogue du script s'ouvre. Ce script ne lit pas de paramètres d'icône : les réglages se font dans son dialogue. SOMME DE CONTRÔLE : l'icône contient l'empreinte MD5 de la version actuelle du script ; après une mise à jour du script, PixInsight bloque l'icône : double-clique-la, efface le champ MD5 et réenregistre-la. SCRIPT — Halo-B-Gon (SetiAstro, script) sur l'image d'étoiles seule. Reduction Amount Low au départ (Extra Low / Low / Med / High) ; Linear Data coché seulement si l'image est encore linéaire.</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/Halo-B-Gon.js</parameter>
+      <parameter id="md5sum">b9427e718e2b9760704c8c738e0893b7</parameter>
+      <table id="parameters" rows="0"/>
+      <parameter id="information"></parameter>
    </instance>
    <icon id="HOO_01_WBPP" instance="HOO_01_WBPP_instance" xpos="30" ypos="30" workspace="Workspace01"/>
    <icon id="HOO_02_CC_auto" instance="HOO_02_CC_auto_instance" xpos="30" ypos="60" workspace="Workspace01"/>

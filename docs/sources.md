@@ -255,6 +255,15 @@ Légende :
 - Recherche — [NixOS, paquet PixInsight 1.9.5-20260917](https://github.com/NixOS/nixpkgs/pull/564758) : date de version.
 - Officiel — [ScopeTrader, MARS DR2](https://scopetrader.com/mars-dr2-for-pixinsight-dropped/) (29 juin 2026) : filtres R, G, B, Ha et OIII ; hémisphère nord complet en large bande, narrowband jusqu'à +75° de déclinaison, extension sud jusqu'à −15° ; base 2 à 6 fois plus profonde. Fichier .xmars d'environ 1,35 Go et installation par la clé à molette de MGC : résumé de recherche (AstroBin, Cloudy Nights), non relu directement.
 
+## Icônes de script (process Script)
+
+- Modèle — [theAstroShed, icônes de process](https://github.com/jamiesmith/pixinsight-icons) : format réel d'une instance Script (`filePath` en `$PXI_SRCDIR/scripts/…`, `md5sum`, table `parameters` en lignes `id` / `value`, `information`) ; chemins `AdP/ImageSolver.js` et `CorrectMagentaStars/CorrectMagentaStars.js` (avec `scnrAmount` 0,8 et `scnrPresLight`) ; table vide écrite `rows="0"/>`.
+- Officiel — [Forum PixInsight, somme de contrôle des scripts](https://pixinsight.com/forum/index.php?threads/restore-script-from-process-icon.14091/) : une icône dont l'empreinte ne correspond plus au script est bloquée ; Juan Conejero : ouvrir l'icône et effacer la somme MD5 pour l'exécuter.
+- Code — archive SetiAstro `SetiAstroScripts09.19.2026.zip` ([dépôt](https://github.com/setiastro/pixinsight-updates-194), servie pour 1.9.4 à 1.9.5) : chemins, empreintes MD5 et paramètres lus (`Parameters.has`) de statisticalstretch.js, star_stretch.js (v2.6), FindBackground.js, ContinuumSubtraction.js ; NBtoRGBStars.js v1.6 définit `load()` sans l'appeler (paramètres d'icône ignorés) ; Halo-B-Gon.js et PerfectPalettePicker.js n'en lisent pas ; Statistical Stretch, Star Stretch, NB to RGB et Find Background refusent le contexte global.
+- Code — [CorrectMagentaStars sur GitHub](https://github.com/terrordrummer/correctMagentaStars) v1.1 : exécution directe sur une vue ou l'image active, paramètre `scnrAmount` ; version livrée avec PixInsight différente (empreinte de l'icône theAstroShed ≠ fichier GitHub), d'où une empreinte laissée vide.
+- Code — [psf-guard](https://github.com/theatrus/psf-guard) (`wbpp.rs`, vérifié contre PixInsight 1.9.5 et WBPP 3.1.0) : WBPP 3.x dans `src/scripts/BatchPreprocessing/BPP-Main.js`, réglages lus depuis `Runtime.jsArguments` (ligne de commande), d'où une icône WBPP sans paramètres.
+- Non vérifié : NBColourMapper (paquet 3.1 derrière une protection anti-robots, chemin et paramètres inconnus) et NBRGBCombination (livré avec PixInsight, chemin inconnu) restent des icônes-notes ; chargement et lancement des icônes de script non testés dans PixInsight.
+
 ## Schémas de la fiche
 
 Les schémas ne reprennent que des faits déjà sourcés plus haut ; ils n'ajoutent aucun réglage.

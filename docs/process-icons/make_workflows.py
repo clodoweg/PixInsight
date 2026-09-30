@@ -20,7 +20,72 @@ def renamed(item, new):
     name, t = item
     return new, t.replace('id="%s_instance"' % name, 'id="%s_instance"' % new, 1)
 
+# Scripts lancés par une vraie icône Script (et non une icône-note NoOperation).
+# (chemin, md5 du fichier installé ou '' si inconnu, paramètres lus par le script, mode de lancement)
+# SetiAstro : archive SetiAstroScripts09.19.2026.zip (dépôt 1.9.4 à 1.9.5), md5 calculés sur les fichiers.
+# Scripts livrés avec PixInsight : chemin relevé dans des icônes réelles ou dans psf-guard (PixInsight 1.9.5),
+# md5 laissé vide (version 1.9.5 du fichier inconnue) : PixInsight ne vérifie alors pas la somme de contrôle.
+L_DRAG = ("LANCEMENT : GLISSE cette icône sur l'image cible (le script refuse le mode global : un double-clic suivi de "
+          "« Apply Global » n'aboutit pas). ")
+L_GLOBAL = ("LANCEMENT : double-clique l'icône, puis clique sur le rond « Apply Global » (ou glisse-la sur une image) : "
+            "le dialogue du script s'ouvre. ")
+SCRIPTS = {
+    'WBPP': ('$PXI_SRCDIR/scripts/BatchPreprocessing/BPP-Main.js', '', [],
+             L_GLOBAL + "WBPP 3.x lit ses réglages dans sa propre mémoire (dernière session) et sur la ligne de commande, pas dans les paramètres d'une icône : "
+             "cette icône ouvre WBPP, les réglages ci-dessous se font dans son dialogue. Chemin relevé pour WBPP 3.1.0 sous PixInsight 1.9.5 (psf-guard). "),
+    'ImageSolver': ('$PXI_SRCDIR/scripts/AdP/ImageSolver.js', '', [],
+             L_GLOBAL + "Aucun paramètre préréglé : le code de la version 1.9.5 n'est pas public, et une icône d'une autre version imposerait ses coordonnées. "),
+    'Statistical_Stretch': ('$PXI_SRCDIR/scripts/statisticalstretch.js', 'defab45bb4e2f33db39a7bb016cdefb0',
+             [('targetMedian', '0.25'), ('curvesBoost', '0'), ('numIterations', '1'), ('normalizeImageRange', 'false'),
+              ('linkedStretch', 'true'), ('openDialogbox', 'true'), ('autoConvergence', 'false'), ('blackpointSigma', '5'),
+              ('noBlackClip', 'false'), ('hdrCompress', 'false'), ('hdrAmount', '0.25'), ('hdrKnee', '0.35'),
+              ('lumaOnly', 'false'), ('lumaMode', 'rec709'), ('lumaBlend', '0.6')],
+             L_DRAG + "Le dialogue s'ouvre avec les valeurs de l'icône (openDialogbox = true) ; pour étirer directement sans dialogue, mets openDialogbox à false. "),
+    'Star_Stretch': ('$PXI_SRCDIR/scripts/star_stretch.js', '69a1ee6db4e9f5374c2cddb1e5a7f4ae',
+             [('amount', '5'), ('satAmount', '1'), ('removeGreen', 'false'), ('showPreview', 'false')],
+             L_DRAG + "Glisse-la sur l'image d'étoiles linéaire : le dialogue s'ouvre avec Stretch Amount 5 et Color Boost 1,0. "),
+    'Halo_B_Gon': ('$PXI_SRCDIR/scripts/Halo-B-Gon.js', 'b9427e718e2b9760704c8c738e0893b7', [],
+             L_GLOBAL + "Ce script ne lit pas de paramètres d'icône : les réglages se font dans son dialogue. "),
+    'NB_to_RGB_Stars': ('$PXI_SRCDIR/scripts/NBtoRGBStars.js', '0fae2f23d6f23037fb118fd1ef749592', [],
+             L_DRAG + "La version 1.6 du script ne relit pas les paramètres d'icône : choisis les vues Ha, OIII (et SII) et les réglages dans son dialogue. "),
+    'Continuum_auto': ('$PXI_SRCDIR/scripts/ContinuumSubtraction.js', 'e795144823fb111101f269c22eaaf8cf',
+             [('applyNoiseReduction', 'false'), ('noiseReductionMethod', 'NoiseXterminator'), ('starrySelected', 'true'),
+              ('outputLinearImageOnly', 'true'), ('aiModel', '2.0.0')],
+             L_GLOBAL + "Préréglé pour ce workflow : images avec étoiles (Starry), sortie linéaire seule (Output Linear Image Only, pour injecter Ha_cs en linéaire), "
+             "sans réduction de bruit intégrée (NXT se fait à part). "),
+    'Perfect_Palette_Picker': ('$PXI_SRCDIR/scripts/PerfectPalettePicker.js', '0ffff6a0fb869acfc4f9ee3ad81b6338', [],
+             L_GLOBAL + "Ce script ne lit pas de paramètres d'icône : choisis les vues et Linear Input Data dans son dialogue. "),
+    'Find_Background': ('$PXI_SRCDIR/scripts/FindBackground.js', '4af61e322ea5149f93fdcfe6ef0e62bd',
+             [('filterAvg', 'true'), ('filterSdev', 'true'), ('filterPoisonIndex', 'false'), ('filterMAAD', 'false'),
+              ('filterObjects', 'false'), ('printInformation', 'true'), ('generatePreview', 'true'), ('previewName', 'Background'),
+              ('slowSearch', 'false'), ('fastSearch', 'true'), ('size', '50'), ('spacingRate', '2'), ('searchGridSize', '100'),
+              ('startingPoints', '40')],
+             "LANCEMENT : clique d'abord sur l'image pour l'activer, puis GLISSE l'icône dessus (le script travaille sur l'image active et refuse le mode global). "
+             "Sans dialogue, il crée directement un aperçu nommé 'Background' (recherche rapide, réglages par défaut du script). "),
+    'CorrectMagentaStars': ('$PXI_SRCDIR/scripts/CorrectMagentaStars/CorrectMagentaStars.js', '',
+             [('scnrAmount', '0.8'), ('scnrPresLight', 'true')],
+             "LANCEMENT : GLISSE l'icône sur l'image : la correction s'applique DIRECTEMENT, sans dialogue, avec Amount 0,8 (en global, elle s'applique à l'image active). "
+             "Pour changer l'Amount, double-clique l'icône et modifie scnrAmount (0 à 1). "),
+}
+MD5_NOTE = {True: ("SOMME DE CONTRÔLE : l'icône contient l'empreinte MD5 de la version actuelle du script ; après une mise à jour du script, PixInsight bloque l'icône : "
+                   "double-clique-la, efface le champ MD5 et réenregistre-la. "),
+            False: "Le champ MD5 est vide : PixInsight exécute le script installé sans vérifier sa version. "}
+
+def script(name, text):
+    path, md5, params, launch = SCRIPTS[name]
+    text = re.sub(r"Icône-note[^.]*\.\s*", "", text).replace("ÉTAPE MANUELLE — ", "SCRIPT — ", 1)
+    rows = ''.join('\n         <tr>\n            <td id="id">%s</td>\n            <td id="value">%s</td>\n         </tr>' % (escape(k), escape(v)) for k, v in params)
+    table = ('\n      <table id="parameters" rows="%d">%s\n      </table>' % (len(params), rows)) if params else '\n      <table id="parameters" rows="0"/>'
+    return name, ('   <instance class="Script" version="256" id="%s_instance">\n'
+                  '      <description>%s</description>\n'
+                  '      <parameter id="filePath">%s</parameter>\n'
+                  '      <parameter id="md5sum">%s</parameter>%s\n'
+                  '      <parameter id="information"></parameter>\n   </instance>'
+                  % (name, escape(launch + MD5_NOTE[bool(md5)] + text), escape(path), md5, table))
+
 def note(name, text):
+    if name in SCRIPTS:
+        return script(name, text)
     return name, ('   <instance class="NoOperation" version="256" id="%s_instance">\n'
                   '      <description>%s</description>\n   </instance>' % (name, escape(text)))
 
@@ -55,7 +120,7 @@ def write(filename, prefix, title, steps):
     for i, (item, desc) in enumerate(steps, 1):
         name = '%s_%02d_%s' % (prefix, i, item[0])
         item = renamed(item, name)
-        if 'class="NoOperation"' not in item[1]:
+        if 'class="NoOperation"' not in item[1] and '<description>' not in item[1]:
             item = described(item, desc)
         insts.append(item[1])
         col, row = divmod(i - 1, 14)
@@ -230,6 +295,8 @@ T_SPCC = ("SPCC configuré pour ton matériel (" + MATERIEL + ") : White referen
           "nébuleuse par réflexion bleue, en émission rouge, étoiles du bleu-blanc au jaune-orange, JAMAIS vertes (G au-dessus de R et de B à la fois = erreur). "
           "Légère dominante bleue (moins de 10 %) possible et normale avec SPCC. Tout vert, tout bleu ou tout jaune : filtres ou capteur mal choisis, ou gradient resté avant SPCC.")
 spcc = lambda: (spcc_perso('SPCC'), T_SPCC)
+T_FINDBG = ("OPTION avant SPCC, champ rempli de nébuleuse — Find Background (SetiAstro, Script › SetiAstro › Find Background, v1.2.2) : "
+            "crée un aperçu 'Background' sur du fond vide ; dans SPCC, coche Region of Interest puis From Preview. Galaxie ou ciel libre : inutile, SPCC prend l'image entière.")
 
 # ---------------------------------------------------------------- LRGB
 STARS_LRGB = (" STANDARD DES ÉTOILES (RGB calibré par SPCC) : du bleu-blanc au jaune-orange, couleur visible mais pas criarde, une gamme de couleurs, JAMAIS vertes. "
@@ -241,6 +308,7 @@ SCREEN_LRGB = (" LRGB — CONTRÔLE après recombinaison, à 100 % : étoiles de
 
 lrgb = pre_block() + [rgb_comb(), (note('ImageSolver', T_SOLVER), '')] + gradient_block('rgb') + [
     (M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), D_BXT_CO),
+    (note('Find_Background', T_FINDBG), ''),
     spcc(),
     (M.bxt('BXT_RGB', False, 0.25, 0.0, 0.50), "BlurXTerminator complet sur RGB, APRÈS SPCC : Sharpen Stars 0,25 (0 à 0,5), Adjust Star Halos 0, PSF automatique, Sharpen Nonstellar 0,50 (le détail viendra de L). Avant toute réduction de bruit."),
     (M.bxt('BXT_L', False, 0.25, 0.0, 0.80), "BlurXTerminator complet sur L (linéaire, gradient retiré) : Sharpen Nonstellar 0,80 (0,70 à 0,90), plus fort que sur RGB car la luminance porte le détail. Si vers ou pores à 100 % : baisse Nonstellar."),
@@ -259,6 +327,7 @@ lrgb = pre_block() + [rgb_comb(), (note('ImageSolver', T_SOLVER), '')] + gradien
 # ---------------------------------------------------------------- LHaRGB
 lhargb = pre_block() + [rgb_comb(), (note('ImageSolver', T_SOLVER), '')] + gradient_block('lha') + [
     (M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), D_BXT_CO),
+    (note('Find_Background', T_FINDBG), ''),
     spcc(),
     (M.bxt('BXT_RGB', False, 0.25, 0.0, 0.50), "BlurXTerminator complet sur RGB, après SPCC : Sharpen Stars 0,25, Halos 0, Nonstellar 0,50."),
     (M.bxt('BXT_L_Ha', False, 0.25, 0.0, 0.80), "BlurXTerminator complet sur L et sur le master Ha (mono, linéaires) : Nonstellar 0,80. Déconvolue AVANT tout mélange (soustraction du continuum, injection)."),
@@ -358,6 +427,7 @@ def rgb_stars_block():
         (note('Etoiles_RGB', "ÉTOILES RGB — masters R, G, B : même recadrage, puis les icônes suivantes dans l'ordre (combinaison, gradient via l'icône GradientCorrection ou les notes, BXT Correct Only, SPCC, BXT, SXT)." + STARS_RGBSHO), ''),
         rgb_comb(),
         (M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), D_BXT_CO),
+        (note('Find_Background', T_FINDBG), ''),
         spcc(),
         (M.bxt('BXT_RGB', False, 0.25, 0.0, 0.50), "BlurXTerminator complet sur RGB après SPCC : Sharpen Stars 0,25, Halos 0, Nonstellar 0,50."),
         (M.sxt('SXT_RGB_lineaire', False), D_SXT_LIN + " Garde uniquement l'image d'étoiles RGB."),

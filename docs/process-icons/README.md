@@ -86,9 +86,9 @@ Chaque fichier contient **tous les process du workflow, dans l'ordre**, numérot
 
 | Fichier | Icônes | Contenu |
 |---|---|---|
-| `Workflow-LRGB.xpsm` | 31 | Prétraitement, combinaison RGB, gradient, BXT Correct Only, SPCC, BXT, SXT linéaire, NXT, GHS, LRGBCombination, finition, étoiles (standard de couleur et contrôle après recombinaison) |
-| `Workflow-LHaRGB.xpsm` | 38 | LRGB + soustraction du continuum, Ha dans le rouge et dans L, NBRGBCombination en alternative ; contrôles de couleur et des étoiles (option : étoiles prises avant injection) |
-| `Workflow-RGB-SHO.xpsm` | 46 | Masters narrowband, LinearFit, combinaison SHO simple, BXT, SXT, extraction des canaux, palettes (NarrowbandNormalization avec rendu visé et contrôle des couleurs, Foraxx, Perfect Palette Picker, NBColourMapper), étoiles RGB (couleurs attendues et contrôle de la recombinaison) |
+| `Workflow-LRGB.xpsm` | 32 | Prétraitement, combinaison RGB, gradient, BXT Correct Only, SPCC, BXT, SXT linéaire, NXT, GHS, LRGBCombination, finition, étoiles (standard de couleur et contrôle après recombinaison) |
+| `Workflow-LHaRGB.xpsm` | 39 | LRGB + soustraction du continuum, Ha dans le rouge et dans L, NBRGBCombination en alternative ; contrôles de couleur et des étoiles (option : étoiles prises avant injection) |
+| `Workflow-RGB-SHO.xpsm` | 47 | Masters narrowband, LinearFit, combinaison SHO simple, BXT, SXT, extraction des canaux, palettes (NarrowbandNormalization avec rendu visé et contrôle des couleurs, Foraxx, Perfect Palette Picker, NBColourMapper), étoiles RGB (couleurs attendues et contrôle de la recombinaison) |
 | `Workflow-SHO-sans-RGB.xpsm` | 45 | Idem sans RGB, avec étoiles narrowband (NB to RGB Star Combination, étoiles HOO synthétiques, CorrectMagentaStars) et leur standard de couleur (contrôle à la sonde, ajustements) |
 | `Workflow-HOO.xpsm` | 42 | Extraction dual-band pour caméra couleur, combinaison HOO, NarrowbandNormalization HOO (avec rendu visé et contrôle des couleurs), Foraxx HOO, variante Hubble, Perfect Palette Picker, Ha en luminance, standard des étoiles HOO (vert synthétique, contrôle à la sonde) |
 
@@ -101,7 +101,21 @@ Chaque fichier contient **tous les process du workflow, dans l'ordre**, numérot
   - `SPCC` et `SPFC_…` : configurés pour ton matériel (QHY600 + Antlia V Pro). Bande passante narrowband 3 nm (filtres Antlia 3 nm).
   - `GHS_1_premier`, `GHS_2_contraste`, `GHS_3_fond` : Local intensity et protections réglés, mais **Stretch factor à 0 et SP à choisir sur ton image** (l'icône ne fait rien tant que tu ne l'as pas réglée). Leurs descriptions donnent les repères de niveau : fond vers 0,20–0,25 après le 1er étirement, 0,12–0,14 (30–35 sur 255) dans l'image finale, jamais 0.
   - `Courbes` : légère courbe en S et saturation, à ajuster à l'œil.
-- **Icônes-notes** (process *NoOperation*, sans effet) : seulement pour les **scripts** (WBPP, ImageSolver, Statistical Stretch, Star Stretch, Halo-B-Gon, CorrectMagentaStars, NB to RGB Star Combination, Perfect Palette Picker, NBColourMapper, Automatic Continuum Subtraction, NBRGBCombination) et les en-têtes d'étape. Une icône de script enregistre le chemin du fichier et son empreinte sur la machine de l'auteur, et WBPP 3.x a changé d'emplacement : une icône de script recopiée risquerait de ne pas se charger chez toi. La description donne tous les réglages à faire dans le script.
+- **Icônes de script** (process *Script*) : elles lancent directement le script, avec ses paramètres préréglés quand le script les lit.
+
+  | Script | Lancement | Paramètres préréglés | Empreinte MD5 |
+  |---|---|---|---|
+  | Statistical Stretch | glisser sur l'image | oui (Target Median 0,25, Linked, Blackpoint Sigma 5…), dialogue ouvert | oui |
+  | Star Stretch | glisser sur l'image d'étoiles | oui (Stretch Amount 5, Color Boost 1,0) | oui |
+  | Find Background | activer l'image puis glisser | oui (aperçu « Background », recherche rapide), sans dialogue | oui |
+  | Automatic Continuum Subtraction | double-clic puis *Apply Global* | oui (Starry, sortie linéaire, sans réduction de bruit) | oui |
+  | NB to RGB Star Combination | glisser sur une image | non : la v1.6 ne relit pas les paramètres d'icône | oui |
+  | Halo-B-Gon, Perfect Palette Picker | double-clic puis *Apply Global* | non : ces scripts n'en lisent pas | oui |
+  | CorrectMagentaStars | glisser sur l'image (s'applique sans dialogue) | oui (Amount 0,8) | vide |
+  | WBPP 3.1, ImageSolver | double-clic puis *Apply Global* | non (WBPP garde ses réglages lui-même ; code d'ImageSolver 1.9.5 non public) | vide |
+
+  Chemins en `$PXI_SRCDIR/scripts/…`, valables sur toute installation. Scripts SetiAstro : fichiers de l'archive `SetiAstroScripts09.19.2026.zip` (dépôt 1.9.4 à 1.9.5), dont l'icône porte l'empreinte MD5 ; après une mise à jour d'un script, PixInsight bloque l'icône : double-clique-la, efface le champ MD5, réenregistre-la. Scripts livrés avec PixInsight : chemins relevés dans des icônes réelles (ImageSolver, CorrectMagentaStars) ou dans psf-guard pour WBPP 3.1 sous PixInsight 1.9.5 ; empreinte laissée vide, donc sans vérification.
+- **Icônes-notes** (process *NoOperation*, sans effet) : en-têtes d'étape, et deux scripts dont le chemin d'installation n'a pas pu être vérifié : NBColourMapper (paquet inaccessible, serveur anti-robots) et NBRGBCombination (livré avec PixInsight, chemin inconnu). Leur description donne tous les réglages.
 
 ChannelCombination et ChannelExtraction sont remplacés par des icônes PixelMath équivalentes (par exemple `$T[1]` pour extraire le canal vert).
 

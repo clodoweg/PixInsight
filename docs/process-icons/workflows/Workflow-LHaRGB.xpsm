@@ -5,8 +5,12 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
 -->
 <xpsm version="1.0" xmlns="http://www.pixinsight.com/xpsm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.pixinsight.com/xpsm http://pixinsight.com/xpsm/xpsm-1.0.xsd">
 <!-- Workflow LHaRGB -->
-   <instance class="NoOperation" version="256" id="LHA_01_WBPP_instance">
-      <description>ÉTAPE MANUELLE — WBPP 3.1 (Script › Batch Processing › WeightedBatchPreprocessing). Icône-note : WBPP dépend de tes fichiers et de ton dossier de sortie. Fichiers : mêmes gain/offset/température/driver/format ; darks de même durée et température (jamais pré-calibrés avec les bias) ; flats par filtre et par session, flat-darks de même durée ; plusieurs nuits : dossiers SESSION_&lt;date&gt; et Grouping keywords = SESSION. Add Directory, puis vérifie dans l'onglet Calibration que chaque groupe de lights a son dark et son flat. Réglages : préréglage Maximum quality ; Output pedestal Automatic ; Optimize dark frames décoché ; CosmeticCorrection avec l'icône CC_auto ; caméra couleur : CFA images, motif Auto, Debayer VNG ; Subframe weighting PSF Signal Weight ; Registration reference Auto, Distortion correction pour les grands champs ; Local normalization activée ; Rejection Auto (sinon Percentile &lt; 10 images, Winsorized &gt; 10, ESD pour les grands lots) ; Large-scale pixel rejection High ; Fast Integration automatique dès 150 images par groupe (à décocher pour l'intégration pondérée complète) ; Drizzle par groupe x2 seulement si FWHM &lt; 2 px et 15-20 poses dithérées (caméra couleur : drizzle CFA Scale 1, Drop shrink 1,0) ; Autocrop et Astrometric solution activés. Contrôle ensuite le journal et les cartes de réjection. Détails et sources : docs/pixinsight-workflow.html et docs/sources.md (github.com/clodoweg/PixInsight).</description>
+   <instance class="Script" version="256" id="LHA_01_WBPP_instance">
+      <description>LANCEMENT : double-clique l'icône, puis clique sur le rond « Apply Global » (ou glisse-la sur une image) : le dialogue du script s'ouvre. WBPP 3.x lit ses réglages dans sa propre mémoire (dernière session) et sur la ligne de commande, pas dans les paramètres d'une icône : cette icône ouvre WBPP, les réglages ci-dessous se font dans son dialogue. Chemin relevé pour WBPP 3.1.0 sous PixInsight 1.9.5 (psf-guard). Le champ MD5 est vide : PixInsight exécute le script installé sans vérifier sa version. SCRIPT — WBPP 3.1 (Script › Batch Processing › WeightedBatchPreprocessing). Fichiers : mêmes gain/offset/température/driver/format ; darks de même durée et température (jamais pré-calibrés avec les bias) ; flats par filtre et par session, flat-darks de même durée ; plusieurs nuits : dossiers SESSION_&lt;date&gt; et Grouping keywords = SESSION. Add Directory, puis vérifie dans l'onglet Calibration que chaque groupe de lights a son dark et son flat. Réglages : préréglage Maximum quality ; Output pedestal Automatic ; Optimize dark frames décoché ; CosmeticCorrection avec l'icône CC_auto ; caméra couleur : CFA images, motif Auto, Debayer VNG ; Subframe weighting PSF Signal Weight ; Registration reference Auto, Distortion correction pour les grands champs ; Local normalization activée ; Rejection Auto (sinon Percentile &lt; 10 images, Winsorized &gt; 10, ESD pour les grands lots) ; Large-scale pixel rejection High ; Fast Integration automatique dès 150 images par groupe (à décocher pour l'intégration pondérée complète) ; Drizzle par groupe x2 seulement si FWHM &lt; 2 px et 15-20 poses dithérées (caméra couleur : drizzle CFA Scale 1, Drop shrink 1,0) ; Autocrop et Astrometric solution activés. Contrôle ensuite le journal et les cartes de réjection. Détails et sources : docs/pixinsight-workflow.html et docs/sources.md (github.com/clodoweg/PixInsight).</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/BatchPreprocessing/BPP-Main.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="0"/>
+      <parameter id="information"></parameter>
    </instance>
    <instance class="CosmeticCorrection" version="256" id="LHA_02_CC_auto_instance">
       <description>CosmeticCorrection pour WBPP : Auto detect, Hot sigma 2,5 (2,2 à 3,0 ; 2,2-2,5 en narrowband, poses longues), Cold désactivé. Coche CFA si caméra couleur. Ne l'applique pas directement : dans WBPP, sélectionne cette icône comme modèle de correction cosmétique.</description>
@@ -90,8 +94,12 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
-   <instance class="NoOperation" version="256" id="LHA_05_ImageSolver_instance">
-      <description>ÉTAPE MANUELLE — ImageSolver (Script › Image Analysis › ImageSolver). Icône-note : dépend de ta focale et de ta caméra. Inutile si WBPP a déjà résolu l'image. Réglages : Search coordinates avec le nom de l'objet ; focale et taille de pixel de ton setup ; catalogue Gaia DR3 local (XPSD) ; Distortion correction pour les grands champs.</description>
+   <instance class="Script" version="256" id="LHA_05_ImageSolver_instance">
+      <description>LANCEMENT : double-clique l'icône, puis clique sur le rond « Apply Global » (ou glisse-la sur une image) : le dialogue du script s'ouvre. Aucun paramètre préréglé : le code de la version 1.9.5 n'est pas public, et une icône d'une autre version imposerait ses coordonnées. Le champ MD5 est vide : PixInsight exécute le script installé sans vérifier sa version. SCRIPT — ImageSolver (Script › Image Analysis › ImageSolver). Inutile si WBPP a déjà résolu l'image. Réglages : Search coordinates avec le nom de l'objet ; focale et taille de pixel de ton setup ; catalogue Gaia DR3 local (XPSD) ; Distortion correction pour les grands champs.</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/AdP/ImageSolver.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="0"/>
+      <parameter id="information"></parameter>
    </instance>
    <instance class="SpectrophotometricFluxCalibration" version="1" id="LHA_06_SPFC_RGB_filtres_instance">
       <description>SPFC sur l'image RGB combinée, configuré pour ton matériel : QE curve Sony IMX411/455/461/533/571 (QHY600), Red/Green/Blue filter = Antlia V Pro Series R, G, B (courbes de ta base de filtres). Mêmes filtres que l'icône SPCC. Prérequis : image LINÉAIRE et résolue (ImageSolver ou WBPP), base Gaia DR3/SP installée. Catalog Gaia DR3/SP, Automatic limit magnitude coché, détection PSF par défaut. SPFC ne modifie pas les pixels : il écrit les métadonnées de flux lues par MGC. Utilise ensuite les MÊMES filtres dans SPCC.</description>
@@ -344,7 +352,71 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="lunar_planetary" value="false"/>
       <parameter id="overlap" value="0.20"/>
    </instance>
-   <instance class="SpectrophotometricColorCalibration" version="1" id="LHA_14_SPCC_instance">
+   <instance class="Script" version="256" id="LHA_14_Find_Background_instance">
+      <description>LANCEMENT : clique d'abord sur l'image pour l'activer, puis GLISSE l'icône dessus (le script travaille sur l'image active et refuse le mode global). Sans dialogue, il crée directement un aperçu nommé 'Background' (recherche rapide, réglages par défaut du script). SOMME DE CONTRÔLE : l'icône contient l'empreinte MD5 de la version actuelle du script ; après une mise à jour du script, PixInsight bloque l'icône : double-clique-la, efface le champ MD5 et réenregistre-la. OPTION avant SPCC, champ rempli de nébuleuse — Find Background (SetiAstro, Script › SetiAstro › Find Background, v1.2.2) : crée un aperçu 'Background' sur du fond vide ; dans SPCC, coche Region of Interest puis From Preview. Galaxie ou ciel libre : inutile, SPCC prend l'image entière.</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/FindBackground.js</parameter>
+      <parameter id="md5sum">4af61e322ea5149f93fdcfe6ef0e62bd</parameter>
+      <table id="parameters" rows="14">
+         <tr>
+            <td id="id">filterAvg</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">filterSdev</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">filterPoisonIndex</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">filterMAAD</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">filterObjects</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">printInformation</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">generatePreview</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">previewName</td>
+            <td id="value">Background</td>
+         </tr>
+         <tr>
+            <td id="id">slowSearch</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">fastSearch</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">size</td>
+            <td id="value">50</td>
+         </tr>
+         <tr>
+            <td id="id">spacingRate</td>
+            <td id="value">2</td>
+         </tr>
+         <tr>
+            <td id="id">searchGridSize</td>
+            <td id="value">100</td>
+         </tr>
+         <tr>
+            <td id="id">startingPoints</td>
+            <td id="value">40</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
+   </instance>
+   <instance class="SpectrophotometricColorCalibration" version="1" id="LHA_15_SPCC_instance">
       <description>SPCC configuré pour ton matériel (QHY600 (Sony IMX455) + filtres Antlia V Pro) : White reference Average Spiral Galaxy ; QE curve Sony IMX411/455/461/533/571 ; filtres Antlia V Pro Series R, G, B (courbes issues de ta base de filtres PixInsight) ; neutralisation du fond activée (limites -2,80 / +2,00) ; Generate graphs coché. FOND DE RÉFÉRENCE : l'icône n'a ni vue de référence ni Region of Interest, donc SPCC prend l'image entière ; les limites sont en écarts-types autour de la médiane et écartent étoiles et nébuleuse. Suffisant après le retrait du gradient sur une galaxie ou un champ avec du ciel libre. Champ rempli de nébuleuse : baisse la limite haute, ou lance Script › SetiAstro › Find Background (dépôt https://updates.setiastro.com/) qui crée automatiquement un aperçu nommé Background, puis coche Region of Interest et clique From Preview (ou crée toi-même une preview sur du fond vide). Après SPCC, vérifie que le fond est gris neutre. Toujours en linéaire, après le gradient et BXT Correct Only, avant BXT complet. CONTRÔLE : graphes = étoiles serrées autour des droites, croix du blanc de référence dans le nuage (forte dispersion : flat à revoir, gradient multiplicatif). COULEURS ATTENDUES : galaxie spirale blanche en moyenne (définition du blanc Average Spiral Galaxy), cœur jaune, bras bleus, régions HII roses, poussière brun sombre, nébuleuse par réflexion bleue, en émission rouge, étoiles du bleu-blanc au jaune-orange, JAMAIS vertes (G au-dessus de R et de B à la fois = erreur). Légère dominante bleue (moins de 10 %) possible et normale avec SPCC. Tout vert, tout bleu ou tout jaune : filtres ou capteur mal choisis, ou gradient resté avant SPCC.</description>
       <parameter id="applyCalibration" value="true"/>
       <parameter id="narrowbandMode" value="false"/>
@@ -400,7 +472,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="generateTextFiles" value="false"/>
       <parameter id="outputDirectory"></parameter>
    </instance>
-   <instance class="BlurXTerminator" version="256" id="LHA_15_BXT_RGB_instance">
+   <instance class="BlurXTerminator" version="256" id="LHA_16_BXT_RGB_instance">
       <description>BlurXTerminator complet sur RGB, après SPCC : Sharpen Stars 0,25, Halos 0, Nonstellar 0,50.</description>
       <parameter id="ml_version" value="4"/>
       <parameter id="correct_only" value="false"/>
@@ -412,7 +484,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="lunar_planetary" value="false"/>
       <parameter id="overlap" value="0.20"/>
    </instance>
-   <instance class="BlurXTerminator" version="256" id="LHA_16_BXT_L_Ha_instance">
+   <instance class="BlurXTerminator" version="256" id="LHA_17_BXT_L_Ha_instance">
       <description>BlurXTerminator complet sur L et sur le master Ha (mono, linéaires) : Nonstellar 0,80. Déconvolue AVANT tout mélange (soustraction du continuum, injection).</description>
       <parameter id="ml_version" value="4"/>
       <parameter id="correct_only" value="false"/>
@@ -424,7 +496,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="lunar_planetary" value="false"/>
       <parameter id="overlap" value="0.20"/>
    </instance>
-   <instance class="PixelMath" version="256" id="LHA_17_Continuum_Ha_instance">
+   <instance class="PixelMath" version="256" id="LHA_18_Continuum_Ha_instance">
       <description>Soustraction du continuum : Ha_cs = Ha - k*(R - med(R)). Vues 'Ha' et 'R' (master rouge linéaire, gradient retiré). Ajuste k (0,8 à 1) jusqu'à faire disparaître étoiles et disque galactique. med(R) garde le niveau du fond. Limite : résidus sur les étoiles (PSF différentes). CONTRÔLE : dans Ha_cs, étoiles et disque galactique ont disparu, il ne reste que les taches HII sur un fond sombre proche de 0. Continuum mal soustrait = cœur et halo de la galaxie rougis et étoiles à halo rouge dans l'image finale : augmente k. NXT sur Ha_cs avant injection si son fond est granuleux.</description>
       <parameter id="expression">k = 0.9;
 Ha - k*(R - med(R))</parameter>
@@ -455,10 +527,35 @@ Ha - k*(R - med(R))</parameter>
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
-   <instance class="NoOperation" version="256" id="LHA_18_Continuum_auto_instance">
-      <description>OPTION — Automatic Continuum Subtraction (SetiAstro, script) : choisis Ha et R ; le script calcule le coefficient. Contrôle que les étoiles disparaissent de Ha_cs.</description>
+   <instance class="Script" version="256" id="LHA_19_Continuum_auto_instance">
+      <description>LANCEMENT : double-clique l'icône, puis clique sur le rond « Apply Global » (ou glisse-la sur une image) : le dialogue du script s'ouvre. Préréglé pour ce workflow : images avec étoiles (Starry), sortie linéaire seule (Output Linear Image Only, pour injecter Ha_cs en linéaire), sans réduction de bruit intégrée (NXT se fait à part). SOMME DE CONTRÔLE : l'icône contient l'empreinte MD5 de la version actuelle du script ; après une mise à jour du script, PixInsight bloque l'icône : double-clique-la, efface le champ MD5 et réenregistre-la. OPTION — Automatic Continuum Subtraction (SetiAstro, script) : choisis Ha et R ; le script calcule le coefficient. Contrôle que les étoiles disparaissent de Ha_cs.</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/ContinuumSubtraction.js</parameter>
+      <parameter id="md5sum">e795144823fb111101f269c22eaaf8cf</parameter>
+      <table id="parameters" rows="5">
+         <tr>
+            <td id="id">applyNoiseReduction</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">noiseReductionMethod</td>
+            <td id="value">NoiseXterminator</td>
+         </tr>
+         <tr>
+            <td id="id">starrySelected</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">outputLinearImageOnly</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">aiModel</td>
+            <td id="value">2.0.0</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
    </instance>
-   <instance class="PixelMath" version="256" id="LHA_19_Ha_dans_RGB_instance">
+   <instance class="PixelMath" version="256" id="LHA_20_Ha_dans_RGB_instance">
       <description>Injection de Ha_cs dans le rouge : applique sur l'image RGB (linéaire, calibrée) ; R' = R + w*Ha_cs, G et B inchangés. w de 0,5 à 2 selon l'effet voulu. Garde une copie du RGB avant injection pour comparer. RENDU VISÉ : identique au LRGB partout, sauf les régions HII, rose à rouge rosé (Hα + Hβ), plus visibles mais ponctuelles ; cœur, bras, étoiles et fond inchangés. CONTRÔLE à la sonde 15x15 : région HII R nettement au-dessus de G et B avec B &gt;= G ; cœur R &gt;= G &gt;&gt; B comme en LRGB ; fond R = G = B. Taches HII rouge vif : baisse w. Régions HII invisibles : monte w ou injecte aussi dans L. Fond rouge : bruit de Ha_cs injecté. Cœur ou étoiles rougis : continuum mal soustrait (icône précédente). ÉTOILES : l'injection se fait avant SXT, donc les étoiles gardées viennent du RGB injecté ; tout résidu d'étoile dans Ha_cs passe dans leur rouge. Défauts : étoiles rougies ou à halo rouge (k trop faible), anneaux clairs ou sombres (PSF différentes entre Ha et R, inévitable en partie), étoiles grossies (w trop fort). Standard : comme en LRGB, et pas plus rouges que sur la copie avant injection. OPTION la plus propre : SXT sur une copie du RGB AVANT injection, garde ces étoiles-là, et injecte le Ha seulement dans l'image sans étoiles.</description>
       <parameter id="expression">w = 1.0;
 $T[0] + w*Ha_cs</parameter>
@@ -489,7 +586,7 @@ $T[0] + w*Ha_cs</parameter>
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
-   <instance class="PixelMath" version="256" id="LHA_20_Ha_dans_L_instance">
+   <instance class="PixelMath" version="256" id="LHA_21_Ha_dans_L_instance">
       <description>Option : injection de Ha dans la luminance, L' = max(L, a*Ha_cs). Vues 'L' et 'Ha_cs'. Rend les régions HII plus nettes. Renomme ensuite 'L_Ha' en 'L' pour la suite. Régions HII nettes mais couleurs délavées après LRGBCombination : a trop fort, baisse-le ou fais un mélange léger.</description>
       <parameter id="expression">a = 1.0;
 max(L, Ha_cs*a)</parameter>
@@ -520,10 +617,10 @@ max(L, Ha_cs*a)</parameter>
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
-   <instance class="NoOperation" version="256" id="LHA_21_NBRGBCombination_instance">
+   <instance class="NoOperation" version="256" id="LHA_22_NBRGBCombination_instance">
       <description>ALTERNATIVE — NBRGBCombination (Script › Utilities) : image RGB et sa bande passante (~100 nm pour un filtre R mono), image Ha dans le canal R avec la bande passante de ton filtre (3, 5, 7 nm), Scale 1,2 par défaut (3 à 5 pour un Ha faible). Compare avec les aperçus RGB et NBRGB.</description>
    </instance>
-   <instance class="StarXTerminator" version="256" id="LHA_22_SXT_lineaire_instance">
+   <instance class="StarXTerminator" version="256" id="LHA_23_SXT_lineaire_instance">
       <description>StarXTerminator — sur données LINÉAIRES, le plus tôt possible après BXT (RC Astro). Generate star image coché, UNSCREEN DÉCOCHÉ (réservé aux images étirées) : simple soustraction, couleurs d'étoiles les plus fidèles. N'applique pas l'autoSTF de façon permanente à l'image d'étoiles. Large overlap : décoché par défaut, à cocher seulement si un quadrillage apparaît (deux fois plus lent). Sur RGB (garde les étoiles) et sur L (jette ses étoiles). Les étoiles RGB gardées ici contiennent l'injection de Ha : compare-les à la copie d'avant injection (pas plus rouges, sans halo ni anneau). Si elles sont abîmées : monte k, baisse w, ou passe SXT sur la copie du RGB non injecté et garde ses étoiles (option la plus propre).</description>
       <parameter id="ml_version" value="0"/>
       <parameter id="output_stars" value="true"/>
@@ -534,7 +631,7 @@ max(L, Ha_cs*a)</parameter>
       <parameter id="remove_reflections" value="false"/>
       <parameter id="overlap" value="0.20"/>
    </instance>
-   <instance class="NoiseXTerminator" version="256" id="LHA_23_NXT_RGB_instance">
+   <instance class="NoiseXTerminator" version="256" id="LHA_24_NXT_RGB_instance">
       <description>NoiseXTerminator sur RGB sans étoiles : Denoise 0,80, Detail 0,15.</description>
       <parameter id="ml_version" value="0"/>
       <parameter id="denoise" value="0.80"/>
@@ -553,7 +650,7 @@ max(L, Ha_cs*a)</parameter>
       <parameter id="detail" value="0.15"/>
       <parameter id="overlap" value="0.20"/>
    </instance>
-   <instance class="NoiseXTerminator" version="256" id="LHA_24_NXT_L_instance">
+   <instance class="NoiseXTerminator" version="256" id="LHA_25_NXT_L_instance">
       <description>NoiseXTerminator sur L sans étoiles : Denoise 0,60.</description>
       <parameter id="ml_version" value="0"/>
       <parameter id="denoise" value="0.60"/>
@@ -572,7 +669,7 @@ max(L, Ha_cs*a)</parameter>
       <parameter id="detail" value="0.15"/>
       <parameter id="overlap" value="0.20"/>
    </instance>
-   <instance class="GeneralizedHyperbolicStretch" version="256" id="LHA_25_GHS_1_premier_instance">
+   <instance class="GeneralizedHyperbolicStretch" version="256" id="LHA_26_GHS_1_premier_instance">
       <description>GHS, 1er étirement — Stretch factor à 0 : l'icône ne fait rien tant que tu ne l'as pas réglée. Zoome l'histogramme, clique dans l'image sur la zone intéressante la plus faible (sonde 15x15), Send to SP. Local intensity (b) = 10. Monte Stretch factor jusqu'à un pic d'histogramme vers 0,20-0,25. Retire l'autoSTF, active l'aperçu, affine SP. Image couleur : passe Colour mode sur Colour (clip RGBBlend). Même niveau de fond visé pour toutes les images à combiner. REPÈRES : après ce 1er étirement, fond vers 0,20-0,25 (volontairement clair) ; l'image finale visera 0,12-0,14 (30-35 sur 255), jamais 0. Contrôle : preview sur du fond vide + Process › Image › Statistics (médiane) ; aucun pixel écrêté à 0 dans l'histogramme. Étire RGB et L sans étoiles jusqu'au même fond.</description>
       <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
       <parameter id="stretchChannel" value="SC_RGB"/>
@@ -588,7 +685,7 @@ max(L, Ha_cs*a)</parameter>
       <parameter id="clipType" value="CT_RGBBlend"/>
       <parameter id="useRGBWorkingSpace" value="false"/>
    </instance>
-   <instance class="GeneralizedHyperbolicStretch" version="256" id="LHA_26_GHS_2_contraste_instance">
+   <instance class="GeneralizedHyperbolicStretch" version="256" id="LHA_27_GHS_2_contraste_instance">
       <description>GHS, ajout de contraste (passes suivantes) — clique sur une zone qui paraît plate, Send to SP ; Local intensity (b) 4 (3 à 5) ; monte Stretch factor doucement ; baisse HP (ici 0,90) pour protéger les étoiles et les cœurs brillants ; monte LP pour garder le fond sombre. 1 à 3 passes. Seuls les cœurs des étoiles les plus brillantes doivent atteindre 1 ; si la lecture donne 1,0 sur de grandes zones, baisse HP. Trop étiré : fond granuleux, halos, étoiles grosses et blanches, couleurs délavées. Pas assez : extensions faibles invisibles, aspect découpé sur du noir.</description>
       <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
       <parameter id="stretchChannel" value="SC_RGB"/>
@@ -604,7 +701,7 @@ max(L, Ha_cs*a)</parameter>
       <parameter id="clipType" value="CT_RGBBlend"/>
       <parameter id="useRGBWorkingSpace" value="false"/>
    </instance>
-   <instance class="GeneralizedHyperbolicStretch" version="256" id="LHA_27_GHS_3_fond_instance">
+   <instance class="GeneralizedHyperbolicStretch" version="256" id="LHA_28_GHS_3_fond_instance">
       <description>GHS, assombrir le fond sans écrêter — SP juste sous le niveau à rendre noir, HP = SP (règle HP à la même valeur que SP), LP = 0, b = 10 ; ajuste Stretch factor. Plus propre qu'un point noir en Linear, qui détruit des données. CIBLE DU FOND FINAL : gris foncé 0,12-0,14 (30-35 sur 255 ; Readout Options › plage entière 8 bits), R = G = B à quelques unités près, JAMAIS 0. Données bruitées : 0,14-0,15 ; données propres (après NXT) : 0,10-0,12. Au-delà de 0,18-0,20 : trop étiré. Vérifie avec Statistics (médiane d'une preview de fond).</description>
       <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
       <parameter id="stretchChannel" value="SC_RGB"/>
@@ -620,13 +717,99 @@ max(L, Ha_cs*a)</parameter>
       <parameter id="clipType" value="CT_RGBBlend"/>
       <parameter id="useRGBWorkingSpace" value="false"/>
    </instance>
-   <instance class="NoOperation" version="256" id="LHA_28_Statistical_Stretch_instance">
-      <description>ÉTAPE MANUELLE — Statistical Stretch (SetiAstro, script). Icône-note : le chemin du script dépend de ton installation. Alternative à GHS. Target Median 0,25 (défaut, 0,15-0,25) ; Linked Stretch coché pour une image couleur calibrée ; Blackpoint Sigma 5,0 ; Normalize décoché ; Curves Boost 0 ; même Target Median pour les images à combiner.</description>
+   <instance class="Script" version="256" id="LHA_29_Statistical_Stretch_instance">
+      <description>LANCEMENT : GLISSE cette icône sur l'image cible (le script refuse le mode global : un double-clic suivi de « Apply Global » n'aboutit pas). Le dialogue s'ouvre avec les valeurs de l'icône (openDialogbox = true) ; pour étirer directement sans dialogue, mets openDialogbox à false. SOMME DE CONTRÔLE : l'icône contient l'empreinte MD5 de la version actuelle du script ; après une mise à jour du script, PixInsight bloque l'icône : double-clique-la, efface le champ MD5 et réenregistre-la. SCRIPT — Statistical Stretch (SetiAstro, script). Alternative à GHS. Target Median 0,25 (défaut, 0,15-0,25) ; Linked Stretch coché pour une image couleur calibrée ; Blackpoint Sigma 5,0 ; Normalize décoché ; Curves Boost 0 ; même Target Median pour les images à combiner.</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/statisticalstretch.js</parameter>
+      <parameter id="md5sum">defab45bb4e2f33db39a7bb016cdefb0</parameter>
+      <table id="parameters" rows="15">
+         <tr>
+            <td id="id">targetMedian</td>
+            <td id="value">0.25</td>
+         </tr>
+         <tr>
+            <td id="id">curvesBoost</td>
+            <td id="value">0</td>
+         </tr>
+         <tr>
+            <td id="id">numIterations</td>
+            <td id="value">1</td>
+         </tr>
+         <tr>
+            <td id="id">normalizeImageRange</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">linkedStretch</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">openDialogbox</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">autoConvergence</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">blackpointSigma</td>
+            <td id="value">5</td>
+         </tr>
+         <tr>
+            <td id="id">noBlackClip</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">hdrCompress</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">hdrAmount</td>
+            <td id="value">0.25</td>
+         </tr>
+         <tr>
+            <td id="id">hdrKnee</td>
+            <td id="value">0.35</td>
+         </tr>
+         <tr>
+            <td id="id">lumaOnly</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">lumaMode</td>
+            <td id="value">rec709</td>
+         </tr>
+         <tr>
+            <td id="id">lumaBlend</td>
+            <td id="value">0.6</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
    </instance>
-   <instance class="NoOperation" version="256" id="LHA_29_Star_Stretch_instance">
-      <description>ÉTAPE MANUELLE — Star Stretch (SetiAstro, script) sur l'image d'étoiles LINÉAIRE issue de SXT. Stretch Amount 5 (défaut, prudence au-delà) ; Color Boost 1,0 (0 à 2) ; Remove Green via SCNR optionnel (décoché par défaut). STANDARD DES ÉTOILES (RGB calibré par SPCC) : du bleu-blanc au jaune-orange, couleur visible mais pas criarde, une gamme de couleurs, JAMAIS vertes. CONTRÔLE sur l'image d'étoiles seule, à la sonde 15x15 sur le HALO (le cœur est souvent saturé et blanc) : chaudes R &gt;= G &gt;= B, bleues B &gt;= G &gt;= R, aucune avec G au-dessus de R et B ; une dizaine d'étoiles pas toutes identiques. Toutes blanches : Stretch Amount plus bas (ou GHS avec HP) ; criardes : Color Boost plus bas ; vertes, bleues ou jaunes en bloc : SPCC à revoir.</description>
+   <instance class="Script" version="256" id="LHA_30_Star_Stretch_instance">
+      <description>LANCEMENT : GLISSE cette icône sur l'image cible (le script refuse le mode global : un double-clic suivi de « Apply Global » n'aboutit pas). Glisse-la sur l'image d'étoiles linéaire : le dialogue s'ouvre avec Stretch Amount 5 et Color Boost 1,0. SOMME DE CONTRÔLE : l'icône contient l'empreinte MD5 de la version actuelle du script ; après une mise à jour du script, PixInsight bloque l'icône : double-clique-la, efface le champ MD5 et réenregistre-la. SCRIPT — Star Stretch (SetiAstro, script) sur l'image d'étoiles LINÉAIRE issue de SXT. Stretch Amount 5 (défaut, prudence au-delà) ; Color Boost 1,0 (0 à 2) ; Remove Green via SCNR optionnel (décoché par défaut). STANDARD DES ÉTOILES (RGB calibré par SPCC) : du bleu-blanc au jaune-orange, couleur visible mais pas criarde, une gamme de couleurs, JAMAIS vertes. CONTRÔLE sur l'image d'étoiles seule, à la sonde 15x15 sur le HALO (le cœur est souvent saturé et blanc) : chaudes R &gt;= G &gt;= B, bleues B &gt;= G &gt;= R, aucune avec G au-dessus de R et B ; une dizaine d'étoiles pas toutes identiques. Toutes blanches : Stretch Amount plus bas (ou GHS avec HP) ; criardes : Color Boost plus bas ; vertes, bleues ou jaunes en bloc : SPCC à revoir.</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/star_stretch.js</parameter>
+      <parameter id="md5sum">69a1ee6db4e9f5374c2cddb1e5a7f4ae</parameter>
+      <table id="parameters" rows="4">
+         <tr>
+            <td id="id">amount</td>
+            <td id="value">5</td>
+         </tr>
+         <tr>
+            <td id="id">satAmount</td>
+            <td id="value">1</td>
+         </tr>
+         <tr>
+            <td id="id">removeGreen</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">showPreview</td>
+            <td id="value">false</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
    </instance>
-   <instance class="LRGBCombination" version="256" id="LHA_30_LRGB_ajout_L_instance">
+   <instance class="LRGBCombination" version="256" id="LHA_31_LRGB_ajout_L_instance">
       <description>LRGBCombination sur les images étirées sans étoiles : seul L activé (vue 'L'), Lightness 0,5, Saturation 0,40, Chrominance noise reduction cochée. CONTRÔLE (sonde 15x15) : cœur de galaxie jaune (R &gt;= G &gt;&gt; B), bras bleus, régions HII roses et bien visibles grâce au Ha (R &gt; B &gt; G), aucune étoile verte, fond R = G = B ; couleurs délavées : L trop claire, étire-la moins. Compare avec la copie LRGB sans Ha : seules les régions HII doivent changer ; si le cœur ou les étoiles ont rougi, reprends la soustraction du continuum (k).</description>
       <table id="channels" rows="4">
          <tr>
@@ -658,7 +841,7 @@ max(L, Ha_cs*a)</parameter>
       <parameter id="layersProtected" value="2"/>
       <parameter id="inheritAstrometricSolution" value="true"/>
    </instance>
-   <instance class="CurvesTransformation" version="256" id="LHA_31_Courbes_instance">
+   <instance class="CurvesTransformation" version="256" id="LHA_32_Courbes_instance">
       <description>CurvesTransformation — légère courbe en S sur RGB/K (0,25→0,22 ; 0,75→0,78) et saturation (canal S : milieu monté de 0,5 à 0,6). Ajuste à l'œil, idéalement sous un masque de luminance pour protéger le fond.</description>
       <table id="R" rows="2">
          <tr>
@@ -794,7 +977,7 @@ max(L, Ha_cs*a)</parameter>
       </table>
       <parameter id="St" value="AkimaSubsplines"/>
    </instance>
-   <instance class="LocalHistogramEqualization" version="256" id="LHA_32_LHE_instance">
+   <instance class="LocalHistogramEqualization" version="256" id="LHA_33_LHE_instance">
       <description>LocalHistogramEqualization sur l'image sans étoiles, sous masque de luminance : Kernel radius 150 (64 à 300 selon les structures), Contrast limit 2,0, Amount 0,35 (facile à exagérer).</description>
       <parameter id="radius" value="150"/>
       <parameter id="histogramBins" value="Bit8"/>
@@ -802,7 +985,7 @@ max(L, Ha_cs*a)</parameter>
       <parameter id="amount" value="0.350"/>
       <parameter id="circularKernel" value="true"/>
    </instance>
-   <instance class="HDRMultiscaleTransform" version="256" id="LHA_33_HDRMT_instance">
+   <instance class="HDRMultiscaleTransform" version="256" id="LHA_34_HDRMT_instance">
       <description>HDRMultiscaleTransform sur l'image sans étoiles pour les zones brillantes : 6 couches, 1 itération (essaie 2), To lightness, Preserve hue et Lightness mask cochés. Trop fort : mélange à 50 % avec l'original.</description>
       <parameter id="numberOfLayers" value="6"/>
       <parameter id="numberOfIterations" value="1"/>
@@ -825,7 +1008,7 @@ max(L, Ha_cs*a)</parameter>
       <parameter id="lightnessMask" value="true"/>
       <parameter id="intensity" value="1.00"/>
    </instance>
-   <instance class="NoiseXTerminator" version="256" id="LHA_34_NXT_final_instance">
+   <instance class="NoiseXTerminator" version="256" id="LHA_35_NXT_final_instance">
       <description>NoiseXTerminator, passe finale légère sur l'image étirée : Denoise 0,40, Detail 0,15. Seulement si besoin.</description>
       <parameter id="ml_version" value="0"/>
       <parameter id="denoise" value="0.40"/>
@@ -844,7 +1027,7 @@ max(L, Ha_cs*a)</parameter>
       <parameter id="detail" value="0.15"/>
       <parameter id="overlap" value="0.20"/>
    </instance>
-   <instance class="PixelMath" version="256" id="LHA_35_Etoiles_screen_instance">
+   <instance class="PixelMath" version="256" id="LHA_36_Etoiles_screen_instance">
       <description>Recombinaison des étoiles en mode screen : ~((~starless) * (~stars)). Renomme la vue sans étoiles 'starless' et l'image d'étoiles 'stars', toutes deux étirées. Résultat : nouvelle image 'Final'. LRGB — CONTRÔLE après recombinaison, à 100 % : étoiles de la même couleur que sur l'image d'étoiles seule (la combinaison L a été faite sans étoiles) ; pas d'anneau sombre ni de halo coloré autour des étoiles ; étoiles ni grossies ni trop présentes (sinon réduction d'étoiles ou étirement plus doux) ; fond toujours R = G = B (fond éclairci : fond de l'image d'étoiles pas à 0).</description>
       <parameter id="expression">~((~starless) * (~stars))</parameter>
       <parameter id="expression1"></parameter>
@@ -874,7 +1057,7 @@ max(L, Ha_cs*a)</parameter>
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
-   <instance class="PixelMath" version="256" id="LHA_36_Blanshan_Transfer_instance">
+   <instance class="PixelMath" version="256" id="LHA_37_Blanshan_Transfer_instance">
       <description>Réduction d'étoiles Bill Blanshan, méthode Transfer V2 : applique sur l'image AVEC étoiles, la version sans étoiles de la même image (étirée pareil) doit s'appeler 'starless'. S = 0,15 (plus bas = étoiles plus petites). Les versions V3 et les méthodes Halo/Star sont dans 01-PixelMath-formules.xpsm.</description>
       <parameter id="expression">S=0.15;
 Img1=starless;
@@ -907,7 +1090,7 @@ max(Img1,f1)</parameter>
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
-   <instance class="MorphologicalTransformation" version="256" id="LHA_37_MT_etoiles_instance">
+   <instance class="MorphologicalTransformation" version="256" id="LHA_38_MT_etoiles_instance">
       <description>Alternative : MorphologicalTransformation sur l'image d'étoiles seule (ou avec un masque d'étoiles). Morphological Selection 0,25 (sous 0,5 = érosion), Amount 0,60, 1 itération, élément circulaire 5x5.</description>
       <parameter id="operator" value="Selection"/>
       <parameter id="interlacingDistance" value="1"/>
@@ -924,8 +1107,12 @@ max(Img1,f1)</parameter>
          </tr>
       </table>
    </instance>
-   <instance class="NoOperation" version="256" id="LHA_38_Halo_B_Gon_instance">
-      <description>ÉTAPE MANUELLE — Halo-B-Gon (SetiAstro, script) sur l'image d'étoiles seule. Reduction Amount Low au départ (Extra Low / Low / Med / High) ; Linear Data coché seulement si l'image est encore linéaire.</description>
+   <instance class="Script" version="256" id="LHA_39_Halo_B_Gon_instance">
+      <description>LANCEMENT : double-clique l'icône, puis clique sur le rond « Apply Global » (ou glisse-la sur une image) : le dialogue du script s'ouvre. Ce script ne lit pas de paramètres d'icône : les réglages se font dans son dialogue. SOMME DE CONTRÔLE : l'icône contient l'empreinte MD5 de la version actuelle du script ; après une mise à jour du script, PixInsight bloque l'icône : double-clique-la, efface le champ MD5 et réenregistre-la. SCRIPT — Halo-B-Gon (SetiAstro, script) sur l'image d'étoiles seule. Reduction Amount Low au départ (Extra Low / Low / Med / High) ; Linear Data coché seulement si l'image est encore linéaire.</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/Halo-B-Gon.js</parameter>
+      <parameter id="md5sum">b9427e718e2b9760704c8c738e0893b7</parameter>
+      <table id="parameters" rows="0"/>
+      <parameter id="information"></parameter>
    </instance>
    <icon id="LHA_01_WBPP" instance="LHA_01_WBPP_instance" xpos="30" ypos="30" workspace="Workspace01"/>
    <icon id="LHA_02_CC_auto" instance="LHA_02_CC_auto_instance" xpos="30" ypos="60" workspace="Workspace01"/>
@@ -940,29 +1127,30 @@ max(Img1,f1)</parameter>
    <icon id="LHA_11_GradientCorrection" instance="LHA_11_GradientCorrection_instance" xpos="30" ypos="330" workspace="Workspace01"/>
    <icon id="LHA_12_DBE" instance="LHA_12_DBE_instance" xpos="30" ypos="360" workspace="Workspace01"/>
    <icon id="LHA_13_BXT_CorrectOnly" instance="LHA_13_BXT_CorrectOnly_instance" xpos="30" ypos="390" workspace="Workspace01"/>
-   <icon id="LHA_14_SPCC" instance="LHA_14_SPCC_instance" xpos="30" ypos="420" workspace="Workspace01"/>
-   <icon id="LHA_15_BXT_RGB" instance="LHA_15_BXT_RGB_instance" xpos="330" ypos="30" workspace="Workspace01"/>
-   <icon id="LHA_16_BXT_L_Ha" instance="LHA_16_BXT_L_Ha_instance" xpos="330" ypos="60" workspace="Workspace01"/>
-   <icon id="LHA_17_Continuum_Ha" instance="LHA_17_Continuum_Ha_instance" xpos="330" ypos="90" workspace="Workspace01"/>
-   <icon id="LHA_18_Continuum_auto" instance="LHA_18_Continuum_auto_instance" xpos="330" ypos="120" workspace="Workspace01"/>
-   <icon id="LHA_19_Ha_dans_RGB" instance="LHA_19_Ha_dans_RGB_instance" xpos="330" ypos="150" workspace="Workspace01"/>
-   <icon id="LHA_20_Ha_dans_L" instance="LHA_20_Ha_dans_L_instance" xpos="330" ypos="180" workspace="Workspace01"/>
-   <icon id="LHA_21_NBRGBCombination" instance="LHA_21_NBRGBCombination_instance" xpos="330" ypos="210" workspace="Workspace01"/>
-   <icon id="LHA_22_SXT_lineaire" instance="LHA_22_SXT_lineaire_instance" xpos="330" ypos="240" workspace="Workspace01"/>
-   <icon id="LHA_23_NXT_RGB" instance="LHA_23_NXT_RGB_instance" xpos="330" ypos="270" workspace="Workspace01"/>
-   <icon id="LHA_24_NXT_L" instance="LHA_24_NXT_L_instance" xpos="330" ypos="300" workspace="Workspace01"/>
-   <icon id="LHA_25_GHS_1_premier" instance="LHA_25_GHS_1_premier_instance" xpos="330" ypos="330" workspace="Workspace01"/>
-   <icon id="LHA_26_GHS_2_contraste" instance="LHA_26_GHS_2_contraste_instance" xpos="330" ypos="360" workspace="Workspace01"/>
-   <icon id="LHA_27_GHS_3_fond" instance="LHA_27_GHS_3_fond_instance" xpos="330" ypos="390" workspace="Workspace01"/>
-   <icon id="LHA_28_Statistical_Stretch" instance="LHA_28_Statistical_Stretch_instance" xpos="330" ypos="420" workspace="Workspace01"/>
-   <icon id="LHA_29_Star_Stretch" instance="LHA_29_Star_Stretch_instance" xpos="630" ypos="30" workspace="Workspace01"/>
-   <icon id="LHA_30_LRGB_ajout_L" instance="LHA_30_LRGB_ajout_L_instance" xpos="630" ypos="60" workspace="Workspace01"/>
-   <icon id="LHA_31_Courbes" instance="LHA_31_Courbes_instance" xpos="630" ypos="90" workspace="Workspace01"/>
-   <icon id="LHA_32_LHE" instance="LHA_32_LHE_instance" xpos="630" ypos="120" workspace="Workspace01"/>
-   <icon id="LHA_33_HDRMT" instance="LHA_33_HDRMT_instance" xpos="630" ypos="150" workspace="Workspace01"/>
-   <icon id="LHA_34_NXT_final" instance="LHA_34_NXT_final_instance" xpos="630" ypos="180" workspace="Workspace01"/>
-   <icon id="LHA_35_Etoiles_screen" instance="LHA_35_Etoiles_screen_instance" xpos="630" ypos="210" workspace="Workspace01"/>
-   <icon id="LHA_36_Blanshan_Transfer" instance="LHA_36_Blanshan_Transfer_instance" xpos="630" ypos="240" workspace="Workspace01"/>
-   <icon id="LHA_37_MT_etoiles" instance="LHA_37_MT_etoiles_instance" xpos="630" ypos="270" workspace="Workspace01"/>
-   <icon id="LHA_38_Halo_B_Gon" instance="LHA_38_Halo_B_Gon_instance" xpos="630" ypos="300" workspace="Workspace01"/>
+   <icon id="LHA_14_Find_Background" instance="LHA_14_Find_Background_instance" xpos="30" ypos="420" workspace="Workspace01"/>
+   <icon id="LHA_15_SPCC" instance="LHA_15_SPCC_instance" xpos="330" ypos="30" workspace="Workspace01"/>
+   <icon id="LHA_16_BXT_RGB" instance="LHA_16_BXT_RGB_instance" xpos="330" ypos="60" workspace="Workspace01"/>
+   <icon id="LHA_17_BXT_L_Ha" instance="LHA_17_BXT_L_Ha_instance" xpos="330" ypos="90" workspace="Workspace01"/>
+   <icon id="LHA_18_Continuum_Ha" instance="LHA_18_Continuum_Ha_instance" xpos="330" ypos="120" workspace="Workspace01"/>
+   <icon id="LHA_19_Continuum_auto" instance="LHA_19_Continuum_auto_instance" xpos="330" ypos="150" workspace="Workspace01"/>
+   <icon id="LHA_20_Ha_dans_RGB" instance="LHA_20_Ha_dans_RGB_instance" xpos="330" ypos="180" workspace="Workspace01"/>
+   <icon id="LHA_21_Ha_dans_L" instance="LHA_21_Ha_dans_L_instance" xpos="330" ypos="210" workspace="Workspace01"/>
+   <icon id="LHA_22_NBRGBCombination" instance="LHA_22_NBRGBCombination_instance" xpos="330" ypos="240" workspace="Workspace01"/>
+   <icon id="LHA_23_SXT_lineaire" instance="LHA_23_SXT_lineaire_instance" xpos="330" ypos="270" workspace="Workspace01"/>
+   <icon id="LHA_24_NXT_RGB" instance="LHA_24_NXT_RGB_instance" xpos="330" ypos="300" workspace="Workspace01"/>
+   <icon id="LHA_25_NXT_L" instance="LHA_25_NXT_L_instance" xpos="330" ypos="330" workspace="Workspace01"/>
+   <icon id="LHA_26_GHS_1_premier" instance="LHA_26_GHS_1_premier_instance" xpos="330" ypos="360" workspace="Workspace01"/>
+   <icon id="LHA_27_GHS_2_contraste" instance="LHA_27_GHS_2_contraste_instance" xpos="330" ypos="390" workspace="Workspace01"/>
+   <icon id="LHA_28_GHS_3_fond" instance="LHA_28_GHS_3_fond_instance" xpos="330" ypos="420" workspace="Workspace01"/>
+   <icon id="LHA_29_Statistical_Stretch" instance="LHA_29_Statistical_Stretch_instance" xpos="630" ypos="30" workspace="Workspace01"/>
+   <icon id="LHA_30_Star_Stretch" instance="LHA_30_Star_Stretch_instance" xpos="630" ypos="60" workspace="Workspace01"/>
+   <icon id="LHA_31_LRGB_ajout_L" instance="LHA_31_LRGB_ajout_L_instance" xpos="630" ypos="90" workspace="Workspace01"/>
+   <icon id="LHA_32_Courbes" instance="LHA_32_Courbes_instance" xpos="630" ypos="120" workspace="Workspace01"/>
+   <icon id="LHA_33_LHE" instance="LHA_33_LHE_instance" xpos="630" ypos="150" workspace="Workspace01"/>
+   <icon id="LHA_34_HDRMT" instance="LHA_34_HDRMT_instance" xpos="630" ypos="180" workspace="Workspace01"/>
+   <icon id="LHA_35_NXT_final" instance="LHA_35_NXT_final_instance" xpos="630" ypos="210" workspace="Workspace01"/>
+   <icon id="LHA_36_Etoiles_screen" instance="LHA_36_Etoiles_screen_instance" xpos="630" ypos="240" workspace="Workspace01"/>
+   <icon id="LHA_37_Blanshan_Transfer" instance="LHA_37_Blanshan_Transfer_instance" xpos="630" ypos="270" workspace="Workspace01"/>
+   <icon id="LHA_38_MT_etoiles" instance="LHA_38_MT_etoiles_instance" xpos="630" ypos="300" workspace="Workspace01"/>
+   <icon id="LHA_39_Halo_B_Gon" instance="LHA_39_Halo_B_Gon_instance" xpos="630" ypos="330" workspace="Workspace01"/>
 </xpsm>
