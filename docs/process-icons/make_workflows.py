@@ -177,8 +177,8 @@ def stars_end(cms=False):
           (note('Halo_B_Gon', T_HALO), '')]
     return b
 
-def ghs_block(extra_desc=''):
-    return [(ghs('GHS_1_premier', 10), D_GHS1 + extra_desc), (ghs('GHS_2_contraste', 4, hp=0.9), D_GHS2), (ghs('GHS_3_fond', 10), D_GHS3), (note('Statistical_Stretch', T_STAT), '')]
+def ghs_block(extra_desc='', stat_extra=''):
+    return [(ghs('GHS_1_premier', 10), D_GHS1 + extra_desc), (ghs('GHS_2_contraste', 4, hp=0.9), D_GHS2), (ghs('GHS_3_fond', 10), D_GHS3), (note('Statistical_Stretch', T_STAT + stat_extra), '')]
 
 rgb_comb = lambda: (pm('Combinaison_RGB', 'R', 'G', 'B', new_image=True, new_id='RGB', space='RGB'),
                     "Combinaison RGB (équivalent de ChannelCombination) : nomme tes masters linéaires 'R', 'G' et 'B'. Crée l'image couleur 'RGB'.")
@@ -264,15 +264,22 @@ def extract(prefix_names, src_desc):
 
 nb_noise = [(M.nxt('NXT_Ha', 0.60, 1), "NoiseXTerminator sur Ha sans étoiles : Denoise 0,60 (0,50 à 0,70), Detail 0,15. En linéaire ou après étirement."),
             (M.nxt('NXT_OIII_SII', 0.75, 1), "NoiseXTerminator sur OIII et SII sans étoiles, plus bruités : Denoise 0,75 (0,60 à 0,85). Ne pousse pas plus : aspect plastique.")]
-GHS_NB = " En narrowband : étire Ha en premier, puis OIII et SII jusqu'au MÊME fond et à une médiane proche ; OIII/SII demandent un Stretch factor plus élevé, monte LP pour ne pas faire ressortir leur bruit."
+GHS_NB = (" En narrowband, étire chaque canal séparément. Règle : même niveau de fond et médiane proche pour tous les canaux (on n'égalise pas la nébuleuse : l'écart de signal, c'est la couleur). "
+          "Étire Ha en premier (pic d'histogramme vers 0,20-0,25) et note ce niveau : c'est la référence. Puis OIII et SII jusqu'au MÊME fond et à la même médiane ; ils demandent un Stretch factor plus élevé, monte LP pour ne pas faire ressortir leur bruit. "
+          "Vérifie le fond avec Statistics ou la lecture de pixel. CONTRÔLE : combinaison simple des canaux étirés ; le fond doit être gris neutre, sinon le fond du canal dominant est trop clair : reprends son étirement. "
+          "Alternative : Statistical Stretch avec la même Target Median (icône Statistical_Stretch).")
+STAT_NB = (" En narrowband : même Target Median (0,25) pour tous les masters narrowband (Ha, OIII et SII s'il y en a), les médianes sont alors identiques par construction ; "
+           "sur une image couleur déjà combinée, décoche Linked Stretch pour étirer chaque canal séparément. Contrôle ensuite le fond neutre (combinaison simple).")
 
 sho_combine = (pm('Combinaison_SHO', 'Sii', 'Ha', 'Oiii', new_image=True, new_id='SHO', space='RGB'),
                "Combinaison SHO SIMPLE (équivalent de ChannelCombination) : R = Sii, G = Ha, B = Oiii, sans boost ni mélange. Sert à BXT et SXT. Crée l'image 'SHO'.")
 sho_palette = [
     (M.instance('NarrowbandNormalization', 'NBN_SHO', {'palette': 'Palette_SHO'}),
      "PALETTE — NarrowbandNormalization, palette SHO (valeurs par défaut ; nom interne Palette_SHO vérifié dans le module 1.1). Sur l'image SHO combinée (R = Sii, G = Ha, B = Oiii), "
-     "ÉTIRÉE et sans étoiles (recombine les canaux étirés avec l'icône Combinaison_SHO). Active l'aperçu ; monte O3 boost et S2 boost progressivement ; Shadowpoint pour le fond ; "
-     "Highlight reduction ; Brightness ; Lightness (Off, Preserve, Ha, OIII ou SII) ; SCNR partiel si besoin."),
+     "ÉTIRÉE et sans étoiles, canaux étirés avec le même fond et la même médiane (recombine-les avec l'icône Combinaison_SHO). Active l'aperçu. "
+     "Ordre de réglage conseillé (suggestion de la fiche, pas une consigne de l'auteur) : Lightness (Off, Preserve, Ha, OIII ou SII ; souvent Ha) ; Shadowpoint pour le fond, sans l'écrêter ; "
+     "O3 boost puis S2 boost, progressivement (SII, le plus bruité, avec prudence) ; Highlight reduction ; Brightness ; SCNR partiel en dernier, si besoin. "
+     "Pour comprendre un curseur, pousse-le à fond (0 ou maximum) puis reviens à une valeur raisonnable (astuce theAstroShed). Garde ton réglage en glissant le triangle du process sur le bureau."),
     (pm('Foraxx_SHO', '(Oiii^~Oiii)*Sii + ~(Oiii^~Oiii)*Ha', '((Oiii*Ha)^~(Oiii*Ha))*Ha + ~((Oiii*Ha)^~(Oiii*Ha))*Oiii', 'Oiii', new_image=True, new_id='SHO_Foraxx', space='RGB'),
      "ALTERNATIVE — Palette Foraxx SHO dynamique (Ludo/ForaxX) : vues 'Sii', 'Ha', 'Oiii' ÉTIRÉES, sans étoiles, fonds proches. Crée 'SHO_Foraxx'. Tons or et bleu sans vert envahissant."),
     (note('NBColourMapper', T_NBCM), ''),
@@ -296,14 +303,14 @@ rgbsho = pre_block() + nb_masters(['Sii', 'Ha', 'Oiii']) + [
     sho_combine,
     (M.bxt('BXT_NB', False, 0.25, 0.0, 0.60), D_BXT_NB),
     (M.sxt('SXT_lineaire', False), D_SXT_LIN + " Sur l'image SHO : garde le fond sans étoiles (les étoiles viendront du RGB)."),
-] + extract([(0, 'Sii'), (1, 'Ha'), (2, 'Oiii')], "l'image SHO sans étoiles") + nb_noise + ghs_block(GHS_NB) + sho_palette + finish_block(sho_finish) + rgb_stars_block() + stars_end(cms=True)
+] + extract([(0, 'Sii'), (1, 'Ha'), (2, 'Oiii')], "l'image SHO sans étoiles") + nb_noise + ghs_block(GHS_NB, STAT_NB) + sho_palette + finish_block(sho_finish) + rgb_stars_block() + stars_end(cms=True)
 
 # ---------------------------------------------------------------- SHO sans RGB
 sho = pre_block() + nb_masters(['Sii', 'Ha', 'Oiii']) + [
     sho_combine,
     (M.bxt('BXT_NB', False, 0.25, 0.0, 0.60), D_BXT_NB),
     (M.sxt('SXT_lineaire', False), D_SXT_LIN + " Sur l'image SHO : GARDE LES DEUX images (fond et étoiles), les étoiles viennent ici du narrowband."),
-] + extract([(0, 'Sii'), (1, 'Ha'), (2, 'Oiii')], "l'image SHO sans étoiles") + extract([(0, 'Sii_stars'), (1, 'Ha_stars'), (2, 'Oiii_stars')], "l'image d'étoiles SHO (linéaire)") + nb_noise + ghs_block(GHS_NB) + sho_palette + finish_block(sho_finish) + [
+] + extract([(0, 'Sii'), (1, 'Ha'), (2, 'Oiii')], "l'image SHO sans étoiles") + extract([(0, 'Sii_stars'), (1, 'Ha_stars'), (2, 'Oiii_stars')], "l'image d'étoiles SHO (linéaire)") + nb_noise + ghs_block(GHS_NB, STAT_NB) + sho_palette + finish_block(sho_finish) + [
     (note('NB_to_RGB_Stars', "ÉTOILES — méthode 1 : NB to RGB Star Combination (SetiAstro, script). Ha Stars et OIII Stars (linéaires, obligatoires), SII optionnel. "
           "Green Channel Blend Ratio décoché par défaut (Ha to OIII ratio 0,3 si activé). Apply Star Stretch recommandé par l'auteur : Stretch Factor 5, Color Boost 1,0."), ''),
     (pm('Etoiles_HOO_synth', 'Ha_stars', '0.2*Ha_stars + 0.8*Oiii_stars', 'Oiii_stars', new_image=True, new_id='Stars_HOO', space='RGB'),
@@ -324,7 +331,7 @@ hoo = pre_block() + [
      "Combinaison HOO SIMPLE : R = Ha, G = Oiii, B = Oiii, sans boost. Sert à BXT et SXT (en caméra couleur, BXT s'applique plutôt sur l'image d'origine avant extraction). Crée 'HOO'."),
     (M.bxt('BXT_NB', False, 0.25, 0.0, 0.60), D_BXT_NB),
     (M.sxt('SXT_lineaire', False), D_SXT_LIN + " Sur l'image HOO : garde l'image d'étoiles si tu n'as pas d'étoiles RGB."),
-] + extract([(0, 'Ha'), (1, 'Oiii')], "l'image HOO sans étoiles") + nb_noise + ghs_block(GHS_NB) + [
+] + extract([(0, 'Ha'), (1, 'Oiii')], "l'image HOO sans étoiles") + nb_noise + ghs_block(GHS_NB, STAT_NB) + [
     (pm('HOO_simple', 'Ha', 'Oiii', 'Oiii', new_image=True, new_id='HOO_etire', space='RGB'),
      "PALETTE — combinaison simple sur 'Ha' et 'Oiii' étirés sans étoiles, à équilibrer ensuite avec NarrowbandNormalization (icône suivante)."),
     (M.instance('NarrowbandNormalization', 'NBN_HOO', {'palette': 'Palette_HOO'}),
