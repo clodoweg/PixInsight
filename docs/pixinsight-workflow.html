@@ -841,8 +841,15 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
       </li>
       <li id="rgbsho-e5">
         <div class="step-head"><h4>Bruit et étirement des canaux</h4><span class="phase lin">Linéaire</span><span class="phase nl">Étiré</span></div>
-        <p>NXT sur chaque canal (en linéaire ou après étirement), plus fort sur OIII et SII. Puis étire chaque canal avec GHS jusqu'à des fonds et des médianes proches.</p>
-        <div class="tools"><a class="tool rc" href="#t-nxt">NoiseXTerminator</a><a class="tool nat" href="#t-ghs">GeneralizedHyperbolicStretch</a></div>
+        <p>NXT sur chaque canal (en linéaire ou après étirement), plus fort sur OIII et SII. Puis étire <strong>chaque canal séparément</strong> : OIII et SII, plus faibles, demandent un étirement plus fort que Ha.</p>
+        <p>La règle : <strong>les trois canaux doivent avoir le même niveau de fond et une médiane proche</strong> avant la palette. On n'égalise pas la nébuleuse : l'écart de signal entre filtres, c'est la couleur, et NarrowbandNormalization l'équilibre ensuite.</p>
+        <ul>
+          <li><strong>Méthode A, GHS canal par canal</strong> : étire <strong>Ha d'abord</strong> (SP sur le fond, b vers 10, Stretch factor jusqu'à un pic d'histogramme vers 0,20 à 0,25) et note ce niveau : c'est la référence. Étire ensuite OIII et SII de la même façon, avec un Stretch factor plus élevé, jusqu'au même fond et à la même médiane que Ha ; monte LP pour ne pas faire ressortir le bruit du fond. Vérifie le fond avec le process Statistics ou la lecture de pixel.</li>
+          <li><strong>Méthode B, Statistical Stretch</strong> : le script place la médiane de l'image sur une valeur cible. Avec la <strong>même Target median</strong> (0,25 par défaut) pour les trois masters, les médianes sont identiques par construction. Sur une image couleur déjà combinée, décoche <em>Linked Stretch</em> pour étirer chaque canal séparément.</li>
+          <li><strong>Contrôle</strong> : ChannelCombination simple (R = SII, G = Ha, B = OIII). Le fond doit être gris neutre ; s'il tire vers une couleur, le fond de ce canal est trop clair : reprends son étirement.</li>
+        </ul>
+        <p>Variante (theAstroShed) : combiner d'abord en linéaire, passer AutoLinearFit sur l'image SHO avec le vert (Ha) comme référence, puis étirer avant ou après la combinaison.</p>
+        <div class="tools"><a class="tool rc" href="#t-nxt">NoiseXTerminator</a><a class="tool nat" href="#t-ghs">GeneralizedHyperbolicStretch</a><a class="tool free" href="#t-statstretch">Statistical Stretch</a></div>
       </li>
       <li id="rgbsho-e6">
         <div class="step-head"><h4>Palette</h4><span class="phase nl">Étiré</span></div>
@@ -987,8 +994,15 @@ svg.dg .curve-a-t { fill: var(--accent); } svg.dg .curve-b-t { fill: var(--lin);
       </li>
       <li id="sho-e5">
         <div class="step-head"><h4>Bruit et étirement du fond</h4><span class="phase lin">Linéaire</span><span class="phase nl">Étiré</span></div>
-        <p>NXT sur chaque canal sans étoiles, plus fort sur OIII et SII (0,60 à 0,85) que sur Ha (0,50 à 0,70). Puis GHS sur chaque canal jusqu'à des fonds de même luminosité ; OIII et SII demandent un étirement plus fort.</p>
-        <div class="tools"><a class="tool rc" href="#t-nxt">NoiseXTerminator</a><a class="tool nat" href="#t-ghs">GeneralizedHyperbolicStretch</a></div>
+        <p>NXT sur chaque canal sans étoiles, plus fort sur OIII et SII (0,60 à 0,85) que sur Ha (0,50 à 0,70). Puis étire <strong>chaque canal séparément</strong> : OIII et SII demandent un étirement plus fort que Ha.</p>
+        <p>La règle : <strong>les trois canaux doivent avoir le même niveau de fond et une médiane proche</strong> avant la palette. On n'égalise pas la nébuleuse : l'écart de signal entre filtres, c'est la couleur, et NarrowbandNormalization l'équilibre ensuite.</p>
+        <ul>
+          <li><strong>Méthode A, GHS canal par canal</strong> : étire <strong>Ha d'abord</strong> (SP sur le fond, b vers 10, Stretch factor jusqu'à un pic d'histogramme vers 0,20 à 0,25) et note ce niveau : c'est la référence. Étire ensuite OIII et SII de la même façon, avec un Stretch factor plus élevé, jusqu'au même fond et à la même médiane que Ha ; monte LP pour ne pas faire ressortir le bruit du fond. Vérifie le fond avec le process Statistics ou la lecture de pixel.</li>
+          <li><strong>Méthode B, Statistical Stretch</strong> : le script place la médiane de l'image sur une valeur cible. Avec la <strong>même Target median</strong> (0,25 par défaut) pour les trois masters, les médianes sont identiques par construction. Sur une image couleur déjà combinée, décoche <em>Linked Stretch</em> pour étirer chaque canal séparément.</li>
+          <li><strong>Contrôle</strong> : ChannelCombination simple (R = SII, G = Ha, B = OIII). Le fond doit être gris neutre ; s'il tire vers une couleur, le fond de ce canal est trop clair : reprends son étirement.</li>
+        </ul>
+        <p>Variante (theAstroShed) : combiner d'abord en linéaire, passer AutoLinearFit sur l'image SHO avec le vert (Ha) comme référence, puis étirer avant ou après la combinaison.</p>
+        <div class="tools"><a class="tool rc" href="#t-nxt">NoiseXTerminator</a><a class="tool nat" href="#t-ghs">GeneralizedHyperbolicStretch</a><a class="tool free" href="#t-statstretch">Statistical Stretch</a></div>
       </li>
       <li id="sho-e6">
         <div class="step-head"><h4>Palette et finition</h4><span class="phase nl">Étiré</span></div>
@@ -1634,7 +1648,7 @@ max(Img1,iif(M==1,E7,iif(M==2,E8,E9)))</code><button type="button" data-copy>Cop
       <article class="tcard" id="t-nbn">
         <div class="tcard-head"><h4>NarrowbandNormalization (module)</h4><span class="ttag free" title="Script ou module gratuit">GRATUIT</span><span class="phase nl">Étiré</span></div>
         <div class="tlabel">Méthode</div>
-        <ol class="tsteps"><li>Combine SII, Ha et OIII en une image RGB selon la palette (ChannelCombination), de préférence <strong>étirée et sans étoiles</strong>.</li><li>Choisis la palette correspondante (SHO, HOO…).</li><li>Active l'aperçu en temps réel et règle les boosts, le point noir et les hautes lumières.</li><li>Utilise le SCNR intégré si un reste de vert apparaît.</li></ol>
+        <ol class="tsteps"><li>Étire les canaux avec le même fond et la même médiane (<a href="#sho-e5" style="color:var(--accent)">méthode</a>), puis combine SII, Ha et OIII en une image RGB selon la palette (ChannelCombination), de préférence <strong>étirée et sans étoiles</strong>.</li><li>Choisis la palette correspondante (SHO, HOO…).</li><li>Active l'aperçu en temps réel. Ordre de réglage conseillé (suggestion de la fiche, pas une consigne de l'auteur) : Lightness, Shadowpoint, O3 boost, S2 boost, hautes lumières, Brightness, SCNR en dernier.</li><li>Pour comprendre un curseur, pousse-le à fond (0 ou maximum), observe, puis reviens à une valeur raisonnable (astuce theAstroShed).</li><li>Utilise le SCNR intégré si un reste de vert apparaît. Garde le réglage en glissant le triangle du process sur le bureau (icône).</li></ol>
         <div class="tlabel">Paramètres</div>
         <dl class="tparams"><div><dt>Palette</dt><dd>Celle de ta combinaison : HOO, SHO, HSO ou HOS</dd></div><div><dt>O3 boost / S2 boost</dt><dd>0 par défaut ; monter progressivement jusqu'à l'équilibre voulu</dd></div><div><dt>Shadowpoint</dt><dd>Point noir : ajuster le fond sans l'écrêter</dd></div><div><dt>Highlight reduction</dt><dd>Atténuer les hautes lumières</dd></div><div><dt>Brightness</dt><dd>Luminosité globale</dd></div><div><dt>Lightness</dt><dd>Off (défaut), Preserve, Ha, OIII ou SII : canal qui porte la luminance, souvent Ha</dd></div><div><dt>Blend mode / Ha blend</dt><dd>Mode de mélange du vert, surtout pour les données de caméra couleur</dd></div><div><dt>SCNR</dt><dd>0 par défaut ; partiel, seulement si nécessaire</dd></div></dl>
         <div class="tlabel">Par filtre</div>

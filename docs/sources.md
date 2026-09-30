@@ -150,6 +150,14 @@ Légende :
 - Utilisateur — base de filtres exportée depuis ton PixInsight (`.xspd`, 256 courbes, 29 septembre 2026) : courbes Antlia V Pro Series R, G, B, Sony IMX411/455/461/533/571 (identique à celle du modèle SPCC de theAstroShed) utilisées dans les icônes SPCC et SPFC. Filtres narrowband Antlia 3 nm (confirmé par l'utilisateur).
 - Revendeur — [Teleskop-Express, Antlia L-V Pro](https://www.teleskop-express.de/en/antlia-175/photo-r-g-b-and-ir-cut-filters-267/antlia-2-l-v-pro-uv-ir-cut-luminance-filter-19102) : passe-bande 420 à 715 nm, transmission supérieure à 95 %.
 
+## Étirement cohérent des canaux SHO et réglage de NarrowbandNormalization
+
+- Tutoriel — [AstroWorldCreations, présentation de NarrowbandNormalization](https://www.astroworldcreations.com/blog/new-pixinsight-process-narrowbandnormalization) : entrée = image RGB (de préférence sans étoiles) où les canaux narrowband sont placés selon la palette ; réglages de boosts OIII/SII, lightness, SCNR, ombres, hautes lumières et luminosité.
+- Tutoriel — [theAstroShed, workflows RGB et SHO 2024](https://www.theastroshed.com/my-rgb-and-sho-workflows-2024-edition/) : combinaison SHO puis AutoLinearFit avec le vert comme référence, GHS avant ou après la combinaison, NarrowbandNormalization avec aperçu en temps réel et astuce « pousser le curseur à 0 ou au maximum pour voir son effet ».
+- Code — [pixinsight-mcp, formule de Statistical Stretch](https://github.com/mxcoppell/pixinsight-mcp/releases/tag/v1.2.0) : point noir médiane/MAD puis fonction de transfert des tons moyens qui place la médiane sur la cible ; option liée ou non liée pour la couleur (étirer les trois masters avec la même Target median donne des médianes identiques).
+- Recherche — [nrStellar, workflow narrowband](https://nrstellar.com/blogs/articles/narrowband-editing-workflow-for-pixinsight) et [annonce officielle sur le forum PixInsight](https://pixinsight.com/forum/index.php?threads%2Fnew-process-narrowbandnormalization.21441%2F=) : NarrowbandNormalization de préférence sur une image étirée et sans étoiles ; en linéaire, l'équilibrage de luminosité et l'option Lightness sont limités.
+- Ordre de réglage de NarrowbandNormalization (Lightness, Shadowpoint, boosts, hautes lumières, Brightness, SCNR) : suggestion de la fiche, signalée comme telle sur la page ; aucune source ne fixe d'ordre.
+
 ## Schémas de la fiche
 
 Les schémas ne reprennent que des faits déjà sourcés plus haut ; ils n'ajoutent aucun réglage.
