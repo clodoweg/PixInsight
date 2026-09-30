@@ -47,7 +47,7 @@ https://www.cosmicphotons.com/pi-scripts/screenstars/
 RECOMMANDÉ — SETI ASTRO (Franklin Marek, gratuit)
 Statistical Stretch, Star Stretch, Halo-B-Gon, NB to RGB Star Combination,
 Automatic Continuum Subtraction, Perfect Palette Picker,
-Find Background Preview (aperçu de fond automatique pour SPCC)...
+Find Background (aperçu de fond automatique pour SPCC, menu Script › SetiAstro)...
 https://updates.setiastro.com/
 
   Dépôt de secours (seulement si le premier ne répond pas, ne pas mettre les deux) :

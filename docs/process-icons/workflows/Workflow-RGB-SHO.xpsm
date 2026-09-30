@@ -521,7 +521,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <description>ÉTAPE MANUELLE — Statistical Stretch (SetiAstro, script). Icône-note : le chemin du script dépend de ton installation. Alternative à GHS. Target Median 0,25 (défaut, 0,15-0,25) ; Linked Stretch coché pour une image couleur calibrée ; Blackpoint Sigma 5,0 ; Normalize décoché ; Curves Boost 0 ; même Target Median pour les images à combiner. En narrowband : même Target Median (0,25) pour tous les masters narrowband (Ha, OIII et SII s'il y en a), les médianes sont alors identiques par construction ; sur une image couleur déjà combinée, décoche Linked Stretch pour étirer chaque canal séparément. Contrôle ensuite le fond neutre (combinaison simple).</description>
    </instance>
    <instance class="NarrowbandNormalization" version="256" id="RSHO_24_NBN_SHO_instance">
-      <description>PALETTE — NarrowbandNormalization, palette SHO (valeurs par défaut ; nom interne Palette_SHO vérifié dans le module 1.1). Sur l'image SHO combinée (R = Sii, G = Ha, B = Oiii), ÉTIRÉE et sans étoiles, canaux étirés avec le même fond et la même médiane (recombine-les avec l'icône Combinaison_SHO). Active l'aperçu. Ordre de réglage conseillé (suggestion de la fiche, pas une consigne de l'auteur) : Lightness (Off, Preserve, Ha, OIII ou SII ; souvent Ha) ; Shadowpoint pour le fond, sans l'écrêter ; O3 boost puis S2 boost, progressivement (SII, le plus bruité, avec prudence) ; Highlight reduction ; Brightness ; SCNR partiel en dernier, si besoin. Pour comprendre un curseur, pousse-le à fond (0 ou maximum) puis reviens à une valeur raisonnable (astuce theAstroShed). Garde ton réglage en glissant le triangle du process sur le bureau.</description>
+      <description>PALETTE — NarrowbandNormalization, palette SHO (valeurs par défaut ; nom interne Palette_SHO vérifié dans le module 1.1). Sur l'image SHO combinée (R = Sii, G = Ha, B = Oiii), ÉTIRÉE et sans étoiles, canaux étirés avec le même fond et la même médiane (recombine-les avec l'icône Combinaison_SHO). Active l'aperçu. Ordre de réglage conseillé (suggestion de la fiche, pas une consigne de l'auteur) : Lightness (Off, Preserve, Ha, OIII ou SII ; souvent Ha) ; Shadowpoint pour le fond, sans l'écrêter ; O3 boost puis S2 boost, progressivement (SII, le plus bruité, avec prudence) ; Highlight reduction ; Brightness ; SCNR partiel en dernier, si besoin. Pour comprendre un curseur, pousse-le à fond (0 ou maximum) puis reviens à une valeur raisonnable (astuce theAstroShed). Garde ton réglage en glissant le triangle du process sur le bureau. RENDU VISÉ (look Hubble) : zones Ha or / jaune orangé, zones OIII cyan à bleu, soufre en orange plus rouge, fond gris neutre foncé, pas de vert dominant (quelques touches acceptées), étoiles pas magenta. CONTRÔLE à la sonde 15x15 : zone Ha R &gt;= G, nettement au-dessus de B (si G &gt; R : trop vert) ; zone OIII G et B au-dessus de R, B &gt;= G ; fond R = G = B. AJUSTER : trop vert -&gt; SCNR partiel (ou SCNR 0,50-0,80 après) ; pas de bleu -&gt; O3 boost ; pas de nuances orange/rouge -&gt; S2 boost ; fond coloré -&gt; Shadowpoint, sinon reprends l'étirement des canaux ; cœur brûlé -&gt; Highlight reduction ; détail pâteux -&gt; Lightness Ha ; teinte à affiner -&gt; CurvesTransformation (canal H, puis S) sous masque de luminance. AUTRE PALETTE : SII très faible -&gt; HOO ; Ha dominant et OIII faible -&gt; HOO centré sur Ha ou HaRGB ; or et bleu sans vert -&gt; Foraxx ; teintes libres -&gt; NBColourMapper ; pour comparer -&gt; Perfect Palette Picker.</description>
       <parameter id="palette" value="Palette_SHO"/>
       <parameter id="lightness" value="Lightness_Off"/>
       <parameter id="blendMode" value="Blend_Mode1"/>
@@ -563,17 +563,20 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
-   <instance class="NoOperation" version="256" id="RSHO_26_NBColourMapper_instance">
+   <instance class="NoOperation" version="256" id="RSHO_26_Perfect_Palette_Picker_instance">
+      <description>EXPLORER — Perfect Palette Picker (SetiAstro, script v1.3, Script › SetiAstro › Perfect Palette Picker). Icône-note : le chemin du script dépend de ton installation. Choisis les vues Ha, OIII et SII (sans étoiles de préférence ; sans SII, Ha le remplace), ou jusqu'à deux images couleur dual-band (HaO3, S2O3). Linear Input Data coché par défaut : chaque canal est étiré à une médiane de 0,25 ; décoche si tes images sont déjà étirées. Create Palettes : 16 vignettes (HOO, HOS, HSO, HSS, OHH, OHS, OSH, OSS, SHH, SHO, SOH, SOO, Realistic1, Realistic2, Foraxx, Dynamic Inverse). Clique une vignette pour générer la palette en pleine taille. Sert à choisir : équilibre ensuite le résultat (NarrowbandNormalization, courbes) et vérifie les couleurs.</description>
+   </instance>
+   <instance class="NoOperation" version="256" id="RSHO_27_NBColourMapper_instance">
       <description>OPTION — NBColourMapper (Mike Cranfield, script). Une couche par filtre sans étoiles : Ha rouge-orangé, OIII cyan-bleu, SII rouge profond ou or ; règle teinte et saturation avec l'aperçu.</description>
    </instance>
-   <instance class="SCNR" version="256" id="RSHO_27_SCNR_SHO_instance">
+   <instance class="SCNR" version="256" id="RSHO_28_SCNR_SHO_instance">
       <description>SCNR sur la palette SHO si un vert reste : Green, Average Neutral, Amount 0,70 (1,0 par défaut convient souvent ; plus bas pour garder un peu de vert).</description>
       <parameter id="amount" value="0.70"/>
       <parameter id="protectionMethod" value="AverageNeutral"/>
       <parameter id="colorToRemove" value="Green"/>
       <parameter id="preserveLightness" value="true"/>
    </instance>
-   <instance class="CurvesTransformation" version="256" id="RSHO_28_Courbes_instance">
+   <instance class="CurvesTransformation" version="256" id="RSHO_29_Courbes_instance">
       <description>CurvesTransformation — légère courbe en S sur RGB/K (0,25→0,22 ; 0,75→0,78) et saturation (canal S : milieu monté de 0,5 à 0,6). Ajuste à l'œil, idéalement sous un masque de luminance pour protéger le fond.</description>
       <table id="R" rows="2">
          <tr>
@@ -709,7 +712,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </table>
       <parameter id="St" value="AkimaSubsplines"/>
    </instance>
-   <instance class="LocalHistogramEqualization" version="256" id="RSHO_29_LHE_instance">
+   <instance class="LocalHistogramEqualization" version="256" id="RSHO_30_LHE_instance">
       <description>LocalHistogramEqualization sur l'image sans étoiles, sous masque de luminance : Kernel radius 150 (64 à 300 selon les structures), Contrast limit 2,0, Amount 0,35 (facile à exagérer).</description>
       <parameter id="radius" value="150"/>
       <parameter id="histogramBins" value="Bit8"/>
@@ -717,7 +720,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="amount" value="0.350"/>
       <parameter id="circularKernel" value="true"/>
    </instance>
-   <instance class="HDRMultiscaleTransform" version="256" id="RSHO_30_HDRMT_instance">
+   <instance class="HDRMultiscaleTransform" version="256" id="RSHO_31_HDRMT_instance">
       <description>HDRMultiscaleTransform sur l'image sans étoiles pour les zones brillantes : 6 couches, 1 itération (essaie 2), To lightness, Preserve hue et Lightness mask cochés. Trop fort : mélange à 50 % avec l'original.</description>
       <parameter id="numberOfLayers" value="6"/>
       <parameter id="numberOfIterations" value="1"/>
@@ -740,7 +743,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="lightnessMask" value="true"/>
       <parameter id="intensity" value="1.00"/>
    </instance>
-   <instance class="NoiseXTerminator" version="256" id="RSHO_31_NXT_final_instance">
+   <instance class="NoiseXTerminator" version="256" id="RSHO_32_NXT_final_instance">
       <description>NoiseXTerminator, passe finale légère sur l'image étirée : Denoise 0,40, Detail 0,15. Seulement si besoin.</description>
       <parameter id="ml_version" value="0"/>
       <parameter id="denoise" value="0.40"/>
@@ -759,10 +762,10 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="detail" value="0.15"/>
       <parameter id="overlap" value="0.20"/>
    </instance>
-   <instance class="NoOperation" version="256" id="RSHO_32_Etoiles_RGB_instance">
+   <instance class="NoOperation" version="256" id="RSHO_33_Etoiles_RGB_instance">
       <description>ÉTOILES RGB — masters R, G, B : même recadrage, puis les icônes suivantes dans l'ordre (combinaison, gradient via l'icône GradientCorrection ou les notes, BXT Correct Only, SPCC, BXT, SXT).</description>
    </instance>
-   <instance class="PixelMath" version="256" id="RSHO_33_Combinaison_RGB_instance">
+   <instance class="PixelMath" version="256" id="RSHO_34_Combinaison_RGB_instance">
       <description>Combinaison RGB (équivalent de ChannelCombination) : nomme tes masters linéaires 'R', 'G' et 'B'. Crée l'image couleur 'RGB'.</description>
       <parameter id="expression">R</parameter>
       <parameter id="expression1">G</parameter>
@@ -792,7 +795,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
-   <instance class="BlurXTerminator" version="256" id="RSHO_34_BXT_CorrectOnly_instance">
+   <instance class="BlurXTerminator" version="256" id="RSHO_35_BXT_CorrectOnly_instance">
       <description>BlurXTerminator — Correct Only, AVANT SPCC (manuel RC Astro) : corrige aberrations, coma et tilt sans accentuer. Sur l'image couleur combinée, en linéaire, après le gradient. Si les aberrations diffèrent d'un filtre à l'autre : applique-le sur chaque master avant de combiner.</description>
       <parameter id="ml_version" value="4"/>
       <parameter id="correct_only" value="true"/>
@@ -804,8 +807,8 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="lunar_planetary" value="false"/>
       <parameter id="overlap" value="0.20"/>
    </instance>
-   <instance class="SpectrophotometricColorCalibration" version="1" id="RSHO_35_SPCC_instance">
-      <description>SPCC configuré pour ton matériel (QHY600 (Sony IMX455) + filtres Antlia V Pro) : White reference Average Spiral Galaxy ; QE curve Sony IMX411/455/461/533/571 ; filtres Antlia V Pro Series R, G, B (courbes issues de ta base de filtres PixInsight) ; neutralisation du fond activée (limites -2,80 / +2,00) ; Generate graphs coché. FOND DE RÉFÉRENCE : l'icône n'a ni vue de référence ni Region of Interest, donc SPCC prend l'image entière ; les limites sont en écarts-types autour de la médiane et écartent étoiles et nébuleuse. Suffisant après le retrait du gradient sur une galaxie ou un champ avec du ciel libre. Champ rempli de nébuleuse : baisse la limite haute, ou lance le script Find Background Preview (SetiAstro, dépôt https://updates.setiastro.com/) qui crée automatiquement un aperçu de fond, puis coche Region of Interest et clique From Preview (ou crée toi-même une preview sur du fond vide). Après SPCC, vérifie que le fond est gris neutre. Toujours en linéaire, après le gradient et BXT Correct Only, avant BXT complet.</description>
+   <instance class="SpectrophotometricColorCalibration" version="1" id="RSHO_36_SPCC_instance">
+      <description>SPCC configuré pour ton matériel (QHY600 (Sony IMX455) + filtres Antlia V Pro) : White reference Average Spiral Galaxy ; QE curve Sony IMX411/455/461/533/571 ; filtres Antlia V Pro Series R, G, B (courbes issues de ta base de filtres PixInsight) ; neutralisation du fond activée (limites -2,80 / +2,00) ; Generate graphs coché. FOND DE RÉFÉRENCE : l'icône n'a ni vue de référence ni Region of Interest, donc SPCC prend l'image entière ; les limites sont en écarts-types autour de la médiane et écartent étoiles et nébuleuse. Suffisant après le retrait du gradient sur une galaxie ou un champ avec du ciel libre. Champ rempli de nébuleuse : baisse la limite haute, ou lance Script › SetiAstro › Find Background (dépôt https://updates.setiastro.com/) qui crée automatiquement un aperçu nommé Background, puis coche Region of Interest et clique From Preview (ou crée toi-même une preview sur du fond vide). Après SPCC, vérifie que le fond est gris neutre. Toujours en linéaire, après le gradient et BXT Correct Only, avant BXT complet.</description>
       <parameter id="applyCalibration" value="true"/>
       <parameter id="narrowbandMode" value="false"/>
       <parameter id="narrowbandOptimizeStars" value="false"/>
@@ -860,7 +863,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="generateTextFiles" value="false"/>
       <parameter id="outputDirectory"></parameter>
    </instance>
-   <instance class="BlurXTerminator" version="256" id="RSHO_36_BXT_RGB_instance">
+   <instance class="BlurXTerminator" version="256" id="RSHO_37_BXT_RGB_instance">
       <description>BlurXTerminator complet sur RGB après SPCC : Sharpen Stars 0,25, Halos 0, Nonstellar 0,50.</description>
       <parameter id="ml_version" value="4"/>
       <parameter id="correct_only" value="false"/>
@@ -872,7 +875,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="lunar_planetary" value="false"/>
       <parameter id="overlap" value="0.20"/>
    </instance>
-   <instance class="StarXTerminator" version="256" id="RSHO_37_SXT_RGB_lineaire_instance">
+   <instance class="StarXTerminator" version="256" id="RSHO_38_SXT_RGB_lineaire_instance">
       <description>StarXTerminator — sur données LINÉAIRES, le plus tôt possible après BXT (RC Astro). Generate star image coché, UNSCREEN DÉCOCHÉ (réservé aux images étirées) : simple soustraction, couleurs d'étoiles les plus fidèles. N'applique pas l'autoSTF de façon permanente à l'image d'étoiles. Large overlap : décoché par défaut, à cocher seulement si un quadrillage apparaît (deux fois plus lent). Garde uniquement l'image d'étoiles RGB.</description>
       <parameter id="ml_version" value="0"/>
       <parameter id="output_stars" value="true"/>
@@ -883,10 +886,10 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="remove_reflections" value="false"/>
       <parameter id="overlap" value="0.20"/>
    </instance>
-   <instance class="NoOperation" version="256" id="RSHO_38_Star_Stretch_instance">
+   <instance class="NoOperation" version="256" id="RSHO_39_Star_Stretch_instance">
       <description>ÉTAPE MANUELLE — Star Stretch (SetiAstro, script) sur l'image d'étoiles LINÉAIRE issue de SXT. Stretch Amount 5 (défaut, prudence au-delà) ; Color Boost 1,0 (0 à 2) ; Remove Green via SCNR optionnel (décoché par défaut).</description>
    </instance>
-   <instance class="PixelMath" version="256" id="RSHO_39_Etoiles_screen_instance">
+   <instance class="PixelMath" version="256" id="RSHO_40_Etoiles_screen_instance">
       <description>Recombinaison des étoiles en mode screen : ~((~starless) * (~stars)). Renomme la vue sans étoiles 'starless' et l'image d'étoiles 'stars', toutes deux étirées. Résultat : nouvelle image 'Final'.</description>
       <parameter id="expression">~((~starless) * (~stars))</parameter>
       <parameter id="expression1"></parameter>
@@ -916,10 +919,10 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
-   <instance class="NoOperation" version="256" id="RSHO_40_CorrectMagentaStars_instance">
+   <instance class="NoOperation" version="256" id="RSHO_41_CorrectMagentaStars_instance">
       <description>ÉTAPE MANUELLE — CorrectMagentaStars (Script › Utilities). Sur l'image SHO finale avec étoiles. Amount 0,8 (défaut, 0 à 1). Le script inverse l'image, retire le vert avec SCNR (le magenta inversé), puis réinverse.</description>
    </instance>
-   <instance class="PixelMath" version="256" id="RSHO_41_Blanshan_Transfer_instance">
+   <instance class="PixelMath" version="256" id="RSHO_42_Blanshan_Transfer_instance">
       <description>Réduction d'étoiles Bill Blanshan, méthode Transfer V2 : applique sur l'image AVEC étoiles, la version sans étoiles de la même image (étirée pareil) doit s'appeler 'starless'. S = 0,15 (plus bas = étoiles plus petites). Les versions V3 et les méthodes Halo/Star sont dans 01-PixelMath-formules.xpsm.</description>
       <parameter id="expression">S=0.15;
 Img1=starless;
@@ -952,7 +955,7 @@ max(Img1,f1)</parameter>
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
-   <instance class="MorphologicalTransformation" version="256" id="RSHO_42_MT_etoiles_instance">
+   <instance class="MorphologicalTransformation" version="256" id="RSHO_43_MT_etoiles_instance">
       <description>Alternative : MorphologicalTransformation sur l'image d'étoiles seule (ou avec un masque d'étoiles). Morphological Selection 0,25 (sous 0,5 = érosion), Amount 0,60, 1 itération, élément circulaire 5x5.</description>
       <parameter id="operator" value="Selection"/>
       <parameter id="interlacingDistance" value="1"/>
@@ -969,7 +972,7 @@ max(Img1,f1)</parameter>
          </tr>
       </table>
    </instance>
-   <instance class="NoOperation" version="256" id="RSHO_43_Halo_B_Gon_instance">
+   <instance class="NoOperation" version="256" id="RSHO_44_Halo_B_Gon_instance">
       <description>ÉTAPE MANUELLE — Halo-B-Gon (SetiAstro, script) sur l'image d'étoiles seule. Reduction Amount Low au départ (Extra Low / Low / Med / High) ; Linear Data coché seulement si l'image est encore linéaire.</description>
    </instance>
    <icon id="RSHO_01_WBPP" instance="RSHO_01_WBPP_instance" xpos="30" ypos="30" workspace="Workspace01"/>
@@ -997,22 +1000,23 @@ max(Img1,f1)</parameter>
    <icon id="RSHO_23_Statistical_Stretch" instance="RSHO_23_Statistical_Stretch_instance" xpos="330" ypos="270" workspace="Workspace01"/>
    <icon id="RSHO_24_NBN_SHO" instance="RSHO_24_NBN_SHO_instance" xpos="330" ypos="300" workspace="Workspace01"/>
    <icon id="RSHO_25_Foraxx_SHO" instance="RSHO_25_Foraxx_SHO_instance" xpos="330" ypos="330" workspace="Workspace01"/>
-   <icon id="RSHO_26_NBColourMapper" instance="RSHO_26_NBColourMapper_instance" xpos="330" ypos="360" workspace="Workspace01"/>
-   <icon id="RSHO_27_SCNR_SHO" instance="RSHO_27_SCNR_SHO_instance" xpos="330" ypos="390" workspace="Workspace01"/>
-   <icon id="RSHO_28_Courbes" instance="RSHO_28_Courbes_instance" xpos="330" ypos="420" workspace="Workspace01"/>
-   <icon id="RSHO_29_LHE" instance="RSHO_29_LHE_instance" xpos="630" ypos="30" workspace="Workspace01"/>
-   <icon id="RSHO_30_HDRMT" instance="RSHO_30_HDRMT_instance" xpos="630" ypos="60" workspace="Workspace01"/>
-   <icon id="RSHO_31_NXT_final" instance="RSHO_31_NXT_final_instance" xpos="630" ypos="90" workspace="Workspace01"/>
-   <icon id="RSHO_32_Etoiles_RGB" instance="RSHO_32_Etoiles_RGB_instance" xpos="630" ypos="120" workspace="Workspace01"/>
-   <icon id="RSHO_33_Combinaison_RGB" instance="RSHO_33_Combinaison_RGB_instance" xpos="630" ypos="150" workspace="Workspace01"/>
-   <icon id="RSHO_34_BXT_CorrectOnly" instance="RSHO_34_BXT_CorrectOnly_instance" xpos="630" ypos="180" workspace="Workspace01"/>
-   <icon id="RSHO_35_SPCC" instance="RSHO_35_SPCC_instance" xpos="630" ypos="210" workspace="Workspace01"/>
-   <icon id="RSHO_36_BXT_RGB" instance="RSHO_36_BXT_RGB_instance" xpos="630" ypos="240" workspace="Workspace01"/>
-   <icon id="RSHO_37_SXT_RGB_lineaire" instance="RSHO_37_SXT_RGB_lineaire_instance" xpos="630" ypos="270" workspace="Workspace01"/>
-   <icon id="RSHO_38_Star_Stretch" instance="RSHO_38_Star_Stretch_instance" xpos="630" ypos="300" workspace="Workspace01"/>
-   <icon id="RSHO_39_Etoiles_screen" instance="RSHO_39_Etoiles_screen_instance" xpos="630" ypos="330" workspace="Workspace01"/>
-   <icon id="RSHO_40_CorrectMagentaStars" instance="RSHO_40_CorrectMagentaStars_instance" xpos="630" ypos="360" workspace="Workspace01"/>
-   <icon id="RSHO_41_Blanshan_Transfer" instance="RSHO_41_Blanshan_Transfer_instance" xpos="630" ypos="390" workspace="Workspace01"/>
-   <icon id="RSHO_42_MT_etoiles" instance="RSHO_42_MT_etoiles_instance" xpos="630" ypos="420" workspace="Workspace01"/>
-   <icon id="RSHO_43_Halo_B_Gon" instance="RSHO_43_Halo_B_Gon_instance" xpos="930" ypos="30" workspace="Workspace01"/>
+   <icon id="RSHO_26_Perfect_Palette_Picker" instance="RSHO_26_Perfect_Palette_Picker_instance" xpos="330" ypos="360" workspace="Workspace01"/>
+   <icon id="RSHO_27_NBColourMapper" instance="RSHO_27_NBColourMapper_instance" xpos="330" ypos="390" workspace="Workspace01"/>
+   <icon id="RSHO_28_SCNR_SHO" instance="RSHO_28_SCNR_SHO_instance" xpos="330" ypos="420" workspace="Workspace01"/>
+   <icon id="RSHO_29_Courbes" instance="RSHO_29_Courbes_instance" xpos="630" ypos="30" workspace="Workspace01"/>
+   <icon id="RSHO_30_LHE" instance="RSHO_30_LHE_instance" xpos="630" ypos="60" workspace="Workspace01"/>
+   <icon id="RSHO_31_HDRMT" instance="RSHO_31_HDRMT_instance" xpos="630" ypos="90" workspace="Workspace01"/>
+   <icon id="RSHO_32_NXT_final" instance="RSHO_32_NXT_final_instance" xpos="630" ypos="120" workspace="Workspace01"/>
+   <icon id="RSHO_33_Etoiles_RGB" instance="RSHO_33_Etoiles_RGB_instance" xpos="630" ypos="150" workspace="Workspace01"/>
+   <icon id="RSHO_34_Combinaison_RGB" instance="RSHO_34_Combinaison_RGB_instance" xpos="630" ypos="180" workspace="Workspace01"/>
+   <icon id="RSHO_35_BXT_CorrectOnly" instance="RSHO_35_BXT_CorrectOnly_instance" xpos="630" ypos="210" workspace="Workspace01"/>
+   <icon id="RSHO_36_SPCC" instance="RSHO_36_SPCC_instance" xpos="630" ypos="240" workspace="Workspace01"/>
+   <icon id="RSHO_37_BXT_RGB" instance="RSHO_37_BXT_RGB_instance" xpos="630" ypos="270" workspace="Workspace01"/>
+   <icon id="RSHO_38_SXT_RGB_lineaire" instance="RSHO_38_SXT_RGB_lineaire_instance" xpos="630" ypos="300" workspace="Workspace01"/>
+   <icon id="RSHO_39_Star_Stretch" instance="RSHO_39_Star_Stretch_instance" xpos="630" ypos="330" workspace="Workspace01"/>
+   <icon id="RSHO_40_Etoiles_screen" instance="RSHO_40_Etoiles_screen_instance" xpos="630" ypos="360" workspace="Workspace01"/>
+   <icon id="RSHO_41_CorrectMagentaStars" instance="RSHO_41_CorrectMagentaStars_instance" xpos="630" ypos="390" workspace="Workspace01"/>
+   <icon id="RSHO_42_Blanshan_Transfer" instance="RSHO_42_Blanshan_Transfer_instance" xpos="630" ypos="420" workspace="Workspace01"/>
+   <icon id="RSHO_43_MT_etoiles" instance="RSHO_43_MT_etoiles_instance" xpos="930" ypos="30" workspace="Workspace01"/>
+   <icon id="RSHO_44_Halo_B_Gon" instance="RSHO_44_Halo_B_Gon_instance" xpos="930" ypos="60" workspace="Workspace01"/>
 </xpsm>

@@ -605,10 +605,13 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
-   <instance class="NoOperation" version="256" id="HOO_28_NBColourMapper_instance">
+   <instance class="NoOperation" version="256" id="HOO_28_Perfect_Palette_Picker_instance">
+      <description>EXPLORER — Perfect Palette Picker (SetiAstro, script v1.3, Script › SetiAstro › Perfect Palette Picker). Icône-note : le chemin du script dépend de ton installation. Choisis les vues Ha, OIII et SII (sans étoiles de préférence ; sans SII, Ha le remplace), ou jusqu'à deux images couleur dual-band (HaO3, S2O3). Linear Input Data coché par défaut : chaque canal est étiré à une médiane de 0,25 ; décoche si tes images sont déjà étirées. Create Palettes : 16 vignettes (HOO, HOS, HSO, HSS, OHH, OHS, OSH, OSS, SHH, SHO, SOH, SOO, Realistic1, Realistic2, Foraxx, Dynamic Inverse). Clique une vignette pour générer la palette en pleine taille. Sert à choisir : équilibre ensuite le résultat (NarrowbandNormalization, courbes) et vérifie les couleurs.</description>
+   </instance>
+   <instance class="NoOperation" version="256" id="HOO_29_NBColourMapper_instance">
       <description>OPTION — NBColourMapper (Mike Cranfield, script). Une couche par filtre sans étoiles : Ha rouge-orangé, OIII cyan-bleu, SII rouge profond ou or ; règle teinte et saturation avec l'aperçu.</description>
    </instance>
-   <instance class="LRGBCombination" version="256" id="HOO_29_Ha_en_luminance_instance">
+   <instance class="LRGBCombination" version="256" id="HOO_30_Ha_en_luminance_instance">
       <description>Option — Ha en luminance : fais une copie de Ha étiré nommée 'L' (même fond et médiane proche que l'image HOO, sinon couleurs délavées), puis applique sur l'image HOO. Seul L activé, Saturation 0,40.</description>
       <table id="channels" rows="4">
          <tr>
@@ -640,7 +643,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="layersProtected" value="2"/>
       <parameter id="inheritAstrometricSolution" value="true"/>
    </instance>
-   <instance class="CurvesTransformation" version="256" id="HOO_30_Courbes_instance">
+   <instance class="CurvesTransformation" version="256" id="HOO_31_Courbes_instance">
       <description>CurvesTransformation — légère courbe en S sur RGB/K (0,25→0,22 ; 0,75→0,78) et saturation (canal S : milieu monté de 0,5 à 0,6). Ajuste à l'œil, idéalement sous un masque de luminance pour protéger le fond.</description>
       <table id="R" rows="2">
          <tr>
@@ -776,7 +779,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </table>
       <parameter id="St" value="AkimaSubsplines"/>
    </instance>
-   <instance class="LocalHistogramEqualization" version="256" id="HOO_31_LHE_instance">
+   <instance class="LocalHistogramEqualization" version="256" id="HOO_32_LHE_instance">
       <description>LocalHistogramEqualization sur l'image sans étoiles, sous masque de luminance : Kernel radius 150 (64 à 300 selon les structures), Contrast limit 2,0, Amount 0,35 (facile à exagérer).</description>
       <parameter id="radius" value="150"/>
       <parameter id="histogramBins" value="Bit8"/>
@@ -784,7 +787,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="amount" value="0.350"/>
       <parameter id="circularKernel" value="true"/>
    </instance>
-   <instance class="HDRMultiscaleTransform" version="256" id="HOO_32_HDRMT_instance">
+   <instance class="HDRMultiscaleTransform" version="256" id="HOO_33_HDRMT_instance">
       <description>HDRMultiscaleTransform sur l'image sans étoiles pour les zones brillantes : 6 couches, 1 itération (essaie 2), To lightness, Preserve hue et Lightness mask cochés. Trop fort : mélange à 50 % avec l'original.</description>
       <parameter id="numberOfLayers" value="6"/>
       <parameter id="numberOfIterations" value="1"/>
@@ -807,7 +810,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="lightnessMask" value="true"/>
       <parameter id="intensity" value="1.00"/>
    </instance>
-   <instance class="NoiseXTerminator" version="256" id="HOO_33_NXT_final_instance">
+   <instance class="NoiseXTerminator" version="256" id="HOO_34_NXT_final_instance">
       <description>NoiseXTerminator, passe finale légère sur l'image étirée : Denoise 0,40, Detail 0,15. Seulement si besoin.</description>
       <parameter id="ml_version" value="0"/>
       <parameter id="denoise" value="0.40"/>
@@ -826,13 +829,13 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="detail" value="0.15"/>
       <parameter id="overlap" value="0.20"/>
    </instance>
-   <instance class="NoOperation" version="256" id="HOO_34_Etoiles_HOO_instance">
+   <instance class="NoOperation" version="256" id="HOO_35_Etoiles_HOO_instance">
       <description>ÉTOILES — avec RGB : suis le bloc étoiles RGB du workflow RGB + SHO. Sans RGB : utilise l'image d'étoiles de SXT sur HOO (ou NB to RGB Star Combination), étire-la avec Star Stretch et renomme-la 'stars'. Les étoiles HOO tirent vers le rouge et le cyan : désature-les légèrement si besoin.</description>
    </instance>
-   <instance class="NoOperation" version="256" id="HOO_35_Star_Stretch_instance">
+   <instance class="NoOperation" version="256" id="HOO_36_Star_Stretch_instance">
       <description>ÉTAPE MANUELLE — Star Stretch (SetiAstro, script) sur l'image d'étoiles LINÉAIRE issue de SXT. Stretch Amount 5 (défaut, prudence au-delà) ; Color Boost 1,0 (0 à 2) ; Remove Green via SCNR optionnel (décoché par défaut).</description>
    </instance>
-   <instance class="PixelMath" version="256" id="HOO_36_Etoiles_screen_instance">
+   <instance class="PixelMath" version="256" id="HOO_37_Etoiles_screen_instance">
       <description>Recombinaison des étoiles en mode screen : ~((~starless) * (~stars)). Renomme la vue sans étoiles 'starless' et l'image d'étoiles 'stars', toutes deux étirées. Résultat : nouvelle image 'Final'.</description>
       <parameter id="expression">~((~starless) * (~stars))</parameter>
       <parameter id="expression1"></parameter>
@@ -862,7 +865,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
-   <instance class="PixelMath" version="256" id="HOO_37_Blanshan_Transfer_instance">
+   <instance class="PixelMath" version="256" id="HOO_38_Blanshan_Transfer_instance">
       <description>Réduction d'étoiles Bill Blanshan, méthode Transfer V2 : applique sur l'image AVEC étoiles, la version sans étoiles de la même image (étirée pareil) doit s'appeler 'starless'. S = 0,15 (plus bas = étoiles plus petites). Les versions V3 et les méthodes Halo/Star sont dans 01-PixelMath-formules.xpsm.</description>
       <parameter id="expression">S=0.15;
 Img1=starless;
@@ -895,7 +898,7 @@ max(Img1,f1)</parameter>
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
-   <instance class="MorphologicalTransformation" version="256" id="HOO_38_MT_etoiles_instance">
+   <instance class="MorphologicalTransformation" version="256" id="HOO_39_MT_etoiles_instance">
       <description>Alternative : MorphologicalTransformation sur l'image d'étoiles seule (ou avec un masque d'étoiles). Morphological Selection 0,25 (sous 0,5 = érosion), Amount 0,60, 1 itération, élément circulaire 5x5.</description>
       <parameter id="operator" value="Selection"/>
       <parameter id="interlacingDistance" value="1"/>
@@ -912,7 +915,7 @@ max(Img1,f1)</parameter>
          </tr>
       </table>
    </instance>
-   <instance class="NoOperation" version="256" id="HOO_39_Halo_B_Gon_instance">
+   <instance class="NoOperation" version="256" id="HOO_40_Halo_B_Gon_instance">
       <description>ÉTAPE MANUELLE — Halo-B-Gon (SetiAstro, script) sur l'image d'étoiles seule. Reduction Amount Low au départ (Extra Low / Low / Med / High) ; Linear Data coché seulement si l'image est encore linéaire.</description>
    </instance>
    <icon id="HOO_01_WBPP" instance="HOO_01_WBPP_instance" xpos="30" ypos="30" workspace="Workspace01"/>
@@ -942,16 +945,17 @@ max(Img1,f1)</parameter>
    <icon id="HOO_25_NBN_HOO" instance="HOO_25_NBN_HOO_instance" xpos="330" ypos="330" workspace="Workspace01"/>
    <icon id="HOO_26_Foraxx_HOO" instance="HOO_26_Foraxx_HOO_instance" xpos="330" ypos="360" workspace="Workspace01"/>
    <icon id="HOO_27_HOO_Hubble" instance="HOO_27_HOO_Hubble_instance" xpos="330" ypos="390" workspace="Workspace01"/>
-   <icon id="HOO_28_NBColourMapper" instance="HOO_28_NBColourMapper_instance" xpos="330" ypos="420" workspace="Workspace01"/>
-   <icon id="HOO_29_Ha_en_luminance" instance="HOO_29_Ha_en_luminance_instance" xpos="630" ypos="30" workspace="Workspace01"/>
-   <icon id="HOO_30_Courbes" instance="HOO_30_Courbes_instance" xpos="630" ypos="60" workspace="Workspace01"/>
-   <icon id="HOO_31_LHE" instance="HOO_31_LHE_instance" xpos="630" ypos="90" workspace="Workspace01"/>
-   <icon id="HOO_32_HDRMT" instance="HOO_32_HDRMT_instance" xpos="630" ypos="120" workspace="Workspace01"/>
-   <icon id="HOO_33_NXT_final" instance="HOO_33_NXT_final_instance" xpos="630" ypos="150" workspace="Workspace01"/>
-   <icon id="HOO_34_Etoiles_HOO" instance="HOO_34_Etoiles_HOO_instance" xpos="630" ypos="180" workspace="Workspace01"/>
-   <icon id="HOO_35_Star_Stretch" instance="HOO_35_Star_Stretch_instance" xpos="630" ypos="210" workspace="Workspace01"/>
-   <icon id="HOO_36_Etoiles_screen" instance="HOO_36_Etoiles_screen_instance" xpos="630" ypos="240" workspace="Workspace01"/>
-   <icon id="HOO_37_Blanshan_Transfer" instance="HOO_37_Blanshan_Transfer_instance" xpos="630" ypos="270" workspace="Workspace01"/>
-   <icon id="HOO_38_MT_etoiles" instance="HOO_38_MT_etoiles_instance" xpos="630" ypos="300" workspace="Workspace01"/>
-   <icon id="HOO_39_Halo_B_Gon" instance="HOO_39_Halo_B_Gon_instance" xpos="630" ypos="330" workspace="Workspace01"/>
+   <icon id="HOO_28_Perfect_Palette_Picker" instance="HOO_28_Perfect_Palette_Picker_instance" xpos="330" ypos="420" workspace="Workspace01"/>
+   <icon id="HOO_29_NBColourMapper" instance="HOO_29_NBColourMapper_instance" xpos="630" ypos="30" workspace="Workspace01"/>
+   <icon id="HOO_30_Ha_en_luminance" instance="HOO_30_Ha_en_luminance_instance" xpos="630" ypos="60" workspace="Workspace01"/>
+   <icon id="HOO_31_Courbes" instance="HOO_31_Courbes_instance" xpos="630" ypos="90" workspace="Workspace01"/>
+   <icon id="HOO_32_LHE" instance="HOO_32_LHE_instance" xpos="630" ypos="120" workspace="Workspace01"/>
+   <icon id="HOO_33_HDRMT" instance="HOO_33_HDRMT_instance" xpos="630" ypos="150" workspace="Workspace01"/>
+   <icon id="HOO_34_NXT_final" instance="HOO_34_NXT_final_instance" xpos="630" ypos="180" workspace="Workspace01"/>
+   <icon id="HOO_35_Etoiles_HOO" instance="HOO_35_Etoiles_HOO_instance" xpos="630" ypos="210" workspace="Workspace01"/>
+   <icon id="HOO_36_Star_Stretch" instance="HOO_36_Star_Stretch_instance" xpos="630" ypos="240" workspace="Workspace01"/>
+   <icon id="HOO_37_Etoiles_screen" instance="HOO_37_Etoiles_screen_instance" xpos="630" ypos="270" workspace="Workspace01"/>
+   <icon id="HOO_38_Blanshan_Transfer" instance="HOO_38_Blanshan_Transfer_instance" xpos="630" ypos="300" workspace="Workspace01"/>
+   <icon id="HOO_39_MT_etoiles" instance="HOO_39_MT_etoiles_instance" xpos="630" ypos="330" workspace="Workspace01"/>
+   <icon id="HOO_40_Halo_B_Gon" instance="HOO_40_Halo_B_Gon_instance" xpos="630" ypos="360" workspace="Workspace01"/>
 </xpsm>

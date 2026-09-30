@@ -98,6 +98,11 @@ T_STARSTRETCH = ("ÉTAPE MANUELLE — Star Stretch (SetiAstro, script) sur l'ima
 T_HALO = "ÉTAPE MANUELLE — Halo-B-Gon (SetiAstro, script) sur l'image d'étoiles seule. Reduction Amount Low au départ (Extra Low / Low / Med / High) ; Linear Data coché seulement si l'image est encore linéaire."
 T_CMS = ("ÉTAPE MANUELLE — CorrectMagentaStars (Script › Utilities). Sur l'image SHO finale avec étoiles. Amount 0,8 (défaut, 0 à 1). "
          "Le script inverse l'image, retire le vert avec SCNR (le magenta inversé), puis réinverse.")
+T_PPP = ("EXPLORER — Perfect Palette Picker (SetiAstro, script v1.3, Script › SetiAstro › Perfect Palette Picker). Icône-note : le chemin du script dépend de ton installation. "
+         "Choisis les vues Ha, OIII et SII (sans étoiles de préférence ; sans SII, Ha le remplace), ou jusqu'à deux images couleur dual-band (HaO3, S2O3). "
+         "Linear Input Data coché par défaut : chaque canal est étiré à une médiane de 0,25 ; décoche si tes images sont déjà étirées. Create Palettes : 16 vignettes "
+         "(HOO, HOS, HSO, HSS, OHH, OHS, OSH, OSS, SHH, SHO, SOH, SOO, Realistic1, Realistic2, Foraxx, Dynamic Inverse). Clique une vignette pour générer la palette en pleine taille. "
+         "Sert à choisir : équilibre ensuite le résultat (NarrowbandNormalization, courbes) et vérifie les couleurs.")
 T_NBCM = "OPTION — NBColourMapper (Mike Cranfield, script). Une couche par filtre sans étoiles : Ha rouge-orangé, OIII cyan-bleu, SII rouge profond ou or ; règle teinte et saturation avec l'aperçu."
 
 def cc():
@@ -206,8 +211,8 @@ def spcc_perso(name):
 T_SPCC = ("SPCC configuré pour ton matériel (" + MATERIEL + ") : White reference Average Spiral Galaxy ; QE curve Sony IMX411/455/461/533/571 ; filtres Antlia V Pro Series R, G, B "
           "(courbes issues de ta base de filtres PixInsight) ; neutralisation du fond activée (limites -2,80 / +2,00) ; Generate graphs coché. "
           "FOND DE RÉFÉRENCE : l'icône n'a ni vue de référence ni Region of Interest, donc SPCC prend l'image entière ; les limites sont en écarts-types autour de la médiane et écartent étoiles et nébuleuse. "
-          "Suffisant après le retrait du gradient sur une galaxie ou un champ avec du ciel libre. Champ rempli de nébuleuse : baisse la limite haute, ou lance le script Find Background Preview (SetiAstro, "
-          "dépôt https://updates.setiastro.com/) qui crée automatiquement un aperçu de fond, puis coche Region of Interest et clique From Preview (ou crée toi-même une preview sur du fond vide). "
+          "Suffisant après le retrait du gradient sur une galaxie ou un champ avec du ciel libre. Champ rempli de nébuleuse : baisse la limite haute, ou lance Script › SetiAstro › Find Background (dépôt "
+          "https://updates.setiastro.com/) qui crée automatiquement un aperçu nommé Background, puis coche Region of Interest et clique From Preview (ou crée toi-même une preview sur du fond vide). "
           "Après SPCC, vérifie que le fond est gris neutre. Toujours en linéaire, après le gradient et BXT Correct Only, avant BXT complet.")
 spcc = lambda: (spcc_perso('SPCC'), T_SPCC)
 
@@ -288,9 +293,15 @@ sho_palette = [
      "ÉTIRÉE et sans étoiles, canaux étirés avec le même fond et la même médiane (recombine-les avec l'icône Combinaison_SHO). Active l'aperçu. "
      "Ordre de réglage conseillé (suggestion de la fiche, pas une consigne de l'auteur) : Lightness (Off, Preserve, Ha, OIII ou SII ; souvent Ha) ; Shadowpoint pour le fond, sans l'écrêter ; "
      "O3 boost puis S2 boost, progressivement (SII, le plus bruité, avec prudence) ; Highlight reduction ; Brightness ; SCNR partiel en dernier, si besoin. "
-     "Pour comprendre un curseur, pousse-le à fond (0 ou maximum) puis reviens à une valeur raisonnable (astuce theAstroShed). Garde ton réglage en glissant le triangle du process sur le bureau."),
+     "Pour comprendre un curseur, pousse-le à fond (0 ou maximum) puis reviens à une valeur raisonnable (astuce theAstroShed). Garde ton réglage en glissant le triangle du process sur le bureau. "
+     "RENDU VISÉ (look Hubble) : zones Ha or / jaune orangé, zones OIII cyan à bleu, soufre en orange plus rouge, fond gris neutre foncé, pas de vert dominant (quelques touches acceptées), étoiles pas magenta. "
+     "CONTRÔLE à la sonde 15x15 : zone Ha R >= G, nettement au-dessus de B (si G > R : trop vert) ; zone OIII G et B au-dessus de R, B >= G ; fond R = G = B. "
+     "AJUSTER : trop vert -> SCNR partiel (ou SCNR 0,50-0,80 après) ; pas de bleu -> O3 boost ; pas de nuances orange/rouge -> S2 boost ; fond coloré -> Shadowpoint, sinon reprends l'étirement des canaux ; "
+     "cœur brûlé -> Highlight reduction ; détail pâteux -> Lightness Ha ; teinte à affiner -> CurvesTransformation (canal H, puis S) sous masque de luminance. "
+     "AUTRE PALETTE : SII très faible -> HOO ; Ha dominant et OIII faible -> HOO centré sur Ha ou HaRGB ; or et bleu sans vert -> Foraxx ; teintes libres -> NBColourMapper ; pour comparer -> Perfect Palette Picker."),
     (pm('Foraxx_SHO', '(Oiii^~Oiii)*Sii + ~(Oiii^~Oiii)*Ha', '((Oiii*Ha)^~(Oiii*Ha))*Ha + ~((Oiii*Ha)^~(Oiii*Ha))*Oiii', 'Oiii', new_image=True, new_id='SHO_Foraxx', space='RGB'),
      "ALTERNATIVE — Palette Foraxx SHO dynamique (Ludo/ForaxX) : vues 'Sii', 'Ha', 'Oiii' ÉTIRÉES, sans étoiles, fonds proches. Crée 'SHO_Foraxx'. Tons or et bleu sans vert envahissant."),
+    (note('Perfect_Palette_Picker', T_PPP), ''),
     (note('NBColourMapper', T_NBCM), ''),
 ]
 sho_finish = [(M.instance('SCNR', 'SCNR_SHO', {'amount': '0.70', 'protectionMethod': 'AverageNeutral', 'colorToRemove': 'Green'}),
@@ -349,6 +360,7 @@ hoo = pre_block() + [
      "ALTERNATIVE — Foraxx HOO : le vert varie selon le rapport Ha/OIII (transitions orangées). Vues 'Ha' et 'Oiii' étirées, sans étoiles, fonds proches."),
     (pm('HOO_Hubble', 'Ha', '0.6*Ha + 0.4*Oiii', 'Oiii', new_image=True, new_id='HOO_Hubble', space='RGB'),
      "ALTERNATIVE — variante « style Hubble » (Galactic Hunter) : G = 0,6·Ha + 0,4·OIII, tons plus dorés ; ajuste les coefficients."),
+    (note('Perfect_Palette_Picker', T_PPP), ''),
     (note('NBColourMapper', T_NBCM), ''),
     (M.instance('LRGBCombination', 'Ha_en_luminance', {'mL': '0.500', 'mc': '0.400', 'noiseReduction': True}, post=M.lrgb_post),
      "Option — Ha en luminance : fais une copie de Ha étiré nommée 'L' (même fond et médiane proche que l'image HOO, sinon couleurs délavées), puis applique sur l'image HOO. Seul L activé, Saturation 0,40."),

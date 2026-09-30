@@ -161,7 +161,8 @@ Légende :
 ## Neutralisation du fond dans SPCC
 
 - Officiel — [Documentation SPCC](https://pixinsight.com/doc/docs/SPCC/SPCC.html) : limites d'échantillonnage du fond exprimées en écarts-types (sigma) et non en valeurs de pixel ; fond de référence choisi par une preview (Region of Interest). La documentation ne décrit pas explicitement le cas sans référence (image entière) : comportement de l'outil, confirmé par l'icône (vue de référence vide, backgroundUseROI = false).
-- Officiel — [Seti Astro, scripts PixInsight](https://www.setiastro.com/pjsr-scripts) : Find Background Preview trouve automatiquement l'aperçu de fond pour BackgroundNeutralization, ColorCalibration, SPCC et la soustraction du continuum. Emplacement exact dans le menu non vérifié.
+- Officiel — [Seti Astro, scripts PixInsight](https://www.setiastro.com/pjsr-scripts) : script de recherche automatique de l'aperçu de fond pour BackgroundNeutralization, ColorCalibration, SPCC et la soustraction du continuum (présenté sous le nom « Find Background Preview »).
+- Code — [Seti Astro, `FindBackground.js` v1.2.2](https://github.com/setiastro/pixinsight-updates-194) (archive des scripts) : menu `Script › SetiAstro › Find Background` ; crée un aperçu nommé `Background` couvrant uniquement du fond ; co-écrit par Gerrit Erdt (AstroGerdt, auteur de NeutralizeBackground) et Franklin Marek ; PixInsight 1.9.4 minimum. Corrige le point « emplacement dans le menu non vérifié ».
 - Forum — [AstroBin, script qui trouve automatiquement la zone de fond](https://app.astrobin.com/forum/topic/121048/new-script-to-automatically-find-the-background-roi-in-pixinsight)
 - Forum — [PixInsight, NeutralizeBackground (AstroGerdt)](https://pixinsight.com/forum/index.php?threads/rudimentary-script-to-optimize-background-neutralization-in-spcc.21398/) : alternative (pièce jointe du forum, sans dépôt) ; cherche les zones les plus sombres et recommande une limite haute pour SPCC.
 - Forum — [PixInsight, difficultés de neutralisation du fond dans SPCC](https://pixinsight.com/forum/index.php?threads/struggles-with-background-neutralization-in-spcc.20388/) et [Cloudy Nights, SPCC ou BackgroundNeutralization](https://www.cloudynights.com/forums/topic/938201-spcc-background-neutralization-vs-bn-tool/) : limites par défaut −2,80 / +2,00 ; la limite basse sert surtout à éviter un fond artificiellement sombre.
@@ -175,12 +176,23 @@ Légende :
 - Tutoriel — [Jon Rista, signal, bruit et histogrammes](https://jonrista.com/the-astrophotographers-guide/astrophotography-basics/signal-noise-and-histograms/) : après réduction du bruit, on peut assombrir davantage le fond.
 - Pratique de la fiche (signalée comme telle sur la page) : fourchette 0,14–0,15 pour des données bruitées et 0,10–0,12 pour des données propres ; seuil « trop étiré » au-delà de 0,18–0,20 ; hautes lumières (seuls les cœurs d'étoiles à 1) ; signes visuels de sur- et sous-étirement.
 
+## Couleurs SHO et choix de la palette
+
+- Tutoriel — [AstroBackyard, guide du narrowband et de la palette Hubble](https://astrobackyard.com/narrowband-imaging/)
+- Tutoriel — [Optical Mechanics, SHO ou HOO](https://www.opticalmechanics.com/narrowband-astrophotography-sho-vs-hoo-guide/) : rendu or et bleu (teal) après réduction du vert ; oxygène vers le cyan, soufre et hydrogène vers l'or ; étoiles aux teintes peu naturelles ; HOO pour les cibles à SII faible ; California (Ha dominant, OIII faible) : HOO centré sur Ha ou hybride HaRGB.
+- Tutoriel — [AstroImagery, couleurs de la palette Hubble](https://astroimagery.com/techniques/post-processing/hubble-palette-colours/) : beaucoup d'images publiées « très orange et bleu ».
+- Tutoriel — [Light Vortex Astronomy, palette Hubble](https://www.lightvortexastronomy.com/tutorial-narrowband-hubble-palette.html) : combinaison brute très verte (Ha dominant) ; rendu orange et bleu, parfois avec des touches de vert (site aujourd'hui injoignable, contenu relevé par la recherche).
+- Tutoriel — [Jon Rista, SCNR](https://jonrista.com/the-astrophotographers-guide/pixinsights/scnr/) : Average Neutral remplace le vert par la moyenne de R et B quand il la dépasse.
+- Règles de lecture à la sonde (or : R ≥ G ≫ B ; cyan : B ≥ G ≫ R ; fond R = G = B) et tableau des ajustements NarrowbandNormalization : déduits de la composition des couleurs et des rôles des réglages déjà sourcés ; aucune source ne les chiffre, la page l'indique.
+- Code — [Seti Astro, `PerfectPalettePicker.js` v1.3](https://github.com/setiastro/pixinsight-updates-194) (archive des scripts) : menu `Script › SetiAstro › Perfect Palette Picker` ; 16 palettes (HOO, HOS, HSO, HSS, OHH, OHS, OSH, OSS, SHH, SHO, SOH, SOO, Realistic1, Realistic2, Foraxx, Dynamic Inverse) ; case *Linear Input Data* cochée par défaut, qui étire chaque canal à une médiane de 0,25 (point noir médiane − 2,7 σ) ; Ha remplace SII s'il manque (et inversement) ; entrées OSC HaO3 et S2O3 (Ha ou SII = rouge, OIII = moyenne de G et B) ; clic sur une vignette = palette en pleine taille.
+
 ## Schémas de la fiche
 
 Les schémas ne reprennent que des faits déjà sourcés plus haut ; ils n'ajoutent aucun réglage.
 
 - Frises des workflows, arbre de choix, comparaison large bande / narrowband, circuit des étoiles : ordre des étapes et phase linéaire ou étirée tirés des étapes de la fiche (sources des rubriques correspondantes).
 - Courbes GHS : calculées avec l'équation hyperbolique généralisée de David Payne (b > 0) telle qu'elle est codée dans les formules PixelMath de Bill Blanshan (`FromLukeAndBill.xpsm`, [theAstroShed](https://github.com/jamiesmith/pixinsight-icons)) ; D = 10, SP = 0,1, b = 10 et b = 1, sans LP ni HP. Lecture des paramètres d'après la [documentation GHS](https://www.ghsastro.co.uk/doc/tools/GeneralizedHyperbolicStretch/GeneralizedHyperbolicStretch.html).
+- Lecture des couleurs SHO (section RGB + SHO) : valeurs illustratives, règles de la rubrique « Couleurs SHO et choix de la palette ».
 - Échelle du fond (section GHS) : reprend les valeurs de la rubrique « Repères d'étirement ».
 - Continuum : filtre R vers 600–700 nm, raie Ha à 656,3 nm, filtre Ha de 3 nm et formule `Ha_cs = Ha − k·(R − med(R))`, déjà sourcés (rubrique Combinaison et narrowband). Les hauteurs sont schématiques, pas à l'échelle.
 
