@@ -6,7 +6,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
 <xpsm version="1.0" xmlns="http://www.pixinsight.com/xpsm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.pixinsight.com/xpsm http://pixinsight.com/xpsm/xpsm-1.0.xsd">
 <!-- Icônes pour QHY600 (Sony IMX455) + filtres Antlia V Pro -->
    <instance class="SpectrophotometricColorCalibration" version="1" id="SPCC_QHY600_Antlia_instance">
-      <description>SPCC configuré pour ton matériel (QHY600 (Sony IMX455) + filtres Antlia V Pro) : White reference Average Spiral Galaxy ; QE curve Sony IMX411/455/461/533/571 ; filtres Antlia V Pro Series R, G, B (courbes issues de ta base de filtres PixInsight) ; neutralisation du fond activée (limites -2,80 / +2,00) ; Generate graphs coché. FOND DE RÉFÉRENCE : l'icône n'a ni vue de référence ni Region of Interest, donc SPCC prend l'image entière ; les limites sont en écarts-types autour de la médiane et écartent étoiles et nébuleuse. Suffisant après le retrait du gradient sur une galaxie ou un champ avec du ciel libre. Champ rempli de nébuleuse : baisse la limite haute, ou lance Script › SetiAstro › Find Background (dépôt https://updates.setiastro.com/) qui crée automatiquement un aperçu nommé Background, puis coche Region of Interest et clique From Preview (ou crée toi-même une preview sur du fond vide). Après SPCC, vérifie que le fond est gris neutre. Toujours en linéaire, après le gradient et BXT Correct Only, avant BXT complet. CONTRÔLE : graphes = étoiles serrées autour des droites, croix du blanc de référence dans le nuage (forte dispersion : flat à revoir, gradient multiplicatif). COULEURS ATTENDUES : galaxie spirale blanche en moyenne (définition du blanc Average Spiral Galaxy), cœur jaune, bras bleus, régions HII roses, poussière brun sombre, nébuleuse par réflexion bleue, en émission rouge, étoiles du bleu-blanc au jaune-orange, JAMAIS vertes (G au-dessus de R et de B à la fois = erreur). Légère dominante bleue (moins de 10 %) possible et normale avec SPCC. Tout vert, tout bleu ou tout jaune : filtres ou capteur mal choisis, ou gradient resté avant SPCC.</description>
+      <description>PRÉRÉGLÉ : Average Spiral Galaxy, QE IMX455, Antlia V Pro R, G, B, neutralisation du fond, Gaia DR3/SP. À RÉGLER : rien ; sur le RGB linéaire. SI champ rempli de nébuleuse -&gt; aperçu Background en Region of Interest. Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="applyCalibration" value="true"/>
       <parameter id="narrowbandMode" value="false"/>
       <parameter id="narrowbandOptimizeStars" value="false"/>
@@ -62,7 +62,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="outputDirectory"></parameter>
    </instance>
    <instance class="SpectrophotometricFluxCalibration" version="1" id="SPFC_RGB_QHY600_Antlia_instance">
-      <description>SPFC sur l'image RGB combinée, configuré pour ton matériel : QE curve Sony IMX411/455/461/533/571 (QHY600), Red/Green/Blue filter = Antlia V Pro Series R, G, B (courbes de ta base de filtres). Mêmes filtres que l'icône SPCC. Prérequis : image LINÉAIRE et résolue (ImageSolver ou WBPP), base Gaia DR3/SP installée. Catalog Gaia DR3/SP, Automatic limit magnitude coché, détection PSF par défaut. SPFC ne modifie pas les pixels : il écrit les métadonnées de flux lues par MGC. Utilise ensuite les MÊMES filtres dans SPCC.</description>
+      <description>PRÉRÉGLÉ : QE IMX455, Antlia R, G, B. À RÉGLER : rien ; sur le RGB combiné, avant MGC. Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="narrowbandMode" value="false"/>
       <parameter id="grayFilterTrCurve">300,0,410,0,420,0.95,705,0.95,720,0,800,0</parameter>
       <parameter id="grayFilterName">Antlia V Pro Series L (approx. 420-715 nm)</parameter>
@@ -108,7 +108,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="generateTextFiles" value="false"/>
    </instance>
    <instance class="SpectrophotometricFluxCalibration" version="1" id="SPFC_L_QHY600_Antlia_instance">
-      <description>SPFC sur le master L : QE curve IMX455 ; Gray filter = courbe approchée du filtre Antlia V Pro L (420 à 715 nm, transmission 95 %, d'après les caractéristiques publiées : la vraie courbe n'est pas dans ta base de filtres). Prérequis : image LINÉAIRE et résolue (ImageSolver ou WBPP), base Gaia DR3/SP installée. Catalog Gaia DR3/SP, Automatic limit magnitude coché, détection PSF par défaut. SPFC ne modifie pas les pixels : il écrit les métadonnées de flux lues par MGC. Utilise ensuite les MÊMES filtres dans SPCC.</description>
+      <description>PRÉRÉGLÉ : QE IMX455, Antlia L. À RÉGLER : rien ; sur le master L, avant MGC. Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="narrowbandMode" value="false"/>
       <parameter id="grayFilterTrCurve">300,0,410,0,420,0.95,705,0.95,720,0,800,0</parameter>
       <parameter id="grayFilterName">Antlia V Pro Series L (approx. 420-715 nm)</parameter>
@@ -154,7 +154,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="generateTextFiles" value="false"/>
    </instance>
    <instance class="SpectrophotometricFluxCalibration" version="1" id="SPFC_H_QHY600_Antlia_instance">
-      <description>SPFC sur le master H : QE curve IMX455 ; Narrowband mode, 656,3 nm, bande passante 3 nm (filtres Antlia 3 nm). Prérequis : image LINÉAIRE et résolue (ImageSolver ou WBPP), base Gaia DR3/SP installée. Catalog Gaia DR3/SP, Automatic limit magnitude coché, détection PSF par défaut. SPFC ne modifie pas les pixels : il écrit les métadonnées de flux lues par MGC. Utilise ensuite les MÊMES filtres dans SPCC.</description>
+      <description>PRÉRÉGLÉ : QE IMX455, 656,3 nm, 3 nm. À RÉGLER : rien ; sur le master H, avant MGC_MARS_H. Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="narrowbandMode" value="true"/>
       <parameter id="grayFilterTrCurve">300,0,410,0,420,0.95,705,0.95,720,0,800,0</parameter>
       <parameter id="grayFilterName">Antlia V Pro Series L (approx. 420-715 nm)</parameter>
@@ -200,7 +200,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="generateTextFiles" value="false"/>
    </instance>
    <instance class="SpectrophotometricFluxCalibration" version="1" id="SPFC_O_QHY600_Antlia_instance">
-      <description>SPFC sur le master O : QE curve IMX455 ; Narrowband mode, 500,7 nm, bande passante 3 nm (filtres Antlia 3 nm). Prérequis : image LINÉAIRE et résolue (ImageSolver ou WBPP), base Gaia DR3/SP installée. Catalog Gaia DR3/SP, Automatic limit magnitude coché, détection PSF par défaut. SPFC ne modifie pas les pixels : il écrit les métadonnées de flux lues par MGC. Utilise ensuite les MÊMES filtres dans SPCC.</description>
+      <description>PRÉRÉGLÉ : QE IMX455, 500,7 nm, 3 nm. À RÉGLER : rien ; sur le master O, avant MGC_MARS_O. Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="narrowbandMode" value="true"/>
       <parameter id="grayFilterTrCurve">300,0,410,0,420,0.95,705,0.95,720,0,800,0</parameter>
       <parameter id="grayFilterName">Antlia V Pro Series L (approx. 420-715 nm)</parameter>
@@ -246,7 +246,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="generateTextFiles" value="false"/>
    </instance>
    <instance class="SpectrophotometricFluxCalibration" version="1" id="SPFC_S_QHY600_Antlia_instance">
-      <description>SPFC sur le master S : QE curve IMX455 ; Narrowband mode, 672,4 nm, bande passante 3 nm (filtres Antlia 3 nm). Prérequis : image LINÉAIRE et résolue (ImageSolver ou WBPP), base Gaia DR3/SP installée. Catalog Gaia DR3/SP, Automatic limit magnitude coché, détection PSF par défaut. SPFC ne modifie pas les pixels : il écrit les métadonnées de flux lues par MGC. Utilise ensuite les MÊMES filtres dans SPCC.</description>
+      <description>PRÉRÉGLÉ : QE IMX455, 672,4 nm, 3 nm. À RÉGLER : rien ; S hors MARS : GradientCorrection ou DBE. Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="narrowbandMode" value="true"/>
       <parameter id="grayFilterTrCurve">300,0,410,0,420,0.95,705,0.95,720,0,800,0</parameter>
       <parameter id="grayFilterName">Antlia V Pro Series L (approx. 420-715 nm)</parameter>

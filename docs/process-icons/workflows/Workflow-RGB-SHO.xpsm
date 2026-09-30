@@ -6,14 +6,14 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
 <xpsm version="1.0" xmlns="http://www.pixinsight.com/xpsm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.pixinsight.com/xpsm http://pixinsight.com/xpsm/xpsm-1.0.xsd">
 <!-- Workflow RGB + SHO (étoiles RGB) -->
    <instance class="Script" version="256" id="RSHO_01_WBPP_instance">
-      <description>LANCEMENT : double-clique l'icône, puis clique sur le rond « Apply Global » (ou glisse-la sur une image) : le dialogue du script s'ouvre. WBPP 3.x lit ses réglages dans sa propre mémoire (dernière session) et sur la ligne de commande, pas dans les paramètres d'une icône : cette icône ouvre WBPP, les réglages ci-dessous se font dans son dialogue. Chemin relevé pour WBPP 3.1.0 sous PixInsight 1.9.5 (psf-guard). Le champ MD5 est vide : PixInsight exécute le script installé sans vérifier sa version. SCRIPT — WBPP 3.1 (Script › Batch Processing › WeightedBatchPreprocessing). Fichiers : mêmes gain/offset/température/driver/format ; darks de même durée et température (jamais pré-calibrés avec les bias) ; flats par filtre et par session, flat-darks de même durée ; plusieurs nuits : dossiers SESSION_&lt;date&gt; et Grouping keywords = SESSION. Add Directory, puis vérifie dans l'onglet Calibration que chaque groupe de lights a son dark et son flat. Réglages : préréglage Maximum quality ; Output pedestal Automatic ; Optimize dark frames décoché ; CosmeticCorrection avec l'icône CC_auto ; caméra couleur : CFA images, motif Auto, Debayer VNG ; Subframe weighting PSF Signal Weight ; Registration reference Auto, Distortion correction pour les grands champs ; Local normalization activée ; Rejection Auto (sinon Percentile &lt; 10 images, Winsorized &gt; 10, ESD pour les grands lots) ; Large-scale pixel rejection High ; Fast Integration automatique dès 150 images par groupe (à décocher pour l'intégration pondérée complète) ; Drizzle par groupe x2 seulement si FWHM &lt; 2 px et 15-20 poses dithérées (caméra couleur : drizzle CFA Scale 1, Drop shrink 1,0) ; Autocrop et Astrometric solution activés. Contrôle ensuite le journal et les cartes de réjection. Détails et sources : docs/pixinsight-workflow.html et docs/sources.md (github.com/clodoweg/PixInsight).</description>
+      <description>Double-clic sur l'icône puis Apply Global. PRÉRÉGLÉ : rien (WBPP garde ses propres réglages). À RÉGLER : Maximum quality ; CosmeticCorrection = icône CC_auto ; PSF Signal Weight ; Local normalization activée ; Rejection Auto ; Large-scale rejection High ; pas de drizzle (sauf FWHM &lt; 2 px). SI un groupe de lights sans dark ou flat (onglet Calibration) -&gt; corrige avant Run ; si plusieurs nuits -&gt; Grouping keywords = SESSION. Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/BatchPreprocessing/BPP-Main.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="0"/>
       <parameter id="information"></parameter>
    </instance>
    <instance class="CosmeticCorrection" version="256" id="RSHO_02_CC_auto_instance">
-      <description>CosmeticCorrection pour WBPP : Auto detect, Hot sigma 2,5 (2,2 à 3,0 ; 2,2-2,5 en narrowband, poses longues), Cold désactivé. Coche CFA si caméra couleur. Ne l'applique pas directement : dans WBPP, sélectionne cette icône comme modèle de correction cosmétique.</description>
+      <description>PRÉRÉGLÉ : Auto detect, Hot sigma 2,5, Cold désactivé. À RÉGLER : rien ; choisis cette icône comme modèle Cosmetic correction dans WBPP ; coche CFA seulement en caméra couleur. SI petites étoiles modifiées -&gt; Hot sigma 3,0 ; si S, H, O en poses longues -&gt; 2,2. Détails : page docs/pixinsight-workflow.html.</description>
       <table id="targetFrames" rows="0"/>
       <parameter id="masterDarkPath"></parameter>
       <parameter id="outputDir"></parameter>
@@ -37,7 +37,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <table id="defects" rows="0"/>
    </instance>
    <instance class="DynamicCrop" version="2" id="RSHO_03_DynamicCrop_instance">
-      <description>DynamicCrop, sans recadrage au départ (le cadre dépend de ton image) : ouvre l'icône, trace le cadre sur un master en excluant les bords mal couverts, glisse le triangle du process sur l'espace de travail pour créer ton icône, puis applique CETTE icône à tous les autres masters (ils sont alignés, le recadrage sera identique).</description>
+      <description>PRÉRÉGLÉ : rien (le cadre dépend de ton image). À RÉGLER : trace le cadre sur un master en excluant les bords bruités, crée une icône, applique-la à tous les masters. Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="refWidth" value="1"/>
       <parameter id="refHeight" value="1"/>
       <parameter id="outWidth" value="1.00"/>
@@ -65,10 +65,10 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="noGUIMessages" value="false"/>
    </instance>
    <instance class="NoOperation" version="256" id="RSHO_04_Masters_S_H_O_instance">
-      <description>Masters S et H et O : même recadrage (icône DynamicCrop) et retrait du gradient sur CHAQUE master séparément (icônes suivantes). O est le plus sensible à la Lune : contrôle bien son modèle. Nomme les vues exactement 'S', 'H' et 'O' : les formules en dépendent.</description>
+      <description>PRÉRÉGLÉ : rien (icône-note). À RÉGLER : renomme tes masters S, H et O ; même recadrage pour tous. Détails : page docs/pixinsight-workflow.html.</description>
    </instance>
    <instance class="SpectrophotometricFluxCalibration" version="1" id="RSHO_05_SPFC_S_instance">
-      <description>SPFC sur le master S : QE curve IMX455 ; Narrowband mode, 672,4 nm, bande passante 3 nm (filtres Antlia 3 nm). Prérequis : image LINÉAIRE et résolue (ImageSolver ou WBPP), base Gaia DR3/SP installée. Catalog Gaia DR3/SP, Automatic limit magnitude coché, détection PSF par défaut. SPFC ne modifie pas les pixels : il écrit les métadonnées de flux lues par MGC. Utilise ensuite les MÊMES filtres dans SPCC.</description>
+      <description>PRÉRÉGLÉ : QE IMX455, Narrowband 672,4 nm, 3 nm. À RÉGLER : rien ; S n'est pas dans MARS : utilise plutôt GradientCorrection ou DBE. Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="narrowbandMode" value="true"/>
       <parameter id="grayFilterTrCurve">300,0,410,0,420,0.95,705,0.95,720,0,800,0</parameter>
       <parameter id="grayFilterName">Antlia V Pro Series L (approx. 420-715 nm)</parameter>
@@ -114,7 +114,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="generateTextFiles" value="false"/>
    </instance>
    <instance class="SpectrophotometricFluxCalibration" version="1" id="RSHO_06_SPFC_H_instance">
-      <description>SPFC sur le master H : QE curve IMX455 ; Narrowband mode, 656,3 nm, bande passante 3 nm (filtres Antlia 3 nm). Prérequis : image LINÉAIRE et résolue (ImageSolver ou WBPP), base Gaia DR3/SP installée. Catalog Gaia DR3/SP, Automatic limit magnitude coché, détection PSF par défaut. SPFC ne modifie pas les pixels : il écrit les métadonnées de flux lues par MGC. Utilise ensuite les MÊMES filtres dans SPCC.</description>
+      <description>PRÉRÉGLÉ : QE IMX455, Narrowband 656,3 nm, 3 nm. À RÉGLER : rien ; applique sur le master H, puis MGC_MARS_H. Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="narrowbandMode" value="true"/>
       <parameter id="grayFilterTrCurve">300,0,410,0,420,0.95,705,0.95,720,0,800,0</parameter>
       <parameter id="grayFilterName">Antlia V Pro Series L (approx. 420-715 nm)</parameter>
@@ -160,7 +160,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="generateTextFiles" value="false"/>
    </instance>
    <instance class="SpectrophotometricFluxCalibration" version="1" id="RSHO_07_SPFC_O_instance">
-      <description>SPFC sur le master O : QE curve IMX455 ; Narrowband mode, 500,7 nm, bande passante 3 nm (filtres Antlia 3 nm). Prérequis : image LINÉAIRE et résolue (ImageSolver ou WBPP), base Gaia DR3/SP installée. Catalog Gaia DR3/SP, Automatic limit magnitude coché, détection PSF par défaut. SPFC ne modifie pas les pixels : il écrit les métadonnées de flux lues par MGC. Utilise ensuite les MÊMES filtres dans SPCC.</description>
+      <description>PRÉRÉGLÉ : QE IMX455, Narrowband 500,7 nm, 3 nm. À RÉGLER : rien ; applique sur le master O, puis MGC_MARS_O. Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="narrowbandMode" value="true"/>
       <parameter id="grayFilterTrCurve">300,0,410,0,420,0.95,705,0.95,720,0,800,0</parameter>
       <parameter id="grayFilterName">Antlia V Pro Series L (approx. 420-715 nm)</parameter>
@@ -206,7 +206,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="generateTextFiles" value="false"/>
    </instance>
    <instance class="MultiscaleGradientCorrection" version="1" id="RSHO_08_MGC_MARS_instance">
-      <description>MultiscaleGradientCorrection, juste après SPFC, sur la même image. Use MARS database coché ; filtres MARS Gray = L (image mono), Red = R, Green = G, Blue = B (image couleur) ; Gradient scale 1024 (512 ou 256 si un gradient reste dans les coins), Structure separation 3 (1-2 pour les bords), Model smoothness 1,0 (3-5 si le modèle ondule), Scale factors 1,0, Show gradient model coché. La base MARS se charge dans les préférences de MGC (clé à molette › Add › fichier .xmars) : si MGC signale qu'aucune base n'est chargée, ajoute-la là. Narrowband : MARS DR2 (21 juin 2026) couvre H et O jusqu'à +75° de déclinaison : utilise les icônes MGC_MARS_H et MGC_MARS_O (filtre MARS Gray = Ha ou OIII) ; cette icône-ci est réglée sur L. S absent de DR2 : GradientCorrection ou DBE.</description>
+      <description>PRÉRÉGLÉ : Gradient scale 1024, Structure separation 3, Smoothness 1,0, MARS Gray = L, modèle affiché. À RÉGLER : rien ; après SPFC, sur l'image linéaire. SI gradient restant dans les coins -&gt; Gradient scale 512 puis 256 ; si modèle qui ondule -&gt; Smoothness 3 à 5 ; si image couleur -&gt; filtres MARS R, G, B. Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="command"></parameter>
       <parameter id="useMARSDatabase" value="true"/>
       <parameter id="grayMARSFilter">L</parameter>
@@ -226,7 +226,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="showGradientModel" value="true"/>
    </instance>
    <instance class="MultiscaleGradientCorrection" version="1" id="RSHO_09_MGC_MARS_H_instance">
-      <description>MultiscaleGradientCorrection pour le master H : filtre MARS Gray = Ha (MARS DR2, juin 2026 : bandes Ha et OIII, couverture narrowband jusqu'à +75° de déclinaison ; valeur du paramètre relevée dans un outil qui pilote MGC sous PixInsight 1.9.5, texte du menu non vu dans l'interface). Applique juste après l'icône SPFC_H, sur le même master linéaire et résolu. Autres réglages identiques à MGC_MARS : Gradient scale 1024 (512 ou 256 si un gradient reste dans les coins), Structure separation 3, Model smoothness 1,0, Show gradient model coché (le modèle doit être lisse, sans structure de la nébuleuse). Base MARS DR2 à charger dans les préférences de MGC (clé à molette › Add › fichier .xmars). Hors couverture MARS : GradientCorrection ou DBE. S : pas de bande S dans MARS, utilise GradientCorrection ou DBE.</description>
+      <description>PRÉRÉGLÉ : comme MGC_MARS, filtre MARS Gray = Ha. À RÉGLER : rien ; après SPFC_H, sur le master H. SI gradient restant -&gt; Gradient scale 512 puis 256. Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="command"></parameter>
       <parameter id="useMARSDatabase" value="true"/>
       <parameter id="grayMARSFilter">Ha</parameter>
@@ -246,7 +246,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="showGradientModel" value="true"/>
    </instance>
    <instance class="MultiscaleGradientCorrection" version="1" id="RSHO_10_MGC_MARS_O_instance">
-      <description>MultiscaleGradientCorrection pour le master O : filtre MARS Gray = OIII (MARS DR2, juin 2026 : bandes Ha et OIII, couverture narrowband jusqu'à +75° de déclinaison ; valeur du paramètre relevée dans un outil qui pilote MGC sous PixInsight 1.9.5, texte du menu non vu dans l'interface). Applique juste après l'icône SPFC_O, sur le même master linéaire et résolu. Autres réglages identiques à MGC_MARS : Gradient scale 1024 (512 ou 256 si un gradient reste dans les coins), Structure separation 3, Model smoothness 1,0, Show gradient model coché (le modèle doit être lisse, sans structure de la nébuleuse). Base MARS DR2 à charger dans les préférences de MGC (clé à molette › Add › fichier .xmars). Hors couverture MARS : GradientCorrection ou DBE. S : pas de bande S dans MARS, utilise GradientCorrection ou DBE.</description>
+      <description>PRÉRÉGLÉ : comme MGC_MARS, filtre MARS Gray = OIII. À RÉGLER : rien ; après SPFC_O, sur le master O. SI gradient restant -&gt; Gradient scale 512 puis 256. Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="command"></parameter>
       <parameter id="useMARSDatabase" value="true"/>
       <parameter id="grayMARSFilter">OIII</parameter>
@@ -266,7 +266,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="showGradientModel" value="true"/>
    </instance>
    <instance class="GradientCorrection" version="1" id="RSHO_11_GradientCorrection_instance">
-      <description>ALTERNATIVE — GradientCorrection, valeurs par défaut. Structure protection activée ; Generate gradient model coché pour contrôler le modèle. Si des zones claires apparaissent autour des structures sombres : monte Low threshold. Si le modèle a des bords nets : désactive la protection, baisse Scale et Smoothness, puis réactive.</description>
+      <description>PRÉRÉGLÉ : valeurs par défaut, Structure protection activée. À RÉGLER : rien ; contrôle le modèle de gradient. SI gradient dans les coins -&gt; baisse Gradient scale ; si nébuleuse assombrie -&gt; monte Protection amount. Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="reference" value="0.50"/>
       <parameter id="lowThreshold" value="0.20"/>
       <parameter id="lowTolerance" value="0.50"/>
@@ -293,7 +293,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="gridSamplingDelta" value="16"/>
    </instance>
    <instance class="DynamicBackgroundExtraction" version="1" id="RSHO_12_DBE_instance">
-      <description>ALTERNATIVE — DynamicBackgroundExtraction, sans points (ils dépendent de l'image) : ouvre l'icône, clique sur l'image, puis Generate. Samples per row 15, Sample radius 15 (10 à 50), Tolerance 0,5 (1,0-1,5 si des points sont rejetés), Shadows relaxation 3, Smoothing 0,25 (0,5-1,0 champs nébuleux), Correction Subtract (Division seulement pour le vignettage), Normalize, Discard model et Replace target cochés. Retire les points posés sur la nébuleuse ; d'un filtre à l'autre, garde les points et ajuste Tolerance.</description>
+      <description>PRÉRÉGLÉ : 15 points par ligne, rayon 15, Tolerance 0,5, Smoothing 0,25, Subtraction. À RÉGLER : Generate, retire les points sur l'objet, ajoute-en dans le fond vide. SI points rouges -&gt; Tolerance 1,0 à 1,5 ; si vignettage -&gt; Division. Détails : page docs/pixinsight-workflow.html.</description>
       <table id="data" rows="0"/>
       <parameter id="derivativeOrder" value="2"/>
       <parameter id="smoothing" value="0.250"/>
@@ -321,13 +321,13 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="samplesPerRow" value="15"/>
    </instance>
    <instance class="LinearFit" version="256" id="RSHO_13_LinearFit_ref_H_instance">
-      <description>Option — LinearFit avec H comme référence : applique sur O (et S). Rapproche fonds et niveaux, ce qu'exige Foraxx (theAstroShed, Galactic Hunter). Référence : vue nommée 'H'.</description>
+      <description>PRÉRÉGLÉ : référence = vue H. À RÉGLER : applique sur O puis sur S. Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="referenceViewId">H</parameter>
       <parameter id="rejectLow" value="0.000000"/>
       <parameter id="rejectHigh" value="0.920000"/>
    </instance>
    <instance class="PixelMath" version="256" id="RSHO_14_Combinaison_SHO_instance">
-      <description>Combinaison SHO SIMPLE (équivalent de ChannelCombination) : R = S, G = H, B = O, sans boost ni mélange. Sert à BXT et SXT. Crée l'image 'SHO'.</description>
+      <description>PRÉRÉGLÉ : R = S, G = H, B = O, image 'SHO'. À RÉGLER : nomme tes masters S, H et O. Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="expression">S</parameter>
       <parameter id="expression1">H</parameter>
       <parameter id="expression2">O</parameter>
@@ -357,7 +357,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <table id="outputData" rows="0"/>
    </instance>
    <instance class="BlurXTerminator" version="256" id="RSHO_15_BXT_NB_instance">
-      <description>BlurXTerminator complet sur la combinaison narrowband SIMPLE (un filtre par canal, sans boost ni mélange) : Sharpen Stars 0,25, Halos 0, Nonstellar 0,60. Manuel RC Astro : mélanger ou booster un canal avant la déconvolution modifie la PSF (étoiles brillantes incohérentes). Baisse Nonstellar si artefacts dans O/SII. Réglages (manuel RC Astro AI4) : données LINÉAIRES obligatoires, avant toute réduction de bruit et avant SXT. Sharpen Stars 0 à 0,5 (défaut 0,25 ; au maximum les étoiles perdent la moitié de leur taille) ; longue focale : une valeur haute peut laisser des zones sans détail autour des étoiles brillantes, et des halos sombres (baisse la valeur ou monte Adjust Star Halos). Adjust Star Halos −0,5 à +0,5 (défaut 0 ; plus haut = halos plus larges et plus doux, plus bas = étoiles plus dures). Automatic PSF coché ; sinon PSF Diameter = FWHM des étoiles en pixels (8 px au plus ; au-delà, réduis l'image de moitié). CDK17 + QHY600 bin 1 : 0,264″/px, donc 2″ de FWHM = 7,6 px, 2,5″ = 9,5 px. Sharpen Nonstellar 0 à 1 (1 = viser une PSF ponctuelle). Ne pas appliquer deux fois.</description>
+      <description>PRÉRÉGLÉ : Sharpen Stars 0,25, Halos 0, Nonstellar 0,60, PSF auto. À RÉGLER : rien ; sur la combinaison simple (un filtre par canal), avant tout boost. SI artefacts dans O ou S -&gt; Nonstellar 0,50 ; si FWHM &gt; 8 px -&gt; bin 2 ou réduction ×0,5 avant. Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="ml_version" value="4"/>
       <parameter id="correct_only" value="false"/>
       <parameter id="sharpen_stars" value="0.25"/>
@@ -369,7 +369,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="overlap" value="0.20"/>
    </instance>
    <instance class="StarXTerminator" version="256" id="RSHO_16_SXT_lineaire_instance">
-      <description>StarXTerminator — sur données LINÉAIRES, le plus tôt possible après BXT (RC Astro). Generate star image coché, UNSCREEN DÉCOCHÉ (réservé aux images étirées) : simple soustraction, couleurs d'étoiles les plus fidèles. N'applique pas l'autoSTF de façon permanente à l'image d'étoiles. Large overlap : décoché (recouvrement des tuiles 20 %) ; coché = 50 %, seulement si un quadrillage apparaît (environ trois fois plus lent selon RC Astro). AI11 : version complète de préférence (Lite = 75 % de mémoire en moins ; Lite.nonoise plus rapide mais sans bruit dans les zones retirées). Plus de case Linear : détection automatique. Remove stars, spikes et aureoles cochés, reflections décoché : valeurs de l'instance de référence, non documentées par RC Astro, à laisser. Masque noir sur un cœur de galaxie compact : zone protégée du retrait (SXT 2.2.0). Sur l'image SHO : garde le fond sans étoiles (les étoiles viendront du RGB).</description>
+      <description>PRÉRÉGLÉ : Generate star image coché, Unscreen décoché. À RÉGLER : rien ; garde le fond sans étoiles (étoiles prises au RGB). SI quadrillage -&gt; Large overlap. Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="ml_version" value="0"/>
       <parameter id="output_stars" value="true"/>
       <parameter id="unscreen" value="false"/>
@@ -380,7 +380,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="overlap" value="0.20"/>
    </instance>
    <instance class="PixelMath" version="256" id="RSHO_17_Extraire_S_instance">
-      <description>Extraction du canal 0 (équivalent de ChannelExtraction) : applique sur l'image SHO sans étoiles. Crée la vue mono 'S'. AVANT : renomme les masters linéaires qui portent déjà ce nom (par exemple 'S_lin'), sinon PixInsight donnera un autre nom à la nouvelle vue et les formules suivantes ne la trouveront pas.</description>
+      <description>PRÉRÉGLÉ : canal -&gt; vue mono 'S'. À RÉGLER : renomme d'abord un master déjà nommé S. Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="expression">$T[0]</parameter>
       <parameter id="expression1"></parameter>
       <parameter id="expression2"></parameter>
@@ -410,7 +410,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <table id="outputData" rows="0"/>
    </instance>
    <instance class="PixelMath" version="256" id="RSHO_18_Extraire_H_instance">
-      <description>Extraction du canal 1 (équivalent de ChannelExtraction) : applique sur l'image SHO sans étoiles. Crée la vue mono 'H'. AVANT : renomme les masters linéaires qui portent déjà ce nom (par exemple 'H_lin'), sinon PixInsight donnera un autre nom à la nouvelle vue et les formules suivantes ne la trouveront pas.</description>
+      <description>PRÉRÉGLÉ : canal -&gt; vue mono 'H'. À RÉGLER : renomme d'abord un master déjà nommé H (ex. H_lin). Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="expression">$T[1]</parameter>
       <parameter id="expression1"></parameter>
       <parameter id="expression2"></parameter>
@@ -440,7 +440,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <table id="outputData" rows="0"/>
    </instance>
    <instance class="PixelMath" version="256" id="RSHO_19_Extraire_O_instance">
-      <description>Extraction du canal 2 (équivalent de ChannelExtraction) : applique sur l'image SHO sans étoiles. Crée la vue mono 'O'. AVANT : renomme les masters linéaires qui portent déjà ce nom (par exemple 'O_lin'), sinon PixInsight donnera un autre nom à la nouvelle vue et les formules suivantes ne la trouveront pas.</description>
+      <description>PRÉRÉGLÉ : canal -&gt; vue mono 'O'. À RÉGLER : renomme d'abord un master déjà nommé O. Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="expression">$T[2]</parameter>
       <parameter id="expression1"></parameter>
       <parameter id="expression2"></parameter>
@@ -470,7 +470,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <table id="outputData" rows="0"/>
    </instance>
    <instance class="NoiseXTerminator" version="256" id="RSHO_20_NXT_H_instance">
-      <description>NoiseXTerminator sur H sans étoiles : Denoise 0,60 (0,50 à 0,70), Detail 0,15. En linéaire ou après étirement. Réglages communs (manuel RC Astro AI3) : Iterations 1 (plus = garde mieux le détail des zones très bruitées, mais trop d'itérations crée des artefacts) ; Detail sans effet en AI3 ; séparations décochées. Option Enable color separation (image couleur seulement) : Denoise color plus haut que l'intensité. Option Enable frequency separation : HF intensité 0,80-0,90, HF couleur 0,90-1,00, LF intensité 0,50-0,70, LF couleur 1,00 ; HF/LF scale 5 px (règle-le avec LF à 0 en aperçu).</description>
+      <description>PRÉRÉGLÉ : Denoise 0,60, 1 itération. À RÉGLER : rien. SI encore bruité -&gt; 0,70 ; si aspect plastique -&gt; 0,50. Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="ml_version" value="0"/>
       <parameter id="denoise" value="0.60"/>
       <parameter id="enable_color_separation" value="false"/>
@@ -489,7 +489,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="overlap" value="0.20"/>
    </instance>
    <instance class="NoiseXTerminator" version="256" id="RSHO_21_NXT_O_S_instance">
-      <description>NoiseXTerminator sur O et S sans étoiles, plus bruités : Denoise 0,75 (0,60 à 0,85). Ne pousse pas plus : aspect plastique. Réglages communs (manuel RC Astro AI3) : Iterations 1 (plus = garde mieux le détail des zones très bruitées, mais trop d'itérations crée des artefacts) ; Detail sans effet en AI3 ; séparations décochées. Option Enable color separation (image couleur seulement) : Denoise color plus haut que l'intensité. Option Enable frequency separation : HF intensité 0,80-0,90, HF couleur 0,90-1,00, LF intensité 0,50-0,70, LF couleur 1,00 ; HF/LF scale 5 px (règle-le avec LF à 0 en aperçu).</description>
+      <description>PRÉRÉGLÉ : Denoise 0,75, 1 itération. À RÉGLER : rien. SI très bruité -&gt; 2 itérations ; si aspect plastique -&gt; 0,60. Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="ml_version" value="0"/>
       <parameter id="denoise" value="0.75"/>
       <parameter id="enable_color_separation" value="false"/>
@@ -508,7 +508,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="overlap" value="0.20"/>
    </instance>
    <instance class="GeneralizedHyperbolicStretch" version="256" id="RSHO_22_GHS_1_premier_instance">
-      <description>GHS, 1er étirement — Stretch factor à 0 : l'icône ne fait rien tant que tu ne l'as pas réglée. Zoome l'histogramme, clique dans l'image sur la zone intéressante la plus faible (sonde 15x15), Send to SP. Local intensity (b) = 10. Monte Stretch factor jusqu'à un pic d'histogramme vers 0,20-0,25. Retire l'autoSTF, active l'aperçu, affine SP. Image couleur : passe Colour mode sur Colour (clip RGBBlend). Même niveau de fond visé pour toutes les images à combiner. REPÈRES : après ce 1er étirement, fond vers 0,20-0,25 (volontairement clair) ; l'image finale visera 0,12-0,14 (30-35 sur 255), jamais 0. Contrôle : preview sur du fond vide + Process › Image › Statistics (médiane) ; aucun pixel écrêté à 0 dans l'histogramme. En narrowband, étire chaque canal séparément. Règle : même niveau de fond et médiane proche pour tous les canaux (on n'égalise pas la nébuleuse : l'écart de signal, c'est la couleur). Étire H en premier (pic d'histogramme vers 0,20-0,25) et note ce niveau : c'est la référence. Puis O et S jusqu'au MÊME fond et à la même médiane ; ils demandent un Stretch factor plus élevé, monte LP pour ne pas faire ressortir leur bruit. Vérifie le fond avec Statistics ou la lecture de pixel. CONTRÔLE : combinaison simple des canaux étirés ; le fond doit être gris neutre, sinon le fond du canal dominant est trop clair : reprends son étirement. Alternative : Statistical Stretch avec la même Target Median (icône Statistical_Stretch).</description>
+      <description>PRÉRÉGLÉ : b = 10, Stretch factor 0. À RÉGLER : étire H d'abord (fond vers 0,20–0,25), puis O et S jusqu'au MÊME fond et une médiane proche. SI bruit de O ou S qui ressort -&gt; monte LP. Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
       <parameter id="stretchChannel" value="SC_RGB"/>
       <parameter id="inverse" value="false"/>
@@ -524,7 +524,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="useRGBWorkingSpace" value="false"/>
    </instance>
    <instance class="GeneralizedHyperbolicStretch" version="256" id="RSHO_23_GHS_2_contraste_instance">
-      <description>GHS, ajout de contraste (passes suivantes) — clique sur une zone qui paraît plate, Send to SP ; Local intensity (b) 4 (3 à 5) ; monte Stretch factor doucement ; baisse HP (ici 0,90) pour protéger les étoiles et les cœurs brillants ; monte LP pour garder le fond sombre. 1 à 3 passes. Seuls les cœurs des étoiles les plus brillantes doivent atteindre 1 ; si la lecture donne 1,0 sur de grandes zones, baisse HP. Trop étiré : fond granuleux, halos, étoiles grosses et blanches, couleurs délavées. Pas assez : extensions faibles invisibles, aspect découpé sur du noir.</description>
+      <description>PRÉRÉGLÉ : b = 4, HP 0,9, Stretch factor 0. À RÉGLER : SP dans la zone à contraster ; monte Stretch factor peu à peu. SI étoiles brûlées -&gt; HP plus bas ; si fond qui remonte -&gt; LP. Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
       <parameter id="stretchChannel" value="SC_RGB"/>
       <parameter id="inverse" value="false"/>
@@ -540,7 +540,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="useRGBWorkingSpace" value="false"/>
    </instance>
    <instance class="GeneralizedHyperbolicStretch" version="256" id="RSHO_24_GHS_3_fond_instance">
-      <description>GHS, assombrir le fond sans écrêter — SP juste sous le niveau à rendre noir, HP = SP (règle HP à la même valeur que SP), LP = 0, b = 10 ; ajuste Stretch factor. Plus propre qu'un point noir en Linear, qui détruit des données. CIBLE DU FOND FINAL : gris foncé 0,12-0,14 (30-35 sur 255 ; Readout Options › plage entière 8 bits), R = G = B à quelques unités près, JAMAIS 0. Données bruitées : 0,14-0,15 ; données propres (après NXT) : 0,10-0,12. Au-delà de 0,18-0,20 : trop étiré. Vérifie avec Statistics (médiane d'une preview de fond).</description>
+      <description>PRÉRÉGLÉ : b = 10, Stretch factor 0. À RÉGLER : technique HP = SP pour assombrir le fond vers 0,12–0,14 sans écrêter. Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
       <parameter id="stretchChannel" value="SC_RGB"/>
       <parameter id="inverse" value="false"/>
@@ -556,7 +556,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="useRGBWorkingSpace" value="false"/>
    </instance>
    <instance class="Script" version="256" id="RSHO_25_Statistical_Stretch_instance">
-      <description>LANCEMENT : GLISSE cette icône sur l'image cible (le script refuse le mode global : un double-clic suivi de « Apply Global » n'aboutit pas). Le dialogue s'ouvre avec les valeurs de l'icône (openDialogbox = true) ; pour étirer directement sans dialogue, mets openDialogbox à false. SOMME DE CONTRÔLE : l'icône contient l'empreinte MD5 de la version actuelle du script ; après une mise à jour du script, PixInsight bloque l'icône : double-clique-la, efface le champ MD5 et réenregistre-la. SCRIPT — Statistical Stretch (SetiAstro, script v2.3). Alternative à GHS. À chaque passe : point noir = médiane − Blackpoint Sigma × 1,4826 × MAD (jamais sous le minimum), puis fonction de transfert qui place la médiane sur Target Median. Target Median 0,25 par défaut (0 à 1) ; l'auteur conseille 0,10 pour une cible compacte (galaxie, nébuleuse planétaire), 0,25 pour une grande nébuleuse ; même valeur pour les images à combiner. Blackpoint Sigma 5,0 (0 à 10) : plus haut = fond protégé et plus sombre, plus bas = plus de signal faible ; Calculate Clipped Pixels estime l'écrêtage. No Black Clip décoché. Linked Stretch coché pour une image couleur calibrée (décoché : chaque canal séparément, les couleurs bougent) ; sans effet en mono. Luma Only décoché (Luma Mode rec709, Luma Blend 0,60 : 0 = lié, 1 = luminance seule). Normalize décoché (sinon la médiane dépasse la cible). Curves Boost 0 (0 à 0,50) : relève les tons au-dessus de la médiane après les passes. HDR Compress décoché (Amount 0,25, Knee 0,35) : comprime les hautes lumières. Dans l'icône seulement : numIterations 1 (5 au plus), autoConvergence false (jusqu'à 5 passes, arrêt à 0,001 de la cible). En narrowband : même Target Median (0,25) pour tous les masters narrowband (H, O et S s'il y en a), les médianes sont alors identiques par construction ; sur une image couleur déjà combinée, décoche Linked Stretch pour étirer chaque canal séparément. Contrôle ensuite le fond neutre (combinaison simple).</description>
+      <description>Glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script : efface son champ MD5. PRÉRÉGLÉ : Target Median 0,25, Blackpoint Sigma 5. À RÉGLER : rien ; même Target Median pour tous les masters. Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/statisticalstretch.js</parameter>
       <parameter id="md5sum">defab45bb4e2f33db39a7bb016cdefb0</parameter>
       <table id="parameters" rows="15">
@@ -624,7 +624,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="information"></parameter>
    </instance>
    <instance class="NarrowbandNormalization" version="256" id="RSHO_26_NBN_SHO_instance">
-      <description>PALETTE — NarrowbandNormalization, palette SHO (valeurs par défaut ; nom interne Palette_SHO vérifié dans le module 1.1). Sur l'image SHO combinée (R = S, G = H, B = O), ÉTIRÉE et sans étoiles, canaux étirés avec le même fond et la même médiane (recombine-les avec l'icône Combinaison_SHO). Active l'aperçu. Ordre de réglage conseillé (suggestion de la fiche, pas une consigne de l'auteur) : Lightness (Off, Preserve, Ha, OIII ou SII ; souvent Ha) ; Shadowpoint pour le fond, sans l'écrêter ; O3 boost puis S2 boost, progressivement (S, le plus bruité, avec prudence) ; Highlight reduction ; Brightness ; SCNR partiel en dernier, si besoin. Pour comprendre un curseur, pousse-le à fond (0 ou maximum) puis reviens à une valeur raisonnable (astuce theAstroShed). Garde ton réglage en glissant le triangle du process sur le bureau. RENDU VISÉ (look Hubble) : zones H or / jaune orangé, zones O cyan à bleu, soufre en orange plus rouge, fond gris neutre foncé, pas de vert dominant (quelques touches acceptées), étoiles pas magenta (standard des étoiles : avec RGB, étoiles calibrées comme en LRGB, voir les icônes Etoiles_RGB et Star_Stretch ; sans RGB, étoiles plausibles, voir NB_to_RGB_Stars et Etoiles_HOO_synth). CONTRÔLE à la sonde 15x15 : zone H R &gt;= G, nettement au-dessus de B (si G &gt; R : trop vert) ; zone O G et B au-dessus de R, B &gt;= G ; fond R = G = B. AJUSTER : trop vert -&gt; SCNR partiel (ou SCNR 0,50-0,80 après) ; pas de bleu -&gt; O3 boost ; pas de nuances orange/rouge -&gt; S2 boost ; fond coloré -&gt; Shadowpoint, sinon reprends l'étirement des canaux ; cœur brûlé -&gt; Highlight reduction ; détail pâteux -&gt; Lightness Ha ; teinte à affiner -&gt; CurvesTransformation (canal H, puis S) sous masque de luminance. AUTRE PALETTE : S très faible -&gt; HOO ; H dominant et O faible -&gt; HOO centré sur H ou HaRGB ; or et bleu sans vert -&gt; Foraxx ; teintes libres -&gt; NBColourMapper ; pour comparer -&gt; Perfect Palette Picker.</description>
+      <description>PRÉRÉGLÉ : palette SHO, boosts à 0. À RÉGLER : Lightness = H ; Shadowpoint pour un fond gris foncé ; O3 puis S2 boost peu à peu. SI trop vert -&gt; SCNR partiel ; si O discret -&gt; O3 boost. Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="palette" value="Palette_SHO"/>
       <parameter id="lightness" value="Lightness_Off"/>
       <parameter id="blendMode" value="Blend_Mode1"/>
@@ -637,7 +637,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="brightness" value="0.000"/>
    </instance>
    <instance class="PixelMath" version="256" id="RSHO_27_Foraxx_SHO_instance">
-      <description>ALTERNATIVE — Palette Foraxx SHO dynamique (Ludo/ForaxX) : vues 'S', 'H', 'O' ÉTIRÉES, sans étoiles, fonds proches. Crée 'SHO_Foraxx'. Tons or et bleu sans vert envahissant.</description>
+      <description>PRÉRÉGLÉ : formule Foraxx SHO, image 'SHO_Foraxx'. À RÉGLER : vues S, H, O étirées, sans étoiles, fonds proches. Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="expression">(O^~O)*S + ~(O^~O)*H</parameter>
       <parameter id="expression1">((O*H)^~(O*H))*H + ~((O*H)^~(O*H))*O</parameter>
       <parameter id="expression2">O</parameter>
@@ -667,24 +667,24 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <table id="outputData" rows="0"/>
    </instance>
    <instance class="Script" version="256" id="RSHO_28_Perfect_Palette_Picker_instance">
-      <description>LANCEMENT : double-clique l'icône, puis clique sur le rond « Apply Global » (ou glisse-la sur une image) : le dialogue du script s'ouvre. Ce script ne lit pas de paramètres d'icône : choisis les vues et Linear Input Data dans son dialogue. SOMME DE CONTRÔLE : l'icône contient l'empreinte MD5 de la version actuelle du script ; après une mise à jour du script, PixInsight bloque l'icône : double-clique-la, efface le champ MD5 et réenregistre-la. EXPLORER — Perfect Palette Picker (SetiAstro, script v1.3, Script › SetiAstro › Perfect Palette Picker). Choisis les vues H, O et S (sans étoiles de préférence ; sans S, H le remplace), ou jusqu'à deux images couleur dual-band (HaO3, S2O3). Linear Input Data coché par défaut : chaque canal est étiré à une médiane de 0,25 ; décoche si tes images sont déjà étirées. Create Palettes : 16 vignettes (HOO, HOS, HSO, HSS, OHH, OHS, OSH, OSS, SHH, SHO, SOH, SOO, Realistic1, Realistic2, Foraxx, Dynamic Inverse). Clique une vignette pour générer la palette en pleine taille. Sert à choisir : équilibre ensuite le résultat (NarrowbandNormalization, courbes) et vérifie les couleurs.</description>
+      <description>Double-clic sur l'icône puis Apply Global. Si l'icône est bloquée après une mise à jour du script : efface son champ MD5. PRÉRÉGLÉ : rien (le script ne lit pas l'icône). À RÉGLER : choisis H, O, S ; Linear Input Data selon tes images ; compare les 16 vignettes. Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/PerfectPalettePicker.js</parameter>
       <parameter id="md5sum">0ffff6a0fb869acfc4f9ee3ad81b6338</parameter>
       <table id="parameters" rows="0"/>
       <parameter id="information"></parameter>
    </instance>
    <instance class="NoOperation" version="256" id="RSHO_29_NBColourMapper_instance">
-      <description>OPTION — NBColourMapper (Mike Cranfield, script). Une couche par filtre sans étoiles : H rouge-orangé, O cyan-bleu, S rouge profond ou or ; règle teinte et saturation avec l'aperçu.</description>
+      <description>PRÉRÉGLÉ : rien (icône-note). À RÉGLER : H rouge-orangé, O cyan-bleu, S rouge profond ou or. Détails : page docs/pixinsight-workflow.html.</description>
    </instance>
    <instance class="SCNR" version="256" id="RSHO_30_SCNR_SHO_instance">
-      <description>SCNR sur la palette SHO si un vert reste : Green, Average Neutral, Amount 0,70 (1,0 par défaut convient souvent ; plus bas pour garder un peu de vert).</description>
+      <description>PRÉRÉGLÉ : vert, Average Neutral, Amount 0,70. À RÉGLER : rien. SI encore vert -&gt; 0,80 ; si trop magenta -&gt; 0,50. Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="amount" value="0.70"/>
       <parameter id="protectionMethod" value="AverageNeutral"/>
       <parameter id="colorToRemove" value="Green"/>
       <parameter id="preserveLightness" value="true"/>
    </instance>
    <instance class="PixelMath" version="256" id="RSHO_31_Masque_L_instance">
-      <description>MASQUE DE LUMINANCE en un clic (optionnel, pour Courbes et LHE) : glisse l'icône sur l'image SANS ÉTOILES étirée ; elle crée la vue mono 'masque_L' = luminance Rec. 709 (0,2126 R + 0,7152 G + 0,0722 B) dont le fond est coupé : tout ce qui est sous s passe à 0 (protégé), le reste va de 0 à 1. s = 0,14 par défaut : fond final de la fiche 0,12-0,14 ; règle s = fond mesuré à la sonde 15x15 + 0,01 (vers 0,26 si le fond est encore à 0,20-0,25). Contrôle à la sonde sur masque_L : fond 0 à 0,05. Puis léger flou (Convolution gaussienne, quelques pixels) et Mask › Select Mask (Ctrl+M) sur l'image ; Mask › Invert Mask pour traiter le fond. Image mono : icône Masque_L_mono du fichier 01. HDRMT n'en a pas besoin (option Lightness mask).</description>
+      <description>PRÉRÉGLÉ : fond coupé à s = 0,14, crée 'masque_L'. À RÉGLER : glisse sur l'image sans étoiles étirée ; s = fond mesuré + 0,01 ; léger flou ; Ctrl+M. SI fond du masque au-dessus de 0,05 -&gt; monte s. Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="expression">s = 0.14;
 max(0, (0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2] - s) / (1 - s))</parameter>
       <parameter id="expression1"></parameter>
@@ -715,7 +715,7 @@ max(0, (0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2] - s) / (1 - s))</parameter>
       <table id="outputData" rows="0"/>
    </instance>
    <instance class="CurvesTransformation" version="256" id="RSHO_32_Courbes_instance">
-      <description>CurvesTransformation — sur l'image sans étoiles étirée, sous masque de luminance (icône Masque_L juste avant). Préréglé : légère courbe en S sur RGB/K (0,25 → 0,22 ; 0,75 → 0,78) et saturation (canal S, milieu monté de 0,5 à 0,6), interpolation Akima. Place les points aux niveaux réels (valeur K du curseur dans la barre d'état). Canaux : RGB/K = même courbe sur R, G, B ; L = luminosité CIE L* seule ; S = saturation en fonction de la saturation (sature les pixels ternes sans toucher aux saturés) ; H = teinte d'origine → nouvelle teinte (un point déplacé verticalement change une couleur en une autre) ; c = chroma. Petits déplacements, compare avec l'aperçu.</description>
+      <description>PRÉRÉGLÉ : légère courbe en S (0,25 -&gt; 0,22 ; 0,75 -&gt; 0,78), saturation 0,5 -&gt; 0,6. À RÉGLER : sous Masque_L ; ajuste à l'œil. SI fond qui se colore -&gt; vérifie le masque. Détails : page docs/pixinsight-workflow.html.</description>
       <table id="R" rows="2">
          <tr>
             <td id="x" value="0.00000"/>
@@ -851,7 +851,7 @@ max(0, (0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2] - s) / (1 - s))</parameter>
       <parameter id="St" value="AkimaSubsplines"/>
    </instance>
    <instance class="LocalHistogramEqualization" version="256" id="RSHO_33_LHE_instance">
-      <description>LocalHistogramEqualization (CLAHE) sur l'image sans étoiles, sous masque de luminance (icône Masque_L, masque attaché avec Ctrl+M) : sans masque, le fond bruité prend du contraste. Kernel radius 150 (défaut 64 ; 100 à 300 selon la taille des structures ; petit = effet fort mais bruit et anneaux, grand = plus doux ; en pixels, donc plus grand à fort échantillonnage). Contrast limit 2,0 (1,0 = rien ; 1,5 à 2,0 ; sous 3 sinon bruit). Amount 0,35 (1,0 = résultat pur ; facile à exagérer). Histogram resolution 8-bit, Circular kernel coché. Option deux passes : grand rayon puis petit rayon, Amount 0,15 à 0,20 chacune (ex. galaxie 140 px à 0,20 puis 32 px à 0,18). Resature aux courbes si besoin.</description>
+      <description>PRÉRÉGLÉ : Kernel 150, Contrast limit 2,0, Amount 0,35, 8-bit, circulaire. À RÉGLER : sous Masque_L. SI effet artificiel -&gt; Amount 0,20 ; si bruit -&gt; Contrast limit 1,5 ; si anneaux -&gt; Kernel plus grand. Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="radius" value="150"/>
       <parameter id="histogramBins" value="Bit8"/>
       <parameter id="slopeLimit" value="2.0"/>
@@ -859,7 +859,7 @@ max(0, (0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2] - s) / (1 - s))</parameter>
       <parameter id="circularKernel" value="true"/>
    </instance>
    <instance class="HDRMultiscaleTransform" version="256" id="RSHO_34_HDRMT_instance">
-      <description>HDRMultiscaleTransform sur l'image sans étoiles pour les zones brillantes (cœurs, nébuleuses denses). Number of layers 6 = échelles 1 à 32 px (4 à 6 selon Starlust ; plus de couches = plus grandes structures ; essaie 7 à fort échantillonnage). Iterations 1 (plus = plus fort et plus doux ; essaie 2). Overdrive 0 (0,10 à 0,20 pour plus de force). Median transform décoché (coché = moins d'anneaux, plus lent). Scaling function B3 Spline (5). Deringing décoché (petites valeurs si anneaux). Midtones balance Automatic. To lightness, Preserve hue et Lightness mask cochés (le masque interne protège le fond : pas de masque externe). Trop fort : mélange à 50 % avec l'original.</description>
+      <description>PRÉRÉGLÉ : 6 couches, 1 itération, To lightness, Preserve hue, Lightness mask. À RÉGLER : rien. SI pas assez -&gt; 2 itérations ; si trop fort -&gt; mélange 50 % avec l'original. Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="numberOfLayers" value="6"/>
       <parameter id="numberOfIterations" value="1"/>
       <parameter id="invertedIterations" value="true"/>
@@ -882,7 +882,7 @@ max(0, (0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2] - s) / (1 - s))</parameter>
       <parameter id="intensity" value="1.00"/>
    </instance>
    <instance class="NoiseXTerminator" version="256" id="RSHO_35_NXT_final_instance">
-      <description>NoiseXTerminator, passe finale légère sur l'image étirée : Denoise 0,40 (0,30 à 0,50). Seulement si besoin. Réglages communs (manuel RC Astro AI3) : Iterations 1 (plus = garde mieux le détail des zones très bruitées, mais trop d'itérations crée des artefacts) ; Detail sans effet en AI3 ; séparations décochées. Option Enable color separation (image couleur seulement) : Denoise color plus haut que l'intensité. Option Enable frequency separation : HF intensité 0,80-0,90, HF couleur 0,90-1,00, LF intensité 0,50-0,70, LF couleur 1,00 ; HF/LF scale 5 px (règle-le avec LF à 0 en aperçu).</description>
+      <description>PRÉRÉGLÉ : Denoise 0,40, 1 itération. À RÉGLER : seulement si du bruit reste sur l'image finale. SI aspect plastique -&gt; 0,30. Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="ml_version" value="0"/>
       <parameter id="denoise" value="0.40"/>
       <parameter id="enable_color_separation" value="false"/>
@@ -901,10 +901,10 @@ max(0, (0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2] - s) / (1 - s))</parameter>
       <parameter id="overlap" value="0.20"/>
    </instance>
    <instance class="NoOperation" version="256" id="RSHO_36_Etoiles_RGB_instance">
-      <description>ÉTOILES RGB — masters R, G, B : même recadrage, puis les icônes suivantes dans l'ordre (combinaison, gradient via l'icône GradientCorrection ou les notes, BXT Correct Only, SPCC, BXT, SXT). RGB + SHO — les étoiles doivent avoir des couleurs NATURELLES calibrées : du bleu-blanc au jaune-orange, jamais vertes (G au-dessus de R et B) ni magenta (R et B nettement au-dessus de G). Contrôle sur l'image d'étoiles seule avant recombinaison : graphes SPCC corrects, toute une gamme bleue et jaune-orange ; lis la couleur à la sonde 15x15 sur le HALO (le cœur des étoiles brillantes est souvent saturé et blanc) : chaudes R &gt;= G &gt;= B, bleues B &gt;= G &gt;= R. Même standard que les étoiles LRGB. Étoiles toutes blanches : étirement trop fort ; criardes : Color Boost plus bas ou légère désaturation ; vertes, bleues ou jaunes en bloc : SPCC du RGB à revoir.</description>
+      <description>PRÉRÉGLÉ : rien (icône-note). À RÉGLER : suis les icônes suivantes : étoiles RGB calibrées pour l'image SHO. Détails : page docs/pixinsight-workflow.html.</description>
    </instance>
    <instance class="PixelMath" version="256" id="RSHO_37_Combinaison_RGB_instance">
-      <description>Combinaison RGB (équivalent de ChannelCombination) : nomme tes masters linéaires 'R', 'G' et 'B'. Crée l'image couleur 'RGB'.</description>
+      <description>PRÉRÉGLÉ : R, G, B -&gt; image couleur 'RGB'. À RÉGLER : nomme tes masters R, G et B, puis glisse l'icône. Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="expression">R</parameter>
       <parameter id="expression1">G</parameter>
       <parameter id="expression2">B</parameter>
@@ -934,7 +934,7 @@ max(0, (0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2] - s) / (1 - s))</parameter>
       <table id="outputData" rows="0"/>
    </instance>
    <instance class="BlurXTerminator" version="256" id="RSHO_38_BXT_CorrectOnly_instance">
-      <description>BlurXTerminator — Correct Only, AVANT SPCC (manuel RC Astro) : corrige aberrations, coma et tilt sans accentuer. Sur l'image couleur combinée, en linéaire, après le gradient. Si les aberrations diffèrent d'un filtre à l'autre : applique-le sur chaque master avant de combiner. Réglages (manuel RC Astro AI4) : données LINÉAIRES obligatoires, avant toute réduction de bruit et avant SXT. Sharpen Stars 0 à 0,5 (défaut 0,25 ; au maximum les étoiles perdent la moitié de leur taille) ; longue focale : une valeur haute peut laisser des zones sans détail autour des étoiles brillantes, et des halos sombres (baisse la valeur ou monte Adjust Star Halos). Adjust Star Halos −0,5 à +0,5 (défaut 0 ; plus haut = halos plus larges et plus doux, plus bas = étoiles plus dures). Automatic PSF coché ; sinon PSF Diameter = FWHM des étoiles en pixels (8 px au plus ; au-delà, réduis l'image de moitié). CDK17 + QHY600 bin 1 : 0,264″/px, donc 2″ de FWHM = 7,6 px, 2,5″ = 9,5 px. Sharpen Nonstellar 0 à 1 (1 = viser une PSF ponctuelle). Ne pas appliquer deux fois.</description>
+      <description>PRÉRÉGLÉ : Correct Only coché. À RÉGLER : rien ; sur le RGB combiné linéaire, AVANT SPCC. Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="ml_version" value="4"/>
       <parameter id="correct_only" value="true"/>
       <parameter id="sharpen_stars" value="0.25"/>
@@ -946,7 +946,7 @@ max(0, (0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2] - s) / (1 - s))</parameter>
       <parameter id="overlap" value="0.20"/>
    </instance>
    <instance class="Script" version="256" id="RSHO_39_Find_Background_instance">
-      <description>LANCEMENT : clique d'abord sur l'image pour l'activer, puis GLISSE l'icône dessus (le script travaille sur l'image active et refuse le mode global). Sans dialogue, il crée directement un aperçu nommé 'Background' (recherche rapide, réglages par défaut du script). SOMME DE CONTRÔLE : l'icône contient l'empreinte MD5 de la version actuelle du script ; après une mise à jour du script, PixInsight bloque l'icône : double-clique-la, efface le champ MD5 et réenregistre-la. OPTION avant SPCC, champ rempli de nébuleuse — Find Background (SetiAstro, Script › SetiAstro › Find Background, v1.2.2) : crée un aperçu 'Background' sur du fond vide ; dans SPCC, coche Region of Interest puis From Preview. Galaxie ou ciel libre : inutile, SPCC prend l'image entière.</description>
+      <description>Double-clic sur l'icône puis Apply Global. Si l'icône est bloquée après une mise à jour du script : efface son champ MD5. PRÉRÉGLÉ : rien. À RÉGLER : glisse sur l'image : crée l'aperçu Background ; dans SPCC, Region of Interest › From Preview. Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/FindBackground.js</parameter>
       <parameter id="md5sum">4af61e322ea5149f93fdcfe6ef0e62bd</parameter>
       <table id="parameters" rows="14">
@@ -1010,7 +1010,7 @@ max(0, (0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2] - s) / (1 - s))</parameter>
       <parameter id="information"></parameter>
    </instance>
    <instance class="SpectrophotometricColorCalibration" version="1" id="RSHO_40_SPCC_instance">
-      <description>SPCC configuré pour ton matériel (QHY600 (Sony IMX455) + filtres Antlia V Pro) : White reference Average Spiral Galaxy ; QE curve Sony IMX411/455/461/533/571 ; filtres Antlia V Pro Series R, G, B (courbes issues de ta base de filtres PixInsight) ; neutralisation du fond activée (limites -2,80 / +2,00) ; Generate graphs coché. FOND DE RÉFÉRENCE : l'icône n'a ni vue de référence ni Region of Interest, donc SPCC prend l'image entière ; les limites sont en écarts-types autour de la médiane et écartent étoiles et nébuleuse. Suffisant après le retrait du gradient sur une galaxie ou un champ avec du ciel libre. Champ rempli de nébuleuse : baisse la limite haute, ou lance Script › SetiAstro › Find Background (dépôt https://updates.setiastro.com/) qui crée automatiquement un aperçu nommé Background, puis coche Region of Interest et clique From Preview (ou crée toi-même une preview sur du fond vide). Après SPCC, vérifie que le fond est gris neutre. Toujours en linéaire, après le gradient et BXT Correct Only, avant BXT complet. CONTRÔLE : graphes = étoiles serrées autour des droites, croix du blanc de référence dans le nuage (forte dispersion : flat à revoir, gradient multiplicatif). COULEURS ATTENDUES : galaxie spirale blanche en moyenne (définition du blanc Average Spiral Galaxy), cœur jaune, bras bleus, régions HII roses, poussière brun sombre, nébuleuse par réflexion bleue, en émission rouge, étoiles du bleu-blanc au jaune-orange, JAMAIS vertes (G au-dessus de R et de B à la fois = erreur). Légère dominante bleue (moins de 10 %) possible et normale avec SPCC. Tout vert, tout bleu ou tout jaune : filtres ou capteur mal choisis, ou gradient resté avant SPCC.</description>
+      <description>PRÉRÉGLÉ : Average Spiral Galaxy, QE IMX455, filtres Antlia R, G, B, neutralisation du fond (−2,80 / +2,00), Gaia DR3/SP. À RÉGLER : rien ; sur le RGB linéaire, après BXT Correct Only. SI champ rempli de nébuleuse -&gt; aperçu Background (Find Background) en Region of Interest. Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="applyCalibration" value="true"/>
       <parameter id="narrowbandMode" value="false"/>
       <parameter id="narrowbandOptimizeStars" value="false"/>
@@ -1066,7 +1066,7 @@ max(0, (0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2] - s) / (1 - s))</parameter>
       <parameter id="outputDirectory"></parameter>
    </instance>
    <instance class="BlurXTerminator" version="256" id="RSHO_41_BXT_RGB_instance">
-      <description>BlurXTerminator complet sur RGB après SPCC : Sharpen Stars 0,25, Halos 0, Nonstellar 0,50. Réglages (manuel RC Astro AI4) : données LINÉAIRES obligatoires, avant toute réduction de bruit et avant SXT. Sharpen Stars 0 à 0,5 (défaut 0,25 ; au maximum les étoiles perdent la moitié de leur taille) ; longue focale : une valeur haute peut laisser des zones sans détail autour des étoiles brillantes, et des halos sombres (baisse la valeur ou monte Adjust Star Halos). Adjust Star Halos −0,5 à +0,5 (défaut 0 ; plus haut = halos plus larges et plus doux, plus bas = étoiles plus dures). Automatic PSF coché ; sinon PSF Diameter = FWHM des étoiles en pixels (8 px au plus ; au-delà, réduis l'image de moitié). CDK17 + QHY600 bin 1 : 0,264″/px, donc 2″ de FWHM = 7,6 px, 2,5″ = 9,5 px. Sharpen Nonstellar 0 à 1 (1 = viser une PSF ponctuelle). Ne pas appliquer deux fois.</description>
+      <description>PRÉRÉGLÉ : Sharpen Stars 0,25, Halos 0, Nonstellar 0,50, PSF auto. À RÉGLER : rien ; après SPCC, en linéaire. SI vers ou pores à 100 % -&gt; Nonstellar 0,40 ; si halos sombres -&gt; Sharpen Stars plus bas ou Halos plus haut. Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="ml_version" value="4"/>
       <parameter id="correct_only" value="false"/>
       <parameter id="sharpen_stars" value="0.25"/>
@@ -1078,7 +1078,7 @@ max(0, (0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2] - s) / (1 - s))</parameter>
       <parameter id="overlap" value="0.20"/>
    </instance>
    <instance class="StarXTerminator" version="256" id="RSHO_42_SXT_RGB_lineaire_instance">
-      <description>StarXTerminator — sur données LINÉAIRES, le plus tôt possible après BXT (RC Astro). Generate star image coché, UNSCREEN DÉCOCHÉ (réservé aux images étirées) : simple soustraction, couleurs d'étoiles les plus fidèles. N'applique pas l'autoSTF de façon permanente à l'image d'étoiles. Large overlap : décoché (recouvrement des tuiles 20 %) ; coché = 50 %, seulement si un quadrillage apparaît (environ trois fois plus lent selon RC Astro). AI11 : version complète de préférence (Lite = 75 % de mémoire en moins ; Lite.nonoise plus rapide mais sans bruit dans les zones retirées). Plus de case Linear : détection automatique. Remove stars, spikes et aureoles cochés, reflections décoché : valeurs de l'instance de référence, non documentées par RC Astro, à laisser. Masque noir sur un cœur de galaxie compact : zone protégée du retrait (SXT 2.2.0). Garde uniquement l'image d'étoiles RGB.</description>
+      <description>PRÉRÉGLÉ : Generate star image coché, Unscreen décoché. À RÉGLER : rien ; sur le RGB linéaire calibré ; garde seulement l'image d'étoiles. Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="ml_version" value="0"/>
       <parameter id="output_stars" value="true"/>
       <parameter id="unscreen" value="false"/>
@@ -1089,7 +1089,7 @@ max(0, (0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2] - s) / (1 - s))</parameter>
       <parameter id="overlap" value="0.20"/>
    </instance>
    <instance class="Script" version="256" id="RSHO_43_Star_Stretch_instance">
-      <description>LANCEMENT : GLISSE cette icône sur l'image cible (le script refuse le mode global : un double-clic suivi de « Apply Global » n'aboutit pas). Glisse-la sur l'image d'étoiles linéaire : le dialogue s'ouvre avec Stretch Amount 5 et Color Boost 1,0. SOMME DE CONTRÔLE : l'icône contient l'empreinte MD5 de la version actuelle du script ; après une mise à jour du script, PixInsight bloque l'icône : double-clique-la, efface le champ MD5 et réenregistre-la. SCRIPT — Star Stretch (SetiAstro, script v2.6) sur l'image d'étoiles LINÉAIRE issue de SXT. Modifie l'image elle-même : garde une copie linéaire. Étirement y = 3^a·x / ((3^a − 1)·x + 1). Stretch Amount a = 5 par défaut (0 à 8, prudence au-delà de 5) : un pixel à 0,01 devient 0,45 à 4, 0,71 à 5, 0,88 à 6. Color Boost 1,0 (0 à 2) : saturation par teinte, 0,4 × Boost sur les rouges, 0,7 × Boost sur les cyans (couleur seulement). Remove Green via SCNR décoché par défaut (SCNR vert pleine force, Average Neutral). Show Preview décoché (aperçu + Refresh Preview). RGB + SHO — les étoiles doivent avoir des couleurs NATURELLES calibrées : du bleu-blanc au jaune-orange, jamais vertes (G au-dessus de R et B) ni magenta (R et B nettement au-dessus de G). Contrôle sur l'image d'étoiles seule avant recombinaison : graphes SPCC corrects, toute une gamme bleue et jaune-orange ; lis la couleur à la sonde 15x15 sur le HALO (le cœur des étoiles brillantes est souvent saturé et blanc) : chaudes R &gt;= G &gt;= B, bleues B &gt;= G &gt;= R. Même standard que les étoiles LRGB. Étoiles toutes blanches : étirement trop fort ; criardes : Color Boost plus bas ou légère désaturation ; vertes, bleues ou jaunes en bloc : SPCC du RGB à revoir.</description>
+      <description>Glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script : efface son champ MD5. PRÉRÉGLÉ : Stretch Amount 5, Color Boost 1,0, SCNR décoché. À RÉGLER : rien ; sur l'image d'étoiles linéaire. SI étoiles trop grosses -&gt; 4 ; si couleurs criardes -&gt; Color Boost 0,7. Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/star_stretch.js</parameter>
       <parameter id="md5sum">69a1ee6db4e9f5374c2cddb1e5a7f4ae</parameter>
       <table id="parameters" rows="4">
@@ -1113,7 +1113,7 @@ max(0, (0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2] - s) / (1 - s))</parameter>
       <parameter id="information"></parameter>
    </instance>
    <instance class="PixelMath" version="256" id="RSHO_44_Etoiles_screen_instance">
-      <description>Recombinaison des étoiles en mode screen : ~((~starless) * (~stars)). Renomme la vue sans étoiles 'starless' et l'image d'étoiles 'stars', toutes deux étirées. Résultat : nouvelle image 'Final'. RGB + SHO — CONTRÔLE après recombinaison, à 100 % : pas de restes d'étoiles SHO sous les étoiles RGB (anneaux ou points magenta, trous sombres : SXT incomplet sur l'image SHO, refais-le ou passe CorrectMagentaStars) ; étoiles pas « collées » (ni plus grosses ni plus brillantes que la nébuleuse ne le laisse attendre, sinon réduction d'étoiles ou étirement plus doux) ; pas de décalage entre étoiles RGB et leurs traces (aligne RGB et SHO sur la même référence dans WBPP, même recadrage) ; fond toujours R = G = B (fond éclairci ou teinté : fond de l'image d'étoiles pas à 0). Nébuleuse en fausses couleurs et étoiles en vraies couleurs : c'est voulu.</description>
+      <description>PRÉRÉGLÉ : ~((~starless) * (~stars)), image 'Final'. À RÉGLER : nomme l'image sans étoiles 'starless' et les étoiles 'stars', toutes deux étirées. Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="expression">~((~starless) * (~stars))</parameter>
       <parameter id="expression1"></parameter>
       <parameter id="expression2"></parameter>
@@ -1143,7 +1143,7 @@ max(0, (0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2] - s) / (1 - s))</parameter>
       <table id="outputData" rows="0"/>
    </instance>
    <instance class="Script" version="256" id="RSHO_45_CorrectMagentaStars_instance">
-      <description>LANCEMENT : GLISSE l'icône sur l'image : la correction s'applique DIRECTEMENT, sans dialogue, avec Amount 0,8 (en global, elle s'applique à l'image active). Pour changer l'Amount, double-clique l'icône et modifie scnrAmount (0 à 1). Le champ MD5 est vide : PixInsight exécute le script installé sans vérifier sa version. SCRIPT — CorrectMagentaStars (Script › Utilities). Sur l'image SHO finale avec étoiles. Amount 0,8 (défaut, 0 à 1). Le script inverse l'image, retire le vert avec SCNR (le magenta inversé), puis réinverse.</description>
+      <description>Double-clic sur l'icône puis Apply Global. PRÉRÉGLÉ : Amount 0,8. À RÉGLER : rien ; sur l'image SHO finale avec étoiles. SI magenta encore visible -&gt; 1,0. Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/CorrectMagentaStars/CorrectMagentaStars.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="2">
@@ -1159,7 +1159,7 @@ max(0, (0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2] - s) / (1 - s))</parameter>
       <parameter id="information"></parameter>
    </instance>
    <instance class="PixelMath" version="256" id="RSHO_46_Blanshan_Transfer_instance">
-      <description>Réduction d'étoiles Bill Blanshan, méthode Transfer V2 : applique sur l'image AVEC étoiles, la version sans étoiles de la même image (étirée pareil) doit s'appeler 'starless'. S = 0,15 (plus bas = étoiles plus petites). Les versions V3 et les méthodes Halo/Star sont dans 01-PixelMath-formules.xpsm.</description>
+      <description>PRÉRÉGLÉ : S = 0,15. À RÉGLER : vue sans étoiles nommée 'starless' ; glisse sur l'image avec étoiles. SI étoiles encore grosses -&gt; S plus bas. Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="expression">S=0.15;
 Img1=starless;
 f1= ~((~mtf(~S,$T)/~mtf(~S,Img1))*~Img1);
@@ -1192,7 +1192,7 @@ max(Img1,f1)</parameter>
       <table id="outputData" rows="0"/>
    </instance>
    <instance class="MorphologicalTransformation" version="256" id="RSHO_47_MT_etoiles_instance">
-      <description>Alternative : MorphologicalTransformation sur l'image d'étoiles seule (ou avec un masque d'étoiles). Morphological Selection 0,25 (sous 0,5 = érosion), Amount 0,60, 1 itération, élément circulaire 5x5.</description>
+      <description>PRÉRÉGLÉ : Selection 0,25, Amount 0,60, 1 itération, 5×5 circulaire. À RÉGLER : sur l'image d'étoiles seule. SI trop fort -&gt; Amount 0,50. Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="operator" value="Selection"/>
       <parameter id="interlacingDistance" value="1"/>
       <parameter id="lowThreshold" value="0.000000"/>
@@ -1209,7 +1209,7 @@ max(Img1,f1)</parameter>
       </table>
    </instance>
    <instance class="Script" version="256" id="RSHO_48_Halo_B_Gon_instance">
-      <description>LANCEMENT : double-clique l'icône, puis clique sur le rond « Apply Global » (ou glisse-la sur une image) : le dialogue du script s'ouvre. Ce script ne lit pas de paramètres d'icône : les réglages se font dans son dialogue. SOMME DE CONTRÔLE : l'icône contient l'empreinte MD5 de la version actuelle du script ; après une mise à jour du script, PixInsight bloque l'icône : double-clique-la, efface le champ MD5 et réenregistre-la. SCRIPT — Halo-B-Gon (SetiAstro, script v2.1) sur l'image d'étoiles seule ; modifie l'image elle-même, garde une copie. Masque de luminosité inversé moins les petites structures (cœurs protégés), puis courbe qui assombrit les tons moyens (0,75 → 0,40). Reduction Amount, Low par défaut : Extra Low = 1 courbe douce (0,75 → 0,575) ; Low = 1 passe, 1 courbe ; Med = 2 passes × 2 courbes (4) ; High = 3 passes × 3 courbes (9). Commence par Extra Low ou Low. Linear Data décoché par défaut ; coché, le script étire (mtf 0,25^5), traite puis rend l'image linéaire : seulement si l'image est encore linéaire.</description>
+      <description>Double-clic sur l'icône puis Apply Global. Si l'icône est bloquée après une mise à jour du script : efface son champ MD5. PRÉRÉGLÉ : rien (réglages dans le dialogue). À RÉGLER : Reduction Amount Low ; Linear Data décoché sur une image étirée. SI pas assez -&gt; relance en Low (Med = 4 courbes, High = 9). Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/Halo-B-Gon.js</parameter>
       <parameter id="md5sum">b9427e718e2b9760704c8c738e0893b7</parameter>
       <table id="parameters" rows="0"/>

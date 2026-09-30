@@ -7,6 +7,7 @@ from xml.sax.saxutils import escape
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = sys.argv[1]
 sys.argv = [sys.argv[0], tempfile.mkdtemp()]
+import short_desc as SD  # noqa: E402
 import make_icons as M  # noqa: E402  (génère les icônes unitaires dans un dossier temporaire)
 
 ALL = open(os.environ.get('ALL_XPSM', os.path.join(HERE, 'all.x')), encoding='utf-8').read()
@@ -114,15 +115,25 @@ def ghs(name, b, hp=1.0, lp=0.0, channel='SC_RGB'):
 def pm(*a, **k):
     return M.pixelmath(*a, **k)
 
+def shorten(xml, prefix, base):
+    """Remplace la description détaillée par la version courte (préréglé / à régler / si ... ->)."""
+    drag = md5 = None
+    if base in SCRIPTS and 'class="Script"' in xml:
+        path, md5, params, launch = SCRIPTS[base]
+        drag = launch.startswith(L_DRAG)
+    short = escape(SD.text(prefix, base, drag, bool(md5)))
+    return re.sub(r'<description>.*?</description>', lambda m: '<description>%s</description>' % short, xml, count=1, flags=re.S)
+
 def write(filename, prefix, title, steps):
     """steps : liste de (item, description). Les icônes sont numérotées dans l'ordre."""
     insts, icons = [], []
     for i, (item, desc) in enumerate(steps, 1):
+        base = item[0]
         name = '%s_%02d_%s' % (prefix, i, item[0])
         item = renamed(item, name)
         if 'class="NoOperation"' not in item[1] and '<description>' not in item[1]:
             item = described(item, desc)
-        insts.append(item[1])
+        insts.append(shorten(item[1], prefix, base))
         col, row = divmod(i - 1, 14)
         icons.append('   <icon id="%s" instance="%s_instance" xpos="%d" ypos="%d" workspace="Workspace01"/>' % (name, name, 30 + 300 * col, 30 + 30 * row))
     xml = M.HEADER + '<!-- ' + escape(title) + ' -->\n' + '\n'.join(insts) + '\n' + '\n'.join(icons) + '\n</xpsm>\n'
@@ -551,7 +562,7 @@ mat = [(spcc_perso('SPCC_QHY600_Antlia'), T_SPCC)] + [(M.spfc(n + '_QHY600_Antli
 insts, icons = [], []
 for i, (item, desc) in enumerate(mat):
     item = described(item, desc)
-    insts.append(item[1])
+    insts.append(shorten(item[1], '', item[0]))
     icons.append('   <icon id="%s" instance="%s_instance" xpos="30" ypos="%d" workspace="Workspace01"/>' % (item[0], item[0], 30 + 30 * i))
 open(os.path.join(OUT, '..', '04-Materiel-QHY600-Antlia.xpsm'), 'w', encoding='utf-8').write(
     M.HEADER + '<!-- Icônes pour ' + MATERIEL + ' -->\n' + '\n'.join(insts) + '\n' + '\n'.join(icons) + '\n</xpsm>\n')

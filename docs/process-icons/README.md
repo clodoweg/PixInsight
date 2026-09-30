@@ -83,7 +83,7 @@ Icônes SPCC et SPFC configurées pour **QHY600 (capteur Sony IMX455) + filtres 
 
 ## Un fichier par workflow (dossier `workflows/`)
 
-Chaque fichier contient **tous les process du workflow, dans l'ordre**, numérotés (`LRGB_01_WBPP`, `LRGB_02_CC_auto`…) et disposés en colonnes de haut en bas. **Chaque icône porte une description détaillée** : réglages, vues attendues, quand l'appliquer et pourquoi. Pour la lire dans PixInsight, survole l'icône ou ouvre-la (champ *Description*).
+Chaque fichier contient **tous les process du workflow, dans l'ordre**, numérotés (`LRGB_01_WBPP`, `LRGB_02_CC_auto`…) et disposés en colonnes de haut en bas. **Chaque icône porte une description courte** : `PRÉRÉGLÉ` (ce que l'icône règle déjà), `À RÉGLER` (ce qu'il te reste à faire) et `SI … ->` (quoi changer selon le symptôme), plus le mode de lancement pour les scripts. Textes dans `short_desc.py` ; explications complètes dans les fiches de la page. Pour la lire dans PixInsight, survole l'icône ou ouvre-la (champ *Description*).
 
 | Fichier | Icônes | Contenu |
 |---|---|---|
