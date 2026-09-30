@@ -27,7 +27,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="lunar_planetary" value="false"/>
       <parameter id="overlap" value="0.20"/>
    </instance>
-   <instance class="BlurXTerminator" version="256" id="BXT_L_Ha_instance">
+   <instance class="BlurXTerminator" version="256" id="BXT_L_H_instance">
       <parameter id="ml_version" value="4"/>
       <parameter id="correct_only" value="false"/>
       <parameter id="sharpen_stars" value="0.25"/>
@@ -49,7 +49,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="lunar_planetary" value="false"/>
       <parameter id="overlap" value="0.20"/>
    </instance>
-   <instance class="NoiseXTerminator" version="256" id="NXT_L_Ha_instance">
+   <instance class="NoiseXTerminator" version="256" id="NXT_L_H_instance">
       <parameter id="ml_version" value="0"/>
       <parameter id="denoise" value="0.60"/>
       <parameter id="enable_color_separation" value="false"/>
@@ -85,7 +85,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="detail" value="0.15"/>
       <parameter id="overlap" value="0.20"/>
    </instance>
-   <instance class="NoiseXTerminator" version="256" id="NXT_OIII_SII_instance">
+   <instance class="NoiseXTerminator" version="256" id="NXT_O_S_instance">
       <parameter id="ml_version" value="0"/>
       <parameter id="denoise" value="0.75"/>
       <parameter id="enable_color_separation" value="false"/>
@@ -143,11 +143,11 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
    </instance>
    <icon id="BXT_CorrectOnly" instance="BXT_CorrectOnly_instance" xpos="40" ypos="40" workspace="Workspace01"/>
    <icon id="BXT_RGB" instance="BXT_RGB_instance" xpos="40" ypos="72" workspace="Workspace01"/>
-   <icon id="BXT_L_Ha" instance="BXT_L_Ha_instance" xpos="40" ypos="104" workspace="Workspace01"/>
+   <icon id="BXT_L_H" instance="BXT_L_H_instance" xpos="40" ypos="104" workspace="Workspace01"/>
    <icon id="BXT_NB_combine" instance="BXT_NB_combine_instance" xpos="40" ypos="136" workspace="Workspace01"/>
-   <icon id="NXT_L_Ha" instance="NXT_L_Ha_instance" xpos="40" ypos="168" workspace="Workspace01"/>
+   <icon id="NXT_L_H" instance="NXT_L_H_instance" xpos="40" ypos="168" workspace="Workspace01"/>
    <icon id="NXT_RGB" instance="NXT_RGB_instance" xpos="40" ypos="200" workspace="Workspace01"/>
-   <icon id="NXT_OIII_SII" instance="NXT_OIII_SII_instance" xpos="40" ypos="232" workspace="Workspace01"/>
+   <icon id="NXT_O_S" instance="NXT_O_S_instance" xpos="40" ypos="232" workspace="Workspace01"/>
    <icon id="NXT_final_etire" instance="NXT_final_etire_instance" xpos="40" ypos="264" workspace="Workspace01"/>
    <icon id="SXT_lineaire" instance="SXT_lineaire_instance" xpos="40" ypos="296" workspace="Workspace01"/>
    <icon id="SXT_etire" instance="SXT_etire_instance" xpos="40" ypos="328" workspace="Workspace01"/>

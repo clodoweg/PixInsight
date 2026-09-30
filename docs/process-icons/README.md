@@ -14,7 +14,7 @@ Les fichiers n'ont pas été testés dans PixInsight avant publication : ils ont
 
 ## 01-PixelMath-formules.xpsm
 
-Les formules supposent des images nommées comme indiqué (renomme tes vues avec le bon identifiant avant de les appliquer). Masters narrowband : `H` (Hα), `O` (OIII), `S` (SII). Les noms des filtres MARS (`Ha`, `OIII`) et des icônes SPFC restent ceux des filtres.
+Les formules supposent des images nommées comme indiqué (renomme tes vues avec le bon identifiant avant de les appliquer). Masters narrowband : `H` (Hα), `O` (OIII), `S` (SII). Les icônes suivent la même convention (`SPFC_H`, `MGC_MARS_O`, `NXT_O_S`…) ; seules les valeurs de filtre MARS dans MGC restent `Ha` et `OIII`, noms imposés par la base.
 
 | Icône | Images attendues | Résultat |
 |---|---|---|
@@ -22,9 +22,9 @@ Les formules supposent des images nommées comme indiqué (renomme tes vues avec
 | `Foraxx_HOO` | `H`, `O` | Nouvelle image RGB `HOO_Foraxx` |
 | `HOO_simple` | `H`, `O` | R = H, G = O, B = O |
 | `HOO_Hubble` | `H`, `O` | G = 0,6·H + 0,4·O (Galactic Hunter) |
-| `DualBand_Ha` / `DualBand_OIII` | À appliquer sur l'image couleur dual-band | Nouvelles images mono `H` et `O` |
-| `Continuum_Ha` | `H`, `R` | `H_cs` ; ajuste `k = 0.9` dans la formule |
-| `Ha_dans_R` | `R`, `H_cs` | `R_H` ; ajuste `w = 1.0` |
+| `DualBand_H` / `DualBand_O` | À appliquer sur l'image couleur dual-band | Nouvelles images mono `H` et `O` |
+| `Continuum_H` | `H`, `R` | `H_cs` ; ajuste `k = 0.9` dans la formule |
+| `H_dans_R` | `R`, `H_cs` | `R_H` ; ajuste `w = 1.0` |
 | `Etoiles_screen` | `starless`, `stars` (étirées) | Nouvelle image `Final` |
 | `Etoiles_HOO_synth` | `H_stars`, `O_stars` (linéaires) | Étoiles RGB synthétiques, G = 20 % H + 80 % O |
 | `Blanshan_Transfer` / `_Halo` / `_Star` | Vue sans étoiles nommée `starless` ; appliquer sur l'image avec étoiles | Version 2, identique à la page (S = 0,15) |
@@ -36,11 +36,11 @@ Les formules supposent des images nommées comme indiqué (renomme tes vues avec
 |---|---|
 | `BXT_CorrectOnly` | Correct Only, avant SPCC |
 | `BXT_RGB` | Sharpen Stars 0,25, Halos 0, Nonstellar 0,50, PSF automatique |
-| `BXT_L_Ha` | Idem, Nonstellar 0,80 |
+| `BXT_L_H` | Idem, Nonstellar 0,80 |
 | `BXT_NB_combine` | Idem, Nonstellar 0,60, pour la combinaison SHO/HOO simple |
-| `NXT_L_Ha` | Denoise 0,60, Detail 0,15, 1 itération |
+| `NXT_L_H` | Denoise 0,60, Detail 0,15, 1 itération |
 | `NXT_RGB` | Denoise 0,80 |
-| `NXT_OIII_SII` | Denoise 0,75 |
+| `NXT_O_S` | Denoise 0,75 |
 | `NXT_final_etire` | Denoise 0,40, passe finale légère |
 | `SXT_lineaire` | Étoiles générées, **Unscreen décoché** (image linéaire) |
 | `SXT_etire` | Étoiles générées, Unscreen coché (image étirée uniquement) |
@@ -59,9 +59,9 @@ Les formules supposent des images nommées comme indiqué (renomme tes vues avec
 | `SPFC_RGB_filtres` | SpectrophotometricFluxCalibration pour un RGB combiné (filtres Astrodon E-series et capteur IMX571, comme l'icône SPCC : **à remplacer par ton matériel**) |
 | `SPFC_couleur_OSC` | SPFC pour une caméra couleur : filtres Bayer Sony (R/G/B-UVIRcut), QE idéale |
 | `SPFC_L` | SPFC pour un master L : Gray filter Astronomik L-2 (à remplacer par ton filtre), QE idéale |
-| `SPFC_Ha` / `SPFC_OIII` / `SPFC_SII` | SPFC en Narrowband mode : 656,3 / 500,7 / 672,4 nm, bande passante 3 nm (mets celle de ton filtre) |
+| `SPFC_H` / `SPFC_O` / `SPFC_S` | SPFC en Narrowband mode : 656,3 / 500,7 / 672,4 nm, bande passante 3 nm (mets celle de ton filtre) |
 | `MGC_MARS` | MultiscaleGradientCorrection : base MARS, filtres MARS L/R/G/B, Gradient scale 1024, Structure separation 3, Model smoothness 1,0, modèle affiché |
-| `MGC_MARS_Ha` / `MGC_MARS_OIII` | Idem pour un master narrowband : filtre MARS Gray = `Ha` ou `OIII` (base MARS DR2, juin 2026). Pas de bande SII dans MARS : GradientCorrection ou DBE pour SII |
+| `MGC_MARS_H` / `MGC_MARS_O` | Idem pour un master narrowband : filtre MARS Gray = `Ha` ou `OIII` (base MARS DR2, juin 2026). Pas de bande SII dans MARS : GradientCorrection ou DBE pour SII |
 | `DBE_base` | DynamicBackgroundExtraction sans points : Samples per row 15, radius 15, Tolerance 0,5, Shadows relaxation 3, Smoothing 0,25, Subtract, Normalize |
 | `DynamicCrop_base` | DynamicCrop sans recadrage : trace ton cadre, puis crée ton icône |
 | `NBN_SHO` / `NBN_HOO` | NarrowbandNormalization, palette SHO ou HOO, valeurs par défaut, sur l'image combinée étirée sans étoiles |
@@ -78,7 +78,7 @@ Icônes SPCC et SPFC configurées pour **QHY600 (capteur Sony IMX455) + filtres 
 | `SPCC_QHY600_Antlia` | Average Spiral Galaxy ; QE Sony IMX411/455/461/533/571 ; Antlia V Pro Series R, G, B ; neutralisation du fond (−2,80 / +2,00) sur l'image entière (ou aperçu du script Find Background, voir la description) ; graphes |
 | `SPFC_RGB_QHY600_Antlia` | Image RGB combinée : Antlia V Pro R, G, B ; QE IMX455 |
 | `SPFC_L_QHY600_Antlia` | Master L : courbe approchée du filtre Antlia V Pro L (420 à 715 nm, 95 %, d'après les caractéristiques publiées, la vraie courbe n'étant pas dans ta base) ; QE IMX455 |
-| `SPFC_Ha/OIII/SII_QHY600_Antlia` | Narrowband mode, 656,3 / 500,7 / 672,4 nm, bande passante 3 nm (filtres Antlia 3 nm) ; QE IMX455 |
+| `SPFC_H/O/S_QHY600_Antlia` | Narrowband mode, 656,3 / 500,7 / 672,4 nm, bande passante 3 nm (filtres Antlia 3 nm) ; QE IMX455 |
 
 ## Un fichier par workflow (dossier `workflows/`)
 
@@ -96,7 +96,7 @@ Chaque fichier contient **tous les process du workflow, dans l'ordre**, numérot
 
 - **Process réglés** : s'appliquent directement (PixelMath, BlurXTerminator, NoiseXTerminator, StarXTerminator, LRGBCombination, LinearFit, SCNR, LHE, HDRMT, MorphologicalTransformation, CurvesTransformation, GradientCorrection, NarrowbandNormalization SHO et HOO, CosmeticCorrection).
 - **Process à compléter sur ton image ou ton matériel** :
-  - `MGC_MARS`, `MGC_MARS_Ha`, `MGC_MARS_OIII` : charge la base MARS (DR2) dans les préférences de MGC si elle ne l'est pas. Les icônes Ha et OIII sont dans les workflows LHaRGB (Ha seulement), RGB-SHO, SHO sans RGB et HOO.
+  - `MGC_MARS`, `MGC_MARS_H`, `MGC_MARS_O` : charge la base MARS (DR2) dans les préférences de MGC si elle ne l'est pas. Les icônes Ha et OIII sont dans les workflows LHaRGB (Ha seulement), RGB-SHO, SHO sans RGB et HOO.
   - `DynamicCrop` et `DBE` : icônes réelles, sans cadre ni points (ils dépendent de l'image).
   - `SPCC` et `SPFC_…` : configurés pour ton matériel (QHY600 + Antlia V Pro). Bande passante narrowband 3 nm (filtres Antlia 3 nm).
   - `GHS_1_premier`, `GHS_2_contraste`, `GHS_3_fond` : Local intensity et protections réglés, mais **Stretch factor à 0 et SP à choisir sur ton image** (l'icône ne fait rien tant que tu ne l'as pas réglée). Leurs descriptions donnent les repères de niveau : fond vers 0,20–0,25 après le 1er étirement, 0,12–0,14 (30–35 sur 255) dans l'image finale, jamais 0.

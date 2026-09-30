@@ -147,7 +147,7 @@ T_MGC = ("ÉTAPE MANUELLE — Gradient par MARS : SpectrophotometricFluxCalibrat
          "Prérequis : image linéaire, solution astrométrique, bases Gaia DR3/SP et MARS installées (clé à molette de MGC › Add › fichier .xmars). "
          "SPFC (Process › ColorCalibration) : QE curve = ton capteur, sinon Ideal QE curve ; image mono : Gray filter = ton filtre (Narrowband mode + longueur d'onde et bande passante pour Ha/OIII/SII) ; image couleur : Red/Green/Blue filter = tes filtres ou les filtres Bayer du capteur ; Catalog Gaia DR3/SP ; Automatic limit magnitude coché ; le reste par défaut. SPFC ne modifie pas les pixels (métadonnées de flux pour MGC) ; utilise ensuite les mêmes filtres dans SPCC. "
          "MGC : Use MARS database coché, filtres MARS Gray = L, Red = R, Green = G, Blue = B ; Gradient scale 1024 au départ (512 ou 256 si un gradient reste dans les coins), Structure separation 3 (1-2 pour les bords), Model smoothness 1,0 (3-5 si le modèle ondule), Scale factors 1,0, Show gradient model coché. "
-         "Narrowband : MARS DR2 (juin 2026) couvre Ha et OIII jusqu'à +75° de déclinaison (SPFC en Narrowband mode, puis les icônes MGC_MARS_Ha et MGC_MARS_OIII, filtre MARS Gray = Ha ou OIII) ; SII absent de DR2 : icône GradientCorrection ou DBE.")
+         "Narrowband : MARS DR2 (juin 2026) couvre Ha et OIII jusqu'à +75° de déclinaison (SPFC en Narrowband mode, puis les icônes MGC_MARS_H et MGC_MARS_O, filtre MARS Gray = Ha ou OIII) ; SII absent de DR2 : icône GradientCorrection ou DBE.")
 T_GC = ("ALTERNATIVE — GradientCorrection, valeurs par défaut. Structure protection activée ; Generate gradient model coché pour contrôler le modèle. "
         "Si des zones claires apparaissent autour des structures sombres : monte Low threshold. Si le modèle a des bords nets : désactive la protection, baisse Scale et Smoothness, puis réactive.")
 T_DBE = ("ALTERNATIVE — DynamicBackgroundExtraction. Icône-note : les points dépendent de l'image. Samples per row 10-20 ; Sample radius 10-50 ; Tolerance 0,5 (1,0-1,5 si points rejetés) ; "
@@ -208,14 +208,14 @@ D_SPFC_COMMUN = (" Prérequis : image LINÉAIRE et résolue (ImageSolver ou WBPP
 D_SPFC = {
  'SPFC_RGB_filtres': "SPFC sur l'image RGB combinée, configuré pour ton matériel : QE curve Sony IMX411/455/461/533/571 (QHY600), Red/Green/Blue filter = Antlia V Pro Series R, G, B (courbes de ta base de filtres). Mêmes filtres que l'icône SPCC.",
  'SPFC_L': "SPFC sur le master L : QE curve IMX455 ; Gray filter = courbe approchée du filtre Antlia V Pro L (420 à 715 nm, transmission 95 %, d'après les caractéristiques publiées : la vraie courbe n'est pas dans ta base de filtres).",
- 'SPFC_Ha': "SPFC sur le master Ha : QE curve IMX455 ; Narrowband mode, 656,3 nm, bande passante 3 nm (filtres Antlia 3 nm).",
- 'SPFC_OIII': "SPFC sur le master OIII : QE curve IMX455 ; Narrowband mode, 500,7 nm, bande passante 3 nm (filtres Antlia 3 nm).",
- 'SPFC_SII': "SPFC sur le master SII : QE curve IMX455 ; Narrowband mode, 672,4 nm, bande passante 3 nm (filtres Antlia 3 nm).",
+ 'SPFC_H': "SPFC sur le master Ha : QE curve IMX455 ; Narrowband mode, 656,3 nm, bande passante 3 nm (filtres Antlia 3 nm).",
+ 'SPFC_O': "SPFC sur le master OIII : QE curve IMX455 ; Narrowband mode, 500,7 nm, bande passante 3 nm (filtres Antlia 3 nm).",
+ 'SPFC_S': "SPFC sur le master SII : QE curve IMX455 ; Narrowband mode, 672,4 nm, bande passante 3 nm (filtres Antlia 3 nm).",
 }
 D_MGC = ("MultiscaleGradientCorrection, juste après SPFC, sur la même image. Use MARS database coché ; filtres MARS Gray = L (image mono), Red = R, Green = G, Blue = B (image couleur) ; "
          "Gradient scale 1024 (512 ou 256 si un gradient reste dans les coins), Structure separation 3 (1-2 pour les bords), Model smoothness 1,0 (3-5 si le modèle ondule), Scale factors 1,0, Show gradient model coché. "
          "La base MARS se charge dans les préférences de MGC (clé à molette › Add › fichier .xmars) : si MGC signale qu'aucune base n'est chargée, ajoute-la là. "
-         "Narrowband : MARS DR2 (21 juin 2026) couvre Ha et OIII jusqu'à +75° de déclinaison : utilise les icônes MGC_MARS_Ha et MGC_MARS_OIII (filtre MARS Gray = Ha ou OIII) ; cette icône-ci est réglée sur L. SII absent de DR2 : GradientCorrection ou DBE.")
+         "Narrowband : MARS DR2 (21 juin 2026) couvre Ha et OIII jusqu'à +75° de déclinaison : utilise les icônes MGC_MARS_H et MGC_MARS_O (filtre MARS Gray = Ha ou OIII) ; cette icône-ci est réglée sur L. SII absent de DR2 : GradientCorrection ou DBE.")
 D_DBE = ("ALTERNATIVE — DynamicBackgroundExtraction, sans points (ils dépendent de l'image) : ouvre l'icône, clique sur l'image, puis Generate. Samples per row 15, Sample radius 15 (10 à 50), "
          "Tolerance 0,5 (1,0-1,5 si des points sont rejetés), Shadows relaxation 3, Smoothing 0,25 (0,5-1,0 champs nébuleux), Correction Subtract (Division seulement pour le vignettage), "
          "Normalize, Discard model et Replace target cochés. Retire les points posés sur la nébuleuse ; d'un filtre à l'autre, garde les points et ajuste Tolerance.")
@@ -229,17 +229,17 @@ D_MGC_NB = ("MultiscaleGradientCorrection pour le master %s : filtre MARS Gray =
 
 def gradient_block(kind='rgb'):
     """kind : 'rgb' (RGB + L), 'lha' (RGB + L + Ha), 'sho', 'hoo'."""
-    names = {'rgb': ['SPFC_RGB_filtres', 'SPFC_L'], 'lha': ['SPFC_RGB_filtres', 'SPFC_L', 'SPFC_Ha'],
-             'sho': ['SPFC_SII', 'SPFC_Ha', 'SPFC_OIII'], 'hoo': ['SPFC_Ha', 'SPFC_OIII']}[kind]
+    names = {'rgb': ['SPFC_RGB_filtres', 'SPFC_L'], 'lha': ['SPFC_RGB_filtres', 'SPFC_L', 'SPFC_H'],
+             'sho': ['SPFC_S', 'SPFC_H', 'SPFC_O'], 'hoo': ['SPFC_H', 'SPFC_O']}[kind]
     opts = {'SPFC_RGB_filtres': dict(rgb='antlia', gray='antlia_L_spec', qe='qe_imx455'), 'SPFC_L': dict(rgb='antlia', gray='antlia_L_spec', qe='qe_imx455'),
-            'SPFC_Ha': dict(nb=(656.3, 3.0), rgb='antlia', gray='antlia_L_spec', qe='qe_imx455'), 'SPFC_OIII': dict(nb=(500.7, 3.0), rgb='antlia', gray='antlia_L_spec', qe='qe_imx455'),
-            'SPFC_SII': dict(nb=(672.4, 3.0), rgb='antlia', gray='antlia_L_spec', qe='qe_imx455')}
+            'SPFC_H': dict(nb=(656.3, 3.0), rgb='antlia', gray='antlia_L_spec', qe='qe_imx455'), 'SPFC_O': dict(nb=(500.7, 3.0), rgb='antlia', gray='antlia_L_spec', qe='qe_imx455'),
+            'SPFC_S': dict(nb=(672.4, 3.0), rgb='antlia', gray='antlia_L_spec', qe='qe_imx455')}
     b = [(M.spfc(n, **opts[n]), D_SPFC[n] + D_SPFC_COMMUN) for n in names]
     b += [(M.mgc('MGC_MARS'), D_MGC)]
     if kind in ('lha', 'sho', 'hoo'):
-        b += [(M.mgc('MGC_MARS_Ha', gray='Ha'), D_MGC_NB % ('H', 'Ha', 'SPFC_Ha'))]
+        b += [(M.mgc('MGC_MARS_H', gray='Ha'), D_MGC_NB % ('H', 'Ha', 'SPFC_H'))]
     if kind in ('sho', 'hoo'):
-        b += [(M.mgc('MGC_MARS_OIII', gray='OIII'), D_MGC_NB % ('O', 'OIII', 'SPFC_OIII'))]
+        b += [(M.mgc('MGC_MARS_O', gray='OIII'), D_MGC_NB % ('O', 'OIII', 'SPFC_O'))]
     b += [(M.instance('GradientCorrection', 'GradientCorrection'), T_GC),
           (M.dbe('DBE'), D_DBE)]
     return b
@@ -330,14 +330,14 @@ lhargb = pre_block() + [rgb_comb(), (note('ImageSolver', T_SOLVER), '')] + gradi
     (note('Find_Background', T_FINDBG), ''),
     spcc(),
     (M.bxt('BXT_RGB', False, 0.25, 0.0, 0.50), "BlurXTerminator complet sur RGB, après SPCC : Sharpen Stars 0,25, Halos 0, Nonstellar 0,50."),
-    (M.bxt('BXT_L_Ha', False, 0.25, 0.0, 0.80), "BlurXTerminator complet sur L et sur le master Ha (mono, linéaires) : Sharpen Stars 0,25, Halos 0, Nonstellar 0,80. Déconvolue AVANT tout mélange (soustraction du continuum, injection)."),
-    (pm('Continuum_Ha', 'k = 0.9;\nH - k*(R - med(R))', symbols='k', new_image=True, new_id='H_cs', space='Gray'),
+    (M.bxt('BXT_L_H', False, 0.25, 0.0, 0.80), "BlurXTerminator complet sur L et sur le master Ha (mono, linéaires) : Sharpen Stars 0,25, Halos 0, Nonstellar 0,80. Déconvolue AVANT tout mélange (soustraction du continuum, injection)."),
+    (pm('Continuum_H', 'k = 0.9;\nH - k*(R - med(R))', symbols='k', new_image=True, new_id='H_cs', space='Gray'),
      "Soustraction du continuum : H_cs = H - k*(R - med(R)). Vues 'H' et 'R' (master rouge linéaire, gradient retiré). Ajuste k (0,8 à 1) jusqu'à faire disparaître étoiles et disque galactique. "
      "med(R) garde le niveau du fond. Limite : résidus sur les étoiles (PSF différentes). "
      "CONTRÔLE : dans H_cs, étoiles et disque galactique ont disparu, il ne reste que les taches HII sur un fond sombre proche de 0. "
      "Continuum mal soustrait = cœur et halo de la galaxie rougis et étoiles à halo rouge dans l'image finale : augmente k. NXT sur H_cs avant injection si son fond est granuleux."),
     (note('Continuum_auto', "OPTION — Automatic Continuum Subtraction (SetiAstro, script) : choisis H et R ; le script calcule le coefficient. Contrôle que les étoiles disparaissent de H_cs."), ''),
-    (pm('Ha_dans_RGB', 'w = 1.0;\n$T[0] + w*H_cs', '$T[1]', '$T[2]', symbols='w'),
+    (pm('H_dans_RGB', 'w = 1.0;\n$T[0] + w*H_cs', '$T[1]', '$T[2]', symbols='w'),
      "Injection de H_cs dans le rouge : applique sur l'image RGB (linéaire, calibrée) ; R' = R + w*H_cs, G et B inchangés. w de 0,5 à 2 selon l'effet voulu. "
      "Garde une copie du RGB avant injection pour comparer. RENDU VISÉ : identique au LRGB partout, sauf les régions HII, rose à rouge rosé (Hα + Hβ), plus visibles mais ponctuelles ; cœur, bras, étoiles et fond inchangés. "
      "CONTRÔLE à la sonde 15x15 : région HII R nettement au-dessus de G et B avec B >= G ; cœur R >= G >> B comme en LRGB ; fond R = G = B. "
@@ -345,7 +345,7 @@ lhargb = pre_block() + [rgb_comb(), (note('ImageSolver', T_SOLVER), '')] + gradi
      "ÉTOILES : l'injection se fait avant SXT, donc les étoiles gardées viennent du RGB injecté ; tout résidu d'étoile dans H_cs passe dans leur rouge. Défauts : étoiles rougies ou à halo rouge (k trop faible), "
      "anneaux clairs ou sombres (PSF différentes entre Ha et R, inévitable en partie), étoiles grossies (w trop fort). Standard : comme en LRGB, et pas plus rouges que sur la copie avant injection. "
      "OPTION la plus propre : SXT sur une copie du RGB AVANT injection, garde ces étoiles-là, et injecte le Ha seulement dans l'image sans étoiles."),
-    (pm('Ha_dans_L', 'a = 1.0;\nmax(L, H_cs*a)', symbols='a', new_image=True, new_id='L_H', space='Gray'),
+    (pm('H_dans_L', 'a = 1.0;\nmax(L, H_cs*a)', symbols='a', new_image=True, new_id='L_H', space='Gray'),
      "Option : injection de Ha dans la luminance, L' = max(L, a*H_cs). Vues 'L' et 'H_cs'. Rend les régions HII plus nettes. Renomme ensuite 'L_H' en 'L' pour la suite. "
      "Régions HII nettes mais couleurs délavées après LRGBCombination : a trop fort, baisse-le ou fais un mélange léger."),
     (note('NBRGBCombination', "ALTERNATIVE — NBRGBCombination (Script › Utilities) : image RGB et sa bande passante (~100 nm pour un filtre R mono), image Ha dans le canal R avec la bande passante de ton filtre (3, 5, 7 nm), "
@@ -382,8 +382,8 @@ def extract(prefix_names, src_desc):
                     "AVANT : renomme les masters linéaires qui portent déjà ce nom (par exemple '%s_lin'), sinon PixInsight donnera un autre nom à la nouvelle vue et les formules suivantes ne la trouveront pas." % (idx, src_desc, n, n)))
     return out
 
-nb_noise = [(M.nxt('NXT_Ha', 0.60, 1), "NoiseXTerminator sur Ha sans étoiles : Denoise 0,60 (0,50 à 0,70), Detail 0,15. En linéaire ou après étirement."),
-            (M.nxt('NXT_OIII_SII', 0.75, 1), "NoiseXTerminator sur OIII et SII sans étoiles, plus bruités : Denoise 0,75 (0,60 à 0,85). Ne pousse pas plus : aspect plastique.")]
+nb_noise = [(M.nxt('NXT_H', 0.60, 1), "NoiseXTerminator sur Ha sans étoiles : Denoise 0,60 (0,50 à 0,70), Detail 0,15. En linéaire ou après étirement."),
+            (M.nxt('NXT_O_S', 0.75, 1), "NoiseXTerminator sur OIII et SII sans étoiles, plus bruités : Denoise 0,75 (0,60 à 0,85). Ne pousse pas plus : aspect plastique.")]
 GHS_NB = (" En narrowband, étire chaque canal séparément. Règle : même niveau de fond et médiane proche pour tous les canaux (on n'égalise pas la nébuleuse : l'écart de signal, c'est la couleur). "
           "Étire Ha en premier (pic d'histogramme vers 0,20-0,25) et note ce niveau : c'est la référence. Puis OIII et SII jusqu'au MÊME fond et à la même médiane ; ils demandent un Stretch factor plus élevé, monte LP pour ne pas faire ressortir leur bruit. "
           "Vérifie le fond avec Statistics ou la lecture de pixel. CONTRÔLE : combinaison simple des canaux étirés ; le fond doit être gris neutre, sinon le fond du canal dominant est trop clair : reprends son étirement. "
@@ -466,9 +466,9 @@ sho = pre_block() + nb_masters(['S', 'H', 'O']) + [
 
 # ---------------------------------------------------------------- HOO
 hoo = pre_block() + [
-    (pm('DualBand_Ha', '$T[0]', new_image=True, new_id='H', space='Gray'),
+    (pm('DualBand_H', '$T[0]', new_image=True, new_id='H', space='Gray'),
      "CAMÉRA COULEUR + filtre dual-band seulement : applique sur l'image couleur (gradient retiré, BXT déjà appliqué) ; Ha = canal rouge. Caméra mono : ignore cette icône et la suivante."),
-    (pm('DualBand_OIII', '($T[1] + $T[2]) / 2', new_image=True, new_id='O', space='Gray'),
+    (pm('DualBand_O', '($T[1] + $T[2]) / 2', new_image=True, new_id='O', space='Gray'),
      "CAMÉRA COULEUR + dual-band : OIII = moyenne de G et B. Le bleu est plus bruité et moins riche : donner plus de poids à G donne souvent un OIII plus propre (poids selon capteur et filtre). "
      "La fuite Bayer (OIII dans R, Ha dans B) ne peut pas être séparée parfaitement."),
 ] + nb_masters(['H', 'O']) + [
@@ -492,7 +492,7 @@ hoo = pre_block() + [
      "ALTERNATIVE — variante « style Hubble » (Galactic Hunter) : G = 0,6·H + 0,4·O, tons plus dorés ; ajuste les coefficients."),
     (note('Perfect_Palette_Picker', T_PPP), ''),
     (note('NBColourMapper', T_NBCM), ''),
-    (M.instance('LRGBCombination', 'Ha_en_luminance', {'mL': '0.500', 'mc': '0.400', 'noiseReduction': True}, post=M.lrgb_post),
+    (M.instance('LRGBCombination', 'H_en_luminance', {'mL': '0.500', 'mc': '0.400', 'noiseReduction': True}, post=M.lrgb_post),
      "Option — Ha en luminance : fais une copie de H étiré nommée 'L' (même fond et médiane proche que l'image HOO, sinon couleurs délavées), puis applique sur l'image HOO. Seul L activé, Lightness 0,5, Saturation 0,40."),
 ] + finish_block() + [
     (note('Etoiles_HOO', "ÉTOILES — avec RGB : suis le bloc étoiles RGB du workflow RGB + SHO. Sans RGB : utilise l'image d'étoiles de SXT sur HOO (ou NB to RGB Star Combination), étire-la avec Star Stretch et renomme-la 'stars'. "
@@ -509,7 +509,7 @@ hoo = pre_block() + [
 os.makedirs(OUT, exist_ok=True)
 mat = [(spcc_perso('SPCC_QHY600_Antlia'), T_SPCC)] + [(M.spfc(n + '_QHY600_Antlia' if n != 'SPFC_RGB_filtres' else 'SPFC_RGB_QHY600_Antlia', **o), D_SPFC[n] + D_SPFC_COMMUN) for n, o in [
     ('SPFC_RGB_filtres', dict(rgb='antlia', gray='antlia_L_spec', qe='qe_imx455')), ('SPFC_L', dict(rgb='antlia', gray='antlia_L_spec', qe='qe_imx455')),
-    ('SPFC_Ha', dict(nb=(656.3, 3.0), rgb='antlia', gray='antlia_L_spec', qe='qe_imx455')), ('SPFC_OIII', dict(nb=(500.7, 3.0), rgb='antlia', gray='antlia_L_spec', qe='qe_imx455')), ('SPFC_SII', dict(nb=(672.4, 3.0), rgb='antlia', gray='antlia_L_spec', qe='qe_imx455'))]]
+    ('SPFC_H', dict(nb=(656.3, 3.0), rgb='antlia', gray='antlia_L_spec', qe='qe_imx455')), ('SPFC_O', dict(nb=(500.7, 3.0), rgb='antlia', gray='antlia_L_spec', qe='qe_imx455')), ('SPFC_S', dict(nb=(672.4, 3.0), rgb='antlia', gray='antlia_L_spec', qe='qe_imx455'))]]
 insts, icons = [], []
 for i, (item, desc) in enumerate(mat):
     item = described(item, desc)

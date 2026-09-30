@@ -233,7 +233,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="generateStarMaps" value="false"/>
       <parameter id="generateTextFiles" value="false"/>
    </instance>
-   <instance class="SpectrophotometricFluxCalibration" version="1" id="SPFC_Ha_instance">
+   <instance class="SpectrophotometricFluxCalibration" version="1" id="SPFC_H_instance">
       <parameter id="narrowbandMode" value="true"/>
       <parameter id="grayFilterTrCurve">300,0,380,0,400,1,500,1,675,1,710,0,800,0</parameter>
       <parameter id="grayFilterName">Astronomik UV-IR Block L-2</parameter>
@@ -278,7 +278,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="generateStarMaps" value="false"/>
       <parameter id="generateTextFiles" value="false"/>
    </instance>
-   <instance class="SpectrophotometricFluxCalibration" version="1" id="SPFC_OIII_instance">
+   <instance class="SpectrophotometricFluxCalibration" version="1" id="SPFC_O_instance">
       <parameter id="narrowbandMode" value="true"/>
       <parameter id="grayFilterTrCurve">300,0,380,0,400,1,500,1,675,1,710,0,800,0</parameter>
       <parameter id="grayFilterName">Astronomik UV-IR Block L-2</parameter>
@@ -323,7 +323,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="generateStarMaps" value="false"/>
       <parameter id="generateTextFiles" value="false"/>
    </instance>
-   <instance class="SpectrophotometricFluxCalibration" version="1" id="SPFC_SII_instance">
+   <instance class="SpectrophotometricFluxCalibration" version="1" id="SPFC_S_instance">
       <parameter id="narrowbandMode" value="true"/>
       <parameter id="grayFilterTrCurve">300,0,380,0,400,1,500,1,675,1,710,0,800,0</parameter>
       <parameter id="grayFilterName">Astronomik UV-IR Block L-2</parameter>
@@ -387,7 +387,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="scaleFactorB" value="1.00"/>
       <parameter id="showGradientModel" value="true"/>
    </instance>
-   <instance class="MultiscaleGradientCorrection" version="1" id="MGC_MARS_Ha_instance">
+   <instance class="MultiscaleGradientCorrection" version="1" id="MGC_MARS_H_instance">
       <parameter id="command"></parameter>
       <parameter id="useMARSDatabase" value="true"/>
       <parameter id="grayMARSFilter">Ha</parameter>
@@ -406,7 +406,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="scaleFactorB" value="1.00"/>
       <parameter id="showGradientModel" value="true"/>
    </instance>
-   <instance class="MultiscaleGradientCorrection" version="1" id="MGC_MARS_OIII_instance">
+   <instance class="MultiscaleGradientCorrection" version="1" id="MGC_MARS_O_instance">
       <parameter id="command"></parameter>
       <parameter id="useMARSDatabase" value="true"/>
       <parameter id="grayMARSFilter">OIII</parameter>
@@ -536,12 +536,12 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
    <icon id="SPFC_RGB_filtres" instance="SPFC_RGB_filtres_instance" xpos="40" ypos="264" workspace="Workspace01"/>
    <icon id="SPFC_couleur_OSC" instance="SPFC_couleur_OSC_instance" xpos="40" ypos="296" workspace="Workspace01"/>
    <icon id="SPFC_L" instance="SPFC_L_instance" xpos="40" ypos="328" workspace="Workspace01"/>
-   <icon id="SPFC_Ha" instance="SPFC_Ha_instance" xpos="40" ypos="360" workspace="Workspace01"/>
-   <icon id="SPFC_OIII" instance="SPFC_OIII_instance" xpos="40" ypos="392" workspace="Workspace01"/>
-   <icon id="SPFC_SII" instance="SPFC_SII_instance" xpos="270" ypos="40" workspace="Workspace01"/>
+   <icon id="SPFC_H" instance="SPFC_H_instance" xpos="40" ypos="360" workspace="Workspace01"/>
+   <icon id="SPFC_O" instance="SPFC_O_instance" xpos="40" ypos="392" workspace="Workspace01"/>
+   <icon id="SPFC_S" instance="SPFC_S_instance" xpos="270" ypos="40" workspace="Workspace01"/>
    <icon id="MGC_MARS" instance="MGC_MARS_instance" xpos="270" ypos="72" workspace="Workspace01"/>
-   <icon id="MGC_MARS_Ha" instance="MGC_MARS_Ha_instance" xpos="270" ypos="104" workspace="Workspace01"/>
-   <icon id="MGC_MARS_OIII" instance="MGC_MARS_OIII_instance" xpos="270" ypos="136" workspace="Workspace01"/>
+   <icon id="MGC_MARS_H" instance="MGC_MARS_H_instance" xpos="270" ypos="104" workspace="Workspace01"/>
+   <icon id="MGC_MARS_O" instance="MGC_MARS_O_instance" xpos="270" ypos="136" workspace="Workspace01"/>
    <icon id="DBE_base" instance="DBE_base_instance" xpos="270" ypos="168" workspace="Workspace01"/>
    <icon id="DynamicCrop_base" instance="DynamicCrop_base_instance" xpos="270" ypos="200" workspace="Workspace01"/>
    <icon id="NBN_SHO" instance="NBN_SHO_instance" xpos="270" ypos="232" workspace="Workspace01"/>

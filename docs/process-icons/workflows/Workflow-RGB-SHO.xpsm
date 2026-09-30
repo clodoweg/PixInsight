@@ -67,7 +67,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
    <instance class="NoOperation" version="256" id="RSHO_04_Masters_S_H_O_instance">
       <description>Masters S et H et O : même recadrage (icône DynamicCrop) et retrait du gradient sur CHAQUE master séparément (icônes suivantes). OIII est le plus sensible à la Lune : contrôle bien son modèle. Nomme les vues exactement 'S', 'H' et 'O' : les formules en dépendent.</description>
    </instance>
-   <instance class="SpectrophotometricFluxCalibration" version="1" id="RSHO_05_SPFC_SII_instance">
+   <instance class="SpectrophotometricFluxCalibration" version="1" id="RSHO_05_SPFC_S_instance">
       <description>SPFC sur le master SII : QE curve IMX455 ; Narrowband mode, 672,4 nm, bande passante 3 nm (filtres Antlia 3 nm). Prérequis : image LINÉAIRE et résolue (ImageSolver ou WBPP), base Gaia DR3/SP installée. Catalog Gaia DR3/SP, Automatic limit magnitude coché, détection PSF par défaut. SPFC ne modifie pas les pixels : il écrit les métadonnées de flux lues par MGC. Utilise ensuite les MÊMES filtres dans SPCC.</description>
       <parameter id="narrowbandMode" value="true"/>
       <parameter id="grayFilterTrCurve">300,0,410,0,420,0.95,705,0.95,720,0,800,0</parameter>
@@ -113,7 +113,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="generateStarMaps" value="false"/>
       <parameter id="generateTextFiles" value="false"/>
    </instance>
-   <instance class="SpectrophotometricFluxCalibration" version="1" id="RSHO_06_SPFC_Ha_instance">
+   <instance class="SpectrophotometricFluxCalibration" version="1" id="RSHO_06_SPFC_H_instance">
       <description>SPFC sur le master Ha : QE curve IMX455 ; Narrowband mode, 656,3 nm, bande passante 3 nm (filtres Antlia 3 nm). Prérequis : image LINÉAIRE et résolue (ImageSolver ou WBPP), base Gaia DR3/SP installée. Catalog Gaia DR3/SP, Automatic limit magnitude coché, détection PSF par défaut. SPFC ne modifie pas les pixels : il écrit les métadonnées de flux lues par MGC. Utilise ensuite les MÊMES filtres dans SPCC.</description>
       <parameter id="narrowbandMode" value="true"/>
       <parameter id="grayFilterTrCurve">300,0,410,0,420,0.95,705,0.95,720,0,800,0</parameter>
@@ -159,7 +159,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="generateStarMaps" value="false"/>
       <parameter id="generateTextFiles" value="false"/>
    </instance>
-   <instance class="SpectrophotometricFluxCalibration" version="1" id="RSHO_07_SPFC_OIII_instance">
+   <instance class="SpectrophotometricFluxCalibration" version="1" id="RSHO_07_SPFC_O_instance">
       <description>SPFC sur le master OIII : QE curve IMX455 ; Narrowband mode, 500,7 nm, bande passante 3 nm (filtres Antlia 3 nm). Prérequis : image LINÉAIRE et résolue (ImageSolver ou WBPP), base Gaia DR3/SP installée. Catalog Gaia DR3/SP, Automatic limit magnitude coché, détection PSF par défaut. SPFC ne modifie pas les pixels : il écrit les métadonnées de flux lues par MGC. Utilise ensuite les MÊMES filtres dans SPCC.</description>
       <parameter id="narrowbandMode" value="true"/>
       <parameter id="grayFilterTrCurve">300,0,410,0,420,0.95,705,0.95,720,0,800,0</parameter>
@@ -206,7 +206,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="generateTextFiles" value="false"/>
    </instance>
    <instance class="MultiscaleGradientCorrection" version="1" id="RSHO_08_MGC_MARS_instance">
-      <description>MultiscaleGradientCorrection, juste après SPFC, sur la même image. Use MARS database coché ; filtres MARS Gray = L (image mono), Red = R, Green = G, Blue = B (image couleur) ; Gradient scale 1024 (512 ou 256 si un gradient reste dans les coins), Structure separation 3 (1-2 pour les bords), Model smoothness 1,0 (3-5 si le modèle ondule), Scale factors 1,0, Show gradient model coché. La base MARS se charge dans les préférences de MGC (clé à molette › Add › fichier .xmars) : si MGC signale qu'aucune base n'est chargée, ajoute-la là. Narrowband : MARS DR2 (21 juin 2026) couvre Ha et OIII jusqu'à +75° de déclinaison : utilise les icônes MGC_MARS_Ha et MGC_MARS_OIII (filtre MARS Gray = Ha ou OIII) ; cette icône-ci est réglée sur L. SII absent de DR2 : GradientCorrection ou DBE.</description>
+      <description>MultiscaleGradientCorrection, juste après SPFC, sur la même image. Use MARS database coché ; filtres MARS Gray = L (image mono), Red = R, Green = G, Blue = B (image couleur) ; Gradient scale 1024 (512 ou 256 si un gradient reste dans les coins), Structure separation 3 (1-2 pour les bords), Model smoothness 1,0 (3-5 si le modèle ondule), Scale factors 1,0, Show gradient model coché. La base MARS se charge dans les préférences de MGC (clé à molette › Add › fichier .xmars) : si MGC signale qu'aucune base n'est chargée, ajoute-la là. Narrowband : MARS DR2 (21 juin 2026) couvre Ha et OIII jusqu'à +75° de déclinaison : utilise les icônes MGC_MARS_H et MGC_MARS_O (filtre MARS Gray = Ha ou OIII) ; cette icône-ci est réglée sur L. SII absent de DR2 : GradientCorrection ou DBE.</description>
       <parameter id="command"></parameter>
       <parameter id="useMARSDatabase" value="true"/>
       <parameter id="grayMARSFilter">L</parameter>
@@ -225,8 +225,8 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="scaleFactorB" value="1.00"/>
       <parameter id="showGradientModel" value="true"/>
    </instance>
-   <instance class="MultiscaleGradientCorrection" version="1" id="RSHO_09_MGC_MARS_Ha_instance">
-      <description>MultiscaleGradientCorrection pour le master H : filtre MARS Gray = Ha (MARS DR2, juin 2026 : bandes Ha et OIII, couverture narrowband jusqu'à +75° de déclinaison ; valeur du paramètre relevée dans un outil qui pilote MGC sous PixInsight 1.9.5, texte du menu non vu dans l'interface). Applique juste après l'icône SPFC_Ha, sur le même master linéaire et résolu. Autres réglages identiques à MGC_MARS : Gradient scale 1024 (512 ou 256 si un gradient reste dans les coins), Structure separation 3, Model smoothness 1,0, Show gradient model coché (le modèle doit être lisse, sans structure de la nébuleuse). Base MARS DR2 à charger dans les préférences de MGC (clé à molette › Add › fichier .xmars). Hors couverture MARS : GradientCorrection ou DBE. SII : pas de bande SII dans MARS, utilise GradientCorrection ou DBE.</description>
+   <instance class="MultiscaleGradientCorrection" version="1" id="RSHO_09_MGC_MARS_H_instance">
+      <description>MultiscaleGradientCorrection pour le master H : filtre MARS Gray = Ha (MARS DR2, juin 2026 : bandes Ha et OIII, couverture narrowband jusqu'à +75° de déclinaison ; valeur du paramètre relevée dans un outil qui pilote MGC sous PixInsight 1.9.5, texte du menu non vu dans l'interface). Applique juste après l'icône SPFC_H, sur le même master linéaire et résolu. Autres réglages identiques à MGC_MARS : Gradient scale 1024 (512 ou 256 si un gradient reste dans les coins), Structure separation 3, Model smoothness 1,0, Show gradient model coché (le modèle doit être lisse, sans structure de la nébuleuse). Base MARS DR2 à charger dans les préférences de MGC (clé à molette › Add › fichier .xmars). Hors couverture MARS : GradientCorrection ou DBE. SII : pas de bande SII dans MARS, utilise GradientCorrection ou DBE.</description>
       <parameter id="command"></parameter>
       <parameter id="useMARSDatabase" value="true"/>
       <parameter id="grayMARSFilter">Ha</parameter>
@@ -245,8 +245,8 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="scaleFactorB" value="1.00"/>
       <parameter id="showGradientModel" value="true"/>
    </instance>
-   <instance class="MultiscaleGradientCorrection" version="1" id="RSHO_10_MGC_MARS_OIII_instance">
-      <description>MultiscaleGradientCorrection pour le master O : filtre MARS Gray = OIII (MARS DR2, juin 2026 : bandes Ha et OIII, couverture narrowband jusqu'à +75° de déclinaison ; valeur du paramètre relevée dans un outil qui pilote MGC sous PixInsight 1.9.5, texte du menu non vu dans l'interface). Applique juste après l'icône SPFC_OIII, sur le même master linéaire et résolu. Autres réglages identiques à MGC_MARS : Gradient scale 1024 (512 ou 256 si un gradient reste dans les coins), Structure separation 3, Model smoothness 1,0, Show gradient model coché (le modèle doit être lisse, sans structure de la nébuleuse). Base MARS DR2 à charger dans les préférences de MGC (clé à molette › Add › fichier .xmars). Hors couverture MARS : GradientCorrection ou DBE. SII : pas de bande SII dans MARS, utilise GradientCorrection ou DBE.</description>
+   <instance class="MultiscaleGradientCorrection" version="1" id="RSHO_10_MGC_MARS_O_instance">
+      <description>MultiscaleGradientCorrection pour le master O : filtre MARS Gray = OIII (MARS DR2, juin 2026 : bandes Ha et OIII, couverture narrowband jusqu'à +75° de déclinaison ; valeur du paramètre relevée dans un outil qui pilote MGC sous PixInsight 1.9.5, texte du menu non vu dans l'interface). Applique juste après l'icône SPFC_O, sur le même master linéaire et résolu. Autres réglages identiques à MGC_MARS : Gradient scale 1024 (512 ou 256 si un gradient reste dans les coins), Structure separation 3, Model smoothness 1,0, Show gradient model coché (le modèle doit être lisse, sans structure de la nébuleuse). Base MARS DR2 à charger dans les préférences de MGC (clé à molette › Add › fichier .xmars). Hors couverture MARS : GradientCorrection ou DBE. SII : pas de bande SII dans MARS, utilise GradientCorrection ou DBE.</description>
       <parameter id="command"></parameter>
       <parameter id="useMARSDatabase" value="true"/>
       <parameter id="grayMARSFilter">OIII</parameter>
@@ -469,7 +469,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
-   <instance class="NoiseXTerminator" version="256" id="RSHO_20_NXT_Ha_instance">
+   <instance class="NoiseXTerminator" version="256" id="RSHO_20_NXT_H_instance">
       <description>NoiseXTerminator sur Ha sans étoiles : Denoise 0,60 (0,50 à 0,70), Detail 0,15. En linéaire ou après étirement.</description>
       <parameter id="ml_version" value="0"/>
       <parameter id="denoise" value="0.60"/>
@@ -488,7 +488,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="detail" value="0.15"/>
       <parameter id="overlap" value="0.20"/>
    </instance>
-   <instance class="NoiseXTerminator" version="256" id="RSHO_21_NXT_OIII_SII_instance">
+   <instance class="NoiseXTerminator" version="256" id="RSHO_21_NXT_O_S_instance">
       <description>NoiseXTerminator sur OIII et SII sans étoiles, plus bruités : Denoise 0,75 (0,60 à 0,85). Ne pousse pas plus : aspect plastique.</description>
       <parameter id="ml_version" value="0"/>
       <parameter id="denoise" value="0.75"/>
@@ -1188,12 +1188,12 @@ max(Img1,f1)</parameter>
    <icon id="RSHO_02_CC_auto" instance="RSHO_02_CC_auto_instance" xpos="30" ypos="60" workspace="Workspace01"/>
    <icon id="RSHO_03_DynamicCrop" instance="RSHO_03_DynamicCrop_instance" xpos="30" ypos="90" workspace="Workspace01"/>
    <icon id="RSHO_04_Masters_S_H_O" instance="RSHO_04_Masters_S_H_O_instance" xpos="30" ypos="120" workspace="Workspace01"/>
-   <icon id="RSHO_05_SPFC_SII" instance="RSHO_05_SPFC_SII_instance" xpos="30" ypos="150" workspace="Workspace01"/>
-   <icon id="RSHO_06_SPFC_Ha" instance="RSHO_06_SPFC_Ha_instance" xpos="30" ypos="180" workspace="Workspace01"/>
-   <icon id="RSHO_07_SPFC_OIII" instance="RSHO_07_SPFC_OIII_instance" xpos="30" ypos="210" workspace="Workspace01"/>
+   <icon id="RSHO_05_SPFC_S" instance="RSHO_05_SPFC_S_instance" xpos="30" ypos="150" workspace="Workspace01"/>
+   <icon id="RSHO_06_SPFC_H" instance="RSHO_06_SPFC_H_instance" xpos="30" ypos="180" workspace="Workspace01"/>
+   <icon id="RSHO_07_SPFC_O" instance="RSHO_07_SPFC_O_instance" xpos="30" ypos="210" workspace="Workspace01"/>
    <icon id="RSHO_08_MGC_MARS" instance="RSHO_08_MGC_MARS_instance" xpos="30" ypos="240" workspace="Workspace01"/>
-   <icon id="RSHO_09_MGC_MARS_Ha" instance="RSHO_09_MGC_MARS_Ha_instance" xpos="30" ypos="270" workspace="Workspace01"/>
-   <icon id="RSHO_10_MGC_MARS_OIII" instance="RSHO_10_MGC_MARS_OIII_instance" xpos="30" ypos="300" workspace="Workspace01"/>
+   <icon id="RSHO_09_MGC_MARS_H" instance="RSHO_09_MGC_MARS_H_instance" xpos="30" ypos="270" workspace="Workspace01"/>
+   <icon id="RSHO_10_MGC_MARS_O" instance="RSHO_10_MGC_MARS_O_instance" xpos="30" ypos="300" workspace="Workspace01"/>
    <icon id="RSHO_11_GradientCorrection" instance="RSHO_11_GradientCorrection_instance" xpos="30" ypos="330" workspace="Workspace01"/>
    <icon id="RSHO_12_DBE" instance="RSHO_12_DBE_instance" xpos="30" ypos="360" workspace="Workspace01"/>
    <icon id="RSHO_13_LinearFit_ref_H" instance="RSHO_13_LinearFit_ref_H_instance" xpos="30" ypos="390" workspace="Workspace01"/>
@@ -1203,8 +1203,8 @@ max(Img1,f1)</parameter>
    <icon id="RSHO_17_Extraire_S" instance="RSHO_17_Extraire_S_instance" xpos="330" ypos="90" workspace="Workspace01"/>
    <icon id="RSHO_18_Extraire_H" instance="RSHO_18_Extraire_H_instance" xpos="330" ypos="120" workspace="Workspace01"/>
    <icon id="RSHO_19_Extraire_O" instance="RSHO_19_Extraire_O_instance" xpos="330" ypos="150" workspace="Workspace01"/>
-   <icon id="RSHO_20_NXT_Ha" instance="RSHO_20_NXT_Ha_instance" xpos="330" ypos="180" workspace="Workspace01"/>
-   <icon id="RSHO_21_NXT_OIII_SII" instance="RSHO_21_NXT_OIII_SII_instance" xpos="330" ypos="210" workspace="Workspace01"/>
+   <icon id="RSHO_20_NXT_H" instance="RSHO_20_NXT_H_instance" xpos="330" ypos="180" workspace="Workspace01"/>
+   <icon id="RSHO_21_NXT_O_S" instance="RSHO_21_NXT_O_S_instance" xpos="330" ypos="210" workspace="Workspace01"/>
    <icon id="RSHO_22_GHS_1_premier" instance="RSHO_22_GHS_1_premier_instance" xpos="330" ypos="240" workspace="Workspace01"/>
    <icon id="RSHO_23_GHS_2_contraste" instance="RSHO_23_GHS_2_contraste_instance" xpos="330" ypos="270" workspace="Workspace01"/>
    <icon id="RSHO_24_GHS_3_fond" instance="RSHO_24_GHS_3_fond_instance" xpos="330" ypos="300" workspace="Workspace01"/>

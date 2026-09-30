@@ -121,7 +121,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
-   <instance class="PixelMath" version="256" id="DualBand_Ha_instance">
+   <instance class="PixelMath" version="256" id="DualBand_H_instance">
       <parameter id="expression">$T[0]</parameter>
       <parameter id="expression1"></parameter>
       <parameter id="expression2"></parameter>
@@ -150,7 +150,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
-   <instance class="PixelMath" version="256" id="DualBand_OIII_instance">
+   <instance class="PixelMath" version="256" id="DualBand_O_instance">
       <parameter id="expression">($T[1] + $T[2]) / 2</parameter>
       <parameter id="expression1"></parameter>
       <parameter id="expression2"></parameter>
@@ -179,7 +179,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
-   <instance class="PixelMath" version="256" id="Continuum_Ha_instance">
+   <instance class="PixelMath" version="256" id="Continuum_H_instance">
       <parameter id="expression">k = 0.9;
 H - k*(R - med(R))</parameter>
       <parameter id="expression1"></parameter>
@@ -209,7 +209,7 @@ H - k*(R - med(R))</parameter>
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
-   <instance class="PixelMath" version="256" id="Ha_dans_R_instance">
+   <instance class="PixelMath" version="256" id="H_dans_R_instance">
       <parameter id="expression">w = 1.0;
 R + w*H_cs</parameter>
       <parameter id="expression1"></parameter>
@@ -597,10 +597,10 @@ iif(M==1,E7,iif(M==2,E8,E9))</parameter>
    <icon id="Foraxx_HOO" instance="Foraxx_HOO_instance" xpos="40" ypos="72" workspace="Workspace01"/>
    <icon id="HOO_simple" instance="HOO_simple_instance" xpos="40" ypos="104" workspace="Workspace01"/>
    <icon id="HOO_Hubble" instance="HOO_Hubble_instance" xpos="40" ypos="136" workspace="Workspace01"/>
-   <icon id="DualBand_Ha" instance="DualBand_Ha_instance" xpos="40" ypos="168" workspace="Workspace01"/>
-   <icon id="DualBand_OIII" instance="DualBand_OIII_instance" xpos="40" ypos="200" workspace="Workspace01"/>
-   <icon id="Continuum_Ha" instance="Continuum_Ha_instance" xpos="40" ypos="232" workspace="Workspace01"/>
-   <icon id="Ha_dans_R" instance="Ha_dans_R_instance" xpos="40" ypos="264" workspace="Workspace01"/>
+   <icon id="DualBand_H" instance="DualBand_H_instance" xpos="40" ypos="168" workspace="Workspace01"/>
+   <icon id="DualBand_O" instance="DualBand_O_instance" xpos="40" ypos="200" workspace="Workspace01"/>
+   <icon id="Continuum_H" instance="Continuum_H_instance" xpos="40" ypos="232" workspace="Workspace01"/>
+   <icon id="H_dans_R" instance="H_dans_R_instance" xpos="40" ypos="264" workspace="Workspace01"/>
    <icon id="Etoiles_screen" instance="Etoiles_screen_instance" xpos="40" ypos="296" workspace="Workspace01"/>
    <icon id="Etoiles_HOO_synth" instance="Etoiles_HOO_synth_instance" xpos="40" ypos="328" workspace="Workspace01"/>
    <icon id="Blanshan_Transfer" instance="Blanshan_Transfer_instance" xpos="40" ypos="360" workspace="Workspace01"/>
