@@ -831,22 +831,19 @@ def finition_cont(steps):
     return cont('C_Finition', [pick(steps, b)[0] for b in ('Courbes', 'LHE', 'LHE_fin')])
 
 T_RAPIDE = {
- 'LRGB': ("MODE RAPIDE LRGB — icône de repère, sans effet. Aucun réglage à faire. Ordre (numéros des icônes) : "
+ 'LRGB': ("MODE RAPIDE LRGB — icône de repère, sans effet. Aucun réglage, pas de MARS (MGC + MARS : mode soigné). Ordre (numéros des icônes) : "
           "E00 LinearPatternSubtraction (glisse sur un master : tous les masters ouverts). E02 Renommer_auto (double-clic, Apply Global). E03 Combinaison_RGB. "
-          "Sur RGB : E04 ImageSolver (date par défaut si absente, puis ImageSolver ; icône seule, pas de conteneur), E05 SPFC_RGB_filtres, E06 TON MGC_MARS. "
-          "Sur L : E07 ImageSolver, E08 SPFC_L, E06 MGC_MARS. "
-          "E09 C_RGB_rapide sur RGB (BXT Correct Only, SPCC, BXT, SXT, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond SP = HP = 0,22) : RGB étiré sans étoiles et RGB_stars. "
-          "E10 C_L_rapide sur L (BXT, SXT, NXT, fermeture de L_stars, Statistical Stretch, GHS fond). "
-          "E11 Star_Stretch sur RGB_stars. E12 LRGB_ajout_L sur RGB. E13 Masque_L sur RGB, Ctrl+M, puis E14 C_Finition. E15 Etoiles_screen sur RGB. "
-          "MGC : garde TON icône MGC_MARS où tu as cliqué Default Files (chaque instance a sa liste MARS). Cible hors MARS (sud au-delà de −15° environ) : GradientCorrection des options à la place de MGC. "
-          "ImageSolver ne marche pas dans un conteneur ; s'il s'arrête après la date : ImageSolver_seul des options. Une étape en erreur arrête un conteneur : lis la console."),
- 'LHA': ("MODE RAPIDE LHaRGB — icône de repère, sans effet. "
-         "0 LinearPatternSubtraction (glisse sur un master). 1 Renommer_auto (double-clic, Apply Global). 2 Combinaison_RGB (R, G, B restent ouvertes : R sert à Continuum_H). "
-         "3 ImageSolver, SPFC_RGB_filtres, MGC_MARS sur RGB. 4 C_RGB_couleur_rapide sur RGB (BXT Correct Only, SPCC, BXT). "
-         "5 ImageSolver, SPFC_H, MGC_MARS_H, puis BXT_L_H sur H. 6 Continuum_H (k à régler), puis H_dans_RGB sur RGB. "
-         "7 C_RGB_fin_rapide sur RGB (SXT, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond 0,22). "
-         "8 ImageSolver, SPFC_L, MGC_MARS, puis C_L_rapide sur L. 9 Star_Stretch sur RGB_stars. 10 LRGB_ajout_L. 11 Masque_L, Ctrl+M, C_Finition. 12 Etoiles_screen. "
-         "MGC : garde TES icônes MGC réglées avec Default Files. Cible hors MARS : GradientCorrection des options. ImageSolver ne marche pas dans un conteneur : icône seule."),
+          "E04 ImageSolver sur RGB (date par défaut si absente, puis ImageSolver ; nécessaire à SPCC ; icône seule, pas de conteneur). "
+          "E05 C_RGB_rapide sur RGB (GradientCorrection, BXT Correct Only, SPCC, BXT, SXT, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond SP = HP = 0,22) : RGB étiré sans étoiles et RGB_stars. "
+          "E06 C_L_rapide sur L (GradientCorrection, BXT, SXT, NXT, fermeture de L_stars, Statistical Stretch, GHS fond). "
+          "E07 Star_Stretch sur RGB_stars. E08 LRGB_ajout_L sur RGB. E09 Masque_L sur RGB, Ctrl+M, puis E10 C_Finition. E11 Etoiles_screen sur RGB. "
+          "ImageSolver s'arrête après la date : ImageSolver_seul des options. Une étape en erreur arrête un conteneur : lis la console."),
+ 'LHA': ("MODE RAPIDE LHaRGB — icône de repère, sans effet. Pas de MARS (mode soigné). "
+         "E00 LinearPatternSubtraction (glisse sur un master). E02 Renommer_auto. E03 Combinaison_RGB (R, G, B restent ouvertes : R sert à Continuum_H). "
+         "E04 ImageSolver sur RGB. E05 GradientCorrection sur R. E06 C_RGB_couleur_rapide sur RGB (GradientCorrection, BXT Correct Only, SPCC, BXT). "
+         "E07 C_H_rapide sur H (GradientCorrection, BXT). E08 Continuum_H (k à régler), puis E09 H_dans_RGB sur RGB. "
+         "E10 C_RGB_fin_rapide sur RGB (SXT, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond 0,22). E11 C_L_rapide sur L. "
+         "E12 Star_Stretch sur RGB_stars. E13 LRGB_ajout_L. E14 Masque_L, Ctrl+M, E15 C_Finition. E16 Etoiles_screen."),
 }
 WHEN_R = {'GradientCorrection': "à la place de MGC_MARS si la cible est hors couverture MARS (sud au-delà de −15° environ) ou si MGC échoue",
           'Etoiles_reduites': L.WHEN['Etoiles_reduites']}
@@ -871,7 +868,7 @@ def write_rapide(filename, prefix, title, steps, main_spec, opt_spec):
     return len(main), len(opts)
 
 def rapide_common_opts(steps):
-    return [(2, *pick(steps, 'GradientCorrection')), (2, *pick(steps, 'ImageSolver_seul')),
+    return [(2, *pick(steps, 'ImageSolver_seul')),
             (6, *pick(steps, 'Boost_finition_light')), (6, *pick(steps, 'Boost_finition')), (6, *pick(steps, 'HDRMT_50')), (6, *pick(steps, 'NXT_final')),
             (7, *pick(steps, 'Halo_B_Gon')), (7, *pick(steps, 'MT_etoiles')), (7, *pick(steps, 'Etoiles_reduites'))]
 
@@ -883,21 +880,20 @@ def note_rapide(prefix):
     return (1, ('Mode_rapide', '   <instance class="NoOperation" version="256" id="Mode_rapide_instance">\n      <description>%s</description>\n   </instance>' % escape(T_RAPIDE[prefix])), '')
 
 bxt_rgb = lambda: M.bxt('BXT_RGB', False, 0.25, 0.0, 0.50)
-l_rapide = lambda bxt: cont('C_L_rapide', [bxt, M.sxt('SXT_lineaire', False), M.nxt('NXT_L', 0.60, 1), fermer('Fermer_L_stars', 'L_stars'), stat_auto(), GHS_FOND_R()])
+gc_r = lambda: M.instance('GradientCorrection', 'GradientCorrection', {'generateGradientModel': False})   # mode rapide : pas de MARS
+l_rapide = lambda bxt: cont('C_L_rapide', [gc_r(), bxt, M.sxt('SXT_lineaire', False), M.nxt('NXT_L', 0.60, 1), fermer('Fermer_L_stars', 'L_stars'), stat_auto(), GHS_FOND_R()])
 
 rapide_lrgb = [(1, *pick(lrgb, 'LinearPatternSubtraction')), note_rapide('LRGB'), (1, *pick(lrgb, 'Renommer_auto')), (1, *pick(lrgb, 'Combinaison_RGB')),
-    (2, solver_container(), ''), (2, *pick(lrgb, 'SPFC_RGB_filtres')), (2, *pick(lrgb, 'MGC_MARS')),
-    (2, solver_container(), ''), (2, *pick(lrgb, 'SPFC_L')),
-    (3, cont('C_RGB_rapide', [M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), spcc_perso('SPCC'), bxt_rgb(), M.sxt('SXT_lineaire', False),
+    (2, solver_container(), ''),
+    (3, cont('C_RGB_rapide', [gc_r(), M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), spcc_perso('SPCC'), bxt_rgb(), M.sxt('SXT_lineaire', False),
                               M.nxt('NXT_RGB', 0.80, 1), stat_auto(), GHS_FOND_R()]), ''),
     (3, l_rapide(M.bxt('BXT_L', False, 0.25, 0.0, 0.80)), '')] + rapide_end(lrgb)
 
 rapide_lha = [(1, *pick(lhargb, 'LinearPatternSubtraction')), note_rapide('LHA'), (1, *pick(lhargb, 'Renommer_auto')), (1, *pick(lhargb, 'Combinaison_RGB')),
-    (2, solver_container(), ''), (2, *pick(lhargb, 'SPFC_RGB_filtres')), (2, *pick(lhargb, 'MGC_MARS')),
-    (2, solver_container(), ''), (2, *pick(lhargb, 'SPFC_H')), (2, *pick(lhargb, 'MGC_MARS_H')),
-    (2, solver_container(), ''), (2, *pick(lhargb, 'SPFC_L')),
-    (3, cont('C_RGB_couleur_rapide', [M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), spcc_perso('SPCC'), bxt_rgb()]), ''),
-    (3, *pick(lhargb, 'BXT_L_H')), (3, *pick(lhargb, 'Continuum_H')), (3, *pick(lhargb, 'H_dans_RGB')),
+    (2, solver_container(), ''), (2, gc_r(), "GradientCorrection seul, sur le master R (gardé ouvert pour Continuum_H), valeurs par défaut."),
+    (3, cont('C_RGB_couleur_rapide', [gc_r(), M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), spcc_perso('SPCC'), bxt_rgb()]), ''),
+    (3, cont('C_H_rapide', [gc_r(), M.bxt('BXT_L_H', False, 0.25, 0.0, 0.80)]), ''),
+    (3, *pick(lhargb, 'Continuum_H')), (3, *pick(lhargb, 'H_dans_RGB')),
     (3, cont('C_RGB_fin_rapide', [M.sxt('SXT_lineaire', False), M.nxt('NXT_RGB', 0.80, 1), stat_auto(), GHS_FOND_R()]), ''),
     (3, l_rapide(M.bxt('BXT_L_H', False, 0.25, 0.0, 0.80)), '')] + rapide_end(lhargb)
 
