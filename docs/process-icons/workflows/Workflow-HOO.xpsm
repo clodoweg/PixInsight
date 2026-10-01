@@ -357,7 +357,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <instance class="MultiscaleGradientCorrection" version="1" id="E06_MGC_MARS_H_instance">
       <description>PRÉRÉGLÉ : comme MGC_MARS, filtre MARS Gray = Ha.
 
-À RÉGLER : rien ; après SPFC_H, sur le master H.
+À RÉGLER : une seule fois par ordinateur : ouvre l'icône, section MARS Database, clique Default Files (copie la liste des préférences de MGC), puis glisse le triangle sur l'icône pour la remplacer et enregistre tes icônes (Save Process Icons) ; à refaire si tu recharges les icônes de la fiche ; ensuite après SPFC_H, sur le master H.
 
 SI :
 - gradient restant -&gt; Gradient scale 512 puis 256
@@ -384,7 +384,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <instance class="MultiscaleGradientCorrection" version="1" id="E07_MGC_MARS_O_instance">
       <description>PRÉRÉGLÉ : comme MGC_MARS, filtre MARS Gray = OIII.
 
-À RÉGLER : rien ; après SPFC_O, sur le master O.
+À RÉGLER : une seule fois par ordinateur : ouvre l'icône, section MARS Database, clique Default Files (copie la liste des préférences de MGC), puis glisse le triangle sur l'icône pour la remplacer et enregistre tes icônes (Save Process Icons) ; à refaire si tu recharges les icônes de la fiche ; ensuite après SPFC_O, sur le master O.
 
 SI :
 - gradient restant -&gt; Gradient scale 512 puis 256

@@ -390,11 +390,12 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="generateTextFiles" value="false"/>
    </instance>
    <instance class="MultiscaleGradientCorrection" version="1" id="E06_MGC_MARS_instance">
-      <description>PRÉRÉGLÉ : Gradient scale 1024, Structure separation 3, Smoothness 1,0, MARS Gray = L, modèle affiché.
+      <description>PRÉRÉGLÉ : Gradient scale 1024, Structure separation 3, Smoothness 1,0, MARS Gray = L et R, G, B (la même icône sert pour L et pour l'image RGB), modèle affiché.
 
-À RÉGLER : rien ; après SPFC, sur l'image linéaire.
+À RÉGLER : une seule fois par ordinateur : ouvre l'icône, section MARS Database, clique Default Files (copie la liste des préférences de MGC), puis glisse le triangle sur l'icône pour la remplacer et enregistre tes icônes (Save Process Icons) ; à refaire si tu recharges les icônes de la fiche ; ensuite après SPFC, sur l'image linéaire.
 
 SI :
+- erreur « No MARS database files have been selected » -&gt; Default Files dans la section MARS Database
 - gradient restant dans les coins -&gt; Gradient scale 512 puis 256
 - modèle qui ondule -&gt; Smoothness 3 à 5
 - image couleur -&gt; filtres MARS R, G, B
