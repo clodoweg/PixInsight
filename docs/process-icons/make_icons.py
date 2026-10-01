@@ -91,10 +91,28 @@ def build(cls, version, name, params):
     lines.append('   </instance>')
     return name, '\n'.join(lines)
 
+def densify(curve, step=2.0, minpoints=20):
+    """Courbe de filtre approchée (quelques points) -> mêmes segments, rééchantillonnés tous les 2 nm.
+    SPFC refuse une courbe trop courte (« At least 5 items are required »)."""
+    v = [float(x) for x in curve.split(',')]
+    pts = list(zip(v[0::2], v[1::2]))
+    if len(pts) >= minpoints:
+        return curve
+    out, w = [], pts[0][0]
+    while w <= pts[-1][0] + 1e-9:
+        for (x0, y0), (x1, y1) in zip(pts, pts[1:]):
+            if x0 <= w <= x1:
+                y = y0 + (y1 - y0) * (w - x0) / (x1 - x0) if x1 > x0 else y1
+                break
+        out.append('%g,%.3f' % (w, y))
+        w += step
+    return ','.join(out)
+
 def spfc(name, rgb='ai', gray='ai_gray', qe=None, nb=None):
     """rgb : 'ai' (filtres Bayer Sony) ou 'astrodon' ; nb : (longueur d'onde, bande passante) pour un master narrowband."""
     qn, qc = CURVES[qe] if qe else ('Ideal QE curve', '1,1.0,500,1.0,1000,1.0,1500,1.0,2000,1.0,2500,1.0')
     gn, gc = CURVES[gray]
+    gc = densify(gc)
     rn, rc = CURVES[rgb + '_red']; gnn, gcc = CURVES[rgb + '_green']; bn, bc = CURVES[rgb + '_blue']
     wl, bw = nb if nb else (656.3, 3.0)
     p = [('narrowbandMode', bool(nb), 'v'),
