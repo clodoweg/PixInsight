@@ -3,7 +3,7 @@
 // ----------------------------------------------------------------------------
 // Appelle directement le moteur LPSEngine de Vicent Peris
 // (<pjsr/LinearPatternSubtraction.jsh>, livré avec PixInsight) avec des
-// réglages fixes, sur l'image active ou sur toutes les images ouvertes.
+// réglages fixes, sur toutes les images ouvertes (par défaut) ou une seule.
 // Zone de fond : choisie automatiquement (la plus sombre) si autoBackground.
 //
 // Installation (Mac et PC) : créer le dossier clodoweg dans src/scripts de
@@ -39,7 +39,7 @@ function LPS1Parameters()
    this.backgroundReferenceWidth = 512;
    this.backgroundReferenceHeight = 512;
    this.autoBackground = true;           // cherche la zone de fond la plus sombre
-   this.allOpenImages = false;           // true = traite toutes les images ouvertes
+   this.allOpenImages = true;            // true = traite toutes les images ouvertes (false = image active ou cible)
    this.closeWorkingImages = true;       // ferme les fenêtres LS, SS et pattern
 
    this.import = function()
@@ -129,9 +129,7 @@ function main()
    console.show();
 
    let windows = [];
-   if ( Parameters.isViewTarget )
-      windows.push( Parameters.targetView.window );
-   else if ( P.allOpenImages )
+   if ( P.allOpenImages )
    {
       let all = ImageWindow.windows;
       for ( let k = 0; k < all.length; ++k )
@@ -141,6 +139,8 @@ function main()
             windows.push( all[ k ] );
       }
    }
+   else if ( Parameters.isViewTarget )
+      windows.push( Parameters.targetView.window );
    else if ( !ImageWindow.activeWindow.isNull )
       windows.push( ImageWindow.activeWindow );
 

@@ -44,7 +44,7 @@ SCRIPTS = {
              [('correctColumns', 'false'), ('correctEntireImage', 'true'), ('defectTableFilePath', ''), ('layersToRemove', '9'),
               ('rejectionLimit', '3'), ('globalRejection', 'true'), ('globalRejectionLimit', '5'), ('autoBackground', 'true'),
               ('backgroundReferenceLeft', '0'), ('backgroundReferenceTop', '0'), ('backgroundReferenceWidth', '512'), ('backgroundReferenceHeight', '512'),
-              ('allOpenImages', 'false'), ('closeWorkingImages', 'true')],
+              ('allOpenImages', 'true'), ('closeWorkingImages', 'true')],
              L_DRAG + "Script LPS_UnClic.js de la fiche (moteur de Vicent Peris, sans dialogue). "),
     'Statistical_Stretch': ('$PXI_SRCDIR/scripts/statisticalstretch.js', 'defab45bb4e2f33db39a7bb016cdefb0',
              [('targetMedian', '0.25'), ('curvesBoost', '0'), ('numIterations', '1'), ('normalizeImageRange', 'false'),

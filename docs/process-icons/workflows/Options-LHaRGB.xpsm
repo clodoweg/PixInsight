@@ -13,13 +13,13 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
 
 LANCEMENT : glisse l'icône sur l'image.
 
-PRÉRÉGLÉ : script LPS_UnClic (moteur de Vicent Peris, sans dialogue) : lignes, Correct the entire image, Layers to remove 9, Rejection limit 3, Global rejection 5, zone de fond choisie automatiquement (la plus sombre), fenêtres de travail fermées.
+PRÉRÉGLÉ : script LPS_UnClic (moteur de Vicent Peris, sans dialogue) : lignes, Correct the entire image, Layers to remove 9, Rejection limit 3, Global rejection 5, zone de fond choisie automatiquement (la plus sombre), fenêtres de travail fermées, TOUTES les images ouvertes corrigées (allOpenImages = true).
 
-À RÉGLER : une seule fois par ordinateur (Mac ou PC) : crée le dossier clodoweg dans src/scripts de PixInsight (à côté de PatternCorrection ; Mac : /Applications/PixInsight/src/scripts/clodoweg, PC : en général C:\Program Files\PixInsight\src\scripts\clodoweg ; pas le dossier scripts du premier niveau) et copies-y LPS_UnClic.js ; ensuite glisse l'icône sur chaque master linéaire, avant le recadrage (la correction se fait dans l'image).
+À RÉGLER : une seule fois par ordinateur (Mac ou PC) : crée le dossier clodoweg dans src/scripts de PixInsight (à côté de PatternCorrection ; Mac : /Applications/PixInsight/src/scripts/clodoweg, PC : en général C:\Program Files\PixInsight\src\scripts\clodoweg ; pas le dossier scripts du premier niveau) et copies-y LPS_UnClic.js ; ensuite ouvre les masters linéaires de la cible (et rien d'autre), puis glisse l'icône sur l'un d'eux : tous sont corrigés, avant le recadrage (la correction se fait dans les images).
 
 SI :
 - corriger des colonnes -&gt; correctColumns = true dans l'icône
-- tous les masters ouverts d'un coup -&gt; allOpenImages = true, puis double-clic et Apply Global
+- une seule image -&gt; allOpenImages = false dans l'icône, puis glisse-la sur l'image
 - artefacts -&gt; Ctrl+Z : le script est conçu pour les brutes, avant alignement
 - script introuvable -&gt; vérifie le dossier scripts/clodoweg (à recopier après une réinstallation de PixInsight) ; version avec dialogue : menu Script › Pattern Correction › LinearPatternSubtraction
 
@@ -77,7 +77,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
          </tr>
          <tr>
             <td id="id">allOpenImages</td>
-            <td id="value">false</td>
+            <td id="value">true</td>
          </tr>
          <tr>
             <td id="id">closeWorkingImages</td>

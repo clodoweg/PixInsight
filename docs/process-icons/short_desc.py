@@ -5,10 +5,10 @@ PAGE = ' Détails : page docs/pixinsight-workflow.html.'
 
 # nom de base -> (préréglé, à régler, [si ... -> ...])
 S = {
-    'LinearPatternSubtraction': ("script LPS_UnClic (moteur de Vicent Peris, sans dialogue) : lignes, Correct the entire image, Layers to remove 9, Rejection limit 3, Global rejection 5, zone de fond choisie automatiquement (la plus sombre), fenêtres de travail fermées",
-             "une seule fois par ordinateur (Mac ou PC) : crée le dossier clodoweg dans src/scripts de PixInsight (à côté de PatternCorrection ; Mac : /Applications/PixInsight/src/scripts/clodoweg, PC : en général C:\\Program Files\\PixInsight\\src\\scripts\\clodoweg ; pas le dossier scripts du premier niveau) et copies-y LPS_UnClic.js ; ensuite glisse l'icône sur chaque master linéaire, avant le recadrage (la correction se fait dans l'image)",
+    'LinearPatternSubtraction': ("script LPS_UnClic (moteur de Vicent Peris, sans dialogue) : lignes, Correct the entire image, Layers to remove 9, Rejection limit 3, Global rejection 5, zone de fond choisie automatiquement (la plus sombre), fenêtres de travail fermées, TOUTES les images ouvertes corrigées (allOpenImages = true)",
+             "une seule fois par ordinateur (Mac ou PC) : crée le dossier clodoweg dans src/scripts de PixInsight (à côté de PatternCorrection ; Mac : /Applications/PixInsight/src/scripts/clodoweg, PC : en général C:\\Program Files\\PixInsight\\src\\scripts\\clodoweg ; pas le dossier scripts du premier niveau) et copies-y LPS_UnClic.js ; ensuite ouvre les masters linéaires de la cible (et rien d'autre), puis glisse l'icône sur l'un d'eux : tous sont corrigés, avant le recadrage (la correction se fait dans les images)",
              ["corriger des colonnes -> correctColumns = true dans l'icône",
-              "tous les masters ouverts d'un coup -> allOpenImages = true, puis double-clic et Apply Global",
+              "une seule image -> allOpenImages = false dans l'icône, puis glisse-la sur l'image",
               "artefacts -> Ctrl+Z : le script est conçu pour les brutes, avant alignement",
               "script introuvable -> vérifie le dossier scripts/clodoweg (à recopier après une réinstallation de PixInsight) ; version avec dialogue : menu Script › Pattern Correction › LinearPatternSubtraction"]),
     'WBPP': ("rien (WBPP garde ses propres réglages)",
