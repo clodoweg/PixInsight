@@ -62,7 +62,9 @@ function main()
 }
 
 // Lance ImageSolver (script livré avec PixInsight) sur l'image, avec les
-// réglages de l'icône (paramètre solverParams : liste JSON [[nom, valeur], ...]).
+// réglages de l'icône (paramètre solverParams : « nom=valeur;nom=valeur;... », sans
+// guillemets : PixInsight transmet les paramètres d'icône par une ligne de commande
+// run -p="nom,valeur" que des guillemets couperaient).
 function runSolver( window )
 {
    if ( !Parameters.has( "solverPath" ) || !Parameters.has( "solverParams" ) )
@@ -70,7 +72,15 @@ function runSolver( window )
    let P = new Script;
    P.filePath = Parameters.getString( "solverPath" ).trim();
    P.md5sum = "";
-   P.parameters = JSON.parse( Parameters.getString( "solverParams" ) );
+   let list = [];
+   let items = Parameters.getString( "solverParams" ).split( ";" );
+   for ( let k = 0; k < items.length; ++k )
+   {
+      let i = items[ k ].indexOf( "=" );
+      if ( i > 0 )
+         list.push( [ items[ k ].substring( 0, i ).trim(), items[ k ].substring( i + 1 ).trim() ] );
+   }
+   P.parameters = list;
    console.writeln( "<end><cbr>" + TITLE + " : ImageSolver sur " + window.mainView.id + "..." );
    if ( !P.executeOn( window.mainView ) )
       throw new Error( TITLE + " : ImageSolver a échoué sur " + window.mainView.id + " (voir la console)." );

@@ -265,7 +265,9 @@ def solver_container():
     avec les réglages du matériel. Pas de ProcessContainer : ImageSolver y échoue (« The image is already being processed »)."""
     name, x = script('ImageSolver_Date', '')
     path, md5, params, launch = SCRIPTS['ImageSolver']
-    extra = [('solverPath', path), ('solverParams', json.dumps([[k, v] for k, v in params], separators=(',', ':')))]
+    for k, v in params:   # transmis par une ligne de commande run -p="nom,valeur" : ni guillemets, ni ; ni = dans les valeurs
+        assert not any(c in k + v for c in '";=')
+    extra = [('solverPath', path), ('solverParams', ';'.join('%s=%s' % (k, v) for k, v in params))]
     rows = ''.join('\n         <tr>\n            <td id="id">%s</td>\n            <td id="value">%s</td>\n         </tr>' % (escape(k), escape(v)) for k, v in extra)
     x, n = re.subn(r'<table id="parameters" rows="(\d+)">(.*?)\n      </table>',
                    lambda m: '<table id="parameters" rows="%d">%s%s\n      </table>' % (int(m.group(1)) + len(extra), m.group(2), rows), x, count=1, flags=re.S)
