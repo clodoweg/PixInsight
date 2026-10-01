@@ -161,5 +161,6 @@ Les fichiers ont été générés par `make_workflows.py` (dans ce dossier) à p
 À copier une fois par ordinateur (Mac ou PC) dans `src/scripts/clodoweg/` du dossier de PixInsight, à côté de `PatternCorrection` (Mac : `/Applications/PixInsight/src/scripts/clodoweg/`) :
 
 - `LPS_UnClic.js` : LinearPatternSubtraction sans dialogue (icône `Opt_LinearPatternSubtraction`).
+- `Combiner_RGB.js` : icône `Combinaison_RGB` des workflows ; combine les masters R, G, B en `RGB`, copie l'en-tête FITS du rouge (coordonnées et date pour ImageSolver), puis ferme R, G et B sans demander d'enregistrer (`closeSources = false` pour les garder). Double-clic puis Apply Global.
 - `ImageSolver_Date.js` : ajoute `DATE-OBS = 2020-01-01` aux images sans date ; première étape du conteneur `ImageSolver` des workflows, suivie d'ImageSolver (`$PXI_SRCDIR/scripts/ImageSolver/ImageSolver.js`, version 6.4.2) avec focale 2 939 mm, pixel 3,76 µm, catalogue automatique et correction de distorsion. Glisser l'icône `ImageSolver` sur l'image suffit.
 

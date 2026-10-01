@@ -41,6 +41,8 @@ SCRIPTS = {
     'ImageSolver': ('$PXI_SRCDIR/scripts/ImageSolver/ImageSolver.js', '',
              [('metadata_focal', '2939'), ('metadata_useFocal', 'true'), ('metadata_xpixsz', '3.76'), ('metadata_resolution', '0.00007330116739335556'), ('metadata_referenceSystem', 'ICRS'), ('metadata_topocentric', 'false'), ('solver_version', '6.4.2'), ('solver_magnitude', '12'), ('solver_autoMagnitude', 'true'), ('solver_databasePath', 'undefined'), ('solver_generateErrorImg', 'false'), ('solver_structureLayers', '5'), ('solver_minStructureSize', '0'), ('solver_hotPixelFilterRadius', '1'), ('solver_noiseReductionFilterRadius', '0'), ('solver_sensitivity', '0.5'), ('solver_peakResponse', '0.5'), ('solver_brightThreshold', '3'), ('solver_maxStarDistortion', '0.6'), ('solver_autoPSF', 'false'), ('solver_catalogMode', '2'), ('solver_vizierServer', 'https://vizier.cds.unistra.fr/'), ('solver_showStars', 'false'), ('solver_showStarMatches', 'false'), ('solver_showSimplifiedSurfaces', 'false'), ('solver_showDistortion', 'false'), ('solver_generateDistortModel', 'false'), ('solver_catalog', 'PPMXL'), ('solver_distortionCorrection', 'true'), ('solver_rbfType', '101'), ('solver_maxSplinePoints', '4000'), ('solver_splineOrder', '2'), ('solver_splineSmoothing', '0.005'), ('solver_enableSimplifier', 'true'), ('solver_simplifierRejectFraction', '0.1'), ('solver_outlierDetectionRadius', '160'), ('solver_outlierDetectionMinThreshold', '4'), ('solver_outlierDetectionSigma', '5'), ('solver_useActive', 'true'), ('solver_outSuffix', '_ast'), ('solver_projection', '0'), ('solver_projectionOriginMode', '0'), ('solver_restrictToHQStars', 'false'), ('solver_intersectionMode', '1'), ('solver_tryApparentCoordinates', 'true'), ('solver_tryExhaustiveInitialAlignment', 'false')],
              L_DRAG),
+    'Combinaison_RGB': ('$PXI_SRCDIR/scripts/clodoweg/Combiner_RGB.js', '',
+             [('red', 'R'), ('green', 'G'), ('blue', 'B'), ('newId', 'RGB'), ('closeSources', 'true'), ('copyKeywords', 'true')], L_GLOBAL),
     'ImageSolver_Date': ('$PXI_SRCDIR/scripts/clodoweg/ImageSolver_Date.js', '', [('defaultDate', '2020-01-01T00:00:00')], L_DRAG),
     'LinearPatternSubtraction': ('$PXI_SRCDIR/scripts/clodoweg/LPS_UnClic.js', '',
              [('correctColumns', 'false'), ('correctEntireImage', 'true'), ('defectTableFilePath', ''), ('layersToRemove', '9'),
@@ -454,8 +456,7 @@ def stars_end(cms=False, screen_extra='', cms_extra=''):
 def ghs_block(extra_desc='', stat_extra=''):
     return [(ghs('GHS_1_premier', 10), D_GHS1 + extra_desc), (ghs('GHS_2_contraste', 4, hp=0.9), D_GHS2), (ghs('GHS_3_fond', 10), D_GHS3), (note('Statistical_Stretch', T_STAT + stat_extra), '')]
 
-rgb_comb = lambda: (pm('Combinaison_RGB', 'R', 'G', 'B', new_image=True, new_id='RGB', space='RGB'),
-                    "Combinaison RGB (équivalent de ChannelCombination) : nomme tes masters linéaires 'R', 'G' et 'B'. Crée l'image couleur 'RGB'.")
+rgb_comb = lambda: (note('Combinaison_RGB', ''), '')
 MATERIEL = "QHY600 (Sony IMX455) + filtres Antlia V Pro"
 
 def spcc_perso(name):

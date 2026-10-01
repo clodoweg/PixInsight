@@ -40,39 +40,47 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="alpha" value="1.000000"/>
       <parameter id="noGUIMessages" value="false"/>
    </instance>
-   <instance class="PixelMath" version="256" id="E02_Combinaison_RGB_instance">
-      <description>PRÉRÉGLÉ : R, G, B -&gt; image couleur 'RGB'.
+   <instance class="Script" version="256" id="E02_Combinaison_RGB_instance">
+      <description>LANCEMENT : double-clic sur l'icône, puis Apply Global.
 
-À RÉGLER : nomme tes masters R, G et B, puis glisse l'icône.
+PRÉRÉGLÉ : script Combiner_RGB : R, G, B -&gt; image couleur 'RGB', en-tête FITS du rouge copié (coordonnées et date pour ImageSolver), puis R, G et B fermées sans demander d'enregistrer.
+
+À RÉGLER : une seule fois par ordinateur : copie Combiner_RGB.js dans src/scripts/clodoweg ; nomme tes masters R, G et B, enregistre-les si tu veux garder une version modifiée (après LPS par exemple), puis lance l'icône.
+
+SI :
+- garder R, G et B ouvertes -&gt; closeSources = false dans l'icône
+- une image 'RGB' existe déjà -&gt; ferme-la ou renomme-la
 
 Détails : page docs/pixinsight-workflow.html.</description>
-      <parameter id="expression">R</parameter>
-      <parameter id="expression1">G</parameter>
-      <parameter id="expression2">B</parameter>
-      <parameter id="expression3"></parameter>
-      <parameter id="useSingleExpression" value="false"/>
-      <parameter id="symbols"></parameter>
-      <parameter id="clearImageCacheAndExit" value="false"/>
-      <parameter id="cacheGeneratedImages" value="false"/>
-      <parameter id="generateOutput" value="true"/>
-      <parameter id="singleThreaded" value="false"/>
-      <parameter id="optimization" value="true"/>
-      <parameter id="use64BitWorkingImage" value="false"/>
-      <parameter id="rescale" value="false"/>
-      <parameter id="rescaleLower" value="0"/>
-      <parameter id="rescaleUpper" value="1"/>
-      <parameter id="truncate" value="true"/>
-      <parameter id="truncateLower" value="0"/>
-      <parameter id="truncateUpper" value="1"/>
-      <parameter id="createNewImage" value="true"/>
-      <parameter id="showNewImage" value="true"/>
-      <parameter id="newImageId">RGB</parameter>
-      <parameter id="newImageWidth" value="0"/>
-      <parameter id="newImageHeight" value="0"/>
-      <parameter id="newImageAlpha" value="false"/>
-      <parameter id="newImageColorSpace" value="RGB"/>
-      <parameter id="newImageSampleFormat" value="SameAsTarget"/>
-      <table id="outputData" rows="0"/>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Combiner_RGB.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="6">
+         <tr>
+            <td id="id">red</td>
+            <td id="value">R</td>
+         </tr>
+         <tr>
+            <td id="id">green</td>
+            <td id="value">G</td>
+         </tr>
+         <tr>
+            <td id="id">blue</td>
+            <td id="value">B</td>
+         </tr>
+         <tr>
+            <td id="id">newId</td>
+            <td id="value">RGB</td>
+         </tr>
+         <tr>
+            <td id="id">closeSources</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">copyKeywords</td>
+            <td id="value">true</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
    </instance>
    <instance class="NoOperation" version="256" id="P2_Gradient_instance">
       <description>PHASE 2 — Gradient : image linéaire : retrait du gradient. Colonne de repère, sans effet.</description>

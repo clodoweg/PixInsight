@@ -39,7 +39,7 @@ S = {
                            ["gradient dans les coins -> baisse Gradient scale", "nébuleuse assombrie -> monte Protection amount"]),
     'DBE': ("15 points par ligne, rayon 15, Tolerance 0,5, Smoothing 0,25, Subtraction", "Generate, retire les points sur l'objet, ajoute-en dans le fond vide",
             ["points rouges -> Tolerance 1,0 à 1,5", "vignettage -> Division"]),
-    'Combinaison_RGB': ("R, G, B -> image couleur 'RGB'", "nomme tes masters R, G et B, puis glisse l'icône", []),
+    'Combinaison_RGB': ("script Combiner_RGB : R, G, B -> image couleur 'RGB', en-tête FITS du rouge copié (coordonnées et date pour ImageSolver), puis R, G et B fermées sans demander d'enregistrer", "une seule fois par ordinateur : copie Combiner_RGB.js dans src/scripts/clodoweg ; nomme tes masters R, G et B, enregistre-les si tu veux garder une version modifiée (après LPS par exemple), puis lance l'icône", ["garder R, G et B ouvertes -> closeSources = false dans l'icône", "une image 'RGB' existe déjà -> ferme-la ou renomme-la"]),
     'Combinaison_SHO': ("R = S, G = H, B = O, image 'SHO'", "nomme tes masters S, H et O", []),
     'Combinaison_HOO': ("R = H, G = O, B = O, image 'HOO'", "nomme tes masters H et O", []),
     'Masters_S_H_O': ("rien (icône-note)", "renomme tes masters S, H et O ; même recadrage pour tous", []),
