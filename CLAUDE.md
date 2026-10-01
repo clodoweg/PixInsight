@@ -29,6 +29,7 @@ Utilisateur : astrophotographe, PixInsight 1.9.5 sur macOS (Apple Silicon), CDK1
 - **Tout régénérer : `sh docs/process-icons/build/build.sh`** (reproduit exactement les fichiers commités ; valide les XML).
 
 ### Conventions
+- Disposition des icônes : largeur de colonne = 90 + 4,4 × (nom le plus long), au lieu de 260 fixe (make_workflows.col_width, et même calcul dans build/prep_build.py).
 - Finition : deux LHE dans le chemin principal (LHE 150 px / 0,30 puis LHE_fin 40 px / 0,30), C_Finition = Courbes → LHE → LHE_fin. Option Boost_finition (ProcessContainer : Courbes_boost puis LHE 80 px / 0,20), rejouable.
 - Couleur : Courbes 0,25 → 0,19 / 0,75 → 0,81, saturation 0,5 → 0,72 ; LRGB_ajout_L Saturation 0,35 ; pas de SCNR par défaut sur les étoiles RGB (contrôle à la sonde, Remove Green si étoile verte).
 - Star_Stretch : Stretch Amount 6 dans toutes les icônes (choix de l'utilisateur ; défaut du script 5). Blanshan_Transfer S = 0,20. BXT Sharpen Stars reste 0,25.

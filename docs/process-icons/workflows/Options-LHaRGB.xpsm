@@ -639,19 +639,19 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <icon id="Opt_LinearPatternSubtraction" instance="Opt_LinearPatternSubtraction_instance" xpos="30" ypos="64" workspace="Workspace01"/>
    <icon id="Opt_WBPP" instance="Opt_WBPP_instance" xpos="30" ypos="94" workspace="Workspace01"/>
    <icon id="Opt_CC_auto" instance="Opt_CC_auto_instance" xpos="30" ypos="124" workspace="Workspace01"/>
-   <icon id="P2_Gradient" instance="P2_Gradient_instance" xpos="290" ypos="20" workspace="Workspace01"/>
-   <icon id="Opt_GradientCorrection" instance="Opt_GradientCorrection_instance" xpos="290" ypos="64" workspace="Workspace01"/>
-   <icon id="Opt_DBE" instance="Opt_DBE_instance" xpos="290" ypos="94" workspace="Workspace01"/>
-   <icon id="P3_Lineaire" instance="P3_Lineaire_instance" xpos="550" ypos="20" workspace="Workspace01"/>
-   <icon id="Opt_Find_Background" instance="Opt_Find_Background_instance" xpos="550" ypos="64" workspace="Workspace01"/>
-   <icon id="Opt_Continuum_auto" instance="Opt_Continuum_auto_instance" xpos="550" ypos="94" workspace="Workspace01"/>
-   <icon id="Opt_H_dans_L" instance="Opt_H_dans_L_instance" xpos="550" ypos="124" workspace="Workspace01"/>
-   <icon id="Opt_NBRGBCombination" instance="Opt_NBRGBCombination_instance" xpos="550" ypos="154" workspace="Workspace01"/>
-   <icon id="P6_Finition" instance="P6_Finition_instance" xpos="810" ypos="20" workspace="Workspace01"/>
-   <icon id="Opt_Boost_finition" instance="Opt_Boost_finition_instance" xpos="810" ypos="64" workspace="Workspace01"/>
-   <icon id="Opt_HDRMT" instance="Opt_HDRMT_instance" xpos="810" ypos="94" workspace="Workspace01"/>
-   <icon id="Opt_NXT_final" instance="Opt_NXT_final_instance" xpos="810" ypos="124" workspace="Workspace01"/>
-   <icon id="P7_Etoiles" instance="P7_Etoiles_instance" xpos="1070" ypos="20" workspace="Workspace01"/>
-   <icon id="Opt_MT_etoiles" instance="Opt_MT_etoiles_instance" xpos="1070" ypos="64" workspace="Workspace01"/>
-   <icon id="Opt_Halo_B_Gon" instance="Opt_Halo_B_Gon_instance" xpos="1070" ypos="94" workspace="Workspace01"/>
+   <icon id="P2_Gradient" instance="P2_Gradient_instance" xpos="243" ypos="20" workspace="Workspace01"/>
+   <icon id="Opt_GradientCorrection" instance="Opt_GradientCorrection_instance" xpos="243" ypos="64" workspace="Workspace01"/>
+   <icon id="Opt_DBE" instance="Opt_DBE_instance" xpos="243" ypos="94" workspace="Workspace01"/>
+   <icon id="P3_Lineaire" instance="P3_Lineaire_instance" xpos="430" ypos="20" workspace="Workspace01"/>
+   <icon id="Opt_Find_Background" instance="Opt_Find_Background_instance" xpos="430" ypos="64" workspace="Workspace01"/>
+   <icon id="Opt_Continuum_auto" instance="Opt_Continuum_auto_instance" xpos="430" ypos="94" workspace="Workspace01"/>
+   <icon id="Opt_H_dans_L" instance="Opt_H_dans_L_instance" xpos="430" ypos="124" workspace="Workspace01"/>
+   <icon id="Opt_NBRGBCombination" instance="Opt_NBRGBCombination_instance" xpos="430" ypos="154" workspace="Workspace01"/>
+   <icon id="P6_Finition" instance="P6_Finition_instance" xpos="608" ypos="20" workspace="Workspace01"/>
+   <icon id="Opt_Boost_finition" instance="Opt_Boost_finition_instance" xpos="608" ypos="64" workspace="Workspace01"/>
+   <icon id="Opt_HDRMT" instance="Opt_HDRMT_instance" xpos="608" ypos="94" workspace="Workspace01"/>
+   <icon id="Opt_NXT_final" instance="Opt_NXT_final_instance" xpos="608" ypos="124" workspace="Workspace01"/>
+   <icon id="P7_Etoiles" instance="P7_Etoiles_instance" xpos="777" ypos="20" workspace="Workspace01"/>
+   <icon id="Opt_MT_etoiles" instance="Opt_MT_etoiles_instance" xpos="777" ypos="64" workspace="Workspace01"/>
+   <icon id="Opt_Halo_B_Gon" instance="Opt_Halo_B_Gon_instance" xpos="777" ypos="94" workspace="Workspace01"/>
 </xpsm>

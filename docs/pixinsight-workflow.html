@@ -3001,17 +3001,21 @@ document.querySelectorAll('[data-copy]').forEach(function (btn) {
   function xpsm() {
     var w = wf(), sel = selection(), phases = [], insts = [], icons = [], col = -1, row = 0;
     sel.forEach(function (s) { if (phases.indexOf(s.p) < 0) phases.push(s.p); });
+    var cw = phases.map(function (p) { return ('P' + p + '_' + D.ascii[p - 1]).length; });
+    sel.forEach(function (s, i) { var c = phases.indexOf(s.p); cw[c] = Math.max(cw[c], ('E00_' + s.b).length); });
+    var xs = [], xx = 30;
+    cw.forEach(function (n) { xs.push(xx); xx += Math.round(90 + 4.4 * n); });
     sel.forEach(function (s, i) {
       var c = phases.indexOf(s.p);
       if (c !== col) {
         col = c; row = 0;
         var hn = 'P' + s.p + '_' + D.ascii[s.p - 1];
         insts.push('   <instance class="NoOperation" version="256" id="' + hn + '_instance">\n      <description>' + esc('PHASE ' + s.p + ' — ' + D.phases[s.p - 1] + ' : ' + D.notes[s.p - 1] + '. Colonne de repère, sans effet.') + '</description>\n   </instance>');
-        icons.push('   <icon id="' + hn + '" instance="' + hn + '_instance" xpos="' + (30 + 260 * c) + '" ypos="20" workspace="Workspace01"/>');
+        icons.push('   <icon id="' + hn + '" instance="' + hn + '_instance" xpos="' + xs[c] + '" ypos="20" workspace="Workspace01"/>');
       }
       var name = 'E' + ('0' + (i + 1)).slice(-2) + '_' + s.b;
       insts.push(instOf(s, name));
-      icons.push('   <icon id="' + name + '" instance="' + name + '_instance" xpos="' + (30 + 260 * c) + '" ypos="' + (64 + 30 * row) + '" workspace="Workspace01"/>');
+      icons.push('   <icon id="' + name + '" instance="' + name + '_instance" xpos="' + xs[c] + '" ypos="' + (64 + 30 * row) + '" workspace="Workspace01"/>');
       row++;
     });
     return D.header + '<!-- ' + esc(w.title) + ' — sélection du préparateur -->\n' + insts.join('\n') + '\n' + icons.join('\n') + '\n</xpsm>\n';

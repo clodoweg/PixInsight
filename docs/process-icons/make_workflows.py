@@ -146,20 +146,34 @@ def header_icon(n):
     return name, ('   <instance class="NoOperation" version="256" id="%s_instance">\n      <description>%s</description>\n   </instance>'
                   % (name, escape('PHASE %d — %s : %s. Colonne de repère, sans effet.' % (n, L.PHASES[n - 1], L.PHASE_NOTE[n - 1]))))
 
+def col_width(names):
+    """Largeur d'une colonne d'icônes : nom le plus long (environ 4,4 unités par caractère) + icône + marge."""
+    return int(round(90 + 4.4 * max(len(n) for n in names)))
+
+def xs_of(columns):
+    """columns : listes de noms par colonne -> abscisse de chaque colonne."""
+    xs, x = [], 30
+    for names in columns:
+        xs.append(x)
+        x += col_width(names)
+    return xs
+
 def layout(entries, naming):
     """entries : liste de (base, phase, xml avec id __ID__). Une colonne par phase, une icône-titre en haut."""
-    insts, icons, col, rows = [], [], -1, 0
     phases = sorted({e[1] for e in entries})
-    for k, (base, ph, xml) in enumerate(entries, 1):
+    named = [(naming(k, base), base, ph, xml) for k, (base, ph, xml) in enumerate(entries, 1)]
+    cols = [[header_icon(ph)[0]] + [n for n, b, p, x in named if p == ph] for ph in phases]
+    xs = xs_of(cols)
+    insts, icons, col, rows = [], [], -1, 0
+    for name, base, ph, xml in named:
         c = phases.index(ph)
         if c != col:
             col, rows = c, 0
             hn, hx = header_icon(ph)
             insts.append(hx)
-            icons.append('   <icon id="%s" instance="%s_instance" xpos="%d" ypos="20" workspace="Workspace01"/>' % (hn, hn, 30 + 260 * c))
-        name = naming(k, base)
+            icons.append('   <icon id="%s" instance="%s_instance" xpos="%d" ypos="20" workspace="Workspace01"/>' % (hn, hn, xs[c]))
         insts.append(xml.replace('id="__ID___instance"', 'id="%s_instance"' % name, 1))
-        icons.append('   <icon id="%s" instance="%s_instance" xpos="%d" ypos="%d" workspace="Workspace01"/>' % (name, name, 30 + 260 * c, 64 + 30 * rows))
+        icons.append('   <icon id="%s" instance="%s_instance" xpos="%d" ypos="%d" workspace="Workspace01"/>' % (name, name, xs[c], 64 + 30 * rows))
         rows += 1
     return insts, icons
 
@@ -167,18 +181,24 @@ def layout_all(main, opts):
     """Une colonne par phase : icône-titre, étapes du chemin principal (E01…), puis icône « options » et options (Opt_…)."""
     insts, icons = [], []
     phases = sorted({e[1] for e in main} | {e[1] for e in opts})
-    k = 0
+    numbered, k = [], 0
+    for ph in phases:
+        for b, p, xml in main:
+            if p == ph:
+                k += 1
+                numbered.append(('E%02d_%s' % (k, b), p, xml))
+    cols = [[header_icon(ph)[0], 'P%d_options' % ph] + [n for n, p, x in numbered if p == ph] + ['Opt_%s' % b for b, p, x in opts if p == ph]
+            for ph in phases]
+    xs = xs_of(cols)
     for c, ph in enumerate(phases):
-        x = 30 + 260 * c
+        x = xs[c]
         hn, hx = header_icon(ph)
         insts.append(hx)
         icons.append('   <icon id="%s" instance="%s_instance" xpos="%d" ypos="20" workspace="Workspace01"/>' % (hn, hn, x))
         y = 64
-        for b, p, xml in main:
+        for name, p, xml in numbered:
             if p != ph:
                 continue
-            k += 1
-            name = 'E%02d_%s' % (k, b)
             insts.append(xml.replace('id="__ID___instance"', 'id="%s_instance"' % name, 1))
             icons.append('   <icon id="%s" instance="%s_instance" xpos="%d" ypos="%d" workspace="Workspace01"/>' % (name, name, x, y))
             y += 30
