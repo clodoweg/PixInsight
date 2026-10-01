@@ -115,7 +115,7 @@ Dans les trois fichiers, **une colonne par phase**, avec une icône-titre sans e
 | SHO-sans-RGB | 30 | 18 | Idem sans RGB, étoiles narrowband par NB to RGB Star Combination ; options : étoiles HOO synthétiques, CorrectMagentaStars |
 | HOO | 27 | 18 | Combinaison HOO, NarrowbandNormalization HOO ; options : extraction dual-band (caméra couleur), Foraxx HOO, variante Hubble, H en luminance |
 
-(Les nombres ne comptent pas les icônes-titres. Masters déjà empilés : WBPP et CosmeticCorrection sont en options, pour repartir des brutes. Première option de chaque workflow : `Opt_LinearPatternSubtraction`, pour des lignes résiduelles sur un master : lance `scripts/LPS_UnClic.js` (moteur de Vicent Peris appelé sans dialogue, zone de fond automatique), à copier une fois par ordinateur (Mac ou PC) dans `scripts/clodoweg/` du dossier de PixInsight, celui qui contient `PatternCorrection` : l'icône pointe vers `$PXI_SRCDIR/scripts/clodoweg/LPS_UnClic.js`.)
+(Les nombres ne comptent pas les icônes-titres. Masters déjà empilés : WBPP et CosmeticCorrection sont en options, pour repartir des brutes. Première option de chaque workflow : `Opt_LinearPatternSubtraction`, pour des lignes résiduelles sur un master : lance `scripts/LPS_UnClic.js` (moteur de Vicent Peris appelé sans dialogue, zone de fond automatique), à copier une fois par ordinateur (Mac ou PC) dans `src/scripts/clodoweg/` du dossier de PixInsight, à côté de `PatternCorrection` (Mac : `/Applications/PixInsight/src/scripts/clodoweg/` ; PC : en général `C:\Program Files\PixInsight\src\scripts\clodoweg\` ; pas le dossier `scripts` du premier niveau) : l'icône pointe vers `$PXI_SRCDIR/scripts/clodoweg/LPS_UnClic.js`.)
 
 **Trois sortes d'icônes :**
 

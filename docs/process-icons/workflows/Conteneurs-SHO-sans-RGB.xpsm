@@ -57,7 +57,7 @@ LANCEMENT : glisse l'icône sur l'image.
 
 PRÉRÉGLÉ : script LPS_UnClic (moteur de Vicent Peris, sans dialogue) : lignes, Correct the entire image, Layers to remove 9, Rejection limit 3, Global rejection 5, zone de fond choisie automatiquement (la plus sombre), fenêtres de travail fermées.
 
-À RÉGLER : une seule fois par ordinateur (Mac ou PC) : crée le dossier clodoweg dans le dossier scripts de PixInsight (celui qui contient PatternCorrection) et copies-y LPS_UnClic.js ; ensuite glisse l'icône sur chaque master linéaire, avant le recadrage (la correction se fait dans l'image).
+À RÉGLER : une seule fois par ordinateur (Mac ou PC) : crée le dossier clodoweg dans src/scripts de PixInsight (à côté de PatternCorrection ; Mac : /Applications/PixInsight/src/scripts/clodoweg, PC : en général C:\Program Files\PixInsight\src\scripts\clodoweg ; pas le dossier scripts du premier niveau) et copies-y LPS_UnClic.js ; ensuite glisse l'icône sur chaque master linéaire, avant le recadrage (la correction se fait dans l'image).
 
 SI :
 - corriger des colonnes -&gt; correctColumns = true dans l'icône

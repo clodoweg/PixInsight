@@ -6,7 +6,7 @@ PAGE = ' Détails : page docs/pixinsight-workflow.html.'
 # nom de base -> (préréglé, à régler, [si ... -> ...])
 S = {
     'LinearPatternSubtraction': ("script LPS_UnClic (moteur de Vicent Peris, sans dialogue) : lignes, Correct the entire image, Layers to remove 9, Rejection limit 3, Global rejection 5, zone de fond choisie automatiquement (la plus sombre), fenêtres de travail fermées",
-             "une seule fois par ordinateur (Mac ou PC) : crée le dossier clodoweg dans le dossier scripts de PixInsight (celui qui contient PatternCorrection) et copies-y LPS_UnClic.js ; ensuite glisse l'icône sur chaque master linéaire, avant le recadrage (la correction se fait dans l'image)",
+             "une seule fois par ordinateur (Mac ou PC) : crée le dossier clodoweg dans src/scripts de PixInsight (à côté de PatternCorrection ; Mac : /Applications/PixInsight/src/scripts/clodoweg, PC : en général C:\\Program Files\\PixInsight\\src\\scripts\\clodoweg ; pas le dossier scripts du premier niveau) et copies-y LPS_UnClic.js ; ensuite glisse l'icône sur chaque master linéaire, avant le recadrage (la correction se fait dans l'image)",
              ["corriger des colonnes -> correctColumns = true dans l'icône",
               "tous les masters ouverts d'un coup -> allOpenImages = true, puis double-clic et Apply Global",
               "artefacts -> Ctrl+Z : le script est conçu pour les brutes, avant alignement",

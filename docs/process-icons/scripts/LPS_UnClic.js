@@ -6,8 +6,10 @@
 // réglages fixes, sur l'image active ou sur toutes les images ouvertes.
 // Zone de fond : choisie automatiquement (la plus sombre) si autoBackground.
 //
-// Installation (Mac et PC) : créer le dossier clodoweg dans le dossier
-// scripts de PixInsight (celui qui contient PatternCorrection) et y copier ce
+// Installation (Mac et PC) : créer le dossier clodoweg dans src/scripts de
+// PixInsight, à côté de PatternCorrection (Mac : /Applications/PixInsight/
+// src/scripts/clodoweg ; PC : en général C:\Program Files\PixInsight\src\
+// scripts\clodoweg ; pas le dossier scripts du premier niveau) et y copier ce
 // fichier. L'icône Opt_LinearPatternSubtraction de la fiche pointe vers
 // $PXI_SRCDIR/scripts/clodoweg/LPS_UnClic.js.
 // Lancement : glisser l'icône sur l'image, ou activer l'image puis
