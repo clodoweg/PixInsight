@@ -12,7 +12,7 @@ PHASE_NOTE = [
 ]
 
 PHASE = {
-    'LinearPatternSubtraction': 1, 'WBPP': 1, 'CC_auto': 1, 'DynamicCrop': 1, 'Combinaison_RGB': 1, 'Masters_S_H_O': 1, 'Masters_H_O': 1, 'DualBand_H': 1, 'DualBand_O': 1,
+    'Renommer_auto': 1, 'LinearPatternSubtraction': 1, 'WBPP': 1, 'CC_auto': 1, 'DynamicCrop': 1, 'Combinaison_RGB': 1, 'Masters_S_H_O': 1, 'Masters_H_O': 1, 'DualBand_H': 1, 'DualBand_O': 1,
     'ImageSolver': 2, 'SPFC_RGB_filtres': 2, 'SPFC_L': 2, 'SPFC_H': 2, 'SPFC_O': 2, 'SPFC_S': 2, 'MGC_MARS': 2, 'MGC_MARS_H': 2, 'MGC_MARS_O': 2,
     'GradientCorrection': 2, 'DBE': 2, 'LinearFit_ref_H': 2,
     'BXT_CorrectOnly': 3, 'Find_Background': 3, 'SPCC': 3, 'BXT_RGB': 3, 'BXT_L': 3, 'BXT_L_H': 3, 'BXT_NB': 3, 'Combinaison_SHO': 3, 'Combinaison_HOO': 3,
@@ -35,7 +35,7 @@ OPT = {'Boost_finition', 'LinearPatternSubtraction', 'WBPP', 'CC_auto', 'Find_Ba
 
 
 def role(prefix, base):
-    if base in OPT or (base == 'MGC_MARS' and prefix in NB):
+    if base in OPT or (base == 'MGC_MARS' and prefix in NB) or (base == 'Blanshan_Transfer' and prefix in LUM):
         return 'opt'
     if base.startswith(('SPFC_', 'MGC_MARS')):
         return 'grad:mgc'
@@ -81,6 +81,7 @@ WHEN = {
     'H_en_luminance': "détail plus net en HOO (H en luminance)", 'Etoiles_HOO_synth': "alternative à NB to RGB pour les étoiles",
     'DualBand_H': "caméra couleur avec filtre dual-band", 'DualBand_O': "caméra couleur avec filtre dual-band",
     'SPFC_S': "seulement si ta base MARS couvre S (pas le cas de DR2)",
+    'Blanshan_Transfer': "étoiles trop présentes ou qui distraient de la galaxie (réduction, de temps en temps)",
     'MGC_MARS': "image RGB (étoiles du workflow RGB + SHO) ou master L",
 }
 

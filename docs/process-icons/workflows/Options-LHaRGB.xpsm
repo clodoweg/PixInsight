@@ -635,6 +635,49 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <table id="parameters" rows="0"/>
       <parameter id="information"></parameter>
    </instance>
+   <instance class="PixelMath" version="256" id="Opt_Blanshan_Transfer_instance">
+      <description>OPTION — étoiles trop présentes ou qui distraient de la galaxie (réduction, de temps en temps).
+
+PRÉRÉGLÉ : S = 0,20 (Bill : 0,15) ; lit 'Final', crée 'Final_reduit'.
+
+À RÉGLER : glisse sur l'image SANS étoiles (comme Etoiles_screen).
+
+SI :
+- étoiles encore grosses -&gt; S 0,15
+- étoiles trop petites -&gt; S 0,25, ou saute cette étape
+
+Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="expression">S=0.20;
+Img1=$T;
+f1= ~((~mtf(~S,Final)/~mtf(~S,Img1))*~Img1);
+max(Img1,f1)</parameter>
+      <parameter id="expression1"></parameter>
+      <parameter id="expression2"></parameter>
+      <parameter id="expression3"></parameter>
+      <parameter id="useSingleExpression" value="true"/>
+      <parameter id="symbols">S, Img1, f1</parameter>
+      <parameter id="clearImageCacheAndExit" value="false"/>
+      <parameter id="cacheGeneratedImages" value="false"/>
+      <parameter id="generateOutput" value="true"/>
+      <parameter id="singleThreaded" value="false"/>
+      <parameter id="optimization" value="true"/>
+      <parameter id="use64BitWorkingImage" value="false"/>
+      <parameter id="rescale" value="false"/>
+      <parameter id="rescaleLower" value="0"/>
+      <parameter id="rescaleUpper" value="1"/>
+      <parameter id="truncate" value="true"/>
+      <parameter id="truncateLower" value="0"/>
+      <parameter id="truncateUpper" value="1"/>
+      <parameter id="createNewImage" value="true"/>
+      <parameter id="showNewImage" value="true"/>
+      <parameter id="newImageId">Final_reduit</parameter>
+      <parameter id="newImageWidth" value="0"/>
+      <parameter id="newImageHeight" value="0"/>
+      <parameter id="newImageAlpha" value="false"/>
+      <parameter id="newImageColorSpace" value="SameAsTarget"/>
+      <parameter id="newImageSampleFormat" value="SameAsTarget"/>
+      <table id="outputData" rows="0"/>
+   </instance>
    <icon id="P1_Preparation" instance="P1_Preparation_instance" xpos="30" ypos="20" workspace="Workspace01"/>
    <icon id="Opt_LinearPatternSubtraction" instance="Opt_LinearPatternSubtraction_instance" xpos="30" ypos="64" workspace="Workspace01"/>
    <icon id="Opt_WBPP" instance="Opt_WBPP_instance" xpos="30" ypos="94" workspace="Workspace01"/>
@@ -654,4 +697,5 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <icon id="P7_Etoiles" instance="P7_Etoiles_instance" xpos="777" ypos="20" workspace="Workspace01"/>
    <icon id="Opt_MT_etoiles" instance="Opt_MT_etoiles_instance" xpos="777" ypos="64" workspace="Workspace01"/>
    <icon id="Opt_Halo_B_Gon" instance="Opt_Halo_B_Gon_instance" xpos="777" ypos="94" workspace="Workspace01"/>
+   <icon id="Opt_Blanshan_Transfer" instance="Opt_Blanshan_Transfer_instance" xpos="777" ypos="124" workspace="Workspace01"/>
 </xpsm>

@@ -13,18 +13,20 @@ Contexte : une centaine de photos à retraiter, **masters déjà empilés (un pa
 ## A. Retirer ce qui ne sert plus — **fait (1er octobre 2026)**
 1. WBPP et CosmeticCorrection sortis du chemin principal (masters déjà empilés) et rangés en options (« seulement si tu repars des brutes ») dans `layout.py` : présents dans `Options-X`, dans les options de `Conteneurs-X` et dans le préparateur (décochés).
 
-## B. Conteneurs plus gros
+## B. Conteneurs plus gros — **fait en partie (1er octobre 2026) : fichiers `Rapide-LRGB` et `Rapide-LHaRGB`**
+MGC reste hors conteneur (liste MARS propre à chaque instance) ; étirement par Statistical Stretch sans dialogue + GHS fond fixe (SP = HP = 0,22). Reste à faire : narrowband (C).
+
 2. **Gradient dans le conteneur linéaire** : SPFC → MGC → BXT Correct Only → SPCC → BXT → SXT → NXT en un clic par image (masters résolus par WBPP). LRGB : phase linéaire en 2 clics (RGB, puis L).
 3. **Étirement dans le conteneur** : Statistical Stretch avec `openDialogbox = false` en fin de conteneur (les conteneurs de theAstroShed contiennent déjà des scripts). Un clic : master → image sans étoiles étirée. GHS reste pour les photos soignées.
 
 ## C. Narrowband sans séparer les canaux (le plus gros gain en SHO / HOO)
 4. Au lieu de combinaison + 3 extractions + 2 NXT + 3 GHS : NXT sur l'image SHO combinée, puis **Statistical Stretch non lié** (chaque canal à la même médiane = fonds égalisés demandés par la fiche), puis NarrowbandNormalization. ≈ 8 icônes de moins. **À valider** sur une image en comparant avec la méthode actuelle.
 
-## D. Moins d'étapes à la fin
+## D. Moins d'étapes à la fin — **5 abandonné** (l'utilisateur ne veut pas de réduction d'étoiles systématique ; Blanshan en option en LRGB/LHaRGB)
 5. **Recombinaison des étoiles + réduction Blanshan en une seule formule PixelMath** (Blanshan Transfer appliqué au résultat de la recombinaison screen). Vérifiable numériquement.
 6. **Finition rapide sans masque à fabriquer** : conteneur HDRMT (masque de luminosité intégré) + courbe de saturation légère. Masque_L et LHE restent pour les photos soignées.
 
-## E. Supprimer les manipulations à la main
+## E. Supprimer les manipulations à la main — **7 fait : `Renommer_auto.js`**
 7. **Script de renommage automatique** : un clic, nomme les vues ouvertes L, R, G, B, H, O, S d'après le mot-clé FILTER de leur en-tête (les formules et la recombinaison exigent ces noms).
 8. **Garder les icônes chargées** dans un espace de travail PixInsight dédié plutôt que de les recharger à chaque photo (à vérifier dans les préférences).
 

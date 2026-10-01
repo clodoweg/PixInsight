@@ -43,6 +43,7 @@ SCRIPTS = {
              L_DRAG),
     'Combinaison_RGB': ('$PXI_SRCDIR/scripts/clodoweg/Combiner_RGB.js', '',
              [('red', 'R'), ('green', 'G'), ('blue', 'B'), ('newId', 'RGB'), ('closeSources', 'true'), ('copyKeywords', 'true')], L_GLOBAL),
+    'Renommer_auto': ('$PXI_SRCDIR/scripts/clodoweg/Renommer_auto.js', '', [], L_GLOBAL),
     'ImageSolver_Date': ('$PXI_SRCDIR/scripts/clodoweg/ImageSolver_Date.js', '', [('defaultDate', '2020-01-01T00:00:00')], L_DRAG),
     'LinearPatternSubtraction': ('$PXI_SRCDIR/scripts/clodoweg/LPS_UnClic.js', '',
              [('correctColumns', 'false'), ('correctEntireImage', 'true'), ('defectTableFilePath', ''), ('layersToRemove', '9'),
@@ -464,7 +465,7 @@ T_LPS = ("OPTION — LinearPatternSubtraction (Vicent Peris, script livré avec 
          "Postfix _lps ; Layers to remove 9 ; Rejection limit 3 ; Global rejection coché, limite 5 ; Background reference region 0, 0, 512, 512 (à placer sur une zone sombre).")
 
 def pre_block():
-    return [(note('LinearPatternSubtraction', T_LPS), ''), (note('WBPP', T_WBPP), ''), (cc(), D_CC), (M.crop('DynamicCrop'), "DynamicCrop, sans recadrage au départ (le cadre dépend de ton image) : ouvre l'icône, trace le cadre sur un master en excluant les bords mal couverts, "
+    return [(note('Renommer_auto', ''), ''), (note('LinearPatternSubtraction', T_LPS), ''), (note('WBPP', T_WBPP), ''), (cc(), D_CC), (M.crop('DynamicCrop'), "DynamicCrop, sans recadrage au départ (le cadre dépend de ton image) : ouvre l'icône, trace le cadre sur un master en excluant les bords mal couverts, "
             "glisse le triangle du process sur l'espace de travail pour créer ton icône, puis applique CETTE icône à tous les autres masters (ils sont alignés, le recadrage sera identique).")]
 
 D_MASK = ("MASQUE DE LUMINANCE en un clic (optionnel, pour Courbes et LHE) : glisse l'icône sur l'image SANS ÉTOILES étirée ; elle crée la vue mono 'masque_L' = luminance Rec. 709 (0,2126 R + 0,7152 G + 0,0722 B) "
@@ -502,7 +503,14 @@ L_STAT = (" LRGB, méthode par défaut : sur le RGB sans étoiles seulement (il 
           "Si tu as choisi Statistical Stretch sur tout : même Target Median pour L. Ensuite GHS_3_fond sur les deux avant LRGB. "
           "Couleurs ternes : Saturation plus basse dans LRGBCombination, ou Luma Only coché.")
 L_FOND = " LRGB : applique-la au RGB ET à L avec les mêmes réglages, avant LRGBCombination, pour qu'elles arrivent au même fond (0,12-0,14)."
-rgb_comb = lambda: (note('Combinaison_RGB', ''), '')
+def rgb_comb(close=True):
+    n, x = note('Combinaison_RGB', '')
+    if not close:
+        x = x.replace('<td id="id">closeSources</td>\n            <td id="value">true</td>', '<td id="id">closeSources</td>\n            <td id="value">false</td>')
+        assert 'closeSources</td>\n            <td id="value">false' in x
+    return n, x
+
+rgb_comb_item = lambda close=True: (rgb_comb(close), '')
 MATERIEL = "QHY600 (Sony IMX455) + filtres Antlia V Pro"
 
 def spcc_perso(name):
@@ -540,7 +548,7 @@ SCREEN_LRGB = (" LRGB — CONTRÔLE après recombinaison, à 100 % : étoiles de
                "pas d'anneau sombre ni de halo coloré autour des étoiles ; étoiles ni grossies ni trop présentes (sinon réduction d'étoiles ou étirement plus doux) ; "
                "fond toujours R = G = B (fond éclairci : fond de l'image d'étoiles pas à 0).")
 
-lrgb = pre_block() + [rgb_comb(), (solver_container(), '')] + gradient_block('rgb') + [
+lrgb = pre_block() + [rgb_comb_item(), (solver_container(), '')] + gradient_block('rgb') + [
     (M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), D_BXT_CO + BXT_C),
     (note('Find_Background', T_FINDBG), ''),
     spcc(),
@@ -559,7 +567,7 @@ lrgb = pre_block() + [rgb_comb(), (solver_container(), '')] + gradient_block('rg
 ] + finish_block() + stars_end('RGB_stars', screen_extra=SCREEN_LRGB)
 
 # ---------------------------------------------------------------- LHaRGB
-lhargb = pre_block() + [rgb_comb(), (solver_container(), '')] + gradient_block('lha') + [
+lhargb = pre_block() + [rgb_comb_item(False), (solver_container(), '')] + gradient_block('lha') + [
     (M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), D_BXT_CO + BXT_C),
     (note('Find_Background', T_FINDBG), ''),
     spcc(),
@@ -659,7 +667,7 @@ STARS_RGBSHO = (" RGB + SHO — les étoiles doivent avoir des couleurs NATURELL
 def rgb_stars_block():
     return [
         (note('Etoiles_RGB', "ÉTOILES RGB — masters R, G, B : même recadrage, puis les icônes suivantes dans l'ordre (combinaison, gradient via l'icône GradientCorrection ou les notes, BXT Correct Only, SPCC, BXT, SXT)." + STARS_RGBSHO), ''),
-        rgb_comb(),
+        rgb_comb_item(),
         (solver_container(), ''),
         (M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), D_BXT_CO + BXT_C),
         (note('Find_Background', T_FINDBG), ''),
@@ -760,5 +768,112 @@ for fn, pre, title, steps in [
     ('Workflow-HOO.xpsm', 'HOO', 'Workflow HOO', hoo),
 ]:
     print(fn, 'principal, options, avec conteneurs :', write(fn, pre, title, steps))
+
+# ---------------------------------------------------------------- MODE RAPIDE (LRGB, LHaRGB)
+# Un fichier Rapide-X.xpsm : moins de clics, presque aucun réglage. MGC reste une icône à part (la liste des
+# fichiers MARS est propre à chaque instance : l'utilisateur garde la sienne, réglée avec « Default Files »).
+def flat(item):
+    name, x = item
+    return x.replace('id="%s_instance"' % name, 'id="__ID___instance"', 1)
+
+def cont(name, items):
+    return name, container(name, [flat(i) for i in items])
+
+def stat_auto():
+    n, x = script('Statistical_Stretch', '')
+    a = '<td id="id">openDialogbox</td>\n            <td id="value">true</td>'
+    assert a in x
+    return n, x.replace(a, a.replace('true', 'false'))
+
+def solver_parts():
+    return [script('ImageSolver_Date', ''), script('ImageSolver', '')]
+
+GHS_FOND_R = lambda: ghs('GHS_fond', 10, hp=0.22, sf=1.0, sp=0.22)   # fond 0,25 (Statistical Stretch) -> environ 0,13
+SPFC_OPTS = dict(rgb='antlia', gray='antlia_L_spec', qe='qe_imx455')
+
+def pick(steps, base):
+    for item, desc in steps:
+        if item[0] == base:
+            return item, desc
+    raise KeyError(base)
+
+def finition_cont(steps):
+    return cont('C_Finition', [pick(steps, b)[0] for b in ('Courbes', 'LHE', 'LHE_fin')])
+
+T_RAPIDE = {
+ 'LRGB': ("MODE RAPIDE LRGB — environ 15 glisser-déposer, aucun réglage à faire. Icône de repère, sans effet. "
+          "1 Renommer_auto (double-clic, Apply Global). 2 Combinaison_RGB. 3 DynamicCrop sur RGB puis sur L. "
+          "4 C_RGB_prep sur RGB (ImageSolver avec date par défaut, SPFC). 5 TON icône MGC_MARS sur RGB. "
+          "6 C_RGB_rapide sur RGB (BXT Correct Only, SPCC, BXT, SXT, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond SP = HP = 0,22) : RGB étiré sans étoiles et RGB_stars. "
+          "7 C_L_prep sur L. 8 MGC_MARS sur L. 9 C_L_rapide sur L (BXT, SXT, NXT, Statistical Stretch, GHS fond) ; ferme L_stars. "
+          "10 Star_Stretch sur RGB_stars. 11 LRGB_ajout_L sur RGB. 12 Masque_L sur RGB, Ctrl+M, puis C_Finition (Courbes, LHE, LHE_fin). 13 Etoiles_screen sur RGB. "
+          "MGC : garde TON icône MGC_MARS où tu as cliqué Default Files (chaque instance a sa liste MARS). Cible hors MARS (sud au-delà de −15° environ) : GradientCorrection des options à la place de MGC. "
+          "Une étape en erreur arrête le conteneur : lis la console. Options : P2, P6, P7 ; Blanshan seulement de temps en temps."),
+ 'LHA': ("MODE RAPIDE LHaRGB — environ 20 glisser-déposer. Icône de repère, sans effet. "
+         "1 Renommer_auto (double-clic, Apply Global). 2 Combinaison_RGB (R, G, B restent ouvertes : R sert à Continuum_H). 3 DynamicCrop sur RGB, L, H et R. "
+         "4 C_RGB_prep sur RGB, puis MGC_MARS. 5 C_RGB_couleur_rapide sur RGB (BXT Correct Only, SPCC, BXT). "
+         "6 C_H_prep sur H, puis MGC_MARS_H, puis BXT_L_H sur H. 7 Continuum_H (k à régler), puis H_dans_RGB sur RGB. "
+         "8 C_RGB_fin_rapide sur RGB (SXT, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond 0,22). "
+         "9 C_L_prep sur L, MGC_MARS, C_L_rapide sur L. 10 Star_Stretch sur RGB_stars. 11 LRGB_ajout_L. 12 Masque_L, Ctrl+M, C_Finition. 13 Etoiles_screen. "
+         "MGC : garde TES icônes MGC réglées avec Default Files. Cible hors MARS : GradientCorrection des options. Une étape en erreur arrête le conteneur : lis la console."),
+}
+WHEN_R = {'GradientCorrection': "à la place de MGC_MARS si la cible est hors couverture MARS (sud au-delà de −15° environ) ou si MGC échoue",
+          'Blanshan_Transfer': L.WHEN['Blanshan_Transfer']}
+
+def write_rapide(filename, prefix, title, steps, main_spec, opt_spec):
+    """main_spec / opt_spec : listes de (phase, item, description) ; description '' = celle du workflow ou aucune (conteneur)."""
+    def prep(ph, item, desc, opt):
+        base = item[0]
+        item = renamed(item, '__ID__')
+        x = item[1]
+        if 'class="ProcessContainer"' not in x:
+            if 'class="NoOperation"' not in x and '<description>' not in x:
+                item = described(item, desc)
+            x = item[1] if base == 'Mode_rapide' else shorten(item[1], prefix, base)
+            if opt:
+                tag = 'OPTION — %s.\n\n' % (WHEN_R.get(base) or L.WHEN.get(base, 'si besoin'))
+                x = x.replace('<description>', '<description>' + escape(tag), 1)
+        return base, ph, x
+    main = [prep(ph, it, d, False) for ph, it, d in main_spec]
+    opts = [prep(ph, it, d, True) for ph, it, d in opt_spec]
+    save(filename, title + ' — mode rapide', *layout_all(main, opts))
+    return len(main), len(opts)
+
+def rapide_common_opts(steps):
+    return [(1, *pick(steps, 'LinearPatternSubtraction')),
+            (2, *pick(steps, 'GradientCorrection')),
+            (6, *pick(steps, 'Boost_finition')), (6, *pick(steps, 'HDRMT')), (6, *pick(steps, 'NXT_final')),
+            (7, *pick(steps, 'Halo_B_Gon')), (7, *pick(steps, 'MT_etoiles')), (7, *pick(steps, 'Blanshan_Transfer'))]
+
+def rapide_end(steps):
+    return [(4, *pick(steps, 'Star_Stretch')), (5, *pick(steps, 'LRGB_ajout_L')),
+            (6, *pick(steps, 'Masque_L')), (6, finition_cont(steps), ''), (7, *pick(steps, 'Etoiles_screen'))]
+
+def note_rapide(prefix):
+    return (1, ('Mode_rapide', '   <instance class="NoOperation" version="256" id="Mode_rapide_instance">\n      <description>%s</description>\n   </instance>' % escape(T_RAPIDE[prefix])), '')
+
+bxt_rgb = lambda: M.bxt('BXT_RGB', False, 0.25, 0.0, 0.50)
+l_prep = lambda: cont('C_L_prep', solver_parts() + [M.spfc('SPFC_L', **SPFC_OPTS)])
+rgb_prep = lambda: cont('C_RGB_prep', solver_parts() + [M.spfc('SPFC_RGB_filtres', **SPFC_OPTS)])
+l_rapide = lambda bxt: cont('C_L_rapide', [bxt, M.sxt('SXT_lineaire', False), M.nxt('NXT_L', 0.60, 1), stat_auto(), GHS_FOND_R()])
+
+rapide_lrgb = [note_rapide('LRGB'), (1, *pick(lrgb, 'Renommer_auto')), (1, *pick(lrgb, 'Combinaison_RGB')), (1, *pick(lrgb, 'DynamicCrop')),
+    (2, rgb_prep(), ''), (2, *pick(lrgb, 'MGC_MARS')), (2, l_prep(), ''),
+    (3, cont('C_RGB_rapide', [M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), spcc_perso('SPCC'), bxt_rgb(), M.sxt('SXT_lineaire', False),
+                              M.nxt('NXT_RGB', 0.80, 1), stat_auto(), GHS_FOND_R()]), ''),
+    (3, l_rapide(M.bxt('BXT_L', False, 0.25, 0.0, 0.80)), '')] + rapide_end(lrgb)
+
+rapide_lha = [note_rapide('LHA'), (1, *pick(lhargb, 'Renommer_auto')), (1, *pick(lhargb, 'Combinaison_RGB')), (1, *pick(lhargb, 'DynamicCrop')),
+    (2, rgb_prep(), ''), (2, *pick(lhargb, 'MGC_MARS')),
+    (2, cont('C_H_prep', solver_parts() + [M.spfc('SPFC_H', nb=(656.3, 3.0), **SPFC_OPTS)]), ''), (2, *pick(lhargb, 'MGC_MARS_H')), (2, l_prep(), ''),
+    (3, cont('C_RGB_couleur_rapide', [M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), spcc_perso('SPCC'), bxt_rgb()]), ''),
+    (3, *pick(lhargb, 'BXT_L_H')), (3, *pick(lhargb, 'Continuum_H')), (3, *pick(lhargb, 'H_dans_RGB')),
+    (3, cont('C_RGB_fin_rapide', [M.sxt('SXT_lineaire', False), M.nxt('NXT_RGB', 0.80, 1), stat_auto(), GHS_FOND_R()]), ''),
+    (3, l_rapide(M.bxt('BXT_L_H', False, 0.25, 0.0, 0.80)), '')] + rapide_end(lhargb)
+
+for fn, pre, title, steps, spec in [('Rapide-LRGB.xpsm', 'LRGB', 'Workflow LRGB', lrgb, rapide_lrgb),
+                                     ('Rapide-LHaRGB.xpsm', 'LHA', 'Workflow LHaRGB', lhargb, rapide_lha)]:
+    print(fn, 'principal, options :', write_rapide(fn, pre, title, steps, spec, rapide_common_opts(steps)))
+
 DATA['header'] = M.HEADER
 json.dump(DATA, open(os.path.join(OUT, '..', 'preparer-data.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))

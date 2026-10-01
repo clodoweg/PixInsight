@@ -85,6 +85,8 @@ Icônes SPCC et SPFC configurées pour **QHY600 (capteur Sony IMX455) + filtres 
 
 **Le plus simple : le préparateur de la page** (section « Préparer ma photo » de `docs/pixinsight-workflow.html`). Tu choisis tes filtres, tes méthodes (gradient, étirement, palette) et tes options ; il affiche les étapes de ta photo avec ce qu'il faut régler et télécharge un `.xpsm` qui ne contient qu'elles (dans la page publiée sur claude.ai, un `.zip` à décompresser). Ses données sont dans `preparer-data.json`, régénéré avec les icônes.
 
+**Mode rapide (galaxies LRGB et LHaRGB)** : `Rapide-LRGB.xpsm` (14 icônes) et `Rapide-LHaRGB.xpsm` (20 icônes), presque tout préréglé en conteneurs : `C_RGB_prep` / `C_L_prep` / `C_H_prep` (ImageSolver + SPFC), ta propre icône MGC (liste MARS propre à chaque instance), `C_RGB_rapide` (BXT Correct Only → SPCC → BXT → SXT → NXT → Statistical Stretch 0,25 sans dialogue → GHS fond SP = HP = 0,22), `C_L_rapide` (BXT → SXT → NXT → Statistical Stretch → GHS fond), puis Star_Stretch, LRGB, Masque_L + `C_Finition`, Etoiles_screen. L'icône `E01_Mode_rapide` donne l'ordre. Options dans le même fichier : GradientCorrection, Boost_finition, HDRMT, NXT final, Halo-B-Gon, MT, Blanshan. Détails : section « Mode rapide » de la page.
+
 Sinon, deux fichiers par workflow :
 
 - **`Workflow-X.xpsm` — chemin principal** : les étapes standard seulement (MGC + MARS pour le gradient, GHS pour l'étirement — en LRGB et LHaRGB : Statistical Stretch sur le RGB et GHS sur L —, NarrowbandNormalization pour la palette), numérotées `E01_WBPP`, `E02_CC_auto`…
@@ -160,6 +162,7 @@ Les fichiers ont été générés par `make_workflows.py` (dans ce dossier) à p
 
 À copier une fois par ordinateur (Mac ou PC) dans `src/scripts/clodoweg/` du dossier de PixInsight, à côté de `PatternCorrection` (Mac : `/Applications/PixInsight/src/scripts/clodoweg/`) :
 
+- `Renommer_auto.js` : première icône de chaque workflow (`Renommer_auto`) ; renomme les masters mono ouverts L, R, G, B, H, O, S d'après le mot-clé FILTER (Lum, Red, Ha, OIII, SII…), sinon d'après le nom du fichier (`FILTER-Ha`, `_L_`) ; images couleur et noms déjà pris laissés tels quels, avec un message dans la console. Double-clic puis Apply Global.
 - `LPS_UnClic.js` : LinearPatternSubtraction sans dialogue (icône `Opt_LinearPatternSubtraction`).
 - `Combiner_RGB.js` : icône `Combinaison_RGB` des workflows ; combine les masters R, G, B en `RGB`, copie l'en-tête FITS du rouge (coordonnées et date pour ImageSolver), puis ferme R, G et B sans demander d'enregistrer (`closeSources = false` pour les garder). Double-clic puis Apply Global.
 - `ImageSolver_Date.js` : ajoute `DATE-OBS = 2020-01-01` aux images sans date ; première étape du conteneur `ImageSolver` des workflows, suivie d'ImageSolver (`$PXI_SRCDIR/scripts/ImageSolver/ImageSolver.js`, version 6.4.2) avec focale 2 939 mm, pixel 3,76 µm, catalogue automatique et correction de distorsion. Glisser l'icône `ImageSolver` sur l'image suffit.
