@@ -29,7 +29,7 @@ PHASE = {
 
 NB = ('RSHO', 'SHO', 'HOO')
 LUM = ('LRGB', 'LHA')   # workflows avec luminance : par défaut Statistical Stretch sur le RGB, GHS sur L
-OPT = {'Boost_finition_light', 'Boost_finition', 'LinearPatternSubtraction', 'WBPP', 'CC_auto', 'Find_Background', 'LinearFit_ref_H', 'Continuum_auto', 'H_dans_L', 'NBRGBCombination', 'HDRMT_50', 'NXT_final',
+OPT = {'Boost_finition_light', 'Boost_finition', 'WBPP', 'CC_auto', 'Find_Background', 'LinearFit_ref_H', 'Continuum_auto', 'H_dans_L', 'NBRGBCombination', 'HDRMT_50', 'NXT_final',
        'MT_etoiles', 'Halo_B_Gon', 'CorrectMagentaStars', 'SCNR_SHO', 'Perfect_Palette_Picker', 'NBColourMapper', 'H_en_luminance',
        'Etoiles_HOO_synth', 'DualBand_H', 'DualBand_O', 'SPFC_S'}
 

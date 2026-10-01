@@ -183,7 +183,7 @@ def layout_all(main, opts):
     """Une colonne par phase : icône-titre, étapes du chemin principal (E01…), puis icône « options » et options (Opt_…)."""
     insts, icons = [], []
     phases = sorted({e[1] for e in main} | {e[1] for e in opts})
-    numbered, k = [], 0
+    numbered, k = [], -1 if main and main[0][0] == 'LinearPatternSubtraction' else 0   # LPS = E00
     for ph in phases:
         for b, p, xml in main:
             if p == ph:
@@ -295,7 +295,8 @@ def write(filename, prefix, title, steps):
         entries.append((base, ph, r, xml, tag))
     main = [(b, ph, x) for b, ph, r, x, t in entries if L.is_default(r, prefix)]
     opts = [(b, ph, x) for b, ph, r, x, t in entries if not L.is_default(r, prefix)]
-    save(filename, title + ' — chemin principal', *layout(main, lambda k, b: 'E%02d_%s' % (k, b)))
+    off = 1 if main and main[0][0] == 'LinearPatternSubtraction' else 0   # LinearPatternSubtraction = E00, la suite garde ses numéros
+    save(filename, title + ' — chemin principal', *layout(main, lambda k, b: 'E%02d_%s' % (k - off, b)))
     save(filename.replace('Workflow-', 'Options-'), title + ' — options et alternatives', *layout(opts, lambda k, b: 'Opt_%s' % b))
     # Conteneurs-X.xpsm : chemin principal complet, suites sans réglage remplacées par un ProcessContainer
     byb = {b: x for b, ph, x in main}
@@ -485,7 +486,7 @@ T_LPS = ("OPTION — LinearPatternSubtraction (Vicent Peris, script livré avec 
          "Postfix _lps ; Layers to remove 9 ; Rejection limit 3 ; Global rejection coché, limite 5 ; Background reference region 0, 0, 512, 512 (à placer sur une zone sombre).")
 
 def pre_block():
-    return [(note('Renommer_auto', ''), ''), (note('LinearPatternSubtraction', T_LPS), ''), (note('WBPP', T_WBPP), ''), (cc(), D_CC)]
+    return [(note('LinearPatternSubtraction', T_LPS), ''), (note('Renommer_auto', ''), ''), (note('WBPP', T_WBPP), ''), (cc(), D_CC)]
 
 D_MASK = ("MASQUE DE LUMINANCE en un clic (optionnel, pour Courbes et LHE) : glisse l'icône sur l'image SANS ÉTOILES étirée ; elle crée la vue mono 'masque_L' = luminance Rec. 709 (0,2126 R + 0,7152 G + 0,0722 B) "
           "dont le fond est coupé : tout ce qui est sous s passe à 0 (protégé), le reste va de 0 à 1. s = 0,14 par défaut : fond final de la fiche 0,12-0,14 ; règle s = fond mesuré à la sonde 15x15 + 0,01 (vers 0,26 si le fond est encore à 0,20-0,25). "
@@ -826,7 +827,7 @@ def finition_cont(steps):
 
 T_RAPIDE = {
  'LRGB': ("MODE RAPIDE LRGB — environ 13 glisser-déposer, aucun réglage à faire. Icône de repère, sans effet. "
-          "1 Renommer_auto (double-clic, Apply Global). 2 Combinaison_RGB. "
+          "0 LinearPatternSubtraction (glisse sur un master : tous les masters ouverts). 1 Renommer_auto (double-clic, Apply Global). 2 Combinaison_RGB. "
           "3 C_RGB_prep sur RGB (ImageSolver avec date par défaut, SPFC). 4 TON icône MGC_MARS sur RGB. "
           "5 C_RGB_rapide sur RGB (BXT Correct Only, SPCC, BXT, SXT, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond SP = HP = 0,22) : RGB étiré sans étoiles et RGB_stars. "
           "6 C_L_prep sur L. 7 MGC_MARS sur L. 8 C_L_rapide sur L (BXT, SXT, NXT, Statistical Stretch, GHS fond) ; ferme L_stars. "
@@ -834,7 +835,7 @@ T_RAPIDE = {
           "MGC : garde TON icône MGC_MARS où tu as cliqué Default Files (chaque instance a sa liste MARS). Cible hors MARS (sud au-delà de −15° environ) : GradientCorrection des options à la place de MGC. "
           "Une étape en erreur arrête le conteneur : lis la console. Options : P2, P6, P7 ; Blanshan seulement de temps en temps."),
  'LHA': ("MODE RAPIDE LHaRGB — environ 18 glisser-déposer. Icône de repère, sans effet. "
-         "1 Renommer_auto (double-clic, Apply Global). 2 Combinaison_RGB (R, G, B restent ouvertes : R sert à Continuum_H). "
+         "0 LinearPatternSubtraction (glisse sur un master : tous les masters ouverts). 1 Renommer_auto (double-clic, Apply Global). 2 Combinaison_RGB (R, G, B restent ouvertes : R sert à Continuum_H). "
          "3 C_RGB_prep sur RGB, puis MGC_MARS. 4 C_RGB_couleur_rapide sur RGB (BXT Correct Only, SPCC, BXT). "
          "5 C_H_prep sur H, puis MGC_MARS_H, puis BXT_L_H sur H. 6 Continuum_H (k à régler), puis H_dans_RGB sur RGB. "
          "7 C_RGB_fin_rapide sur RGB (SXT, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond 0,22). "
@@ -864,8 +865,7 @@ def write_rapide(filename, prefix, title, steps, main_spec, opt_spec):
     return len(main), len(opts)
 
 def rapide_common_opts(steps):
-    return [(1, *pick(steps, 'LinearPatternSubtraction')),
-            (2, *pick(steps, 'GradientCorrection')),
+    return [(2, *pick(steps, 'GradientCorrection')),
             (6, *pick(steps, 'Boost_finition_light')), (6, *pick(steps, 'Boost_finition')), (6, *pick(steps, 'HDRMT_50')), (6, *pick(steps, 'NXT_final')),
             (7, *pick(steps, 'Halo_B_Gon')), (7, *pick(steps, 'MT_etoiles')), (7, *pick(steps, 'Etoiles_reduites'))]
 
@@ -881,13 +881,13 @@ l_prep = lambda: cont('C_L_prep', solver_parts() + [M.spfc('SPFC_L', **SPFC_OPTS
 rgb_prep = lambda: cont('C_RGB_prep', solver_parts() + [M.spfc('SPFC_RGB_filtres', **SPFC_OPTS)])
 l_rapide = lambda bxt: cont('C_L_rapide', [bxt, M.sxt('SXT_lineaire', False), M.nxt('NXT_L', 0.60, 1), fermer('Fermer_L_stars', 'L_stars'), stat_auto(), GHS_FOND_R()])
 
-rapide_lrgb = [note_rapide('LRGB'), (1, *pick(lrgb, 'Renommer_auto')), (1, *pick(lrgb, 'Combinaison_RGB')),
+rapide_lrgb = [(1, *pick(lrgb, 'LinearPatternSubtraction')), note_rapide('LRGB'), (1, *pick(lrgb, 'Renommer_auto')), (1, *pick(lrgb, 'Combinaison_RGB')),
     (2, rgb_prep(), ''), (2, *pick(lrgb, 'MGC_MARS')), (2, l_prep(), ''),
     (3, cont('C_RGB_rapide', [M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), spcc_perso('SPCC'), bxt_rgb(), M.sxt('SXT_lineaire', False),
                               M.nxt('NXT_RGB', 0.80, 1), stat_auto(), GHS_FOND_R()]), ''),
     (3, l_rapide(M.bxt('BXT_L', False, 0.25, 0.0, 0.80)), '')] + rapide_end(lrgb)
 
-rapide_lha = [note_rapide('LHA'), (1, *pick(lhargb, 'Renommer_auto')), (1, *pick(lhargb, 'Combinaison_RGB')),
+rapide_lha = [(1, *pick(lhargb, 'LinearPatternSubtraction')), note_rapide('LHA'), (1, *pick(lhargb, 'Renommer_auto')), (1, *pick(lhargb, 'Combinaison_RGB')),
     (2, rgb_prep(), ''), (2, *pick(lhargb, 'MGC_MARS')),
     (2, cont('C_H_prep', solver_parts() + [M.spfc('SPFC_H', nb=(656.3, 3.0), **SPFC_OPTS)]), ''), (2, *pick(lhargb, 'MGC_MARS_H')), (2, l_prep(), ''),
     (3, cont('C_RGB_couleur_rapide', [M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), spcc_perso('SPCC'), bxt_rgb()]), ''),

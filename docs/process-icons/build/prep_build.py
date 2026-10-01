@@ -111,10 +111,10 @@ JS = r'''<script>
   }
   function clean(d) { return d.replace(/\s*Détails : page \S+\.$/, '').replace(/SI :\n- /g, 'SI ').replace(/\n- /g, ' ; si ').replace(/\n+/g, ' '); }
   function list() {
-    var sel = selection(), html = '', last = 0;
+    var sel = selection(), html = '', last = 0, off = sel.length && sel[0].b === 'LinearPatternSubtraction' ? 0 : 1;
     sel.forEach(function (s, i) {
       if (s.p !== last) { html += '<li class="phase">' + s.p + '. ' + esc(D.phases[s.p - 1]) + ' — ' + esc(D.notes[s.p - 1]) + '</li>'; last = s.p; }
-      html += '<li><b>E' + ('0' + (i + 1)).slice(-2) + '_' + esc(s.b) + '</b> — ' + esc(clean(s.d)) + '</li>';
+      html += '<li><b>E' + ('0' + (i + off)).slice(-2) + '_' + esc(s.b) + '</b> — ' + esc(clean(s.d)) + '</li>';
     });
     $('prep-list').innerHTML = html;
     $('prep-msg').textContent = sel.length + ' icônes, ' + new Set(sel.map(function (s) { return s.p; })).size + ' phases (colonnes).';
@@ -126,6 +126,7 @@ JS = r'''<script>
     sel.forEach(function (s, i) { var c = phases.indexOf(s.p); cw[c] = Math.max(cw[c], ('E00_' + s.b).length); });
     var xs = [], xx = 30;
     cw.forEach(function (n) { xs.push(xx); xx += Math.round(90 + 4.4 * n); });
+    var off = sel.length && sel[0].b === 'LinearPatternSubtraction' ? 0 : 1;   // LinearPatternSubtraction = E00
     sel.forEach(function (s, i) {
       var c = phases.indexOf(s.p);
       if (c !== col) {
@@ -134,7 +135,7 @@ JS = r'''<script>
         insts.push('   <instance class="NoOperation" version="256" id="' + hn + '_instance">\n      <description>' + esc('PHASE ' + s.p + ' — ' + D.phases[s.p - 1] + ' : ' + D.notes[s.p - 1] + '. Colonne de repère, sans effet.') + '</description>\n   </instance>');
         icons.push('   <icon id="' + hn + '" instance="' + hn + '_instance" xpos="' + xs[c] + '" ypos="20" workspace="Workspace01"/>');
       }
-      var name = 'E' + ('0' + (i + 1)).slice(-2) + '_' + s.b;
+      var name = 'E' + ('0' + (i + off)).slice(-2) + '_' + s.b;
       insts.push(instOf(s, name));
       icons.push('   <icon id="' + name + '" instance="' + name + '_instance" xpos="' + xs[c] + '" ypos="' + (64 + 30 * row) + '" workspace="Workspace01"/>');
       row++;

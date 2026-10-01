@@ -8,67 +8,8 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
    <instance class="NoOperation" version="256" id="P1_Preparation_instance">
       <description>PHASE 1 — Préparation : masters intégrés, recadrés et combinés. Colonne de repère, sans effet.</description>
    </instance>
-   <instance class="Script" version="256" id="E01_Renommer_auto_instance">
-      <description>LANCEMENT : double-clic sur l'icône, puis Apply Global.
-
-PRÉRÉGLÉ : script Renommer_auto : renomme les masters mono ouverts L, R, G, B, H, O, S d'après le mot-clé FILTER (Lum, Red, Ha, OIII...), sinon d'après le nom du fichier.
-
-À RÉGLER : une seule fois par ordinateur : copie Renommer_auto.js dans src/scripts/clodoweg ; ouvre tes masters, puis lance l'icône.
-
-SI :
-- filtre inconnu ou nom déjà pris -&gt; message dans la console, renomme cette vue à la main
-
-Détails : page docs/pixinsight-workflow.html.</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Renommer_auto.js</parameter>
-      <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="0"/>
-      <parameter id="information"></parameter>
-   </instance>
-   <instance class="Script" version="256" id="E02_Combinaison_RGB_instance">
-      <description>LANCEMENT : double-clic sur l'icône, puis Apply Global.
-
-PRÉRÉGLÉ : script Combiner_RGB : R, G, B -&gt; image couleur 'RGB', en-tête FITS du rouge copié ; R, G et B restent OUVERTES (closeSources = false : R sert à Continuum_H).
-
-À RÉGLER : nomme tes masters R, G et B (ou Renommer_auto), puis lance l'icône ; ferme G et B toi-même.
-
-Détails : page docs/pixinsight-workflow.html.</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Combiner_RGB.js</parameter>
-      <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="6">
-         <tr>
-            <td id="id">red</td>
-            <td id="value">R</td>
-         </tr>
-         <tr>
-            <td id="id">green</td>
-            <td id="value">G</td>
-         </tr>
-         <tr>
-            <td id="id">blue</td>
-            <td id="value">B</td>
-         </tr>
-         <tr>
-            <td id="id">newId</td>
-            <td id="value">RGB</td>
-         </tr>
-         <tr>
-            <td id="id">closeSources</td>
-            <td id="value">false</td>
-         </tr>
-         <tr>
-            <td id="id">copyKeywords</td>
-            <td id="value">true</td>
-         </tr>
-      </table>
-      <parameter id="information"></parameter>
-   </instance>
-   <instance class="NoOperation" version="256" id="P1_options_instance">
-      <description>OPTIONS de la phase 1 — Préparation : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
-   </instance>
-   <instance class="Script" version="256" id="Opt_LinearPatternSubtraction_instance">
-      <description>OPTION — lignes horizontales résiduelles visibles sur un master (motif du capteur).
-
-LANCEMENT : glisse l'icône sur l'image.
+   <instance class="Script" version="256" id="E00_LinearPatternSubtraction_instance">
+      <description>LANCEMENT : glisse l'icône sur l'image.
 
 PRÉRÉGLÉ : script LPS_UnClic (moteur de Vicent Peris, sans dialogue) : lignes, Correct the entire image, Layers to remove 9, Rejection limit 3, Global rejection 5, zone de fond choisie automatiquement (la plus sombre), fenêtres de travail fermées, TOUTES les images ouvertes corrigées (allOpenImages = true).
 
@@ -142,6 +83,63 @@ Détails : page docs/pixinsight-workflow.html.</description>
          </tr>
       </table>
       <parameter id="information"></parameter>
+   </instance>
+   <instance class="Script" version="256" id="E01_Renommer_auto_instance">
+      <description>LANCEMENT : double-clic sur l'icône, puis Apply Global.
+
+PRÉRÉGLÉ : script Renommer_auto : renomme les masters mono ouverts L, R, G, B, H, O, S d'après le mot-clé FILTER (Lum, Red, Ha, OIII...), sinon d'après le nom du fichier.
+
+À RÉGLER : une seule fois par ordinateur : copie Renommer_auto.js dans src/scripts/clodoweg ; ouvre tes masters, puis lance l'icône.
+
+SI :
+- filtre inconnu ou nom déjà pris -&gt; message dans la console, renomme cette vue à la main
+
+Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Renommer_auto.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="0"/>
+      <parameter id="information"></parameter>
+   </instance>
+   <instance class="Script" version="256" id="E02_Combinaison_RGB_instance">
+      <description>LANCEMENT : double-clic sur l'icône, puis Apply Global.
+
+PRÉRÉGLÉ : script Combiner_RGB : R, G, B -&gt; image couleur 'RGB', en-tête FITS du rouge copié ; R, G et B restent OUVERTES (closeSources = false : R sert à Continuum_H).
+
+À RÉGLER : nomme tes masters R, G et B (ou Renommer_auto), puis lance l'icône ; ferme G et B toi-même.
+
+Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Combiner_RGB.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="6">
+         <tr>
+            <td id="id">red</td>
+            <td id="value">R</td>
+         </tr>
+         <tr>
+            <td id="id">green</td>
+            <td id="value">G</td>
+         </tr>
+         <tr>
+            <td id="id">blue</td>
+            <td id="value">B</td>
+         </tr>
+         <tr>
+            <td id="id">newId</td>
+            <td id="value">RGB</td>
+         </tr>
+         <tr>
+            <td id="id">closeSources</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">copyKeywords</td>
+            <td id="value">true</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
+   </instance>
+   <instance class="NoOperation" version="256" id="P1_options_instance">
+      <description>OPTIONS de la phase 1 — Préparation : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
    </instance>
    <instance class="Script" version="256" id="Opt_WBPP_instance">
       <description>OPTION — seulement si tu repars des brutes (masters pas encore empilés).
@@ -2068,10 +2066,10 @@ max($T,f1)</parameter>
       <table id="outputData" rows="0"/>
    </instance>
    <icon id="P1_Preparation" instance="P1_Preparation_instance" xpos="30" ypos="20" workspace="Workspace01"/>
-   <icon id="E01_Renommer_auto" instance="E01_Renommer_auto_instance" xpos="30" ypos="64" workspace="Workspace01"/>
-   <icon id="E02_Combinaison_RGB" instance="E02_Combinaison_RGB_instance" xpos="30" ypos="94" workspace="Workspace01"/>
-   <icon id="P1_options" instance="P1_options_instance" xpos="30" ypos="140" workspace="Workspace01"/>
-   <icon id="Opt_LinearPatternSubtraction" instance="Opt_LinearPatternSubtraction_instance" xpos="30" ypos="174" workspace="Workspace01"/>
+   <icon id="E00_LinearPatternSubtraction" instance="E00_LinearPatternSubtraction_instance" xpos="30" ypos="64" workspace="Workspace01"/>
+   <icon id="E01_Renommer_auto" instance="E01_Renommer_auto_instance" xpos="30" ypos="94" workspace="Workspace01"/>
+   <icon id="E02_Combinaison_RGB" instance="E02_Combinaison_RGB_instance" xpos="30" ypos="124" workspace="Workspace01"/>
+   <icon id="P1_options" instance="P1_options_instance" xpos="30" ypos="170" workspace="Workspace01"/>
    <icon id="Opt_WBPP" instance="Opt_WBPP_instance" xpos="30" ypos="204" workspace="Workspace01"/>
    <icon id="Opt_CC_auto" instance="Opt_CC_auto_instance" xpos="30" ypos="234" workspace="Workspace01"/>
    <icon id="P2_Gradient" instance="P2_Gradient_instance" xpos="243" ypos="20" workspace="Workspace01"/>
