@@ -50,7 +50,7 @@ Les formules supposent des images nommées comme indiqué (renomme tes vues avec
 
 | Icône | Réglages |
 |---|---|
-| `LRGB_ajout_L` | Seul L activé (vue nommée `L`), Lightness 0,5, Saturation 0,40, réduction du bruit de chrominance |
+| `LRGB_ajout_L` | Seul L activé (vue nommée `L`), Lightness 0,5, Saturation 0,35, réduction du bruit de chrominance |
 | `LinearFit_ref_H` | Référence : vue nommée `H` |
 | `SCNR_vert` | Green, Average Neutral, 1,0 |
 | `SCNR_SHO_partiel` | Green, Average Neutral, 0,70 |

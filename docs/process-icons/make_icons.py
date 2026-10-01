@@ -256,7 +256,7 @@ def mt_post(t):
     return t
 
 nat = [
-    instance('LRGBCombination', 'LRGB_ajout_L', {'mL': '0.500', 'mc': '0.400', 'noiseReduction': True}, post=lrgb_post),
+    instance('LRGBCombination', 'LRGB_ajout_L', {'mL': '0.500', 'mc': '0.350', 'noiseReduction': True}, post=lrgb_post),
     instance('LinearFit', 'LinearFit_ref_H', {'rejectLow': '0.000000', 'rejectHigh': '0.920000'}, {'referenceViewId': 'H'}),
     instance('SCNR', 'SCNR_vert', {'amount': '1.00', 'protectionMethod': 'AverageNeutral', 'colorToRemove': 'Green'}),
     instance('SCNR', 'SCNR_SHO_partiel', {'amount': '0.70', 'protectionMethod': 'AverageNeutral', 'colorToRemove': 'Green'}),

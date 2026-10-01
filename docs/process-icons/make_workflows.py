@@ -115,7 +115,7 @@ def curves(name):
             rows = ''.join('\n         <tr>\n            <td id="x" value="%.5f"/>\n            <td id="y" value="%.5f"/>\n         </tr>' % p for p in pts)
             return '<table id="%s" rows="%d">%s\n      </table>' % (tid, len(pts), rows)
         t, n1 = re.subn(r'<table id="K" rows="\d+">.*?</table>', lambda m: table('K', [(0, 0), (0.25, 0.22), (0.75, 0.78), (1, 1)]), t, flags=re.S)
-        t, n2 = re.subn(r'<table id="S" rows="\d+">.*?</table>', lambda m: table('S', [(0, 0), (0.5, 0.6), (1, 1)]), t, flags=re.S)
+        t, n2 = re.subn(r'<table id="S" rows="\d+">.*?</table>', lambda m: table('S', [(0, 0), (0.5, 0.65), (1, 1)]), t, flags=re.S)
         assert n1 == 1 and n2 == 1
         return t
     return M.instance('CurvesTransformation', name, post=post)
@@ -368,7 +368,7 @@ D_BL = ("Réduction d'étoiles Bill Blanshan, méthode Transfer V2 : GLISSE l'ic
         "S = 0,20 dans cette icône (valeur de Bill : 0,15 ; plus bas = étoiles plus petites ; étoiles trop petites -> 0,25, ou saute cette étape). Les versions V3 et les méthodes Halo/Star sont dans 01-PixelMath-formules.xpsm.")
 D_MT = ("Alternative : MorphologicalTransformation sur l'image d'étoiles seule (ou avec un masque d'étoiles), AVANT Etoiles_screen. Morphological Selection 0,25 (sous 0,5 = érosion), Amount 0,60, 1 itération, élément circulaire 5x5.")
 D_CURVES = ("CurvesTransformation — sur l'image sans étoiles étirée, sous masque de luminance (icône Masque_L juste avant). "
-            "Préréglé : légère courbe en S sur RGB/K (0,25 → 0,22 ; 0,75 → 0,78) et saturation (canal S, milieu monté de 0,5 à 0,6), interpolation Akima. "
+            "Préréglé : légère courbe en S sur RGB/K (0,25 → 0,22 ; 0,75 → 0,78) et saturation (canal S, milieu monté de 0,5 à 0,65 ; couleurs encore ternes -> 0,70 ou deuxième passe), interpolation Akima. "
             "Place les points aux niveaux réels (valeur K du curseur dans la barre d'état). Canaux : RGB/K = même courbe sur R, G, B ; L = luminosité CIE L* seule ; "
             "S = saturation en fonction de la saturation (sature les pixels ternes sans toucher aux saturés) ; H = teinte d'origine → nouvelle teinte (un point déplacé verticalement change une couleur en une autre) ; c = chroma. "
             "Petits déplacements, compare avec l'aperçu.")
@@ -517,8 +517,8 @@ lrgb = pre_block() + [rgb_comb(), (solver_container(), '')] + gradient_block('rg
     (M.nxt('NXT_L', 0.60, 1), "NoiseXTerminator sur L sans étoiles : Denoise 0,60 (0,50 à 0,70) pour garder le détail fin." + NXT_C),
 ] + ghs_block(L_GHS, L_STAT, L_FOND) + [
     (note('Star_Stretch', T_STARSTRETCH + STARS_LRGB), ''),
-    (M.instance('LRGBCombination', 'LRGB_ajout_L', {'mL': '0.500', 'mc': '0.400', 'noiseReduction': True}, post=M.lrgb_post),
-     "LRGBCombination sur les images étirées et SANS étoiles : seul L activé (renomme ta luminance 'L'), glisse le triangle sur le RGB. Lightness 0,5 ; Saturation 0,40 (plus bas = plus saturé) ; "
+    (M.instance('LRGBCombination', 'LRGB_ajout_L', {'mL': '0.500', 'mc': '0.350', 'noiseReduction': True}, post=M.lrgb_post),
+     "LRGBCombination sur les images étirées et SANS étoiles : seul L activé (renomme ta luminance 'L'), glisse le triangle sur le RGB. Lightness 0,5 ; Saturation 0,35 (plus bas = plus saturé ; ternes -> 0,30) ; "
      "Chrominance noise reduction cochée. Couleurs délavées : L trop claire par rapport au RGB, étire-la moins. "
      "CONTRÔLE après combinaison (sonde 15x15) : cœur de galaxie R >= G, nettement au-dessus de B ; bras B au-dessus de R ; régions HII R > B > G ; aucune étoile verte ; toute une gamme d'étoiles bleues et jaune-orange ; fond R = G = B. "
      "Couleurs criardes ou bruit coloré : remonte la valeur de Saturation (plus haut = moins saturé), NXT sur le RGB. Étoiles toutes blanches : étire-les à part. Régions HII peu visibles : normal en LRGB pur, passe en LHaRGB."),
@@ -557,8 +557,8 @@ lhargb = pre_block() + [rgb_comb(), (solver_container(), '')] + gradient_block('
     (M.nxt('NXT_L', 0.60, 1), "NoiseXTerminator sur L sans étoiles : Denoise 0,60." + NXT_C),
 ] + ghs_block(L_GHS, L_STAT, L_FOND) + [
     (note('Star_Stretch', T_STARSTRETCH + STARS_LRGB), ''),
-    (M.instance('LRGBCombination', 'LRGB_ajout_L', {'mL': '0.500', 'mc': '0.400', 'noiseReduction': True}, post=M.lrgb_post),
-     "LRGBCombination sur les images étirées sans étoiles : seul L activé (vue 'L'), Lightness 0,5, Saturation 0,40, Chrominance noise reduction cochée. "
+    (M.instance('LRGBCombination', 'LRGB_ajout_L', {'mL': '0.500', 'mc': '0.350', 'noiseReduction': True}, post=M.lrgb_post),
+     "LRGBCombination sur les images étirées sans étoiles : seul L activé (vue 'L'), Lightness 0,5, Saturation 0,35, Chrominance noise reduction cochée. "
      "CONTRÔLE (sonde 15x15) : cœur de galaxie jaune (R >= G >> B), bras bleus, régions HII roses et bien visibles grâce au H (R > B > G), aucune étoile verte, fond R = G = B ; couleurs délavées : L trop claire, étire-la moins. "
      "Compare avec la copie LRGB sans H : seules les régions HII doivent changer ; si le cœur ou les étoiles ont rougi, reprends la soustraction du continuum (k)."),
 ] + finish_block() + stars_end('RGB_stars', screen_extra=SCREEN_LRGB)

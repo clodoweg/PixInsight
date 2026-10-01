@@ -29,7 +29,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          </tr>
       </table>
       <parameter id="mL" value="0.500"/>
-      <parameter id="mc" value="0.400"/>
+      <parameter id="mc" value="0.350"/>
       <parameter id="clipHighlights" value="false"/>
       <parameter id="noiseReduction" value="true"/>
       <parameter id="layersRemoved" value="4"/>

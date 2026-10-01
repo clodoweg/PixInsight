@@ -29,6 +29,7 @@ Utilisateur : astrophotographe, PixInsight 1.9.5 sur macOS (Apple Silicon), CDK1
 - **Tout régénérer : `sh docs/process-icons/build/build.sh`** (reproduit exactement les fichiers commités ; valide les XML).
 
 ### Conventions
+- Couleur : Courbes saturation 0,5 → 0,65 ; LRGB_ajout_L Saturation 0,35 ; pas de SCNR par défaut sur les étoiles RGB (contrôle à la sonde, Remove Green si étoile verte).
 - Star_Stretch : Stretch Amount 6 dans toutes les icônes (choix de l'utilisateur ; défaut du script 5). Blanshan_Transfer S = 0,20. BXT Sharpen Stars reste 0,25.
 - Recombinaison des étoiles : Etoiles_screen = ~((~$T) * (~ÉTOILES)), à glisser sur l'image sans étoiles finale ; ÉTOILES = RGB_stars (LRGB, LHaRGB, RGB+SHO), NBtoRGB_stars (SHO sans RGB), HOO_stars (HOO). Blanshan_Transfer glissé sur l'image sans étoiles, lit 'Final', crée 'Final_reduit'. Plus de vues à renommer starless / stars dans les workflows.
 - Étirement LRGB / LHaRGB : par défaut Statistical Stretch sur le RGB (couleur seule) et GHS_1 + GHS_2 sur L (détail), puis GHS_3_fond sur les deux avant LRGB. Choix « mix » du préparateur (layout.LUM, WF_DEFAULT ; 'def' dans les données du préparateur ; JS dans build/prep_build.py, pas dans la page). GHS sur tout et Statistical Stretch sur tout restent proposés. Les autres workflows : GHS par défaut.
