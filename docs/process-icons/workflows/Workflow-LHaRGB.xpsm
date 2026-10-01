@@ -776,7 +776,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <instance class="GeneralizedHyperbolicStretch" version="256" id="E18_GHS_1_premier_instance">
       <description>PRÉRÉGLÉ : b = 10, Stretch factor 0 (aucun effet tant que tu ne le montes pas).
 
-À RÉGLER : clique le signal faible et Send to SP ; monte Stretch factor jusqu'au pic du fond vers 0,20–0,25.
+À RÉGLER : clique le fond ou le signal faible et Send to SP ; Stretch factor jusqu'au pic vers 0,20–0,25 (fond lu 0,001 -&gt; 6 ; 0,002 -&gt; 5 ; 0,005 -&gt; 4 ; 0,01 -&gt; 3).
 
 SI :
 - fond bruité qui ressort -&gt; SP trop bas, remonte-le
@@ -800,7 +800,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <instance class="GeneralizedHyperbolicStretch" version="256" id="E19_GHS_2_contraste_instance">
       <description>PRÉRÉGLÉ : b = 4, HP 0,9, Stretch factor 0.
 
-À RÉGLER : SP dans la zone plate à contraster ; monte Stretch factor peu à peu.
+À RÉGLER : SP dans la zone plate à contraster (souvent 0,25–0,40) ; Stretch factor 1 à 2.
 
 SI :
 - étoiles qui gonflent -&gt; baisse HP vers leur valeur
@@ -825,7 +825,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <instance class="GeneralizedHyperbolicStretch" version="256" id="E20_GHS_3_fond_instance">
       <description>PRÉRÉGLÉ : b = 10, Stretch factor 0.
 
-À RÉGLER : technique HP = SP pour assombrir le fond vers 0,12–0,14 sans écrêter.
+À RÉGLER : SP = HP = fond lu - 0,03 ; Stretch factor 0,5 à 1,2 (≈ 1) jusqu'au fond vers 0,12–0,14.
 
 Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>

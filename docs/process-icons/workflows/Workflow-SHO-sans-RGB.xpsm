@@ -784,7 +784,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <instance class="GeneralizedHyperbolicStretch" version="256" id="E20_GHS_1_premier_instance">
       <description>PRÉRÉGLÉ : b = 10, Stretch factor 0.
 
-À RÉGLER : étire H d'abord (fond vers 0,20–0,25), puis O et S jusqu'au MÊME fond et une médiane proche.
+À RÉGLER : étire H d'abord (fond vers 0,20–0,25 ; Stretch factor 3 à 6 selon le fond lu), puis O et S jusqu'au MÊME fond (Stretch factor plus élevé).
 
 SI :
 - bruit de O ou S qui ressort -&gt; SP trop bas, remonte-le
@@ -807,7 +807,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <instance class="GeneralizedHyperbolicStretch" version="256" id="E21_GHS_2_contraste_instance">
       <description>PRÉRÉGLÉ : b = 4, HP 0,9, Stretch factor 0.
 
-À RÉGLER : SP dans la zone plate à contraster ; monte Stretch factor peu à peu.
+À RÉGLER : SP dans la zone plate à contraster (souvent 0,25–0,40) ; Stretch factor 1 à 2.
 
 SI :
 - étoiles qui gonflent -&gt; baisse HP vers leur valeur
@@ -832,7 +832,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <instance class="GeneralizedHyperbolicStretch" version="256" id="E22_GHS_3_fond_instance">
       <description>PRÉRÉGLÉ : b = 10, Stretch factor 0.
 
-À RÉGLER : technique HP = SP pour assombrir le fond vers 0,12–0,14 sans écrêter.
+À RÉGLER : SP = HP = fond lu - 0,03 ; Stretch factor 0,5 à 1,2 (≈ 1) jusqu'au fond vers 0,12–0,14.
 
 Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
