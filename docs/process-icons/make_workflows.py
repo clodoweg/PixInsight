@@ -261,13 +261,11 @@ def boost_container(name='Boost_finition', k=((0, 0), (0.25, 0.23), (0.75, 0.77)
     return name, container(name, parts)
 
 def solver_container():
-    """Icône ImageSolver en un glisser : ImageSolver_Date.js ajoute la date si elle manque, puis lance lui-même ImageSolver
-    avec les réglages du matériel. Pas de ProcessContainer : ImageSolver y échoue (« The image is already being processed »)."""
+    """Icône ImageSolver en un glisser : ImageSolver_Date.js ajoute la date si elle manque, puis résout l'image avec le moteur
+    d'ImageSolver (#include, comme WBPP) et les réglages du matériel. Pas de ProcessContainer : ImageSolver y échoue (« The image is already being processed »)."""
     name, x = script('ImageSolver_Date', '')
     path, md5, params, launch = SCRIPTS['ImageSolver']
-    for k, v in params:   # transmis par une ligne de commande run -p="nom,valeur" : ni guillemets, ni ; ni = dans les valeurs
-        assert not any(c in k + v for c in '";=')
-    extra = [('solverPath', path), ('solverParams', ';'.join('%s=%s' % (k, v) for k, v in params))]
+    extra = list(params)   # réglages d'ImageSolver lus par son moteur, inclus comme bibliothèque dans ImageSolver_Date.js
     rows = ''.join('\n         <tr>\n            <td id="id">%s</td>\n            <td id="value">%s</td>\n         </tr>' % (escape(k), escape(v)) for k, v in extra)
     x, n = re.subn(r'<table id="parameters" rows="(\d+)">(.*?)\n      </table>',
                    lambda m: '<table id="parameters" rows="%d">%s%s\n      </table>' % (int(m.group(1)) + len(extra), m.group(2), rows), x, count=1, flags=re.S)

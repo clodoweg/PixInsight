@@ -159,18 +159,194 @@ SI :
 Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/ImageSolver_Date.js</parameter>
       <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="3">
+      <table id="parameters" rows="47">
          <tr>
             <td id="id">defaultDate</td>
             <td id="value">2020-01-01T00:00:00</td>
          </tr>
          <tr>
-            <td id="id">solverPath</td>
-            <td id="value">$PXI_SRCDIR/scripts/ImageSolver/ImageSolver.js</td>
+            <td id="id">metadata_focal</td>
+            <td id="value">2939</td>
          </tr>
          <tr>
-            <td id="id">solverParams</td>
-            <td id="value">metadata_focal=2939;metadata_useFocal=true;metadata_xpixsz=3.76;metadata_resolution=0.00007330116739335556;metadata_referenceSystem=ICRS;metadata_topocentric=false;solver_version=6.4.2;solver_magnitude=12;solver_autoMagnitude=true;solver_databasePath=undefined;solver_generateErrorImg=false;solver_structureLayers=5;solver_minStructureSize=0;solver_hotPixelFilterRadius=1;solver_noiseReductionFilterRadius=0;solver_sensitivity=0.5;solver_peakResponse=0.5;solver_brightThreshold=3;solver_maxStarDistortion=0.6;solver_autoPSF=false;solver_catalogMode=2;solver_vizierServer=https://vizier.cds.unistra.fr/;solver_showStars=false;solver_showStarMatches=false;solver_showSimplifiedSurfaces=false;solver_showDistortion=false;solver_generateDistortModel=false;solver_catalog=PPMXL;solver_distortionCorrection=true;solver_rbfType=101;solver_maxSplinePoints=4000;solver_splineOrder=2;solver_splineSmoothing=0.005;solver_enableSimplifier=true;solver_simplifierRejectFraction=0.1;solver_outlierDetectionRadius=160;solver_outlierDetectionMinThreshold=4;solver_outlierDetectionSigma=5;solver_useActive=true;solver_outSuffix=_ast;solver_projection=0;solver_projectionOriginMode=0;solver_restrictToHQStars=false;solver_intersectionMode=1;solver_tryApparentCoordinates=true;solver_tryExhaustiveInitialAlignment=false</td>
+            <td id="id">metadata_useFocal</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">metadata_xpixsz</td>
+            <td id="value">3.76</td>
+         </tr>
+         <tr>
+            <td id="id">metadata_resolution</td>
+            <td id="value">0.00007330116739335556</td>
+         </tr>
+         <tr>
+            <td id="id">metadata_referenceSystem</td>
+            <td id="value">ICRS</td>
+         </tr>
+         <tr>
+            <td id="id">metadata_topocentric</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">solver_version</td>
+            <td id="value">6.4.2</td>
+         </tr>
+         <tr>
+            <td id="id">solver_magnitude</td>
+            <td id="value">12</td>
+         </tr>
+         <tr>
+            <td id="id">solver_autoMagnitude</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">solver_databasePath</td>
+            <td id="value">undefined</td>
+         </tr>
+         <tr>
+            <td id="id">solver_generateErrorImg</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">solver_structureLayers</td>
+            <td id="value">5</td>
+         </tr>
+         <tr>
+            <td id="id">solver_minStructureSize</td>
+            <td id="value">0</td>
+         </tr>
+         <tr>
+            <td id="id">solver_hotPixelFilterRadius</td>
+            <td id="value">1</td>
+         </tr>
+         <tr>
+            <td id="id">solver_noiseReductionFilterRadius</td>
+            <td id="value">0</td>
+         </tr>
+         <tr>
+            <td id="id">solver_sensitivity</td>
+            <td id="value">0.5</td>
+         </tr>
+         <tr>
+            <td id="id">solver_peakResponse</td>
+            <td id="value">0.5</td>
+         </tr>
+         <tr>
+            <td id="id">solver_brightThreshold</td>
+            <td id="value">3</td>
+         </tr>
+         <tr>
+            <td id="id">solver_maxStarDistortion</td>
+            <td id="value">0.6</td>
+         </tr>
+         <tr>
+            <td id="id">solver_autoPSF</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">solver_catalogMode</td>
+            <td id="value">2</td>
+         </tr>
+         <tr>
+            <td id="id">solver_vizierServer</td>
+            <td id="value">https://vizier.cds.unistra.fr/</td>
+         </tr>
+         <tr>
+            <td id="id">solver_showStars</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">solver_showStarMatches</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">solver_showSimplifiedSurfaces</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">solver_showDistortion</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">solver_generateDistortModel</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">solver_catalog</td>
+            <td id="value">PPMXL</td>
+         </tr>
+         <tr>
+            <td id="id">solver_distortionCorrection</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">solver_rbfType</td>
+            <td id="value">101</td>
+         </tr>
+         <tr>
+            <td id="id">solver_maxSplinePoints</td>
+            <td id="value">4000</td>
+         </tr>
+         <tr>
+            <td id="id">solver_splineOrder</td>
+            <td id="value">2</td>
+         </tr>
+         <tr>
+            <td id="id">solver_splineSmoothing</td>
+            <td id="value">0.005</td>
+         </tr>
+         <tr>
+            <td id="id">solver_enableSimplifier</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">solver_simplifierRejectFraction</td>
+            <td id="value">0.1</td>
+         </tr>
+         <tr>
+            <td id="id">solver_outlierDetectionRadius</td>
+            <td id="value">160</td>
+         </tr>
+         <tr>
+            <td id="id">solver_outlierDetectionMinThreshold</td>
+            <td id="value">4</td>
+         </tr>
+         <tr>
+            <td id="id">solver_outlierDetectionSigma</td>
+            <td id="value">5</td>
+         </tr>
+         <tr>
+            <td id="id">solver_useActive</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">solver_outSuffix</td>
+            <td id="value">_ast</td>
+         </tr>
+         <tr>
+            <td id="id">solver_projection</td>
+            <td id="value">0</td>
+         </tr>
+         <tr>
+            <td id="id">solver_projectionOriginMode</td>
+            <td id="value">0</td>
+         </tr>
+         <tr>
+            <td id="id">solver_restrictToHQStars</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">solver_intersectionMode</td>
+            <td id="value">1</td>
+         </tr>
+         <tr>
+            <td id="id">solver_tryApparentCoordinates</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">solver_tryExhaustiveInitialAlignment</td>
+            <td id="value">false</td>
          </tr>
       </table>
       <parameter id="information"></parameter>
