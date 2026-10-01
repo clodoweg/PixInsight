@@ -624,7 +624,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
 
 SI :
 - fond bruité qui ressort -&gt; SP trop bas, remonte-le
-- étoiles qui gonflent -&gt; baisse HP
+- cœur brillant qui sature -&gt; baisse HP
 
 Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
@@ -647,7 +647,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
 À RÉGLER : SP dans la zone plate à contraster (souvent 0,25–0,40) ; Stretch factor 1 à 2.
 
 SI :
-- étoiles qui gonflent -&gt; baisse HP vers leur valeur
+- cœur brillant qui sature -&gt; baisse HP vers sa valeur
 - fond trop sombre -&gt; monte LP vers sa valeur (pas au-dessus de SP)
 - fond bruité qui ressort -&gt; SP trop bas
 

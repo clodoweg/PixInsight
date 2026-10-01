@@ -1041,7 +1041,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
 À RÉGLER : SP dans la zone plate à contraster (souvent 0,25–0,40) ; Stretch factor 1 à 2.
 
 SI :
-- étoiles qui gonflent -&gt; baisse HP vers leur valeur
+- cœur brillant qui sature -&gt; baisse HP vers sa valeur
 - fond trop sombre -&gt; monte LP vers sa valeur (pas au-dessus de SP)
 - fond bruité qui ressort -&gt; SP trop bas
 
@@ -1090,7 +1090,7 @@ LANCEMENT : glisse l'icône sur l'image. Si l'icône est bloquée après une mis
 
 PRÉRÉGLÉ : Target Median 0,25, Blackpoint Sigma 5.
 
-À RÉGLER : rien ; même Target Median pour tous les masters.
+À RÉGLER : rien ; même Target Median pour tous les masters ; avec 0,25, passe ensuite GHS_3_fond.
 
 Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/statisticalstretch.js</parameter>

@@ -302,7 +302,7 @@ LANCEMENT : glisse l'icône sur l'image. Si l'icône est bloquée après une mis
 
 PRÉRÉGLÉ : Target Median 0,25, Blackpoint Sigma 5, Linked coché, reste par défaut.
 
-À RÉGLER : rien ; alternative à GHS.
+À RÉGLER : rien ; alternative à GHS ; avec 0,25, passe ensuite GHS_3_fond (fond vers 0,12–0,14).
 
 SI :
 - cible compacte (galaxie) -&gt; Target Median 0,10

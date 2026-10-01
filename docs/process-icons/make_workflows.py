@@ -305,7 +305,7 @@ T_SPCC = ("SPCC — Average Spiral Galaxy, neutralisation du fond activée. ATTE
           "Toujours en linéaire, après le gradient et BXT Correct Only, avant BXT complet.")
 T_STAT = ("ÉTAPE MANUELLE — Statistical Stretch (SetiAstro, script v2.3). Alternative à GHS. À chaque passe : point noir = médiane − Blackpoint Sigma × 1,4826 × MAD (jamais sous le minimum), "
           "puis fonction de transfert qui place la médiane sur Target Median. "
-          "Target Median 0,25 par défaut (0 à 1) ; l'auteur conseille 0,10 pour une cible compacte (galaxie, nébuleuse planétaire), 0,25 pour une grande nébuleuse ; même valeur pour les images à combiner. "
+          "Target Median 0,25 par défaut (0 à 1) ; avec 0,25, passe ensuite GHS_3_fond pour ramener le fond vers 0,12-0,14 (image finale) ; l'auteur conseille 0,10 pour une cible compacte (galaxie, nébuleuse planétaire), 0,25 pour une grande nébuleuse ; même valeur pour les images à combiner. "
           "Blackpoint Sigma 5,0 (0 à 10) : plus haut = fond protégé et plus sombre, plus bas = plus de signal faible ; Calculate Clipped Pixels estime l'écrêtage. No Black Clip décoché. "
           "Linked Stretch coché pour une image couleur calibrée (décoché : chaque canal séparément, les couleurs bougent) ; sans effet en mono. "
           "Luma Only décoché (Luma Mode rec709, Luma Blend 0,60 : 0 = lié, 1 = luminance seule). Normalize décoché (sinon la médiane dépasse la cible). "
@@ -351,10 +351,10 @@ D_GHS1 = ("GHS, 1er étirement — Stretch factor à 0 : l'icône ne fait rien t
           "REPÈRES : après ce 1er étirement, fond vers 0,20-0,25 (volontairement clair) ; l'image finale visera 0,12-0,14 (30-35 sur 255), jamais 0. "
           "Contrôle : preview sur du fond vide + Process › Image › Statistics (médiane) ; aucun pixel écrêté à 0 dans l'histogramme.")
 D_GHS2 = ("GHS, ajout de contraste (passes suivantes) — clique sur une zone qui paraît plate, Send to SP ; Local intensity (b) 4 (3 à 5) ; monte Stretch factor doucement ; "
-          "baisse HP (ici 0,90) pour protéger les étoiles et les cœurs brillants ; monte LP pour garder le fond sombre. 1 à 3 passes. "
-          "Seuls les cœurs des étoiles les plus brillantes doivent atteindre 1 ; si la lecture donne 1,0 sur de grandes zones, baisse HP. "
-          "Trop étiré : fond granuleux, halos, étoiles grosses et blanches, couleurs délavées. Pas assez : extensions faibles invisibles, aspect découpé sur du noir.")
-D_GHS3 = ("GHS, assombrir le fond sans écrêter — SP juste sous le niveau à rendre noir, HP = SP (règle HP à la même valeur que SP), LP = 0, b = 10 ; ajuste Stretch factor. "
+          "baisse HP (ici 0,90) pour protéger les cœurs brillants ; monte LP si le fond devient trop sombre. 1 à 3 passes. Image sans étoiles uniquement (étoiles : Star Stretch). "
+          "Aucune grande zone ne doit atteindre 1 ; si la lecture donne 1,0 sur un cœur, baisse HP. "
+          "Trop étiré : fond granuleux, cœurs brûlés, couleurs délavées. Pas assez : extensions faibles invisibles, aspect découpé sur du noir.")
+D_GHS3 = ("GHS, assombrir le fond sans écrêter — après GHS ou Statistical Stretch. SP = fond lu - 0,03, HP = SP (règle HP à la même valeur que SP), LP = 0, b = 10 ; Stretch factor 0,5 à 1,2 (environ 1 pour un fond à 0,20-0,22). "
           "Plus propre qu'un point noir en Linear, qui détruit des données. "
           "CIBLE DU FOND FINAL : gris foncé 0,12-0,14 (30-35 sur 255 ; Readout Options › plage entière 8 bits), R = G = B à quelques unités près, JAMAIS 0. "
           "Données bruitées : 0,14-0,15 ; données propres (après NXT) : 0,10-0,12. Au-delà de 0,18-0,20 : trop étiré. Vérifie avec Statistics (médiane d'une preview de fond).")
@@ -454,7 +454,7 @@ def stars_end(cms=False, screen_extra='', cms_extra=''):
     return b
 
 def ghs_block(extra_desc='', stat_extra=''):
-    return [(ghs('GHS_1_premier', 10), D_GHS1 + extra_desc), (ghs('GHS_2_contraste', 4, hp=0.9), D_GHS2), (ghs('GHS_3_fond', 10), D_GHS3), (note('Statistical_Stretch', T_STAT + stat_extra), '')]
+    return [(ghs('GHS_1_premier', 10), D_GHS1 + extra_desc), (ghs('GHS_2_contraste', 4, hp=0.9), D_GHS2), (note('Statistical_Stretch', T_STAT + stat_extra), ''), (ghs('GHS_3_fond', 10), D_GHS3)]
 
 rgb_comb = lambda: (note('Combinaison_RGB', ''), '')
 MATERIEL = "QHY600 (Sony IMX455) + filtres Antlia V Pro"

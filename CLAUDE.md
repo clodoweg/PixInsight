@@ -29,6 +29,7 @@ Utilisateur : astrophotographe, PixInsight 1.9.5 sur macOS (Apple Silicon), CDK1
 - **Tout régénérer : `sh docs/process-icons/build/build.sh`** (reproduit exactement les fichiers commités ; valide les XML).
 
 ### Conventions
+- Étirement : GHS uniquement sur l'image sans étoiles (étoiles : Star Stretch). GHS_3_fond est dans le chemin principal (rôle core) et suit GHS comme Statistical Stretch (Target Median 0,25 → fond ramené à 0,12–0,14). Valeurs de départ GHS par étape : tableau #ghs-valeurs de la page.
 - Gradient : garder les deux voies dans chaque workflow. L'utilisateur essaie d'abord MGC + MARS (chemin principal : ImageSolver → SPFC → MGC) et, si MGC échoue (cible hors couverture MARS, sud au-delà de −15° environ), passe à GradientCorrection (ou DBE) rangé dans les options de la phase Gradient. ImageSolver reste dans le chemin principal dans les deux cas (nécessaire à SPCC).
 - Vues narrowband nommées **H, O, S** partout (formules, icônes, texte) ; exceptions : valeurs de filtre MARS `Ha`/`OIII` dans MGC, libellés d'interface (Lightness = Ha, O3/S2 boost, Ha Stars…), raies physiques Hα/Hβ, noms HII, HaRGB, LHaRGB.
 - Scripts écrits pour la fiche : `docs/process-icons/scripts/` (`LPS_UnClic.js`, `ImageSolver_Date.js`, `Combiner_RGB.js`), installés par l'utilisateur dans `src/scripts/clodoweg/` de PixInsight (icônes en `$PXI_SRCDIR/scripts/clodoweg/…`, Mac et PC). ImageSolver = conteneur [ImageSolver_Date, ImageSolver 6.4.2 `$PXI_SRCDIR/scripts/ImageSolver/ImageSolver.js` avec focale/pixel du matériel].

@@ -868,7 +868,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
 
 SI :
 - fond bruité qui ressort -&gt; SP trop bas, remonte-le
-- étoiles qui gonflent -&gt; baisse HP
+- cœur brillant qui sature -&gt; baisse HP
 
 Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
@@ -891,7 +891,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
 À RÉGLER : SP dans la zone plate à contraster (souvent 0,25–0,40) ; Stretch factor 1 à 2.
 
 SI :
-- étoiles qui gonflent -&gt; baisse HP vers leur valeur
+- cœur brillant qui sature -&gt; baisse HP vers sa valeur
 - fond trop sombre -&gt; monte LP vers sa valeur (pas au-dessus de SP)
 - fond bruité qui ressort -&gt; SP trop bas
 
@@ -974,7 +974,7 @@ LANCEMENT : glisse l'icône sur l'image. Si l'icône est bloquée après une mis
 
 PRÉRÉGLÉ : Target Median 0,25, Blackpoint Sigma 5, Linked coché, reste par défaut.
 
-À RÉGLER : rien ; alternative à GHS.
+À RÉGLER : rien ; alternative à GHS ; avec 0,25, passe ensuite GHS_3_fond (fond vers 0,12–0,14).
 
 SI :
 - cible compacte (galaxie) -&gt; Target Median 0,10

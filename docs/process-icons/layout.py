@@ -42,6 +42,8 @@ def role(prefix, base):
         return 'grad:mgc|gc' if prefix in NB else 'grad:gc'   # en narrowband, S n'est pas dans MARS : GradientCorrection s'y ajoute
     if base == 'DBE':
         return 'grad:dbe'
+    if base == 'GHS_3_fond':
+        return 'core'   # assombrit le fond après GHS comme après Statistical Stretch
     if base.startswith('GHS_'):
         return 'str:ghs'
     if base == 'Statistical_Stretch':
