@@ -12,6 +12,9 @@
 //      (metadata_focal, solver_catalogMode...) sont les paramètres de l'icône,
 //      lus par le moteur exactement comme pour une icône ImageSolver.
 //
+// #engine v8 : moteur JavaScript récent, exigé par le code d'ImageSolver
+// (syntaxe class), comme dans les scripts officiels.
+//
 // Une seule icône, SANS conteneur : dans un ProcessContainer, ImageSolver
 // échoue (« The image is already being processed ») car il ouvre son propre
 // traitement pour écrire la solution astrométrique.
@@ -21,6 +24,8 @@
 // ../ImageSolver/ImageSolver.js en dépend). Lancement : glisser l'icône sur
 // l'image.
 // ----------------------------------------------------------------------------
+
+#engine v8
 
 #feature-id    ImageSolver_Date : clodoweg > ImageSolver avec date par défaut
 #feature-info  Ajoute DATE-OBS = 2020-01-01 aux images sans date d'observation, \
