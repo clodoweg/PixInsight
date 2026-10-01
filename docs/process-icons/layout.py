@@ -22,14 +22,14 @@ PHASE = {
     'GHS_1_premier': 4, 'GHS_2_contraste': 4, 'GHS_3_fond': 4, 'Statistical_Stretch': 4, 'Star_Stretch': 4,
     'LRGB_ajout_L': 5, 'NBN_SHO': 5, 'NBN_HOO': 5, 'Foraxx_SHO': 5, 'Foraxx_HOO': 5, 'HOO_simple': 5, 'HOO_Hubble': 5,
     'Perfect_Palette_Picker': 5, 'NBColourMapper': 5, 'SCNR_SHO': 5, 'H_en_luminance': 5,
-    'Masque_L': 6, 'Courbes': 6, 'LHE': 6, 'LHE_fin': 6, 'HDRMT': 6, 'NXT_final': 6,
+    'Masque_L': 6, 'Courbes': 6, 'LHE': 6, 'LHE_fin': 6, 'Boost_finition': 6, 'HDRMT': 6, 'NXT_final': 6,
     'Etoiles_RGB': 7, 'Etoiles_HOO': 7, 'NB_to_RGB_Stars': 7, 'Etoiles_HOO_synth': 7, 'Etoiles_screen': 7, 'CorrectMagentaStars': 7,
     'Blanshan_Transfer': 7, 'MT_etoiles': 7, 'Halo_B_Gon': 7,
 }
 
 NB = ('RSHO', 'SHO', 'HOO')
 LUM = ('LRGB', 'LHA')   # workflows avec luminance : par défaut Statistical Stretch sur le RGB, GHS sur L
-OPT = {'LinearPatternSubtraction', 'WBPP', 'CC_auto', 'Find_Background', 'LinearFit_ref_H', 'Continuum_auto', 'H_dans_L', 'NBRGBCombination', 'HDRMT', 'NXT_final',
+OPT = {'Boost_finition', 'LinearPatternSubtraction', 'WBPP', 'CC_auto', 'Find_Background', 'LinearFit_ref_H', 'Continuum_auto', 'H_dans_L', 'NBRGBCombination', 'HDRMT', 'NXT_final',
        'MT_etoiles', 'Halo_B_Gon', 'CorrectMagentaStars', 'SCNR_SHO', 'Perfect_Palette_Picker', 'NBColourMapper', 'H_en_luminance',
        'Etoiles_HOO_synth', 'DualBand_H', 'DualBand_O', 'SPFC_S'}
 
@@ -73,6 +73,7 @@ WHEN = {
     'Find_Background': "champ rempli de nébuleuse : fond de référence pour SPCC",
     'LinearFit_ref_H': "fonds très différents entre H, O et S (conseillé avec Foraxx)", 'Continuum_auto': "calcul automatique du coefficient k",
     'H_dans_L': "régions HII plus nettes (H injecté dans la luminance)", 'NBRGBCombination': "alternative à la soustraction du continuum",
+    'Boost_finition': "encore un peu plus de couleur et de contraste après LHE_fin (rejouable)",
     'HDRMT': "cœur de galaxie ou nébuleuse brillante brûlé", 'NXT_final': "bruit visible sur l'image finale",
     'MT_etoiles': "réduction d'étoiles supplémentaire", 'Halo_B_Gon': "halos autour des étoiles brillantes",
     'CorrectMagentaStars': "étoiles magenta", 'SCNR_SHO': "reste de vert après la palette",

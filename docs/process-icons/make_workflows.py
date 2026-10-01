@@ -109,13 +109,13 @@ def raw(src_id, new):
     t = re.sub(r'\n\s*<time[^>]*/>', '', m.group(0))
     return new, '   ' + t.replace('id="%s_instance"' % src_id, 'id="%s_instance"' % new, 1)
 
-def curves(name):
+def curves(name, k=((0, 0), (0.25, 0.22), (0.75, 0.78), (1, 1)), sat=0.65):
     def post(t):
         def table(tid, pts):
             rows = ''.join('\n         <tr>\n            <td id="x" value="%.5f"/>\n            <td id="y" value="%.5f"/>\n         </tr>' % p for p in pts)
             return '<table id="%s" rows="%d">%s\n      </table>' % (tid, len(pts), rows)
-        t, n1 = re.subn(r'<table id="K" rows="\d+">.*?</table>', lambda m: table('K', [(0, 0), (0.25, 0.22), (0.75, 0.78), (1, 1)]), t, flags=re.S)
-        t, n2 = re.subn(r'<table id="S" rows="\d+">.*?</table>', lambda m: table('S', [(0, 0), (0.5, 0.65), (1, 1)]), t, flags=re.S)
+        t, n1 = re.subn(r'<table id="K" rows="\d+">.*?</table>', lambda m: table('K', list(k)), t, flags=re.S)
+        t, n2 = re.subn(r'<table id="S" rows="\d+">.*?</table>', lambda m: table('S', [(0, 0), (0.5, sat), (1, 1)]), t, flags=re.S)
         assert n1 == 1 and n2 == 1
         return t
     return M.instance('CurvesTransformation', name, post=post)
@@ -210,6 +210,15 @@ def nested(xml):
 def container(name, xmls):
     return '   <instance class="ProcessContainer" id="%s_instance">\n%s\n   </instance>' % (name, '\n'.join(nested(x) for x in xmls))
 
+
+def boost_container():
+    """Option de finition en un glisser : petite courbe (contraste + saturation) puis LHE à rayon moyen. Rejouable."""
+    parts = []
+    for item in (curves('Courbes_boost', k=((0, 0), (0.25, 0.23), (0.75, 0.77), (1, 1)), sat=0.60),
+                 M.instance('LocalHistogramEqualization', 'LHE_moyen', {'radius': 80, 'slopeLimit': '2.0', 'amount': '0.200', 'circularKernel': True})):
+        name, x = item
+        parts.append(x.replace('id="%s_instance"' % name, 'id="__ID___instance"', 1))
+    return 'Boost_finition', container('Boost_finition', parts)
 
 def solver_container():
     """ImageSolver en un glisser : conteneur [date par défaut si absente, ImageSolver avec les réglages du matériel]."""
@@ -447,6 +456,7 @@ def finish_block(extra=None):
     b = [(pm('Masque_L', 's = 0.14;\nmax(0, (0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2] - s) / (1 - s))', symbols='s', new_image=True, new_id='masque_L', space='Gray'), D_MASK),
          (curves('Courbes'), D_CURVES), (M.instance('LocalHistogramEqualization', 'LHE', {'radius': 150, 'slopeLimit': '2.0', 'amount': '0.300', 'circularKernel': True}), D_LHE),
          (M.instance('LocalHistogramEqualization', 'LHE_fin', {'radius': 40, 'slopeLimit': '2.0', 'amount': '0.300', 'circularKernel': True}), D_LHE_FIN),
+         (boost_container(), ''),
          (M.instance('HDRMultiscaleTransform', 'HDRMT', {'numberOfLayers': 6, 'numberOfIterations': 1, 'toLightness': True, 'preserveHue': True, 'lightnessMask': True}), D_HDR)]
     if extra:
         b = extra + b

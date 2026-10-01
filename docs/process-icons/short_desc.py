@@ -100,6 +100,8 @@ S = {
             ["effet artificiel ou halo sombre -> Amount 0,20", "bruit -> Contrast limit 1,5", "anneaux -> Kernel plus grand"]),
     'LHE_fin': ("Kernel 40, Contrast limit 2,0, Amount 0,30, 8-bit, circulaire", "sous Masque_L, après LHE ; passe 2 (petits détails)",
             ["bruit ou aspect gravé -> Amount 0,20 (0,16)"]),
+    'Boost_finition': ("conteneur : petite courbe (0,25 -> 0,23 ; 0,75 -> 0,77, saturation 0,5 -> 0,60) puis LHE rayon 80, Amount 0,20", "sous Masque_L, après LHE_fin ; un glisser = un petit cran, rejoue-le pour pousser encore",
+                       ["fond qui se colore ou bruit -> arrête, ou NXT final", "halo sombre autour de la galaxie -> une passe de moins"]),
     'HDRMT': ("6 couches, 1 itération, To lightness, Preserve hue, Lightness mask", "rien",
               ["pas assez -> 2 itérations", "trop fort -> mélange 50 % avec l'original"]),
     'NBN_SHO': ("palette SHO, boosts à 0", "Lightness = H ; Shadowpoint pour un fond gris foncé ; O3 puis S2 boost peu à peu",
