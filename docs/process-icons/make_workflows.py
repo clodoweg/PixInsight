@@ -315,7 +315,9 @@ T_STARSTRETCH = ("ÉTAPE MANUELLE — Star Stretch (SetiAstro, script v2.6) sur 
                  "Étirement y = 3^a·x / ((3^a − 1)·x + 1). Stretch Amount a = 5 par défaut (0 à 8, prudence au-delà de 5) : un pixel à 0,01 devient 0,45 à 4, 0,71 à 5, 0,88 à 6. "
                  "Color Boost 1,0 (0 à 2) : saturation par teinte, 0,4 × Boost sur les rouges, 0,7 × Boost sur les cyans (couleur seulement). "
                  "Remove Green via SCNR décoché par défaut (SCNR vert pleine force, Average Neutral). Show Preview décoché (aperçu + Refresh Preview).")
-T_HALO = ("ÉTAPE MANUELLE — Halo-B-Gon (SetiAstro, script v2.1) sur l'image d'étoiles seule ; modifie l'image elle-même, garde une copie. "
+T_HALO = ("ÉTAPE MANUELLE — Halo-B-Gon (SetiAstro, script v2.1) sur l'image d'étoiles seule, AVANT Etoiles_screen ; modifie l'image elle-même, garde une copie. "
+          "Select stars-only image : l'image d'étoiles étirée, celle de la formule Etoiles_screen (RGB_Stars ; NBtoRGB_stars en SHO ; HOO_Stars en HOO). "
+          "Déjà recombiné : applique Halo-B-Gon sur l'image d'étoiles, puis relance Etoiles_screen sur l'image sans étoiles (ferme l'ancienne Final). "
           "Masque de luminosité inversé moins les petites structures (cœurs protégés), puis courbe qui assombrit les tons moyens (0,75 → 0,40). "
           "Reduction Amount, Low par défaut : Extra Low = 1 courbe douce (0,75 → 0,575) ; Low = 1 passe, 1 courbe ; Med = 2 passes × 2 courbes (4) ; High = 3 passes × 3 courbes (9). "
           "Commence par Extra Low ou Low. Linear Data décoché par défaut ; coché, le script étire (mtf 0,25^5), traite puis rend l'image linéaire : seulement si l'image est encore linéaire.")
@@ -364,7 +366,7 @@ D_SCREEN = ("Recombinaison des étoiles en mode screen : ~((~$T) * (~%s)). GLISS
 D_BL = ("Réduction d'étoiles Bill Blanshan, méthode Transfer V2 : GLISSE l'icône sur l'image SANS étoiles (la même que pour Etoiles_screen) ; elle lit l'image avec étoiles 'Final' et crée 'Final_reduit'. "
         "Formule de Bill avec $T et starless permutés (Img1 = $T, image étoilée = Final) : même calcul, sans renommer les vues. "
         "S = 0,15 (plus bas = étoiles plus petites). Les versions V3 et les méthodes Halo/Star sont dans 01-PixelMath-formules.xpsm.")
-D_MT = ("Alternative : MorphologicalTransformation sur l'image d'étoiles seule (ou avec un masque d'étoiles). Morphological Selection 0,25 (sous 0,5 = érosion), Amount 0,60, 1 itération, élément circulaire 5x5.")
+D_MT = ("Alternative : MorphologicalTransformation sur l'image d'étoiles seule (ou avec un masque d'étoiles), AVANT Etoiles_screen. Morphological Selection 0,25 (sous 0,5 = érosion), Amount 0,60, 1 itération, élément circulaire 5x5.")
 D_CURVES = ("CurvesTransformation — sur l'image sans étoiles étirée, sous masque de luminance (icône Masque_L juste avant). "
             "Préréglé : légère courbe en S sur RGB/K (0,25 → 0,22 ; 0,75 → 0,78) et saturation (canal S, milieu monté de 0,5 à 0,6), interpolation Akima. "
             "Place les points aux niveaux réels (valeur K du curseur dans la barre d'état). Canaux : RGB/K = même courbe sur R, G, B ; L = luminosité CIE L* seule ; "
@@ -447,13 +449,14 @@ def finish_block(extra=None):
     return b + [(M.nxt('NXT_final', 0.40, 1), D_NXT_F)]
 
 def stars_end(stars='RGB_Stars', cms=False, screen_extra='', cms_extra='', alt=''):
-    b = [(pm('Etoiles_screen', '~((~$T) * (~%s))' % stars, new_image=True, new_id='Final'),
-          D_SCREEN % (stars, stars) + alt + screen_extra)]
+    # options sur l'image d'étoiles seule : AVANT la recombinaison
+    b = [(M.instance('MorphologicalTransformation', 'MT_etoiles', {'operator': 'Selection', 'numberOfIterations': 1, 'amount': '0.60', 'selectionPoint': '0.25', 'structureSize': 5}, post=M.mt_post), D_MT),
+         (note('Halo_B_Gon', T_HALO), '')]
+    b.append((pm('Etoiles_screen', '~((~$T) * (~%s))' % stars, new_image=True, new_id='Final'),
+              D_SCREEN % (stars, stars) + alt + screen_extra))
     if cms:
         b.append((note('CorrectMagentaStars', T_CMS + cms_extra), ''))
-    b += [(pm('Blanshan_Transfer', "S=0.15;\nImg1=$T;\nf1= ~((~mtf(~S,Final)/~mtf(~S,Img1))*~Img1);\nmax(Img1,f1)", symbols='S, Img1, f1', new_image=True, new_id='Final_reduit'), D_BL),
-          (M.instance('MorphologicalTransformation', 'MT_etoiles', {'operator': 'Selection', 'numberOfIterations': 1, 'amount': '0.60', 'selectionPoint': '0.25', 'structureSize': 5}, post=M.mt_post), D_MT),
-          (note('Halo_B_Gon', T_HALO), '')]
+    b.append((pm('Blanshan_Transfer', "S=0.15;\nImg1=$T;\nf1= ~((~mtf(~S,Final)/~mtf(~S,Img1))*~Img1);\nmax(Img1,f1)", symbols='S, Img1, f1', new_image=True, new_id='Final_reduit'), D_BL))
     return b
 
 def ghs_block(extra_desc='', stat_extra='', fond_extra=''):

@@ -1954,39 +1954,12 @@ Détails : page docs/pixinsight-workflow.html.</description>
       </table>
       <parameter id="information"></parameter>
    </instance>
-   <instance class="Script" version="256" id="Opt_CorrectMagentaStars_instance">
-      <description>OPTION — étoiles magenta.
-
-LANCEMENT : double-clic sur l'icône, puis Apply Global.
-
-PRÉRÉGLÉ : Amount 0,8.
-
-À RÉGLER : rien ; sur l'image SHO finale avec étoiles.
-
-SI :
-- magenta encore visible -&gt; 1,0
-
-Détails : page docs/pixinsight-workflow.html.</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/CorrectMagentaStars/CorrectMagentaStars.js</parameter>
-      <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="2">
-         <tr>
-            <td id="id">scnrAmount</td>
-            <td id="value">0.8</td>
-         </tr>
-         <tr>
-            <td id="id">scnrPresLight</td>
-            <td id="value">true</td>
-         </tr>
-      </table>
-      <parameter id="information"></parameter>
-   </instance>
    <instance class="MorphologicalTransformation" version="256" id="Opt_MT_etoiles_instance">
       <description>OPTION — réduction d'étoiles supplémentaire.
 
 PRÉRÉGLÉ : Selection 0,25, Amount 0,60, 1 itération, 5×5 circulaire.
 
-À RÉGLER : sur l'image d'étoiles seule.
+À RÉGLER : sur l'image d'étoiles seule, avant Etoiles_screen.
 
 SI :
 - trop fort -&gt; Amount 0,50
@@ -2014,7 +1987,7 @@ LANCEMENT : double-clic sur l'icône, puis Apply Global. Si l'icône est bloqué
 
 PRÉRÉGLÉ : rien (réglages dans le dialogue).
 
-À RÉGLER : Reduction Amount Low ; Linear Data décoché sur une image étirée.
+À RÉGLER : Select stars-only image = l'image d'étoiles étirée (RGB_Stars ; NBtoRGB_stars en SHO ; HOO_Stars en HOO), AVANT Etoiles_screen ; Reduction Amount Low ; Linear Data décoché.
 
 SI :
 - pas assez -&gt; relance en Low (Med = 4 courbes, High = 9)
@@ -2023,6 +1996,33 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/Halo-B-Gon.js</parameter>
       <parameter id="md5sum">b9427e718e2b9760704c8c738e0893b7</parameter>
       <table id="parameters" rows="0"/>
+      <parameter id="information"></parameter>
+   </instance>
+   <instance class="Script" version="256" id="Opt_CorrectMagentaStars_instance">
+      <description>OPTION — étoiles magenta.
+
+LANCEMENT : double-clic sur l'icône, puis Apply Global.
+
+PRÉRÉGLÉ : Amount 0,8.
+
+À RÉGLER : rien ; sur l'image SHO finale avec étoiles.
+
+SI :
+- magenta encore visible -&gt; 1,0
+
+Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/CorrectMagentaStars/CorrectMagentaStars.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="2">
+         <tr>
+            <td id="id">scnrAmount</td>
+            <td id="value">0.8</td>
+         </tr>
+         <tr>
+            <td id="id">scnrPresLight</td>
+            <td id="value">true</td>
+         </tr>
+      </table>
       <parameter id="information"></parameter>
    </instance>
    <icon id="P1_Preparation" instance="P1_Preparation_instance" xpos="30" ypos="20" workspace="Workspace01"/>
@@ -2079,7 +2079,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <icon id="E26_Blanshan_Transfer" instance="E26_Blanshan_Transfer_instance" xpos="1590" ypos="244" workspace="Workspace01"/>
    <icon id="P7_options" instance="P7_options_instance" xpos="1590" ypos="290" workspace="Workspace01"/>
    <icon id="Opt_Find_Background" instance="Opt_Find_Background_instance" xpos="1590" ypos="324" workspace="Workspace01"/>
-   <icon id="Opt_CorrectMagentaStars" instance="Opt_CorrectMagentaStars_instance" xpos="1590" ypos="354" workspace="Workspace01"/>
-   <icon id="Opt_MT_etoiles" instance="Opt_MT_etoiles_instance" xpos="1590" ypos="384" workspace="Workspace01"/>
-   <icon id="Opt_Halo_B_Gon" instance="Opt_Halo_B_Gon_instance" xpos="1590" ypos="414" workspace="Workspace01"/>
+   <icon id="Opt_MT_etoiles" instance="Opt_MT_etoiles_instance" xpos="1590" ypos="354" workspace="Workspace01"/>
+   <icon id="Opt_Halo_B_Gon" instance="Opt_Halo_B_Gon_instance" xpos="1590" ypos="384" workspace="Workspace01"/>
+   <icon id="Opt_CorrectMagentaStars" instance="Opt_CorrectMagentaStars_instance" xpos="1590" ypos="414" workspace="Workspace01"/>
 </xpsm>

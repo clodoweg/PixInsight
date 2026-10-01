@@ -121,8 +121,8 @@ S = {
     'Etoiles_screen': ("~((~$T) * (~RGB_Stars)), crée l'image 'Final'", "glisse sur l'image sans étoiles finale ; étoiles étirées nommées RGB_Stars (nom SXT, majuscule comprise)", ["autre nom d'étoiles -> corrige-le dans la formule"]),
     'CorrectMagentaStars': ("Amount 0,8", "rien ; sur l'image SHO finale avec étoiles", ["magenta encore visible -> 1,0"]),
     'Blanshan_Transfer': ("S = 0,15 ; lit 'Final', crée 'Final_reduit'", "glisse sur l'image SANS étoiles (comme Etoiles_screen)", ["étoiles encore grosses -> S plus bas"]),
-    'MT_etoiles': ("Selection 0,25, Amount 0,60, 1 itération, 5×5 circulaire", "sur l'image d'étoiles seule", ["trop fort -> Amount 0,50"]),
-    'Halo_B_Gon': ("rien (réglages dans le dialogue)", "Reduction Amount Low ; Linear Data décoché sur une image étirée",
+    'MT_etoiles': ("Selection 0,25, Amount 0,60, 1 itération, 5×5 circulaire", "sur l'image d'étoiles seule, avant Etoiles_screen", ["trop fort -> Amount 0,50"]),
+    'Halo_B_Gon': ("rien (réglages dans le dialogue)", "Select stars-only image = l'image d'étoiles étirée (RGB_Stars ; NBtoRGB_stars en SHO ; HOO_Stars en HOO), AVANT Etoiles_screen ; Reduction Amount Low ; Linear Data décoché",
                    ["pas assez -> relance en Low (Med = 4 courbes, High = 9)"]),
     # 04 : matériel
     'SPCC_QHY600_Antlia': ("Average Spiral Galaxy, QE IMX455, Antlia V Pro R, G, B, neutralisation du fond, Gaia DR3/SP", "rien ; sur le RGB linéaire",
