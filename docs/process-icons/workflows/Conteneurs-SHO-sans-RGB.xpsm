@@ -1534,13 +1534,13 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <instance class="Script" version="256" id="E22_Star_Stretch_instance">
       <description>LANCEMENT : glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
 
-PRÉRÉGLÉ : Stretch Amount 5, Color Boost 1,0, SCNR décoché.
+PRÉRÉGLÉ : Stretch Amount 6, Color Boost 1,0, SCNR décoché.
 
 À RÉGLER : rien ; sur l'image d'étoiles linéaire.
 
 SI :
-- étoiles trop grosses -&gt; 4
-- étoiles trop petites -&gt; 5,5 à 6 (cœurs blancs : reviens à 5)
+- cœurs d'étoiles blancs (R = G = B = 1) -&gt; 5,5
+- étoiles trop grosses -&gt; 5 ou 4
 - couleurs criardes -&gt; Color Boost 0,7
 
 Détails : page docs/pixinsight-workflow.html.</description>
@@ -1549,7 +1549,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <table id="parameters" rows="4">
          <tr>
             <td id="id">amount</td>
-            <td id="value">5</td>
+            <td id="value">6</td>
          </tr>
          <tr>
             <td id="id">satAmount</td>

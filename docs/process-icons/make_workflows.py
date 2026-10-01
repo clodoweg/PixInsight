@@ -57,8 +57,8 @@ SCRIPTS = {
               ('lumaOnly', 'false'), ('lumaMode', 'rec709'), ('lumaBlend', '0.6')],
              L_DRAG + "Le dialogue s'ouvre avec les valeurs de l'icône (openDialogbox = true) ; pour étirer directement sans dialogue, mets openDialogbox à false. "),
     'Star_Stretch': ('$PXI_SRCDIR/scripts/star_stretch.js', '69a1ee6db4e9f5374c2cddb1e5a7f4ae',
-             [('amount', '5'), ('satAmount', '1'), ('removeGreen', 'false'), ('showPreview', 'false')],
-             L_DRAG + "Glisse-la sur l'image d'étoiles linéaire : le dialogue s'ouvre avec Stretch Amount 5 et Color Boost 1,0. "),
+             [('amount', '6'), ('satAmount', '1'), ('removeGreen', 'false'), ('showPreview', 'false')],
+             L_DRAG + "Glisse-la sur l'image d'étoiles linéaire : le dialogue s'ouvre avec Stretch Amount 6 (choix de la fiche ; défaut du script 5) et Color Boost 1,0. "),
     'Halo_B_Gon': ('$PXI_SRCDIR/scripts/Halo-B-Gon.js', 'b9427e718e2b9760704c8c738e0893b7', [],
              L_GLOBAL + "Ce script ne lit pas de paramètres d'icône : les réglages se font dans son dialogue. "),
     'NB_to_RGB_Stars': ('$PXI_SRCDIR/scripts/NBtoRGBStars.js', '0fae2f23d6f23037fb118fd1ef749592', [],
@@ -312,7 +312,7 @@ T_STAT = ("ÉTAPE MANUELLE — Statistical Stretch (SetiAstro, script v2.3). Alt
           "Curves Boost 0 (0 à 0,50) : relève les tons au-dessus de la médiane après les passes. HDR Compress décoché (Amount 0,25, Knee 0,35) : comprime les hautes lumières. "
           "Dans l'icône seulement : numIterations 1 (5 au plus), autoConvergence false (jusqu'à 5 passes, arrêt à 0,001 de la cible).")
 T_STARSTRETCH = ("ÉTAPE MANUELLE — Star Stretch (SetiAstro, script v2.6) sur l'image d'étoiles LINÉAIRE issue de SXT. Modifie l'image elle-même : garde une copie linéaire. "
-                 "Étirement y = 3^a·x / ((3^a − 1)·x + 1). Stretch Amount a = 5 par défaut (0 à 8, prudence au-delà de 5) : un pixel à 0,01 devient 0,45 à 4, 0,71 à 5, 0,88 à 6. "
+                 "Étirement y = 3^a·x / ((3^a − 1)·x + 1). Stretch Amount a = 6 dans l'icône (défaut du script 5 ; 0 à 8, l'auteur conseille la prudence au-delà de 5 : cœurs blancs -> 5,5) : un pixel à 0,01 devient 0,45 à 4, 0,71 à 5, 0,88 à 6. "
                  "Color Boost 1,0 (0 à 2) : saturation par teinte, 0,4 × Boost sur les rouges, 0,7 × Boost sur les cyans (couleur seulement). "
                  "Remove Green via SCNR décoché par défaut (SCNR vert pleine force, Average Neutral). Show Preview décoché (aperçu + Refresh Preview).")
 T_HALO = ("ÉTAPE MANUELLE — Halo-B-Gon (SetiAstro, script v2.1) sur l'image d'étoiles seule, AVANT Etoiles_screen ; modifie l'image elle-même, garde une copie. "

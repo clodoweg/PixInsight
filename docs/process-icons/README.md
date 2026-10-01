@@ -131,7 +131,7 @@ Dans les trois fichiers, **une colonne par phase**, avec une icône-titre sans e
   | Script | Lancement | Paramètres préréglés | Empreinte MD5 |
   |---|---|---|---|
   | Statistical Stretch | glisser sur l'image | oui (Target Median 0,25, Linked, Blackpoint Sigma 5…), dialogue ouvert | oui |
-  | Star Stretch | glisser sur l'image d'étoiles | oui (Stretch Amount 5, Color Boost 1,0) | oui |
+  | Star Stretch | glisser sur l'image d'étoiles | oui (Stretch Amount 6, Color Boost 1,0) | oui |
   | Find Background | activer l'image puis glisser | oui (aperçu « Background », recherche rapide), sans dialogue | oui |
   | Automatic Continuum Subtraction | double-clic puis *Apply Global* | oui (Starry, sortie linéaire, sans réduction de bruit) | oui |
   | NB to RGB Star Combination | glisser sur une image | non : la v1.6 ne relit pas les paramètres d'icône | oui |
