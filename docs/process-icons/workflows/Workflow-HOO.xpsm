@@ -50,7 +50,23 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <instance class="NoOperation" version="256" id="P2_Gradient_instance">
       <description>PHASE 2 — Gradient : image linéaire : retrait du gradient. Colonne de repère, sans effet.</description>
    </instance>
-   <instance class="SpectrophotometricFluxCalibration" version="1" id="E03_SPFC_H_instance">
+   <instance class="Script" version="256" id="E03_ImageSolver_instance">
+      <description>LANCEMENT : double-clic sur l'icône, puis Apply Global.
+
+PRÉRÉGLÉ : rien (focale et pixel à saisir une fois).
+
+À RÉGLER : nom de l'objet ; focale 2 939 mm ; pixel 3,76 µm ; Gaia DR3 ; applique sur CHAQUE image à calibrer, juste avant SPFC ou SPCC : image RGB combinée, master L, masters H, O et S ; le recadrage (DynamicCrop) et la combinaison effacent la solution de WBPP.
+
+SI :
+- échec -&gt; vérifie focale et pixel, coche Distortion correction
+
+Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/AdP/ImageSolver.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="0"/>
+      <parameter id="information"></parameter>
+   </instance>
+   <instance class="SpectrophotometricFluxCalibration" version="1" id="E04_SPFC_H_instance">
       <description>PRÉRÉGLÉ : QE IMX455, Narrowband 656,3 nm, 3 nm.
 
 À RÉGLER : rien ; applique sur le master H, puis MGC_MARS_H.
@@ -100,7 +116,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="generateStarMaps" value="false"/>
       <parameter id="generateTextFiles" value="false"/>
    </instance>
-   <instance class="SpectrophotometricFluxCalibration" version="1" id="E04_SPFC_O_instance">
+   <instance class="SpectrophotometricFluxCalibration" version="1" id="E05_SPFC_O_instance">
       <description>PRÉRÉGLÉ : QE IMX455, Narrowband 500,7 nm, 3 nm.
 
 À RÉGLER : rien ; applique sur le master O, puis MGC_MARS_O.
@@ -150,7 +166,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="generateStarMaps" value="false"/>
       <parameter id="generateTextFiles" value="false"/>
    </instance>
-   <instance class="MultiscaleGradientCorrection" version="1" id="E05_MGC_MARS_H_instance">
+   <instance class="MultiscaleGradientCorrection" version="1" id="E06_MGC_MARS_H_instance">
       <description>PRÉRÉGLÉ : comme MGC_MARS, filtre MARS Gray = Ha.
 
 À RÉGLER : rien ; après SPFC_H, sur le master H.
@@ -177,7 +193,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="scaleFactorB" value="1.00"/>
       <parameter id="showGradientModel" value="true"/>
    </instance>
-   <instance class="MultiscaleGradientCorrection" version="1" id="E06_MGC_MARS_O_instance">
+   <instance class="MultiscaleGradientCorrection" version="1" id="E07_MGC_MARS_O_instance">
       <description>PRÉRÉGLÉ : comme MGC_MARS, filtre MARS Gray = OIII.
 
 À RÉGLER : rien ; après SPFC_O, sur le master O.
@@ -204,7 +220,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="scaleFactorB" value="1.00"/>
       <parameter id="showGradientModel" value="true"/>
    </instance>
-   <instance class="GradientCorrection" version="1" id="E07_GradientCorrection_instance">
+   <instance class="GradientCorrection" version="1" id="E08_GradientCorrection_instance">
       <description>PRÉRÉGLÉ : valeurs par défaut, Structure protection activée.
 
 À RÉGLER : rien ; contrôle le modèle de gradient.
@@ -242,7 +258,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <instance class="NoOperation" version="256" id="P3_Lineaire_instance">
       <description>PHASE 3 — Linéaire : image linéaire : couleur, déconvolution, retrait des étoiles, bruit. Colonne de repère, sans effet.</description>
    </instance>
-   <instance class="PixelMath" version="256" id="E08_Combinaison_HOO_instance">
+   <instance class="PixelMath" version="256" id="E09_Combinaison_HOO_instance">
       <description>PRÉRÉGLÉ : R = H, G = O, B = O, image 'HOO'.
 
 À RÉGLER : nomme tes masters H et O.
@@ -276,7 +292,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
-   <instance class="BlurXTerminator" version="256" id="E09_BXT_NB_instance">
+   <instance class="BlurXTerminator" version="256" id="E10_BXT_NB_instance">
       <description>PRÉRÉGLÉ : Sharpen Stars 0,25, Halos 0, Nonstellar 0,60, PSF auto.
 
 À RÉGLER : rien ; sur la combinaison simple (un filtre par canal), avant tout boost.
@@ -296,7 +312,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="lunar_planetary" value="false"/>
       <parameter id="overlap" value="0.20"/>
    </instance>
-   <instance class="StarXTerminator" version="256" id="E10_SXT_lineaire_instance">
+   <instance class="StarXTerminator" version="256" id="E11_SXT_lineaire_instance">
       <description>PRÉRÉGLÉ : Generate star image coché, Unscreen décoché.
 
 À RÉGLER : rien ; garde l'image d'étoiles si tu n'as pas de RGB.
@@ -314,7 +330,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="remove_reflections" value="false"/>
       <parameter id="overlap" value="0.20"/>
    </instance>
-   <instance class="PixelMath" version="256" id="E11_Extraire_H_instance">
+   <instance class="PixelMath" version="256" id="E12_Extraire_H_instance">
       <description>PRÉRÉGLÉ : canal -&gt; vue mono 'H'.
 
 À RÉGLER : renomme d'abord un master déjà nommé H (ex. H_lin).
@@ -348,7 +364,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
-   <instance class="PixelMath" version="256" id="E12_Extraire_O_instance">
+   <instance class="PixelMath" version="256" id="E13_Extraire_O_instance">
       <description>PRÉRÉGLÉ : canal -&gt; vue mono 'O'.
 
 À RÉGLER : renomme d'abord un master déjà nommé O.
@@ -382,7 +398,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
-   <instance class="NoiseXTerminator" version="256" id="E13_NXT_H_instance">
+   <instance class="NoiseXTerminator" version="256" id="E14_NXT_H_instance">
       <description>PRÉRÉGLÉ : Denoise 0,60, 1 itération.
 
 À RÉGLER : rien.
@@ -409,7 +425,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="detail" value="0.15"/>
       <parameter id="overlap" value="0.20"/>
    </instance>
-   <instance class="NoiseXTerminator" version="256" id="E14_NXT_O_S_instance">
+   <instance class="NoiseXTerminator" version="256" id="E15_NXT_O_S_instance">
       <description>PRÉRÉGLÉ : Denoise 0,75, 1 itération.
 
 À RÉGLER : rien.
@@ -439,7 +455,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <instance class="NoOperation" version="256" id="P4_Etirement_instance">
       <description>PHASE 4 — Étirement : passage en non linéaire, même fond pour toutes les images. Colonne de repère, sans effet.</description>
    </instance>
-   <instance class="GeneralizedHyperbolicStretch" version="256" id="E15_GHS_1_premier_instance">
+   <instance class="GeneralizedHyperbolicStretch" version="256" id="E16_GHS_1_premier_instance">
       <description>PRÉRÉGLÉ : b = 10, Stretch factor 0.
 
 À RÉGLER : étire H d'abord (fond vers 0,20–0,25), puis O et S jusqu'au MÊME fond et une médiane proche.
@@ -462,7 +478,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="clipType" value="CT_RGBBlend"/>
       <parameter id="useRGBWorkingSpace" value="false"/>
    </instance>
-   <instance class="GeneralizedHyperbolicStretch" version="256" id="E16_GHS_2_contraste_instance">
+   <instance class="GeneralizedHyperbolicStretch" version="256" id="E17_GHS_2_contraste_instance">
       <description>PRÉRÉGLÉ : b = 4, HP 0,9, Stretch factor 0.
 
 À RÉGLER : SP dans la zone à contraster ; monte Stretch factor peu à peu.
@@ -486,7 +502,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="clipType" value="CT_RGBBlend"/>
       <parameter id="useRGBWorkingSpace" value="false"/>
    </instance>
-   <instance class="GeneralizedHyperbolicStretch" version="256" id="E17_GHS_3_fond_instance">
+   <instance class="GeneralizedHyperbolicStretch" version="256" id="E18_GHS_3_fond_instance">
       <description>PRÉRÉGLÉ : b = 10, Stretch factor 0.
 
 À RÉGLER : technique HP = SP pour assombrir le fond vers 0,12–0,14 sans écrêter.
@@ -509,7 +525,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <instance class="NoOperation" version="256" id="P5_Couleur_instance">
       <description>PHASE 5 — Couleur : combinaison finale et palette. Colonne de repère, sans effet.</description>
    </instance>
-   <instance class="PixelMath" version="256" id="E18_HOO_simple_instance">
+   <instance class="PixelMath" version="256" id="E19_HOO_simple_instance">
       <description>PRÉRÉGLÉ : R = H, G = O, B = O.
 
 À RÉGLER : vues H et O étirées.
@@ -543,7 +559,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
-   <instance class="NarrowbandNormalization" version="256" id="E19_NBN_HOO_instance">
+   <instance class="NarrowbandNormalization" version="256" id="E20_NBN_HOO_instance">
       <description>PRÉRÉGLÉ : palette HOO, boost à 0.
 
 À RÉGLER : Lightness = H ; Shadowpoint ; O3 boost peu à peu.
@@ -566,7 +582,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <instance class="NoOperation" version="256" id="P6_Finition_instance">
       <description>PHASE 6 — Finition : contraste et saturation sur l'image sans étoiles. Colonne de repère, sans effet.</description>
    </instance>
-   <instance class="PixelMath" version="256" id="E20_Masque_L_instance">
+   <instance class="PixelMath" version="256" id="E21_Masque_L_instance">
       <description>PRÉRÉGLÉ : fond coupé à s = 0,14, crée 'masque_L'.
 
 À RÉGLER : glisse sur l'image sans étoiles étirée ; s = fond mesuré + 0,01 ; léger flou ; Ctrl+M.
@@ -604,7 +620,7 @@ max(0, (0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2] - s) / (1 - s))</parameter>
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
-   <instance class="CurvesTransformation" version="256" id="E21_Courbes_instance">
+   <instance class="CurvesTransformation" version="256" id="E22_Courbes_instance">
       <description>PRÉRÉGLÉ : légère courbe en S (0,25 -&gt; 0,22 ; 0,75 -&gt; 0,78), saturation 0,5 -&gt; 0,6.
 
 À RÉGLER : sous Masque_L ; ajuste à l'œil.
@@ -747,7 +763,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       </table>
       <parameter id="St" value="AkimaSubsplines"/>
    </instance>
-   <instance class="LocalHistogramEqualization" version="256" id="E22_LHE_instance">
+   <instance class="LocalHistogramEqualization" version="256" id="E23_LHE_instance">
       <description>PRÉRÉGLÉ : Kernel 150, Contrast limit 2,0, Amount 0,35, 8-bit, circulaire.
 
 À RÉGLER : sous Masque_L.
@@ -767,14 +783,14 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <instance class="NoOperation" version="256" id="P7_Etoiles_instance">
       <description>PHASE 7 — Étoiles : étoiles : étirement, recombinaison, réduction. Colonne de repère, sans effet.</description>
    </instance>
-   <instance class="NoOperation" version="256" id="E23_Etoiles_HOO_instance">
+   <instance class="NoOperation" version="256" id="E24_Etoiles_HOO_instance">
       <description>PRÉRÉGLÉ : rien (icône-note).
 
 À RÉGLER : avec RGB : étoiles RGB ; sans RGB : étoiles de SXT, NB to RGB ou étoiles synthétiques.
 
 Détails : page docs/pixinsight-workflow.html.</description>
    </instance>
-   <instance class="Script" version="256" id="E24_Star_Stretch_instance">
+   <instance class="Script" version="256" id="E25_Star_Stretch_instance">
       <description>LANCEMENT : glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
 
 PRÉRÉGLÉ : Stretch Amount 5, Color Boost 1,0, SCNR décoché.
@@ -808,7 +824,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       </table>
       <parameter id="information"></parameter>
    </instance>
-   <instance class="PixelMath" version="256" id="E25_Etoiles_screen_instance">
+   <instance class="PixelMath" version="256" id="E26_Etoiles_screen_instance">
       <description>PRÉRÉGLÉ : ~((~starless) * (~stars)), image 'Final'.
 
 À RÉGLER : nomme l'image sans étoiles 'starless' et les étoiles 'stars', toutes deux étirées.
@@ -842,7 +858,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
-   <instance class="PixelMath" version="256" id="E26_Blanshan_Transfer_instance">
+   <instance class="PixelMath" version="256" id="E27_Blanshan_Transfer_instance">
       <description>PRÉRÉGLÉ : S = 0,15.
 
 À RÉGLER : vue sans étoiles nommée 'starless' ; glisse sur l'image avec étoiles.
@@ -886,33 +902,34 @@ max(Img1,f1)</parameter>
    <icon id="E01_DynamicCrop" instance="E01_DynamicCrop_instance" xpos="30" ypos="64" workspace="Workspace01"/>
    <icon id="E02_Masters_H_O" instance="E02_Masters_H_O_instance" xpos="30" ypos="94" workspace="Workspace01"/>
    <icon id="P2_Gradient" instance="P2_Gradient_instance" xpos="290" ypos="20" workspace="Workspace01"/>
-   <icon id="E03_SPFC_H" instance="E03_SPFC_H_instance" xpos="290" ypos="64" workspace="Workspace01"/>
-   <icon id="E04_SPFC_O" instance="E04_SPFC_O_instance" xpos="290" ypos="94" workspace="Workspace01"/>
-   <icon id="E05_MGC_MARS_H" instance="E05_MGC_MARS_H_instance" xpos="290" ypos="124" workspace="Workspace01"/>
-   <icon id="E06_MGC_MARS_O" instance="E06_MGC_MARS_O_instance" xpos="290" ypos="154" workspace="Workspace01"/>
-   <icon id="E07_GradientCorrection" instance="E07_GradientCorrection_instance" xpos="290" ypos="184" workspace="Workspace01"/>
+   <icon id="E03_ImageSolver" instance="E03_ImageSolver_instance" xpos="290" ypos="64" workspace="Workspace01"/>
+   <icon id="E04_SPFC_H" instance="E04_SPFC_H_instance" xpos="290" ypos="94" workspace="Workspace01"/>
+   <icon id="E05_SPFC_O" instance="E05_SPFC_O_instance" xpos="290" ypos="124" workspace="Workspace01"/>
+   <icon id="E06_MGC_MARS_H" instance="E06_MGC_MARS_H_instance" xpos="290" ypos="154" workspace="Workspace01"/>
+   <icon id="E07_MGC_MARS_O" instance="E07_MGC_MARS_O_instance" xpos="290" ypos="184" workspace="Workspace01"/>
+   <icon id="E08_GradientCorrection" instance="E08_GradientCorrection_instance" xpos="290" ypos="214" workspace="Workspace01"/>
    <icon id="P3_Lineaire" instance="P3_Lineaire_instance" xpos="550" ypos="20" workspace="Workspace01"/>
-   <icon id="E08_Combinaison_HOO" instance="E08_Combinaison_HOO_instance" xpos="550" ypos="64" workspace="Workspace01"/>
-   <icon id="E09_BXT_NB" instance="E09_BXT_NB_instance" xpos="550" ypos="94" workspace="Workspace01"/>
-   <icon id="E10_SXT_lineaire" instance="E10_SXT_lineaire_instance" xpos="550" ypos="124" workspace="Workspace01"/>
-   <icon id="E11_Extraire_H" instance="E11_Extraire_H_instance" xpos="550" ypos="154" workspace="Workspace01"/>
-   <icon id="E12_Extraire_O" instance="E12_Extraire_O_instance" xpos="550" ypos="184" workspace="Workspace01"/>
-   <icon id="E13_NXT_H" instance="E13_NXT_H_instance" xpos="550" ypos="214" workspace="Workspace01"/>
-   <icon id="E14_NXT_O_S" instance="E14_NXT_O_S_instance" xpos="550" ypos="244" workspace="Workspace01"/>
+   <icon id="E09_Combinaison_HOO" instance="E09_Combinaison_HOO_instance" xpos="550" ypos="64" workspace="Workspace01"/>
+   <icon id="E10_BXT_NB" instance="E10_BXT_NB_instance" xpos="550" ypos="94" workspace="Workspace01"/>
+   <icon id="E11_SXT_lineaire" instance="E11_SXT_lineaire_instance" xpos="550" ypos="124" workspace="Workspace01"/>
+   <icon id="E12_Extraire_H" instance="E12_Extraire_H_instance" xpos="550" ypos="154" workspace="Workspace01"/>
+   <icon id="E13_Extraire_O" instance="E13_Extraire_O_instance" xpos="550" ypos="184" workspace="Workspace01"/>
+   <icon id="E14_NXT_H" instance="E14_NXT_H_instance" xpos="550" ypos="214" workspace="Workspace01"/>
+   <icon id="E15_NXT_O_S" instance="E15_NXT_O_S_instance" xpos="550" ypos="244" workspace="Workspace01"/>
    <icon id="P4_Etirement" instance="P4_Etirement_instance" xpos="810" ypos="20" workspace="Workspace01"/>
-   <icon id="E15_GHS_1_premier" instance="E15_GHS_1_premier_instance" xpos="810" ypos="64" workspace="Workspace01"/>
-   <icon id="E16_GHS_2_contraste" instance="E16_GHS_2_contraste_instance" xpos="810" ypos="94" workspace="Workspace01"/>
-   <icon id="E17_GHS_3_fond" instance="E17_GHS_3_fond_instance" xpos="810" ypos="124" workspace="Workspace01"/>
+   <icon id="E16_GHS_1_premier" instance="E16_GHS_1_premier_instance" xpos="810" ypos="64" workspace="Workspace01"/>
+   <icon id="E17_GHS_2_contraste" instance="E17_GHS_2_contraste_instance" xpos="810" ypos="94" workspace="Workspace01"/>
+   <icon id="E18_GHS_3_fond" instance="E18_GHS_3_fond_instance" xpos="810" ypos="124" workspace="Workspace01"/>
    <icon id="P5_Couleur" instance="P5_Couleur_instance" xpos="1070" ypos="20" workspace="Workspace01"/>
-   <icon id="E18_HOO_simple" instance="E18_HOO_simple_instance" xpos="1070" ypos="64" workspace="Workspace01"/>
-   <icon id="E19_NBN_HOO" instance="E19_NBN_HOO_instance" xpos="1070" ypos="94" workspace="Workspace01"/>
+   <icon id="E19_HOO_simple" instance="E19_HOO_simple_instance" xpos="1070" ypos="64" workspace="Workspace01"/>
+   <icon id="E20_NBN_HOO" instance="E20_NBN_HOO_instance" xpos="1070" ypos="94" workspace="Workspace01"/>
    <icon id="P6_Finition" instance="P6_Finition_instance" xpos="1330" ypos="20" workspace="Workspace01"/>
-   <icon id="E20_Masque_L" instance="E20_Masque_L_instance" xpos="1330" ypos="64" workspace="Workspace01"/>
-   <icon id="E21_Courbes" instance="E21_Courbes_instance" xpos="1330" ypos="94" workspace="Workspace01"/>
-   <icon id="E22_LHE" instance="E22_LHE_instance" xpos="1330" ypos="124" workspace="Workspace01"/>
+   <icon id="E21_Masque_L" instance="E21_Masque_L_instance" xpos="1330" ypos="64" workspace="Workspace01"/>
+   <icon id="E22_Courbes" instance="E22_Courbes_instance" xpos="1330" ypos="94" workspace="Workspace01"/>
+   <icon id="E23_LHE" instance="E23_LHE_instance" xpos="1330" ypos="124" workspace="Workspace01"/>
    <icon id="P7_Etoiles" instance="P7_Etoiles_instance" xpos="1590" ypos="20" workspace="Workspace01"/>
-   <icon id="E23_Etoiles_HOO" instance="E23_Etoiles_HOO_instance" xpos="1590" ypos="64" workspace="Workspace01"/>
-   <icon id="E24_Star_Stretch" instance="E24_Star_Stretch_instance" xpos="1590" ypos="94" workspace="Workspace01"/>
-   <icon id="E25_Etoiles_screen" instance="E25_Etoiles_screen_instance" xpos="1590" ypos="124" workspace="Workspace01"/>
-   <icon id="E26_Blanshan_Transfer" instance="E26_Blanshan_Transfer_instance" xpos="1590" ypos="154" workspace="Workspace01"/>
+   <icon id="E24_Etoiles_HOO" instance="E24_Etoiles_HOO_instance" xpos="1590" ypos="64" workspace="Workspace01"/>
+   <icon id="E25_Star_Stretch" instance="E25_Star_Stretch_instance" xpos="1590" ypos="94" workspace="Workspace01"/>
+   <icon id="E26_Etoiles_screen" instance="E26_Etoiles_screen_instance" xpos="1590" ypos="124" workspace="Workspace01"/>
+   <icon id="E27_Blanshan_Transfer" instance="E27_Blanshan_Transfer_instance" xpos="1590" ypos="154" workspace="Workspace01"/>
 </xpsm>

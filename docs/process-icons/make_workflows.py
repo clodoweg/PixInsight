@@ -533,7 +533,7 @@ lhargb = pre_block() + [rgb_comb(), (note('ImageSolver', T_SOLVER), '')] + gradi
 def nb_masters(chans):
     names = ' et '.join(chans)
     return [(note('Masters_' + '_'.join(chans), "Masters %s : même recadrage (icône DynamicCrop) et retrait du gradient sur CHAQUE master séparément (icônes suivantes). O est le plus sensible à la Lune : contrôle bien son modèle. "
-                  "Nomme les vues exactement 'S', 'H' et 'O' : les formules en dépendent." % names), '')] + gradient_block('sho' if 'S' in chans else 'hoo') + [
+                  "Nomme les vues exactement 'S', 'H' et 'O' : les formules en dépendent." % names), ''), (note('ImageSolver', T_SOLVER), '')] + gradient_block('sho' if 'S' in chans else 'hoo') + [
         (M.instance('LinearFit', 'LinearFit_ref_H', {'rejectLow': '0.000000', 'rejectHigh': '0.920000'}, {'referenceViewId': 'H'}),
          "Option — LinearFit avec H comme référence : applique sur O (et S). Rapproche fonds et niveaux, ce qu'exige Foraxx (theAstroShed, Galactic Hunter). Référence : vue nommée 'H'.")]
 
@@ -592,6 +592,7 @@ def rgb_stars_block():
     return [
         (note('Etoiles_RGB', "ÉTOILES RGB — masters R, G, B : même recadrage, puis les icônes suivantes dans l'ordre (combinaison, gradient via l'icône GradientCorrection ou les notes, BXT Correct Only, SPCC, BXT, SXT)." + STARS_RGBSHO), ''),
         rgb_comb(),
+        (note('ImageSolver', T_SOLVER), ''),
         (M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), D_BXT_CO + BXT_C),
         (note('Find_Background', T_FINDBG), ''),
         spcc(),

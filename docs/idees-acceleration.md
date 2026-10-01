@@ -1,12 +1,12 @@
 # Idées pour aller encore plus vite (à faire plus tard)
 
-Contexte : une centaine de photos à retraiter, **masters déjà empilés (un par filtre et par cible)**, mode conteneurs préféré. Le chemin LRGB en conteneurs comptait 18 icônes, 16 depuis A. Ces idées visent 7 à 8 icônes en mode « rapide » ; les chemins complets restent pour les meilleures photos. A est fait ; le reste n'est pas commencé.
+Contexte : une centaine de photos à retraiter, **masters déjà empilés (un par filtre et par cible)**, mode conteneurs préféré. Le chemin LRGB en conteneurs comptait 18 icônes ; 17 depuis A et le retour d'ImageSolver (nécessaire avant SPFC/SPCC après recadrage et combinaison). Ces idées visent 7 à 8 icônes en mode « rapide » ; les chemins complets restent pour les meilleures photos. A est fait ; le reste n'est pas commencé.
 
 | Workflow | Aujourd'hui (conteneurs) | Avec A + B + D | Avec C en plus |
 |---|---|---|---|
-| LRGB | 18 (16 depuis A) | ≈ 8 | — |
-| SHO sans RGB | 25 (23 depuis A) | ≈ 15 | ≈ 8 |
-| HOO | 25 (23 depuis A) | ≈ 14 | ≈ 7 |
+| LRGB | 18 (17 maintenant) | ≈ 8 | — |
+| SHO sans RGB | 25 (24 maintenant) | ≈ 15 | ≈ 8 |
+| HOO | 25 (24 maintenant) | ≈ 14 | ≈ 7 |
 
 (Estimations, à confirmer en construisant le mode rapide.)
 

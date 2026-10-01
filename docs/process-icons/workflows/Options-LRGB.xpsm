@@ -64,24 +64,6 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <instance class="NoOperation" version="256" id="P2_Gradient_instance">
       <description>PHASE 2 — Gradient : image linéaire : retrait du gradient. Colonne de repère, sans effet.</description>
    </instance>
-   <instance class="Script" version="256" id="Opt_ImageSolver_instance">
-      <description>OPTION — si WBPP n'a pas résolu l'image.
-
-LANCEMENT : double-clic sur l'icône, puis Apply Global.
-
-PRÉRÉGLÉ : rien.
-
-À RÉGLER : nom de l'objet ; focale 2 939 mm ; pixel 3,76 µm ; Gaia DR3.
-
-SI :
-- WBPP a déjà résolu l'image -&gt; saute cette étape
-
-Détails : page docs/pixinsight-workflow.html.</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/AdP/ImageSolver.js</parameter>
-      <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="0"/>
-      <parameter id="information"></parameter>
-   </instance>
    <instance class="GradientCorrection" version="1" id="Opt_GradientCorrection_instance">
       <description>ALTERNATIVE — GradientCorrection.
 
@@ -430,9 +412,8 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <icon id="Opt_WBPP" instance="Opt_WBPP_instance" xpos="30" ypos="64" workspace="Workspace01"/>
    <icon id="Opt_CC_auto" instance="Opt_CC_auto_instance" xpos="30" ypos="94" workspace="Workspace01"/>
    <icon id="P2_Gradient" instance="P2_Gradient_instance" xpos="290" ypos="20" workspace="Workspace01"/>
-   <icon id="Opt_ImageSolver" instance="Opt_ImageSolver_instance" xpos="290" ypos="64" workspace="Workspace01"/>
-   <icon id="Opt_GradientCorrection" instance="Opt_GradientCorrection_instance" xpos="290" ypos="94" workspace="Workspace01"/>
-   <icon id="Opt_DBE" instance="Opt_DBE_instance" xpos="290" ypos="124" workspace="Workspace01"/>
+   <icon id="Opt_GradientCorrection" instance="Opt_GradientCorrection_instance" xpos="290" ypos="64" workspace="Workspace01"/>
+   <icon id="Opt_DBE" instance="Opt_DBE_instance" xpos="290" ypos="94" workspace="Workspace01"/>
    <icon id="P3_Lineaire" instance="P3_Lineaire_instance" xpos="550" ypos="20" workspace="Workspace01"/>
    <icon id="Opt_Find_Background" instance="Opt_Find_Background_instance" xpos="550" ypos="64" workspace="Workspace01"/>
    <icon id="P4_Etirement" instance="P4_Etirement_instance" xpos="810" ypos="20" workspace="Workspace01"/>

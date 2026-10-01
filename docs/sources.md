@@ -353,3 +353,12 @@ Points clos au dernier contrôle (30 septembre 2026) :
 ## Conteneurs de process
 
 - Modèle — [theAstroShed, icônes de process](https://github.com/jamiesmith/pixinsight-icons) : trois *ProcessContainer* réels (`RGB_PostProcess` : SPCC → BXT → NXT → script → SXT → script ; `for_each_in_RGB` ; `for_each_SHO__ADD_CROP`), générés par PixInsight 1.9.3 : instances imbriquées sans identifiant, attribut `enabled="true"`, pas de description sur le conteneur. Format recopié pour les fichiers Conteneurs-X et le préparateur ; non testé dans PixInsight 1.9.5.
+
+## Solution astrométrique (ImageSolver)
+
+- Officiel — [PixInsight, documentation SPCC](https://pixinsight.com/doc/docs/SPCC/SPCC.html) : l'image doit avoir une solution astrométrique valide, calculée par le script ImageSolver.
+- Forum — [PixInsight, plate solve requirements for SPCC](https://pixinsight.com/forum/index.php?threads/what-exactly-are-the-plate-solve-information-requirements-for-spcc.22062/) *(résumé)* : SPCC demande une solution dans les métadonnées PixInsight ; une solution présente seulement dans l'en-tête FITS n'est pas reconnue.
+- Tutoriel — [Telescope Live, ImageSolver explained](https://telescope.live/blog/pixinsight-image-solver-script-explained) *(résumé)* : après recadrage ou combinaison, la solution est perdue ; résoudre avant PCC/SPCC.
+- Outil — [DynamicAstroCrop (deepskycolors)](http://www.deepskycolors.com/pixinsight/dynamicastrocrop/) *(résumé)* : les process géométriques standard (DynamicCrop, Resample, Rotation…) suppriment la solution astrométrique ; DynamicAstroCrop recadre en la conservant. Non testé.
+- Conséquence dans la fiche (1er octobre 2026) : ImageSolver remis dans le chemin principal de tous les workflows, avant SPFC, et avant le SPCC des étoiles RGB du workflow RGB + SHO.
+

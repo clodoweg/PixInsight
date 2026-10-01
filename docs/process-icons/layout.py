@@ -28,7 +28,7 @@ PHASE = {
 }
 
 NB = ('RSHO', 'SHO', 'HOO')
-OPT = {'WBPP', 'CC_auto', 'ImageSolver', 'Find_Background', 'LinearFit_ref_H', 'Continuum_auto', 'H_dans_L', 'NBRGBCombination', 'HDRMT', 'NXT_final',
+OPT = {'WBPP', 'CC_auto', 'Find_Background', 'LinearFit_ref_H', 'Continuum_auto', 'H_dans_L', 'NBRGBCombination', 'HDRMT', 'NXT_final',
        'MT_etoiles', 'Halo_B_Gon', 'CorrectMagentaStars', 'SCNR_SHO', 'Perfect_Palette_Picker', 'NBColourMapper', 'H_en_luminance',
        'Etoiles_HOO_synth', 'DualBand_H', 'DualBand_O', 'SPFC_S'}
 
@@ -65,7 +65,7 @@ CHOICES = {
 # pour les options : quand les ajouter
 WHEN = {
     'WBPP': "seulement si tu repars des brutes (masters pas encore empilés)", 'CC_auto': "avec WBPP, si tu repars des brutes",
-    'ImageSolver': "si WBPP n'a pas résolu l'image", 'Find_Background': "champ rempli de nébuleuse : fond de référence pour SPCC",
+    'Find_Background': "champ rempli de nébuleuse : fond de référence pour SPCC",
     'LinearFit_ref_H': "fonds très différents entre H, O et S (conseillé avec Foraxx)", 'Continuum_auto': "calcul automatique du coefficient k",
     'H_dans_L': "régions HII plus nettes (H injecté dans la luminance)", 'NBRGBCombination': "alternative à la soustraction du continuum",
     'HDRMT': "cœur de galaxie ou nébuleuse brillante brûlé", 'NXT_final': "bruit visible sur l'image finale",
