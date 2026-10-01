@@ -40,7 +40,7 @@ SCRIPTS = {
              "cette icône ouvre WBPP, les réglages ci-dessous se font dans son dialogue. Chemin relevé pour WBPP 3.1.0 sous PixInsight 1.9.5 (psf-guard). "),
     'ImageSolver': ('$PXI_SRCDIR/scripts/AdP/ImageSolver.js', '', [],
              L_GLOBAL + "Aucun paramètre préréglé : le code de la version 1.9.5 n'est pas public, et une icône d'une autre version imposerait ses coordonnées. "),
-    'LinearPatternSubtraction': ('/Users/Shared/PixInsight/scripts/LPS_UnClic.js', '',
+    'LinearPatternSubtraction': ('$PXI_SRCDIR/scripts/FichePixInsight/LPS_UnClic.js', '',
              [('correctColumns', 'false'), ('correctEntireImage', 'true'), ('defectTableFilePath', ''), ('layersToRemove', '9'),
               ('rejectionLimit', '3'), ('globalRejection', 'true'), ('globalRejectionLimit', '5'), ('autoBackground', 'true'),
               ('backgroundReferenceLeft', '0'), ('backgroundReferenceTop', '0'), ('backgroundReferenceWidth', '512'), ('backgroundReferenceHeight', '512'),

@@ -6,8 +6,10 @@
 // réglages fixes, sur l'image active ou sur toutes les images ouvertes.
 // Zone de fond : choisie automatiquement (la plus sombre) si autoBackground.
 //
-// Installation : copier ce fichier dans /Users/Shared/PixInsight/scripts/
-// (chemin utilisé par l'icône Opt_LinearPatternSubtraction de la fiche).
+// Installation (Mac et PC) : créer le dossier FichePixInsight dans le dossier
+// scripts de PixInsight (celui qui contient PatternCorrection) et y copier ce
+// fichier. L'icône Opt_LinearPatternSubtraction de la fiche pointe vers
+// $PXI_SRCDIR/scripts/FichePixInsight/LPS_UnClic.js.
 // Lancement : glisser l'icône sur l'image, ou activer l'image puis
 // double-clic sur l'icône et Apply Global.
 // ----------------------------------------------------------------------------
