@@ -1407,7 +1407,7 @@ max(0, (0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2] - s) / (1 - s))</parameter>
             </tr>
             <tr>
                <td id="x" value="0.50000"/>
-               <td id="y" value="0.72000"/>
+               <td id="y" value="0.65000"/>
             </tr>
             <tr>
                <td id="x" value="1.00000"/>
@@ -1713,7 +1713,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <instance class="Script" version="256" id="E22_Star_Stretch_instance">
       <description>LANCEMENT : glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
 
-PRÉRÉGLÉ : Stretch Amount 6, Color Boost 1,0, SCNR décoché.
+PRÉRÉGLÉ : Stretch Amount 6, Color Boost 1,3, SCNR décoché.
 
 À RÉGLER : rien ; sur l'image d'étoiles linéaire.
 
@@ -1721,7 +1721,7 @@ SI :
 - cœurs d'étoiles blancs (R = G = B = 1) -&gt; 5,5
 - étoiles trop grosses -&gt; 5 ou 4
 - étoile verte à la sonde (G au-dessus de R et de B) -&gt; coche Remove Green
-- couleurs criardes -&gt; Color Boost 0,7
+- étoiles criardes -&gt; Color Boost 1,0
 
 Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/star_stretch.js</parameter>
@@ -1733,7 +1733,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
          </tr>
          <tr>
             <td id="id">satAmount</td>
-            <td id="value">1</td>
+            <td id="value">1.3</td>
          </tr>
          <tr>
             <td id="id">removeGreen</td>

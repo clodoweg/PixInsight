@@ -59,8 +59,8 @@ SCRIPTS = {
               ('lumaOnly', 'false'), ('lumaMode', 'rec709'), ('lumaBlend', '0.6')],
              L_DRAG + "Le dialogue s'ouvre avec les valeurs de l'icône (openDialogbox = true) ; pour étirer directement sans dialogue, mets openDialogbox à false. "),
     'Star_Stretch': ('$PXI_SRCDIR/scripts/star_stretch.js', '69a1ee6db4e9f5374c2cddb1e5a7f4ae',
-             [('amount', '6'), ('satAmount', '1'), ('removeGreen', 'false'), ('showPreview', 'false')],
-             L_DRAG + "Glisse-la sur l'image d'étoiles linéaire : le dialogue s'ouvre avec Stretch Amount 6 (choix de la fiche ; défaut du script 5) et Color Boost 1,0. "),
+             [('amount', '6'), ('satAmount', '1.3'), ('removeGreen', 'false'), ('showPreview', 'false')],
+             L_DRAG + "Glisse-la sur l'image d'étoiles linéaire : le dialogue s'ouvre avec Stretch Amount 6 (choix de la fiche ; défaut du script 5) et Color Boost 1,3. "),
     'Halo_B_Gon': ('$PXI_SRCDIR/scripts/Halo-B-Gon.js', 'b9427e718e2b9760704c8c738e0893b7', [],
              L_GLOBAL + "Ce script ne lit pas de paramètres d'icône : les réglages se font dans son dialogue. "),
     'NB_to_RGB_Stars': ('$PXI_SRCDIR/scripts/NBtoRGBStars.js', '0fae2f23d6f23037fb118fd1ef749592', [],
@@ -111,7 +111,7 @@ def raw(src_id, new):
     t = re.sub(r'\n\s*<time[^>]*/>', '', m.group(0))
     return new, '   ' + t.replace('id="%s_instance"' % src_id, 'id="%s_instance"' % new, 1)
 
-def curves(name, k=((0, 0), (0.25, 0.19), (0.75, 0.81), (1, 1)), sat=0.72):
+def curves(name, k=((0, 0), (0.25, 0.19), (0.75, 0.81), (1, 1)), sat=0.65):
     def post(t):
         def table(tid, pts):
             rows = ''.join('\n         <tr>\n            <td id="x" value="%.5f"/>\n            <td id="y" value="%.5f"/>\n         </tr>' % p for p in pts)
@@ -362,7 +362,7 @@ T_STAT = ("ÉTAPE MANUELLE — Statistical Stretch (SetiAstro, script v2.3). Alt
           "Dans l'icône seulement : numIterations 1 (5 au plus), autoConvergence false (jusqu'à 5 passes, arrêt à 0,001 de la cible).")
 T_STARSTRETCH = ("ÉTAPE MANUELLE — Star Stretch (SetiAstro, script v2.6) sur l'image d'étoiles LINÉAIRE issue de SXT. Modifie l'image elle-même : garde une copie linéaire. "
                  "Étirement y = 3^a·x / ((3^a − 1)·x + 1). Stretch Amount a = 6 dans l'icône (défaut du script 5 ; 0 à 8, l'auteur conseille la prudence au-delà de 5 : cœurs blancs -> 5,5) : un pixel à 0,01 devient 0,45 à 4, 0,71 à 5, 0,88 à 6. "
-                 "Color Boost 1,0 (0 à 2) : saturation par teinte, 0,4 × Boost sur les rouges, 0,7 × Boost sur les cyans (couleur seulement). "
+                 "Color Boost 1,3 dans l'icône (défaut du script 1,0 ; 0 à 2) : saturation par teinte, 0,4 × Boost sur les rouges, 0,7 × Boost sur les cyans (couleur seulement). "
                  "Remove Green via SCNR décoché par défaut (SCNR vert pleine force, Average Neutral). Show Preview décoché (aperçu + Refresh Preview).")
 T_HALO = ("ÉTAPE MANUELLE — Halo-B-Gon (SetiAstro, script v2.1) sur l'image d'étoiles seule, AVANT Etoiles_screen ; modifie l'image elle-même, garde une copie. "
           "Select stars-only image : l'image d'étoiles étirée, celle de la formule Etoiles_screen (RGB_stars ; NBtoRGB_stars en SHO ; HOO_stars en HOO). "
@@ -418,7 +418,7 @@ D_BL = ("Recombinaison des étoiles + réduction Bill Blanshan (Transfer V2) en 
         "S = 0,20 dans cette icône (valeur de Bill : 0,15 ; plus bas = étoiles plus petites ; étoiles trop petites -> 0,25, ou saute cette étape). Les versions V3 et les méthodes Halo/Star sont dans 01-PixelMath-formules.xpsm.")
 D_MT = ("Alternative : MorphologicalTransformation sur l'image d'étoiles seule (ou avec un masque d'étoiles), AVANT Etoiles_screen. Morphological Selection 0,25 (sous 0,5 = érosion), Amount 0,60, 1 itération, élément circulaire 5x5.")
 D_CURVES = ("CurvesTransformation — sur l'image sans étoiles étirée, sous masque de luminance (icône Masque_L juste avant). "
-            "Préréglé : courbe en S sur RGB/K (0,25 → 0,19 ; 0,75 → 0,81) et saturation (canal S, milieu monté de 0,5 à 0,72), interpolation Akima : environ l'effet de l'ancienne courbe légère passée deux fois, saturation un peu moins forte. Trop saturé -> milieu S à 0,65 ; trop contrasté -> 0,21 / 0,79 ; pas assez -> option Boost_finition. "
+            "Préréglé : courbe en S sur RGB/K (0,25 → 0,19 ; 0,75 → 0,81) et saturation (canal S, milieu monté de 0,5 à 0,65), interpolation Akima : contraste d'environ deux passes de l'ancienne courbe légère, saturation modérée (0,72 jugé trop saturé sur NGC 1532). Trop saturé -> milieu S à 0,60 ; couleurs ternes -> 0,72 ; trop contrasté -> 0,21 / 0,79 ; pas assez -> option Boost_finition. "
             "Place les points aux niveaux réels (valeur K du curseur dans la barre d'état). Canaux : RGB/K = même courbe sur R, G, B ; L = luminosité CIE L* seule ; "
             "S = saturation en fonction de la saturation (sature les pixels ternes sans toucher aux saturés) ; H = teinte d'origine → nouvelle teinte (un point déplacé verticalement change une couleur en une autre) ; c = chroma. "
             "Petits déplacements, compare avec l'aperçu.")
