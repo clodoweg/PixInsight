@@ -1045,7 +1045,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="St" value="AkimaSubsplines"/>
    </instance>
    <instance class="LocalHistogramEqualization" version="256" id="E26_LHE_instance">
-      <description>PRÉRÉGLÉ : Kernel 150, Contrast limit 2,0, Amount 0,30, 8-bit, circulaire.
+      <description>PRÉRÉGLÉ : Kernel 150, Contrast limit 2,0, Amount 0,30, 12-bit, circulaire.
 
 À RÉGLER : sous Masque_L ; passe 1 (grandes structures), LHE_fin ensuite.
 
@@ -1056,13 +1056,13 @@ SI :
 
 Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="radius" value="150"/>
-      <parameter id="histogramBins" value="Bit8"/>
+      <parameter id="histogramBins" value="Bit12"/>
       <parameter id="slopeLimit" value="2.0"/>
       <parameter id="amount" value="0.300"/>
       <parameter id="circularKernel" value="true"/>
    </instance>
    <instance class="LocalHistogramEqualization" version="256" id="E27_LHE_fin_instance">
-      <description>PRÉRÉGLÉ : Kernel 40, Contrast limit 2,0, Amount 0,30, 8-bit, circulaire.
+      <description>PRÉRÉGLÉ : Kernel 40, Contrast limit 2,0, Amount 0,30, 10-bit, circulaire.
 
 À RÉGLER : sous Masque_L, après LHE ; passe 2 (petits détails).
 
@@ -1071,7 +1071,7 @@ SI :
 
 Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="radius" value="40"/>
-      <parameter id="histogramBins" value="Bit8"/>
+      <parameter id="histogramBins" value="Bit10"/>
       <parameter id="slopeLimit" value="2.0"/>
       <parameter id="amount" value="0.300"/>
       <parameter id="circularKernel" value="true"/>
