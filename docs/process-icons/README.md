@@ -115,7 +115,7 @@ Dans les trois fichiers, **une colonne par phase**, avec une icône-titre sans e
 | SHO-sans-RGB | 30 | 18 | Idem sans RGB, étoiles narrowband par NB to RGB Star Combination ; options : étoiles HOO synthétiques, CorrectMagentaStars |
 | HOO | 27 | 18 | Combinaison HOO, NarrowbandNormalization HOO ; options : extraction dual-band (caméra couleur), Foraxx HOO, variante Hubble, H en luminance |
 
-(Les nombres ne comptent pas les icônes-titres. Masters déjà empilés : WBPP et CosmeticCorrection sont en options, pour repartir des brutes. Première option de chaque workflow : `Opt_LinearPatternSubtraction`, icône-note avec les réglages du script de Vicent Peris, pour des lignes résiduelles sur un master.)
+(Les nombres ne comptent pas les icônes-titres. Masters déjà empilés : WBPP et CosmeticCorrection sont en options, pour repartir des brutes. Première option de chaque workflow : `Opt_LinearPatternSubtraction`, icône Script du script de Vicent Peris (`PatternCorrection/LinearPatternSubtraction.js`, réglages préremplis), pour des lignes résiduelles sur un master.)
 
 **Trois sortes d'icônes :**
 

@@ -77,19 +77,90 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <instance class="NoOperation" version="256" id="P1_options_instance">
       <description>OPTIONS de la phase 1 — Préparation : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
    </instance>
-   <instance class="NoOperation" version="256" id="Opt_LinearPatternSubtraction_instance">
+   <instance class="Script" version="256" id="Opt_LinearPatternSubtraction_instance">
       <description>OPTION — lignes horizontales résiduelles visibles sur un master (motif du capteur).
 
-PRÉRÉGLÉ : rien (icône-note : lance le script depuis le menu Script de PixInsight).
+LANCEMENT : double-clic sur l'icône, puis Apply Global. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
 
-À RÉGLER : Target is active image coché ; Close former working images décoché ; Output directory vide ; Correct columns décoché (corrige les lignes) ; Correct the entire image coché ; Defects file vide ; Postfix _lps ; Layers to remove 9 ; Rejection limit 3 ; Global rejection coché ; Global rejection limit 5 ; Background reference region 0, 0, 512, 512, à déplacer sur une zone de fond sombre ; sur chaque master linéaire, avant le recadrage.
+PRÉRÉGLÉ : Target is active image, Correct columns décoché (lignes), Correct the entire image, Postfix _lps, Layers to remove 9, Rejection limit 3, Global rejection 5, région de fond 0, 0, 512, 512.
+
+À RÉGLER : active le master à corriger avant de lancer ; dans le dialogue, déplace la région de fond sur une zone sombre ; sur chaque master linéaire, avant le recadrage.
 
 SI :
-- erreur « partialColumnOrRow is undefined » -&gt; bug connu sur un master avec Correct the entire image et sans Defects file : fournis un fichier de défauts (LinearDefectDetection) ou passe-toi du script
+- erreur « partialColumnOrRow is undefined » -&gt; bug signalé sur un master avec Correct the entire image et sans Defects file : fournis un fichier de défauts (LinearDefectDetection) ou passe-toi du script
 - colonnes plutôt que lignes -&gt; coche Correct columns
 - artefacts après correction -&gt; annule : le script est conçu pour les brutes, avant alignement
 
 Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/PatternCorrection/LinearPatternSubtraction.js</parameter>
+      <parameter id="md5sum">e0dfe7d0bf6799a1a75f3a8089a8dd64</parameter>
+      <table id="parameters" rows="16">
+         <tr>
+            <td id="id">inputFiles</td>
+            <td id="value"></td>
+         </tr>
+         <tr>
+            <td id="id">targetIsActiveImage</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">closeFormerWorkingImages</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">outputDir</td>
+            <td id="value"></td>
+         </tr>
+         <tr>
+            <td id="id">correctColumns</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">correctEntireImage</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">defectTableFilePath</td>
+            <td id="value"></td>
+         </tr>
+         <tr>
+            <td id="id">postfix</td>
+            <td id="value">_lps</td>
+         </tr>
+         <tr>
+            <td id="id">layersToRemove</td>
+            <td id="value">9</td>
+         </tr>
+         <tr>
+            <td id="id">rejectionLimit</td>
+            <td id="value">3</td>
+         </tr>
+         <tr>
+            <td id="id">globalRejection</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">globalRejectionLimit</td>
+            <td id="value">5</td>
+         </tr>
+         <tr>
+            <td id="id">backgroundReferenceLeft</td>
+            <td id="value">0</td>
+         </tr>
+         <tr>
+            <td id="id">backgroundReferenceTop</td>
+            <td id="value">0</td>
+         </tr>
+         <tr>
+            <td id="id">backgroundReferenceWidth</td>
+            <td id="value">512</td>
+         </tr>
+         <tr>
+            <td id="id">backgroundReferenceHeight</td>
+            <td id="value">512</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
    </instance>
    <instance class="Script" version="256" id="Opt_WBPP_instance">
       <description>OPTION — seulement si tu repars des brutes (masters pas encore empilés).
