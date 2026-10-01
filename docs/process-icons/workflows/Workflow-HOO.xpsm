@@ -669,9 +669,9 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="useRGBWorkingSpace" value="false"/>
    </instance>
    <instance class="GeneralizedHyperbolicStretch" version="256" id="E17_GHS_2_contraste_instance">
-      <description>PRÉRÉGLÉ : b = 4, HP 0,9, Stretch factor 1 (valeur de départ).
+      <description>PRÉRÉGLÉ : b = 4, HP 0,9, Stretch factor 1, SP 0,25.
 
-À RÉGLER : SP dans la zone plate à contraster (souvent 0,25–0,40), AVANT de glisser l'icône ; Stretch factor 1 à 2.
+À RÉGLER : SP = valeur de ta zone plate (souvent 0,25–0,40) ; Stretch factor 1 à 2.
 
 SI :
 - cœur brillant qui sature -&gt; baisse HP vers sa valeur
@@ -684,7 +684,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="inverse" value="false"/>
       <parameter id="stretchFactor" value="1.000"/>
       <parameter id="localIntensity" value="4.000"/>
-      <parameter id="symmetryPoint" value="0.000000"/>
+      <parameter id="symmetryPoint" value="0.250000"/>
       <parameter id="highlightProtection" value="0.900000"/>
       <parameter id="shadowProtection" value="0.000000"/>
       <parameter id="blackPoint" value="0.000000"/>
@@ -694,18 +694,18 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="useRGBWorkingSpace" value="false"/>
    </instance>
    <instance class="GeneralizedHyperbolicStretch" version="256" id="E18_GHS_3_fond_instance">
-      <description>PRÉRÉGLÉ : b = 10, Stretch factor 0.
+      <description>PRÉRÉGLÉ : b = 10, SP = HP = 0,19, Stretch factor 1 (pour un fond lu à 0,22).
 
-À RÉGLER : SP = HP = fond lu - 0,03 ; Stretch factor 0,5 à 1,2 (≈ 1) jusqu'au fond vers 0,12–0,14.
+À RÉGLER : SP = HP = fond lu - 0,03 (0,22 après Statistical Stretch à 0,25) ; Stretch factor 0,5 à 1,2 jusqu'au fond vers 0,12–0,14.
 
 Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
       <parameter id="stretchChannel" value="SC_RGB"/>
       <parameter id="inverse" value="false"/>
-      <parameter id="stretchFactor" value="0.000"/>
+      <parameter id="stretchFactor" value="1.000"/>
       <parameter id="localIntensity" value="10.000"/>
-      <parameter id="symmetryPoint" value="0.000000"/>
-      <parameter id="highlightProtection" value="1.000000"/>
+      <parameter id="symmetryPoint" value="0.190000"/>
+      <parameter id="highlightProtection" value="0.190000"/>
       <parameter id="shadowProtection" value="0.000000"/>
       <parameter id="blackPoint" value="0.000000"/>
       <parameter id="whitePoint" value="1.000000"/>

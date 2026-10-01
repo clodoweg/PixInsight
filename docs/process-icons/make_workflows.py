@@ -120,10 +120,10 @@ def curves(name):
         return t
     return M.instance('CurvesTransformation', name, post=post)
 
-def ghs(name, b, hp=1.0, lp=0.0, channel='SC_RGB', sf=0.0):
+def ghs(name, b, hp=1.0, lp=0.0, channel='SC_RGB', sf=0.0, sp=0.0):
     return M.instance('GeneralizedHyperbolicStretch', name, {
         'stretchType': 'ST_GeneralisedHyperbolic', 'stretchChannel': channel, 'inverse': False,
-        'stretchFactor': '%.3f' % sf, 'localIntensity': '%.3f' % b, 'symmetryPoint': '0.000000',
+        'stretchFactor': '%.3f' % sf, 'localIntensity': '%.3f' % b, 'symmetryPoint': '%.6f' % sp,
         'highlightProtection': '%.6f' % hp, 'shadowProtection': '%.6f' % lp, 'clipType': 'CT_RGBBlend'})
 
 def pm(*a, **k):
@@ -350,11 +350,11 @@ D_GHS1 = ("GHS, 1er étirement — Stretch factor à 0 : l'icône ne fait rien t
           "Image couleur : passe Colour mode sur Colour (clip RGBBlend). Même niveau de fond visé pour toutes les images à combiner. "
           "REPÈRES : après ce 1er étirement, fond vers 0,20-0,25 (volontairement clair) ; l'image finale visera 0,12-0,14 (30-35 sur 255), jamais 0. "
           "Contrôle : preview sur du fond vide + Process › Image › Statistics (médiane) ; aucun pixel écrêté à 0 dans l'histogramme.")
-D_GHS2 = ("GHS, ajout de contraste (passes suivantes) — clique sur une zone qui paraît plate, Send to SP ; Local intensity (b) 4 (3 à 5) ; Stretch factor préréglé à 1 (valeur de départ ; 1 à 2 en général) : règle SP AVANT de glisser l'icône ; "
+D_GHS2 = ("GHS, ajout de contraste (passes suivantes) — clique sur une zone qui paraît plate, Send to SP ; Local intensity (b) 4 (3 à 5) ; préréglé : Stretch factor 1 (1 à 2 en général) et SP 0,25 ; remplace SP par la valeur de TA zone plate avant d'appliquer ; "
           "baisse HP (ici 0,90) pour protéger les cœurs brillants ; monte LP si le fond devient trop sombre. 1 à 3 passes. Image sans étoiles uniquement (étoiles : Star Stretch). "
           "Aucune grande zone ne doit atteindre 1 ; si la lecture donne 1,0 sur un cœur, baisse HP. "
           "Trop étiré : fond granuleux, cœurs brûlés, couleurs délavées. Pas assez : extensions faibles invisibles, aspect découpé sur du noir.")
-D_GHS3 = ("GHS, assombrir le fond sans écrêter — après GHS ou Statistical Stretch. SP = fond lu - 0,03, HP = SP (règle HP à la même valeur que SP), LP = 0, b = 10 ; Stretch factor 0,5 à 1,2 (environ 1 pour un fond à 0,20-0,22). "
+D_GHS3 = ("GHS, assombrir le fond sans écrêter — après GHS ou Statistical Stretch. Préréglé pour un fond à 0,22 : SP = HP = 0,19, Stretch factor 1, LP = 0, b = 10. Règle SP = HP = fond lu - 0,03 (après Statistical Stretch à 0,25 : 0,22) ; Stretch factor 0,5 à 1,2 jusqu'au fond visé. "
           "Plus propre qu'un point noir en Linear, qui détruit des données. "
           "CIBLE DU FOND FINAL : gris foncé 0,12-0,14 (30-35 sur 255 ; Readout Options › plage entière 8 bits), R = G = B à quelques unités près, JAMAIS 0. "
           "Données bruitées : 0,14-0,15 ; données propres (après NXT) : 0,10-0,12. Au-delà de 0,18-0,20 : trop étiré. Vérifie avec Statistics (médiane d'une preview de fond).")
@@ -454,7 +454,7 @@ def stars_end(cms=False, screen_extra='', cms_extra=''):
     return b
 
 def ghs_block(extra_desc='', stat_extra=''):
-    return [(ghs('GHS_1_premier', 10), D_GHS1 + extra_desc), (ghs('GHS_2_contraste', 4, hp=0.9, sf=1.0), D_GHS2), (note('Statistical_Stretch', T_STAT + stat_extra), ''), (ghs('GHS_3_fond', 10), D_GHS3)]
+    return [(ghs('GHS_1_premier', 10), D_GHS1 + extra_desc), (ghs('GHS_2_contraste', 4, hp=0.9, sf=1.0, sp=0.25), D_GHS2), (note('Statistical_Stretch', T_STAT + stat_extra), ''), (ghs('GHS_3_fond', 10, hp=0.19, sf=1.0, sp=0.19), D_GHS3)]
 
 rgb_comb = lambda: (note('Combinaison_RGB', ''), '')
 MATERIEL = "QHY600 (Sony IMX455) + filtres Antlia V Pro"
