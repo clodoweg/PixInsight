@@ -426,9 +426,9 @@ D_LHE = ("LocalHistogramEqualization (CLAHE) sur l'image sans étoiles, sous mas
          "Kernel radius 150 (défaut 64 ; 100 à 300 selon la taille des structures ; petit = effet fort mais bruit et anneaux, grand = plus doux ; en pixels, donc plus grand à fort échantillonnage). "
          "Contrast limit 2,0 (1,0 = rien ; 1,5 à 2,0 ; sous 3 sinon bruit). Amount 0,30 (1,0 = résultat pur ; facile à exagérer). Histogram resolution 12-bit (anneaux ou paliers autour d'un cœur brillant en 8-bit, postérisation ; plus lent), Circular kernel coché. "
          "PASSE 1 sur 2 (grandes structures) ; l'icône LHE_fin suit (petit rayon). Deux passes de rayons différents (Chad Leader : galaxie 140 px à 0,20 puis 32 px à 0,18) ; "
-         "ici Amounts plus forts (0,30 puis 0,30) pour un effet plus marqué : effet artificiel, halo sombre autour de la galaxie ou bruit -> 0,20 et 0,16. Resature aux courbes si besoin.")
+         "ici Amounts plus forts (0,30 puis 0,25) pour un effet plus marqué : effet artificiel, halo sombre autour de la galaxie ou bruit -> 0,20 et 0,16. Resature aux courbes si besoin.")
 D_LHE_FIN = ("LocalHistogramEqualization, PASSE 2 sur 2 (petits détails : poussières, nœuds, bras) : après l'icône LHE, même image sans étoiles, même Masque_L. "
-             "Kernel radius 40 (32 à 50), Contrast limit 2,0, Amount 0,30, 10-bit (12-bit marche mal avec un petit rayon), circulaire. Bruit ou aspect gravé -> Amount 0,16 ou Contrast limit 1,5.")
+             "Kernel radius 40 (32 à 50), Contrast limit 2,0, Amount 0,25 (0,30 donnait un aspect un peu peint à 1:1), 10-bit (12-bit marche mal avec un petit rayon), circulaire. Bruit ou aspect gravé -> Amount 0,16 ou Contrast limit 1,5.")
 D_HDR = ("HDRMultiscaleTransform sur l'image sans étoiles pour les zones brillantes (cœurs, nébuleuses denses). "
          "Number of layers 6 = échelles 1 à 32 px (4 à 6 selon Starlust ; plus de couches = plus grandes structures ; essaie 7 à fort échantillonnage). Iterations 1 (plus = plus fort et plus doux ; essaie 2). "
          "Overdrive 0 (0,10 à 0,20 pour plus de force). Median transform décoché (coché = moins d'anneaux, plus lent). Scaling function B3 Spline (5). Deringing décoché (petites valeurs si anneaux). "
@@ -495,7 +495,7 @@ D_MASK = ("MASQUE DE LUMINANCE en un clic (optionnel, pour Courbes et LHE) : gli
 def finish_block(extra=None):
     b = [(pm('Masque_L', 's = 0.14;\nmax(0, (0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2] - s) / (1 - s))', symbols='s', new_image=True, new_id='masque_L', space='Gray'), D_MASK),
          (curves('Courbes'), D_CURVES), (M.instance('LocalHistogramEqualization', 'LHE', {'radius': 150, 'histogramBins': 'Bit12', 'slopeLimit': '2.0', 'amount': '0.300', 'circularKernel': True}), D_LHE),
-         (M.instance('LocalHistogramEqualization', 'LHE_fin', {'radius': 40, 'histogramBins': 'Bit10', 'slopeLimit': '2.0', 'amount': '0.300', 'circularKernel': True}), D_LHE_FIN),
+         (M.instance('LocalHistogramEqualization', 'LHE_fin', {'radius': 40, 'histogramBins': 'Bit10', 'slopeLimit': '2.0', 'amount': '0.250', 'circularKernel': True}), D_LHE_FIN),
          (boost_container(), ''),
          (hdrmt_50(), '')]
     if extra:

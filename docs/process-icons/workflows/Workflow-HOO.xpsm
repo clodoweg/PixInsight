@@ -959,18 +959,19 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="circularKernel" value="true"/>
    </instance>
    <instance class="LocalHistogramEqualization" version="256" id="E24_LHE_fin_instance">
-      <description>PRÉRÉGLÉ : Kernel 40, Contrast limit 2,0, Amount 0,30, 10-bit, circulaire.
+      <description>PRÉRÉGLÉ : Kernel 40, Contrast limit 2,0, Amount 0,25, 10-bit, circulaire.
 
 À RÉGLER : sous Masque_L, après LHE ; passe 2 (petits détails).
 
 SI :
 - bruit ou aspect gravé -&gt; Amount 0,20 (0,16)
+- pas assez de détail fin -&gt; 0,30
 
 Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="radius" value="40"/>
       <parameter id="histogramBins" value="Bit10"/>
       <parameter id="slopeLimit" value="2.0"/>
-      <parameter id="amount" value="0.300"/>
+      <parameter id="amount" value="0.250"/>
       <parameter id="circularKernel" value="true"/>
    </instance>
    <instance class="NoOperation" version="256" id="P7_Etoiles_instance">
