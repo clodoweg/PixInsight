@@ -101,6 +101,7 @@ S = {
             ["effet artificiel ou halo sombre -> Amount 0,20", "bruit -> Contrast limit 1,5", "anneaux -> Kernel plus grand"]),
     'LHE_fin': ("Kernel 40, Contrast limit 2,0, Amount 0,25, 10-bit, circulaire", "sous Masque_L, après LHE ; passe 2 (petits détails)",
             ["bruit ou aspect gravé -> Amount 0,20 (0,16)", "pas assez de détail fin -> 0,30"]),
+    'Boost_finition_light': ("conteneur : courbe très légère (0,25 -> 0,24 ; 0,75 -> 0,76, saturation 0,5 -> 0,57) puis LHE rayon 80, Amount 0,12", "sous Masque_L, après LHE_fin ; un glisser = un petit cran", ["pas assez -> un deuxième passage, ou Boost_finition"]),
     'Boost_finition': ("conteneur : petite courbe (0,25 -> 0,23 ; 0,75 -> 0,77, saturation 0,5 -> 0,60) puis LHE rayon 80, Amount 0,20", "sous Masque_L, après LHE_fin ; un glisser = un petit cran, rejoue-le pour pousser encore",
                        ["fond qui se colore ou bruit -> arrête, ou NXT final", "halo sombre autour de la galaxie -> une passe de moins"]),
     'HDRMT_50': ("conteneur : copie de l'image (vue HDR_avant), HDRMT 6 couches To lightness / Preserve hue / Lightness mask, mélange 0,5 × résultat + 0,5 × copie, puis fermeture de la copie", "glisse sur l'image sans étoiles étirée ; la copie HDR_avant est fermée automatiquement à la fin (script Fermer_vues)", ["effet trop faible -> a = 0,7 dans HDR_melange", "trop fort -> a = 0,3"]),

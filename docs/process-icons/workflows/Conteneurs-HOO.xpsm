@@ -1434,6 +1434,150 @@ max(0, (0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2] - s) / (1 - s))</parameter>
    <instance class="NoOperation" version="256" id="P6_options_instance">
       <description>OPTIONS de la phase 6 — Finition : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
    </instance>
+   <instance class="ProcessContainer" id="Opt_Boost_finition_light_instance">
+      <instance class="CurvesTransformation" version="256" enabled="true">
+         <table id="R" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="Rt" value="AkimaSubsplines"/>
+         <table id="G" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="Gt" value="AkimaSubsplines"/>
+         <table id="B" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="Bt" value="AkimaSubsplines"/>
+         <table id="K" rows="4">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="0.25000"/>
+               <td id="y" value="0.24000"/>
+            </tr>
+            <tr>
+               <td id="x" value="0.75000"/>
+               <td id="y" value="0.76000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="Kt" value="AkimaSubsplines"/>
+         <table id="A" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="At" value="AkimaSubsplines"/>
+         <table id="L" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="Lt" value="AkimaSubsplines"/>
+         <table id="a" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="at" value="AkimaSubsplines"/>
+         <table id="b" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="bt" value="AkimaSubsplines"/>
+         <table id="c" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="ct" value="AkimaSubsplines"/>
+         <table id="H" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="Ht" value="AkimaSubsplines"/>
+         <table id="S" rows="3">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="0.50000"/>
+               <td id="y" value="0.57000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="St" value="AkimaSubsplines"/>
+      </instance>
+      <instance class="LocalHistogramEqualization" version="256" enabled="true">
+         <parameter id="radius" value="80"/>
+         <parameter id="histogramBins" value="Bit10"/>
+         <parameter id="slopeLimit" value="2.0"/>
+         <parameter id="amount" value="0.120"/>
+         <parameter id="circularKernel" value="true"/>
+      </instance>
+   </instance>
    <instance class="ProcessContainer" id="Opt_Boost_finition_instance">
       <instance class="CurvesTransformation" version="256" enabled="true">
          <table id="R" rows="2">
@@ -1920,15 +2064,16 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <icon id="E19_Masque_L" instance="E19_Masque_L_instance" xpos="1003" ypos="64" workspace="Workspace01"/>
    <icon id="E20_C_Finition" instance="E20_C_Finition_instance" xpos="1003" ypos="94" workspace="Workspace01"/>
    <icon id="P6_options" instance="P6_options_instance" xpos="1003" ypos="140" workspace="Workspace01"/>
-   <icon id="Opt_Boost_finition" instance="Opt_Boost_finition_instance" xpos="1003" ypos="174" workspace="Workspace01"/>
-   <icon id="Opt_HDRMT_50" instance="Opt_HDRMT_50_instance" xpos="1003" ypos="204" workspace="Workspace01"/>
-   <icon id="Opt_NXT_final" instance="Opt_NXT_final_instance" xpos="1003" ypos="234" workspace="Workspace01"/>
-   <icon id="P7_Etoiles" instance="P7_Etoiles_instance" xpos="1172" ypos="20" workspace="Workspace01"/>
-   <icon id="E21_Etoiles_HOO" instance="E21_Etoiles_HOO_instance" xpos="1172" ypos="64" workspace="Workspace01"/>
-   <icon id="E22_Star_Stretch" instance="E22_Star_Stretch_instance" xpos="1172" ypos="94" workspace="Workspace01"/>
-   <icon id="E23_Etoiles_reduites" instance="E23_Etoiles_reduites_instance" xpos="1172" ypos="124" workspace="Workspace01"/>
-   <icon id="P7_options" instance="P7_options_instance" xpos="1172" ypos="170" workspace="Workspace01"/>
-   <icon id="Opt_MT_etoiles" instance="Opt_MT_etoiles_instance" xpos="1172" ypos="204" workspace="Workspace01"/>
-   <icon id="Opt_Halo_B_Gon" instance="Opt_Halo_B_Gon_instance" xpos="1172" ypos="234" workspace="Workspace01"/>
-   <icon id="Opt_Etoiles_screen" instance="Opt_Etoiles_screen_instance" xpos="1172" ypos="264" workspace="Workspace01"/>
+   <icon id="Opt_Boost_finition_light" instance="Opt_Boost_finition_light_instance" xpos="1003" ypos="174" workspace="Workspace01"/>
+   <icon id="Opt_Boost_finition" instance="Opt_Boost_finition_instance" xpos="1003" ypos="204" workspace="Workspace01"/>
+   <icon id="Opt_HDRMT_50" instance="Opt_HDRMT_50_instance" xpos="1003" ypos="234" workspace="Workspace01"/>
+   <icon id="Opt_NXT_final" instance="Opt_NXT_final_instance" xpos="1003" ypos="264" workspace="Workspace01"/>
+   <icon id="P7_Etoiles" instance="P7_Etoiles_instance" xpos="1199" ypos="20" workspace="Workspace01"/>
+   <icon id="E21_Etoiles_HOO" instance="E21_Etoiles_HOO_instance" xpos="1199" ypos="64" workspace="Workspace01"/>
+   <icon id="E22_Star_Stretch" instance="E22_Star_Stretch_instance" xpos="1199" ypos="94" workspace="Workspace01"/>
+   <icon id="E23_Etoiles_reduites" instance="E23_Etoiles_reduites_instance" xpos="1199" ypos="124" workspace="Workspace01"/>
+   <icon id="P7_options" instance="P7_options_instance" xpos="1199" ypos="170" workspace="Workspace01"/>
+   <icon id="Opt_MT_etoiles" instance="Opt_MT_etoiles_instance" xpos="1199" ypos="204" workspace="Workspace01"/>
+   <icon id="Opt_Halo_B_Gon" instance="Opt_Halo_B_Gon_instance" xpos="1199" ypos="234" workspace="Workspace01"/>
+   <icon id="Opt_Etoiles_screen" instance="Opt_Etoiles_screen_instance" xpos="1199" ypos="264" workspace="Workspace01"/>
 </xpsm>

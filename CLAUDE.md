@@ -30,6 +30,7 @@ Utilisateur : astrophotographe, PixInsight 1.9.5 sur macOS (Apple Silicon), CDK1
 
 ### Conventions
 - Pas de vues intermédiaires (demande de l'utilisateur) : Etoiles_screen et Etoiles_reduites modifient l'image sans étoiles directement ($T), plus de Final / Final_reduit ; H_dans_L sur L directement (plus de L_H). Etoiles_reduites = screen + Blanshan Transfer V2 en une formule (W = ~((~$T)*(~ÉTOILES)), Img1 = $T), choix « et » du préparateur : screen par défaut en LRGB/LHaRGB, reduit par défaut en narrowband. Script Fermer_vues.js (clodoweg, paramètre views) ferme HDR_avant (HDRMT_50) et L_stars (C_L_lineaire, C_L_etoiles_bruit, C_L_rapide, icône Fermer_L_stars).
+- Options de finition : Boost_finition_light (courbe 0,24/0,76, S 0,57, LHE 80 px 0,12) et Boost_finition (0,23/0,77, S 0,60, LHE 0,20) ; à 1:1 sur NGC 1532 le Boost normal donnait bras cyan et aspect peint.
 - Option HDRMT_50 (remplace Opt_HDRMT) : ProcessContainer [PixelMath copie $T -> HDR_avant, HDRMT, PixelMath a*$T + (1-a)*HDR_avant, a = 0,5] ; fermer HDR_avant après.
 - Pas de DynamicCrop dans aucune icône ni workflow (choix de l'utilisateur, 1er octobre 2026).
 - Sorties de contrôle désactivées (choix de l'utilisateur) : GradientCorrection generateGradientModel=false, SPCC generateGraphs=false (MGC Show gradient model reste coché).

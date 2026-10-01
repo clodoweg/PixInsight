@@ -251,14 +251,14 @@ def hdrmt_50():
         parts.append(x.replace('id="%s_instance"' % name, 'id="__ID___instance"', 1))
     return 'HDRMT_50', container('HDRMT_50', parts)
 
-def boost_container():
+def boost_container(name='Boost_finition', k=((0, 0), (0.25, 0.23), (0.75, 0.77), (1, 1)), sat=0.60, amount='0.200'):
     """Option de finition en un glisser : petite courbe (contraste + saturation) puis LHE à rayon moyen. Rejouable."""
     parts = []
-    for item in (curves('Courbes_boost', k=((0, 0), (0.25, 0.23), (0.75, 0.77), (1, 1)), sat=0.60),
-                 M.instance('LocalHistogramEqualization', 'LHE_moyen', {'radius': 80, 'histogramBins': 'Bit10', 'slopeLimit': '2.0', 'amount': '0.200', 'circularKernel': True})):
-        name, x = item
-        parts.append(x.replace('id="%s_instance"' % name, 'id="__ID___instance"', 1))
-    return 'Boost_finition', container('Boost_finition', parts)
+    for item in (curves('Courbes_boost', k=k, sat=sat),
+                 M.instance('LocalHistogramEqualization', 'LHE_moyen', {'radius': 80, 'histogramBins': 'Bit10', 'slopeLimit': '2.0', 'amount': amount, 'circularKernel': True})):
+        n, x = item
+        parts.append(x.replace('id="%s_instance"' % n, 'id="__ID___instance"', 1))
+    return name, container(name, parts)
 
 def solver_container():
     """ImageSolver en un glisser : conteneur [date par défaut si absente, ImageSolver avec les réglages du matériel]."""
@@ -496,6 +496,7 @@ def finish_block(extra=None):
     b = [(pm('Masque_L', 's = 0.14;\nmax(0, (0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2] - s) / (1 - s))', symbols='s', new_image=True, new_id='masque_L', space='Gray'), D_MASK),
          (curves('Courbes'), D_CURVES), (M.instance('LocalHistogramEqualization', 'LHE', {'radius': 150, 'histogramBins': 'Bit12', 'slopeLimit': '2.0', 'amount': '0.300', 'circularKernel': True}), D_LHE),
          (M.instance('LocalHistogramEqualization', 'LHE_fin', {'radius': 40, 'histogramBins': 'Bit10', 'slopeLimit': '2.0', 'amount': '0.250', 'circularKernel': True}), D_LHE_FIN),
+         (boost_container('Boost_finition_light', k=((0, 0), (0.25, 0.24), (0.75, 0.76), (1, 1)), sat=0.57, amount='0.120'), ''),
          (boost_container(), ''),
          (hdrmt_50(), '')]
     if extra:
@@ -865,7 +866,7 @@ def write_rapide(filename, prefix, title, steps, main_spec, opt_spec):
 def rapide_common_opts(steps):
     return [(1, *pick(steps, 'LinearPatternSubtraction')),
             (2, *pick(steps, 'GradientCorrection')),
-            (6, *pick(steps, 'Boost_finition')), (6, *pick(steps, 'HDRMT_50')), (6, *pick(steps, 'NXT_final')),
+            (6, *pick(steps, 'Boost_finition_light')), (6, *pick(steps, 'Boost_finition')), (6, *pick(steps, 'HDRMT_50')), (6, *pick(steps, 'NXT_final')),
             (7, *pick(steps, 'Halo_B_Gon')), (7, *pick(steps, 'MT_etoiles')), (7, *pick(steps, 'Etoiles_reduites'))]
 
 def rapide_end(steps):
