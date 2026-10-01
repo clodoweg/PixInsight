@@ -38,8 +38,10 @@ SCRIPTS = {
     'WBPP': ('$PXI_SRCDIR/scripts/BatchPreprocessing/BPP-Main.js', '', [],
              L_GLOBAL + "WBPP 3.x lit ses réglages dans sa propre mémoire (dernière session) et sur la ligne de commande, pas dans les paramètres d'une icône : "
              "cette icône ouvre WBPP, les réglages ci-dessous se font dans son dialogue. Chemin relevé pour WBPP 3.1.0 sous PixInsight 1.9.5 (psf-guard). "),
-    'ImageSolver': ('$PXI_SRCDIR/scripts/AdP/ImageSolver.js', '', [],
-             L_GLOBAL + "Aucun paramètre préréglé : le code de la version 1.9.5 n'est pas public, et une icône d'une autre version imposerait ses coordonnées. "),
+    'ImageSolver': ('$PXI_SRCDIR/scripts/ImageSolver/ImageSolver.js', '',
+             [('metadata_focal', '2939'), ('metadata_useFocal', 'true'), ('metadata_xpixsz', '3.76'), ('metadata_resolution', '0.00007330116739335556'), ('metadata_referenceSystem', 'ICRS'), ('metadata_topocentric', 'false'), ('solver_version', '6.4.2'), ('solver_magnitude', '12'), ('solver_autoMagnitude', 'true'), ('solver_databasePath', 'undefined'), ('solver_generateErrorImg', 'false'), ('solver_structureLayers', '5'), ('solver_minStructureSize', '0'), ('solver_hotPixelFilterRadius', '1'), ('solver_noiseReductionFilterRadius', '0'), ('solver_sensitivity', '0.5'), ('solver_peakResponse', '0.5'), ('solver_brightThreshold', '3'), ('solver_maxStarDistortion', '0.6'), ('solver_autoPSF', 'false'), ('solver_catalogMode', '2'), ('solver_vizierServer', 'https://vizier.cds.unistra.fr/'), ('solver_showStars', 'false'), ('solver_showStarMatches', 'false'), ('solver_showSimplifiedSurfaces', 'false'), ('solver_showDistortion', 'false'), ('solver_generateDistortModel', 'false'), ('solver_catalog', 'PPMXL'), ('solver_distortionCorrection', 'true'), ('solver_rbfType', '101'), ('solver_maxSplinePoints', '4000'), ('solver_splineOrder', '2'), ('solver_splineSmoothing', '0.005'), ('solver_enableSimplifier', 'true'), ('solver_simplifierRejectFraction', '0.1'), ('solver_outlierDetectionRadius', '160'), ('solver_outlierDetectionMinThreshold', '4'), ('solver_outlierDetectionSigma', '5'), ('solver_useActive', 'true'), ('solver_outSuffix', '_ast'), ('solver_projection', '0'), ('solver_projectionOriginMode', '0'), ('solver_restrictToHQStars', 'false'), ('solver_intersectionMode', '1'), ('solver_tryApparentCoordinates', 'true'), ('solver_tryExhaustiveInitialAlignment', 'false')],
+             L_DRAG),
+    'ImageSolver_Date': ('$PXI_SRCDIR/scripts/clodoweg/ImageSolver_Date.js', '', [('defaultDate', '2020-01-01T00:00:00')], L_DRAG),
     'LinearPatternSubtraction': ('$PXI_SRCDIR/scripts/clodoweg/LPS_UnClic.js', '',
              [('correctColumns', 'false'), ('correctEntireImage', 'true'), ('defectTableFilePath', ''), ('layersToRemove', '9'),
               ('rejectionLimit', '3'), ('globalRejection', 'true'), ('globalRejectionLimit', '5'), ('autoBackground', 'true'),
@@ -206,6 +208,15 @@ def nested(xml):
 def container(name, xmls):
     return '   <instance class="ProcessContainer" id="%s_instance">\n%s\n   </instance>' % (name, '\n'.join(nested(x) for x in xmls))
 
+
+def solver_container():
+    """ImageSolver en un glisser : conteneur [date par défaut si absente, ImageSolver avec les réglages du matériel]."""
+    parts = []
+    for key in ('ImageSolver_Date', 'ImageSolver'):
+        name, x = script(key, '')
+        parts.append(x.replace('id="%s_instance"' % name, 'id="__ID___instance"', 1))
+    return 'ImageSolver', container('ImageSolver', parts)
+
 def label(r):
     g, vals = r.split(':')
     names = dict(L.CHOICES[g][1])
@@ -219,7 +230,7 @@ def write(filename, prefix, title, steps):
         ph = max(L.PHASE[base], prev)
         prev = ph
         item = renamed(item, '__ID__')
-        if 'class="NoOperation"' not in item[1] and '<description>' not in item[1]:
+        if 'class="NoOperation"' not in item[1] and 'class="ProcessContainer"' not in item[1] and '<description>' not in item[1]:
             item = described(item, desc)
         xml = shorten(item[1], prefix, base)
         r = L.role(prefix, base)
@@ -259,7 +270,7 @@ def write(filename, prefix, title, steps):
                 break
         DATA['inst'][key] = x
         d = re.search(r'<description>(.*?)</description>', x, re.S)
-        wf['steps'].append({'b': b, 'p': ph, 'r': r, 'k': key, 'w': L.WHEN.get(b, ''), 'd': html_unescape(d.group(1)) if d else ''})
+        wf['steps'].append({'b': b, 'p': ph, 'r': r, 'k': key, 'w': L.WHEN.get(b, ''), 'd': html_unescape(d.group(1)) if d else SD.text(prefix, b, True if b in SCRIPTS else None)})
     DATA['wf'].append(wf)
     return len(main), len(opts), len(cmain)
 
@@ -482,7 +493,7 @@ SCREEN_LRGB = (" LRGB — CONTRÔLE après recombinaison, à 100 % : étoiles de
                "pas d'anneau sombre ni de halo coloré autour des étoiles ; étoiles ni grossies ni trop présentes (sinon réduction d'étoiles ou étirement plus doux) ; "
                "fond toujours R = G = B (fond éclairci : fond de l'image d'étoiles pas à 0).")
 
-lrgb = pre_block() + [rgb_comb(), (note('ImageSolver', T_SOLVER), '')] + gradient_block('rgb') + [
+lrgb = pre_block() + [rgb_comb(), (solver_container(), '')] + gradient_block('rgb') + [
     (M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), D_BXT_CO + BXT_C),
     (note('Find_Background', T_FINDBG), ''),
     spcc(),
@@ -501,7 +512,7 @@ lrgb = pre_block() + [rgb_comb(), (note('ImageSolver', T_SOLVER), '')] + gradien
 ] + finish_block() + stars_end(screen_extra=SCREEN_LRGB)
 
 # ---------------------------------------------------------------- LHaRGB
-lhargb = pre_block() + [rgb_comb(), (note('ImageSolver', T_SOLVER), '')] + gradient_block('lha') + [
+lhargb = pre_block() + [rgb_comb(), (solver_container(), '')] + gradient_block('lha') + [
     (M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), D_BXT_CO + BXT_C),
     (note('Find_Background', T_FINDBG), ''),
     spcc(),
@@ -543,7 +554,7 @@ lhargb = pre_block() + [rgb_comb(), (note('ImageSolver', T_SOLVER), '')] + gradi
 def nb_masters(chans):
     names = ' et '.join(chans)
     return [(note('Masters_' + '_'.join(chans), "Masters %s : même recadrage (icône DynamicCrop) et retrait du gradient sur CHAQUE master séparément (icônes suivantes). O est le plus sensible à la Lune : contrôle bien son modèle. "
-                  "Nomme les vues exactement 'S', 'H' et 'O' : les formules en dépendent." % names), ''), (note('ImageSolver', T_SOLVER), '')] + gradient_block('sho' if 'S' in chans else 'hoo') + [
+                  "Nomme les vues exactement 'S', 'H' et 'O' : les formules en dépendent." % names), ''), (solver_container(), '')] + gradient_block('sho' if 'S' in chans else 'hoo') + [
         (M.instance('LinearFit', 'LinearFit_ref_H', {'rejectLow': '0.000000', 'rejectHigh': '0.920000'}, {'referenceViewId': 'H'}),
          "Option — LinearFit avec H comme référence : applique sur O (et S). Rapproche fonds et niveaux, ce qu'exige Foraxx (theAstroShed, Galactic Hunter). Référence : vue nommée 'H'.")]
 
@@ -602,7 +613,7 @@ def rgb_stars_block():
     return [
         (note('Etoiles_RGB', "ÉTOILES RGB — masters R, G, B : même recadrage, puis les icônes suivantes dans l'ordre (combinaison, gradient via l'icône GradientCorrection ou les notes, BXT Correct Only, SPCC, BXT, SXT)." + STARS_RGBSHO), ''),
         rgb_comb(),
-        (note('ImageSolver', T_SOLVER), ''),
+        (solver_container(), ''),
         (M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), D_BXT_CO + BXT_C),
         (note('Find_Background', T_FINDBG), ''),
         spcc(),

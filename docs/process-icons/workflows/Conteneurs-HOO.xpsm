@@ -256,21 +256,209 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <instance class="NoOperation" version="256" id="P2_Gradient_instance">
       <description>PHASE 2 — Gradient : image linéaire : retrait du gradient. Colonne de repère, sans effet.</description>
    </instance>
-   <instance class="Script" version="256" id="E03_ImageSolver_instance">
-      <description>LANCEMENT : double-clic sur l'icône, puis Apply Global.
-
-PRÉRÉGLÉ : rien (focale et pixel à saisir une fois).
-
-À RÉGLER : nom de l'objet ; focale 2 939 mm ; pixel 3,76 µm ; Gaia DR3 ; applique sur CHAQUE image à calibrer, juste avant SPFC ou SPCC : image RGB combinée, master L, masters H, O et S ; le recadrage (DynamicCrop) et la combinaison effacent la solution de WBPP.
-
-SI :
-- échec -&gt; vérifie focale et pixel, coche Distortion correction
-
-Détails : page docs/pixinsight-workflow.html.</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/AdP/ImageSolver.js</parameter>
-      <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="0"/>
-      <parameter id="information"></parameter>
+   <instance class="ProcessContainer" id="E03_ImageSolver_instance">
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/ImageSolver_Date.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="1">
+            <tr>
+               <td id="id">defaultDate</td>
+               <td id="value">2020-01-01T00:00:00</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/ImageSolver/ImageSolver.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="46">
+            <tr>
+               <td id="id">metadata_focal</td>
+               <td id="value">2939</td>
+            </tr>
+            <tr>
+               <td id="id">metadata_useFocal</td>
+               <td id="value">true</td>
+            </tr>
+            <tr>
+               <td id="id">metadata_xpixsz</td>
+               <td id="value">3.76</td>
+            </tr>
+            <tr>
+               <td id="id">metadata_resolution</td>
+               <td id="value">0.00007330116739335556</td>
+            </tr>
+            <tr>
+               <td id="id">metadata_referenceSystem</td>
+               <td id="value">ICRS</td>
+            </tr>
+            <tr>
+               <td id="id">metadata_topocentric</td>
+               <td id="value">false</td>
+            </tr>
+            <tr>
+               <td id="id">solver_version</td>
+               <td id="value">6.4.2</td>
+            </tr>
+            <tr>
+               <td id="id">solver_magnitude</td>
+               <td id="value">12</td>
+            </tr>
+            <tr>
+               <td id="id">solver_autoMagnitude</td>
+               <td id="value">true</td>
+            </tr>
+            <tr>
+               <td id="id">solver_databasePath</td>
+               <td id="value">undefined</td>
+            </tr>
+            <tr>
+               <td id="id">solver_generateErrorImg</td>
+               <td id="value">false</td>
+            </tr>
+            <tr>
+               <td id="id">solver_structureLayers</td>
+               <td id="value">5</td>
+            </tr>
+            <tr>
+               <td id="id">solver_minStructureSize</td>
+               <td id="value">0</td>
+            </tr>
+            <tr>
+               <td id="id">solver_hotPixelFilterRadius</td>
+               <td id="value">1</td>
+            </tr>
+            <tr>
+               <td id="id">solver_noiseReductionFilterRadius</td>
+               <td id="value">0</td>
+            </tr>
+            <tr>
+               <td id="id">solver_sensitivity</td>
+               <td id="value">0.5</td>
+            </tr>
+            <tr>
+               <td id="id">solver_peakResponse</td>
+               <td id="value">0.5</td>
+            </tr>
+            <tr>
+               <td id="id">solver_brightThreshold</td>
+               <td id="value">3</td>
+            </tr>
+            <tr>
+               <td id="id">solver_maxStarDistortion</td>
+               <td id="value">0.6</td>
+            </tr>
+            <tr>
+               <td id="id">solver_autoPSF</td>
+               <td id="value">false</td>
+            </tr>
+            <tr>
+               <td id="id">solver_catalogMode</td>
+               <td id="value">2</td>
+            </tr>
+            <tr>
+               <td id="id">solver_vizierServer</td>
+               <td id="value">https://vizier.cds.unistra.fr/</td>
+            </tr>
+            <tr>
+               <td id="id">solver_showStars</td>
+               <td id="value">false</td>
+            </tr>
+            <tr>
+               <td id="id">solver_showStarMatches</td>
+               <td id="value">false</td>
+            </tr>
+            <tr>
+               <td id="id">solver_showSimplifiedSurfaces</td>
+               <td id="value">false</td>
+            </tr>
+            <tr>
+               <td id="id">solver_showDistortion</td>
+               <td id="value">false</td>
+            </tr>
+            <tr>
+               <td id="id">solver_generateDistortModel</td>
+               <td id="value">false</td>
+            </tr>
+            <tr>
+               <td id="id">solver_catalog</td>
+               <td id="value">PPMXL</td>
+            </tr>
+            <tr>
+               <td id="id">solver_distortionCorrection</td>
+               <td id="value">true</td>
+            </tr>
+            <tr>
+               <td id="id">solver_rbfType</td>
+               <td id="value">101</td>
+            </tr>
+            <tr>
+               <td id="id">solver_maxSplinePoints</td>
+               <td id="value">4000</td>
+            </tr>
+            <tr>
+               <td id="id">solver_splineOrder</td>
+               <td id="value">2</td>
+            </tr>
+            <tr>
+               <td id="id">solver_splineSmoothing</td>
+               <td id="value">0.005</td>
+            </tr>
+            <tr>
+               <td id="id">solver_enableSimplifier</td>
+               <td id="value">true</td>
+            </tr>
+            <tr>
+               <td id="id">solver_simplifierRejectFraction</td>
+               <td id="value">0.1</td>
+            </tr>
+            <tr>
+               <td id="id">solver_outlierDetectionRadius</td>
+               <td id="value">160</td>
+            </tr>
+            <tr>
+               <td id="id">solver_outlierDetectionMinThreshold</td>
+               <td id="value">4</td>
+            </tr>
+            <tr>
+               <td id="id">solver_outlierDetectionSigma</td>
+               <td id="value">5</td>
+            </tr>
+            <tr>
+               <td id="id">solver_useActive</td>
+               <td id="value">true</td>
+            </tr>
+            <tr>
+               <td id="id">solver_outSuffix</td>
+               <td id="value">_ast</td>
+            </tr>
+            <tr>
+               <td id="id">solver_projection</td>
+               <td id="value">0</td>
+            </tr>
+            <tr>
+               <td id="id">solver_projectionOriginMode</td>
+               <td id="value">0</td>
+            </tr>
+            <tr>
+               <td id="id">solver_restrictToHQStars</td>
+               <td id="value">false</td>
+            </tr>
+            <tr>
+               <td id="id">solver_intersectionMode</td>
+               <td id="value">1</td>
+            </tr>
+            <tr>
+               <td id="id">solver_tryApparentCoordinates</td>
+               <td id="value">true</td>
+            </tr>
+            <tr>
+               <td id="id">solver_tryExhaustiveInitialAlignment</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
    </instance>
    <instance class="SpectrophotometricFluxCalibration" version="1" id="E04_SPFC_H_instance">
       <description>PRÉRÉGLÉ : QE IMX455, Narrowband 656,3 nm, 3 nm.

@@ -30,6 +30,7 @@ Utilisateur : astrophotographe, PixInsight 1.9.5 sur macOS (Apple Silicon), CDK1
 
 ### Conventions
 - Vues narrowband nommées **H, O, S** partout (formules, icônes, texte) ; exceptions : valeurs de filtre MARS `Ha`/`OIII` dans MGC, libellés d'interface (Lightness = Ha, O3/S2 boost, Ha Stars…), raies physiques Hα/Hβ, noms HII, HaRGB, LHaRGB.
+- Scripts écrits pour la fiche : `docs/process-icons/scripts/` (`LPS_UnClic.js`, `ImageSolver_Date.js`), installés par l'utilisateur dans `src/scripts/clodoweg/` de PixInsight (icônes en `$PXI_SRCDIR/scripts/clodoweg/…`, Mac et PC). ImageSolver = conteneur [ImageSolver_Date, ImageSolver 6.4.2 `$PXI_SRCDIR/scripts/ImageSolver/ImageSolver.js` avec focale/pixel du matériel].
 - Icônes de scripts = vraies instances Script (chemin `$PXI_SRCDIR/scripts/...`, MD5 de l'archive SetiAstro 19/09/2026 ; MD5 vide pour les scripts livrés avec PixInsight).
 - ProcessContainer : format recopié des icônes de theAstroShed (instances imbriquées sans id, `enabled="true"`, pas de description). **Non testé dans PixInsight** par l'utilisateur à ce jour.
 - Commits sur `main`, en français, avec les lignes d'attribution demandées par la session.
