@@ -1016,12 +1016,17 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="information"></parameter>
    </instance>
    <instance class="PixelMath" version="256" id="E26_Etoiles_screen_instance">
-      <description>PRÉRÉGLÉ : ~((~starless) * (~stars)), image 'Final'.
+      <description>PRÉRÉGLÉ : ~((~$T) * (~HOO_Stars)), crée l'image 'Final'.
 
-À RÉGLER : nomme l'image sans étoiles 'starless' et les étoiles 'stars', toutes deux étirées.
+À RÉGLER : glisse sur l'image HOO sans étoiles finale ; étoiles de SXT sur HOO (HOO_Stars), étirées.
+
+SI :
+- étoiles RGB -&gt; RGB_Stars
+- NB to RGB -&gt; NBtoRGB_stars
+- synthétiques -&gt; Stars_HOO
 
 Détails : page docs/pixinsight-workflow.html.</description>
-      <parameter id="expression">~((~starless) * (~stars))</parameter>
+      <parameter id="expression">~((~$T) * (~HOO_Stars))</parameter>
       <parameter id="expression1"></parameter>
       <parameter id="expression2"></parameter>
       <parameter id="expression3"></parameter>
@@ -1050,17 +1055,17 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <table id="outputData" rows="0"/>
    </instance>
    <instance class="PixelMath" version="256" id="E27_Blanshan_Transfer_instance">
-      <description>PRÉRÉGLÉ : S = 0,15.
+      <description>PRÉRÉGLÉ : S = 0,15 ; lit 'Final', crée 'Final_reduit'.
 
-À RÉGLER : vue sans étoiles nommée 'starless' ; glisse sur l'image avec étoiles.
+À RÉGLER : glisse sur l'image SANS étoiles (comme Etoiles_screen).
 
 SI :
 - étoiles encore grosses -&gt; S plus bas
 
 Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="expression">S=0.15;
-Img1=starless;
-f1= ~((~mtf(~S,$T)/~mtf(~S,Img1))*~Img1);
+Img1=$T;
+f1= ~((~mtf(~S,Final)/~mtf(~S,Img1))*~Img1);
 max(Img1,f1)</parameter>
       <parameter id="expression1"></parameter>
       <parameter id="expression2"></parameter>
@@ -1079,9 +1084,9 @@ max(Img1,f1)</parameter>
       <parameter id="truncate" value="true"/>
       <parameter id="truncateLower" value="0"/>
       <parameter id="truncateUpper" value="1"/>
-      <parameter id="createNewImage" value="false"/>
+      <parameter id="createNewImage" value="true"/>
       <parameter id="showNewImage" value="true"/>
-      <parameter id="newImageId"></parameter>
+      <parameter id="newImageId">Final_reduit</parameter>
       <parameter id="newImageWidth" value="0"/>
       <parameter id="newImageHeight" value="0"/>
       <parameter id="newImageAlpha" value="false"/>
