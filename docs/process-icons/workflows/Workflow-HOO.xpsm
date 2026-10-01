@@ -457,7 +457,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="simplificationDegree" value="1"/>
       <parameter id="simplificationScale" value="1024"/>
       <parameter id="generateSimpleModel" value="false"/>
-      <parameter id="generateGradientModel" value="true"/>
+      <parameter id="generateGradientModel" value="false"/>
       <parameter id="generateProtectionMasks" value="false"/>
       <parameter id="gridSamplingDelta" value="16"/>
    </instance>

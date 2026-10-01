@@ -457,7 +457,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="simplificationDegree" value="1"/>
       <parameter id="simplificationScale" value="1024"/>
       <parameter id="generateSimpleModel" value="false"/>
-      <parameter id="generateGradientModel" value="true"/>
+      <parameter id="generateGradientModel" value="false"/>
       <parameter id="generateProtectionMasks" value="false"/>
       <parameter id="gridSamplingDelta" value="16"/>
    </instance>
@@ -1335,7 +1335,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="backgroundROIY0" value="0"/>
       <parameter id="backgroundROIX1" value="0"/>
       <parameter id="backgroundROIY1" value="0"/>
-      <parameter id="generateGraphs" value="true"/>
+      <parameter id="generateGraphs" value="false"/>
       <parameter id="generateStarMaps" value="false"/>
       <parameter id="generateTextFiles" value="false"/>
       <parameter id="outputDirectory"></parameter>

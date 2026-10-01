@@ -325,13 +325,13 @@ T_MGC = ("ÉTAPE MANUELLE — Gradient par MARS : SpectrophotometricFluxCalibrat
          "SPFC (Process › ColorCalibration) : QE curve = ton capteur, sinon Ideal QE curve ; image mono : Gray filter = ton filtre (Narrowband mode + longueur d'onde et bande passante pour H/O/S) ; image couleur : Red/Green/Blue filter = tes filtres ou les filtres Bayer du capteur ; Catalog Gaia DR3/SP ; Automatic limit magnitude coché ; le reste par défaut. SPFC ne modifie pas les pixels (métadonnées de flux pour MGC) ; utilise ensuite les mêmes filtres dans SPCC. "
          "MGC : Use MARS database coché, filtres MARS Gray = L, Red = R, Green = G, Blue = B ; Gradient scale 1024 au départ (512 ou 256 si un gradient reste dans les coins), Structure separation 3 (1-2 pour les bords), Model smoothness 1,0 (3-5 si le modèle ondule), Scale factors 1,0, Show gradient model coché. "
          "Narrowband : MARS DR2 (juin 2026) couvre H et O jusqu'à +75° de déclinaison (SPFC en Narrowband mode, puis les icônes MGC_MARS_H et MGC_MARS_O, filtre MARS Gray = Ha ou OIII) ; S absent de DR2 : icône GradientCorrection ou DBE.")
-T_GC = ("ALTERNATIVE — GradientCorrection, valeurs par défaut. Structure protection activée ; Generate gradient model coché pour contrôler le modèle. "
+T_GC = ("ALTERNATIVE — GradientCorrection, valeurs par défaut. Structure protection activée ; Generate gradient model décoché (coche-le pour voir le modèle si le résultat est douteux). "
         "Si des zones claires apparaissent autour des structures sombres : monte Low threshold. Si le modèle a des bords nets : désactive la protection, baisse Scale et Smoothness, puis réactive.")
 T_DBE = ("ALTERNATIVE — DynamicBackgroundExtraction. Icône-note : les points dépendent de l'image. Samples per row 10-20 ; Sample radius 10-50 ; Tolerance 0,5 (1,0-1,5 si points rejetés) ; "
          "Shadows relaxation 3 ; Smoothing 0,25 (0,5-1,0 champs nébuleux) ; Correction Subtraction (pollution lumineuse), Division seulement pour le vignettage ; Normalize, Discard model et Replace target cochés. "
          "Retire les points posés sur la nébuleuse. D'un filtre à l'autre, garde les points et ajuste Tolerance.")
 T_SPCC = ("SPCC — Average Spiral Galaxy, neutralisation du fond activée. ATTENTION : cette icône contient les filtres Astrodon E-series et le capteur Sony IMX571 de l'auteur du modèle : "
-          "remplace-les par TES filtres et TON capteur. Crée une preview sur du fond vide et choisis-la comme référence de fond. Coche Generate graphs pour contrôler. "
+          "remplace-les par TES filtres et TON capteur. Crée une preview sur du fond vide et choisis-la comme référence de fond. Generate graphs décoché (coche-le pour contrôler). "
           "Toujours en linéaire, après le gradient et BXT Correct Only, avant BXT complet.")
 T_STAT = ("ÉTAPE MANUELLE — Statistical Stretch (SetiAstro, script v2.3). Alternative à GHS. À chaque passe : point noir = médiane − Blackpoint Sigma × 1,4826 × MAD (jamais sous le minimum), "
           "puis fonction de transfert qui place la médiane sur Target Median. "
@@ -456,7 +456,7 @@ def gradient_block(kind='rgb'):
         b += [(M.mgc('MGC_MARS_H', gray='Ha'), D_MGC_NB % ('H', 'Ha', 'SPFC_H'))]
     if kind in ('sho', 'hoo'):
         b += [(M.mgc('MGC_MARS_O', gray='OIII'), D_MGC_NB % ('O', 'OIII', 'SPFC_O'))]
-    b += [(M.instance('GradientCorrection', 'GradientCorrection'), T_GC),
+    b += [(M.instance('GradientCorrection', 'GradientCorrection', {'generateGradientModel': False}), T_GC),
           (M.dbe('DBE'), D_DBE)]
     return b
 
@@ -520,6 +520,8 @@ def spcc_perso(name):
         t, k1 = re.subn(r'<parameter id="%sFilterTrCurve">[^<]*</parameter>' % ch, '<parameter id="%sFilterTrCurve">%s</parameter>' % (ch, cc), t)
         t, k2 = re.subn(r'<parameter id="%sFilterName">[^<]*</parameter>' % ch, '<parameter id="%sFilterName">%s</parameter>' % (ch, escape(cn)), t)
         assert k1 == 1 and k2 == 1
+    t, kg = re.subn(r'<parameter id="generateGraphs" value="true"/>', '<parameter id="generateGraphs" value="false"/>', t)
+    assert kg == 1
     qn, qc = M.CURVES['qe_imx455']
     t, k1 = re.subn(r'<parameter id="deviceQECurve">[^<]*</parameter>', '<parameter id="deviceQECurve">%s</parameter>' % qc, t)
     t, k2 = re.subn(r'<parameter id="deviceQECurveName">[^<]*</parameter>', '<parameter id="deviceQECurveName">%s</parameter>' % escape(qn), t)
@@ -527,7 +529,7 @@ def spcc_perso(name):
     return n, t
 
 T_SPCC = ("SPCC configuré pour ton matériel (" + MATERIEL + ") : White reference Average Spiral Galaxy ; QE curve Sony IMX411/455/461/533/571 ; filtres Antlia V Pro Series R, G, B "
-          "(courbes issues de ta base de filtres PixInsight) ; neutralisation du fond activée (limites -2,80 / +2,00) ; Generate graphs coché. "
+          "(courbes issues de ta base de filtres PixInsight) ; neutralisation du fond activée (limites -2,80 / +2,00) ; Generate graphs décoché (coche-le pour contrôler la calibration). "
           "FOND DE RÉFÉRENCE : l'icône n'a ni vue de référence ni Region of Interest, donc SPCC prend l'image entière ; les limites sont en écarts-types autour de la médiane et écartent étoiles et nébuleuse. "
           "Suffisant après le retrait du gradient sur une galaxie ou un champ avec du ciel libre. Champ rempli de nébuleuse : baisse la limite haute, ou lance Script › SetiAstro › Find Background (dépôt "
           "https://updates.setiastro.com/) qui crée automatiquement un aperçu nommé Background, puis coche Region of Interest et clique From Preview (ou crée toi-même une preview sur du fond vide). "
