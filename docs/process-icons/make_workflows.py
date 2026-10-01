@@ -269,7 +269,7 @@ T_WBPP = ("ÉTAPE MANUELLE — WBPP 3.1 (Script › Batch Processing › Weighte
           "(caméra couleur : drizzle CFA Scale 1, Drop shrink 1,0) ; Autocrop et Astrometric solution activés. Contrôle ensuite le journal et les cartes de réjection." + SRC)
 T_CROP = ("ÉTAPE MANUELLE — DynamicCrop. Icône-note : le cadre dépend de ton image. Trace le cadre sur un master en excluant les bords mal couverts, glisse le triangle du process sur l'espace de travail pour créer une icône, "
           "puis applique CETTE icône à tous les autres masters (ils sont alignés, le recadrage sera identique).")
-T_SOLVER = ("ÉTAPE MANUELLE — ImageSolver (Script › Image Analysis › ImageSolver). Icône-note : dépend de ta focale et de ta caméra. Inutile si WBPP a déjà résolu l'image. "
+T_SOLVER = ("ÉTAPE MANUELLE — ImageSolver (Script › Image Analysis › ImageSolver). Applique-le sur chaque image après recadrage et combinaison (elles effacent la solution), avant SPFC et SPCC. "
             "Réglages : Search coordinates avec le nom de l'objet ; focale et taille de pixel de ton setup ; catalogue Gaia DR3 local (XPSD) ; Distortion correction pour les grands champs.")
 T_MGC = ("ÉTAPE MANUELLE — Gradient par MARS : SpectrophotometricFluxCalibration (SPFC) puis MultiscaleGradientCorrection (MGC). Icône-note : SPFC dépend de ton capteur/filtres, MGC de l'emplacement de ta base MARS. "
          "Prérequis : image linéaire, solution astrométrique, bases Gaia DR3/SP et MARS installées (clé à molette de MGC › Add › fichier .xmars). "
