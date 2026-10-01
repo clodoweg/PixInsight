@@ -6,11 +6,11 @@ PAGE = ' Détails : page docs/pixinsight-workflow.html.'
 # nom de base -> (préréglé, à régler, [si ... -> ...])
 S = {
     'LinearPatternSubtraction': ("script LPS_UnClic (moteur de Vicent Peris, sans dialogue) : lignes, Correct the entire image, Layers to remove 9, Rejection limit 3, Global rejection 5, zone de fond choisie automatiquement (la plus sombre), fenêtres de travail fermées",
-             "une seule fois par ordinateur (Mac ou PC) : crée le dossier FichePixInsight dans le dossier scripts de PixInsight (celui qui contient PatternCorrection) et copies-y LPS_UnClic.js ; ensuite glisse l'icône sur chaque master linéaire, avant le recadrage (la correction se fait dans l'image)",
+             "une seule fois par ordinateur (Mac ou PC) : crée le dossier clodoweg dans le dossier scripts de PixInsight (celui qui contient PatternCorrection) et copies-y LPS_UnClic.js ; ensuite glisse l'icône sur chaque master linéaire, avant le recadrage (la correction se fait dans l'image)",
              ["corriger des colonnes -> correctColumns = true dans l'icône",
               "tous les masters ouverts d'un coup -> allOpenImages = true, puis double-clic et Apply Global",
               "artefacts -> Ctrl+Z : le script est conçu pour les brutes, avant alignement",
-              "script introuvable -> vérifie le dossier scripts/FichePixInsight (à recopier après une réinstallation de PixInsight) ; version avec dialogue : menu Script › Pattern Correction › LinearPatternSubtraction"]),
+              "script introuvable -> vérifie le dossier scripts/clodoweg (à recopier après une réinstallation de PixInsight) ; version avec dialogue : menu Script › Pattern Correction › LinearPatternSubtraction"]),
     'WBPP': ("rien (WBPP garde ses propres réglages)",
              "Maximum quality ; CosmeticCorrection = icône CC_auto ; PSF Signal Weight ; Local normalization activée ; Rejection Auto ; Large-scale rejection High ; pas de drizzle (sauf FWHM < 2 px)",
              ["un groupe de lights sans dark ou flat (onglet Calibration) -> corrige avant Run", "plusieurs nuits -> Grouping keywords = SESSION"]),
