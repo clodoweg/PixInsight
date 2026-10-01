@@ -776,7 +776,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <instance class="GeneralizedHyperbolicStretch" version="256" id="E18_GHS_1_premier_instance">
       <description>PRÉRÉGLÉ : b = 10, Stretch factor 0 (aucun effet tant que tu ne le montes pas).
 
-À RÉGLER : clique le fond ou le signal faible et Send to SP ; Stretch factor jusqu'au pic vers 0,20–0,25 (fond lu 0,001 -&gt; 6 ; 0,002 -&gt; 5 ; 0,005 -&gt; 4 ; 0,01 -&gt; 3).
+À RÉGLER : clique le fond ou le signal faible et Send to SP ; Stretch factor jusqu'au pic à 0,25 (fond lu 0,001 -&gt; 6,5 ; 0,002 -&gt; 5,5 ; 0,005 -&gt; 4,5 ; 0,01 -&gt; 3,5).
 
 SI :
 - fond bruité qui ressort -&gt; SP trop bas, remonte-le
@@ -798,9 +798,9 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="useRGBWorkingSpace" value="false"/>
    </instance>
    <instance class="GeneralizedHyperbolicStretch" version="256" id="E19_GHS_2_contraste_instance">
-      <description>PRÉRÉGLÉ : b = 4, HP 0,9, Stretch factor 1, SP 0,25.
+      <description>PRÉRÉGLÉ : b = 4, HP 0,9, Stretch factor 1, SP 0,35.
 
-À RÉGLER : SP = valeur de ta zone plate (souvent 0,25–0,40) ; Stretch factor 1 à 2.
+À RÉGLER : SP = valeur de ta zone plate, au-dessus du fond (souvent 0,30–0,45 ; jamais 0,25 = le fond) ; Stretch factor 1 à 2.
 
 SI :
 - cœur brillant qui sature -&gt; baisse HP vers sa valeur
@@ -813,7 +813,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="inverse" value="false"/>
       <parameter id="stretchFactor" value="1.000"/>
       <parameter id="localIntensity" value="4.000"/>
-      <parameter id="symmetryPoint" value="0.250000"/>
+      <parameter id="symmetryPoint" value="0.350000"/>
       <parameter id="highlightProtection" value="0.900000"/>
       <parameter id="shadowProtection" value="0.000000"/>
       <parameter id="blackPoint" value="0.000000"/>
@@ -823,9 +823,9 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="useRGBWorkingSpace" value="false"/>
    </instance>
    <instance class="GeneralizedHyperbolicStretch" version="256" id="E20_GHS_3_fond_instance">
-      <description>PRÉRÉGLÉ : b = 10, SP = HP = 0,19, Stretch factor 1 (pour un fond lu à 0,22).
+      <description>PRÉRÉGLÉ : b = 10, SP = HP = 0,20, Stretch factor 1 (fond à 0,23 après GHS_2).
 
-À RÉGLER : SP = HP = fond lu - 0,03 (0,22 après Statistical Stretch à 0,25) ; Stretch factor 0,5 à 1,2 jusqu'au fond vers 0,12–0,14.
+À RÉGLER : SP = HP = fond lu - 0,03 (0,22 après Statistical Stretch à 0,25) ; Stretch factor 0,8 à 1,2 jusqu'au fond vers 0,12–0,14.
 
 Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
@@ -833,8 +833,8 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="inverse" value="false"/>
       <parameter id="stretchFactor" value="1.000"/>
       <parameter id="localIntensity" value="10.000"/>
-      <parameter id="symmetryPoint" value="0.190000"/>
-      <parameter id="highlightProtection" value="0.190000"/>
+      <parameter id="symmetryPoint" value="0.200000"/>
+      <parameter id="highlightProtection" value="0.200000"/>
       <parameter id="shadowProtection" value="0.000000"/>
       <parameter id="blackPoint" value="0.000000"/>
       <parameter id="whitePoint" value="1.000000"/>

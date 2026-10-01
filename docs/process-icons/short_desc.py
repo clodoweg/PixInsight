@@ -82,11 +82,11 @@ S = {
     'H_dans_L': ("a = 1,0 ; crée L_H = max(L, a·H_cs)", "renomme ensuite L_H en L", ["couleurs délavées -> baisse a"]),
     'NBRGBCombination': ("rien (icône-note)", "RGB bande 100 nm, H bande 3 nm, Scale 1,2", ["H trop discret -> Scale 3 à 5"]),
     'GHS_1_premier': ("b = 10, Stretch factor 0 (aucun effet tant que tu ne le montes pas)",
-                      "clique le fond ou le signal faible et Send to SP ; Stretch factor jusqu'au pic vers 0,20–0,25 (fond lu 0,001 -> 6 ; 0,002 -> 5 ; 0,005 -> 4 ; 0,01 -> 3)",
+                      "clique le fond ou le signal faible et Send to SP ; Stretch factor jusqu'au pic à 0,25 (fond lu 0,001 -> 6,5 ; 0,002 -> 5,5 ; 0,005 -> 4,5 ; 0,01 -> 3,5)",
                       ["fond bruité qui ressort -> SP trop bas, remonte-le", "cœur brillant qui sature -> baisse HP"]),
-    'GHS_2_contraste': ("b = 4, HP 0,9, Stretch factor 1, SP 0,25", "SP = valeur de ta zone plate (souvent 0,25–0,40) ; Stretch factor 1 à 2",
+    'GHS_2_contraste': ("b = 4, HP 0,9, Stretch factor 1, SP 0,35", "SP = valeur de ta zone plate, au-dessus du fond (souvent 0,30–0,45 ; jamais 0,25 = le fond) ; Stretch factor 1 à 2",
                         ["cœur brillant qui sature -> baisse HP vers sa valeur", "fond trop sombre -> monte LP vers sa valeur (pas au-dessus de SP)", "fond bruité qui ressort -> SP trop bas"]),
-    'GHS_3_fond': ("b = 10, SP = HP = 0,19, Stretch factor 1 (pour un fond lu à 0,22)", "SP = HP = fond lu - 0,03 (0,22 après Statistical Stretch à 0,25) ; Stretch factor 0,5 à 1,2 jusqu'au fond vers 0,12–0,14", []),
+    'GHS_3_fond': ("b = 10, SP = HP = 0,20, Stretch factor 1 (fond à 0,23 après GHS_2)", "SP = HP = fond lu - 0,03 (0,22 après Statistical Stretch à 0,25) ; Stretch factor 0,8 à 1,2 jusqu'au fond vers 0,12–0,14", []),
     'Statistical_Stretch': ("Target Median 0,25, Blackpoint Sigma 5, Linked coché, reste par défaut", "rien ; alternative à GHS ; avec 0,25, passe ensuite GHS_3_fond (fond vers 0,12–0,14)",
                             ["cible compacte (galaxie) -> Target Median 0,10", "fond trop clair -> Blackpoint Sigma plus haut"]),
     'LRGB_ajout_L': ("seul L coché, Lightness 0,5, Saturation 0,40, réduction du bruit de chrominance", "vue L nommée 'L' ; glisse sur le RGB sans étoiles",
@@ -136,7 +136,7 @@ S = {
 
 # variantes selon le workflow
 V = {
-    ('NB', 'GHS_1_premier'): ("b = 10, Stretch factor 0", "étire H d'abord (fond vers 0,20–0,25 ; Stretch factor 3 à 6 selon le fond lu), puis O et S jusqu'au MÊME fond (Stretch factor plus élevé)",
+    ('NB', 'GHS_1_premier'): ("b = 10, Stretch factor 0", "étire H d'abord (pic à 0,25 ; Stretch factor 3,5 à 6,5 selon le fond lu), puis O et S jusqu'au MÊME fond (Stretch factor plus élevé)",
                               ["bruit de O ou S qui ressort -> SP trop bas, remonte-le"]),
     ('NB', 'Statistical_Stretch'): ("Target Median 0,25, Blackpoint Sigma 5", "rien ; même Target Median pour tous les masters ; avec 0,25, passe ensuite GHS_3_fond", []),
     ('SHO', 'SXT_lineaire'): ("Generate star image coché, Unscreen décoché", "rien ; garde les DEUX images (fond et étoiles)", ["quadrillage -> Large overlap"]),
