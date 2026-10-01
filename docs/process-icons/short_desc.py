@@ -138,6 +138,10 @@ S = {
 V = {
     ('NB', 'GHS_1_premier'): ("b = 10, Stretch factor 0", "étire H d'abord (pic à 0,25 ; Stretch factor 3,5 à 6,5 selon le fond lu), puis O et S jusqu'au MÊME fond (Stretch factor plus élevé)",
                               ["bruit de O ou S qui ressort -> SP trop bas, remonte-le"]),
+    ('LRGB', 'GHS_3_fond'): ('b = 10, SP = HP = 0,20, Stretch factor 1 (fond à 0,23 après GHS_2)', "applique-la au RGB ET à L, mêmes réglages, AVANT LRGB ; SP = HP = fond lu - 0,03 (0,22 après Statistical Stretch à 0,25) ; Stretch factor 0,8 à 1,2 jusqu'au fond vers 0,12–0,14 sur les deux", []),
+    ('LHA', 'GHS_3_fond'): ('b = 10, SP = HP = 0,20, Stretch factor 1 (fond à 0,23 après GHS_2)', "applique-la au RGB ET à L, mêmes réglages, AVANT LRGB ; SP = HP = fond lu - 0,03 (0,22 après Statistical Stretch à 0,25) ; Stretch factor 0,8 à 1,2 jusqu'au fond vers 0,12–0,14 sur les deux", []),
+    ('LRGB', 'Statistical_Stretch'): ('Target Median 0,25, Blackpoint Sigma 5, Linked coché, reste par défaut', 'même Target Median pour le RGB et pour L ; puis GHS_3_fond sur les deux, avant LRGB', ['cible compacte (galaxie) -> Target Median 0,10 pour les deux, sans GHS_3_fond']),
+    ('LHA', 'Statistical_Stretch'): ('Target Median 0,25, Blackpoint Sigma 5, Linked coché, reste par défaut', 'même Target Median pour le RGB et pour L ; puis GHS_3_fond sur les deux, avant LRGB', ['cible compacte (galaxie) -> Target Median 0,10 pour les deux, sans GHS_3_fond']),
     ('NB', 'Statistical_Stretch'): ("Target Median 0,25, Blackpoint Sigma 5", "rien ; même Target Median pour tous les masters ; avec 0,25, passe ensuite GHS_3_fond", []),
     ('SHO', 'SXT_lineaire'): ("Generate star image coché, Unscreen décoché", "rien ; garde les DEUX images (fond et étoiles)", ["quadrillage -> Large overlap"]),
     ('RSHO', 'SXT_lineaire'): ("Generate star image coché, Unscreen décoché", "rien ; garde le fond sans étoiles (étoiles prises au RGB)", ["quadrillage -> Large overlap"]),

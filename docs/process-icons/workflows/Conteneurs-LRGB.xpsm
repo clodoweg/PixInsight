@@ -913,7 +913,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <instance class="GeneralizedHyperbolicStretch" version="256" id="E11_GHS_3_fond_instance">
       <description>PRÉRÉGLÉ : b = 10, SP = HP = 0,20, Stretch factor 1 (fond à 0,23 après GHS_2).
 
-À RÉGLER : SP = HP = fond lu - 0,03 (0,22 après Statistical Stretch à 0,25) ; Stretch factor 0,8 à 1,2 jusqu'au fond vers 0,12–0,14.
+À RÉGLER : applique-la au RGB ET à L, mêmes réglages, AVANT LRGB ; SP = HP = fond lu - 0,03 (0,22 après Statistical Stretch à 0,25) ; Stretch factor 0,8 à 1,2 jusqu'au fond vers 0,12–0,14 sur les deux.
 
 Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
@@ -974,11 +974,10 @@ LANCEMENT : glisse l'icône sur l'image. Si l'icône est bloquée après une mis
 
 PRÉRÉGLÉ : Target Median 0,25, Blackpoint Sigma 5, Linked coché, reste par défaut.
 
-À RÉGLER : rien ; alternative à GHS ; avec 0,25, passe ensuite GHS_3_fond (fond vers 0,12–0,14).
+À RÉGLER : même Target Median pour le RGB et pour L ; puis GHS_3_fond sur les deux, avant LRGB.
 
 SI :
-- cible compacte (galaxie) -&gt; Target Median 0,10
-- fond trop clair -&gt; Blackpoint Sigma plus haut
+- cible compacte (galaxie) -&gt; Target Median 0,10 pour les deux, sans GHS_3_fond
 
 Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/statisticalstretch.js</parameter>
