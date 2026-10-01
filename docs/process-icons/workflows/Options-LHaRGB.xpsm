@@ -527,38 +527,88 @@ Détails : page docs/pixinsight-workflow.html.</description>
          <parameter id="circularKernel" value="true"/>
       </instance>
    </instance>
-   <instance class="HDRMultiscaleTransform" version="256" id="Opt_HDRMT_instance">
-      <description>OPTION — cœur de galaxie ou nébuleuse brillante brûlé.
-
-PRÉRÉGLÉ : 6 couches, 1 itération, To lightness, Preserve hue, Lightness mask.
-
-À RÉGLER : rien.
-
-SI :
-- pas assez -&gt; 2 itérations
-- trop fort -&gt; mélange 50 % avec l'original
-
-Détails : page docs/pixinsight-workflow.html.</description>
-      <parameter id="numberOfLayers" value="6"/>
-      <parameter id="numberOfIterations" value="1"/>
-      <parameter id="invertedIterations" value="true"/>
-      <parameter id="overdrive" value="0.000"/>
-      <parameter id="medianTransform" value="false"/>
-      <parameter id="scalingFunctionData">0.003906,0.015625,0.023438,0.015625,0.003906,0.015625,0.0625,0.09375,0.0625,0.015625,0.023438,0.09375,0.140625,0.09375,0.023438,0.015625,0.0625,0.09375,0.0625,0.015625,0.003906,0.015625,0.023438,0.015625,0.003906</parameter>
-      <parameter id="scalingFunctionRowFilter">0.0625,0.25,0.375,0.25,0.0625</parameter>
-      <parameter id="scalingFunctionColFilter">0.0625,0.25,0.375,0.25,0.0625</parameter>
-      <parameter id="scalingFunctionName">B3 Spline (5)</parameter>
-      <parameter id="deringing" value="false"/>
-      <parameter id="smallScaleDeringing" value="0.000"/>
-      <parameter id="largeScaleDeringing" value="0.250"/>
-      <parameter id="outputDeringingMaps" value="false"/>
-      <parameter id="midtonesBalanceMode" value="Automatic"/>
-      <parameter id="midtonesBalance" value="0.500000"/>
-      <parameter id="toIntensity" value="false"/>
-      <parameter id="toLightness" value="true"/>
-      <parameter id="preserveHue" value="true"/>
-      <parameter id="lightnessMask" value="true"/>
-      <parameter id="intensity" value="1.00"/>
+   <instance class="ProcessContainer" id="Opt_HDRMT_50_instance">
+      <instance class="PixelMath" version="256" enabled="true">
+         <parameter id="expression">$T</parameter>
+         <parameter id="expression1"></parameter>
+         <parameter id="expression2"></parameter>
+         <parameter id="expression3"></parameter>
+         <parameter id="useSingleExpression" value="true"/>
+         <parameter id="symbols"></parameter>
+         <parameter id="clearImageCacheAndExit" value="false"/>
+         <parameter id="cacheGeneratedImages" value="false"/>
+         <parameter id="generateOutput" value="true"/>
+         <parameter id="singleThreaded" value="false"/>
+         <parameter id="optimization" value="true"/>
+         <parameter id="use64BitWorkingImage" value="false"/>
+         <parameter id="rescale" value="false"/>
+         <parameter id="rescaleLower" value="0"/>
+         <parameter id="rescaleUpper" value="1"/>
+         <parameter id="truncate" value="true"/>
+         <parameter id="truncateLower" value="0"/>
+         <parameter id="truncateUpper" value="1"/>
+         <parameter id="createNewImage" value="true"/>
+         <parameter id="showNewImage" value="true"/>
+         <parameter id="newImageId">HDR_avant</parameter>
+         <parameter id="newImageWidth" value="0"/>
+         <parameter id="newImageHeight" value="0"/>
+         <parameter id="newImageAlpha" value="false"/>
+         <parameter id="newImageColorSpace" value="SameAsTarget"/>
+         <parameter id="newImageSampleFormat" value="SameAsTarget"/>
+         <table id="outputData" rows="0"/>
+      </instance>
+      <instance class="HDRMultiscaleTransform" version="256" enabled="true">
+         <parameter id="numberOfLayers" value="6"/>
+         <parameter id="numberOfIterations" value="1"/>
+         <parameter id="invertedIterations" value="true"/>
+         <parameter id="overdrive" value="0.000"/>
+         <parameter id="medianTransform" value="false"/>
+         <parameter id="scalingFunctionData">0.003906,0.015625,0.023438,0.015625,0.003906,0.015625,0.0625,0.09375,0.0625,0.015625,0.023438,0.09375,0.140625,0.09375,0.023438,0.015625,0.0625,0.09375,0.0625,0.015625,0.003906,0.015625,0.023438,0.015625,0.003906</parameter>
+         <parameter id="scalingFunctionRowFilter">0.0625,0.25,0.375,0.25,0.0625</parameter>
+         <parameter id="scalingFunctionColFilter">0.0625,0.25,0.375,0.25,0.0625</parameter>
+         <parameter id="scalingFunctionName">B3 Spline (5)</parameter>
+         <parameter id="deringing" value="false"/>
+         <parameter id="smallScaleDeringing" value="0.000"/>
+         <parameter id="largeScaleDeringing" value="0.250"/>
+         <parameter id="outputDeringingMaps" value="false"/>
+         <parameter id="midtonesBalanceMode" value="Automatic"/>
+         <parameter id="midtonesBalance" value="0.500000"/>
+         <parameter id="toIntensity" value="false"/>
+         <parameter id="toLightness" value="true"/>
+         <parameter id="preserveHue" value="true"/>
+         <parameter id="lightnessMask" value="true"/>
+         <parameter id="intensity" value="1.00"/>
+      </instance>
+      <instance class="PixelMath" version="256" enabled="true">
+         <parameter id="expression">a = 0.5;
+   a*$T + (1 - a)*HDR_avant</parameter>
+         <parameter id="expression1"></parameter>
+         <parameter id="expression2"></parameter>
+         <parameter id="expression3"></parameter>
+         <parameter id="useSingleExpression" value="true"/>
+         <parameter id="symbols">a</parameter>
+         <parameter id="clearImageCacheAndExit" value="false"/>
+         <parameter id="cacheGeneratedImages" value="false"/>
+         <parameter id="generateOutput" value="true"/>
+         <parameter id="singleThreaded" value="false"/>
+         <parameter id="optimization" value="true"/>
+         <parameter id="use64BitWorkingImage" value="false"/>
+         <parameter id="rescale" value="false"/>
+         <parameter id="rescaleLower" value="0"/>
+         <parameter id="rescaleUpper" value="1"/>
+         <parameter id="truncate" value="true"/>
+         <parameter id="truncateLower" value="0"/>
+         <parameter id="truncateUpper" value="1"/>
+         <parameter id="createNewImage" value="false"/>
+         <parameter id="showNewImage" value="true"/>
+         <parameter id="newImageId"></parameter>
+         <parameter id="newImageWidth" value="0"/>
+         <parameter id="newImageHeight" value="0"/>
+         <parameter id="newImageAlpha" value="false"/>
+         <parameter id="newImageColorSpace" value="SameAsTarget"/>
+         <parameter id="newImageSampleFormat" value="SameAsTarget"/>
+         <table id="outputData" rows="0"/>
+      </instance>
    </instance>
    <instance class="NoiseXTerminator" version="256" id="Opt_NXT_final_instance">
       <description>OPTION — bruit visible sur l'image finale.
@@ -692,7 +742,7 @@ max(Img1,f1)</parameter>
    <icon id="Opt_NBRGBCombination" instance="Opt_NBRGBCombination_instance" xpos="430" ypos="154" workspace="Workspace01"/>
    <icon id="P6_Finition" instance="P6_Finition_instance" xpos="608" ypos="20" workspace="Workspace01"/>
    <icon id="Opt_Boost_finition" instance="Opt_Boost_finition_instance" xpos="608" ypos="64" workspace="Workspace01"/>
-   <icon id="Opt_HDRMT" instance="Opt_HDRMT_instance" xpos="608" ypos="94" workspace="Workspace01"/>
+   <icon id="Opt_HDRMT_50" instance="Opt_HDRMT_50_instance" xpos="608" ypos="94" workspace="Workspace01"/>
    <icon id="Opt_NXT_final" instance="Opt_NXT_final_instance" xpos="608" ypos="124" workspace="Workspace01"/>
    <icon id="P7_Etoiles" instance="P7_Etoiles_instance" xpos="777" ypos="20" workspace="Workspace01"/>
    <icon id="Opt_MT_etoiles" instance="Opt_MT_etoiles_instance" xpos="777" ypos="64" workspace="Workspace01"/>

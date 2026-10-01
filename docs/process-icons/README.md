@@ -84,14 +84,14 @@ Icônes SPCC et SPFC configurées pour **QHY600 (capteur Sony IMX455) + filtres 
 
 **Le plus simple : le préparateur de la page** (section « Préparer ma photo » de `docs/pixinsight-workflow.html`). Tu choisis tes filtres, tes méthodes (gradient, étirement, palette) et tes options ; il affiche les étapes de ta photo avec ce qu'il faut régler et télécharge un `.xpsm` qui ne contient qu'elles (dans la page publiée sur claude.ai, un `.zip` à décompresser). Ses données sont dans `preparer-data.json`, régénéré avec les icônes.
 
-**Mode rapide (galaxies LRGB et LHaRGB)** : `Rapide-LRGB.xpsm` (13 icônes) et `Rapide-LHaRGB.xpsm` (19 icônes), presque tout préréglé en conteneurs : `C_RGB_prep` / `C_L_prep` / `C_H_prep` (ImageSolver + SPFC), ta propre icône MGC (liste MARS propre à chaque instance), `C_RGB_rapide` (BXT Correct Only → SPCC → BXT → SXT → NXT → Statistical Stretch 0,25 sans dialogue → GHS fond SP = HP = 0,22), `C_L_rapide` (BXT → SXT → NXT → Statistical Stretch → GHS fond), puis Star_Stretch, LRGB, Masque_L + `C_Finition`, Etoiles_screen. L'icône `E01_Mode_rapide` donne l'ordre. Options dans le même fichier : GradientCorrection, Boost_finition, HDRMT, NXT final, Halo-B-Gon, MT, Blanshan. Détails : section « Mode rapide » de la page.
+**Mode rapide (galaxies LRGB et LHaRGB)** : `Rapide-LRGB.xpsm` (13 icônes) et `Rapide-LHaRGB.xpsm` (19 icônes), presque tout préréglé en conteneurs : `C_RGB_prep` / `C_L_prep` / `C_H_prep` (ImageSolver + SPFC), ta propre icône MGC (liste MARS propre à chaque instance), `C_RGB_rapide` (BXT Correct Only → SPCC → BXT → SXT → NXT → Statistical Stretch 0,25 sans dialogue → GHS fond SP = HP = 0,22), `C_L_rapide` (BXT → SXT → NXT → Statistical Stretch → GHS fond), puis Star_Stretch, LRGB, Masque_L + `C_Finition`, Etoiles_screen. L'icône `E01_Mode_rapide` donne l'ordre. Options dans le même fichier : GradientCorrection, Boost_finition, HDRMT_50, NXT final, Halo-B-Gon, MT, Blanshan. Détails : section « Mode rapide » de la page.
 
 Sinon, deux fichiers par workflow :
 
 - **`Workflow-X.xpsm` — chemin principal** : les étapes standard seulement (MGC + MARS pour le gradient, GHS pour l'étirement — en LRGB et LHaRGB : Statistical Stretch sur le RGB et GHS sur L —, NarrowbandNormalization pour la palette), numérotées `E01_WBPP`, `E02_CC_auto`…
 - **`Options-X.xpsm` — options et alternatives** (`Opt_HDRMT`, `Opt_DBE`…) : à charger seulement si besoin ; la description de chaque icône commence par `OPTION — quand l'utiliser` ou `ALTERNATIVE — à la place de quoi`.
 
-- **`Conteneurs-X.xpsm` — le fichier unique conseillé (à tester)** : le chemin principal complet ET toutes les options, rangées dans la colonne de leur phase sous une icône-titre `P#_options` (`Opt_HDRMT` en Finition, `Opt_DBE` en Gradient…). Dans le chemin principal, chaque suite d'étapes sans réglage intermédiaire, appliquée à la même image, est remplacée par une icône *ProcessContainer* (un clic au lieu de trois à cinq) : LRGB 17 icônes au lieu de 24, LHaRGB 23 au lieu de 28, RGB-SHO 26 au lieu de 34, SHO sans RGB 24 au lieu de 31, HOO 24 au lieu de 28. Chaque étape garde les réglages de son icône. Le préparateur fait la même chose avec la case « Regrouper en conteneurs ».
+- **`Conteneurs-X.xpsm` — le fichier unique conseillé (à tester)** : le chemin principal complet ET toutes les options, rangées dans la colonne de leur phase sous une icône-titre `P#_options` (`Opt_HDRMT_50` en Finition, `Opt_DBE` en Gradient…). Dans le chemin principal, chaque suite d'étapes sans réglage intermédiaire, appliquée à la même image, est remplacée par une icône *ProcessContainer* (un clic au lieu de trois à cinq) : LRGB 17 icônes au lieu de 24, LHaRGB 23 au lieu de 28, RGB-SHO 26 au lieu de 34, SHO sans RGB 24 au lieu de 31, HOO 24 au lieu de 28. Chaque étape garde les réglages de son icône. Le préparateur fait la même chose avec la case « Regrouper en conteneurs ».
 
 | Conteneur | Image cible | Étapes |
 |---|---|---|
@@ -103,6 +103,7 @@ Sinon, deux fichiers par workflow :
 | `C_Extraction_SHO`, `C_Extraction_HOO`, `C_Extraction_etoiles` | image sans étoiles (ou d'étoiles) | extraction des canaux |
 | `C_Etoiles_RGB` (RGB + SHO) | RGB combiné | BXT Correct Only → SPCC → BXT → SXT |
 | `C_Finition` | image sans étoiles étirée, Masque_L attaché | Courbes → LHE → LHE_fin |
+| `HDRMT_50` (option) | image sans étoiles étirée | copie `HDR_avant` → HDRMT → PixelMath `a·$T + (1 − a)·HDR_avant`, a = 0,5 ; fermer `HDR_avant` ensuite |
 
 Format recopié des conteneurs des icônes de theAstroShed (PixInsight 1.9.3) : instances imbriquées sans identifiant, `enabled="true"`, pas de description sur le conteneur. Pas encore testé dans PixInsight : essaie d'abord sur une copie de l'image.
 

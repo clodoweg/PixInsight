@@ -232,6 +232,16 @@ def container(name, xmls):
     return '   <instance class="ProcessContainer" id="%s_instance">\n%s\n   </instance>' % (name, '\n'.join(nested(x) for x in xmls))
 
 
+def hdrmt_50():
+    """HDRMT à 50 % : copie de l'image, HDRMT sur l'image, puis mélange a·résultat + (1 − a)·copie (a = 0,5)."""
+    parts = []
+    for item in (pm('HDR_copie', '$T', new_image=True, new_id='HDR_avant'),
+                 M.instance('HDRMultiscaleTransform', 'HDRMT', {'numberOfLayers': 6, 'numberOfIterations': 1, 'toLightness': True, 'preserveHue': True, 'lightnessMask': True}),
+                 pm('HDR_melange', 'a = 0.5;\na*$T + (1 - a)*HDR_avant', symbols='a')):
+        name, x = item
+        parts.append(x.replace('id="%s_instance"' % name, 'id="__ID___instance"', 1))
+    return 'HDRMT_50', container('HDRMT_50', parts)
+
 def boost_container():
     """Option de finition en un glisser : petite courbe (contraste + saturation) puis LHE à rayon moyen. Rejouable."""
     parts = []
@@ -477,7 +487,7 @@ def finish_block(extra=None):
          (curves('Courbes'), D_CURVES), (M.instance('LocalHistogramEqualization', 'LHE', {'radius': 150, 'slopeLimit': '2.0', 'amount': '0.300', 'circularKernel': True}), D_LHE),
          (M.instance('LocalHistogramEqualization', 'LHE_fin', {'radius': 40, 'slopeLimit': '2.0', 'amount': '0.300', 'circularKernel': True}), D_LHE_FIN),
          (boost_container(), ''),
-         (M.instance('HDRMultiscaleTransform', 'HDRMT', {'numberOfLayers': 6, 'numberOfIterations': 1, 'toLightness': True, 'preserveHue': True, 'lightnessMask': True}), D_HDR)]
+         (hdrmt_50(), '')]
     if extra:
         b = extra + b
     return b + [(M.nxt('NXT_final', 0.40, 1), D_NXT_F)]
@@ -843,7 +853,7 @@ def write_rapide(filename, prefix, title, steps, main_spec, opt_spec):
 def rapide_common_opts(steps):
     return [(1, *pick(steps, 'LinearPatternSubtraction')),
             (2, *pick(steps, 'GradientCorrection')),
-            (6, *pick(steps, 'Boost_finition')), (6, *pick(steps, 'HDRMT')), (6, *pick(steps, 'NXT_final')),
+            (6, *pick(steps, 'Boost_finition')), (6, *pick(steps, 'HDRMT_50')), (6, *pick(steps, 'NXT_final')),
             (7, *pick(steps, 'Halo_B_Gon')), (7, *pick(steps, 'MT_etoiles')), (7, *pick(steps, 'Blanshan_Transfer'))]
 
 def rapide_end(steps):

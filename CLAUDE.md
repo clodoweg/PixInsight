@@ -29,6 +29,7 @@ Utilisateur : astrophotographe, PixInsight 1.9.5 sur macOS (Apple Silicon), CDK1
 - **Tout régénérer : `sh docs/process-icons/build/build.sh`** (reproduit exactement les fichiers commités ; valide les XML).
 
 ### Conventions
+- Option HDRMT_50 (remplace Opt_HDRMT) : ProcessContainer [PixelMath copie $T -> HDR_avant, HDRMT, PixelMath a*$T + (1-a)*HDR_avant, a = 0,5] ; fermer HDR_avant après.
 - Pas de DynamicCrop dans aucune icône ni workflow (choix de l'utilisateur, 1er octobre 2026).
 - Sorties de contrôle désactivées (choix de l'utilisateur) : GradientCorrection generateGradientModel=false, SPCC generateGraphs=false (MGC Show gradient model reste coché).
 - Mode rapide (galaxies) : workflows/Rapide-LRGB.xpsm et Rapide-LHaRGB.xpsm (write_rapide dans make_workflows.py). MGC hors conteneur (liste MARS propre à chaque instance : l'utilisateur garde ses icônes MGC réglées avec Default Files). Conteneurs C_RGB_prep / C_L_prep / C_H_prep, C_RGB_rapide, C_L_rapide, C_RGB_couleur_rapide, C_RGB_fin_rapide ; Statistical Stretch openDialogbox=false + GHS_fond SP=HP=0,22. Section #rapide de la page. Pas encore testé dans PixInsight.
