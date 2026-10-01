@@ -11,37 +11,22 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
    <instance class="Script" version="256" id="Opt_LinearPatternSubtraction_instance">
       <description>OPTION — lignes horizontales résiduelles visibles sur un master (motif du capteur).
 
-LANCEMENT : double-clic sur l'icône, puis Apply Global. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
+LANCEMENT : glisse l'icône sur l'image.
 
-PRÉRÉGLÉ : Target is active image, Correct columns décoché (lignes), Correct the entire image, Postfix _lps, Layers to remove 9, Rejection limit 3, Global rejection 5, région de fond 0, 0, 512, 512.
+PRÉRÉGLÉ : script LPS_UnClic (moteur de Vicent Peris, sans dialogue) : lignes, Correct the entire image, Layers to remove 9, Rejection limit 3, Global rejection 5, zone de fond choisie automatiquement (la plus sombre), fenêtres de travail fermées.
 
-À RÉGLER : active le master à corriger avant de lancer ; dans le dialogue, déplace la région de fond sur une zone sombre ; sur chaque master linéaire, avant le recadrage.
+À RÉGLER : une seule fois : copie docs/process-icons/scripts/LPS_UnClic.js dans /Users/Shared/PixInsight/scripts/ ; ensuite glisse l'icône sur chaque master linéaire, avant le recadrage (la correction se fait dans l'image).
 
 SI :
-- erreur « partialColumnOrRow is undefined » -&gt; bug signalé sur un master avec Correct the entire image et sans Defects file : fournis un fichier de défauts (LinearDefectDetection) ou passe-toi du script
-- colonnes plutôt que lignes -&gt; coche Correct columns
-- artefacts après correction -&gt; annule : le script est conçu pour les brutes, avant alignement
+- corriger des colonnes -&gt; correctColumns = true dans l'icône
+- tous les masters ouverts d'un coup -&gt; allOpenImages = true, puis double-clic et Apply Global
+- artefacts -&gt; Ctrl+Z : le script est conçu pour les brutes, avant alignement
+- icône introuvable -&gt; vérifie l'emplacement du fichier ; version avec dialogue : menu Script › Pattern Correction › LinearPatternSubtraction
 
 Détails : page docs/pixinsight-workflow.html.</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/PatternCorrection/LinearPatternSubtraction.js</parameter>
-      <parameter id="md5sum">e0dfe7d0bf6799a1a75f3a8089a8dd64</parameter>
-      <table id="parameters" rows="16">
-         <tr>
-            <td id="id">inputFiles</td>
-            <td id="value"></td>
-         </tr>
-         <tr>
-            <td id="id">targetIsActiveImage</td>
-            <td id="value">true</td>
-         </tr>
-         <tr>
-            <td id="id">closeFormerWorkingImages</td>
-            <td id="value">false</td>
-         </tr>
-         <tr>
-            <td id="id">outputDir</td>
-            <td id="value"></td>
-         </tr>
+      <parameter id="filePath">/Users/Shared/PixInsight/scripts/LPS_UnClic.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="14">
          <tr>
             <td id="id">correctColumns</td>
             <td id="value">false</td>
@@ -53,10 +38,6 @@ Détails : page docs/pixinsight-workflow.html.</description>
          <tr>
             <td id="id">defectTableFilePath</td>
             <td id="value"></td>
-         </tr>
-         <tr>
-            <td id="id">postfix</td>
-            <td id="value">_lps</td>
          </tr>
          <tr>
             <td id="id">layersToRemove</td>
@@ -75,6 +56,10 @@ Détails : page docs/pixinsight-workflow.html.</description>
             <td id="value">5</td>
          </tr>
          <tr>
+            <td id="id">autoBackground</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
             <td id="id">backgroundReferenceLeft</td>
             <td id="value">0</td>
          </tr>
@@ -89,6 +74,14 @@ Détails : page docs/pixinsight-workflow.html.</description>
          <tr>
             <td id="id">backgroundReferenceHeight</td>
             <td id="value">512</td>
+         </tr>
+         <tr>
+            <td id="id">allOpenImages</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">closeWorkingImages</td>
+            <td id="value">true</td>
          </tr>
       </table>
       <parameter id="information"></parameter>
