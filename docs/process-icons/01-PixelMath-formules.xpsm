@@ -240,7 +240,7 @@ R + w*H_cs</parameter>
       <table id="outputData" rows="0"/>
    </instance>
    <instance class="PixelMath" version="256" id="Etoiles_screen_instance">
-      <parameter id="expression">~((~$T) * (~RGB_Stars))</parameter>
+      <parameter id="expression">~((~$T) * (~RGB_stars))</parameter>
       <parameter id="expression1"></parameter>
       <parameter id="expression2"></parameter>
       <parameter id="expression3"></parameter>

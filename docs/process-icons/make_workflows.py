@@ -316,7 +316,7 @@ T_STARSTRETCH = ("ÉTAPE MANUELLE — Star Stretch (SetiAstro, script v2.6) sur 
                  "Color Boost 1,0 (0 à 2) : saturation par teinte, 0,4 × Boost sur les rouges, 0,7 × Boost sur les cyans (couleur seulement). "
                  "Remove Green via SCNR décoché par défaut (SCNR vert pleine force, Average Neutral). Show Preview décoché (aperçu + Refresh Preview).")
 T_HALO = ("ÉTAPE MANUELLE — Halo-B-Gon (SetiAstro, script v2.1) sur l'image d'étoiles seule, AVANT Etoiles_screen ; modifie l'image elle-même, garde une copie. "
-          "Select stars-only image : l'image d'étoiles étirée, celle de la formule Etoiles_screen (RGB_Stars ; NBtoRGB_stars en SHO ; HOO_Stars en HOO). "
+          "Select stars-only image : l'image d'étoiles étirée, celle de la formule Etoiles_screen (RGB_stars ; NBtoRGB_stars en SHO ; HOO_stars en HOO). "
           "Déjà recombiné : applique Halo-B-Gon sur l'image d'étoiles, puis relance Etoiles_screen sur l'image sans étoiles (ferme l'ancienne Final). "
           "Masque de luminosité inversé moins les petites structures (cœurs protégés), puis courbe qui assombrit les tons moyens (0,75 → 0,40). "
           "Reduction Amount, Low par défaut : Extra Low = 1 courbe douce (0,75 → 0,575) ; Low = 1 passe, 1 courbe ; Med = 2 passes × 2 courbes (4) ; High = 3 passes × 3 courbes (9). "
@@ -361,7 +361,7 @@ D_GHS3 = ("GHS, assombrir le fond sans écrêter — après GHS ou Statistical S
           "CIBLE DU FOND FINAL : gris foncé 0,12-0,14 (30-35 sur 255 ; Readout Options › plage entière 8 bits), R = G = B à quelques unités près, JAMAIS 0. "
           "Données bruitées : 0,14-0,15 ; données propres (après NXT) : 0,10-0,12. Au-delà de 0,18-0,20 : trop étiré. Vérifie avec Statistics (médiane d'une preview de fond).")
 D_SCREEN = ("Recombinaison des étoiles en mode screen : ~((~$T) * (~%s)). GLISSE l'icône sur l'image SANS étoiles finale (après palette et finition), quel que soit son nom ; "
-            "l'image d'étoiles étirée doit s'appeler '%s' (nom donné par SXT ; PixelMath respecte les majuscules, sinon corrige le nom dans l'icône). "
+            "l'image d'étoiles étirée doit s'appeler '%s' (nom donné par SXT : écris-le exactement comme le titre de la fenêtre, sinon corrige-le dans l'icône). "
             "Résultat : nouvelle image 'Final'.")
 D_BL = ("Réduction d'étoiles Bill Blanshan, méthode Transfer V2 : GLISSE l'icône sur l'image SANS étoiles (la même que pour Etoiles_screen) ; elle lit l'image avec étoiles 'Final' et crée 'Final_reduit'. "
         "Formule de Bill avec $T et starless permutés (Img1 = $T, image étoilée = Final) : même calcul, sans renommer les vues. "
@@ -448,7 +448,7 @@ def finish_block(extra=None):
         b = extra + b
     return b + [(M.nxt('NXT_final', 0.40, 1), D_NXT_F)]
 
-def stars_end(stars='RGB_Stars', cms=False, screen_extra='', cms_extra='', alt=''):
+def stars_end(stars='RGB_stars', cms=False, screen_extra='', cms_extra='', alt=''):
     # options sur l'image d'étoiles seule : AVANT la recombinaison
     b = [(M.instance('MorphologicalTransformation', 'MT_etoiles', {'operator': 'Selection', 'numberOfIterations': 1, 'amount': '0.60', 'selectionPoint': '0.25', 'structureSize': 5}, post=M.mt_post), D_MT),
          (note('Halo_B_Gon', T_HALO), '')]
@@ -522,7 +522,7 @@ lrgb = pre_block() + [rgb_comb(), (solver_container(), '')] + gradient_block('rg
      "Chrominance noise reduction cochée. Couleurs délavées : L trop claire par rapport au RGB, étire-la moins. "
      "CONTRÔLE après combinaison (sonde 15x15) : cœur de galaxie R >= G, nettement au-dessus de B ; bras B au-dessus de R ; régions HII R > B > G ; aucune étoile verte ; toute une gamme d'étoiles bleues et jaune-orange ; fond R = G = B. "
      "Couleurs criardes ou bruit coloré : remonte la valeur de Saturation (plus haut = moins saturé), NXT sur le RGB. Étoiles toutes blanches : étire-les à part. Régions HII peu visibles : normal en LRGB pur, passe en LHaRGB."),
-] + finish_block() + stars_end('RGB_Stars', screen_extra=SCREEN_LRGB)
+] + finish_block() + stars_end('RGB_stars', screen_extra=SCREEN_LRGB)
 
 # ---------------------------------------------------------------- LHaRGB
 lhargb = pre_block() + [rgb_comb(), (solver_container(), '')] + gradient_block('lha') + [
@@ -561,7 +561,7 @@ lhargb = pre_block() + [rgb_comb(), (solver_container(), '')] + gradient_block('
      "LRGBCombination sur les images étirées sans étoiles : seul L activé (vue 'L'), Lightness 0,5, Saturation 0,40, Chrominance noise reduction cochée. "
      "CONTRÔLE (sonde 15x15) : cœur de galaxie jaune (R >= G >> B), bras bleus, régions HII roses et bien visibles grâce au H (R > B > G), aucune étoile verte, fond R = G = B ; couleurs délavées : L trop claire, étire-la moins. "
      "Compare avec la copie LRGB sans H : seules les régions HII doivent changer ; si le cœur ou les étoiles ont rougi, reprends la soustraction du continuum (k)."),
-] + finish_block() + stars_end('RGB_Stars', screen_extra=SCREEN_LRGB)
+] + finish_block() + stars_end('RGB_stars', screen_extra=SCREEN_LRGB)
 
 # ---------------------------------------------------------------- narrowband communs
 def nb_masters(chans):
@@ -640,7 +640,7 @@ rgbsho = pre_block() + nb_masters(['S', 'H', 'O']) + [
     sho_combine,
     (M.bxt('BXT_NB', False, 0.25, 0.0, 0.60), D_BXT_NB + BXT_C),
     (M.sxt('SXT_lineaire', False), D_SXT_LIN + " Sur l'image SHO : garde le fond sans étoiles (les étoiles viendront du RGB)."),
-] + extract([(0, 'S'), (1, 'H'), (2, 'O')], "l'image SHO sans étoiles") + nb_noise + ghs_block(GHS_NB, STAT_NB) + sho_palette + finish_block(sho_finish) + rgb_stars_block() + stars_end('RGB_Stars', cms=True, screen_extra=SCREEN_RGBSHO)
+] + extract([(0, 'S'), (1, 'H'), (2, 'O')], "l'image SHO sans étoiles") + nb_noise + ghs_block(GHS_NB, STAT_NB) + sho_palette + finish_block(sho_finish) + rgb_stars_block() + stars_end('RGB_stars', cms=True, screen_extra=SCREEN_RGBSHO)
 
 # ---------------------------------------------------------------- SHO sans RGB
 STARS_NB = (" STANDARD DES ÉTOILES SANS RGB : couleurs non calibrées, on vise des étoiles PLAUSIBLES, proches du RGB : du bleu-blanc au jaune-orange, peu saturées, une gamme de couleurs, "
@@ -696,7 +696,7 @@ hoo = pre_block() + [
     (M.instance('LRGBCombination', 'H_en_luminance', {'mL': '0.500', 'mc': '0.400', 'noiseReduction': True}, post=M.lrgb_post),
      "Option — H en luminance : fais une copie de H étiré nommée 'L' (même fond et médiane proche que l'image HOO, sinon couleurs délavées), puis applique sur l'image HOO. Seul L activé, Lightness 0,5, Saturation 0,40."),
 ] + finish_block() + [
-    (note('Etoiles_HOO', "ÉTOILES — avec RGB : suis le bloc étoiles RGB du workflow RGB + SHO. Sans RGB : utilise l'image d'étoiles de SXT sur HOO (ou NB to RGB Star Combination), étire-la avec Star Stretch ; son nom ('HOO_Stars' après SXT, 'NBtoRGB_stars' après NB to RGB, 'RGB_Stars' avec RGB) doit être celui de l'icône Etoiles_screen. "
+    (note('Etoiles_HOO', "ÉTOILES — avec RGB : suis le bloc étoiles RGB du workflow RGB + SHO. Sans RGB : utilise l'image d'étoiles de SXT sur HOO (ou NB to RGB Star Combination), étire-la avec Star Stretch ; son nom ('HOO_stars' après SXT, 'NBtoRGB_stars' après NB to RGB, 'RGB_stars' avec RGB) doit être celui de l'icône Etoiles_screen. "
           "Les étoiles HOO tirent vers le rouge et le cyan : désature-les légèrement si besoin. "
           "STANDARD : étoiles plausibles, du bleu-blanc au jaune-orange, peu saturées, une gamme de couleurs, jamais vertes. En HOO classique (G = B = O), le magenta est impossible "
           "mais les étoiles chaudes sortent rouges ou saumon (jamais jaunes) et les froides cyan ; cœur rouge / halo cyan fréquent (étoiles O plus grosses). "
@@ -705,7 +705,7 @@ hoo = pre_block() + [
           "CONTRÔLE à la sonde 15x15 sur le halo : chaude R >= G >= B (G = B exactement = HOO classique, pas de jaune possible), froide B >= G >= R, pas de G au-dessus de R et B ; une dizaine d'étoiles pas toutes identiques. "
           "AJUSTER : bleues verdâtres ou chaudes trop rouges -> plus de H dans le vert ; chaudes jaune-vert -> moins ; cyan saturé -> désature ou Color Boost plus bas ; anneau rouge/cyan -> réduction d'étoiles ; toutes blanches -> étirement plus doux."), ''),
     (note('Star_Stretch', T_STARSTRETCH + " Étoiles HOO : Color Boost plus bas si le cyan ou le rouge est criard, Stretch Amount plus bas si toutes blanches."), ''),
-] + stars_end('HOO_Stars', alt=" Avec étoiles RGB : remplace HOO_Stars par RGB_Stars ; avec NB to RGB Star Combination : par NBtoRGB_stars ; étoiles synthétiques : par Stars_HOO.")
+] + stars_end('HOO_stars', alt=" Avec étoiles RGB : remplace HOO_stars par RGB_stars ; avec NB to RGB Star Combination : par NBtoRGB_stars ; étoiles synthétiques : par Stars_HOO.")
 
 os.makedirs(OUT, exist_ok=True)
 mat = [(spcc_perso('SPCC_QHY600_Antlia'), T_SPCC)] + [(M.spfc(n + '_QHY600_Antlia' if n != 'SPFC_RGB_filtres' else 'SPFC_RGB_QHY600_Antlia', **o), D_SPFC[n] + D_SPFC_COMMUN) for n, o in [

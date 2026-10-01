@@ -608,7 +608,7 @@ LANCEMENT : double-clic sur l'icône, puis Apply Global. Si l'icône est bloqué
 
 PRÉRÉGLÉ : rien (réglages dans le dialogue).
 
-À RÉGLER : Select stars-only image = l'image d'étoiles étirée (RGB_Stars ; NBtoRGB_stars en SHO ; HOO_Stars en HOO), AVANT Etoiles_screen ; Reduction Amount Low ; Linear Data décoché.
+À RÉGLER : Select stars-only image = l'image d'étoiles étirée (RGB_stars ; NBtoRGB_stars en SHO ; HOO_stars en HOO), AVANT Etoiles_screen ; Reduction Amount Low ; Linear Data décoché.
 
 SI :
 - pas assez -&gt; relance en Low (Med = 4 courbes, High = 9)

@@ -25,7 +25,7 @@ Les formules supposent des images nommées comme indiqué (renomme tes vues avec
 | `DualBand_H` / `DualBand_O` | À appliquer sur l'image couleur dual-band | Nouvelles images mono `H` et `O` |
 | `Continuum_H` | `H`, `R` | `H_cs` ; ajuste `k = 0.9` dans la formule |
 | `H_dans_R` | `R`, `H_cs` | `R_H` ; ajuste `w = 1.0` |
-| `Etoiles_screen` | glisser sur l'image sans étoiles ; étoiles étirées `RGB_Stars` (workflows : `NBtoRGB_stars` en SHO, `HOO_Stars` en HOO) | Nouvelle image `Final` |
+| `Etoiles_screen` | glisser sur l'image sans étoiles ; étoiles étirées `RGB_stars` (workflows : `NBtoRGB_stars` en SHO, `HOO_stars` en HOO) | Nouvelle image `Final` |
 | `Etoiles_HOO_synth` | `H_stars`, `O_stars` (linéaires) | Étoiles RGB synthétiques, G = 20 % H + 80 % O |
 | `Masque_L` / `Masque_L_mono` | Image sans étoiles étirée (couleur / mono) ; glisser l'icône dessus | Nouvelle vue mono `masque_L` : luminance Rec. 709 avec le fond coupé, `s = 0.14` par défaut (fond + 0,01). Chaque workflow l'inclut avant les courbes et LHE |
 | `Blanshan_Transfer` / `_Halo` / `_Star` | Vue sans étoiles nommée `starless` ; appliquer sur l'image avec étoiles | Version 2, identique à la page (S = 0,15) |

@@ -1378,15 +1378,15 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="information"></parameter>
    </instance>
    <instance class="PixelMath" version="256" id="E32_Etoiles_screen_instance">
-      <description>PRÉRÉGLÉ : ~((~$T) * (~RGB_Stars)), crée l'image 'Final'.
+      <description>PRÉRÉGLÉ : ~((~$T) * (~RGB_stars)), crée l'image 'Final'.
 
-À RÉGLER : glisse sur l'image sans étoiles finale ; étoiles étirées nommées RGB_Stars (nom SXT, majuscule comprise).
+À RÉGLER : glisse sur l'image sans étoiles finale ; étoiles étirées nommées RGB_stars (nom donné par SXT, s minuscule).
 
 SI :
 - autre nom d'étoiles -&gt; corrige-le dans la formule
 
 Détails : page docs/pixinsight-workflow.html.</description>
-      <parameter id="expression">~((~$T) * (~RGB_Stars))</parameter>
+      <parameter id="expression">~((~$T) * (~RGB_stars))</parameter>
       <parameter id="expression1"></parameter>
       <parameter id="expression2"></parameter>
       <parameter id="expression3"></parameter>
