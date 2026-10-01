@@ -365,7 +365,7 @@ D_SCREEN = ("Recombinaison des étoiles en mode screen : ~((~$T) * (~%s)). GLISS
             "Résultat : nouvelle image 'Final'.")
 D_BL = ("Réduction d'étoiles Bill Blanshan, méthode Transfer V2 : GLISSE l'icône sur l'image SANS étoiles (la même que pour Etoiles_screen) ; elle lit l'image avec étoiles 'Final' et crée 'Final_reduit'. "
         "Formule de Bill avec $T et starless permutés (Img1 = $T, image étoilée = Final) : même calcul, sans renommer les vues. "
-        "S = 0,15 (plus bas = étoiles plus petites). Les versions V3 et les méthodes Halo/Star sont dans 01-PixelMath-formules.xpsm.")
+        "S = 0,20 dans cette icône (valeur de Bill : 0,15 ; plus bas = étoiles plus petites ; étoiles trop petites -> 0,25, ou saute cette étape). Les versions V3 et les méthodes Halo/Star sont dans 01-PixelMath-formules.xpsm.")
 D_MT = ("Alternative : MorphologicalTransformation sur l'image d'étoiles seule (ou avec un masque d'étoiles), AVANT Etoiles_screen. Morphological Selection 0,25 (sous 0,5 = érosion), Amount 0,60, 1 itération, élément circulaire 5x5.")
 D_CURVES = ("CurvesTransformation — sur l'image sans étoiles étirée, sous masque de luminance (icône Masque_L juste avant). "
             "Préréglé : légère courbe en S sur RGB/K (0,25 → 0,22 ; 0,75 → 0,78) et saturation (canal S, milieu monté de 0,5 à 0,6), interpolation Akima. "
@@ -456,7 +456,7 @@ def stars_end(stars='RGB_Stars', cms=False, screen_extra='', cms_extra='', alt='
               D_SCREEN % (stars, stars) + alt + screen_extra))
     if cms:
         b.append((note('CorrectMagentaStars', T_CMS + cms_extra), ''))
-    b.append((pm('Blanshan_Transfer', "S=0.15;\nImg1=$T;\nf1= ~((~mtf(~S,Final)/~mtf(~S,Img1))*~Img1);\nmax(Img1,f1)", symbols='S, Img1, f1', new_image=True, new_id='Final_reduit'), D_BL))
+    b.append((pm('Blanshan_Transfer', "S=0.20;\nImg1=$T;\nf1= ~((~mtf(~S,Final)/~mtf(~S,Img1))*~Img1);\nmax(Img1,f1)", symbols='S, Img1, f1', new_image=True, new_id='Final_reduit'), D_BL))
     return b
 
 def ghs_block(extra_desc='', stat_extra='', fond_extra=''):

@@ -1271,6 +1271,7 @@ PRÉRÉGLÉ : Stretch Amount 5, Color Boost 1,0, SCNR décoché.
 
 SI :
 - étoiles trop grosses -&gt; 4
+- étoiles trop petites -&gt; 5,5 à 6 (cœurs blancs : reviens à 5)
 - couleurs criardes -&gt; Color Boost 0,7
 
 Détails : page docs/pixinsight-workflow.html.</description>
@@ -1628,15 +1629,16 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <table id="outputData" rows="0"/>
    </instance>
    <instance class="PixelMath" version="256" id="E24_Blanshan_Transfer_instance">
-      <description>PRÉRÉGLÉ : S = 0,15 ; lit 'Final', crée 'Final_reduit'.
+      <description>PRÉRÉGLÉ : S = 0,20 (Bill : 0,15) ; lit 'Final', crée 'Final_reduit'.
 
 À RÉGLER : glisse sur l'image SANS étoiles (comme Etoiles_screen).
 
 SI :
-- étoiles encore grosses -&gt; S plus bas
+- étoiles encore grosses -&gt; S 0,15
+- étoiles trop petites -&gt; S 0,25, ou saute cette étape
 
 Détails : page docs/pixinsight-workflow.html.</description>
-      <parameter id="expression">S=0.15;
+      <parameter id="expression">S=0.20;
 Img1=$T;
 f1= ~((~mtf(~S,Final)/~mtf(~S,Img1))*~Img1);
 max(Img1,f1)</parameter>
