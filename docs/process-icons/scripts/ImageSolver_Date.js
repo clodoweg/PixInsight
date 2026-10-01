@@ -7,13 +7,19 @@
 // (mots-clés DATE-OBS, DATE-BEG, DATE-AVG, DATE ni propriété
 // Observation:Time:Start). Une vraie date n'est jamais remplacée.
 //
-// Utilisé en première étape du conteneur ImageSolver de la fiche (glisser
-// l'icône sur l'image). Installation (Mac et PC) : dans src/scripts/clodoweg
-// de PixInsight, à côté du dossier PatternCorrection.
+// Icône ImageSolver de la fiche : si les paramètres solverPath et
+// solverParams sont présents, le script lance ensuite ImageSolver lui-même
+// (instance Script, comme une icône ImageSolver) avec ces réglages. Une seule
+// icône, SANS conteneur : dans un ProcessContainer, ImageSolver échoue
+// (« The image is already being processed ») car il ouvre son propre
+// traitement pour écrire la solution astrométrique.
+// Installation (Mac et PC) : dans src/scripts/clodoweg de PixInsight, à côté
+// du dossier PatternCorrection. Lancement : glisser l'icône sur l'image.
 // ----------------------------------------------------------------------------
 
 #feature-id    ImageSolver_Date : clodoweg > Date par défaut pour ImageSolver
-#feature-info  Ajoute DATE-OBS = 2020-01-01 aux images sans date d'observation.
+#feature-info  Ajoute DATE-OBS = 2020-01-01 aux images sans date d'observation, \
+   puis lance ImageSolver si l'icône en donne les réglages.
 
 #define TITLE "Date par défaut"
 
@@ -44,14 +50,30 @@ function main()
       throw new Error( TITLE + " : aucune image." );
 
    if ( hasObservationDate( window ) )
+      console.writeln( "<end><cbr>" + TITLE + " : " + window.mainView.id + " a déjà une date d'observation." );
+   else
    {
-      console.writeln( "<end><cbr>" + TITLE + " : " + window.mainView.id + " a déjà une date d'observation, rien à faire." );
-      return;
+      let kw = window.keywords;
+      kw.push( new FITSKeyword( "DATE-OBS", "'" + defaultDate + "'", "Date par defaut (ImageSolver_Date.js)" ) );
+      window.keywords = kw;
+      console.warningln( "<end><cbr>" + TITLE + " : " + window.mainView.id + " n'avait pas de date d'observation : DATE-OBS = " + defaultDate + " ajouté." );
    }
-   let kw = window.keywords;
-   kw.push( new FITSKeyword( "DATE-OBS", "'" + defaultDate + "'", "Date par defaut (ImageSolver_Date.js)" ) );
-   window.keywords = kw;
-   console.warningln( "<end><cbr>" + TITLE + " : " + window.mainView.id + " n'avait pas de date d'observation : DATE-OBS = " + defaultDate + " ajouté." );
+   runSolver( window );
+}
+
+// Lance ImageSolver (script livré avec PixInsight) sur l'image, avec les
+// réglages de l'icône (paramètre solverParams : liste JSON [[nom, valeur], ...]).
+function runSolver( window )
+{
+   if ( !Parameters.has( "solverPath" ) || !Parameters.has( "solverParams" ) )
+      return;
+   let P = new Script;
+   P.filePath = Parameters.getString( "solverPath" ).trim();
+   P.md5sum = "";
+   P.parameters = JSON.parse( Parameters.getString( "solverParams" ) );
+   console.writeln( "<end><cbr>" + TITLE + " : ImageSolver sur " + window.mainView.id + "..." );
+   if ( !P.executeOn( window.mainView ) )
+      throw new Error( TITLE + " : ImageSolver a échoué sur " + window.mainView.id + " (voir la console)." );
 }
 
 main();

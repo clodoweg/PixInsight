@@ -261,12 +261,20 @@ def boost_container(name='Boost_finition', k=((0, 0), (0.25, 0.23), (0.75, 0.77)
     return name, container(name, parts)
 
 def solver_container():
-    """ImageSolver en un glisser : conteneur [date par défaut si absente, ImageSolver avec les réglages du matériel]."""
-    parts = []
-    for key in ('ImageSolver_Date', 'ImageSolver'):
-        name, x = script(key, '')
-        parts.append(x.replace('id="%s_instance"' % name, 'id="__ID___instance"', 1))
-    return 'ImageSolver', container('ImageSolver', parts)
+    """Icône ImageSolver en un glisser : ImageSolver_Date.js ajoute la date si elle manque, puis lance lui-même ImageSolver
+    avec les réglages du matériel. Pas de ProcessContainer : ImageSolver y échoue (« The image is already being processed »)."""
+    name, x = script('ImageSolver_Date', '')
+    path, md5, params, launch = SCRIPTS['ImageSolver']
+    extra = [('solverPath', path), ('solverParams', json.dumps([[k, v] for k, v in params], separators=(',', ':')))]
+    rows = ''.join('\n         <tr>\n            <td id="id">%s</td>\n            <td id="value">%s</td>\n         </tr>' % (escape(k), escape(v)) for k, v in extra)
+    x, n = re.subn(r'<table id="parameters" rows="(\d+)">(.*?)\n      </table>',
+                   lambda m: '<table id="parameters" rows="%d">%s%s\n      </table>' % (int(m.group(1)) + len(extra), m.group(2), rows), x, count=1, flags=re.S)
+    assert n == 1
+    return 'ImageSolver', x.replace('id="ImageSolver_Date_instance"', 'id="ImageSolver_instance"', 1)
+
+def solver_seul():
+    n, x = script('ImageSolver', '')
+    return 'ImageSolver_seul', x.replace('id="ImageSolver_instance"', 'id="ImageSolver_seul_instance"', 1)
 
 def label(r):
     g, vals = r.split(':')
@@ -571,7 +579,7 @@ SCREEN_LRGB = (" LRGB — CONTRÔLE après recombinaison, à 100 % : étoiles de
                "pas d'anneau sombre ni de halo coloré autour des étoiles ; étoiles ni grossies ni trop présentes (sinon réduction d'étoiles ou étirement plus doux) ; "
                "fond toujours R = G = B (fond éclairci : fond de l'image d'étoiles pas à 0).")
 
-lrgb = pre_block() + [rgb_comb_item(), (solver_container(), '')] + gradient_block('rgb') + [
+lrgb = pre_block() + [rgb_comb_item(), (solver_container(), ''), (solver_seul(), '')] + gradient_block('rgb') + [
     (M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), D_BXT_CO + BXT_C),
     (note('Find_Background', T_FINDBG), ''),
     spcc(),
@@ -591,7 +599,7 @@ lrgb = pre_block() + [rgb_comb_item(), (solver_container(), '')] + gradient_bloc
 ] + finish_block() + stars_end('RGB_stars', screen_extra=SCREEN_LRGB)
 
 # ---------------------------------------------------------------- LHaRGB
-lhargb = pre_block() + [rgb_comb_item(False), (solver_container(), '')] + gradient_block('lha') + [
+lhargb = pre_block() + [rgb_comb_item(False), (solver_container(), ''), (solver_seul(), '')] + gradient_block('lha') + [
     (M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), D_BXT_CO + BXT_C),
     (note('Find_Background', T_FINDBG), ''),
     spcc(),
@@ -634,7 +642,7 @@ lhargb = pre_block() + [rgb_comb_item(False), (solver_container(), '')] + gradie
 def nb_masters(chans):
     names = ' et '.join(chans)
     return [(note('Masters_' + '_'.join(chans), "Masters %s : retrait du gradient sur CHAQUE master séparément (icônes suivantes). O est le plus sensible à la Lune : contrôle bien son modèle. "
-                  "Nomme les vues exactement 'S', 'H' et 'O' : les formules en dépendent." % names), ''), (solver_container(), '')] + gradient_block('sho' if 'S' in chans else 'hoo') + [
+                  "Nomme les vues exactement 'S', 'H' et 'O' : les formules en dépendent." % names), ''), (solver_container(), ''), (solver_seul(), '')] + gradient_block('sho' if 'S' in chans else 'hoo') + [
         (M.instance('LinearFit', 'LinearFit_ref_H', {'rejectLow': '0.000000', 'rejectHigh': '0.920000'}, {'referenceViewId': 'H'}),
          "Option — LinearFit avec H comme référence : applique sur O (et S). Rapproche fonds et niveaux, ce qu'exige Foraxx (theAstroShed, Galactic Hunter). Référence : vue nommée 'H'.")]
 
@@ -693,7 +701,7 @@ def rgb_stars_block():
     return [
         (note('Etoiles_RGB', "ÉTOILES RGB — masters R, G, B : même recadrage, puis les icônes suivantes dans l'ordre (combinaison, gradient via l'icône GradientCorrection ou les notes, BXT Correct Only, SPCC, BXT, SXT)." + STARS_RGBSHO), ''),
         rgb_comb_item(),
-        (solver_container(), ''),
+        (solver_container(), ''), (solver_seul(), ''),
         (M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), D_BXT_CO + BXT_C),
         (note('Find_Background', T_FINDBG), ''),
         spcc(),
@@ -810,9 +818,6 @@ def stat_auto():
     assert a in x
     return n, x.replace(a, a.replace('true', 'false'))
 
-def solver_parts():
-    return [script('ImageSolver_Date', ''), script('ImageSolver', '')]
-
 GHS_FOND_R = lambda: ghs('GHS_fond', 10, hp=0.22, sf=1.0, sp=0.22)   # fond 0,25 (Statistical Stretch) -> environ 0,13
 SPFC_OPTS = dict(rgb='antlia', gray='antlia_L_spec', qe='qe_imx455')
 
@@ -826,21 +831,22 @@ def finition_cont(steps):
     return cont('C_Finition', [pick(steps, b)[0] for b in ('Courbes', 'LHE', 'LHE_fin')])
 
 T_RAPIDE = {
- 'LRGB': ("MODE RAPIDE LRGB — environ 13 glisser-déposer, aucun réglage à faire. Icône de repère, sans effet. "
-          "0 LinearPatternSubtraction (glisse sur un master : tous les masters ouverts). 1 Renommer_auto (double-clic, Apply Global). 2 Combinaison_RGB. "
-          "3 C_RGB_prep sur RGB (ImageSolver avec date par défaut, SPFC). 4 TON icône MGC_MARS sur RGB. "
-          "5 C_RGB_rapide sur RGB (BXT Correct Only, SPCC, BXT, SXT, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond SP = HP = 0,22) : RGB étiré sans étoiles et RGB_stars. "
-          "6 C_L_prep sur L. 7 MGC_MARS sur L. 8 C_L_rapide sur L (BXT, SXT, NXT, Statistical Stretch, GHS fond) ; ferme L_stars. "
-          "9 Star_Stretch sur RGB_stars. 10 LRGB_ajout_L sur RGB. 11 Masque_L sur RGB, Ctrl+M, puis C_Finition (Courbes, LHE, LHE_fin). 12 Etoiles_screen sur RGB. "
+ 'LRGB': ("MODE RAPIDE LRGB — icône de repère, sans effet. Aucun réglage à faire. Ordre (numéros des icônes) : "
+          "E00 LinearPatternSubtraction (glisse sur un master : tous les masters ouverts). E02 Renommer_auto (double-clic, Apply Global). E03 Combinaison_RGB. "
+          "Sur RGB : E04 ImageSolver (date par défaut si absente, puis ImageSolver ; icône seule, pas de conteneur), E05 SPFC_RGB_filtres, E06 TON MGC_MARS. "
+          "Sur L : E07 ImageSolver, E08 SPFC_L, E06 MGC_MARS. "
+          "E09 C_RGB_rapide sur RGB (BXT Correct Only, SPCC, BXT, SXT, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond SP = HP = 0,22) : RGB étiré sans étoiles et RGB_stars. "
+          "E10 C_L_rapide sur L (BXT, SXT, NXT, fermeture de L_stars, Statistical Stretch, GHS fond). "
+          "E11 Star_Stretch sur RGB_stars. E12 LRGB_ajout_L sur RGB. E13 Masque_L sur RGB, Ctrl+M, puis E14 C_Finition. E15 Etoiles_screen sur RGB. "
           "MGC : garde TON icône MGC_MARS où tu as cliqué Default Files (chaque instance a sa liste MARS). Cible hors MARS (sud au-delà de −15° environ) : GradientCorrection des options à la place de MGC. "
-          "Une étape en erreur arrête le conteneur : lis la console. Options : P2, P6, P7 ; Blanshan seulement de temps en temps."),
- 'LHA': ("MODE RAPIDE LHaRGB — environ 18 glisser-déposer. Icône de repère, sans effet. "
-         "0 LinearPatternSubtraction (glisse sur un master : tous les masters ouverts). 1 Renommer_auto (double-clic, Apply Global). 2 Combinaison_RGB (R, G, B restent ouvertes : R sert à Continuum_H). "
-         "3 C_RGB_prep sur RGB, puis MGC_MARS. 4 C_RGB_couleur_rapide sur RGB (BXT Correct Only, SPCC, BXT). "
-         "5 C_H_prep sur H, puis MGC_MARS_H, puis BXT_L_H sur H. 6 Continuum_H (k à régler), puis H_dans_RGB sur RGB. "
+          "ImageSolver ne marche pas dans un conteneur ; s'il s'arrête après la date : ImageSolver_seul des options. Une étape en erreur arrête un conteneur : lis la console."),
+ 'LHA': ("MODE RAPIDE LHaRGB — icône de repère, sans effet. "
+         "0 LinearPatternSubtraction (glisse sur un master). 1 Renommer_auto (double-clic, Apply Global). 2 Combinaison_RGB (R, G, B restent ouvertes : R sert à Continuum_H). "
+         "3 ImageSolver, SPFC_RGB_filtres, MGC_MARS sur RGB. 4 C_RGB_couleur_rapide sur RGB (BXT Correct Only, SPCC, BXT). "
+         "5 ImageSolver, SPFC_H, MGC_MARS_H, puis BXT_L_H sur H. 6 Continuum_H (k à régler), puis H_dans_RGB sur RGB. "
          "7 C_RGB_fin_rapide sur RGB (SXT, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond 0,22). "
-         "8 C_L_prep sur L, MGC_MARS, C_L_rapide sur L. 9 Star_Stretch sur RGB_stars. 10 LRGB_ajout_L. 11 Masque_L, Ctrl+M, C_Finition. 12 Etoiles_screen. "
-         "MGC : garde TES icônes MGC réglées avec Default Files. Cible hors MARS : GradientCorrection des options. Une étape en erreur arrête le conteneur : lis la console."),
+         "8 ImageSolver, SPFC_L, MGC_MARS, puis C_L_rapide sur L. 9 Star_Stretch sur RGB_stars. 10 LRGB_ajout_L. 11 Masque_L, Ctrl+M, C_Finition. 12 Etoiles_screen. "
+         "MGC : garde TES icônes MGC réglées avec Default Files. Cible hors MARS : GradientCorrection des options. ImageSolver ne marche pas dans un conteneur : icône seule."),
 }
 WHEN_R = {'GradientCorrection': "à la place de MGC_MARS si la cible est hors couverture MARS (sud au-delà de −15° environ) ou si MGC échoue",
           'Etoiles_reduites': L.WHEN['Etoiles_reduites']}
@@ -865,7 +871,7 @@ def write_rapide(filename, prefix, title, steps, main_spec, opt_spec):
     return len(main), len(opts)
 
 def rapide_common_opts(steps):
-    return [(2, *pick(steps, 'GradientCorrection')),
+    return [(2, *pick(steps, 'GradientCorrection')), (2, *pick(steps, 'ImageSolver_seul')),
             (6, *pick(steps, 'Boost_finition_light')), (6, *pick(steps, 'Boost_finition')), (6, *pick(steps, 'HDRMT_50')), (6, *pick(steps, 'NXT_final')),
             (7, *pick(steps, 'Halo_B_Gon')), (7, *pick(steps, 'MT_etoiles')), (7, *pick(steps, 'Etoiles_reduites'))]
 
@@ -877,19 +883,19 @@ def note_rapide(prefix):
     return (1, ('Mode_rapide', '   <instance class="NoOperation" version="256" id="Mode_rapide_instance">\n      <description>%s</description>\n   </instance>' % escape(T_RAPIDE[prefix])), '')
 
 bxt_rgb = lambda: M.bxt('BXT_RGB', False, 0.25, 0.0, 0.50)
-l_prep = lambda: cont('C_L_prep', solver_parts() + [M.spfc('SPFC_L', **SPFC_OPTS)])
-rgb_prep = lambda: cont('C_RGB_prep', solver_parts() + [M.spfc('SPFC_RGB_filtres', **SPFC_OPTS)])
 l_rapide = lambda bxt: cont('C_L_rapide', [bxt, M.sxt('SXT_lineaire', False), M.nxt('NXT_L', 0.60, 1), fermer('Fermer_L_stars', 'L_stars'), stat_auto(), GHS_FOND_R()])
 
 rapide_lrgb = [(1, *pick(lrgb, 'LinearPatternSubtraction')), note_rapide('LRGB'), (1, *pick(lrgb, 'Renommer_auto')), (1, *pick(lrgb, 'Combinaison_RGB')),
-    (2, rgb_prep(), ''), (2, *pick(lrgb, 'MGC_MARS')), (2, l_prep(), ''),
+    (2, solver_container(), ''), (2, *pick(lrgb, 'SPFC_RGB_filtres')), (2, *pick(lrgb, 'MGC_MARS')),
+    (2, solver_container(), ''), (2, *pick(lrgb, 'SPFC_L')),
     (3, cont('C_RGB_rapide', [M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), spcc_perso('SPCC'), bxt_rgb(), M.sxt('SXT_lineaire', False),
                               M.nxt('NXT_RGB', 0.80, 1), stat_auto(), GHS_FOND_R()]), ''),
     (3, l_rapide(M.bxt('BXT_L', False, 0.25, 0.0, 0.80)), '')] + rapide_end(lrgb)
 
 rapide_lha = [(1, *pick(lhargb, 'LinearPatternSubtraction')), note_rapide('LHA'), (1, *pick(lhargb, 'Renommer_auto')), (1, *pick(lhargb, 'Combinaison_RGB')),
-    (2, rgb_prep(), ''), (2, *pick(lhargb, 'MGC_MARS')),
-    (2, cont('C_H_prep', solver_parts() + [M.spfc('SPFC_H', nb=(656.3, 3.0), **SPFC_OPTS)]), ''), (2, *pick(lhargb, 'MGC_MARS_H')), (2, l_prep(), ''),
+    (2, solver_container(), ''), (2, *pick(lhargb, 'SPFC_RGB_filtres')), (2, *pick(lhargb, 'MGC_MARS')),
+    (2, solver_container(), ''), (2, *pick(lhargb, 'SPFC_H')), (2, *pick(lhargb, 'MGC_MARS_H')),
+    (2, solver_container(), ''), (2, *pick(lhargb, 'SPFC_L')),
     (3, cont('C_RGB_couleur_rapide', [M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), spcc_perso('SPCC'), bxt_rgb()]), ''),
     (3, *pick(lhargb, 'BXT_L_H')), (3, *pick(lhargb, 'Continuum_H')), (3, *pick(lhargb, 'H_dans_RGB')),
     (3, cont('C_RGB_fin_rapide', [M.sxt('SXT_lineaire', False), M.nxt('NXT_RGB', 0.80, 1), stat_auto(), GHS_FOND_R()]), ''),
