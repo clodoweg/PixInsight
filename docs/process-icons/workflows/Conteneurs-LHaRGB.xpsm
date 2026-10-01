@@ -1423,11 +1423,11 @@ max(0, (0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2] - s) / (1 - s))</parameter>
             </tr>
             <tr>
                <td id="x" value="0.25000"/>
-               <td id="y" value="0.22000"/>
+               <td id="y" value="0.19000"/>
             </tr>
             <tr>
                <td id="x" value="0.75000"/>
-               <td id="y" value="0.78000"/>
+               <td id="y" value="0.81000"/>
             </tr>
             <tr>
                <td id="x" value="1.00000"/>
@@ -1508,7 +1508,7 @@ max(0, (0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2] - s) / (1 - s))</parameter>
             </tr>
             <tr>
                <td id="x" value="0.50000"/>
-               <td id="y" value="0.65000"/>
+               <td id="y" value="0.72000"/>
             </tr>
             <tr>
                <td id="x" value="1.00000"/>

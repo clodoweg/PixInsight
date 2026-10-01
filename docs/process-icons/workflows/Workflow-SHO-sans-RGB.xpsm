@@ -915,11 +915,13 @@ max(0, (0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2] - s) / (1 - s))</parameter>
       <table id="outputData" rows="0"/>
    </instance>
    <instance class="CurvesTransformation" version="256" id="E25_Courbes_instance">
-      <description>PRÉRÉGLÉ : légère courbe en S (0,25 -&gt; 0,22 ; 0,75 -&gt; 0,78), saturation 0,5 -&gt; 0,65.
+      <description>PRÉRÉGLÉ : courbe en S (0,25 -&gt; 0,19 ; 0,75 -&gt; 0,81), saturation 0,5 -&gt; 0,72.
 
-À RÉGLER : sous Masque_L ; ajuste à l'œil.
+À RÉGLER : sous Masque_L ; une seule passe.
 
 SI :
+- trop saturé -&gt; S à 0,65
+- pas assez -&gt; option Boost_finition
 - fond qui se colore -&gt; vérifie le masque
 
 Détails : page docs/pixinsight-workflow.html.</description>
@@ -963,11 +965,11 @@ Détails : page docs/pixinsight-workflow.html.</description>
          </tr>
          <tr>
             <td id="x" value="0.25000"/>
-            <td id="y" value="0.22000"/>
+            <td id="y" value="0.19000"/>
          </tr>
          <tr>
             <td id="x" value="0.75000"/>
-            <td id="y" value="0.78000"/>
+            <td id="y" value="0.81000"/>
          </tr>
          <tr>
             <td id="x" value="1.00000"/>
@@ -1048,7 +1050,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
          </tr>
          <tr>
             <td id="x" value="0.50000"/>
-            <td id="y" value="0.65000"/>
+            <td id="y" value="0.72000"/>
          </tr>
          <tr>
             <td id="x" value="1.00000"/>

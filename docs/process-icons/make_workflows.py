@@ -109,7 +109,7 @@ def raw(src_id, new):
     t = re.sub(r'\n\s*<time[^>]*/>', '', m.group(0))
     return new, '   ' + t.replace('id="%s_instance"' % src_id, 'id="%s_instance"' % new, 1)
 
-def curves(name, k=((0, 0), (0.25, 0.22), (0.75, 0.78), (1, 1)), sat=0.65):
+def curves(name, k=((0, 0), (0.25, 0.19), (0.75, 0.81), (1, 1)), sat=0.72):
     def post(t):
         def table(tid, pts):
             rows = ''.join('\n         <tr>\n            <td id="x" value="%.5f"/>\n            <td id="y" value="%.5f"/>\n         </tr>' % p for p in pts)
@@ -377,7 +377,7 @@ D_BL = ("Réduction d'étoiles Bill Blanshan, méthode Transfer V2 : GLISSE l'ic
         "S = 0,20 dans cette icône (valeur de Bill : 0,15 ; plus bas = étoiles plus petites ; étoiles trop petites -> 0,25, ou saute cette étape). Les versions V3 et les méthodes Halo/Star sont dans 01-PixelMath-formules.xpsm.")
 D_MT = ("Alternative : MorphologicalTransformation sur l'image d'étoiles seule (ou avec un masque d'étoiles), AVANT Etoiles_screen. Morphological Selection 0,25 (sous 0,5 = érosion), Amount 0,60, 1 itération, élément circulaire 5x5.")
 D_CURVES = ("CurvesTransformation — sur l'image sans étoiles étirée, sous masque de luminance (icône Masque_L juste avant). "
-            "Préréglé : légère courbe en S sur RGB/K (0,25 → 0,22 ; 0,75 → 0,78) et saturation (canal S, milieu monté de 0,5 à 0,65 ; couleurs encore ternes -> 0,70 ou deuxième passe), interpolation Akima. "
+            "Préréglé : courbe en S sur RGB/K (0,25 → 0,19 ; 0,75 → 0,81) et saturation (canal S, milieu monté de 0,5 à 0,72), interpolation Akima : environ l'effet de l'ancienne courbe légère passée deux fois, saturation un peu moins forte. Trop saturé -> milieu S à 0,65 ; trop contrasté -> 0,21 / 0,79 ; pas assez -> option Boost_finition. "
             "Place les points aux niveaux réels (valeur K du curseur dans la barre d'état). Canaux : RGB/K = même courbe sur R, G, B ; L = luminosité CIE L* seule ; "
             "S = saturation en fonction de la saturation (sature les pixels ternes sans toucher aux saturés) ; H = teinte d'origine → nouvelle teinte (un point déplacé verticalement change une couleur en une autre) ; c = chroma. "
             "Petits déplacements, compare avec l'aperçu.")
