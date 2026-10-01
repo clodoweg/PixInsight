@@ -1,17 +1,17 @@
 # Idées pour aller encore plus vite (à faire plus tard)
 
-Contexte : une centaine de photos à retraiter, **masters déjà empilés (un par filtre et par cible)**, mode conteneurs préféré. Aujourd'hui le chemin LRGB en conteneurs compte 18 icônes. Ces idées visent 7 à 8 icônes en mode « rapide » ; les chemins complets restent pour les meilleures photos. Rien n'est commencé sauf A.
+Contexte : une centaine de photos à retraiter, **masters déjà empilés (un par filtre et par cible)**, mode conteneurs préféré. Le chemin LRGB en conteneurs comptait 18 icônes, 16 depuis A. Ces idées visent 7 à 8 icônes en mode « rapide » ; les chemins complets restent pour les meilleures photos. A est fait ; le reste n'est pas commencé.
 
 | Workflow | Aujourd'hui (conteneurs) | Avec A + B + D | Avec C en plus |
 |---|---|---|---|
-| LRGB | 18 | ≈ 8 | — |
-| SHO sans RGB | 25 | ≈ 15 | ≈ 8 |
-| HOO | 25 | ≈ 14 | ≈ 7 |
+| LRGB | 18 (16 depuis A) | ≈ 8 | — |
+| SHO sans RGB | 25 (23 depuis A) | ≈ 15 | ≈ 8 |
+| HOO | 25 (23 depuis A) | ≈ 14 | ≈ 7 |
 
 (Estimations, à confirmer en construisant le mode rapide.)
 
-## A. Retirer ce qui ne sert plus — **fait par l'utilisateur (1er octobre 2026)**
-1. WBPP et CosmeticCorrection ne servent plus : les masters sont déjà empilés. L'utilisateur les a retirés de son côté ; les fichiers du dépôt les contiennent encore (à retirer si on construit le mode « masters empilés »).
+## A. Retirer ce qui ne sert plus — **fait (1er octobre 2026)**
+1. WBPP et CosmeticCorrection sortis du chemin principal (masters déjà empilés) et rangés en options (« seulement si tu repars des brutes ») dans `layout.py` : présents dans `Options-X`, dans les options de `Conteneurs-X` et dans le préparateur (décochés).
 
 ## B. Conteneurs plus gros
 2. **Gradient dans le conteneur linéaire** : SPFC → MGC → BXT Correct Only → SPCC → BXT → SXT → NXT en un clic par image (masters résolus par WBPP). LRGB : phase linéaire en 2 clics (RGB, puis L).

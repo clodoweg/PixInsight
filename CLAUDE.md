@@ -40,7 +40,7 @@ Utilisateur : astrophotographe, PixInsight 1.9.5 sur macOS (Apple Silicon), CDK1
 
 ### En cours / prochaines étapes proposées (non commencées)
 
-**Idées pour réduire encore le nombre d'icônes : voir `docs/idees-acceleration.md`** (A fait par l'utilisateur : WBPP et CosmeticCorrection retirés de son côté ; ordre conseillé ensuite : B + D + renommage automatique, puis narrowband sans séparation des canaux, puis script « Traiter ma cible »).
+**Idées pour réduire encore le nombre d'icônes : voir `docs/idees-acceleration.md`** (A fait : WBPP et CosmeticCorrection passés en options dans `layout.py` ; ordre conseillé ensuite : B + D + renommage automatique, puis narrowband sans séparation des canaux, puis script « Traiter ma cible »).
 
 1. **Masters déjà empilés** : mode sans WBPP/CosmeticCorrection ; vérifier si les masters d'une cible sont alignés entre eux (sinon ajouter StarAlignment, référence L ou H).
 2. **Inventaire automatique** des ~100 cibles (script Python lisant les en-têtes XISF/FITS : cible, filtres, temps de pose → workflow, alertes, `.xpsm` par cible). En attente de l'utilisateur : exemple de nom de fichier, empilement en une seule passe WBPP ou non, en-tête d'un master.
