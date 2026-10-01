@@ -1273,7 +1273,7 @@ max(0, (0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2] - s) / (1 - s))</parameter>
          <parameter id="radius" value="40"/>
          <parameter id="histogramBins" value="Bit8"/>
          <parameter id="slopeLimit" value="2.0"/>
-         <parameter id="amount" value="0.250"/>
+         <parameter id="amount" value="0.300"/>
          <parameter id="circularKernel" value="true"/>
       </instance>
    </instance>
