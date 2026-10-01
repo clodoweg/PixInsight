@@ -59,7 +59,7 @@ JS = r'''<script>
   function wf() { return D.wf.filter(function (w) { return w.id === st.wf; })[0] || D.wf[0]; }
   function save() { try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {} }
   function groupsOf(w) { var g = {}; w.steps.forEach(function (s) { if (s.r.indexOf(':') > 0) { var p = s.r.split(':'); p[1].split('|').forEach(function (v) { (g[p[0]] = g[p[0]] || {})[v] = 1; }); } }); return g; }
-  function chosen(w) { var g = groupsOf(w), c = {}; Object.keys(g).forEach(function (k) { var v = (st.ch || {})[k]; c[k] = g[k][v] ? v : D.defaults[k]; }); return c; }
+  function chosen(w) { var g = groupsOf(w), c = {}; Object.keys(g).forEach(function (k) { var v = (st.ch || {})[k]; c[k] = g[k][v] ? v : ((w.def || {})[k] || D.defaults[k]); }); return c; }
   function keep(s, c) {
     if (s.r === 'core') return true;
     if (s.r === 'opt') return !!(st.opt || {})[s.b];

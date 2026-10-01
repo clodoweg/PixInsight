@@ -292,88 +292,6 @@ Détails : page docs/pixinsight-workflow.html.</description>
       </table>
       <parameter id="information"></parameter>
    </instance>
-   <instance class="NoOperation" version="256" id="P4_Etirement_instance">
-      <description>PHASE 4 — Étirement : passage en non linéaire, même fond pour toutes les images. Colonne de repère, sans effet.</description>
-   </instance>
-   <instance class="Script" version="256" id="Opt_Statistical_Stretch_instance">
-      <description>ALTERNATIVE — Statistical Stretch.
-
-LANCEMENT : glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
-
-PRÉRÉGLÉ : Target Median 0,25, Blackpoint Sigma 5, Linked coché, reste par défaut.
-
-À RÉGLER : même Target Median pour le RGB et pour L ; puis GHS_3_fond sur les deux, avant LRGB.
-
-SI :
-- cible compacte (galaxie) -&gt; Target Median 0,10 pour les deux, sans GHS_3_fond
-
-Détails : page docs/pixinsight-workflow.html.</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/statisticalstretch.js</parameter>
-      <parameter id="md5sum">defab45bb4e2f33db39a7bb016cdefb0</parameter>
-      <table id="parameters" rows="15">
-         <tr>
-            <td id="id">targetMedian</td>
-            <td id="value">0.25</td>
-         </tr>
-         <tr>
-            <td id="id">curvesBoost</td>
-            <td id="value">0</td>
-         </tr>
-         <tr>
-            <td id="id">numIterations</td>
-            <td id="value">1</td>
-         </tr>
-         <tr>
-            <td id="id">normalizeImageRange</td>
-            <td id="value">false</td>
-         </tr>
-         <tr>
-            <td id="id">linkedStretch</td>
-            <td id="value">true</td>
-         </tr>
-         <tr>
-            <td id="id">openDialogbox</td>
-            <td id="value">true</td>
-         </tr>
-         <tr>
-            <td id="id">autoConvergence</td>
-            <td id="value">false</td>
-         </tr>
-         <tr>
-            <td id="id">blackpointSigma</td>
-            <td id="value">5</td>
-         </tr>
-         <tr>
-            <td id="id">noBlackClip</td>
-            <td id="value">false</td>
-         </tr>
-         <tr>
-            <td id="id">hdrCompress</td>
-            <td id="value">false</td>
-         </tr>
-         <tr>
-            <td id="id">hdrAmount</td>
-            <td id="value">0.25</td>
-         </tr>
-         <tr>
-            <td id="id">hdrKnee</td>
-            <td id="value">0.35</td>
-         </tr>
-         <tr>
-            <td id="id">lumaOnly</td>
-            <td id="value">false</td>
-         </tr>
-         <tr>
-            <td id="id">lumaMode</td>
-            <td id="value">rec709</td>
-         </tr>
-         <tr>
-            <td id="id">lumaBlend</td>
-            <td id="value">0.6</td>
-         </tr>
-      </table>
-      <parameter id="information"></parameter>
-   </instance>
    <instance class="NoOperation" version="256" id="P6_Finition_instance">
       <description>PHASE 6 — Finition : contraste et saturation sur l'image sans étoiles. Colonne de repère, sans effet.</description>
    </instance>
@@ -494,12 +412,10 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <icon id="Opt_DBE" instance="Opt_DBE_instance" xpos="290" ypos="94" workspace="Workspace01"/>
    <icon id="P3_Lineaire" instance="P3_Lineaire_instance" xpos="550" ypos="20" workspace="Workspace01"/>
    <icon id="Opt_Find_Background" instance="Opt_Find_Background_instance" xpos="550" ypos="64" workspace="Workspace01"/>
-   <icon id="P4_Etirement" instance="P4_Etirement_instance" xpos="810" ypos="20" workspace="Workspace01"/>
-   <icon id="Opt_Statistical_Stretch" instance="Opt_Statistical_Stretch_instance" xpos="810" ypos="64" workspace="Workspace01"/>
-   <icon id="P6_Finition" instance="P6_Finition_instance" xpos="1070" ypos="20" workspace="Workspace01"/>
-   <icon id="Opt_HDRMT" instance="Opt_HDRMT_instance" xpos="1070" ypos="64" workspace="Workspace01"/>
-   <icon id="Opt_NXT_final" instance="Opt_NXT_final_instance" xpos="1070" ypos="94" workspace="Workspace01"/>
-   <icon id="P7_Etoiles" instance="P7_Etoiles_instance" xpos="1330" ypos="20" workspace="Workspace01"/>
-   <icon id="Opt_MT_etoiles" instance="Opt_MT_etoiles_instance" xpos="1330" ypos="64" workspace="Workspace01"/>
-   <icon id="Opt_Halo_B_Gon" instance="Opt_Halo_B_Gon_instance" xpos="1330" ypos="94" workspace="Workspace01"/>
+   <icon id="P6_Finition" instance="P6_Finition_instance" xpos="810" ypos="20" workspace="Workspace01"/>
+   <icon id="Opt_HDRMT" instance="Opt_HDRMT_instance" xpos="810" ypos="64" workspace="Workspace01"/>
+   <icon id="Opt_NXT_final" instance="Opt_NXT_final_instance" xpos="810" ypos="94" workspace="Workspace01"/>
+   <icon id="P7_Etoiles" instance="P7_Etoiles_instance" xpos="1070" ypos="20" workspace="Workspace01"/>
+   <icon id="Opt_MT_etoiles" instance="Opt_MT_etoiles_instance" xpos="1070" ypos="64" workspace="Workspace01"/>
+   <icon id="Opt_Halo_B_Gon" instance="Opt_Halo_B_Gon_instance" xpos="1070" ypos="94" workspace="Workspace01"/>
 </xpsm>

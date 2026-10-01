@@ -28,6 +28,7 @@ PHASE = {
 }
 
 NB = ('RSHO', 'SHO', 'HOO')
+LUM = ('LRGB', 'LHA')   # workflows avec luminance : par défaut Statistical Stretch sur le RGB, GHS sur L
 OPT = {'LinearPatternSubtraction', 'WBPP', 'CC_auto', 'Find_Background', 'LinearFit_ref_H', 'Continuum_auto', 'H_dans_L', 'NBRGBCombination', 'HDRMT', 'NXT_final',
        'MT_etoiles', 'Halo_B_Gon', 'CorrectMagentaStars', 'SCNR_SHO', 'Perfect_Palette_Picker', 'NBColourMapper', 'H_en_luminance',
        'Etoiles_HOO_synth', 'DualBand_H', 'DualBand_O', 'SPFC_S'}
@@ -45,9 +46,9 @@ def role(prefix, base):
     if base == 'GHS_3_fond':
         return 'core'   # assombrit le fond après GHS comme après Statistical Stretch
     if base.startswith('GHS_'):
-        return 'str:ghs'
+        return 'str:ghs|mix' if prefix in LUM else 'str:ghs'
     if base == 'Statistical_Stretch':
-        return 'str:stat'
+        return 'str:stat|mix' if prefix in LUM else 'str:stat'
     if base in ('NBN_SHO', 'NBN_HOO', 'HOO_simple'):
         return 'pal:nbn'
     if base in ('Foraxx_SHO', 'Foraxx_HOO'):
@@ -58,9 +59,10 @@ def role(prefix, base):
 
 
 DEFAULT = {'grad': 'mgc', 'str': 'ghs', 'pal': 'nbn'}
+WF_DEFAULT = {p: {'str': 'mix'} for p in LUM}
 CHOICES = {
     'grad': ('Gradient', [('mgc', 'MGC + MARS (défaut)'), ('gc', 'GradientCorrection (sans MARS)'), ('dbe', 'DBE (nébuleuse qui remplit le champ)')]),
-    'str': ('Étirement', [('ghs', 'GHS (défaut)'), ('stat', 'Statistical Stretch (automatique)')]),
+    'str': ('Étirement', [('mix', 'Statistical Stretch sur RGB + GHS sur L (défaut LRGB)'), ('ghs', 'GHS sur tout (défaut sans L)'), ('stat', 'Statistical Stretch sur tout (automatique)')]),
     'pal': ('Palette', [('nbn', 'NarrowbandNormalization (défaut)'), ('foraxx', 'Foraxx (or et bleu)'), ('hubble', 'Variante Hubble (HOO, tons dorés)')]),
 }
 
@@ -82,13 +84,13 @@ WHEN = {
 }
 
 
-def is_default(r):
+def is_default(r, prefix=None):
     if r == 'core':
         return True
     if r == 'opt':
         return False
     g, vals = r.split(':')
-    return DEFAULT[g] in vals.split('|')
+    return WF_DEFAULT.get(prefix, {}).get(g, DEFAULT[g]) in vals.split('|')
 
 # Conteneurs (ProcessContainer) : suites d'étapes sans réglage intermédiaire, appliquées à la même image.
 # nom -> (image cible, étapes). Un conteneur n'est utilisé que si toutes ses étapes sont dans la sélection.

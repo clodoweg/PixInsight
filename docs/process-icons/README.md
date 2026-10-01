@@ -87,7 +87,7 @@ Icônes SPCC et SPFC configurées pour **QHY600 (capteur Sony IMX455) + filtres 
 
 Sinon, deux fichiers par workflow :
 
-- **`Workflow-X.xpsm` — chemin principal** : les étapes standard seulement (MGC + MARS pour le gradient, GHS pour l'étirement, NarrowbandNormalization pour la palette), numérotées `E01_WBPP`, `E02_CC_auto`…
+- **`Workflow-X.xpsm` — chemin principal** : les étapes standard seulement (MGC + MARS pour le gradient, GHS pour l'étirement — en LRGB et LHaRGB : Statistical Stretch sur le RGB et GHS sur L —, NarrowbandNormalization pour la palette), numérotées `E01_WBPP`, `E02_CC_auto`…
 - **`Options-X.xpsm` — options et alternatives** (`Opt_HDRMT`, `Opt_DBE`…) : à charger seulement si besoin ; la description de chaque icône commence par `OPTION — quand l'utiliser` ou `ALTERNATIVE — à la place de quoi`.
 
 - **`Conteneurs-X.xpsm` — le fichier unique conseillé (à tester)** : le chemin principal complet ET toutes les options, rangées dans la colonne de leur phase sous une icône-titre `P#_options` (`Opt_HDRMT` en Finition, `Opt_DBE` en Gradient…). Dans le chemin principal, chaque suite d'étapes sans réglage intermédiaire, appliquée à la même image, est remplacée par une icône *ProcessContainer* (un clic au lieu de trois à cinq) : LRGB 17 icônes au lieu de 23, LHaRGB 23 au lieu de 27, RGB-SHO 26 au lieu de 33, SHO sans RGB 24 au lieu de 30, HOO 24 au lieu de 27. Chaque étape garde les réglages de son icône. Le préparateur fait la même chose avec la case « Regrouper en conteneurs ».

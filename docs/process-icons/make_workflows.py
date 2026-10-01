@@ -238,14 +238,14 @@ def write(filename, prefix, title, steps):
         r = L.role(prefix, base)
         if r == 'opt':
             tag = 'OPTION — %s.\n\n' % L.WHEN[base]
-        elif not L.is_default(r):
+        elif not L.is_default(r, prefix):
             tag = 'ALTERNATIVE — %s.\n\n' % label(r)
         else:
             tag = ''
         xml = xml.replace('<description>', '<description>' + escape(tag), 1)
         entries.append((base, ph, r, xml, tag))
-    main = [(b, ph, x) for b, ph, r, x, t in entries if L.is_default(r)]
-    opts = [(b, ph, x) for b, ph, r, x, t in entries if not L.is_default(r)]
+    main = [(b, ph, x) for b, ph, r, x, t in entries if L.is_default(r, prefix)]
+    opts = [(b, ph, x) for b, ph, r, x, t in entries if not L.is_default(r, prefix)]
     save(filename, title + ' — chemin principal', *layout(main, lambda k, b: 'E%02d_%s' % (k, b)))
     save(filename.replace('Workflow-', 'Options-'), title + ' — options et alternatives', *layout(opts, lambda k, b: 'Opt_%s' % b))
     # Conteneurs-X.xpsm : chemin principal complet, suites sans réglage remplacées par un ProcessContainer
@@ -263,7 +263,7 @@ def write(filename, prefix, title, steps):
                 cmain.append((cn, ph, container('__ID__', [byb[m] for m in members])))
     save(filename.replace('Workflow-', 'Conteneurs-'), title + ' — chemin principal avec conteneurs, options dans leur phase', *layout_all(cmain, opts))
     conts = [{'n': cn, 't': target, 'm': members} for cn, target, members in L.CONTAINERS.get(prefix, [])]
-    wf = {'id': prefix, 'file': filename, 'title': title, 'steps': [], 'containers': conts}
+    wf = {'id': prefix, 'file': filename, 'title': title, 'steps': [], 'containers': conts, 'def': L.WF_DEFAULT.get(prefix, {})}
     for b, ph, r, x, t in entries:
         key = 'i%d' % len(DATA['inst'])
         for k2, v in DATA['inst'].items():
@@ -456,7 +456,11 @@ def stars_end(cms=False, screen_extra='', cms_extra=''):
 def ghs_block(extra_desc='', stat_extra='', fond_extra=''):
     return [(ghs('GHS_1_premier', 10), D_GHS1 + extra_desc), (ghs('GHS_2_contraste', 4, hp=0.9, sf=1.0, sp=0.35), D_GHS2), (note('Statistical_Stretch', T_STAT + stat_extra), ''), (ghs('GHS_3_fond', 10, hp=0.20, sf=1.0, sp=0.20), D_GHS3 + fond_extra)]
 
-L_STAT = " LRGB : même Target Median pour le RGB et pour L, puis GHS_3_fond sur les deux avant LRGB."
+L_GHS = (" LRGB, méthode par défaut : GHS_1 et GHS_2 sur L sans étoiles seulement (L porte le détail) ; le RGB passe par Statistical Stretch. "
+         "Si tu as choisi GHS sur tout : aussi sur le RGB sans étoiles, jusqu'au MÊME fond et à une médiane proche.")
+L_STAT = (" LRGB, méthode par défaut : sur le RGB sans étoiles seulement (il ne donne que la couleur), Target Median 0,25 ; L passe par GHS. "
+          "Si tu as choisi Statistical Stretch sur tout : même Target Median pour L. Ensuite GHS_3_fond sur les deux avant LRGB. "
+          "Couleurs ternes : Saturation plus basse dans LRGBCombination, ou Luma Only coché.")
 L_FOND = " LRGB : applique-la au RGB ET à L avec les mêmes réglages, avant LRGBCombination, pour qu'elles arrivent au même fond (0,12-0,14)."
 rgb_comb = lambda: (note('Combinaison_RGB', ''), '')
 MATERIEL = "QHY600 (Sony IMX455) + filtres Antlia V Pro"
@@ -505,7 +509,7 @@ lrgb = pre_block() + [rgb_comb(), (solver_container(), '')] + gradient_block('rg
     (M.sxt('SXT_lineaire', False), D_SXT_LIN + " Sur RGB (garde les étoiles : ce sont celles de l'image finale) et sur L (jette ses étoiles)."),
     (M.nxt('NXT_RGB', 0.80, 1), "NoiseXTerminator sur RGB sans étoiles : Denoise 0,80 (0,70 à 0,90), Detail 0,15. Toujours après BXT. Fonctionne en linéaire ou après étirement (RC Astro)." + NXT_C),
     (M.nxt('NXT_L', 0.60, 1), "NoiseXTerminator sur L sans étoiles : Denoise 0,60 (0,50 à 0,70) pour garder le détail fin." + NXT_C),
-] + ghs_block(" En LRGB : étire le RGB sans étoiles et L sans étoiles jusqu'au MÊME fond et à une médiane proche.", L_STAT, L_FOND) + [
+] + ghs_block(L_GHS, L_STAT, L_FOND) + [
     (note('Star_Stretch', T_STARSTRETCH + STARS_LRGB), ''),
     (M.instance('LRGBCombination', 'LRGB_ajout_L', {'mL': '0.500', 'mc': '0.400', 'noiseReduction': True}, post=M.lrgb_post),
      "LRGBCombination sur les images étirées et SANS étoiles : seul L activé (renomme ta luminance 'L'), glisse le triangle sur le RGB. Lightness 0,5 ; Saturation 0,40 (plus bas = plus saturé) ; "
@@ -545,7 +549,7 @@ lhargb = pre_block() + [rgb_comb(), (solver_container(), '')] + gradient_block('
      "Si elles sont abîmées : monte k, baisse w, ou passe SXT sur la copie du RGB non injecté et garde ses étoiles (option la plus propre)."),
     (M.nxt('NXT_RGB', 0.80, 1), "NoiseXTerminator sur RGB sans étoiles : Denoise 0,80, Detail 0,15." + NXT_C),
     (M.nxt('NXT_L', 0.60, 1), "NoiseXTerminator sur L sans étoiles : Denoise 0,60." + NXT_C),
-] + ghs_block(" Étire RGB et L sans étoiles jusqu'au même fond.", L_STAT, L_FOND) + [
+] + ghs_block(L_GHS, L_STAT, L_FOND) + [
     (note('Star_Stretch', T_STARSTRETCH + STARS_LRGB), ''),
     (M.instance('LRGBCombination', 'LRGB_ajout_L', {'mL': '0.500', 'mc': '0.400', 'noiseReduction': True}, post=M.lrgb_post),
      "LRGBCombination sur les images étirées sans étoiles : seul L activé (vue 'L'), Lightness 0,5, Saturation 0,40, Chrominance noise reduction cochée. "

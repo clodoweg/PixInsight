@@ -301,7 +301,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <description>PHASE 4 — Étirement : passage en non linéaire, même fond pour toutes les images. Colonne de repère, sans effet.</description>
    </instance>
    <instance class="Script" version="256" id="Opt_Statistical_Stretch_instance">
-      <description>ALTERNATIVE — Statistical Stretch.
+      <description>ALTERNATIVE — Statistical Stretch sur tout.
 
 LANCEMENT : glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
 
