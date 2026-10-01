@@ -64,7 +64,6 @@ Les formules supposent des images nommées comme indiqué (renomme tes vues avec
 | `MGC_MARS` | MultiscaleGradientCorrection : base MARS, filtres MARS L/R/G/B, Gradient scale 1024, Structure separation 3, Model smoothness 1,0, modèle affiché |
 | `MGC_MARS_H` / `MGC_MARS_O` | Idem pour un master narrowband : filtre MARS Gray = `Ha` ou `OIII` (base MARS DR2, juin 2026). Pas de bande S dans MARS : GradientCorrection ou DBE pour S |
 | `DBE_base` | DynamicBackgroundExtraction sans points : Samples per row 15, radius 15, Tolerance 0,5, Shadows relaxation 3, Smoothing 0,25, Subtract, Normalize |
-| `DynamicCrop_base` | DynamicCrop sans recadrage : trace ton cadre, puis crée ton icône |
 | `NBN_SHO` / `NBN_HOO` | NarrowbandNormalization, palette SHO ou HOO, valeurs par défaut, sur l'image combinée étirée sans étoiles |
 | `CC_auto_WBPP` | Auto detect, Hot sigma 2,5, Cold désactivé ; à sélectionner comme modèle dans WBPP |
 
@@ -85,14 +84,14 @@ Icônes SPCC et SPFC configurées pour **QHY600 (capteur Sony IMX455) + filtres 
 
 **Le plus simple : le préparateur de la page** (section « Préparer ma photo » de `docs/pixinsight-workflow.html`). Tu choisis tes filtres, tes méthodes (gradient, étirement, palette) et tes options ; il affiche les étapes de ta photo avec ce qu'il faut régler et télécharge un `.xpsm` qui ne contient qu'elles (dans la page publiée sur claude.ai, un `.zip` à décompresser). Ses données sont dans `preparer-data.json`, régénéré avec les icônes.
 
-**Mode rapide (galaxies LRGB et LHaRGB)** : `Rapide-LRGB.xpsm` (14 icônes) et `Rapide-LHaRGB.xpsm` (20 icônes), presque tout préréglé en conteneurs : `C_RGB_prep` / `C_L_prep` / `C_H_prep` (ImageSolver + SPFC), ta propre icône MGC (liste MARS propre à chaque instance), `C_RGB_rapide` (BXT Correct Only → SPCC → BXT → SXT → NXT → Statistical Stretch 0,25 sans dialogue → GHS fond SP = HP = 0,22), `C_L_rapide` (BXT → SXT → NXT → Statistical Stretch → GHS fond), puis Star_Stretch, LRGB, Masque_L + `C_Finition`, Etoiles_screen. L'icône `E01_Mode_rapide` donne l'ordre. Options dans le même fichier : GradientCorrection, Boost_finition, HDRMT, NXT final, Halo-B-Gon, MT, Blanshan. Détails : section « Mode rapide » de la page.
+**Mode rapide (galaxies LRGB et LHaRGB)** : `Rapide-LRGB.xpsm` (13 icônes) et `Rapide-LHaRGB.xpsm` (19 icônes), presque tout préréglé en conteneurs : `C_RGB_prep` / `C_L_prep` / `C_H_prep` (ImageSolver + SPFC), ta propre icône MGC (liste MARS propre à chaque instance), `C_RGB_rapide` (BXT Correct Only → SPCC → BXT → SXT → NXT → Statistical Stretch 0,25 sans dialogue → GHS fond SP = HP = 0,22), `C_L_rapide` (BXT → SXT → NXT → Statistical Stretch → GHS fond), puis Star_Stretch, LRGB, Masque_L + `C_Finition`, Etoiles_screen. L'icône `E01_Mode_rapide` donne l'ordre. Options dans le même fichier : GradientCorrection, Boost_finition, HDRMT, NXT final, Halo-B-Gon, MT, Blanshan. Détails : section « Mode rapide » de la page.
 
 Sinon, deux fichiers par workflow :
 
 - **`Workflow-X.xpsm` — chemin principal** : les étapes standard seulement (MGC + MARS pour le gradient, GHS pour l'étirement — en LRGB et LHaRGB : Statistical Stretch sur le RGB et GHS sur L —, NarrowbandNormalization pour la palette), numérotées `E01_WBPP`, `E02_CC_auto`…
 - **`Options-X.xpsm` — options et alternatives** (`Opt_HDRMT`, `Opt_DBE`…) : à charger seulement si besoin ; la description de chaque icône commence par `OPTION — quand l'utiliser` ou `ALTERNATIVE — à la place de quoi`.
 
-- **`Conteneurs-X.xpsm` — le fichier unique conseillé (à tester)** : le chemin principal complet ET toutes les options, rangées dans la colonne de leur phase sous une icône-titre `P#_options` (`Opt_HDRMT` en Finition, `Opt_DBE` en Gradient…). Dans le chemin principal, chaque suite d'étapes sans réglage intermédiaire, appliquée à la même image, est remplacée par une icône *ProcessContainer* (un clic au lieu de trois à cinq) : LRGB 17 icônes au lieu de 23, LHaRGB 23 au lieu de 27, RGB-SHO 26 au lieu de 33, SHO sans RGB 24 au lieu de 30, HOO 24 au lieu de 27. Chaque étape garde les réglages de son icône. Le préparateur fait la même chose avec la case « Regrouper en conteneurs ».
+- **`Conteneurs-X.xpsm` — le fichier unique conseillé (à tester)** : le chemin principal complet ET toutes les options, rangées dans la colonne de leur phase sous une icône-titre `P#_options` (`Opt_HDRMT` en Finition, `Opt_DBE` en Gradient…). Dans le chemin principal, chaque suite d'étapes sans réglage intermédiaire, appliquée à la même image, est remplacée par une icône *ProcessContainer* (un clic au lieu de trois à cinq) : LRGB 17 icônes au lieu de 24, LHaRGB 23 au lieu de 28, RGB-SHO 26 au lieu de 34, SHO sans RGB 24 au lieu de 31, HOO 24 au lieu de 28. Chaque étape garde les réglages de son icône. Le préparateur fait la même chose avec la case « Regrouper en conteneurs ».
 
 | Conteneur | Image cible | Étapes |
 |---|---|---|
@@ -111,11 +110,11 @@ Dans les trois fichiers, **une colonne par phase**, avec une icône-titre sans e
 
 | Workflow | Principal | Options | Contenu |
 |---|---|---|---|
-| LRGB | 23 | 11 | Prétraitement, combinaison RGB, MGC, BXT Correct Only, SPCC, BXT, SXT linéaire, NXT, GHS, LRGBCombination, finition, étoiles |
-| LHaRGB | 27 | 14 | LRGB + soustraction du continuum et H dans le rouge ; options : calcul automatique de k, H dans L, NBRGBCombination |
-| RGB-SHO | 33 | 18 | Masters narrowband, combinaison SHO simple, BXT, SXT, extraction, NarrowbandNormalization, étoiles RGB ; options : Foraxx, Perfect Palette Picker, NBColourMapper, SCNR, LinearFit |
-| SHO-sans-RGB | 30 | 18 | Idem sans RGB, étoiles narrowband par NB to RGB Star Combination ; options : étoiles HOO synthétiques, CorrectMagentaStars |
-| HOO | 27 | 18 | Combinaison HOO, NarrowbandNormalization HOO ; options : extraction dual-band (caméra couleur), Foraxx HOO, variante Hubble, H en luminance |
+| LRGB | 24 | 12 | Prétraitement, combinaison RGB, MGC, BXT Correct Only, SPCC, BXT, SXT linéaire, NXT, GHS, LRGBCombination, finition, étoiles |
+| LHaRGB | 28 | 15 | LRGB + soustraction du continuum et H dans le rouge ; options : calcul automatique de k, H dans L, NBRGBCombination |
+| RGB-SHO | 34 | 19 | Masters narrowband, combinaison SHO simple, BXT, SXT, extraction, NarrowbandNormalization, étoiles RGB ; options : Foraxx, Perfect Palette Picker, NBColourMapper, SCNR, LinearFit |
+| SHO-sans-RGB | 31 | 19 | Idem sans RGB, étoiles narrowband par NB to RGB Star Combination ; options : étoiles HOO synthétiques, CorrectMagentaStars |
+| HOO | 28 | 19 | Combinaison HOO, NarrowbandNormalization HOO ; options : extraction dual-band (caméra couleur), Foraxx HOO, variante Hubble, H en luminance |
 
 (Les nombres ne comptent pas les icônes-titres. Masters déjà empilés : WBPP et CosmeticCorrection sont en options, pour repartir des brutes. Première option de chaque workflow : `Opt_LinearPatternSubtraction`, pour des lignes résiduelles sur un master : lance `scripts/LPS_UnClic.js` (moteur de Vicent Peris appelé sans dialogue, zone de fond automatique), à copier une fois par ordinateur (Mac ou PC) dans `src/scripts/clodoweg/` du dossier de PixInsight, à côté de `PatternCorrection` (Mac : `/Applications/PixInsight/src/scripts/clodoweg/` ; PC : en général `C:\Program Files\PixInsight\src\scripts\clodoweg\` ; pas le dossier `scripts` du premier niveau) : l'icône pointe vers `$PXI_SRCDIR/scripts/clodoweg/LPS_UnClic.js`.)
 
@@ -124,7 +123,7 @@ Dans les trois fichiers, **une colonne par phase**, avec une icône-titre sans e
 - **Process réglés** : s'appliquent directement (PixelMath, BlurXTerminator, NoiseXTerminator, StarXTerminator, LRGBCombination, LinearFit, SCNR, LHE, HDRMT, MorphologicalTransformation, CurvesTransformation, GradientCorrection, NarrowbandNormalization SHO et HOO, CosmeticCorrection).
 - **Process à compléter sur ton image ou ton matériel** :
   - `MGC_MARS`, `MGC_MARS_H`, `MGC_MARS_O` : charge la base MARS (DR2) dans les préférences de MGC si elle ne l'est pas. Les icônes H et O sont dans les workflows LHaRGB (H seulement), RGB-SHO, SHO sans RGB et HOO.
-  - `DynamicCrop` et `DBE` : icônes réelles, sans cadre ni points (ils dépendent de l'image).
+  - `DBE` : icône réelle, sans points (ils dépendent de l'image).
   - `SPCC` et `SPFC_…` : configurés pour ton matériel (QHY600 + Antlia V Pro). Bande passante narrowband 3 nm (filtres Antlia 3 nm).
   - `GHS_1_premier`, `GHS_2_contraste`, `GHS_3_fond` : Local intensity et protections réglés, mais **SP à choisir sur ton image** ; GHS_1 : Stretch factor 0 et SP 0 ; GHS_2 : Stretch factor 1 et SP 0,35 (valeurs de départ) ; GHS_3 : Stretch factor 1 et SP = HP = 0,20 (fond à 0,23 après GHS_2). Chaîne calculée pour un pic à 0,25 après GHS_1 (l'icône ne fait rien tant que tu ne l'as pas réglée). Leurs descriptions donnent les repères de niveau : fond vers 0,20–0,25 après le 1er étirement, 0,12–0,14 (30–35 sur 255) dans l'image finale, jamais 0.
   - `Courbes` : légère courbe en S et saturation, à ajuster à l'œil.

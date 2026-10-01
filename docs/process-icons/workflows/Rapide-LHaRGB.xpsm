@@ -9,7 +9,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <description>PHASE 1 — Préparation : masters intégrés, recadrés et combinés. Colonne de repère, sans effet.</description>
    </instance>
    <instance class="NoOperation" version="256" id="E01_Mode_rapide_instance">
-      <description>MODE RAPIDE LHaRGB — environ 20 glisser-déposer. Icône de repère, sans effet. 1 Renommer_auto (double-clic, Apply Global). 2 Combinaison_RGB (R, G, B restent ouvertes : R sert à Continuum_H). 3 DynamicCrop sur RGB, L, H et R. 4 C_RGB_prep sur RGB, puis MGC_MARS. 5 C_RGB_couleur_rapide sur RGB (BXT Correct Only, SPCC, BXT). 6 C_H_prep sur H, puis MGC_MARS_H, puis BXT_L_H sur H. 7 Continuum_H (k à régler), puis H_dans_RGB sur RGB. 8 C_RGB_fin_rapide sur RGB (SXT, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond 0,22). 9 C_L_prep sur L, MGC_MARS, C_L_rapide sur L. 10 Star_Stretch sur RGB_stars. 11 LRGB_ajout_L. 12 Masque_L, Ctrl+M, C_Finition. 13 Etoiles_screen. MGC : garde TES icônes MGC réglées avec Default Files. Cible hors MARS : GradientCorrection des options. Une étape en erreur arrête le conteneur : lis la console.</description>
+      <description>MODE RAPIDE LHaRGB — environ 18 glisser-déposer. Icône de repère, sans effet. 1 Renommer_auto (double-clic, Apply Global). 2 Combinaison_RGB (R, G, B restent ouvertes : R sert à Continuum_H). 3 C_RGB_prep sur RGB, puis MGC_MARS. 4 C_RGB_couleur_rapide sur RGB (BXT Correct Only, SPCC, BXT). 5 C_H_prep sur H, puis MGC_MARS_H, puis BXT_L_H sur H. 6 Continuum_H (k à régler), puis H_dans_RGB sur RGB. 7 C_RGB_fin_rapide sur RGB (SXT, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond 0,22). 8 C_L_prep sur L, MGC_MARS, C_L_rapide sur L. 9 Star_Stretch sur RGB_stars. 10 LRGB_ajout_L. 11 Masque_L, Ctrl+M, C_Finition. 12 Etoiles_screen. MGC : garde TES icônes MGC réglées avec Default Files. Cible hors MARS : GradientCorrection des options. Une étape en erreur arrête le conteneur : lis la console.</description>
    </instance>
    <instance class="Script" version="256" id="E02_Renommer_auto_instance">
       <description>LANCEMENT : double-clic sur l'icône, puis Apply Global.
@@ -64,38 +64,6 @@ Détails : page docs/pixinsight-workflow.html.</description>
          </tr>
       </table>
       <parameter id="information"></parameter>
-   </instance>
-   <instance class="DynamicCrop" version="2" id="E04_DynamicCrop_instance">
-      <description>PRÉRÉGLÉ : rien (le cadre dépend de ton image).
-
-À RÉGLER : trace le cadre sur un master en excluant les bords bruités, crée une icône, applique-la à tous les masters.
-
-Détails : page docs/pixinsight-workflow.html.</description>
-      <parameter id="refWidth" value="1"/>
-      <parameter id="refHeight" value="1"/>
-      <parameter id="outWidth" value="1.00"/>
-      <parameter id="outHeight" value="1.00"/>
-      <parameter id="centerX" value="0.50000000"/>
-      <parameter id="centerY" value="0.50000000"/>
-      <parameter id="width" value="1.00000000"/>
-      <parameter id="height" value="1.00000000"/>
-      <parameter id="angle" value="0.0000000000"/>
-      <parameter id="scaleX" value="1.00000000"/>
-      <parameter id="scaleY" value="1.00000000"/>
-      <parameter id="optimizeFast" value="true"/>
-      <parameter id="interpolation" value="Auto"/>
-      <parameter id="clampingThreshold" value="0.30"/>
-      <parameter id="smoothness" value="1.50"/>
-      <parameter id="gammaCorrection" value="false"/>
-      <parameter id="xResolution" value="72.000"/>
-      <parameter id="yResolution" value="72.000"/>
-      <parameter id="metric" value="false"/>
-      <parameter id="forceResolution" value="false"/>
-      <parameter id="red" value="0.000000"/>
-      <parameter id="green" value="0.000000"/>
-      <parameter id="blue" value="0.000000"/>
-      <parameter id="alpha" value="1.000000"/>
-      <parameter id="noGUIMessages" value="false"/>
    </instance>
    <instance class="NoOperation" version="256" id="P1_options_instance">
       <description>OPTIONS de la phase 1 — Préparation : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
@@ -181,7 +149,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <instance class="NoOperation" version="256" id="P2_Gradient_instance">
       <description>PHASE 2 — Gradient : image linéaire : retrait du gradient. Colonne de repère, sans effet.</description>
    </instance>
-   <instance class="ProcessContainer" id="E05_C_RGB_prep_instance">
+   <instance class="ProcessContainer" id="E04_C_RGB_prep_instance">
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/ImageSolver_Date.js</parameter>
          <parameter id="md5sum"></parameter>
@@ -430,7 +398,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
          <parameter id="generateTextFiles" value="false"/>
       </instance>
    </instance>
-   <instance class="MultiscaleGradientCorrection" version="1" id="E06_MGC_MARS_instance">
+   <instance class="MultiscaleGradientCorrection" version="1" id="E05_MGC_MARS_instance">
       <description>PRÉRÉGLÉ : Gradient scale 1024, Structure separation 3, Smoothness 1,0, MARS Gray = L et R, G, B (la même icône sert pour L et pour l'image RGB), modèle affiché.
 
 À RÉGLER : une seule fois par ordinateur : ouvre l'icône, section MARS Database, clique Default Files (copie la liste des préférences de MGC), puis glisse le triangle sur l'icône pour la remplacer et enregistre tes icônes (Save Process Icons) ; à refaire si tu recharges les icônes de la fiche ; ensuite après SPFC, sur l'image linéaire.
@@ -461,7 +429,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="scaleFactorB" value="1.00"/>
       <parameter id="showGradientModel" value="true"/>
    </instance>
-   <instance class="ProcessContainer" id="E07_C_H_prep_instance">
+   <instance class="ProcessContainer" id="E06_C_H_prep_instance">
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/ImageSolver_Date.js</parameter>
          <parameter id="md5sum"></parameter>
@@ -710,7 +678,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
          <parameter id="generateTextFiles" value="false"/>
       </instance>
    </instance>
-   <instance class="MultiscaleGradientCorrection" version="1" id="E08_MGC_MARS_H_instance">
+   <instance class="MultiscaleGradientCorrection" version="1" id="E07_MGC_MARS_H_instance">
       <description>PRÉRÉGLÉ : comme MGC_MARS, filtre MARS Gray = Ha.
 
 À RÉGLER : une seule fois par ordinateur : ouvre l'icône, section MARS Database, clique Default Files (copie la liste des préférences de MGC), puis glisse le triangle sur l'icône pour la remplacer et enregistre tes icônes (Save Process Icons) ; à refaire si tu recharges les icônes de la fiche ; ensuite après SPFC_H, sur le master H.
@@ -738,7 +706,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="scaleFactorB" value="1.00"/>
       <parameter id="showGradientModel" value="true"/>
    </instance>
-   <instance class="ProcessContainer" id="E09_C_L_prep_instance">
+   <instance class="ProcessContainer" id="E08_C_L_prep_instance">
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/ImageSolver_Date.js</parameter>
          <parameter id="md5sum"></parameter>
@@ -1030,7 +998,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <instance class="NoOperation" version="256" id="P3_Lineaire_instance">
       <description>PHASE 3 — Linéaire : image linéaire : couleur, déconvolution, retrait des étoiles, bruit. Colonne de repère, sans effet.</description>
    </instance>
-   <instance class="ProcessContainer" id="E10_C_RGB_couleur_rapide_instance">
+   <instance class="ProcessContainer" id="E09_C_RGB_couleur_rapide_instance">
       <instance class="BlurXTerminator" version="256" enabled="true">
          <parameter id="ml_version" value="4"/>
          <parameter id="correct_only" value="true"/>
@@ -1109,7 +1077,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
          <parameter id="overlap" value="0.20"/>
       </instance>
    </instance>
-   <instance class="BlurXTerminator" version="256" id="E11_BXT_L_H_instance">
+   <instance class="BlurXTerminator" version="256" id="E10_BXT_L_H_instance">
       <description>PRÉRÉGLÉ : Sharpen Stars 0,25, Halos 0, Nonstellar 0,80, PSF auto.
 
 À RÉGLER : rien ; sur L puis sur H, linéaires, avant tout mélange.
@@ -1129,7 +1097,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="lunar_planetary" value="false"/>
       <parameter id="overlap" value="0.20"/>
    </instance>
-   <instance class="PixelMath" version="256" id="E12_Continuum_H_instance">
+   <instance class="PixelMath" version="256" id="E11_Continuum_H_instance">
       <description>PRÉRÉGLÉ : k = 0,9 ; crée H_cs.
 
 À RÉGLER : vues nommées H et R (linéaires) ; ajuste k de 0,8 à 1.
@@ -1168,7 +1136,7 @@ H - k*(R - med(R))</parameter>
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
-   <instance class="PixelMath" version="256" id="E13_H_dans_RGB_instance">
+   <instance class="PixelMath" version="256" id="E12_H_dans_RGB_instance">
       <description>PRÉRÉGLÉ : w = 1,0 ; R' = R + w·H_cs.
 
 À RÉGLER : glisse sur le RGB linéaire calibré ; w entre 0,5 et 2.
@@ -1207,7 +1175,7 @@ $T[0] + w*H_cs</parameter>
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
-   <instance class="ProcessContainer" id="E14_C_RGB_fin_rapide_instance">
+   <instance class="ProcessContainer" id="E13_C_RGB_fin_rapide_instance">
       <instance class="StarXTerminator" version="256" enabled="true">
          <parameter id="ml_version" value="0"/>
          <parameter id="output_stars" value="true"/>
@@ -1319,7 +1287,7 @@ $T[0] + w*H_cs</parameter>
          <parameter id="useRGBWorkingSpace" value="false"/>
       </instance>
    </instance>
-   <instance class="ProcessContainer" id="E15_C_L_rapide_instance">
+   <instance class="ProcessContainer" id="E14_C_L_rapide_instance">
       <instance class="BlurXTerminator" version="256" enabled="true">
          <parameter id="ml_version" value="4"/>
          <parameter id="correct_only" value="false"/>
@@ -1445,7 +1413,7 @@ $T[0] + w*H_cs</parameter>
    <instance class="NoOperation" version="256" id="P4_Etirement_instance">
       <description>PHASE 4 — Étirement : passage en non linéaire, même fond pour toutes les images. Colonne de repère, sans effet.</description>
    </instance>
-   <instance class="Script" version="256" id="E16_Star_Stretch_instance">
+   <instance class="Script" version="256" id="E15_Star_Stretch_instance">
       <description>LANCEMENT : glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
 
 PRÉRÉGLÉ : Stretch Amount 6, Color Boost 1,0, SCNR décoché.
@@ -1484,7 +1452,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <instance class="NoOperation" version="256" id="P5_Couleur_instance">
       <description>PHASE 5 — Couleur : combinaison finale et palette. Colonne de repère, sans effet.</description>
    </instance>
-   <instance class="LRGBCombination" version="256" id="E17_LRGB_ajout_L_instance">
+   <instance class="LRGBCombination" version="256" id="E16_LRGB_ajout_L_instance">
       <description>PRÉRÉGLÉ : seul L coché, Lightness 0,5, Saturation 0,35, réduction du bruit de chrominance.
 
 À RÉGLER : vue L nommée 'L' ; glisse sur le RGB sans étoiles.
@@ -1526,7 +1494,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <instance class="NoOperation" version="256" id="P6_Finition_instance">
       <description>PHASE 6 — Finition : contraste et saturation sur l'image sans étoiles. Colonne de repère, sans effet.</description>
    </instance>
-   <instance class="PixelMath" version="256" id="E18_Masque_L_instance">
+   <instance class="PixelMath" version="256" id="E17_Masque_L_instance">
       <description>PRÉRÉGLÉ : fond coupé à s = 0,14, crée 'masque_L'.
 
 À RÉGLER : glisse sur l'image sans étoiles étirée ; s = fond mesuré + 0,01 ; léger flou ; Ctrl+M.
@@ -1564,7 +1532,7 @@ max(0, (0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2] - s) / (1 - s))</parameter>
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
-   <instance class="ProcessContainer" id="E19_C_Finition_instance">
+   <instance class="ProcessContainer" id="E18_C_Finition_instance">
       <instance class="CurvesTransformation" version="256" enabled="true">
          <table id="R" rows="2">
             <tr>
@@ -1926,7 +1894,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <instance class="NoOperation" version="256" id="P7_Etoiles_instance">
       <description>PHASE 7 — Étoiles : étoiles : étirement, recombinaison, réduction. Colonne de repère, sans effet.</description>
    </instance>
-   <instance class="PixelMath" version="256" id="E20_Etoiles_screen_instance">
+   <instance class="PixelMath" version="256" id="E19_Etoiles_screen_instance">
       <description>PRÉRÉGLÉ : ~((~$T) * (~RGB_stars)), crée l'image 'Final'.
 
 À RÉGLER : glisse sur l'image sans étoiles finale ; étoiles étirées nommées RGB_stars (nom donné par SXT, s minuscule).
@@ -2057,37 +2025,36 @@ max(Img1,f1)</parameter>
    <icon id="E01_Mode_rapide" instance="E01_Mode_rapide_instance" xpos="30" ypos="64" workspace="Workspace01"/>
    <icon id="E02_Renommer_auto" instance="E02_Renommer_auto_instance" xpos="30" ypos="94" workspace="Workspace01"/>
    <icon id="E03_Combinaison_RGB" instance="E03_Combinaison_RGB_instance" xpos="30" ypos="124" workspace="Workspace01"/>
-   <icon id="E04_DynamicCrop" instance="E04_DynamicCrop_instance" xpos="30" ypos="154" workspace="Workspace01"/>
-   <icon id="P1_options" instance="P1_options_instance" xpos="30" ypos="200" workspace="Workspace01"/>
-   <icon id="Opt_LinearPatternSubtraction" instance="Opt_LinearPatternSubtraction_instance" xpos="30" ypos="234" workspace="Workspace01"/>
+   <icon id="P1_options" instance="P1_options_instance" xpos="30" ypos="170" workspace="Workspace01"/>
+   <icon id="Opt_LinearPatternSubtraction" instance="Opt_LinearPatternSubtraction_instance" xpos="30" ypos="204" workspace="Workspace01"/>
    <icon id="P2_Gradient" instance="P2_Gradient_instance" xpos="243" ypos="20" workspace="Workspace01"/>
-   <icon id="E05_C_RGB_prep" instance="E05_C_RGB_prep_instance" xpos="243" ypos="64" workspace="Workspace01"/>
-   <icon id="E06_MGC_MARS" instance="E06_MGC_MARS_instance" xpos="243" ypos="94" workspace="Workspace01"/>
-   <icon id="E07_C_H_prep" instance="E07_C_H_prep_instance" xpos="243" ypos="124" workspace="Workspace01"/>
-   <icon id="E08_MGC_MARS_H" instance="E08_MGC_MARS_H_instance" xpos="243" ypos="154" workspace="Workspace01"/>
-   <icon id="E09_C_L_prep" instance="E09_C_L_prep_instance" xpos="243" ypos="184" workspace="Workspace01"/>
+   <icon id="E04_C_RGB_prep" instance="E04_C_RGB_prep_instance" xpos="243" ypos="64" workspace="Workspace01"/>
+   <icon id="E05_MGC_MARS" instance="E05_MGC_MARS_instance" xpos="243" ypos="94" workspace="Workspace01"/>
+   <icon id="E06_C_H_prep" instance="E06_C_H_prep_instance" xpos="243" ypos="124" workspace="Workspace01"/>
+   <icon id="E07_MGC_MARS_H" instance="E07_MGC_MARS_H_instance" xpos="243" ypos="154" workspace="Workspace01"/>
+   <icon id="E08_C_L_prep" instance="E08_C_L_prep_instance" xpos="243" ypos="184" workspace="Workspace01"/>
    <icon id="P2_options" instance="P2_options_instance" xpos="243" ypos="230" workspace="Workspace01"/>
    <icon id="Opt_GradientCorrection" instance="Opt_GradientCorrection_instance" xpos="243" ypos="264" workspace="Workspace01"/>
    <icon id="P3_Lineaire" instance="P3_Lineaire_instance" xpos="430" ypos="20" workspace="Workspace01"/>
-   <icon id="E10_C_RGB_couleur_rapide" instance="E10_C_RGB_couleur_rapide_instance" xpos="430" ypos="64" workspace="Workspace01"/>
-   <icon id="E11_BXT_L_H" instance="E11_BXT_L_H_instance" xpos="430" ypos="94" workspace="Workspace01"/>
-   <icon id="E12_Continuum_H" instance="E12_Continuum_H_instance" xpos="430" ypos="124" workspace="Workspace01"/>
-   <icon id="E13_H_dans_RGB" instance="E13_H_dans_RGB_instance" xpos="430" ypos="154" workspace="Workspace01"/>
-   <icon id="E14_C_RGB_fin_rapide" instance="E14_C_RGB_fin_rapide_instance" xpos="430" ypos="184" workspace="Workspace01"/>
-   <icon id="E15_C_L_rapide" instance="E15_C_L_rapide_instance" xpos="430" ypos="214" workspace="Workspace01"/>
+   <icon id="E09_C_RGB_couleur_rapide" instance="E09_C_RGB_couleur_rapide_instance" xpos="430" ypos="64" workspace="Workspace01"/>
+   <icon id="E10_BXT_L_H" instance="E10_BXT_L_H_instance" xpos="430" ypos="94" workspace="Workspace01"/>
+   <icon id="E11_Continuum_H" instance="E11_Continuum_H_instance" xpos="430" ypos="124" workspace="Workspace01"/>
+   <icon id="E12_H_dans_RGB" instance="E12_H_dans_RGB_instance" xpos="430" ypos="154" workspace="Workspace01"/>
+   <icon id="E13_C_RGB_fin_rapide" instance="E13_C_RGB_fin_rapide_instance" xpos="430" ypos="184" workspace="Workspace01"/>
+   <icon id="E14_C_L_rapide" instance="E14_C_L_rapide_instance" xpos="430" ypos="214" workspace="Workspace01"/>
    <icon id="P4_Etirement" instance="P4_Etirement_instance" xpos="626" ypos="20" workspace="Workspace01"/>
-   <icon id="E16_Star_Stretch" instance="E16_Star_Stretch_instance" xpos="626" ypos="64" workspace="Workspace01"/>
+   <icon id="E15_Star_Stretch" instance="E15_Star_Stretch_instance" xpos="626" ypos="64" workspace="Workspace01"/>
    <icon id="P5_Couleur" instance="P5_Couleur_instance" xpos="786" ypos="20" workspace="Workspace01"/>
-   <icon id="E17_LRGB_ajout_L" instance="E17_LRGB_ajout_L_instance" xpos="786" ypos="64" workspace="Workspace01"/>
+   <icon id="E16_LRGB_ajout_L" instance="E16_LRGB_ajout_L_instance" xpos="786" ypos="64" workspace="Workspace01"/>
    <icon id="P6_Finition" instance="P6_Finition_instance" xpos="946" ypos="20" workspace="Workspace01"/>
-   <icon id="E18_Masque_L" instance="E18_Masque_L_instance" xpos="946" ypos="64" workspace="Workspace01"/>
-   <icon id="E19_C_Finition" instance="E19_C_Finition_instance" xpos="946" ypos="94" workspace="Workspace01"/>
+   <icon id="E17_Masque_L" instance="E17_Masque_L_instance" xpos="946" ypos="64" workspace="Workspace01"/>
+   <icon id="E18_C_Finition" instance="E18_C_Finition_instance" xpos="946" ypos="94" workspace="Workspace01"/>
    <icon id="P6_options" instance="P6_options_instance" xpos="946" ypos="140" workspace="Workspace01"/>
    <icon id="Opt_Boost_finition" instance="Opt_Boost_finition_instance" xpos="946" ypos="174" workspace="Workspace01"/>
    <icon id="Opt_HDRMT" instance="Opt_HDRMT_instance" xpos="946" ypos="204" workspace="Workspace01"/>
    <icon id="Opt_NXT_final" instance="Opt_NXT_final_instance" xpos="946" ypos="234" workspace="Workspace01"/>
    <icon id="P7_Etoiles" instance="P7_Etoiles_instance" xpos="1115" ypos="20" workspace="Workspace01"/>
-   <icon id="E20_Etoiles_screen" instance="E20_Etoiles_screen_instance" xpos="1115" ypos="64" workspace="Workspace01"/>
+   <icon id="E19_Etoiles_screen" instance="E19_Etoiles_screen_instance" xpos="1115" ypos="64" workspace="Workspace01"/>
    <icon id="P7_options" instance="P7_options_instance" xpos="1115" ypos="110" workspace="Workspace01"/>
    <icon id="Opt_Halo_B_Gon" instance="Opt_Halo_B_Gon_instance" xpos="1115" ypos="144" workspace="Workspace01"/>
    <icon id="Opt_MT_etoiles" instance="Opt_MT_etoiles_instance" xpos="1115" ypos="174" workspace="Workspace01"/>

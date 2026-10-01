@@ -452,33 +452,6 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="defaultSampleRadius" value="15"/>
       <parameter id="samplesPerRow" value="15"/>
    </instance>
-   <instance class="DynamicCrop" version="2" id="DynamicCrop_base_instance">
-      <parameter id="refWidth" value="1"/>
-      <parameter id="refHeight" value="1"/>
-      <parameter id="outWidth" value="1.00"/>
-      <parameter id="outHeight" value="1.00"/>
-      <parameter id="centerX" value="0.50000000"/>
-      <parameter id="centerY" value="0.50000000"/>
-      <parameter id="width" value="1.00000000"/>
-      <parameter id="height" value="1.00000000"/>
-      <parameter id="angle" value="0.0000000000"/>
-      <parameter id="scaleX" value="1.00000000"/>
-      <parameter id="scaleY" value="1.00000000"/>
-      <parameter id="optimizeFast" value="true"/>
-      <parameter id="interpolation" value="Auto"/>
-      <parameter id="clampingThreshold" value="0.30"/>
-      <parameter id="smoothness" value="1.50"/>
-      <parameter id="gammaCorrection" value="false"/>
-      <parameter id="xResolution" value="72.000"/>
-      <parameter id="yResolution" value="72.000"/>
-      <parameter id="metric" value="false"/>
-      <parameter id="forceResolution" value="false"/>
-      <parameter id="red" value="0.000000"/>
-      <parameter id="green" value="0.000000"/>
-      <parameter id="blue" value="0.000000"/>
-      <parameter id="alpha" value="1.000000"/>
-      <parameter id="noGUIMessages" value="false"/>
-   </instance>
    <instance class="NarrowbandNormalization" version="256" id="NBN_SHO_instance">
       <parameter id="palette" value="Palette_SHO"/>
       <parameter id="lightness" value="Lightness_Off"/>
@@ -543,8 +516,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
    <icon id="MGC_MARS_H" instance="MGC_MARS_H_instance" xpos="270" ypos="104" workspace="Workspace01"/>
    <icon id="MGC_MARS_O" instance="MGC_MARS_O_instance" xpos="270" ypos="136" workspace="Workspace01"/>
    <icon id="DBE_base" instance="DBE_base_instance" xpos="270" ypos="168" workspace="Workspace01"/>
-   <icon id="DynamicCrop_base" instance="DynamicCrop_base_instance" xpos="270" ypos="200" workspace="Workspace01"/>
-   <icon id="NBN_SHO" instance="NBN_SHO_instance" xpos="270" ypos="232" workspace="Workspace01"/>
-   <icon id="NBN_HOO" instance="NBN_HOO_instance" xpos="270" ypos="264" workspace="Workspace01"/>
-   <icon id="CC_auto_WBPP" instance="CC_auto_WBPP_instance" xpos="270" ypos="296" workspace="Workspace01"/>
+   <icon id="NBN_SHO" instance="NBN_SHO_instance" xpos="270" ypos="200" workspace="Workspace01"/>
+   <icon id="NBN_HOO" instance="NBN_HOO_instance" xpos="270" ypos="232" workspace="Workspace01"/>
+   <icon id="CC_auto_WBPP" instance="CC_auto_WBPP_instance" xpos="270" ypos="264" workspace="Workspace01"/>
 </xpsm>

@@ -465,8 +465,7 @@ T_LPS = ("OPTION — LinearPatternSubtraction (Vicent Peris, script livré avec 
          "Postfix _lps ; Layers to remove 9 ; Rejection limit 3 ; Global rejection coché, limite 5 ; Background reference region 0, 0, 512, 512 (à placer sur une zone sombre).")
 
 def pre_block():
-    return [(note('Renommer_auto', ''), ''), (note('LinearPatternSubtraction', T_LPS), ''), (note('WBPP', T_WBPP), ''), (cc(), D_CC), (M.crop('DynamicCrop'), "DynamicCrop, sans recadrage au départ (le cadre dépend de ton image) : ouvre l'icône, trace le cadre sur un master en excluant les bords mal couverts, "
-            "glisse le triangle du process sur l'espace de travail pour créer ton icône, puis applique CETTE icône à tous les autres masters (ils sont alignés, le recadrage sera identique).")]
+    return [(note('Renommer_auto', ''), ''), (note('LinearPatternSubtraction', T_LPS), ''), (note('WBPP', T_WBPP), ''), (cc(), D_CC)]
 
 D_MASK = ("MASQUE DE LUMINANCE en un clic (optionnel, pour Courbes et LHE) : glisse l'icône sur l'image SANS ÉTOILES étirée ; elle crée la vue mono 'masque_L' = luminance Rec. 709 (0,2126 R + 0,7152 G + 0,0722 B) "
           "dont le fond est coupé : tout ce qui est sous s passe à 0 (protégé), le reste va de 0 à 1. s = 0,14 par défaut : fond final de la fiche 0,12-0,14 ; règle s = fond mesuré à la sonde 15x15 + 0,01 (vers 0,26 si le fond est encore à 0,20-0,25). "
@@ -610,7 +609,7 @@ lhargb = pre_block() + [rgb_comb_item(False), (solver_container(), '')] + gradie
 # ---------------------------------------------------------------- narrowband communs
 def nb_masters(chans):
     names = ' et '.join(chans)
-    return [(note('Masters_' + '_'.join(chans), "Masters %s : même recadrage (icône DynamicCrop) et retrait du gradient sur CHAQUE master séparément (icônes suivantes). O est le plus sensible à la Lune : contrôle bien son modèle. "
+    return [(note('Masters_' + '_'.join(chans), "Masters %s : retrait du gradient sur CHAQUE master séparément (icônes suivantes). O est le plus sensible à la Lune : contrôle bien son modèle. "
                   "Nomme les vues exactement 'S', 'H' et 'O' : les formules en dépendent." % names), ''), (solver_container(), '')] + gradient_block('sho' if 'S' in chans else 'hoo') + [
         (M.instance('LinearFit', 'LinearFit_ref_H', {'rejectLow': '0.000000', 'rejectHigh': '0.920000'}, {'referenceViewId': 'H'}),
          "Option — LinearFit avec H comme référence : applique sur O (et S). Rapproche fonds et niveaux, ce qu'exige Foraxx (theAstroShed, Galactic Hunter). Référence : vue nommée 'H'.")]
@@ -803,20 +802,20 @@ def finition_cont(steps):
     return cont('C_Finition', [pick(steps, b)[0] for b in ('Courbes', 'LHE', 'LHE_fin')])
 
 T_RAPIDE = {
- 'LRGB': ("MODE RAPIDE LRGB — environ 15 glisser-déposer, aucun réglage à faire. Icône de repère, sans effet. "
-          "1 Renommer_auto (double-clic, Apply Global). 2 Combinaison_RGB. 3 DynamicCrop sur RGB puis sur L. "
-          "4 C_RGB_prep sur RGB (ImageSolver avec date par défaut, SPFC). 5 TON icône MGC_MARS sur RGB. "
-          "6 C_RGB_rapide sur RGB (BXT Correct Only, SPCC, BXT, SXT, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond SP = HP = 0,22) : RGB étiré sans étoiles et RGB_stars. "
-          "7 C_L_prep sur L. 8 MGC_MARS sur L. 9 C_L_rapide sur L (BXT, SXT, NXT, Statistical Stretch, GHS fond) ; ferme L_stars. "
-          "10 Star_Stretch sur RGB_stars. 11 LRGB_ajout_L sur RGB. 12 Masque_L sur RGB, Ctrl+M, puis C_Finition (Courbes, LHE, LHE_fin). 13 Etoiles_screen sur RGB. "
+ 'LRGB': ("MODE RAPIDE LRGB — environ 13 glisser-déposer, aucun réglage à faire. Icône de repère, sans effet. "
+          "1 Renommer_auto (double-clic, Apply Global). 2 Combinaison_RGB. "
+          "3 C_RGB_prep sur RGB (ImageSolver avec date par défaut, SPFC). 4 TON icône MGC_MARS sur RGB. "
+          "5 C_RGB_rapide sur RGB (BXT Correct Only, SPCC, BXT, SXT, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond SP = HP = 0,22) : RGB étiré sans étoiles et RGB_stars. "
+          "6 C_L_prep sur L. 7 MGC_MARS sur L. 8 C_L_rapide sur L (BXT, SXT, NXT, Statistical Stretch, GHS fond) ; ferme L_stars. "
+          "9 Star_Stretch sur RGB_stars. 10 LRGB_ajout_L sur RGB. 11 Masque_L sur RGB, Ctrl+M, puis C_Finition (Courbes, LHE, LHE_fin). 12 Etoiles_screen sur RGB. "
           "MGC : garde TON icône MGC_MARS où tu as cliqué Default Files (chaque instance a sa liste MARS). Cible hors MARS (sud au-delà de −15° environ) : GradientCorrection des options à la place de MGC. "
           "Une étape en erreur arrête le conteneur : lis la console. Options : P2, P6, P7 ; Blanshan seulement de temps en temps."),
- 'LHA': ("MODE RAPIDE LHaRGB — environ 20 glisser-déposer. Icône de repère, sans effet. "
-         "1 Renommer_auto (double-clic, Apply Global). 2 Combinaison_RGB (R, G, B restent ouvertes : R sert à Continuum_H). 3 DynamicCrop sur RGB, L, H et R. "
-         "4 C_RGB_prep sur RGB, puis MGC_MARS. 5 C_RGB_couleur_rapide sur RGB (BXT Correct Only, SPCC, BXT). "
-         "6 C_H_prep sur H, puis MGC_MARS_H, puis BXT_L_H sur H. 7 Continuum_H (k à régler), puis H_dans_RGB sur RGB. "
-         "8 C_RGB_fin_rapide sur RGB (SXT, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond 0,22). "
-         "9 C_L_prep sur L, MGC_MARS, C_L_rapide sur L. 10 Star_Stretch sur RGB_stars. 11 LRGB_ajout_L. 12 Masque_L, Ctrl+M, C_Finition. 13 Etoiles_screen. "
+ 'LHA': ("MODE RAPIDE LHaRGB — environ 18 glisser-déposer. Icône de repère, sans effet. "
+         "1 Renommer_auto (double-clic, Apply Global). 2 Combinaison_RGB (R, G, B restent ouvertes : R sert à Continuum_H). "
+         "3 C_RGB_prep sur RGB, puis MGC_MARS. 4 C_RGB_couleur_rapide sur RGB (BXT Correct Only, SPCC, BXT). "
+         "5 C_H_prep sur H, puis MGC_MARS_H, puis BXT_L_H sur H. 6 Continuum_H (k à régler), puis H_dans_RGB sur RGB. "
+         "7 C_RGB_fin_rapide sur RGB (SXT, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond 0,22). "
+         "8 C_L_prep sur L, MGC_MARS, C_L_rapide sur L. 9 Star_Stretch sur RGB_stars. 10 LRGB_ajout_L. 11 Masque_L, Ctrl+M, C_Finition. 12 Etoiles_screen. "
          "MGC : garde TES icônes MGC réglées avec Default Files. Cible hors MARS : GradientCorrection des options. Une étape en erreur arrête le conteneur : lis la console."),
 }
 WHEN_R = {'GradientCorrection': "à la place de MGC_MARS si la cible est hors couverture MARS (sud au-delà de −15° environ) ou si MGC échoue",
@@ -859,13 +858,13 @@ l_prep = lambda: cont('C_L_prep', solver_parts() + [M.spfc('SPFC_L', **SPFC_OPTS
 rgb_prep = lambda: cont('C_RGB_prep', solver_parts() + [M.spfc('SPFC_RGB_filtres', **SPFC_OPTS)])
 l_rapide = lambda bxt: cont('C_L_rapide', [bxt, M.sxt('SXT_lineaire', False), M.nxt('NXT_L', 0.60, 1), stat_auto(), GHS_FOND_R()])
 
-rapide_lrgb = [note_rapide('LRGB'), (1, *pick(lrgb, 'Renommer_auto')), (1, *pick(lrgb, 'Combinaison_RGB')), (1, *pick(lrgb, 'DynamicCrop')),
+rapide_lrgb = [note_rapide('LRGB'), (1, *pick(lrgb, 'Renommer_auto')), (1, *pick(lrgb, 'Combinaison_RGB')),
     (2, rgb_prep(), ''), (2, *pick(lrgb, 'MGC_MARS')), (2, l_prep(), ''),
     (3, cont('C_RGB_rapide', [M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), spcc_perso('SPCC'), bxt_rgb(), M.sxt('SXT_lineaire', False),
                               M.nxt('NXT_RGB', 0.80, 1), stat_auto(), GHS_FOND_R()]), ''),
     (3, l_rapide(M.bxt('BXT_L', False, 0.25, 0.0, 0.80)), '')] + rapide_end(lrgb)
 
-rapide_lha = [note_rapide('LHA'), (1, *pick(lhargb, 'Renommer_auto')), (1, *pick(lhargb, 'Combinaison_RGB')), (1, *pick(lhargb, 'DynamicCrop')),
+rapide_lha = [note_rapide('LHA'), (1, *pick(lhargb, 'Renommer_auto')), (1, *pick(lhargb, 'Combinaison_RGB')),
     (2, rgb_prep(), ''), (2, *pick(lhargb, 'MGC_MARS')),
     (2, cont('C_H_prep', solver_parts() + [M.spfc('SPFC_H', nb=(656.3, 3.0), **SPFC_OPTS)]), ''), (2, *pick(lhargb, 'MGC_MARS_H')), (2, l_prep(), ''),
     (3, cont('C_RGB_couleur_rapide', [M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), spcc_perso('SPCC'), bxt_rgb()]), ''),

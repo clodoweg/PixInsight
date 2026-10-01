@@ -274,7 +274,6 @@ nat = [
     mgc('MGC_MARS_H', gray='Ha'),
     mgc('MGC_MARS_O', gray='OIII'),
     dbe('DBE_base'),
-    crop('DynamicCrop_base'),
     instance('NarrowbandNormalization', 'NBN_SHO', {'palette': 'Palette_SHO'}),
     instance('NarrowbandNormalization', 'NBN_HOO', {'palette': 'Palette_HOO'}),
     instance('CosmeticCorrection', 'CC_auto_WBPP', {'useAutoDetect': True, 'hotAutoCheck': True, 'hotAutoValue': '2.5',
