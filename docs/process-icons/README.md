@@ -124,7 +124,7 @@ Dans les trois fichiers, **une colonne par phase**, avec une icône-titre sans e
   - `MGC_MARS`, `MGC_MARS_H`, `MGC_MARS_O` : charge la base MARS (DR2) dans les préférences de MGC si elle ne l'est pas. Les icônes H et O sont dans les workflows LHaRGB (H seulement), RGB-SHO, SHO sans RGB et HOO.
   - `DynamicCrop` et `DBE` : icônes réelles, sans cadre ni points (ils dépendent de l'image).
   - `SPCC` et `SPFC_…` : configurés pour ton matériel (QHY600 + Antlia V Pro). Bande passante narrowband 3 nm (filtres Antlia 3 nm).
-  - `GHS_1_premier`, `GHS_2_contraste`, `GHS_3_fond` : Local intensity et protections réglés, mais **Stretch factor à 0 et SP à choisir sur ton image** (l'icône ne fait rien tant que tu ne l'as pas réglée). Leurs descriptions donnent les repères de niveau : fond vers 0,20–0,25 après le 1er étirement, 0,12–0,14 (30–35 sur 255) dans l'image finale, jamais 0.
+  - `GHS_1_premier`, `GHS_2_contraste`, `GHS_3_fond` : Local intensity et protections réglés, mais **SP à choisir sur ton image** ; Stretch factor à 0 pour GHS_1 et GHS_3, à 1 (valeur de départ) pour GHS_2 (l'icône ne fait rien tant que tu ne l'as pas réglée). Leurs descriptions donnent les repères de niveau : fond vers 0,20–0,25 après le 1er étirement, 0,12–0,14 (30–35 sur 255) dans l'image finale, jamais 0.
   - `Courbes` : légère courbe en S et saturation, à ajuster à l'œil.
 - **Icônes de script** (process *Script*) : elles lancent directement le script, avec ses paramètres préréglés quand le script les lit.
 

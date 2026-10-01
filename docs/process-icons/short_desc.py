@@ -84,7 +84,7 @@ S = {
     'GHS_1_premier': ("b = 10, Stretch factor 0 (aucun effet tant que tu ne le montes pas)",
                       "clique le fond ou le signal faible et Send to SP ; Stretch factor jusqu'au pic vers 0,20–0,25 (fond lu 0,001 -> 6 ; 0,002 -> 5 ; 0,005 -> 4 ; 0,01 -> 3)",
                       ["fond bruité qui ressort -> SP trop bas, remonte-le", "cœur brillant qui sature -> baisse HP"]),
-    'GHS_2_contraste': ("b = 4, HP 0,9, Stretch factor 0", "SP dans la zone plate à contraster (souvent 0,25–0,40) ; Stretch factor 1 à 2",
+    'GHS_2_contraste': ("b = 4, HP 0,9, Stretch factor 1 (valeur de départ)", "SP dans la zone plate à contraster (souvent 0,25–0,40), AVANT de glisser l'icône ; Stretch factor 1 à 2",
                         ["cœur brillant qui sature -> baisse HP vers sa valeur", "fond trop sombre -> monte LP vers sa valeur (pas au-dessus de SP)", "fond bruité qui ressort -> SP trop bas"]),
     'GHS_3_fond': ("b = 10, Stretch factor 0", "SP = HP = fond lu - 0,03 ; Stretch factor 0,5 à 1,2 (≈ 1) jusqu'au fond vers 0,12–0,14", []),
     'Statistical_Stretch': ("Target Median 0,25, Blackpoint Sigma 5, Linked coché, reste par défaut", "rien ; alternative à GHS ; avec 0,25, passe ensuite GHS_3_fond (fond vers 0,12–0,14)",

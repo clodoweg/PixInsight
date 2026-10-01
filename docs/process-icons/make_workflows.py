@@ -120,10 +120,10 @@ def curves(name):
         return t
     return M.instance('CurvesTransformation', name, post=post)
 
-def ghs(name, b, hp=1.0, lp=0.0, channel='SC_RGB'):
+def ghs(name, b, hp=1.0, lp=0.0, channel='SC_RGB', sf=0.0):
     return M.instance('GeneralizedHyperbolicStretch', name, {
         'stretchType': 'ST_GeneralisedHyperbolic', 'stretchChannel': channel, 'inverse': False,
-        'stretchFactor': '0.000', 'localIntensity': '%.3f' % b, 'symmetryPoint': '0.000000',
+        'stretchFactor': '%.3f' % sf, 'localIntensity': '%.3f' % b, 'symmetryPoint': '0.000000',
         'highlightProtection': '%.6f' % hp, 'shadowProtection': '%.6f' % lp, 'clipType': 'CT_RGBBlend'})
 
 def pm(*a, **k):
@@ -350,7 +350,7 @@ D_GHS1 = ("GHS, 1er étirement — Stretch factor à 0 : l'icône ne fait rien t
           "Image couleur : passe Colour mode sur Colour (clip RGBBlend). Même niveau de fond visé pour toutes les images à combiner. "
           "REPÈRES : après ce 1er étirement, fond vers 0,20-0,25 (volontairement clair) ; l'image finale visera 0,12-0,14 (30-35 sur 255), jamais 0. "
           "Contrôle : preview sur du fond vide + Process › Image › Statistics (médiane) ; aucun pixel écrêté à 0 dans l'histogramme.")
-D_GHS2 = ("GHS, ajout de contraste (passes suivantes) — clique sur une zone qui paraît plate, Send to SP ; Local intensity (b) 4 (3 à 5) ; monte Stretch factor doucement ; "
+D_GHS2 = ("GHS, ajout de contraste (passes suivantes) — clique sur une zone qui paraît plate, Send to SP ; Local intensity (b) 4 (3 à 5) ; Stretch factor préréglé à 1 (valeur de départ ; 1 à 2 en général) : règle SP AVANT de glisser l'icône ; "
           "baisse HP (ici 0,90) pour protéger les cœurs brillants ; monte LP si le fond devient trop sombre. 1 à 3 passes. Image sans étoiles uniquement (étoiles : Star Stretch). "
           "Aucune grande zone ne doit atteindre 1 ; si la lecture donne 1,0 sur un cœur, baisse HP. "
           "Trop étiré : fond granuleux, cœurs brûlés, couleurs délavées. Pas assez : extensions faibles invisibles, aspect découpé sur du noir.")
@@ -454,7 +454,7 @@ def stars_end(cms=False, screen_extra='', cms_extra=''):
     return b
 
 def ghs_block(extra_desc='', stat_extra=''):
-    return [(ghs('GHS_1_premier', 10), D_GHS1 + extra_desc), (ghs('GHS_2_contraste', 4, hp=0.9), D_GHS2), (note('Statistical_Stretch', T_STAT + stat_extra), ''), (ghs('GHS_3_fond', 10), D_GHS3)]
+    return [(ghs('GHS_1_premier', 10), D_GHS1 + extra_desc), (ghs('GHS_2_contraste', 4, hp=0.9, sf=1.0), D_GHS2), (note('Statistical_Stretch', T_STAT + stat_extra), ''), (ghs('GHS_3_fond', 10), D_GHS3)]
 
 rgb_comb = lambda: (note('Combinaison_RGB', ''), '')
 MATERIEL = "QHY600 (Sony IMX455) + filtres Antlia V Pro"

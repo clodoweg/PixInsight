@@ -669,9 +669,9 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="useRGBWorkingSpace" value="false"/>
    </instance>
    <instance class="GeneralizedHyperbolicStretch" version="256" id="E17_GHS_2_contraste_instance">
-      <description>PRÉRÉGLÉ : b = 4, HP 0,9, Stretch factor 0.
+      <description>PRÉRÉGLÉ : b = 4, HP 0,9, Stretch factor 1 (valeur de départ).
 
-À RÉGLER : SP dans la zone plate à contraster (souvent 0,25–0,40) ; Stretch factor 1 à 2.
+À RÉGLER : SP dans la zone plate à contraster (souvent 0,25–0,40), AVANT de glisser l'icône ; Stretch factor 1 à 2.
 
 SI :
 - cœur brillant qui sature -&gt; baisse HP vers sa valeur
@@ -682,7 +682,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
       <parameter id="stretchChannel" value="SC_RGB"/>
       <parameter id="inverse" value="false"/>
-      <parameter id="stretchFactor" value="0.000"/>
+      <parameter id="stretchFactor" value="1.000"/>
       <parameter id="localIntensity" value="4.000"/>
       <parameter id="symmetryPoint" value="0.000000"/>
       <parameter id="highlightProtection" value="0.900000"/>
