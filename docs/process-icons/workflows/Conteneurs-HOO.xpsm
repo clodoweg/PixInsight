@@ -1444,45 +1444,30 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <instance class="NoOperation" version="256" id="P6_Finition_instance">
       <description>PHASE 6 — Finition : contraste et saturation sur l'image sans étoiles. Colonne de repère, sans effet.</description>
    </instance>
-   <instance class="PixelMath" version="256" id="E19_Masque_L_instance">
-      <description>PRÉRÉGLÉ : fond coupé à s = 0,14, crée 'masque_L'.
-
-À RÉGLER : glisse sur l'image sans étoiles étirée ; s = fond mesuré + 0,01 ; léger flou ; Ctrl+M.
-
-SI :
-- fond du masque au-dessus de 0,05 -&gt; monte s
-
-Détails : page docs/pixinsight-workflow.html.</description>
-      <parameter id="expression">s = 0.14;
-max(0, (0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2] - s) / (1 - s))</parameter>
-      <parameter id="expression1"></parameter>
-      <parameter id="expression2"></parameter>
-      <parameter id="expression3"></parameter>
-      <parameter id="useSingleExpression" value="true"/>
-      <parameter id="symbols">s</parameter>
-      <parameter id="clearImageCacheAndExit" value="false"/>
-      <parameter id="cacheGeneratedImages" value="false"/>
-      <parameter id="generateOutput" value="true"/>
-      <parameter id="singleThreaded" value="false"/>
-      <parameter id="optimization" value="true"/>
-      <parameter id="use64BitWorkingImage" value="false"/>
-      <parameter id="rescale" value="false"/>
-      <parameter id="rescaleLower" value="0"/>
-      <parameter id="rescaleUpper" value="1"/>
-      <parameter id="truncate" value="true"/>
-      <parameter id="truncateLower" value="0"/>
-      <parameter id="truncateUpper" value="1"/>
-      <parameter id="createNewImage" value="true"/>
-      <parameter id="showNewImage" value="true"/>
-      <parameter id="newImageId">masque_L</parameter>
-      <parameter id="newImageWidth" value="0"/>
-      <parameter id="newImageHeight" value="0"/>
-      <parameter id="newImageAlpha" value="false"/>
-      <parameter id="newImageColorSpace" value="Gray"/>
-      <parameter id="newImageSampleFormat" value="SameAsTarget"/>
-      <table id="outputData" rows="0"/>
-   </instance>
-   <instance class="ProcessContainer" id="E20_C_Finition_instance">
+   <instance class="ProcessContainer" id="E19_C_Finition_instance">
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="4">
+            <tr>
+               <td id="id">mode</td>
+               <td id="value">attacher</td>
+            </tr>
+            <tr>
+               <td id="id">s</td>
+               <td id="value">0.14</td>
+            </tr>
+            <tr>
+               <td id="id">flou</td>
+               <td id="value">2</td>
+            </tr>
+            <tr>
+               <td id="id">nom</td>
+               <td id="value">masque_L</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
       <instance class="CurvesTransformation" version="256" enabled="true">
          <table id="R" rows="2">
             <tr>
@@ -1632,11 +1617,49 @@ max(0, (0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2] - s) / (1 - s))</parameter>
          <parameter id="amount" value="0.250"/>
          <parameter id="circularKernel" value="true"/>
       </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="2">
+            <tr>
+               <td id="id">mode</td>
+               <td id="value">retirer</td>
+            </tr>
+            <tr>
+               <td id="id">nom</td>
+               <td id="value">masque_L</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
    </instance>
    <instance class="NoOperation" version="256" id="P6_options_instance">
       <description>OPTIONS de la phase 6 — Finition : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="Opt_Boost_finition_light_instance">
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="4">
+            <tr>
+               <td id="id">mode</td>
+               <td id="value">attacher</td>
+            </tr>
+            <tr>
+               <td id="id">s</td>
+               <td id="value">0.14</td>
+            </tr>
+            <tr>
+               <td id="id">flou</td>
+               <td id="value">2</td>
+            </tr>
+            <tr>
+               <td id="id">nom</td>
+               <td id="value">masque_L</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
       <instance class="CurvesTransformation" version="256" enabled="true">
          <table id="R" rows="2">
             <tr>
@@ -1779,8 +1802,46 @@ max(0, (0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2] - s) / (1 - s))</parameter>
          <parameter id="amount" value="0.120"/>
          <parameter id="circularKernel" value="true"/>
       </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="2">
+            <tr>
+               <td id="id">mode</td>
+               <td id="value">retirer</td>
+            </tr>
+            <tr>
+               <td id="id">nom</td>
+               <td id="value">masque_L</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
    </instance>
    <instance class="ProcessContainer" id="Opt_Boost_finition_instance">
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="4">
+            <tr>
+               <td id="id">mode</td>
+               <td id="value">attacher</td>
+            </tr>
+            <tr>
+               <td id="id">s</td>
+               <td id="value">0.14</td>
+            </tr>
+            <tr>
+               <td id="id">flou</td>
+               <td id="value">2</td>
+            </tr>
+            <tr>
+               <td id="id">nom</td>
+               <td id="value">masque_L</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
       <instance class="CurvesTransformation" version="256" enabled="true">
          <table id="R" rows="2">
             <tr>
@@ -1923,6 +1984,21 @@ max(0, (0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2] - s) / (1 - s))</parameter>
          <parameter id="amount" value="0.200"/>
          <parameter id="circularKernel" value="true"/>
       </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="2">
+            <tr>
+               <td id="id">mode</td>
+               <td id="value">retirer</td>
+            </tr>
+            <tr>
+               <td id="id">nom</td>
+               <td id="value">masque_L</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
    </instance>
    <instance class="ProcessContainer" id="Opt_HDRMT_50_instance">
       <instance class="PixelMath" version="256" enabled="true">
@@ -2049,14 +2125,14 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <instance class="NoOperation" version="256" id="P7_Etoiles_instance">
       <description>PHASE 7 — Étoiles : étoiles : étirement, recombinaison, réduction. Colonne de repère, sans effet.</description>
    </instance>
-   <instance class="NoOperation" version="256" id="E21_Etoiles_HOO_instance">
+   <instance class="NoOperation" version="256" id="E20_Etoiles_HOO_instance">
       <description>PRÉRÉGLÉ : rien (icône-note).
 
 À RÉGLER : avec RGB : étoiles RGB ; sans RGB : étoiles de SXT, NB to RGB ou étoiles synthétiques.
 
 Détails : page docs/pixinsight-workflow.html.</description>
    </instance>
-   <instance class="Script" version="256" id="E22_Star_Stretch_instance">
+   <instance class="Script" version="256" id="E21_Star_Stretch_instance">
       <description>LANCEMENT : glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
 
 PRÉRÉGLÉ : Stretch Amount 6, Color Boost 1,3, SCNR décoché.
@@ -2092,7 +2168,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       </table>
       <parameter id="information"></parameter>
    </instance>
-   <instance class="PixelMath" version="256" id="E23_Etoiles_reduites_instance">
+   <instance class="PixelMath" version="256" id="E22_Etoiles_reduites_instance">
       <description>PRÉRÉGLÉ : S = 0,20 ; screen + réduction Blanshan avec HOO_stars, sur l'image elle-même.
 
 À RÉGLER : à la place d'Etoiles_screen : glisse sur l'image HOO sans étoiles finale.
@@ -2264,17 +2340,16 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <icon id="Opt_NBColourMapper" instance="Opt_NBColourMapper_instance" xpos="799" ypos="264" workspace="Workspace01"/>
    <icon id="Opt_H_en_luminance" instance="Opt_H_en_luminance_instance" xpos="799" ypos="294" workspace="Workspace01"/>
    <icon id="P6_Finition" instance="P6_Finition_instance" xpos="1003" ypos="20" workspace="Workspace01"/>
-   <icon id="E19_Masque_L" instance="E19_Masque_L_instance" xpos="1003" ypos="64" workspace="Workspace01"/>
-   <icon id="E20_C_Finition" instance="E20_C_Finition_instance" xpos="1003" ypos="94" workspace="Workspace01"/>
-   <icon id="P6_options" instance="P6_options_instance" xpos="1003" ypos="140" workspace="Workspace01"/>
-   <icon id="Opt_Boost_finition_light" instance="Opt_Boost_finition_light_instance" xpos="1003" ypos="174" workspace="Workspace01"/>
-   <icon id="Opt_Boost_finition" instance="Opt_Boost_finition_instance" xpos="1003" ypos="204" workspace="Workspace01"/>
-   <icon id="Opt_HDRMT_50" instance="Opt_HDRMT_50_instance" xpos="1003" ypos="234" workspace="Workspace01"/>
-   <icon id="Opt_NXT_final" instance="Opt_NXT_final_instance" xpos="1003" ypos="264" workspace="Workspace01"/>
+   <icon id="E19_C_Finition" instance="E19_C_Finition_instance" xpos="1003" ypos="64" workspace="Workspace01"/>
+   <icon id="P6_options" instance="P6_options_instance" xpos="1003" ypos="110" workspace="Workspace01"/>
+   <icon id="Opt_Boost_finition_light" instance="Opt_Boost_finition_light_instance" xpos="1003" ypos="144" workspace="Workspace01"/>
+   <icon id="Opt_Boost_finition" instance="Opt_Boost_finition_instance" xpos="1003" ypos="174" workspace="Workspace01"/>
+   <icon id="Opt_HDRMT_50" instance="Opt_HDRMT_50_instance" xpos="1003" ypos="204" workspace="Workspace01"/>
+   <icon id="Opt_NXT_final" instance="Opt_NXT_final_instance" xpos="1003" ypos="234" workspace="Workspace01"/>
    <icon id="P7_Etoiles" instance="P7_Etoiles_instance" xpos="1199" ypos="20" workspace="Workspace01"/>
-   <icon id="E21_Etoiles_HOO" instance="E21_Etoiles_HOO_instance" xpos="1199" ypos="64" workspace="Workspace01"/>
-   <icon id="E22_Star_Stretch" instance="E22_Star_Stretch_instance" xpos="1199" ypos="94" workspace="Workspace01"/>
-   <icon id="E23_Etoiles_reduites" instance="E23_Etoiles_reduites_instance" xpos="1199" ypos="124" workspace="Workspace01"/>
+   <icon id="E20_Etoiles_HOO" instance="E20_Etoiles_HOO_instance" xpos="1199" ypos="64" workspace="Workspace01"/>
+   <icon id="E21_Star_Stretch" instance="E21_Star_Stretch_instance" xpos="1199" ypos="94" workspace="Workspace01"/>
+   <icon id="E22_Etoiles_reduites" instance="E22_Etoiles_reduites_instance" xpos="1199" ypos="124" workspace="Workspace01"/>
    <icon id="P7_options" instance="P7_options_instance" xpos="1199" ypos="170" workspace="Workspace01"/>
    <icon id="Opt_MT_etoiles" instance="Opt_MT_etoiles_instance" xpos="1199" ypos="204" workspace="Workspace01"/>
    <icon id="Opt_Halo_B_Gon" instance="Opt_Halo_B_Gon_instance" xpos="1199" ypos="234" workspace="Workspace01"/>

@@ -43,6 +43,8 @@ SCRIPTS = {
              L_DRAG),
     'Combinaison_RGB': ('$PXI_SRCDIR/scripts/clodoweg/Combiner_RGB.js', '',
              [('red', 'R'), ('green', 'G'), ('blue', 'B'), ('newId', 'RGB'), ('closeSources', 'true'), ('copyKeywords', 'true')], L_GLOBAL),
+    'Masque_L': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'attacher'), ('s', '0.14'), ('flou', '2'), ('nom', 'masque_L')], L_DRAG),
+    'Masque_retirer': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'retirer'), ('nom', 'masque_L')], L_DRAG),
     'Fermer_vues': ('$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js', '', [('views', '')], L_GLOBAL),
     'Renommer_auto': ('$PXI_SRCDIR/scripts/clodoweg/Renommer_auto.js', '', [], L_GLOBAL),
     'ImageSolver_Date': ('$PXI_SRCDIR/scripts/clodoweg/ImageSolver_Date.js', '', [('defaultDate', '2020-01-01T00:00:00')], L_DRAG),
@@ -254,8 +256,9 @@ def hdrmt_50():
 def boost_container(name='Boost_finition', k=((0, 0), (0.25, 0.23), (0.75, 0.77), (1, 1)), sat=0.60, amount='0.200'):
     """Option de finition en un glisser : petite courbe (contraste + saturation) puis LHE à rayon moyen. Rejouable."""
     parts = []
-    for item in (curves('Courbes_boost', k=k, sat=sat),
-                 M.instance('LocalHistogramEqualization', 'LHE_moyen', {'radius': 80, 'histogramBins': 'Bit10', 'slopeLimit': '2.0', 'amount': amount, 'circularKernel': True})):
+    for item in (script('Masque_L', ''), curves('Courbes_boost', k=k, sat=sat),
+                 M.instance('LocalHistogramEqualization', 'LHE_moyen', {'radius': 80, 'histogramBins': 'Bit10', 'slopeLimit': '2.0', 'amount': amount, 'circularKernel': True}),
+                 script('Masque_retirer', '')):
         n, x = item
         parts.append(x.replace('id="%s_instance"' % n, 'id="__ID___instance"', 1))
     return name, container(name, parts)
@@ -496,15 +499,16 @@ T_LPS = ("OPTION — LinearPatternSubtraction (Vicent Peris, script livré avec 
 def pre_block():
     return [(note('LinearPatternSubtraction', T_LPS), ''), (note('Renommer_auto', ''), ''), (note('WBPP', T_WBPP), ''), (cc(), D_CC)]
 
-D_MASK = ("MASQUE DE LUMINANCE en un clic (optionnel, pour Courbes et LHE) : glisse l'icône sur l'image SANS ÉTOILES étirée ; elle crée la vue mono 'masque_L' = luminance Rec. 709 (0,2126 R + 0,7152 G + 0,0722 B) "
-          "dont le fond est coupé : tout ce qui est sous s passe à 0 (protégé), le reste va de 0 à 1. s = 0,14 par défaut : fond final de la fiche 0,12-0,14 ; règle s = fond mesuré à la sonde 15x15 + 0,01 (vers 0,26 si le fond est encore à 0,20-0,25). "
-          "Contrôle à la sonde sur masque_L : fond 0 à 0,05. Puis léger flou (Convolution gaussienne, quelques pixels) et Mask › Select Mask (Ctrl+M) sur l'image ; Mask › Invert Mask pour traiter le fond. "
-          "Image mono : icône Masque_L_mono du fichier 01. HDRMT n'en a pas besoin (option Lightness mask).")
+D_MASK = ("MASQUE DE LUMINANCE créé ET attaché en un clic (script Masque_auto.js) : glisse l'icône sur l'image SANS ÉTOILES étirée ; elle crée la vue mono 'masque_L' = luminance Rec. 709 (0,2126 R + 0,7152 G + 0,0722 B ; l'image elle-même si elle est mono) "
+          "dont le fond est coupé : tout ce qui est sous s passe à 0 (protégé), le reste va de 0 à 1 ; puis léger flou gaussien (flou = 2 px) et masque ATTACHÉ à l'image, sans affichage rouge : plus de Ctrl+M. "
+          "s = 0,14 par défaut : fond final de la fiche 0,12-0,14 ; règle s = fond mesuré à la sonde 15x15 + 0,01 (vers 0,26 si le fond est encore à 0,20-0,25). Contrôle à la sonde sur masque_L : fond 0 à 0,05. "
+          "Retrait : icône Masque_retirer (détache et ferme masque_L), déjà en fin de C_Finition et des Boost. HDRMT n'en a pas besoin (option Lightness mask).")
 
 def finish_block(extra=None):
-    b = [(pm('Masque_L', 's = 0.14;\nmax(0, (0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2] - s) / (1 - s))', symbols='s', new_image=True, new_id='masque_L', space='Gray'), D_MASK),
+    b = [(note('Masque_L', D_MASK), ''),
          (curves('Courbes'), D_CURVES), (M.instance('LocalHistogramEqualization', 'LHE', {'radius': 150, 'histogramBins': 'Bit12', 'slopeLimit': '2.0', 'amount': '0.300', 'circularKernel': True}), D_LHE),
          (M.instance('LocalHistogramEqualization', 'LHE_fin', {'radius': 40, 'histogramBins': 'Bit10', 'slopeLimit': '2.0', 'amount': '0.250', 'circularKernel': True}), D_LHE_FIN),
+         (note('Masque_retirer', ''), ''),
          (boost_container('Boost_finition_light', k=((0, 0), (0.25, 0.24), (0.75, 0.76), (1, 1)), sat=0.57, amount='0.120'), ''),
          (boost_container(), ''),
          (hdrmt_50(), '')]
@@ -827,23 +831,26 @@ def pick(steps, base):
             return item, desc
     raise KeyError(base)
 
-def finition_cont(steps):
-    return cont('C_Finition', [pick(steps, b)[0] for b in ('Courbes', 'LHE', 'LHE_fin')])
+def finition_cont(steps, name='C_Finition', avant=(), apres=()):
+    """Masque attaché, Courbes, LHE, LHE_fin, masque retiré ; avant/après : étapes (bases) ajoutées autour."""
+    bases = list(avant) + ['Masque_L', 'Courbes', 'LHE', 'LHE_fin', 'Masque_retirer'] + list(apres)
+    return cont(name, [pick(steps, b)[0] for b in bases])
 
 T_RAPIDE = {
  'LRGB': ("MODE RAPIDE LRGB — icône de repère, sans effet. Aucun réglage, pas de MARS (MGC + MARS : mode soigné). Ordre (numéros des icônes) : "
           "E00 LinearPatternSubtraction (glisse sur un master : tous les masters ouverts). E02 Renommer_auto (double-clic, Apply Global). E03 Combinaison_RGB. "
           "E04 ImageSolver sur RGB (date par défaut si absente, puis ImageSolver ; nécessaire à SPCC ; icône seule, pas de conteneur). "
           "E05 C_RGB_rapide sur RGB (GradientCorrection, BXT Correct Only, SPCC, BXT, SXT, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond SP = HP = 0,22) : RGB étiré sans étoiles et RGB_stars. "
-          "E06 C_L_rapide sur L (GradientCorrection, BXT, SXT, NXT, fermeture de L_stars, Statistical Stretch, GHS fond). "
-          "E07 Star_Stretch sur RGB_stars. E08 LRGB_ajout_L sur RGB. E09 Masque_L sur RGB, Ctrl+M, puis E10 C_Finition. E11 Etoiles_screen sur RGB. "
+          "E06 C_L_rapide sur L (GradientCorrection, BXT, SXT, NXT, fermeture de L_stars, Statistical Stretch, GHS fond). E07 Star_Stretch sur RGB_stars. "
+          "E08 C_Fin_rapide sur RGB : LRGB (L ajoutée), masque de luminance créé et attaché, Courbes, LHE, LHE_fin, masque retiré, étoiles RGB_stars ajoutées : image finie. "
+          "Pour un Boost, HDRMT_50 ou NXT final : à la place d'E08, C_Fin_sans_etoiles (options), puis l'option, puis Etoiles_screen ou Etoiles_reduites (options). Halo-B-Gon : sur RGB_stars avant E08. "
           "ImageSolver s'arrête après la date : ImageSolver_seul des options. Une étape en erreur arrête un conteneur : lis la console."),
  'LHA': ("MODE RAPIDE LHaRGB — icône de repère, sans effet. Pas de MARS (mode soigné). "
          "E00 LinearPatternSubtraction (glisse sur un master). E02 Renommer_auto. E03 Combinaison_RGB (R, G, B restent ouvertes : R sert à Continuum_H). "
          "E04 ImageSolver sur RGB. E05 GradientCorrection sur R. E06 C_RGB_couleur_rapide sur RGB (GradientCorrection, BXT Correct Only, SPCC, BXT). "
          "E07 C_H_rapide sur H (GradientCorrection, BXT). E08 Continuum_H (k à régler), puis E09 H_dans_RGB sur RGB. "
-         "E10 C_RGB_fin_rapide sur RGB (SXT, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond 0,22). E11 C_L_rapide sur L. "
-         "E12 Star_Stretch sur RGB_stars. E13 LRGB_ajout_L. E14 Masque_L, Ctrl+M, E15 C_Finition. E16 Etoiles_screen."),
+         "E10 C_RGB_fin_rapide sur RGB (SXT, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond 0,22). E11 C_L_rapide sur L. E12 Star_Stretch sur RGB_stars. "
+         "E13 C_Fin_rapide sur RGB (LRGB, masque attaché, Courbes, LHE, LHE_fin, masque retiré, étoiles) : image finie. Boost, HDRMT_50, NXT final : C_Fin_sans_etoiles, l'option, puis Etoiles_screen."),
 }
 WHEN_R = {'GradientCorrection': "à la place de MGC_MARS si la cible est hors couverture MARS (sud au-delà de −15° environ) ou si MGC échoue",
           'Etoiles_reduites': L.WHEN['Etoiles_reduites']}
@@ -869,12 +876,13 @@ def write_rapide(filename, prefix, title, steps, main_spec, opt_spec):
 
 def rapide_common_opts(steps):
     return [(2, *pick(steps, 'ImageSolver_seul')),
+            (6, finition_cont(steps, 'C_Fin_sans_etoiles', avant=['LRGB_ajout_L']), ''),
             (6, *pick(steps, 'Boost_finition_light')), (6, *pick(steps, 'Boost_finition')), (6, *pick(steps, 'HDRMT_50')), (6, *pick(steps, 'NXT_final')),
-            (7, *pick(steps, 'Halo_B_Gon')), (7, *pick(steps, 'MT_etoiles')), (7, *pick(steps, 'Etoiles_reduites'))]
+            (7, *pick(steps, 'Halo_B_Gon')), (7, *pick(steps, 'MT_etoiles')), (7, *pick(steps, 'Etoiles_screen')), (7, *pick(steps, 'Etoiles_reduites'))]
 
 def rapide_end(steps):
-    return [(4, *pick(steps, 'Star_Stretch')), (5, *pick(steps, 'LRGB_ajout_L')),
-            (6, *pick(steps, 'Masque_L')), (6, finition_cont(steps), ''), (7, *pick(steps, 'Etoiles_screen'))]
+    return [(4, *pick(steps, 'Star_Stretch')),
+            (6, finition_cont(steps, 'C_Fin_rapide', avant=['LRGB_ajout_L'], apres=['Etoiles_screen']), '')]
 
 def note_rapide(prefix):
     return (1, ('Mode_rapide', '   <instance class="NoOperation" version="256" id="Mode_rapide_instance">\n      <description>%s</description>\n   </instance>' % escape(T_RAPIDE[prefix])), '')

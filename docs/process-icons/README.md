@@ -84,7 +84,7 @@ Icônes SPCC et SPFC configurées pour **QHY600 (capteur Sony IMX455) + filtres 
 
 **Le plus simple : le préparateur de la page** (section « Préparer ma photo » de `docs/pixinsight-workflow.html`). Tu choisis tes filtres, tes méthodes (gradient, étirement, palette) et tes options ; il affiche les étapes de ta photo avec ce qu'il faut régler et télécharge un `.xpsm` qui ne contient qu'elles (dans la page publiée sur claude.ai, un `.zip` à décompresser). Ses données sont dans `preparer-data.json`, régénéré avec les icônes.
 
-**Mode rapide (galaxies LRGB et LHaRGB)** : `Rapide-LRGB.xpsm` (12 icônes) et `Rapide-LHaRGB.xpsm` (17 icônes), presque tout préréglé, gradient par GradientCorrection seulement (MGC + MARS réservé au mode normal) : icône `ImageSolver` sur RGB (seule : ImageSolver échoue dans un conteneur ; nécessaire à SPCC), `C_RGB_rapide` (GradientCorrection → BXT Correct Only → SPCC → BXT → SXT → NXT → Statistical Stretch 0,25 sans dialogue → GHS fond SP = HP = 0,22), `C_L_rapide` (GradientCorrection → BXT → SXT → NXT → fermeture de L_stars → Statistical Stretch → GHS fond), puis Star_Stretch, LRGB, Masque_L + `C_Finition`, Etoiles_screen. L'icône `E01_Mode_rapide` donne l'ordre. Options : ImageSolver_seul, Boost_finition_light, Boost_finition, HDRMT_50, NXT final, Halo-B-Gon, MT, Etoiles_reduites. Détails : section « Mode rapide » de la page.
+**Mode rapide (galaxies LRGB et LHaRGB)** : `Rapide-LRGB.xpsm` (9 icônes) et `Rapide-LHaRGB.xpsm` (14 icônes), presque tout préréglé, gradient par GradientCorrection seulement (MGC + MARS réservé au mode normal) : icône `ImageSolver` sur RGB (seule : ImageSolver échoue dans un conteneur ; nécessaire à SPCC), `C_RGB_rapide` (GradientCorrection → BXT Correct Only → SPCC → BXT → SXT → NXT → Statistical Stretch 0,25 sans dialogue → GHS fond SP = HP = 0,22), `C_L_rapide` (GradientCorrection → BXT → SXT → NXT → fermeture de L_stars → Statistical Stretch → GHS fond), Star_Stretch, puis `C_Fin_rapide` (LRGB → masque attaché → Courbes → LHE → LHE_fin → masque retiré → Etoiles_screen). L'icône `E01_Mode_rapide` donne l'ordre. Options : ImageSolver_seul, C_Fin_sans_etoiles (pour insérer un Boost, HDRMT_50 ou NXT final avant les étoiles), Boost_finition_light, Boost_finition, HDRMT_50, NXT final, Halo-B-Gon, MT, Etoiles_screen, Etoiles_reduites. Détails : section « Mode rapide » de la page.
 
 Sinon, deux fichiers par workflow :
 
@@ -102,7 +102,7 @@ Sinon, deux fichiers par workflow :
 | `C_SHO_lineaire`, `C_HOO_lineaire` | combinaison narrowband linéaire | BXT → SXT |
 | `C_Extraction_SHO`, `C_Extraction_HOO`, `C_Extraction_etoiles` | image sans étoiles (ou d'étoiles) | extraction des canaux |
 | `C_Etoiles_RGB` (RGB + SHO) | RGB combiné | BXT Correct Only → SPCC → BXT → SXT |
-| `C_Finition` | image sans étoiles étirée, Masque_L attaché | Courbes → LHE → LHE_fin |
+| `C_Finition` | image sans étoiles étirée | Masque_L (créé et attaché) → Courbes → LHE → LHE_fin → Masque_retirer |
 | `HDRMT_50` (option) | image sans étoiles étirée | copie `HDR_avant` → HDRMT → PixelMath `a·$T + (1 − a)·HDR_avant`, a = 0,5 → Fermer_vues (`HDR_avant`) |
 
 Format recopié des conteneurs des icônes de theAstroShed (PixInsight 1.9.3) : instances imbriquées sans identifiant, `enabled="true"`, pas de description sur le conteneur. Pas encore testé dans PixInsight : essaie d'abord sur une copie de l'image.
@@ -162,6 +162,7 @@ Les fichiers ont été générés par `make_workflows.py` (dans ce dossier) à p
 
 À copier une fois par ordinateur (Mac ou PC) dans `src/scripts/clodoweg/` du dossier de PixInsight, à côté de `PatternCorrection` (Mac : `/Applications/PixInsight/src/scripts/clodoweg/`) :
 
+- `Masque_auto.js` : icônes `Masque_L` (mode attacher : crée `masque_L`, luminance Rec. 709 au fond coupé à s = 0,14, flou 2 px, et l'attache à l'image) et `Masque_retirer` (détache et ferme) ; dans C_Finition, les Boost et C_Fin_rapide.
 - `Fermer_vues.js` : ferme sans confirmation les vues listées dans son paramètre `views` (virgules) ; dernière étape des conteneurs `HDRMT_50` (copie `HDR_avant`), `C_L_lineaire`, `C_L_etoiles_bruit` et `C_L_rapide` (`L_stars`, étoiles de la luminance, inutiles) ; icône `Fermer_L_stars` dans les fichiers `Workflow-X`.
 - `Renommer_auto.js` : première icône de chaque workflow (`Renommer_auto`) ; renomme les masters mono ouverts L, R, G, B, H, O, S d'après le mot-clé FILTER (Lum, Red, Ha, OIII, SII…), sinon d'après le nom du fichier (`FILTER-Ha`, `_L_`) ; images couleur et noms déjà pris laissés tels quels, avec un message dans la console. Double-clic puis Apply Global.
 - `LPS_UnClic.js` : LinearPatternSubtraction sans dialogue (icône `E00_LinearPatternSubtraction`, première étape de tous les workflows).

@@ -939,43 +939,39 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <instance class="NoOperation" version="256" id="P6_Finition_instance">
       <description>PHASE 6 — Finition : contraste et saturation sur l'image sans étoiles. Colonne de repère, sans effet.</description>
    </instance>
-   <instance class="PixelMath" version="256" id="E24_Masque_L_instance">
-      <description>PRÉRÉGLÉ : fond coupé à s = 0,14, crée 'masque_L'.
+   <instance class="Script" version="256" id="E24_Masque_L_instance">
+      <description>LANCEMENT : glisse l'icône sur l'image.
 
-À RÉGLER : glisse sur l'image sans étoiles étirée ; s = fond mesuré + 0,01 ; léger flou ; Ctrl+M.
+PRÉRÉGLÉ : script Masque_auto : crée 'masque_L' (fond coupé à s = 0,14, flou 2 px) et l'ATTACHE à l'image.
+
+À RÉGLER : glisse sur l'image sans étoiles étirée ; s = fond mesuré + 0,01 ; plus de Ctrl+M.
 
 SI :
 - fond du masque au-dessus de 0,05 -&gt; monte s
+- copie Masque_auto.js dans src/scripts/clodoweg
 
 Détails : page docs/pixinsight-workflow.html.</description>
-      <parameter id="expression">s = 0.14;
-max(0, (0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2] - s) / (1 - s))</parameter>
-      <parameter id="expression1"></parameter>
-      <parameter id="expression2"></parameter>
-      <parameter id="expression3"></parameter>
-      <parameter id="useSingleExpression" value="true"/>
-      <parameter id="symbols">s</parameter>
-      <parameter id="clearImageCacheAndExit" value="false"/>
-      <parameter id="cacheGeneratedImages" value="false"/>
-      <parameter id="generateOutput" value="true"/>
-      <parameter id="singleThreaded" value="false"/>
-      <parameter id="optimization" value="true"/>
-      <parameter id="use64BitWorkingImage" value="false"/>
-      <parameter id="rescale" value="false"/>
-      <parameter id="rescaleLower" value="0"/>
-      <parameter id="rescaleUpper" value="1"/>
-      <parameter id="truncate" value="true"/>
-      <parameter id="truncateLower" value="0"/>
-      <parameter id="truncateUpper" value="1"/>
-      <parameter id="createNewImage" value="true"/>
-      <parameter id="showNewImage" value="true"/>
-      <parameter id="newImageId">masque_L</parameter>
-      <parameter id="newImageWidth" value="0"/>
-      <parameter id="newImageHeight" value="0"/>
-      <parameter id="newImageAlpha" value="false"/>
-      <parameter id="newImageColorSpace" value="Gray"/>
-      <parameter id="newImageSampleFormat" value="SameAsTarget"/>
-      <table id="outputData" rows="0"/>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="4">
+         <tr>
+            <td id="id">mode</td>
+            <td id="value">attacher</td>
+         </tr>
+         <tr>
+            <td id="id">s</td>
+            <td id="value">0.14</td>
+         </tr>
+         <tr>
+            <td id="id">flou</td>
+            <td id="value">2</td>
+         </tr>
+         <tr>
+            <td id="id">nom</td>
+            <td id="value">masque_L</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
    </instance>
    <instance class="CurvesTransformation" version="256" id="E25_Courbes_instance">
       <description>PRÉRÉGLÉ : courbe en S (0,25 -&gt; 0,19 ; 0,75 -&gt; 0,81), saturation 0,5 -&gt; 0,65.
@@ -1156,10 +1152,32 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="amount" value="0.250"/>
       <parameter id="circularKernel" value="true"/>
    </instance>
+   <instance class="Script" version="256" id="E28_Masque_retirer_instance">
+      <description>LANCEMENT : glisse l'icône sur l'image.
+
+PRÉRÉGLÉ : script Masque_auto en mode retirer : détache le masque et ferme masque_L.
+
+À RÉGLER : glisse sur la même image, après Courbes et LHE (déjà inclus dans C_Finition et les Boost).
+
+Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="2">
+         <tr>
+            <td id="id">mode</td>
+            <td id="value">retirer</td>
+         </tr>
+         <tr>
+            <td id="id">nom</td>
+            <td id="value">masque_L</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
+   </instance>
    <instance class="NoOperation" version="256" id="P7_Etoiles_instance">
       <description>PHASE 7 — Étoiles : étoiles : étirement, recombinaison, réduction. Colonne de repère, sans effet.</description>
    </instance>
-   <instance class="Script" version="256" id="E28_NB_to_RGB_Stars_instance">
+   <instance class="Script" version="256" id="E29_NB_to_RGB_Stars_instance">
       <description>LANCEMENT : glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
 
 PRÉRÉGLÉ : rien (le script ne relit pas l'icône).
@@ -1175,7 +1193,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <table id="parameters" rows="0"/>
       <parameter id="information"></parameter>
    </instance>
-   <instance class="Script" version="256" id="E29_Star_Stretch_instance">
+   <instance class="Script" version="256" id="E30_Star_Stretch_instance">
       <description>LANCEMENT : glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
 
 PRÉRÉGLÉ : Stretch Amount 6, Color Boost 1,3, SCNR décoché.
@@ -1211,7 +1229,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       </table>
       <parameter id="information"></parameter>
    </instance>
-   <instance class="PixelMath" version="256" id="E30_Etoiles_reduites_instance">
+   <instance class="PixelMath" version="256" id="E31_Etoiles_reduites_instance">
       <description>PRÉRÉGLÉ : S = 0,20 ; screen + réduction Blanshan avec NBtoRGB_stars, sur l'image elle-même.
 
 À RÉGLER : à la place d'Etoiles_screen : glisse sur l'image SHO sans étoiles finale.
@@ -1286,8 +1304,9 @@ max($T,f1)</parameter>
    <icon id="E25_Courbes" instance="E25_Courbes_instance" xpos="920" ypos="94" workspace="Workspace01"/>
    <icon id="E26_LHE" instance="E26_LHE_instance" xpos="920" ypos="124" workspace="Workspace01"/>
    <icon id="E27_LHE_fin" instance="E27_LHE_fin_instance" xpos="920" ypos="154" workspace="Workspace01"/>
-   <icon id="P7_Etoiles" instance="P7_Etoiles_instance" xpos="1063" ypos="20" workspace="Workspace01"/>
-   <icon id="E28_NB_to_RGB_Stars" instance="E28_NB_to_RGB_Stars_instance" xpos="1063" ypos="64" workspace="Workspace01"/>
-   <icon id="E29_Star_Stretch" instance="E29_Star_Stretch_instance" xpos="1063" ypos="94" workspace="Workspace01"/>
-   <icon id="E30_Etoiles_reduites" instance="E30_Etoiles_reduites_instance" xpos="1063" ypos="124" workspace="Workspace01"/>
+   <icon id="E28_Masque_retirer" instance="E28_Masque_retirer_instance" xpos="920" ypos="184" workspace="Workspace01"/>
+   <icon id="P7_Etoiles" instance="P7_Etoiles_instance" xpos="1089" ypos="20" workspace="Workspace01"/>
+   <icon id="E29_NB_to_RGB_Stars" instance="E29_NB_to_RGB_Stars_instance" xpos="1089" ypos="64" workspace="Workspace01"/>
+   <icon id="E30_Star_Stretch" instance="E30_Star_Stretch_instance" xpos="1089" ypos="94" workspace="Workspace01"/>
+   <icon id="E31_Etoiles_reduites" instance="E31_Etoiles_reduites_instance" xpos="1089" ypos="124" workspace="Workspace01"/>
 </xpsm>

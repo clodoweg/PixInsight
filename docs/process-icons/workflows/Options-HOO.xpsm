@@ -640,6 +640,29 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <description>PHASE 6 — Finition : contraste et saturation sur l'image sans étoiles. Colonne de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="Opt_Boost_finition_light_instance">
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="4">
+            <tr>
+               <td id="id">mode</td>
+               <td id="value">attacher</td>
+            </tr>
+            <tr>
+               <td id="id">s</td>
+               <td id="value">0.14</td>
+            </tr>
+            <tr>
+               <td id="id">flou</td>
+               <td id="value">2</td>
+            </tr>
+            <tr>
+               <td id="id">nom</td>
+               <td id="value">masque_L</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
       <instance class="CurvesTransformation" version="256" enabled="true">
          <table id="R" rows="2">
             <tr>
@@ -782,8 +805,46 @@ Détails : page docs/pixinsight-workflow.html.</description>
          <parameter id="amount" value="0.120"/>
          <parameter id="circularKernel" value="true"/>
       </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="2">
+            <tr>
+               <td id="id">mode</td>
+               <td id="value">retirer</td>
+            </tr>
+            <tr>
+               <td id="id">nom</td>
+               <td id="value">masque_L</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
    </instance>
    <instance class="ProcessContainer" id="Opt_Boost_finition_instance">
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="4">
+            <tr>
+               <td id="id">mode</td>
+               <td id="value">attacher</td>
+            </tr>
+            <tr>
+               <td id="id">s</td>
+               <td id="value">0.14</td>
+            </tr>
+            <tr>
+               <td id="id">flou</td>
+               <td id="value">2</td>
+            </tr>
+            <tr>
+               <td id="id">nom</td>
+               <td id="value">masque_L</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
       <instance class="CurvesTransformation" version="256" enabled="true">
          <table id="R" rows="2">
             <tr>
@@ -925,6 +986,21 @@ Détails : page docs/pixinsight-workflow.html.</description>
          <parameter id="slopeLimit" value="2.0"/>
          <parameter id="amount" value="0.200"/>
          <parameter id="circularKernel" value="true"/>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="2">
+            <tr>
+               <td id="id">mode</td>
+               <td id="value">retirer</td>
+            </tr>
+            <tr>
+               <td id="id">nom</td>
+               <td id="value">masque_L</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
       </instance>
    </instance>
    <instance class="ProcessContainer" id="Opt_HDRMT_50_instance">
