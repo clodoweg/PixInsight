@@ -1058,12 +1058,12 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="St" value="AkimaSubsplines"/>
    </instance>
    <instance class="LocalHistogramEqualization" version="256" id="E26_LHE_instance">
-      <description>PRÉRÉGLÉ : Kernel 150, Contrast limit 2,0, Amount 0,35, 8-bit, circulaire.
+      <description>PRÉRÉGLÉ : Kernel 150, Contrast limit 2,0, Amount 0,30, 8-bit, circulaire.
 
-À RÉGLER : sous Masque_L.
+À RÉGLER : sous Masque_L ; passe 1 (grandes structures), LHE_fin ensuite.
 
 SI :
-- effet artificiel -&gt; Amount 0,20
+- effet artificiel ou halo sombre -&gt; Amount 0,20
 - bruit -&gt; Contrast limit 1,5
 - anneaux -&gt; Kernel plus grand
 
@@ -1071,13 +1071,29 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="radius" value="150"/>
       <parameter id="histogramBins" value="Bit8"/>
       <parameter id="slopeLimit" value="2.0"/>
-      <parameter id="amount" value="0.350"/>
+      <parameter id="amount" value="0.300"/>
+      <parameter id="circularKernel" value="true"/>
+   </instance>
+   <instance class="LocalHistogramEqualization" version="256" id="E27_LHE_fin_instance">
+      <description>PRÉRÉGLÉ : Kernel 40, Contrast limit 2,0, Amount 0,25, 8-bit, circulaire.
+
+À RÉGLER : sous Masque_L, après LHE ; passe 2 (petits détails).
+
+SI :
+- bruit ou aspect gravé -&gt; Amount 0,16
+- pas assez -&gt; Amount 0,30
+
+Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="radius" value="40"/>
+      <parameter id="histogramBins" value="Bit8"/>
+      <parameter id="slopeLimit" value="2.0"/>
+      <parameter id="amount" value="0.250"/>
       <parameter id="circularKernel" value="true"/>
    </instance>
    <instance class="NoOperation" version="256" id="P7_Etoiles_instance">
       <description>PHASE 7 — Étoiles : étoiles : étirement, recombinaison, réduction. Colonne de repère, sans effet.</description>
    </instance>
-   <instance class="Script" version="256" id="E27_NB_to_RGB_Stars_instance">
+   <instance class="Script" version="256" id="E28_NB_to_RGB_Stars_instance">
       <description>LANCEMENT : glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
 
 PRÉRÉGLÉ : rien (le script ne relit pas l'icône).
@@ -1093,7 +1109,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <table id="parameters" rows="0"/>
       <parameter id="information"></parameter>
    </instance>
-   <instance class="Script" version="256" id="E28_Star_Stretch_instance">
+   <instance class="Script" version="256" id="E29_Star_Stretch_instance">
       <description>LANCEMENT : glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
 
 PRÉRÉGLÉ : Stretch Amount 6, Color Boost 1,0, SCNR décoché.
@@ -1129,7 +1145,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       </table>
       <parameter id="information"></parameter>
    </instance>
-   <instance class="PixelMath" version="256" id="E29_Etoiles_screen_instance">
+   <instance class="PixelMath" version="256" id="E30_Etoiles_screen_instance">
       <description>PRÉRÉGLÉ : ~((~$T) * (~NBtoRGB_stars)), crée l'image 'Final'.
 
 À RÉGLER : glisse sur l'image SHO sans étoiles finale ; étoiles de NB to RGB (NBtoRGB_stars), étirées.
@@ -1166,7 +1182,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
-   <instance class="PixelMath" version="256" id="E30_Blanshan_Transfer_instance">
+   <instance class="PixelMath" version="256" id="E31_Blanshan_Transfer_instance">
       <description>PRÉRÉGLÉ : S = 0,20 (Bill : 0,15) ; lit 'Final', crée 'Final_reduit'.
 
 À RÉGLER : glisse sur l'image SANS étoiles (comme Etoiles_screen).
@@ -1239,9 +1255,10 @@ max(Img1,f1)</parameter>
    <icon id="E24_Masque_L" instance="E24_Masque_L_instance" xpos="1330" ypos="64" workspace="Workspace01"/>
    <icon id="E25_Courbes" instance="E25_Courbes_instance" xpos="1330" ypos="94" workspace="Workspace01"/>
    <icon id="E26_LHE" instance="E26_LHE_instance" xpos="1330" ypos="124" workspace="Workspace01"/>
+   <icon id="E27_LHE_fin" instance="E27_LHE_fin_instance" xpos="1330" ypos="154" workspace="Workspace01"/>
    <icon id="P7_Etoiles" instance="P7_Etoiles_instance" xpos="1590" ypos="20" workspace="Workspace01"/>
-   <icon id="E27_NB_to_RGB_Stars" instance="E27_NB_to_RGB_Stars_instance" xpos="1590" ypos="64" workspace="Workspace01"/>
-   <icon id="E28_Star_Stretch" instance="E28_Star_Stretch_instance" xpos="1590" ypos="94" workspace="Workspace01"/>
-   <icon id="E29_Etoiles_screen" instance="E29_Etoiles_screen_instance" xpos="1590" ypos="124" workspace="Workspace01"/>
-   <icon id="E30_Blanshan_Transfer" instance="E30_Blanshan_Transfer_instance" xpos="1590" ypos="154" workspace="Workspace01"/>
+   <icon id="E28_NB_to_RGB_Stars" instance="E28_NB_to_RGB_Stars_instance" xpos="1590" ypos="64" workspace="Workspace01"/>
+   <icon id="E29_Star_Stretch" instance="E29_Star_Stretch_instance" xpos="1590" ypos="94" workspace="Workspace01"/>
+   <icon id="E30_Etoiles_screen" instance="E30_Etoiles_screen_instance" xpos="1590" ypos="124" workspace="Workspace01"/>
+   <icon id="E31_Blanshan_Transfer" instance="E31_Blanshan_Transfer_instance" xpos="1590" ypos="154" workspace="Workspace01"/>
 </xpsm>

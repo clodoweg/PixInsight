@@ -22,7 +22,7 @@ PHASE = {
     'GHS_1_premier': 4, 'GHS_2_contraste': 4, 'GHS_3_fond': 4, 'Statistical_Stretch': 4, 'Star_Stretch': 4,
     'LRGB_ajout_L': 5, 'NBN_SHO': 5, 'NBN_HOO': 5, 'Foraxx_SHO': 5, 'Foraxx_HOO': 5, 'HOO_simple': 5, 'HOO_Hubble': 5,
     'Perfect_Palette_Picker': 5, 'NBColourMapper': 5, 'SCNR_SHO': 5, 'H_en_luminance': 5,
-    'Masque_L': 6, 'Courbes': 6, 'LHE': 6, 'HDRMT': 6, 'NXT_final': 6,
+    'Masque_L': 6, 'Courbes': 6, 'LHE': 6, 'LHE_fin': 6, 'HDRMT': 6, 'NXT_final': 6,
     'Etoiles_RGB': 7, 'Etoiles_HOO': 7, 'NB_to_RGB_Stars': 7, 'Etoiles_HOO_synth': 7, 'Etoiles_screen': 7, 'CorrectMagentaStars': 7,
     'Blanshan_Transfer': 7, 'MT_etoiles': 7, 'Halo_B_Gon': 7,
 }
@@ -94,7 +94,7 @@ def is_default(r, prefix=None):
 
 # Conteneurs (ProcessContainer) : suites d'étapes sans réglage intermédiaire, appliquées à la même image.
 # nom -> (image cible, étapes). Un conteneur n'est utilisé que si toutes ses étapes sont dans la sélection.
-_FIN = ('C_Finition', "l'image sans étoiles étirée, Masque_L attaché (Ctrl+M)", ['Courbes', 'LHE'])
+_FIN = ('C_Finition', "l'image sans étoiles étirée, Masque_L attaché (Ctrl+M)", ['Courbes', 'LHE', 'LHE_fin'])
 CONTAINERS = {
     'LRGB': [('C_RGB_lineaire', "l'image RGB combinée, linéaire, gradient retiré", ['BXT_CorrectOnly', 'SPCC', 'BXT_RGB', 'SXT_lineaire', 'NXT_RGB']),
              ('C_L_lineaire', "le master L, linéaire, gradient retiré", ['BXT_L', 'SXT_lineaire', 'NXT_L']), _FIN],

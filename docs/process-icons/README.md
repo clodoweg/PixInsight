@@ -101,7 +101,7 @@ Sinon, deux fichiers par workflow :
 | `C_SHO_lineaire`, `C_HOO_lineaire` | combinaison narrowband linéaire | BXT → SXT |
 | `C_Extraction_SHO`, `C_Extraction_HOO`, `C_Extraction_etoiles` | image sans étoiles (ou d'étoiles) | extraction des canaux |
 | `C_Etoiles_RGB` (RGB + SHO) | RGB combiné | BXT Correct Only → SPCC → BXT → SXT |
-| `C_Finition` | image sans étoiles étirée, Masque_L attaché | Courbes → LHE |
+| `C_Finition` | image sans étoiles étirée, Masque_L attaché | Courbes → LHE → LHE_fin |
 
 Format recopié des conteneurs des icônes de theAstroShed (PixInsight 1.9.3) : instances imbriquées sans identifiant, `enabled="true"`, pas de description sur le conteneur. Pas encore testé dans PixInsight : essaie d'abord sur une copie de l'image.
 
