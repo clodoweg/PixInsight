@@ -109,13 +109,13 @@ Dans les trois fichiers, **une colonne par phase**, avec une icône-titre sans e
 
 | Workflow | Principal | Options | Contenu |
 |---|---|---|---|
-| LRGB | 23 | 10 | Prétraitement, combinaison RGB, MGC, BXT Correct Only, SPCC, BXT, SXT linéaire, NXT, GHS, LRGBCombination, finition, étoiles |
-| LHaRGB | 27 | 13 | LRGB + soustraction du continuum et H dans le rouge ; options : calcul automatique de k, H dans L, NBRGBCombination |
-| RGB-SHO | 33 | 17 | Masters narrowband, combinaison SHO simple, BXT, SXT, extraction, NarrowbandNormalization, étoiles RGB ; options : Foraxx, Perfect Palette Picker, NBColourMapper, SCNR, LinearFit |
-| SHO-sans-RGB | 30 | 17 | Idem sans RGB, étoiles narrowband par NB to RGB Star Combination ; options : étoiles HOO synthétiques, CorrectMagentaStars |
-| HOO | 27 | 17 | Combinaison HOO, NarrowbandNormalization HOO ; options : extraction dual-band (caméra couleur), Foraxx HOO, variante Hubble, H en luminance |
+| LRGB | 23 | 11 | Prétraitement, combinaison RGB, MGC, BXT Correct Only, SPCC, BXT, SXT linéaire, NXT, GHS, LRGBCombination, finition, étoiles |
+| LHaRGB | 27 | 14 | LRGB + soustraction du continuum et H dans le rouge ; options : calcul automatique de k, H dans L, NBRGBCombination |
+| RGB-SHO | 33 | 18 | Masters narrowband, combinaison SHO simple, BXT, SXT, extraction, NarrowbandNormalization, étoiles RGB ; options : Foraxx, Perfect Palette Picker, NBColourMapper, SCNR, LinearFit |
+| SHO-sans-RGB | 30 | 18 | Idem sans RGB, étoiles narrowband par NB to RGB Star Combination ; options : étoiles HOO synthétiques, CorrectMagentaStars |
+| HOO | 27 | 18 | Combinaison HOO, NarrowbandNormalization HOO ; options : extraction dual-band (caméra couleur), Foraxx HOO, variante Hubble, H en luminance |
 
-(Les nombres ne comptent pas les icônes-titres. Masters déjà empilés : WBPP et CosmeticCorrection sont en options, pour repartir des brutes.)
+(Les nombres ne comptent pas les icônes-titres. Masters déjà empilés : WBPP et CosmeticCorrection sont en options, pour repartir des brutes. Première option de chaque workflow : `Opt_LinearPatternSubtraction`, icône-note avec les réglages du script de Vicent Peris, pour des lignes résiduelles sur un master.)
 
 **Trois sortes d'icônes :**
 

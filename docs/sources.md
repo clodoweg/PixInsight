@@ -362,3 +362,9 @@ Points clos au dernier contrôle (30 septembre 2026) :
 - Outil — [DynamicAstroCrop (deepskycolors)](http://www.deepskycolors.com/pixinsight/dynamicastrocrop/) *(résumé)* : les process géométriques standard (DynamicCrop, Resample, Rotation…) suppriment la solution astrométrique ; DynamicAstroCrop recadre en la conservant. Non testé.
 - Conséquence dans la fiche (1er octobre 2026) : ImageSolver remis dans le chemin principal de tous les workflows, avant SPFC, et avant le SPCC des étoiles RGB du workflow RGB + SHO.
 
+## LinearPatternSubtraction
+
+- Officiel — [PixInsight, Correcting Defective Lines (LinearDefectDetection et LinearPatternSubtraction, Vicent Peris)](https://pixinsight.com/tutorials/LDD-LPS/) : rôle de chaque paramètre (Target is active image, Correct columns, Correct entire image, Defects file, Layers to remove, Rejection limit, Global rejection, Background reference region = zone la plus sombre) ; correction faite avant l'alignement et l'intégration ; sur les masters seulement après vérification.
+- Forum — [PixInsight, Manually running LinearPatternSubtraction script fails](https://pixinsight.com/forum/index.php?threads/manually-running-linearpatternsubtraction-script-fails.19805/) et [Error with Linear Pattern Subtraction Script](https://pixinsight.com/forum/index.php?threads/error-with-linear-pattern-subtraction-script.21491/) *(résumés)* : erreur `partialColumnOrRow is undefined` (LinearPatternSubtraction.jsh, ligne 404) sur une image intégrée avec Correct entire image coché et sans fichier de défauts ; réponse : script prévu pour les brutes. Noms de paramètres vus : targetIsActiveImage, layersToRemove, rejectionLimit, globalRejection.
+- Réglages de l'icône : ceux de l'utilisateur (capture du dialogue, version 1.02, 1er octobre 2026). Chemin d'installation du script non vérifié : icône-note, pas icône Script.
+

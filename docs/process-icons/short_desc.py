@@ -5,6 +5,11 @@ PAGE = ' Détails : page docs/pixinsight-workflow.html.'
 
 # nom de base -> (préréglé, à régler, [si ... -> ...])
 S = {
+    'LinearPatternSubtraction': ("rien (icône-note : lance le script depuis le menu Script de PixInsight)",
+             "Target is active image coché ; Close former working images décoché ; Output directory vide ; Correct columns décoché (corrige les lignes) ; Correct the entire image coché ; Defects file vide ; Postfix _lps ; Layers to remove 9 ; Rejection limit 3 ; Global rejection coché ; Global rejection limit 5 ; Background reference region 0, 0, 512, 512, à déplacer sur une zone de fond sombre ; sur chaque master linéaire, avant le recadrage",
+             ["erreur « partialColumnOrRow is undefined » -> bug connu sur un master avec Correct the entire image et sans Defects file : fournis un fichier de défauts (LinearDefectDetection) ou passe-toi du script",
+              "colonnes plutôt que lignes -> coche Correct columns",
+              "artefacts après correction -> annule : le script est conçu pour les brutes, avant alignement"]),
     'WBPP': ("rien (WBPP garde ses propres réglages)",
              "Maximum quality ; CosmeticCorrection = icône CC_auto ; PSF Signal Weight ; Local normalization activée ; Rejection Auto ; Large-scale rejection High ; pas de drizzle (sauf FWHM < 2 px)",
              ["un groupe de lights sans dark ou flat (onglet Calibration) -> corrige avant Run", "plusieurs nuits -> Grouping keywords = SESSION"]),

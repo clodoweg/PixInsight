@@ -404,8 +404,12 @@ def gradient_block(kind='rgb'):
           (M.dbe('DBE'), D_DBE)]
     return b
 
+T_LPS = ("OPTION — LinearPatternSubtraction (Vicent Peris, script livré avec PixInsight). Icône-note : chemin du script non vérifié ; lance-le depuis le menu Script. "
+         "Réglages : Target is active image coché ; Close former working images décoché ; Correct columns décoché (lignes) ; Correct the entire image coché ; Defects file vide ; "
+         "Postfix _lps ; Layers to remove 9 ; Rejection limit 3 ; Global rejection coché, limite 5 ; Background reference region 0, 0, 512, 512 (à placer sur une zone sombre).")
+
 def pre_block():
-    return [(note('WBPP', T_WBPP), ''), (cc(), D_CC), (M.crop('DynamicCrop'), "DynamicCrop, sans recadrage au départ (le cadre dépend de ton image) : ouvre l'icône, trace le cadre sur un master en excluant les bords mal couverts, "
+    return [(note('LinearPatternSubtraction', T_LPS), ''), (note('WBPP', T_WBPP), ''), (cc(), D_CC), (M.crop('DynamicCrop'), "DynamicCrop, sans recadrage au départ (le cadre dépend de ton image) : ouvre l'icône, trace le cadre sur un master en excluant les bords mal couverts, "
             "glisse le triangle du process sur l'espace de travail pour créer ton icône, puis applique CETTE icône à tous les autres masters (ils sont alignés, le recadrage sera identique).")]
 
 D_MASK = ("MASQUE DE LUMINANCE en un clic (optionnel, pour Courbes et LHE) : glisse l'icône sur l'image SANS ÉTOILES étirée ; elle crée la vue mono 'masque_L' = luminance Rec. 709 (0,2126 R + 0,7152 G + 0,0722 B) "

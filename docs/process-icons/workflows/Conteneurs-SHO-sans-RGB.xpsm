@@ -50,6 +50,20 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <instance class="NoOperation" version="256" id="P1_options_instance">
       <description>OPTIONS de la phase 1 — Préparation : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
    </instance>
+   <instance class="NoOperation" version="256" id="Opt_LinearPatternSubtraction_instance">
+      <description>OPTION — lignes horizontales résiduelles visibles sur un master (motif du capteur).
+
+PRÉRÉGLÉ : rien (icône-note : lance le script depuis le menu Script de PixInsight).
+
+À RÉGLER : Target is active image coché ; Close former working images décoché ; Output directory vide ; Correct columns décoché (corrige les lignes) ; Correct the entire image coché ; Defects file vide ; Postfix _lps ; Layers to remove 9 ; Rejection limit 3 ; Global rejection coché ; Global rejection limit 5 ; Background reference region 0, 0, 512, 512, à déplacer sur une zone de fond sombre ; sur chaque master linéaire, avant le recadrage.
+
+SI :
+- erreur « partialColumnOrRow is undefined » -&gt; bug connu sur un master avec Correct the entire image et sans Defects file : fournis un fichier de défauts (LinearDefectDetection) ou passe-toi du script
+- colonnes plutôt que lignes -&gt; coche Correct columns
+- artefacts après correction -&gt; annule : le script est conçu pour les brutes, avant alignement
+
+Détails : page docs/pixinsight-workflow.html.</description>
+   </instance>
    <instance class="Script" version="256" id="Opt_WBPP_instance">
       <description>OPTION — seulement si tu repars des brutes (masters pas encore empilés).
 
@@ -1485,8 +1499,9 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <icon id="E01_DynamicCrop" instance="E01_DynamicCrop_instance" xpos="30" ypos="64" workspace="Workspace01"/>
    <icon id="E02_Masters_S_H_O" instance="E02_Masters_S_H_O_instance" xpos="30" ypos="94" workspace="Workspace01"/>
    <icon id="P1_options" instance="P1_options_instance" xpos="30" ypos="140" workspace="Workspace01"/>
-   <icon id="Opt_WBPP" instance="Opt_WBPP_instance" xpos="30" ypos="174" workspace="Workspace01"/>
-   <icon id="Opt_CC_auto" instance="Opt_CC_auto_instance" xpos="30" ypos="204" workspace="Workspace01"/>
+   <icon id="Opt_LinearPatternSubtraction" instance="Opt_LinearPatternSubtraction_instance" xpos="30" ypos="174" workspace="Workspace01"/>
+   <icon id="Opt_WBPP" instance="Opt_WBPP_instance" xpos="30" ypos="204" workspace="Workspace01"/>
+   <icon id="Opt_CC_auto" instance="Opt_CC_auto_instance" xpos="30" ypos="234" workspace="Workspace01"/>
    <icon id="P2_Gradient" instance="P2_Gradient_instance" xpos="290" ypos="20" workspace="Workspace01"/>
    <icon id="E03_ImageSolver" instance="E03_ImageSolver_instance" xpos="290" ypos="64" workspace="Workspace01"/>
    <icon id="E04_SPFC_H" instance="E04_SPFC_H_instance" xpos="290" ypos="94" workspace="Workspace01"/>
