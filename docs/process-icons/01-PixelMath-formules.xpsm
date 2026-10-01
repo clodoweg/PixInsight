@@ -258,9 +258,9 @@ R + w*H_cs</parameter>
       <parameter id="truncate" value="true"/>
       <parameter id="truncateLower" value="0"/>
       <parameter id="truncateUpper" value="1"/>
-      <parameter id="createNewImage" value="true"/>
+      <parameter id="createNewImage" value="false"/>
       <parameter id="showNewImage" value="true"/>
-      <parameter id="newImageId">Final</parameter>
+      <parameter id="newImageId"></parameter>
       <parameter id="newImageWidth" value="0"/>
       <parameter id="newImageHeight" value="0"/>
       <parameter id="newImageAlpha" value="false"/>

@@ -43,6 +43,7 @@ SCRIPTS = {
              L_DRAG),
     'Combinaison_RGB': ('$PXI_SRCDIR/scripts/clodoweg/Combiner_RGB.js', '',
              [('red', 'R'), ('green', 'G'), ('blue', 'B'), ('newId', 'RGB'), ('closeSources', 'true'), ('copyKeywords', 'true')], L_GLOBAL),
+    'Fermer_vues': ('$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js', '', [('views', '')], L_GLOBAL),
     'Renommer_auto': ('$PXI_SRCDIR/scripts/clodoweg/Renommer_auto.js', '', [], L_GLOBAL),
     'ImageSolver_Date': ('$PXI_SRCDIR/scripts/clodoweg/ImageSolver_Date.js', '', [('defaultDate', '2020-01-01T00:00:00')], L_DRAG),
     'LinearPatternSubtraction': ('$PXI_SRCDIR/scripts/clodoweg/LPS_UnClic.js', '',
@@ -232,12 +233,20 @@ def container(name, xmls):
     return '   <instance class="ProcessContainer" id="%s_instance">\n%s\n   </instance>' % (name, '\n'.join(nested(x) for x in xmls))
 
 
+def fermer(icon, views):
+    """Icône Script Fermer_vues réglée pour fermer les vues données (dernière étape d'un conteneur)."""
+    n, x = script('Fermer_vues', '')
+    a = '<td id="id">views</td>\n            <td id="value"></td>'
+    assert a in x
+    x = x.replace(a, '<td id="id">views</td>\n            <td id="value">%s</td>' % views)
+    return icon, x.replace('id="Fermer_vues_instance"', 'id="%s_instance"' % icon, 1)
+
 def hdrmt_50():
     """HDRMT à 50 % : copie de l'image, HDRMT sur l'image, puis mélange a·résultat + (1 − a)·copie (a = 0,5)."""
     parts = []
     for item in (pm('HDR_copie', '$T', new_image=True, new_id='HDR_avant'),
                  M.instance('HDRMultiscaleTransform', 'HDRMT', {'numberOfLayers': 6, 'numberOfIterations': 1, 'toLightness': True, 'preserveHue': True, 'lightnessMask': True}),
-                 pm('HDR_melange', 'a = 0.5;\na*$T + (1 - a)*HDR_avant', symbols='a')):
+                 pm('HDR_melange', 'a = 0.5;\na*$T + (1 - a)*HDR_avant', symbols='a'), fermer('Fermer_HDR_avant', 'HDR_avant')):
         name, x = item
         parts.append(x.replace('id="%s_instance"' % name, 'id="__ID___instance"', 1))
     return 'HDRMT_50', container('HDRMT_50', parts)
@@ -357,7 +366,7 @@ T_STARSTRETCH = ("ÉTAPE MANUELLE — Star Stretch (SetiAstro, script v2.6) sur 
                  "Remove Green via SCNR décoché par défaut (SCNR vert pleine force, Average Neutral). Show Preview décoché (aperçu + Refresh Preview).")
 T_HALO = ("ÉTAPE MANUELLE — Halo-B-Gon (SetiAstro, script v2.1) sur l'image d'étoiles seule, AVANT Etoiles_screen ; modifie l'image elle-même, garde une copie. "
           "Select stars-only image : l'image d'étoiles étirée, celle de la formule Etoiles_screen (RGB_stars ; NBtoRGB_stars en SHO ; HOO_stars en HOO). "
-          "Déjà recombiné : applique Halo-B-Gon sur l'image d'étoiles, puis relance Etoiles_screen sur l'image sans étoiles (ferme l'ancienne Final). "
+          "Déjà recombiné : annule Etoiles_screen (Ctrl+Z sur l'image), applique Halo-B-Gon sur l'image d'étoiles, puis relance Etoiles_screen. "
           "Masque de luminosité inversé moins les petites structures (cœurs protégés), puis courbe qui assombrit les tons moyens (0,75 → 0,40). "
           "Reduction Amount, Low par défaut : Extra Low = 1 courbe douce (0,75 → 0,575) ; Low = 1 passe, 1 courbe ; Med = 2 passes × 2 courbes (4) ; High = 3 passes × 3 courbes (9). "
           "Commence par Extra Low ou Low. Linear Data décoché par défaut ; coché, le script étire (mtf 0,25^5), traite puis rend l'image linéaire : seulement si l'image est encore linéaire.")
@@ -402,9 +411,10 @@ D_GHS3 = ("GHS, assombrir le fond sans écrêter — après GHS ou Statistical S
           "Données bruitées : 0,14-0,15 ; données propres (après NXT) : 0,10-0,12. Au-delà de 0,18-0,20 : trop étiré. Vérifie avec Statistics (médiane d'une preview de fond).")
 D_SCREEN = ("Recombinaison des étoiles en mode screen : ~((~$T) * (~%s)). GLISSE l'icône sur l'image SANS étoiles finale (après palette et finition), quel que soit son nom ; "
             "l'image d'étoiles étirée doit s'appeler '%s' (nom donné par SXT : écris-le exactement comme le titre de la fenêtre, sinon corrige-le dans l'icône). "
-            "Résultat : nouvelle image 'Final'.")
-D_BL = ("Réduction d'étoiles Bill Blanshan, méthode Transfer V2 : GLISSE l'icône sur l'image SANS étoiles (la même que pour Etoiles_screen) ; elle lit l'image avec étoiles 'Final' et crée 'Final_reduit'. "
-        "Formule de Bill avec $T et starless permutés (Img1 = $T, image étoilée = Final) : même calcul, sans renommer les vues. "
+            "L'icône MODIFIE l'image sans étoiles (pas de nouvelle vue) : elle devient l'image finale avec étoiles. Pour recommencer : Ctrl+Z. "
+            "Alternative avec réduction des étoiles : icône Etoiles_reduites (à la place de celle-ci).")
+D_BL = ("Recombinaison des étoiles + réduction Bill Blanshan (Transfer V2) en une seule formule, À LA PLACE d'Etoiles_screen : GLISSE l'icône sur l'image SANS étoiles finale ; elle est modifiée directement. "
+        "W = ~((~$T)*(~%s)) est l'image avec étoiles (screen), puis la formule de Bill avec Img1 = $T (sans étoiles) : même calcul que Etoiles_screen suivi de Blanshan, sans vue intermédiaire. "
         "S = 0,20 dans cette icône (valeur de Bill : 0,15 ; plus bas = étoiles plus petites ; étoiles trop petites -> 0,25, ou saute cette étape). Les versions V3 et les méthodes Halo/Star sont dans 01-PixelMath-formules.xpsm.")
 D_MT = ("Alternative : MorphologicalTransformation sur l'image d'étoiles seule (ou avec un masque d'étoiles), AVANT Etoiles_screen. Morphological Selection 0,25 (sous 0,5 = érosion), Amount 0,60, 1 itération, élément circulaire 5x5.")
 D_CURVES = ("CurvesTransformation — sur l'image sans étoiles étirée, sous masque de luminance (icône Masque_L juste avant). "
@@ -496,11 +506,11 @@ def stars_end(stars='RGB_stars', cms=False, screen_extra='', cms_extra='', alt='
     # options sur l'image d'étoiles seule : AVANT la recombinaison
     b = [(M.instance('MorphologicalTransformation', 'MT_etoiles', {'operator': 'Selection', 'numberOfIterations': 1, 'amount': '0.60', 'selectionPoint': '0.25', 'structureSize': 5}, post=M.mt_post), D_MT),
          (note('Halo_B_Gon', T_HALO), '')]
-    b.append((pm('Etoiles_screen', '~((~$T) * (~%s))' % stars, new_image=True, new_id='Final'),
+    b.append((pm('Etoiles_screen', '~((~$T) * (~%s))' % stars),
               D_SCREEN % (stars, stars) + alt + screen_extra))
+    b.append((pm('Etoiles_reduites', "S=0.20;\nW=~((~$T)*(~%s));\nf1= ~((~mtf(~S,W)/~mtf(~S,$T))*~$T);\nmax($T,f1)" % stars, symbols='S, W, f1'), D_BL % stars))
     if cms:
         b.append((note('CorrectMagentaStars', T_CMS + cms_extra), ''))
-    b.append((pm('Blanshan_Transfer', "S=0.20;\nImg1=$T;\nf1= ~((~mtf(~S,Final)/~mtf(~S,Img1))*~Img1);\nmax(Img1,f1)", symbols='S, Img1, f1', new_image=True, new_id='Final_reduit'), D_BL))
     return b
 
 def ghs_block(extra_desc='', stat_extra='', fond_extra=''):
@@ -568,6 +578,7 @@ lrgb = pre_block() + [rgb_comb_item(), (solver_container(), '')] + gradient_bloc
     (M.sxt('SXT_lineaire', False), D_SXT_LIN + " Sur RGB (garde les étoiles : ce sont celles de l'image finale) et sur L (jette ses étoiles)."),
     (M.nxt('NXT_RGB', 0.80, 1), "NoiseXTerminator sur RGB sans étoiles : Denoise 0,80 (0,70 à 0,90), Detail 0,15. Toujours après BXT. Fonctionne en linéaire ou après étirement (RC Astro)." + NXT_C),
     (M.nxt('NXT_L', 0.60, 1), "NoiseXTerminator sur L sans étoiles : Denoise 0,60 (0,50 à 0,70) pour garder le détail fin." + NXT_C),
+    (fermer('Fermer_L_stars', 'L_stars'), ''),
 ] + ghs_block(L_GHS, L_STAT, L_FOND) + [
     (note('Star_Stretch', T_STARSTRETCH + STARS_LRGB), ''),
     (M.instance('LRGBCombination', 'LRGB_ajout_L', {'mL': '0.500', 'mc': '0.350', 'noiseReduction': True}, post=M.lrgb_post),
@@ -598,8 +609,8 @@ lhargb = pre_block() + [rgb_comb_item(False), (solver_container(), '')] + gradie
      "ÉTOILES : l'injection se fait avant SXT, donc les étoiles gardées viennent du RGB injecté ; tout résidu d'étoile dans H_cs passe dans leur rouge. Défauts : étoiles rougies ou à halo rouge (k trop faible), "
      "anneaux clairs ou sombres (PSF différentes entre H et R, inévitable en partie), étoiles grossies (w trop fort). Standard : comme en LRGB, et pas plus rouges que sur la copie avant injection. "
      "OPTION la plus propre : SXT sur une copie du RGB AVANT injection, garde ces étoiles-là, et injecte le H seulement dans l'image sans étoiles."),
-    (pm('H_dans_L', 'a = 1.0;\nmax(L, H_cs*a)', symbols='a', new_image=True, new_id='L_H', space='Gray'),
-     "Option : injection de H dans la luminance, L' = max(L, a*H_cs). Vues 'L' et 'H_cs'. Rend les régions HII plus nettes. Renomme ensuite 'L_H' en 'L' pour la suite. "
+    (pm('H_dans_L', 'a = 1.0;\nmax($T, H_cs*a)', symbols='a'),
+     "Option : injection de H dans la luminance, L' = max(L, a*H_cs) : GLISSE l'icône sur L (modifiée directement, pas de nouvelle vue). Vue 'H_cs' requise. Rend les régions HII plus nettes. "
      "Régions HII nettes mais couleurs délavées après LRGBCombination : a trop fort, baisse-le ou fais un mélange léger."),
     (note('NBRGBCombination', "ALTERNATIVE — NBRGBCombination (Script › Utilities) : image RGB et sa bande passante (~100 nm pour un filtre R mono), image H dans le canal R avec la bande passante de ton filtre (3, 5, 7 nm), "
           "Scale 1,2 par défaut (3 à 5 pour un H faible). Compare avec les aperçus RGB et NBRGB."), ''),
@@ -608,6 +619,7 @@ lhargb = pre_block() + [rgb_comb_item(False), (solver_container(), '')] + gradie
      "Si elles sont abîmées : monte k, baisse w, ou passe SXT sur la copie du RGB non injecté et garde ses étoiles (option la plus propre)."),
     (M.nxt('NXT_RGB', 0.80, 1), "NoiseXTerminator sur RGB sans étoiles : Denoise 0,80, Detail 0,15." + NXT_C),
     (M.nxt('NXT_L', 0.60, 1), "NoiseXTerminator sur L sans étoiles : Denoise 0,60." + NXT_C),
+    (fermer('Fermer_L_stars', 'L_stars'), ''),
 ] + ghs_block(L_GHS, L_STAT, L_FOND) + [
     (note('Star_Stretch', T_STARSTRETCH + STARS_LRGB), ''),
     (M.instance('LRGBCombination', 'LRGB_ajout_L', {'mL': '0.500', 'mc': '0.350', 'noiseReduction': True}, post=M.lrgb_post),
@@ -829,7 +841,7 @@ T_RAPIDE = {
          "MGC : garde TES icônes MGC réglées avec Default Files. Cible hors MARS : GradientCorrection des options. Une étape en erreur arrête le conteneur : lis la console."),
 }
 WHEN_R = {'GradientCorrection': "à la place de MGC_MARS si la cible est hors couverture MARS (sud au-delà de −15° environ) ou si MGC échoue",
-          'Blanshan_Transfer': L.WHEN['Blanshan_Transfer']}
+          'Etoiles_reduites': L.WHEN['Etoiles_reduites']}
 
 def write_rapide(filename, prefix, title, steps, main_spec, opt_spec):
     """main_spec / opt_spec : listes de (phase, item, description) ; description '' = celle du workflow ou aucune (conteneur)."""
@@ -854,7 +866,7 @@ def rapide_common_opts(steps):
     return [(1, *pick(steps, 'LinearPatternSubtraction')),
             (2, *pick(steps, 'GradientCorrection')),
             (6, *pick(steps, 'Boost_finition')), (6, *pick(steps, 'HDRMT_50')), (6, *pick(steps, 'NXT_final')),
-            (7, *pick(steps, 'Halo_B_Gon')), (7, *pick(steps, 'MT_etoiles')), (7, *pick(steps, 'Blanshan_Transfer'))]
+            (7, *pick(steps, 'Halo_B_Gon')), (7, *pick(steps, 'MT_etoiles')), (7, *pick(steps, 'Etoiles_reduites'))]
 
 def rapide_end(steps):
     return [(4, *pick(steps, 'Star_Stretch')), (5, *pick(steps, 'LRGB_ajout_L')),
@@ -866,7 +878,7 @@ def note_rapide(prefix):
 bxt_rgb = lambda: M.bxt('BXT_RGB', False, 0.25, 0.0, 0.50)
 l_prep = lambda: cont('C_L_prep', solver_parts() + [M.spfc('SPFC_L', **SPFC_OPTS)])
 rgb_prep = lambda: cont('C_RGB_prep', solver_parts() + [M.spfc('SPFC_RGB_filtres', **SPFC_OPTS)])
-l_rapide = lambda bxt: cont('C_L_rapide', [bxt, M.sxt('SXT_lineaire', False), M.nxt('NXT_L', 0.60, 1), stat_auto(), GHS_FOND_R()])
+l_rapide = lambda bxt: cont('C_L_rapide', [bxt, M.sxt('SXT_lineaire', False), M.nxt('NXT_L', 0.60, 1), fermer('Fermer_L_stars', 'L_stars'), stat_auto(), GHS_FOND_R()])
 
 rapide_lrgb = [note_rapide('LRGB'), (1, *pick(lrgb, 'Renommer_auto')), (1, *pick(lrgb, 'Combinaison_RGB')),
     (2, rgb_prep(), ''), (2, *pick(lrgb, 'MGC_MARS')), (2, l_prep(), ''),

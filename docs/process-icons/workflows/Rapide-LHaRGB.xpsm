@@ -1328,6 +1328,17 @@ $T[0] + w*H_cs</parameter>
          <parameter id="overlap" value="0.20"/>
       </instance>
       <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="1">
+            <tr>
+               <td id="id">views</td>
+               <td id="value">L_stars</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/statisticalstretch.js</parameter>
          <parameter id="md5sum">defab45bb4e2f33db39a7bb016cdefb0</parameter>
          <table id="parameters" rows="15">
@@ -1912,6 +1923,17 @@ max(0, (0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2] - s) / (1 - s))</parameter>
          <parameter id="newImageSampleFormat" value="SameAsTarget"/>
          <table id="outputData" rows="0"/>
       </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="1">
+            <tr>
+               <td id="id">views</td>
+               <td id="value">HDR_avant</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
    </instance>
    <instance class="NoiseXTerminator" version="256" id="Opt_NXT_final_instance">
       <description>OPTION — bruit visible sur l'image finale.
@@ -1945,9 +1967,9 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <description>PHASE 7 — Étoiles : étoiles : étirement, recombinaison, réduction. Colonne de repère, sans effet.</description>
    </instance>
    <instance class="PixelMath" version="256" id="E19_Etoiles_screen_instance">
-      <description>PRÉRÉGLÉ : ~((~$T) * (~RGB_stars)), crée l'image 'Final'.
+      <description>PRÉRÉGLÉ : ~((~$T) * (~RGB_stars)), sur l'image elle-même.
 
-À RÉGLER : glisse sur l'image sans étoiles finale ; étoiles étirées nommées RGB_stars (nom donné par SXT, s minuscule).
+À RÉGLER : glisse sur l'image sans étoiles finale : elle reçoit les étoiles ; étoiles étirées nommées RGB_stars (nom donné par SXT, s minuscule).
 
 SI :
 - autre nom d'étoiles -&gt; corrige-le dans la formule
@@ -1971,9 +1993,9 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="truncate" value="true"/>
       <parameter id="truncateLower" value="0"/>
       <parameter id="truncateUpper" value="1"/>
-      <parameter id="createNewImage" value="true"/>
+      <parameter id="createNewImage" value="false"/>
       <parameter id="showNewImage" value="true"/>
-      <parameter id="newImageId">Final</parameter>
+      <parameter id="newImageId"></parameter>
       <parameter id="newImageWidth" value="0"/>
       <parameter id="newImageHeight" value="0"/>
       <parameter id="newImageAlpha" value="false"/>
@@ -2028,27 +2050,28 @@ Détails : page docs/pixinsight-workflow.html.</description>
          </tr>
       </table>
    </instance>
-   <instance class="PixelMath" version="256" id="Opt_Blanshan_Transfer_instance">
-      <description>OPTION — étoiles trop présentes ou qui distraient de la galaxie (réduction, de temps en temps).
+   <instance class="PixelMath" version="256" id="Opt_Etoiles_reduites_instance">
+      <description>OPTION — à la place d'Etoiles_screen, si les étoiles sont trop présentes (recombinaison + réduction Blanshan).
 
-PRÉRÉGLÉ : S = 0,20 (Bill : 0,15) ; lit 'Final', crée 'Final_reduit'.
+PRÉRÉGLÉ : S = 0,20 (Bill : 0,15) ; recombinaison screen + réduction Blanshan en une formule, sur l'image elle-même.
 
-À RÉGLER : glisse sur l'image SANS étoiles (comme Etoiles_screen).
+À RÉGLER : À LA PLACE d'Etoiles_screen : glisse sur l'image sans étoiles finale ; étoiles étirées nommées RGB_stars.
 
 SI :
 - étoiles encore grosses -&gt; S 0,15
-- étoiles trop petites -&gt; S 0,25, ou saute cette étape
+- trop petites -&gt; S 0,25, ou Etoiles_screen
+- pour recommencer -&gt; Ctrl+Z
 
 Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="expression">S=0.20;
-Img1=$T;
-f1= ~((~mtf(~S,Final)/~mtf(~S,Img1))*~Img1);
-max(Img1,f1)</parameter>
+W=~((~$T)*(~RGB_stars));
+f1= ~((~mtf(~S,W)/~mtf(~S,$T))*~$T);
+max($T,f1)</parameter>
       <parameter id="expression1"></parameter>
       <parameter id="expression2"></parameter>
       <parameter id="expression3"></parameter>
       <parameter id="useSingleExpression" value="true"/>
-      <parameter id="symbols">S, Img1, f1</parameter>
+      <parameter id="symbols">S, W, f1</parameter>
       <parameter id="clearImageCacheAndExit" value="false"/>
       <parameter id="cacheGeneratedImages" value="false"/>
       <parameter id="generateOutput" value="true"/>
@@ -2061,9 +2084,9 @@ max(Img1,f1)</parameter>
       <parameter id="truncate" value="true"/>
       <parameter id="truncateLower" value="0"/>
       <parameter id="truncateUpper" value="1"/>
-      <parameter id="createNewImage" value="true"/>
+      <parameter id="createNewImage" value="false"/>
       <parameter id="showNewImage" value="true"/>
-      <parameter id="newImageId">Final_reduit</parameter>
+      <parameter id="newImageId"></parameter>
       <parameter id="newImageWidth" value="0"/>
       <parameter id="newImageHeight" value="0"/>
       <parameter id="newImageAlpha" value="false"/>
@@ -2108,5 +2131,5 @@ max(Img1,f1)</parameter>
    <icon id="P7_options" instance="P7_options_instance" xpos="1115" ypos="110" workspace="Workspace01"/>
    <icon id="Opt_Halo_B_Gon" instance="Opt_Halo_B_Gon_instance" xpos="1115" ypos="144" workspace="Workspace01"/>
    <icon id="Opt_MT_etoiles" instance="Opt_MT_etoiles_instance" xpos="1115" ypos="174" workspace="Workspace01"/>
-   <icon id="Opt_Blanshan_Transfer" instance="Opt_Blanshan_Transfer_instance" xpos="1115" ypos="204" workspace="Workspace01"/>
+   <icon id="Opt_Etoiles_reduites" instance="Opt_Etoiles_reduites_instance" xpos="1115" ypos="204" workspace="Workspace01"/>
 </xpsm>

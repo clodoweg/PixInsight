@@ -24,7 +24,7 @@ PHASE = {
     'Perfect_Palette_Picker': 5, 'NBColourMapper': 5, 'SCNR_SHO': 5, 'H_en_luminance': 5,
     'Masque_L': 6, 'Courbes': 6, 'LHE': 6, 'LHE_fin': 6, 'Boost_finition': 6, 'HDRMT_50': 6, 'NXT_final': 6,
     'Etoiles_RGB': 7, 'Etoiles_HOO': 7, 'NB_to_RGB_Stars': 7, 'Etoiles_HOO_synth': 7, 'Etoiles_screen': 7, 'CorrectMagentaStars': 7,
-    'Blanshan_Transfer': 7, 'MT_etoiles': 7, 'Halo_B_Gon': 7,
+    'Etoiles_reduites': 7, 'Fermer_L_stars': 3, 'MT_etoiles': 7, 'Halo_B_Gon': 7,
 }
 
 NB = ('RSHO', 'SHO', 'HOO')
@@ -35,8 +35,12 @@ OPT = {'Boost_finition', 'LinearPatternSubtraction', 'WBPP', 'CC_auto', 'Find_Ba
 
 
 def role(prefix, base):
-    if base in OPT or (base == 'MGC_MARS' and prefix in NB) or (base == 'Blanshan_Transfer' and prefix in LUM):
+    if base in OPT or (base == 'MGC_MARS' and prefix in NB):
         return 'opt'
+    if base == 'Etoiles_screen':
+        return 'et:screen'
+    if base == 'Etoiles_reduites':
+        return 'et:reduit'
     if base.startswith(('SPFC_', 'MGC_MARS')):
         return 'grad:mgc'
     if base == 'GradientCorrection':
@@ -58,11 +62,12 @@ def role(prefix, base):
     return 'core'
 
 
-DEFAULT = {'grad': 'mgc', 'str': 'ghs', 'pal': 'nbn'}
-WF_DEFAULT = {p: {'str': 'mix'} for p in LUM}
+DEFAULT = {'grad': 'mgc', 'str': 'ghs', 'pal': 'nbn', 'et': 'reduit'}
+WF_DEFAULT = {p: {'str': 'mix', 'et': 'screen'} for p in LUM}   # galaxies : pas de réduction d'étoiles par défaut
 CHOICES = {
     'grad': ('Gradient', [('mgc', 'MGC + MARS (défaut)'), ('gc', 'GradientCorrection (sans MARS)'), ('dbe', 'DBE (nébuleuse qui remplit le champ)')]),
     'str': ('Étirement', [('mix', 'Statistical Stretch sur RGB + GHS sur L (défaut LRGB)'), ('ghs', 'GHS sur tout (défaut sans L)'), ('stat', 'Statistical Stretch sur tout (automatique)')]),
+    'et': ('Étoiles', [('screen', 'Recombinaison simple (défaut galaxies)'), ('reduit', 'Recombinaison + réduction Blanshan (défaut nébuleuses)')]),
     'pal': ('Palette', [('nbn', 'NarrowbandNormalization (défaut)'), ('foraxx', 'Foraxx (or et bleu)'), ('hubble', 'Variante Hubble (HOO, tons dorés)')]),
 }
 
@@ -81,7 +86,7 @@ WHEN = {
     'H_en_luminance': "détail plus net en HOO (H en luminance)", 'Etoiles_HOO_synth': "alternative à NB to RGB pour les étoiles",
     'DualBand_H': "caméra couleur avec filtre dual-band", 'DualBand_O': "caméra couleur avec filtre dual-band",
     'SPFC_S': "seulement si ta base MARS couvre S (pas le cas de DR2)",
-    'Blanshan_Transfer': "étoiles trop présentes ou qui distraient de la galaxie (réduction, de temps en temps)",
+    'Etoiles_reduites': "à la place d'Etoiles_screen, si les étoiles sont trop présentes (recombinaison + réduction Blanshan)",
     'MGC_MARS': "image RGB (étoiles du workflow RGB + SHO) ou master L",
 }
 
@@ -99,10 +104,10 @@ def is_default(r, prefix=None):
 _FIN = ('C_Finition', "l'image sans étoiles étirée, Masque_L attaché (Ctrl+M)", ['Courbes', 'LHE', 'LHE_fin'])
 CONTAINERS = {
     'LRGB': [('C_RGB_lineaire', "l'image RGB combinée, linéaire, gradient retiré", ['BXT_CorrectOnly', 'SPCC', 'BXT_RGB', 'SXT_lineaire', 'NXT_RGB']),
-             ('C_L_lineaire', "le master L, linéaire, gradient retiré", ['BXT_L', 'SXT_lineaire', 'NXT_L']), _FIN],
+             ('C_L_lineaire', "le master L, linéaire, gradient retiré", ['BXT_L', 'SXT_lineaire', 'NXT_L', 'Fermer_L_stars']), _FIN],
     'LHA': [('C_RGB_couleur', "l'image RGB combinée, linéaire, gradient retiré", ['BXT_CorrectOnly', 'SPCC', 'BXT_RGB']),
             ('C_RGB_etoiles_bruit', "l'image RGB après injection de H", ['SXT_lineaire', 'NXT_RGB']),
-            ('C_L_etoiles_bruit', "le master L après BXT", ['SXT_lineaire', 'NXT_L']), _FIN],
+            ('C_L_etoiles_bruit', "le master L après BXT", ['SXT_lineaire', 'NXT_L', 'Fermer_L_stars']), _FIN],
     'RSHO': [('C_SHO_lineaire', "l'image SHO combinée, linéaire", ['BXT_NB', 'SXT_lineaire']),
              ('C_Extraction_SHO', "l'image SHO sans étoiles", ['Extraire_S', 'Extraire_H', 'Extraire_O']), _FIN,
              ('C_Etoiles_RGB', "l'image RGB combinée, linéaire, gradient retiré", ['BXT_CorrectOnly', 'SPCC', 'BXT_RGB', 'SXT_RGB_lineaire'])],

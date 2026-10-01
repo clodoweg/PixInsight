@@ -1379,62 +1379,26 @@ Détails : page docs/pixinsight-workflow.html.</description>
       </table>
       <parameter id="information"></parameter>
    </instance>
-   <instance class="PixelMath" version="256" id="E33_Etoiles_screen_instance">
-      <description>PRÉRÉGLÉ : ~((~$T) * (~RGB_stars)), crée l'image 'Final'.
+   <instance class="PixelMath" version="256" id="E33_Etoiles_reduites_instance">
+      <description>PRÉRÉGLÉ : S = 0,20 (Bill : 0,15) ; recombinaison screen + réduction Blanshan en une formule, sur l'image elle-même.
 
-À RÉGLER : glisse sur l'image sans étoiles finale ; étoiles étirées nommées RGB_stars (nom donné par SXT, s minuscule).
-
-SI :
-- autre nom d'étoiles -&gt; corrige-le dans la formule
-
-Détails : page docs/pixinsight-workflow.html.</description>
-      <parameter id="expression">~((~$T) * (~RGB_stars))</parameter>
-      <parameter id="expression1"></parameter>
-      <parameter id="expression2"></parameter>
-      <parameter id="expression3"></parameter>
-      <parameter id="useSingleExpression" value="true"/>
-      <parameter id="symbols"></parameter>
-      <parameter id="clearImageCacheAndExit" value="false"/>
-      <parameter id="cacheGeneratedImages" value="false"/>
-      <parameter id="generateOutput" value="true"/>
-      <parameter id="singleThreaded" value="false"/>
-      <parameter id="optimization" value="true"/>
-      <parameter id="use64BitWorkingImage" value="false"/>
-      <parameter id="rescale" value="false"/>
-      <parameter id="rescaleLower" value="0"/>
-      <parameter id="rescaleUpper" value="1"/>
-      <parameter id="truncate" value="true"/>
-      <parameter id="truncateLower" value="0"/>
-      <parameter id="truncateUpper" value="1"/>
-      <parameter id="createNewImage" value="true"/>
-      <parameter id="showNewImage" value="true"/>
-      <parameter id="newImageId">Final</parameter>
-      <parameter id="newImageWidth" value="0"/>
-      <parameter id="newImageHeight" value="0"/>
-      <parameter id="newImageAlpha" value="false"/>
-      <parameter id="newImageColorSpace" value="SameAsTarget"/>
-      <parameter id="newImageSampleFormat" value="SameAsTarget"/>
-      <table id="outputData" rows="0"/>
-   </instance>
-   <instance class="PixelMath" version="256" id="E34_Blanshan_Transfer_instance">
-      <description>PRÉRÉGLÉ : S = 0,20 (Bill : 0,15) ; lit 'Final', crée 'Final_reduit'.
-
-À RÉGLER : glisse sur l'image SANS étoiles (comme Etoiles_screen).
+À RÉGLER : À LA PLACE d'Etoiles_screen : glisse sur l'image sans étoiles finale ; étoiles étirées nommées RGB_stars.
 
 SI :
 - étoiles encore grosses -&gt; S 0,15
-- étoiles trop petites -&gt; S 0,25, ou saute cette étape
+- trop petites -&gt; S 0,25, ou Etoiles_screen
+- pour recommencer -&gt; Ctrl+Z
 
 Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="expression">S=0.20;
-Img1=$T;
-f1= ~((~mtf(~S,Final)/~mtf(~S,Img1))*~Img1);
-max(Img1,f1)</parameter>
+W=~((~$T)*(~RGB_stars));
+f1= ~((~mtf(~S,W)/~mtf(~S,$T))*~$T);
+max($T,f1)</parameter>
       <parameter id="expression1"></parameter>
       <parameter id="expression2"></parameter>
       <parameter id="expression3"></parameter>
       <parameter id="useSingleExpression" value="true"/>
-      <parameter id="symbols">S, Img1, f1</parameter>
+      <parameter id="symbols">S, W, f1</parameter>
       <parameter id="clearImageCacheAndExit" value="false"/>
       <parameter id="cacheGeneratedImages" value="false"/>
       <parameter id="generateOutput" value="true"/>
@@ -1447,9 +1411,9 @@ max(Img1,f1)</parameter>
       <parameter id="truncate" value="true"/>
       <parameter id="truncateLower" value="0"/>
       <parameter id="truncateUpper" value="1"/>
-      <parameter id="createNewImage" value="true"/>
+      <parameter id="createNewImage" value="false"/>
       <parameter id="showNewImage" value="true"/>
-      <parameter id="newImageId">Final_reduit</parameter>
+      <parameter id="newImageId"></parameter>
       <parameter id="newImageWidth" value="0"/>
       <parameter id="newImageHeight" value="0"/>
       <parameter id="newImageAlpha" value="false"/>
@@ -1496,6 +1460,5 @@ max(Img1,f1)</parameter>
    <icon id="E30_BXT_RGB" instance="E30_BXT_RGB_instance" xpos="1011" ypos="214" workspace="Workspace01"/>
    <icon id="E31_SXT_RGB_lineaire" instance="E31_SXT_RGB_lineaire_instance" xpos="1011" ypos="244" workspace="Workspace01"/>
    <icon id="E32_Star_Stretch" instance="E32_Star_Stretch_instance" xpos="1011" ypos="274" workspace="Workspace01"/>
-   <icon id="E33_Etoiles_screen" instance="E33_Etoiles_screen_instance" xpos="1011" ypos="304" workspace="Workspace01"/>
-   <icon id="E34_Blanshan_Transfer" instance="E34_Blanshan_Transfer_instance" xpos="1011" ypos="334" workspace="Workspace01"/>
+   <icon id="E33_Etoiles_reduites" instance="E33_Etoiles_reduites_instance" xpos="1011" ypos="304" workspace="Workspace01"/>
 </xpsm>

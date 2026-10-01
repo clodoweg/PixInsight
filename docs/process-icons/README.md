@@ -25,7 +25,7 @@ Les formules supposent des images nommées comme indiqué (renomme tes vues avec
 | `DualBand_H` / `DualBand_O` | À appliquer sur l'image couleur dual-band | Nouvelles images mono `H` et `O` |
 | `Continuum_H` | `H`, `R` | `H_cs` ; ajuste `k = 0.9` dans la formule |
 | `H_dans_R` | `R`, `H_cs` | `R_H` ; ajuste `w = 1.0` |
-| `Etoiles_screen` | glisser sur l'image sans étoiles ; étoiles étirées `RGB_stars` (workflows : `NBtoRGB_stars` en SHO, `HOO_stars` en HOO) | Nouvelle image `Final` |
+| `Etoiles_screen` | glisser sur l'image sans étoiles ; étoiles étirées `RGB_stars` (workflows : `NBtoRGB_stars` en SHO, `HOO_stars` en HOO) | Modifie l'image sans étoiles (pas de nouvelle vue) |
 | `Etoiles_HOO_synth` | `H_stars`, `O_stars` (linéaires) | Étoiles RGB synthétiques, G = 20 % H + 80 % O |
 | `Masque_L` / `Masque_L_mono` | Image sans étoiles étirée (couleur / mono) ; glisser l'icône dessus | Nouvelle vue mono `masque_L` : luminance Rec. 709 avec le fond coupé, `s = 0.14` par défaut (fond + 0,01). Chaque workflow l'inclut avant les courbes et LHE |
 | `Blanshan_Transfer` / `_Halo` / `_Star` | Vue sans étoiles nommée `starless` ; appliquer sur l'image avec étoiles | Version 2, identique à la page (S = 0,15) |
@@ -84,7 +84,7 @@ Icônes SPCC et SPFC configurées pour **QHY600 (capteur Sony IMX455) + filtres 
 
 **Le plus simple : le préparateur de la page** (section « Préparer ma photo » de `docs/pixinsight-workflow.html`). Tu choisis tes filtres, tes méthodes (gradient, étirement, palette) et tes options ; il affiche les étapes de ta photo avec ce qu'il faut régler et télécharge un `.xpsm` qui ne contient qu'elles (dans la page publiée sur claude.ai, un `.zip` à décompresser). Ses données sont dans `preparer-data.json`, régénéré avec les icônes.
 
-**Mode rapide (galaxies LRGB et LHaRGB)** : `Rapide-LRGB.xpsm` (13 icônes) et `Rapide-LHaRGB.xpsm` (19 icônes), presque tout préréglé en conteneurs : `C_RGB_prep` / `C_L_prep` / `C_H_prep` (ImageSolver + SPFC), ta propre icône MGC (liste MARS propre à chaque instance), `C_RGB_rapide` (BXT Correct Only → SPCC → BXT → SXT → NXT → Statistical Stretch 0,25 sans dialogue → GHS fond SP = HP = 0,22), `C_L_rapide` (BXT → SXT → NXT → Statistical Stretch → GHS fond), puis Star_Stretch, LRGB, Masque_L + `C_Finition`, Etoiles_screen. L'icône `E01_Mode_rapide` donne l'ordre. Options dans le même fichier : GradientCorrection, Boost_finition, HDRMT_50, NXT final, Halo-B-Gon, MT, Blanshan. Détails : section « Mode rapide » de la page.
+**Mode rapide (galaxies LRGB et LHaRGB)** : `Rapide-LRGB.xpsm` (13 icônes) et `Rapide-LHaRGB.xpsm` (19 icônes), presque tout préréglé en conteneurs : `C_RGB_prep` / `C_L_prep` / `C_H_prep` (ImageSolver + SPFC), ta propre icône MGC (liste MARS propre à chaque instance), `C_RGB_rapide` (BXT Correct Only → SPCC → BXT → SXT → NXT → Statistical Stretch 0,25 sans dialogue → GHS fond SP = HP = 0,22), `C_L_rapide` (BXT → SXT → NXT → Statistical Stretch → GHS fond), puis Star_Stretch, LRGB, Masque_L + `C_Finition`, Etoiles_screen. L'icône `E01_Mode_rapide` donne l'ordre. Options dans le même fichier : GradientCorrection, Boost_finition, HDRMT_50, NXT final, Halo-B-Gon, MT, Etoiles_reduites. Détails : section « Mode rapide » de la page.
 
 Sinon, deux fichiers par workflow :
 
@@ -96,14 +96,14 @@ Sinon, deux fichiers par workflow :
 | Conteneur | Image cible | Étapes |
 |---|---|---|
 | `C_RGB_lineaire` (LRGB) | RGB combiné, linéaire, gradient retiré | BXT Correct Only → SPCC → BXT → SXT → NXT |
-| `C_L_lineaire` (LRGB) | master L | BXT → SXT → NXT |
+| `C_L_lineaire` (LRGB) | master L | BXT → SXT → NXT → fermeture de `L_stars` |
 | `C_RGB_couleur` (LHaRGB) | RGB combiné | BXT Correct Only → SPCC → BXT |
 | `C_RGB_etoiles_bruit`, `C_L_etoiles_bruit` (LHaRGB) | RGB après injection de H, L après BXT | SXT → NXT |
 | `C_SHO_lineaire`, `C_HOO_lineaire` | combinaison narrowband linéaire | BXT → SXT |
 | `C_Extraction_SHO`, `C_Extraction_HOO`, `C_Extraction_etoiles` | image sans étoiles (ou d'étoiles) | extraction des canaux |
 | `C_Etoiles_RGB` (RGB + SHO) | RGB combiné | BXT Correct Only → SPCC → BXT → SXT |
 | `C_Finition` | image sans étoiles étirée, Masque_L attaché | Courbes → LHE → LHE_fin |
-| `HDRMT_50` (option) | image sans étoiles étirée | copie `HDR_avant` → HDRMT → PixelMath `a·$T + (1 − a)·HDR_avant`, a = 0,5 ; fermer `HDR_avant` ensuite |
+| `HDRMT_50` (option) | image sans étoiles étirée | copie `HDR_avant` → HDRMT → PixelMath `a·$T + (1 − a)·HDR_avant`, a = 0,5 → Fermer_vues (`HDR_avant`) |
 
 Format recopié des conteneurs des icônes de theAstroShed (PixInsight 1.9.3) : instances imbriquées sans identifiant, `enabled="true"`, pas de description sur le conteneur. Pas encore testé dans PixInsight : essaie d'abord sur une copie de l'image.
 
@@ -162,6 +162,7 @@ Les fichiers ont été générés par `make_workflows.py` (dans ce dossier) à p
 
 À copier une fois par ordinateur (Mac ou PC) dans `src/scripts/clodoweg/` du dossier de PixInsight, à côté de `PatternCorrection` (Mac : `/Applications/PixInsight/src/scripts/clodoweg/`) :
 
+- `Fermer_vues.js` : ferme sans confirmation les vues listées dans son paramètre `views` (virgules) ; dernière étape des conteneurs `HDRMT_50` (copie `HDR_avant`), `C_L_lineaire`, `C_L_etoiles_bruit` et `C_L_rapide` (`L_stars`, étoiles de la luminance, inutiles) ; icône `Fermer_L_stars` dans les fichiers `Workflow-X`.
 - `Renommer_auto.js` : première icône de chaque workflow (`Renommer_auto`) ; renomme les masters mono ouverts L, R, G, B, H, O, S d'après le mot-clé FILTER (Lum, Red, Ha, OIII, SII…), sinon d'après le nom du fichier (`FILTER-Ha`, `_L_`) ; images couleur et noms déjà pris laissés tels quels, avec un message dans la console. Double-clic puis Apply Global.
 - `LPS_UnClic.js` : LinearPatternSubtraction sans dialogue (icône `Opt_LinearPatternSubtraction`).
 - `Combiner_RGB.js` : icône `Combinaison_RGB` des workflows ; combine les masters R, G, B en `RGB`, copie l'en-tête FITS du rouge (coordonnées et date pour ImageSolver), puis ferme R, G et B sans demander d'enregistrer (`closeSources = false` pour les garder). Double-clic puis Apply Global.

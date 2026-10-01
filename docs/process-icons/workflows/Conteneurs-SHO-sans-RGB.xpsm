@@ -1668,6 +1668,17 @@ max(0, (0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2] - s) / (1 - s))</parameter>
          <parameter id="newImageSampleFormat" value="SameAsTarget"/>
          <table id="outputData" rows="0"/>
       </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="1">
+            <tr>
+               <td id="id">views</td>
+               <td id="value">HDR_avant</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
    </instance>
    <instance class="NoiseXTerminator" version="256" id="Opt_NXT_final_instance">
       <description>OPTION — bruit visible sur l'image finale.
@@ -1752,62 +1763,25 @@ Détails : page docs/pixinsight-workflow.html.</description>
       </table>
       <parameter id="information"></parameter>
    </instance>
-   <instance class="PixelMath" version="256" id="E23_Etoiles_screen_instance">
-      <description>PRÉRÉGLÉ : ~((~$T) * (~NBtoRGB_stars)), crée l'image 'Final'.
+   <instance class="PixelMath" version="256" id="E23_Etoiles_reduites_instance">
+      <description>PRÉRÉGLÉ : S = 0,20 ; screen + réduction Blanshan avec NBtoRGB_stars, sur l'image elle-même.
 
-À RÉGLER : glisse sur l'image SHO sans étoiles finale ; étoiles de NB to RGB (NBtoRGB_stars), étirées.
-
-SI :
-- étoiles synthétiques -&gt; remplace par Stars_HOO
-
-Détails : page docs/pixinsight-workflow.html.</description>
-      <parameter id="expression">~((~$T) * (~NBtoRGB_stars))</parameter>
-      <parameter id="expression1"></parameter>
-      <parameter id="expression2"></parameter>
-      <parameter id="expression3"></parameter>
-      <parameter id="useSingleExpression" value="true"/>
-      <parameter id="symbols"></parameter>
-      <parameter id="clearImageCacheAndExit" value="false"/>
-      <parameter id="cacheGeneratedImages" value="false"/>
-      <parameter id="generateOutput" value="true"/>
-      <parameter id="singleThreaded" value="false"/>
-      <parameter id="optimization" value="true"/>
-      <parameter id="use64BitWorkingImage" value="false"/>
-      <parameter id="rescale" value="false"/>
-      <parameter id="rescaleLower" value="0"/>
-      <parameter id="rescaleUpper" value="1"/>
-      <parameter id="truncate" value="true"/>
-      <parameter id="truncateLower" value="0"/>
-      <parameter id="truncateUpper" value="1"/>
-      <parameter id="createNewImage" value="true"/>
-      <parameter id="showNewImage" value="true"/>
-      <parameter id="newImageId">Final</parameter>
-      <parameter id="newImageWidth" value="0"/>
-      <parameter id="newImageHeight" value="0"/>
-      <parameter id="newImageAlpha" value="false"/>
-      <parameter id="newImageColorSpace" value="SameAsTarget"/>
-      <parameter id="newImageSampleFormat" value="SameAsTarget"/>
-      <table id="outputData" rows="0"/>
-   </instance>
-   <instance class="PixelMath" version="256" id="E24_Blanshan_Transfer_instance">
-      <description>PRÉRÉGLÉ : S = 0,20 (Bill : 0,15) ; lit 'Final', crée 'Final_reduit'.
-
-À RÉGLER : glisse sur l'image SANS étoiles (comme Etoiles_screen).
+À RÉGLER : à la place d'Etoiles_screen : glisse sur l'image SHO sans étoiles finale.
 
 SI :
-- étoiles encore grosses -&gt; S 0,15
-- étoiles trop petites -&gt; S 0,25, ou saute cette étape
+- étoiles synthétiques -&gt; remplace NBtoRGB_stars par Stars_HOO
+- pour recommencer -&gt; Ctrl+Z
 
 Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="expression">S=0.20;
-Img1=$T;
-f1= ~((~mtf(~S,Final)/~mtf(~S,Img1))*~Img1);
-max(Img1,f1)</parameter>
+W=~((~$T)*(~NBtoRGB_stars));
+f1= ~((~mtf(~S,W)/~mtf(~S,$T))*~$T);
+max($T,f1)</parameter>
       <parameter id="expression1"></parameter>
       <parameter id="expression2"></parameter>
       <parameter id="expression3"></parameter>
       <parameter id="useSingleExpression" value="true"/>
-      <parameter id="symbols">S, Img1, f1</parameter>
+      <parameter id="symbols">S, W, f1</parameter>
       <parameter id="clearImageCacheAndExit" value="false"/>
       <parameter id="cacheGeneratedImages" value="false"/>
       <parameter id="generateOutput" value="true"/>
@@ -1820,9 +1794,9 @@ max(Img1,f1)</parameter>
       <parameter id="truncate" value="true"/>
       <parameter id="truncateLower" value="0"/>
       <parameter id="truncateUpper" value="1"/>
-      <parameter id="createNewImage" value="true"/>
+      <parameter id="createNewImage" value="false"/>
       <parameter id="showNewImage" value="true"/>
-      <parameter id="newImageId">Final_reduit</parameter>
+      <parameter id="newImageId"></parameter>
       <parameter id="newImageWidth" value="0"/>
       <parameter id="newImageHeight" value="0"/>
       <parameter id="newImageAlpha" value="false"/>
@@ -1916,6 +1890,45 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <table id="parameters" rows="0"/>
       <parameter id="information"></parameter>
    </instance>
+   <instance class="PixelMath" version="256" id="Opt_Etoiles_screen_instance">
+      <description>ALTERNATIVE — Recombinaison simple.
+
+PRÉRÉGLÉ : ~((~$T) * (~NBtoRGB_stars)), sur l'image elle-même.
+
+À RÉGLER : glisse sur l'image SHO sans étoiles finale ; étoiles de NB to RGB (NBtoRGB_stars), étirées.
+
+SI :
+- étoiles synthétiques -&gt; remplace par Stars_HOO
+
+Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="expression">~((~$T) * (~NBtoRGB_stars))</parameter>
+      <parameter id="expression1"></parameter>
+      <parameter id="expression2"></parameter>
+      <parameter id="expression3"></parameter>
+      <parameter id="useSingleExpression" value="true"/>
+      <parameter id="symbols"></parameter>
+      <parameter id="clearImageCacheAndExit" value="false"/>
+      <parameter id="cacheGeneratedImages" value="false"/>
+      <parameter id="generateOutput" value="true"/>
+      <parameter id="singleThreaded" value="false"/>
+      <parameter id="optimization" value="true"/>
+      <parameter id="use64BitWorkingImage" value="false"/>
+      <parameter id="rescale" value="false"/>
+      <parameter id="rescaleLower" value="0"/>
+      <parameter id="rescaleUpper" value="1"/>
+      <parameter id="truncate" value="true"/>
+      <parameter id="truncateLower" value="0"/>
+      <parameter id="truncateUpper" value="1"/>
+      <parameter id="createNewImage" value="false"/>
+      <parameter id="showNewImage" value="true"/>
+      <parameter id="newImageId"></parameter>
+      <parameter id="newImageWidth" value="0"/>
+      <parameter id="newImageHeight" value="0"/>
+      <parameter id="newImageAlpha" value="false"/>
+      <parameter id="newImageColorSpace" value="SameAsTarget"/>
+      <parameter id="newImageSampleFormat" value="SameAsTarget"/>
+      <table id="outputData" rows="0"/>
+   </instance>
    <instance class="Script" version="256" id="Opt_CorrectMagentaStars_instance">
       <description>OPTION — étoiles magenta.
 
@@ -1992,11 +2005,11 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <icon id="P7_Etoiles" instance="P7_Etoiles_instance" xpos="1190" ypos="20" workspace="Workspace01"/>
    <icon id="E21_NB_to_RGB_Stars" instance="E21_NB_to_RGB_Stars_instance" xpos="1190" ypos="64" workspace="Workspace01"/>
    <icon id="E22_Star_Stretch" instance="E22_Star_Stretch_instance" xpos="1190" ypos="94" workspace="Workspace01"/>
-   <icon id="E23_Etoiles_screen" instance="E23_Etoiles_screen_instance" xpos="1190" ypos="124" workspace="Workspace01"/>
-   <icon id="E24_Blanshan_Transfer" instance="E24_Blanshan_Transfer_instance" xpos="1190" ypos="154" workspace="Workspace01"/>
-   <icon id="P7_options" instance="P7_options_instance" xpos="1190" ypos="200" workspace="Workspace01"/>
-   <icon id="Opt_Etoiles_HOO_synth" instance="Opt_Etoiles_HOO_synth_instance" xpos="1190" ypos="234" workspace="Workspace01"/>
-   <icon id="Opt_MT_etoiles" instance="Opt_MT_etoiles_instance" xpos="1190" ypos="264" workspace="Workspace01"/>
-   <icon id="Opt_Halo_B_Gon" instance="Opt_Halo_B_Gon_instance" xpos="1190" ypos="294" workspace="Workspace01"/>
+   <icon id="E23_Etoiles_reduites" instance="E23_Etoiles_reduites_instance" xpos="1190" ypos="124" workspace="Workspace01"/>
+   <icon id="P7_options" instance="P7_options_instance" xpos="1190" ypos="170" workspace="Workspace01"/>
+   <icon id="Opt_Etoiles_HOO_synth" instance="Opt_Etoiles_HOO_synth_instance" xpos="1190" ypos="204" workspace="Workspace01"/>
+   <icon id="Opt_MT_etoiles" instance="Opt_MT_etoiles_instance" xpos="1190" ypos="234" workspace="Workspace01"/>
+   <icon id="Opt_Halo_B_Gon" instance="Opt_Halo_B_Gon_instance" xpos="1190" ypos="264" workspace="Workspace01"/>
+   <icon id="Opt_Etoiles_screen" instance="Opt_Etoiles_screen_instance" xpos="1190" ypos="294" workspace="Workspace01"/>
    <icon id="Opt_CorrectMagentaStars" instance="Opt_CorrectMagentaStars_instance" xpos="1190" ypos="324" workspace="Workspace01"/>
 </xpsm>
