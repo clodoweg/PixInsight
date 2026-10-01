@@ -360,6 +360,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
 À RÉGLER : une seule fois par ordinateur : ouvre l'icône, section MARS Database, clique Default Files (copie la liste des préférences de MGC), puis glisse le triangle sur l'icône pour la remplacer et enregistre tes icônes (Save Process Icons) ; à refaire si tu recharges les icônes de la fiche ; ensuite après SPFC_H, sur le master H.
 
 SI :
+- cible au sud au-delà de −15° environ (et narrowband au-delà de +75°) -&gt; pas de référence MARS : GradientCorrection ou DBE
 - gradient restant -&gt; Gradient scale 512 puis 256
 
 Détails : page docs/pixinsight-workflow.html.</description>
@@ -387,6 +388,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
 À RÉGLER : une seule fois par ordinateur : ouvre l'icône, section MARS Database, clique Default Files (copie la liste des préférences de MGC), puis glisse le triangle sur l'icône pour la remplacer et enregistre tes icônes (Save Process Icons) ; à refaire si tu recharges les icônes de la fiche ; ensuite après SPFC_O, sur le master O.
 
 SI :
+- cible au sud au-delà de −15° environ (et narrowband au-delà de +75°) -&gt; pas de référence MARS : GradientCorrection ou DBE
 - gradient restant -&gt; Gradient scale 512 puis 256
 
 Détails : page docs/pixinsight-workflow.html.</description>

@@ -446,6 +446,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
 
 SI :
 - erreur « No MARS database files have been selected » -&gt; Default Files dans la section MARS Database
+- « 0 reference image(s) available » ou « No reference data found » -&gt; cible hors de MARS (sud au-delà de −15° environ) : GradientCorrection ou DBE à la place de SPFC + MGC
 - gradient restant dans les coins -&gt; Gradient scale 512 puis 256
 - modèle qui ondule -&gt; Smoothness 3 à 5
 - image couleur -&gt; filtres MARS R, G, B
@@ -475,6 +476,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
 À RÉGLER : une seule fois par ordinateur : ouvre l'icône, section MARS Database, clique Default Files (copie la liste des préférences de MGC), puis glisse le triangle sur l'icône pour la remplacer et enregistre tes icônes (Save Process Icons) ; à refaire si tu recharges les icônes de la fiche ; ensuite après SPFC_H, sur le master H.
 
 SI :
+- cible au sud au-delà de −15° environ (et narrowband au-delà de +75°) -&gt; pas de référence MARS : GradientCorrection ou DBE
 - gradient restant -&gt; Gradient scale 512 puis 256
 
 Détails : page docs/pixinsight-workflow.html.</description>
