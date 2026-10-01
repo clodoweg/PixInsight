@@ -64,6 +64,9 @@ Légende :
 
 - Officiel — [Documentation GHS](https://www.ghsastro.co.uk/doc/tools/GeneralizedHyperbolicStretch/GeneralizedHyperbolicStretch.html) : paramètres, plages et méthode pas à pas.
 - Tutoriel — [AstroBackyard, Statistical Stretch](https://astrobackyard.com/seti-astro-statistical-stretch/)
+- Officiel — [Documentation du script GHS, primer de David Payne](https://www.ghsastro.co.uk/doc/scripts/GeneralisedHyperbolicStretch/GeneralisedHyperbolicStretch.html) : section « Affiner SP, LP et HP ». Section 3.2 : quatre zones (linéaire sous LP, contraste croissant de LP à SP, décroissant de SP à HP, linéaire au-dessus de HP) ; plus HP est bas, plus la protection est large et forte, et HP trop bas assombrit le reste de l'image ; LP garde le contraste des ombres au lieu de les assombrir. Réglage de SP : viser l'élargissement maximal de l'histogramme ; SP trop bas = histogramme qui glisse à droite, trop haut = histogramme qui reste à gauche ; SP au-dessus du bruit du fond ; SP d'abord, puis b et D. Recette « star rescue » : D et b modérés, SP = 1, LP juste sous l'accumulation des étoiles (essai 0,9).
+- Officiel — [Documentation du process GHS](https://www.ghsastro.co.uk/doc/tools/GeneralizedHyperbolicStretch/GeneralizedHyperbolicStretch.html) : plages LP [0, SP] et HP [SP, 1] ; passes suivantes : HP protège les étoiles brillantes, LP « repousse » l'histogramme vers la droite si le fond devient trop sombre. Corrige l'ancienne consigne de la fiche « fond bruité → monte LP » : un fond bruité qui monte vient d'un SP trop bas.
+- Calcul de la fiche : exemple chiffré (SP 0,35, HP 0,8, LP 0,15) et repères « HP vers la valeur des étoiles », « LP vers la valeur du fond », déduits des définitions ci-dessus (linéaire au-dessus de HP, sous LP).
 
 ## Combinaison et narrowband
 

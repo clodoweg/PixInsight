@@ -83,9 +83,9 @@ S = {
     'NBRGBCombination': ("rien (icône-note)", "RGB bande 100 nm, H bande 3 nm, Scale 1,2", ["H trop discret -> Scale 3 à 5"]),
     'GHS_1_premier': ("b = 10, Stretch factor 0 (aucun effet tant que tu ne le montes pas)",
                       "clique le signal faible et Send to SP ; monte Stretch factor jusqu'au pic du fond vers 0,20–0,25",
-                      ["étoiles qui gonflent -> baisse HP", "fond bruité -> monte LP"]),
-    'GHS_2_contraste': ("b = 4, HP 0,9, Stretch factor 0", "SP dans la zone à contraster ; monte Stretch factor peu à peu",
-                        ["étoiles brûlées -> HP plus bas", "fond qui remonte -> LP"]),
+                      ["fond bruité qui ressort -> SP trop bas, remonte-le", "étoiles qui gonflent -> baisse HP"]),
+    'GHS_2_contraste': ("b = 4, HP 0,9, Stretch factor 0", "SP dans la zone plate à contraster ; monte Stretch factor peu à peu",
+                        ["étoiles qui gonflent -> baisse HP vers leur valeur", "fond trop sombre -> monte LP vers sa valeur (pas au-dessus de SP)", "fond bruité qui ressort -> SP trop bas"]),
     'GHS_3_fond': ("b = 10, Stretch factor 0", "technique HP = SP pour assombrir le fond vers 0,12–0,14 sans écrêter", []),
     'Statistical_Stretch': ("Target Median 0,25, Blackpoint Sigma 5, Linked coché, reste par défaut", "rien ; alternative à GHS",
                             ["cible compacte (galaxie) -> Target Median 0,10", "fond trop clair -> Blackpoint Sigma plus haut"]),
@@ -137,7 +137,7 @@ S = {
 # variantes selon le workflow
 V = {
     ('NB', 'GHS_1_premier'): ("b = 10, Stretch factor 0", "étire H d'abord (fond vers 0,20–0,25), puis O et S jusqu'au MÊME fond et une médiane proche",
-                              ["bruit de O ou S qui ressort -> monte LP"]),
+                              ["bruit de O ou S qui ressort -> SP trop bas, remonte-le"]),
     ('NB', 'Statistical_Stretch'): ("Target Median 0,25, Blackpoint Sigma 5", "rien ; même Target Median pour tous les masters", []),
     ('SHO', 'SXT_lineaire'): ("Generate star image coché, Unscreen décoché", "rien ; garde les DEUX images (fond et étoiles)", ["quadrillage -> Large overlap"]),
     ('RSHO', 'SXT_lineaire'): ("Generate star image coché, Unscreen décoché", "rien ; garde le fond sans étoiles (étoiles prises au RGB)", ["quadrillage -> Large overlap"]),
