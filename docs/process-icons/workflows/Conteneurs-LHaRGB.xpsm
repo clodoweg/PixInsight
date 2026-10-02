@@ -2239,7 +2239,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
          <parameter id="intensity" value="1.00"/>
       </instance>
       <instance class="PixelMath" version="256" enabled="true">
-         <parameter id="expression">a = 0.7;
+         <parameter id="expression">a = 0.4;
    a*$T + (1 - a)*HDR_avant</parameter>
          <parameter id="expression1"></parameter>
          <parameter id="expression2"></parameter>
