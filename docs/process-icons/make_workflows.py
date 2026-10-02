@@ -904,14 +904,14 @@ T_RAPIDE = {
          "E08 C_RGB_fin_rapide sur RGB (SXT, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond 0,22, Etoiles_auto sur RGB_stars). E09 C_L_rapide sur L ({L}). "
          "E10 C_Fin_rapide sur RGB (LRGB, HDRMT à 40 %, masque attaché, Courbes, LHE, LHE_fin, masque retiré, NXT_final, étoiles, Fond_auto, Fond_desature ; Boost_final en option) : image finie  ; sans HDRMT : C_Fin_simple. Boost, HDRMT_50, HDRMT_eclat, NXT final : C_Fin_sans_etoiles, l'option, puis Etoiles_screen, puis Fond_auto. Étapes de la préparation seules : options de la phase 1."),
 }
-WHEN_R = {'Fond_desature': "tout à la fin, si le fond du ciel garde une teinte (violet, bruit de couleur) : couleur retirée du fond seulement, galaxie et étoiles intactes",
+WHEN_R = {'GHS_1_premier': "pour étirer L à la main au lieu de GHS_auto (sur L linéaire, puis GHS_2_contraste et GHS_3_fond ; décoche les GHS de C_L_rapide ou pars d'une copie)",
+          'GHS_2_contraste': "après GHS_1_premier, à la main : SP sur une zone plate au-dessus du fond",
+          'GHS_3_fond': "après GHS_2_contraste, à la main : fond vers 0,11-0,13",
+          'Fond_desature': "tout à la fin, si le fond du ciel garde une teinte (violet, bruit de couleur) : couleur retirée du fond seulement, galaxie et étoiles intactes",
           'Etoiles_LRGB': "pour des étoiles plus fines et plus nombreuses : après C_L_rapide, avant la finition ; ajoute la luminance de L_stars (50 %) aux étoiles RGB_stars ; vérifie les anneaux à 1:1",
           'Fond_auto': "tout à la fin, après Etoiles_screen ou Etoiles_reduites (déjà inclus dans C_Fin_rapide et C_Fin_simple) : mesure le fond et l'amène à 0,12, neutre",
           'Etoiles_screen': "après C_Fin_sans_etoiles (et l'option choisie : Boost, HDRMT_50, HDRMT_eclat, NXT final) : remet les étoiles RGB_stars sur l'image ; dernière étape",
           'Etoiles_reduites': "À LA PLACE d'Etoiles_screen, après C_Fin_sans_etoiles : remet les étoiles en les réduisant ; dernière étape",
-          'GHS_1_premier': "après C_L_rapide_lineaire, pour étirer L à la main et comparer (puis GHS_2_contraste et GHS_3_fond)",
-          'GHS_2_contraste': "après GHS_1_premier (L étirée à la main)",
-          'GHS_3_fond': "après GHS_2_contraste (L étirée à la main) : fond vers 0,11-0,13",
           'Star_Stretch': "pour régler les étoiles à l'œil : décoche d'abord Etoiles_auto dans le conteneur RGB (sinon double étirement)",
           'GradientCorrection': "à la place de MGC_MARS si la cible est hors couverture MARS (sud au-delà de −15° environ) ou si MGC échoue",
 }
@@ -936,7 +936,9 @@ def write_rapide(filename, prefix, title, steps, main_spec, opt_spec):
     return len(main), len(opts)
 
 def rapide_common_opts(steps):
-    return [(2, *pick(steps, 'ImageSolver_seul')), (4, *pick(steps, 'Star_Stretch')),
+    return [(2, *pick(steps, 'ImageSolver_seul')),
+            (4, *pick(steps, 'GHS_1_premier')), (4, *pick(steps, 'GHS_2_contraste')), (4, *pick(steps, 'GHS_3_fond')),   # les 3 GHS des conteneurs, à la main
+            (4, *pick(steps, 'Star_Stretch')),
             (6, cont('C_Fin_simple', [pick(steps, b)[0] for b in ('LRGB_ajout_L', 'Masque_L', 'Courbes', 'LHE', 'LHE_fin', 'Masque_retirer', 'Etoiles_screen')] + [script('Fond_auto', ''), fermer('Fermer_L_stars', 'L_stars')]), ''),
             (6, cont('C_Fin_sans_etoiles', [pick(steps, b)[0] for b in ('LRGB_ajout_L', 'Masque_L', 'Courbes', 'LHE', 'LHE_fin', 'Masque_retirer')] + [fermer('Fermer_L_stars', 'L_stars')]), ''),
             (6, *pick(steps, 'Boost_finition_light')), (6, *pick(steps, 'Boost_finition')), (6, *pick(steps, 'HDRMT_50')), (6, *pick(steps, 'HDRMT_eclat')), (6, *pick(steps, 'NXT_final')),
