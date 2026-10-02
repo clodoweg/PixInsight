@@ -1708,6 +1708,38 @@ Détails : page docs/pixinsight-workflow.html.</description>
       </table>
       <parameter id="information"></parameter>
    </instance>
+   <instance class="Script" version="256" id="Opt_Fond_desature_instance">
+      <description>OPTION — fond du ciel teinté (violet, bruit de couleur) sur l'image finie : couleur retirée du fond seulement.
+
+LANCEMENT : glisse l'icône sur l'image.
+
+PRÉRÉGLÉ : script Fond_desature : fond mesuré, poids tiré de la luminance lissée (3 px) de l'image : couleur retirée sous fond + 0,02, gardée au-dessus de fond + 0,08 ; luminosité inchangée.
+
+À RÉGLER : glisse sur l'image finie, étoiles comprises ; dernière étape.
+
+SI :
+- teinte encore visible autour de la galaxie -&gt; fin 0,12
+- extensions faibles de la galaxie grisées -&gt; fin 0,05
+
+Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="3">
+         <tr>
+            <td id="id">debut</td>
+            <td id="value">0.02</td>
+         </tr>
+         <tr>
+            <td id="id">fin</td>
+            <td id="value">0.08</td>
+         </tr>
+         <tr>
+            <td id="id">flou</td>
+            <td id="value">3</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
+   </instance>
    <icon id="P1_Preparation" instance="P1_Preparation_instance" xpos="30" ypos="20" workspace="Workspace01"/>
    <icon id="Opt_WBPP" instance="Opt_WBPP_instance" xpos="30" ypos="64" workspace="Workspace01"/>
    <icon id="Opt_CC_auto" instance="Opt_CC_auto_instance" xpos="30" ypos="94" workspace="Workspace01"/>
@@ -1737,4 +1769,5 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <icon id="Opt_Halo_B_Gon" instance="Opt_Halo_B_Gon_instance" xpos="951" ypos="154" workspace="Workspace01"/>
    <icon id="Opt_Etoiles_screen" instance="Opt_Etoiles_screen_instance" xpos="951" ypos="184" workspace="Workspace01"/>
    <icon id="Opt_CorrectMagentaStars" instance="Opt_CorrectMagentaStars_instance" xpos="951" ypos="214" workspace="Workspace01"/>
+   <icon id="Opt_Fond_desature" instance="Opt_Fond_desature_instance" xpos="951" ypos="244" workspace="Workspace01"/>
 </xpsm>

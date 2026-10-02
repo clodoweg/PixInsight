@@ -3651,6 +3651,38 @@ Détails : page docs/pixinsight-workflow.html.</description>
          <parameter id="information"></parameter>
       </instance>
    </instance>
+   <instance class="Script" version="256" id="Opt_Fond_desature_instance">
+      <description>OPTION — tout à la fin, si le fond du ciel garde une teinte (violet, bruit de couleur) : couleur retirée du fond seulement, galaxie et étoiles intactes.
+
+LANCEMENT : glisse l'icône sur l'image.
+
+PRÉRÉGLÉ : script Fond_desature : fond mesuré, poids tiré de la luminance lissée (3 px) de l'image : couleur retirée sous fond + 0,02, gardée au-dessus de fond + 0,08 ; luminosité inchangée.
+
+À RÉGLER : glisse sur l'image finie, étoiles comprises ; dernière étape.
+
+SI :
+- teinte encore visible autour de la galaxie -&gt; fin 0,12
+- extensions faibles de la galaxie grisées -&gt; fin 0,05
+
+Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="3">
+         <tr>
+            <td id="id">debut</td>
+            <td id="value">0.02</td>
+         </tr>
+         <tr>
+            <td id="id">fin</td>
+            <td id="value">0.08</td>
+         </tr>
+         <tr>
+            <td id="id">flou</td>
+            <td id="value">3</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
+   </instance>
    <icon id="P1_Preparation" instance="P1_Preparation_instance" xpos="30" ypos="20" workspace="Workspace01"/>
    <icon id="E00_C_Preparation_rapide" instance="E00_C_Preparation_rapide_instance" xpos="30" ypos="64" workspace="Workspace01"/>
    <icon id="E01_Mode_rapide" instance="E01_Mode_rapide_instance" xpos="30" ypos="94" workspace="Workspace01"/>
@@ -3688,4 +3720,5 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <icon id="Opt_Etoiles_reduites" instance="Opt_Etoiles_reduites_instance" xpos="816" ypos="444" workspace="Workspace01"/>
    <icon id="Opt_Fond_auto" instance="Opt_Fond_auto_instance" xpos="816" ypos="474" workspace="Workspace01"/>
    <icon id="Opt_Boost_final" instance="Opt_Boost_final_instance" xpos="816" ypos="504" workspace="Workspace01"/>
+   <icon id="Opt_Fond_desature" instance="Opt_Fond_desature_instance" xpos="816" ypos="534" workspace="Workspace01"/>
 </xpsm>

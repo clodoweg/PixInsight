@@ -51,6 +51,7 @@ SCRIPTS = {
     'Etoiles_auto': ('$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js', '', [('vue', 'RGB_stars'), ('amount', '6'), ('satAmount', '1.3'), ('scnr', 'false')], L_DRAG),
     'Etoiles_LRGB': ('$PXI_SRCDIR/scripts/clodoweg/Etoiles_LRGB.js', '', [('etoilesL', 'L_stars'), ('etoilesRGB', 'RGB_stars'), ('etirerL', 'true'), ('amount', '6'), ('partL', '0.5'), ('saturation', '0.35')], L_DRAG),
     'Etoiles_LRGB_etire': ('$PXI_SRCDIR/scripts/clodoweg/Etoiles_LRGB.js', '', [('etoilesL', 'L_stars'), ('etoilesRGB', 'RGB_stars'), ('etirerL', 'false'), ('amount', '6'), ('partL', '0.5'), ('saturation', '0.35')], L_DRAG),
+    'Fond_desature': ('$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js', '', [('debut', '0.02'), ('fin', '0.08'), ('flou', '3')], L_DRAG),
     'Fond_auto': ('$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js', '', [('cible', '0.12'), ('tolerance', '0.005'), ('grille', '8')], L_DRAG),
     'GHS_auto': ('$PXI_SRCDIR/scripts/clodoweg/GHS_auto.js', '', [('mode', 'premier'), ('cible', '0.25'), ('b', '6'), ('spFactor', '0.5'), ('hp', '0.85')], L_DRAG),
     'GHS_auto_fond': ('$PXI_SRCDIR/scripts/clodoweg/GHS_auto.js', '', [('mode', 'fond'), ('cible', '0.11'), ('b', '10'), ('spFactor', '0.87')], L_DRAG),
@@ -564,6 +565,7 @@ def stars_end(stars='RGB_stars', cms=False, screen_extra='', cms_extra='', alt='
     b.append((pm('Etoiles_reduites', "S=0.20;\nW=~((~$T)*(~%s));\nf1= ~((~mtf(~S,W)/~mtf(~S,$T))*~$T);\nmax($T,f1)" % stars, symbols='S, W, f1'), D_BL % stars))
     if cms:
         b.append((note('CorrectMagentaStars', T_CMS + cms_extra), ''))
+    b.append((script('Fond_desature', ''), ''))   # option, tout à la fin : couleur retirée du fond du ciel
     return b
 
 def ghs_block(extra_desc='', stat_extra='', fond_extra=''):
@@ -892,7 +894,8 @@ T_RAPIDE = {
          "E08 C_RGB_fin_rapide sur RGB (SXT, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond 0,22, Etoiles_auto sur RGB_stars). E09 C_L_rapide sur L ({L}). "
          "E10 C_Fin_rapide sur RGB (LRGB, HDRMT à 40 %, masque attaché, Courbes, LHE, LHE_fin, masque retiré, étoiles, Fond_auto) : image finie  ; sans HDRMT : C_Fin_simple. Boost, HDRMT_50, HDRMT_eclat, NXT final : C_Fin_sans_etoiles, l'option, puis Etoiles_screen, puis Fond_auto. Étapes de la préparation seules : options de la phase 1."),
 }
-WHEN_R = {'Etoiles_LRGB': "pour des étoiles plus fines et plus nombreuses : après C_L_rapide, avant la finition ; ajoute la luminance de L_stars (50 %) aux étoiles RGB_stars ; vérifie les anneaux à 1:1",
+WHEN_R = {'Fond_desature': "tout à la fin, si le fond du ciel garde une teinte (violet, bruit de couleur) : couleur retirée du fond seulement, galaxie et étoiles intactes",
+          'Etoiles_LRGB': "pour des étoiles plus fines et plus nombreuses : après C_L_rapide, avant la finition ; ajoute la luminance de L_stars (50 %) aux étoiles RGB_stars ; vérifie les anneaux à 1:1",
           'Fond_auto': "tout à la fin, après Etoiles_screen ou Etoiles_reduites (déjà inclus dans C_Fin_rapide et C_Fin_simple) : mesure le fond et l'amène à 0,12, neutre",
           'Etoiles_screen': "après C_Fin_sans_etoiles (et l'option choisie : Boost, HDRMT_50, HDRMT_eclat, NXT final) : remet les étoiles RGB_stars sur l'image ; dernière étape",
           'Etoiles_reduites': "À LA PLACE d'Etoiles_screen, après C_Fin_sans_etoiles : remet les étoiles en les réduisant ; dernière étape",
@@ -929,7 +932,7 @@ def rapide_common_opts(steps):
             (6, *pick(steps, 'Boost_finition_light')), (6, *pick(steps, 'Boost_finition')), (6, *pick(steps, 'HDRMT_50')), (6, *pick(steps, 'HDRMT_eclat')), (6, *pick(steps, 'NXT_final')),
             # étoiles dans la même colonne (P6) : après C_Fin_sans_etoiles et une option, on remet les étoiles juste en dessous
             (6, *pick(steps, 'Halo_B_Gon')), (6, *pick(steps, 'MT_etoiles')), (6, *pick(steps, 'Etoiles_screen')), (6, *pick(steps, 'Etoiles_reduites')),
-            (6, script('Fond_auto', ''), ''), (6, boost_final(), '')]
+            (6, script('Fond_auto', ''), ''), (6, boost_final(), ''), (6, script('Fond_desature', ''), '')]
 
 def rapide_end(steps):
     """Finition en un glisser, dans l'ordre habituel : HDRMT d'abord (plage dynamique), puis un seul masque, une seule courbe
