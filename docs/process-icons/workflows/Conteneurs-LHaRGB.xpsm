@@ -1102,46 +1102,32 @@ $T[0] + w*H_cs</parameter>
          <parameter id="overlap" value="0.20"/>
       </instance>
    </instance>
-   <instance class="ProcessContainer" id="E14_C_L_etoiles_bruit_instance">
-      <instance class="StarXTerminator" version="256" enabled="true">
-         <parameter id="ml_version" value="0"/>
-         <parameter id="output_stars" value="true"/>
-         <parameter id="unscreen" value="false"/>
-         <parameter id="remove_stars" value="true"/>
-         <parameter id="remove_spikes" value="true"/>
-         <parameter id="remove_aureoles" value="true"/>
-         <parameter id="remove_reflections" value="false"/>
-         <parameter id="overlap" value="0.20"/>
-      </instance>
-      <instance class="NoiseXTerminator" version="256" enabled="true">
-         <parameter id="ml_version" value="0"/>
-         <parameter id="denoise" value="0.60"/>
-         <parameter id="enable_color_separation" value="false"/>
-         <parameter id="enable_frequency_separation" value="false"/>
-         <parameter id="denoise_intensity" value="0.90"/>
-         <parameter id="denoise_color" value="0.90"/>
-         <parameter id="denoise_high_freq" value="0.90"/>
-         <parameter id="denoise_low_freq" value="0.90"/>
-         <parameter id="denoise_intensity_high_freq" value="0.90"/>
-         <parameter id="denoise_intensity_low_freq" value="0.90"/>
-         <parameter id="denoise_color_high_freq" value="0.90"/>
-         <parameter id="denoise_color_low_freq" value="0.90"/>
-         <parameter id="frequency_scale" value="5.0"/>
-         <parameter id="iterations" value="1"/>
-         <parameter id="detail" value="0.15"/>
-         <parameter id="overlap" value="0.20"/>
-      </instance>
-      <instance class="Script" version="256" enabled="true">
-         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
-         <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="1">
-            <tr>
-               <td id="id">views</td>
-               <td id="value">L_stars</td>
-            </tr>
-         </table>
-         <parameter id="information"></parameter>
-      </instance>
+   <instance class="NoiseXTerminator" version="256" id="E14_NXT_L_instance">
+      <description>PRÉRÉGLÉ : Denoise 0,60, 1 itération.
+
+À RÉGLER : rien ; après BXT.
+
+SI :
+- détail fin perdu -&gt; 0,50
+- encore bruité -&gt; 0,70
+
+Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="ml_version" value="0"/>
+      <parameter id="denoise" value="0.60"/>
+      <parameter id="enable_color_separation" value="false"/>
+      <parameter id="enable_frequency_separation" value="false"/>
+      <parameter id="denoise_intensity" value="0.90"/>
+      <parameter id="denoise_color" value="0.90"/>
+      <parameter id="denoise_high_freq" value="0.90"/>
+      <parameter id="denoise_low_freq" value="0.90"/>
+      <parameter id="denoise_intensity_high_freq" value="0.90"/>
+      <parameter id="denoise_intensity_low_freq" value="0.90"/>
+      <parameter id="denoise_color_high_freq" value="0.90"/>
+      <parameter id="denoise_color_low_freq" value="0.90"/>
+      <parameter id="frequency_scale" value="5.0"/>
+      <parameter id="iterations" value="1"/>
+      <parameter id="detail" value="0.15"/>
+      <parameter id="overlap" value="0.20"/>
    </instance>
    <instance class="NoOperation" version="256" id="P3_options_instance">
       <description>OPTIONS de la phase 3 — Linéaire : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
@@ -1491,10 +1477,53 @@ Détails : page docs/pixinsight-workflow.html.</description>
       </table>
       <parameter id="information"></parameter>
    </instance>
+   <instance class="ProcessContainer" id="E20_C_L_etoiles_instance">
+      <instance class="StarXTerminator" version="256" enabled="true">
+         <parameter id="ml_version" value="0"/>
+         <parameter id="output_stars" value="true"/>
+         <parameter id="unscreen" value="true"/>
+         <parameter id="remove_stars" value="true"/>
+         <parameter id="remove_spikes" value="true"/>
+         <parameter id="remove_aureoles" value="true"/>
+         <parameter id="remove_reflections" value="false"/>
+         <parameter id="overlap" value="0.20"/>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Etoiles_LRGB.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="6">
+            <tr>
+               <td id="id">etoilesL</td>
+               <td id="value">L_stars</td>
+            </tr>
+            <tr>
+               <td id="id">etoilesRGB</td>
+               <td id="value">RGB_stars</td>
+            </tr>
+            <tr>
+               <td id="id">etirerL</td>
+               <td id="value">false</td>
+            </tr>
+            <tr>
+               <td id="id">amount</td>
+               <td id="value">6</td>
+            </tr>
+            <tr>
+               <td id="id">partL</td>
+               <td id="value">0.5</td>
+            </tr>
+            <tr>
+               <td id="id">saturation</td>
+               <td id="value">0.35</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+   </instance>
    <instance class="NoOperation" version="256" id="P5_Couleur_instance">
       <description>PHASE 5 — Couleur : combinaison finale et palette. Colonne de repère, sans effet.</description>
    </instance>
-   <instance class="LRGBCombination" version="256" id="E20_LRGB_ajout_L_instance">
+   <instance class="LRGBCombination" version="256" id="E21_LRGB_ajout_L_instance">
       <description>PRÉRÉGLÉ : seul L coché, Lightness 0,5, Saturation 0,35, réduction du bruit de chrominance.
 
 À RÉGLER : vue L nommée 'L' ; glisse sur le RGB sans étoiles.
@@ -1536,7 +1565,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <instance class="NoOperation" version="256" id="P6_Finition_instance">
       <description>PHASE 6 — Finition : contraste et saturation sur l'image sans étoiles. Colonne de repère, sans effet.</description>
    </instance>
-   <instance class="ProcessContainer" id="E21_C_Finition_instance">
+   <instance class="ProcessContainer" id="E22_C_Finition_instance">
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
@@ -2491,7 +2520,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <instance class="NoOperation" version="256" id="P7_Etoiles_instance">
       <description>PHASE 7 — Étoiles : étoiles : étirement, recombinaison, réduction. Colonne de repère, sans effet.</description>
    </instance>
-   <instance class="PixelMath" version="256" id="E22_Etoiles_screen_instance">
+   <instance class="PixelMath" version="256" id="E23_Etoiles_screen_instance">
       <description>PRÉRÉGLÉ : ~((~$T) * (~RGB_stars)), sur l'image elle-même.
 
 À RÉGLER : glisse sur l'image sans étoiles finale : elle reçoit les étoiles ; étoiles étirées nommées RGB_stars (nom donné par SXT, s minuscule).
@@ -2866,7 +2895,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <icon id="E11_Continuum_H" instance="E11_Continuum_H_instance" xpos="430" ypos="124" workspace="Workspace01"/>
    <icon id="E12_H_dans_RGB" instance="E12_H_dans_RGB_instance" xpos="430" ypos="154" workspace="Workspace01"/>
    <icon id="E13_C_RGB_etoiles_bruit" instance="E13_C_RGB_etoiles_bruit_instance" xpos="430" ypos="184" workspace="Workspace01"/>
-   <icon id="E14_C_L_etoiles_bruit" instance="E14_C_L_etoiles_bruit_instance" xpos="430" ypos="214" workspace="Workspace01"/>
+   <icon id="E14_NXT_L" instance="E14_NXT_L_instance" xpos="430" ypos="214" workspace="Workspace01"/>
    <icon id="P3_options" instance="P3_options_instance" xpos="430" ypos="260" workspace="Workspace01"/>
    <icon id="Opt_Find_Background" instance="Opt_Find_Background_instance" xpos="430" ypos="294" workspace="Workspace01"/>
    <icon id="Opt_Continuum_auto" instance="Opt_Continuum_auto_instance" xpos="430" ypos="324" workspace="Workspace01"/>
@@ -2878,10 +2907,11 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <icon id="E17_Statistical_Stretch" instance="E17_Statistical_Stretch_instance" xpos="621" ypos="124" workspace="Workspace01"/>
    <icon id="E18_GHS_3_fond" instance="E18_GHS_3_fond_instance" xpos="621" ypos="154" workspace="Workspace01"/>
    <icon id="E19_Star_Stretch" instance="E19_Star_Stretch_instance" xpos="621" ypos="184" workspace="Workspace01"/>
+   <icon id="E20_C_L_etoiles" instance="E20_C_L_etoiles_instance" xpos="621" ypos="214" workspace="Workspace01"/>
    <icon id="P5_Couleur" instance="P5_Couleur_instance" xpos="812" ypos="20" workspace="Workspace01"/>
-   <icon id="E20_LRGB_ajout_L" instance="E20_LRGB_ajout_L_instance" xpos="812" ypos="64" workspace="Workspace01"/>
+   <icon id="E21_LRGB_ajout_L" instance="E21_LRGB_ajout_L_instance" xpos="812" ypos="64" workspace="Workspace01"/>
    <icon id="P6_Finition" instance="P6_Finition_instance" xpos="972" ypos="20" workspace="Workspace01"/>
-   <icon id="E21_C_Finition" instance="E21_C_Finition_instance" xpos="972" ypos="64" workspace="Workspace01"/>
+   <icon id="E22_C_Finition" instance="E22_C_Finition_instance" xpos="972" ypos="64" workspace="Workspace01"/>
    <icon id="P6_options" instance="P6_options_instance" xpos="972" ypos="110" workspace="Workspace01"/>
    <icon id="Opt_Boost_finition_light" instance="Opt_Boost_finition_light_instance" xpos="972" ypos="144" workspace="Workspace01"/>
    <icon id="Opt_Boost_finition" instance="Opt_Boost_finition_instance" xpos="972" ypos="174" workspace="Workspace01"/>
@@ -2889,7 +2919,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <icon id="Opt_HDRMT_eclat" instance="Opt_HDRMT_eclat_instance" xpos="972" ypos="234" workspace="Workspace01"/>
    <icon id="Opt_NXT_final" instance="Opt_NXT_final_instance" xpos="972" ypos="264" workspace="Workspace01"/>
    <icon id="P7_Etoiles" instance="P7_Etoiles_instance" xpos="1168" ypos="20" workspace="Workspace01"/>
-   <icon id="E22_Etoiles_screen" instance="E22_Etoiles_screen_instance" xpos="1168" ypos="64" workspace="Workspace01"/>
+   <icon id="E23_Etoiles_screen" instance="E23_Etoiles_screen_instance" xpos="1168" ypos="64" workspace="Workspace01"/>
    <icon id="P7_options" instance="P7_options_instance" xpos="1168" ypos="110" workspace="Workspace01"/>
    <icon id="Opt_MT_etoiles" instance="Opt_MT_etoiles_instance" xpos="1168" ypos="144" workspace="Workspace01"/>
    <icon id="Opt_Halo_B_Gon" instance="Opt_Halo_B_Gon_instance" xpos="1168" ypos="174" workspace="Workspace01"/>

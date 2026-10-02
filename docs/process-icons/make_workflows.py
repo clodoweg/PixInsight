@@ -446,6 +446,12 @@ BXT_C = (" Réglages (manuel RC Astro AI4) : données LINÉAIRES obligatoires, a
          "Sharpen Nonstellar 0 à 1 (1 = viser une PSF ponctuelle). Ne pas appliquer deux fois.")
 D_BXT_CO = ("BlurXTerminator — Correct Only, AVANT SPCC (manuel RC Astro) : corrige aberrations, coma et tilt sans accentuer. Sur l'image couleur combinée, en linéaire, après le gradient. "
             "Si les aberrations diffèrent d'un filtre à l'autre : applique-le sur chaque master avant de combiner.")
+D_SXT_L_ETIRE = ("StarXTerminator sur L ÉTIRÉE (après GHS ou Statistical Stretch et GHS_3_fond), Unscreen coché (image étirée, RC Astro). "
+                 "Retirer les étoiles de L après l'étirement enlève aussi leurs halos diffus, qui ressortent en taches rondes si SXT tourne sur L linéaire (constat sur NGC 1532). "
+                 "Les étoiles de L (L_stars, déjà étirées) servent ensuite à Etoiles_LRGB_etire.")
+D_ETOILES_LRGB = ("Etoiles_LRGB (script de la fiche, etirerL = false) : luminance 0,5 × L_stars (déjà étirée par SXT sur L étirée) + 0,5 × luminance de RGB_stars, "
+                  "appliquée à RGB_stars (déjà étirée par Star_Stretch) par LRGBCombination (saturation 0,35), puis L_stars fermée. Étoiles plus fines et plus nombreuses. "
+                  "Vérifie à 1:1 : cœurs trop blancs ou anneau autour des étoiles -> partL 0,3.")
 D_SXT_LIN = ("StarXTerminator — sur données LINÉAIRES, le plus tôt possible après BXT (RC Astro). Generate star image coché, UNSCREEN DÉCOCHÉ (réservé aux images étirées) : "
              "simple soustraction, couleurs d'étoiles les plus fidèles. N'applique pas l'autoSTF de façon permanente à l'image d'étoiles. Large overlap : décoché (recouvrement des tuiles 20 %) ; coché = 50 %, seulement si un quadrillage apparaît (environ trois fois plus lent selon RC Astro). "
              "AI11 : version complète de préférence (Lite = 75 % de mémoire en moins ; Lite.nonoise plus rapide mais sans bruit dans les zones retirées). Plus de case Linear : détection automatique. "
@@ -633,12 +639,13 @@ lrgb = pre_block() + [rgb_comb_item(), (solver_container(), ''), (solver_seul(),
     spcc(),
     (M.bxt('BXT_RGB', False, 0.25, 0.0, 0.50), "BlurXTerminator complet sur RGB, APRÈS SPCC : Sharpen Stars 0,25 (0 à 0,5), Adjust Star Halos 0, PSF automatique, Sharpen Nonstellar 0,50 (le détail viendra de L). Avant toute réduction de bruit." + BXT_C),
     (M.bxt('BXT_L', False, 0.25, 0.0, 0.80), "BlurXTerminator complet sur L (linéaire, gradient retiré) : Sharpen Stars 0,25, Halos 0, Sharpen Nonstellar 0,80 (0,70 à 0,90), plus fort que sur RGB car la luminance porte le détail. Si vers ou pores à 100 % : baisse Nonstellar." + BXT_C),
-    (M.sxt('SXT_lineaire', False), D_SXT_LIN + " Sur RGB (garde les étoiles : ce sont celles de l'image finale) et sur L (jette ses étoiles)."),
+    (M.sxt('SXT_lineaire', False), D_SXT_LIN + " Sur RGB seulement (garde les étoiles : ce sont celles de l'image finale). L garde ses étoiles jusqu'après l'étirement (SXT_L_etire)."),
     (M.nxt('NXT_RGB', 0.80, 1), "NoiseXTerminator sur RGB sans étoiles : Denoise 0,80 (0,70 à 0,90), Detail 0,15. Toujours après BXT. Fonctionne en linéaire ou après étirement (RC Astro)." + NXT_C),
-    (M.nxt('NXT_L', 0.60, 1), "NoiseXTerminator sur L sans étoiles : Denoise 0,60 (0,50 à 0,70) pour garder le détail fin." + NXT_C),
-    (fermer('Fermer_L_stars', 'L_stars'), ''),
+    (M.nxt('NXT_L', 0.60, 1), "NoiseXTerminator sur L (avec ses étoiles, linéaire) : Denoise 0,60 (0,50 à 0,70) pour garder le détail fin." + NXT_C),
 ] + ghs_block(L_GHS, L_STAT, L_FOND) + [
     (note('Star_Stretch', T_STARSTRETCH + STARS_LRGB), ''),
+    (M.sxt('SXT_L_etire', True), D_SXT_L_ETIRE),
+    (note('Etoiles_LRGB_etire', D_ETOILES_LRGB), ''),
     (M.instance('LRGBCombination', 'LRGB_ajout_L', {'mL': '0.500', 'mc': '0.350', 'noiseReduction': True}, post=M.lrgb_post),
      "LRGBCombination sur les images étirées et SANS étoiles : seul L activé (renomme ta luminance 'L'), glisse le triangle sur le RGB. Lightness 0,5 ; Saturation 0,35 (plus bas = plus saturé ; ternes -> 0,30) ; "
      "Chrominance noise reduction cochée. Couleurs délavées : L trop claire par rapport au RGB, étire-la moins. "
@@ -672,14 +679,15 @@ lhargb = pre_block() + [rgb_comb_item(False), (solver_container(), ''), (solver_
      "Régions HII nettes mais couleurs délavées après LRGBCombination : a trop fort, baisse-le ou fais un mélange léger."),
     (note('NBRGBCombination', "ALTERNATIVE — NBRGBCombination (Script › Utilities) : image RGB et sa bande passante (~100 nm pour un filtre R mono), image H dans le canal R avec la bande passante de ton filtre (3, 5, 7 nm), "
           "Scale 1,2 par défaut (3 à 5 pour un H faible). Compare avec les aperçus RGB et NBRGB."), ''),
-    (M.sxt('SXT_lineaire', False), D_SXT_LIN + " Sur RGB (garde les étoiles) et sur L (jette ses étoiles). "
+    (M.sxt('SXT_lineaire', False), D_SXT_LIN + " Sur RGB seulement (garde les étoiles) ; L garde ses étoiles jusqu'après l'étirement (SXT_L_etire). "
      "Les étoiles RGB gardées ici contiennent l'injection de H : compare-les à la copie d'avant injection (pas plus rouges, sans halo ni anneau). "
      "Si elles sont abîmées : monte k, baisse w, ou passe SXT sur la copie du RGB non injecté et garde ses étoiles (option la plus propre)."),
     (M.nxt('NXT_RGB', 0.80, 1), "NoiseXTerminator sur RGB sans étoiles : Denoise 0,80, Detail 0,15." + NXT_C),
-    (M.nxt('NXT_L', 0.60, 1), "NoiseXTerminator sur L sans étoiles : Denoise 0,60." + NXT_C),
-    (fermer('Fermer_L_stars', 'L_stars'), ''),
+    (M.nxt('NXT_L', 0.60, 1), "NoiseXTerminator sur L (avec ses étoiles, linéaire) : Denoise 0,60." + NXT_C),
 ] + ghs_block(L_GHS, L_STAT, L_FOND) + [
     (note('Star_Stretch', T_STARSTRETCH + STARS_LRGB), ''),
+    (M.sxt('SXT_L_etire', True), D_SXT_L_ETIRE),
+    (note('Etoiles_LRGB_etire', D_ETOILES_LRGB), ''),
     (M.instance('LRGBCombination', 'LRGB_ajout_L', {'mL': '0.500', 'mc': '0.350', 'noiseReduction': True}, post=M.lrgb_post),
      "LRGBCombination sur les images étirées sans étoiles : seul L activé (vue 'L'), Lightness 0,5, Saturation 0,35, Chrominance noise reduction cochée. "
      "CONTRÔLE (sonde 15x15) : cœur de galaxie jaune (R >= G >> B), bras bleus, régions HII roses et bien visibles grâce au H (R > B > G), aucune étoile verte, fond R = G = B ; couleurs délavées : L trop claire, étire-la moins. "
@@ -955,11 +963,11 @@ gc_r = lambda: M.instance('GradientCorrection', 'GradientCorrection', {'generate
 # Quatre variantes de C_L_rapide, dans le même fichier : la 1 au chemin principal, les 3 autres en options (P3).
 #   sxt_etire : L étirée (Statistical Stretch + fond) AVANT SXT (Unscreen), sinon SXT en linéaire ;
 #   etoilesL : luminance de L_stars ajoutée aux étoiles RGB_stars (Etoiles_LRGB) à la fin du conteneur, sinon L_stars fermée.
-RAPIDE_VARIANTES = [
-    ('', False, False, "variante 1 : SXT sur L linéaire"),
-    ('_etoilesL', False, True, "variante 2 : SXT sur L linéaire, luminance de L_stars ajoutée aux étoiles"),
-    ('_SXT_etire', True, False, "variante 3 : L étirée avant SXT"),
-    ('_SXT_etire_etoilesL', True, True, "variante 4 : L étirée avant SXT, luminance de L_stars ajoutée aux étoiles"),
+RAPIDE_VARIANTES = [   # la première est le chemin principal (choix de l'utilisateur : L étirée avant SXT + luminance de L pour les étoiles)
+    ('', True, True, "L étirée avant SXT, luminance de L_stars ajoutée aux étoiles"),
+    ('_SXT_lineaire', False, False, "SXT sur L linéaire"),
+    ('_SXT_lineaire_etoilesL', False, True, "SXT sur L linéaire, luminance de L_stars ajoutée aux étoiles"),
+    ('_SXT_etire', True, False, "L étirée avant SXT, sans luminance de L pour les étoiles"),
 ]
 
 def l_rapide(bxt, sxt_etire=False, etoilesL=False, suffix=''):
@@ -1010,13 +1018,13 @@ def rapide_lha(v, sxt_etire, etoilesL):
     (3, cont('C_RGB_fin_rapide', [M.sxt('SXT_lineaire', False), M.nxt('NXT_RGB', 0.80, 1), stat_auto(), GHS_FOND_R(), script('Etoiles_auto', '')]), ''),
     (3, l_rapide(M.bxt('BXT_L_H', False, 0.25, 0.0, 0.80), sxt_etire, etoilesL), '')] + rapide_end(lhargb)
 
-V_NOTE = ("variante 1 au chemin principal (SXT sur L linéaire) ; à la place de C_L_rapide, options de la phase 3 : "
-          "C_L_rapide_etoilesL (variante 2 : luminance de L_stars ajoutée aux étoiles), C_L_rapide_SXT_etire (variante 3 : L étirée avant SXT, Unscreen), "
-          "C_L_rapide_SXT_etire_etoilesL (variante 4 : les deux)")
-v = {'titre': V_NOTE, 'L': l_desc(False, False)}
+V_NOTE = ("C_L_rapide : L étirée avant SXT (Unscreen) et luminance de L_stars ajoutée aux étoiles ; à la place de C_L_rapide, options de la phase 3 : "
+          "C_L_rapide_SXT_lineaire (SXT sur L linéaire), C_L_rapide_SXT_lineaire_etoilesL (SXT linéaire + luminance de L pour les étoiles), "
+          "C_L_rapide_SXT_etire (L étirée avant SXT, sans luminance de L pour les étoiles)")
+v = {'titre': V_NOTE, 'L': l_desc(True, True)}
 for fn, pre, title, steps, spec, bxt in [('Rapide-LRGB.xpsm', 'LRGB', 'Workflow LRGB', lrgb, rapide_lrgb, lambda: M.bxt('BXT_L', False, 0.25, 0.0, 0.80)),
                                           ('Rapide-LHaRGB.xpsm', 'LHA', 'Workflow LHaRGB', lhargb, rapide_lha, lambda: M.bxt('BXT_L_H', False, 0.25, 0.0, 0.80))]:
-    print(fn, 'principal, options :', write_rapide(fn, pre, title, steps, spec(v, False, False), prep_opts(steps) + l_opts(bxt) + rapide_common_opts(steps)))
+    print(fn, 'principal, options :', write_rapide(fn, pre, title, steps, spec(v, True, True), prep_opts(steps) + l_opts(bxt) + rapide_common_opts(steps)))
 
 DATA['header'] = M.HEADER
 json.dump(DATA, open(os.path.join(OUT, '..', 'preparer-data.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
