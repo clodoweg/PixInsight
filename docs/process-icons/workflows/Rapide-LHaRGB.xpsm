@@ -1038,6 +1038,45 @@ $T[0] + w*H_cs</parameter>
          <parameter id="useRGBWorkingSpace" value="false"/>
       </instance>
       <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Halos_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="8">
+            <tr>
+               <td id="id">etoiles</td>
+               <td id="value">RGB_stars</td>
+            </tr>
+            <tr>
+               <td id="id">seuil</td>
+               <td id="value">0.25</td>
+            </tr>
+            <tr>
+               <td id="id">rayon</td>
+               <td id="value">80</td>
+            </tr>
+            <tr>
+               <td id="id">gain</td>
+               <td id="value">200</td>
+            </tr>
+            <tr>
+               <td id="id">lissage</td>
+               <td id="value">20</td>
+            </tr>
+            <tr>
+               <td id="id">protegeMin</td>
+               <td id="value">0.09</td>
+            </tr>
+            <tr>
+               <td id="id">protegeMax</td>
+               <td id="value">0.19</td>
+            </tr>
+            <tr>
+               <td id="id">afficher</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js</parameter>
          <parameter id="md5sum"></parameter>
          <table id="parameters" rows="4">
@@ -1126,17 +1165,6 @@ $T[0] + w*H_cs</parameter>
          <parameter id="iterations" value="1"/>
          <parameter id="detail" value="0.15"/>
          <parameter id="overlap" value="0.20"/>
-      </instance>
-      <instance class="Script" version="256" enabled="true">
-         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
-         <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="1">
-            <tr>
-               <td id="id">views</td>
-               <td id="value">L_stars</td>
-            </tr>
-         </table>
-         <parameter id="information"></parameter>
       </instance>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/statisticalstretch.js</parameter>
@@ -1228,6 +1256,56 @@ $T[0] + w*H_cs</parameter>
          </table>
          <parameter id="information"></parameter>
       </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Halos_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="8">
+            <tr>
+               <td id="id">etoiles</td>
+               <td id="value">L_stars</td>
+            </tr>
+            <tr>
+               <td id="id">seuil</td>
+               <td id="value">0.25</td>
+            </tr>
+            <tr>
+               <td id="id">rayon</td>
+               <td id="value">80</td>
+            </tr>
+            <tr>
+               <td id="id">gain</td>
+               <td id="value">200</td>
+            </tr>
+            <tr>
+               <td id="id">lissage</td>
+               <td id="value">20</td>
+            </tr>
+            <tr>
+               <td id="id">protegeMin</td>
+               <td id="value">0.09</td>
+            </tr>
+            <tr>
+               <td id="id">protegeMax</td>
+               <td id="value">0.19</td>
+            </tr>
+            <tr>
+               <td id="id">afficher</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="1">
+            <tr>
+               <td id="id">views</td>
+               <td id="value">L_stars</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
    </instance>
    <instance class="NoOperation" version="256" id="P3_options_instance">
       <description>OPTIONS de la phase 3 — Linéaire : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
@@ -1299,17 +1377,6 @@ $T[0] + w*H_cs</parameter>
          <parameter id="overlap" value="0.20"/>
       </instance>
       <instance class="Script" version="256" enabled="true">
-         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
-         <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="1">
-            <tr>
-               <td id="id">views</td>
-               <td id="value">L_stars</td>
-            </tr>
-         </table>
-         <parameter id="information"></parameter>
-      </instance>
-      <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/GHS_auto.js</parameter>
          <parameter id="md5sum"></parameter>
          <table id="parameters" rows="5">
@@ -1355,6 +1422,56 @@ $T[0] + w*H_cs</parameter>
             <tr>
                <td id="id">spFactor</td>
                <td id="value">0.87</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Halos_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="8">
+            <tr>
+               <td id="id">etoiles</td>
+               <td id="value">L_stars</td>
+            </tr>
+            <tr>
+               <td id="id">seuil</td>
+               <td id="value">0.25</td>
+            </tr>
+            <tr>
+               <td id="id">rayon</td>
+               <td id="value">80</td>
+            </tr>
+            <tr>
+               <td id="id">gain</td>
+               <td id="value">200</td>
+            </tr>
+            <tr>
+               <td id="id">lissage</td>
+               <td id="value">20</td>
+            </tr>
+            <tr>
+               <td id="id">protegeMin</td>
+               <td id="value">0.09</td>
+            </tr>
+            <tr>
+               <td id="id">protegeMax</td>
+               <td id="value">0.19</td>
+            </tr>
+            <tr>
+               <td id="id">afficher</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="1">
+            <tr>
+               <td id="id">views</td>
+               <td id="value">L_stars</td>
             </tr>
          </table>
          <parameter id="information"></parameter>
