@@ -2373,25 +2373,29 @@ max($T,f1)</parameter>
 
 LANCEMENT : glisse l'icône sur l'image.
 
-PRÉRÉGLÉ : script Fond_desature : fond mesuré, poids tiré de la luminance lissée (3 px) de l'image : couleur retirée sous fond + 0,02, gardée au-dessus de fond + 0,08 ; luminosité inchangée.
+PRÉRÉGLÉ : script Fond_desature : fond mesuré ; zones faibles (luminance lissée sous fond + 0,15, décroissant jusqu'à + 0,30) : violet neutralisé (G remonté jusqu'à min(R, B), magenta seulement) ; fond (sous + 0,03, rampe jusqu'à + 0,15) : couleur retirée.
 
 À RÉGLER : glisse sur l'image finie, étoiles comprises ; dernière étape.
 
 SI :
-- teinte encore visible autour de la galaxie -&gt; fin 0,12
-- extensions faibles de la galaxie grisées -&gt; fin 0,05
+- violet encore visible dans le halo -&gt; violetFin 0,40
+- extensions faibles de la galaxie grisées -&gt; fin 0,10
 
 Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js</parameter>
       <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="3">
+      <table id="parameters" rows="4">
          <tr>
             <td id="id">debut</td>
-            <td id="value">0.02</td>
+            <td id="value">0.03</td>
          </tr>
          <tr>
             <td id="id">fin</td>
-            <td id="value">0.08</td>
+            <td id="value">0.15</td>
+         </tr>
+         <tr>
+            <td id="id">violetFin</td>
+            <td id="value">0.30</td>
          </tr>
          <tr>
             <td id="id">flou</td>
@@ -2411,7 +2415,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
             </tr>
             <tr>
                <td id="id">s</td>
-               <td id="value">0.14</td>
+               <td id="value">0.20</td>
             </tr>
             <tr>
                <td id="id">flou</td>
