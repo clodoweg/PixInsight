@@ -111,7 +111,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </instance>
    </instance>
    <instance class="NoOperation" version="256" id="E01_Mode_rapide_instance">
-      <description>MODE RAPIDE LRGB — icône de repère, sans effet. Aucun réglage, pas de MARS (MGC + MARS : mode soigné). Ordre (numéros des icônes) : E00 C_Preparation_rapide (masters seuls ouverts ; double-clic puis Apply Global, ou glisse sur L) : Renommer_auto (L, R, G, B d'après FILTER), LinearPatternSubtraction sur tous les masters mono ouverts, Combinaison_RGB (RGB créé, R, G, B fermées). E02 ImageSolver sur RGB (date par défaut si absente, puis ImageSolver ; nécessaire à SPCC ; icône seule, pas de conteneur). E03 C_RGB_rapide sur RGB (GradientCorrection, BXT Correct Only, SPCC, BXT, SXT, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond SP = HP = 0,22, Etoiles_auto) : RGB étiré sans étoiles et RGB_stars étirée (courbe de Star Stretch, amount 6, saturation 1,3). E04 C_L_rapide sur L (GradientCorrection, BXT, SXT, NXT, fermeture de L_stars, Statistical Stretch 0,25 sans dialogue, puis GHS_auto_fond : fond mesuré et amené à 0,11). E05 C_Fin_rapide sur RGB : LRGB (L ajoutée), masque de luminance créé et attaché, Courbes, LHE, LHE_fin, masque retiré, HDRMT_eclat (HDRMT à 70 % puis Boost léger : cœur détaillé et lumineux), étoiles RGB_stars ajoutées : image finie. Sans HDRMT : C_Fin_simple (options). Pour un Boost, HDRMT_50, HDRMT_eclat (cœur détaillé ET lumineux) ou NXT final : à la place d'E05, C_Fin_sans_etoiles (options), puis l'option, puis Etoiles_screen ou Etoiles_reduites (options). Halo-B-Gon : sur RGB_stars avant E05. Étoiles réglées à l'œil : décoche Etoiles_auto dans E03, puis Star_Stretch (options) sur RGB_stars. COMPARER L'ÉTIREMENT DE L (options, à la place d'E04, sur une copie de L) : C_L_rapide_ghs (GHS_auto : SP = fond × 0,5, b = 6, HP 0,85, médiane vers 0,25, puis même fond 0,11) ; ou C_L_rapide_lineaire (sans étirement) puis GHS_1_premier, GHS_2_contraste, GHS_3_fond à la main. Une étape de la préparation à refaire seule : LinearPatternSubtraction, Renommer_auto, Combinaison_RGB (options). ImageSolver s'arrête après la date : ImageSolver_seul des options. Une étape en erreur arrête un conteneur : lis la console.</description>
+      <description>MODE RAPIDE LRGB — icône de repère, sans effet. Aucun réglage, pas de MARS (MGC + MARS : mode soigné). Ordre (numéros des icônes) : E00 C_Preparation_rapide (masters seuls ouverts ; double-clic puis Apply Global, ou glisse sur L) : Renommer_auto (L, R, G, B d'après FILTER), LinearPatternSubtraction sur tous les masters mono ouverts, Combinaison_RGB (RGB créé, R, G, B fermées). E02 ImageSolver sur RGB (date par défaut si absente, puis ImageSolver ; nécessaire à SPCC ; icône seule, pas de conteneur). E03 C_RGB_rapide sur RGB (GradientCorrection, BXT Correct Only, SPCC, BXT, SXT, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond SP = HP = 0,22, Etoiles_auto) : RGB étiré sans étoiles et RGB_stars étirée (courbe de Star Stretch, amount 6, saturation 1,3). E04 C_L_rapide sur L (GradientCorrection, BXT, SXT, NXT, fermeture de L_stars, Statistical Stretch 0,25 sans dialogue, puis GHS_auto_fond : fond mesuré et amené à 0,11). E05 C_Fin_rapide sur RGB : LRGB (L ajoutée), masque de luminance créé et attaché, Courbes, LHE, LHE_fin, masque retiré, HDRMT_eclat (HDRMT à 70 % puis Boost léger : cœur détaillé et lumineux), étoiles RGB_stars ajoutées, Fond_auto (fond mesuré, amené à 0,12 et neutre) : image finie. Sans HDRMT : C_Fin_simple (options). Pour un Boost, HDRMT_50, HDRMT_eclat (cœur détaillé ET lumineux) ou NXT final : à la place d'E05, C_Fin_sans_etoiles (options), puis l'option, puis Etoiles_screen ou Etoiles_reduites, puis Fond_auto (options). Halo-B-Gon : sur RGB_stars avant E05. Étoiles réglées à l'œil : décoche Etoiles_auto dans E03, puis Star_Stretch (options) sur RGB_stars. COMPARER L'ÉTIREMENT DE L (options, à la place d'E04, sur une copie de L) : C_L_rapide_ghs (GHS_auto : SP = fond × 0,5, b = 6, HP 0,85, médiane vers 0,25, puis même fond 0,11) ; ou C_L_rapide_lineaire (sans étirement) puis GHS_1_premier, GHS_2_contraste, GHS_3_fond à la main. Une étape de la préparation à refaire seule : LinearPatternSubtraction, Renommer_auto, Combinaison_RGB (options). ImageSolver s'arrête après la date : ImageSolver_seul des options. Une étape en erreur arrête un conteneur : lis la console.</description>
    </instance>
    <instance class="NoOperation" version="256" id="P1_options_instance">
       <description>OPTIONS de la phase 1 — Préparation : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
@@ -1929,6 +1929,25 @@ Détails : page docs/pixinsight-workflow.html.</description>
          <parameter id="newImageSampleFormat" value="SameAsTarget"/>
          <table id="outputData" rows="0"/>
       </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="3">
+            <tr>
+               <td id="id">cible</td>
+               <td id="value">0.12</td>
+            </tr>
+            <tr>
+               <td id="id">tolerance</td>
+               <td id="value">0.005</td>
+            </tr>
+            <tr>
+               <td id="id">grille</td>
+               <td id="value">8</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
    </instance>
    <instance class="NoOperation" version="256" id="P6_options_instance">
       <description>OPTIONS de la phase 6 — Finition : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
@@ -2180,6 +2199,25 @@ Détails : page docs/pixinsight-workflow.html.</description>
          <parameter id="newImageColorSpace" value="SameAsTarget"/>
          <parameter id="newImageSampleFormat" value="SameAsTarget"/>
          <table id="outputData" rows="0"/>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="3">
+            <tr>
+               <td id="id">cible</td>
+               <td id="value">0.12</td>
+            </tr>
+            <tr>
+               <td id="id">tolerance</td>
+               <td id="value">0.005</td>
+            </tr>
+            <tr>
+               <td id="id">grille</td>
+               <td id="value">8</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
       </instance>
    </instance>
    <instance class="ProcessContainer" id="Opt_C_Fin_sans_etoiles_instance">
@@ -3289,6 +3327,38 @@ max($T,f1)</parameter>
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
+   <instance class="Script" version="256" id="Opt_Fond_auto_instance">
+      <description>OPTION — tout à la fin, après Etoiles_screen ou Etoiles_reduites (déjà inclus dans C_Fin_rapide et C_Fin_simple) : mesure le fond et l'amène à 0,12, neutre.
+
+LANCEMENT : glisse l'icône sur l'image.
+
+PRÉRÉGLÉ : script Fond_auto : fond de chaque canal mesuré (grille 8 × 8, quart le plus sombre des cases), puis mtf canal par canal pour l'amener à 0,12, sans écrêtage ; fond neutre.
+
+À RÉGLER : glisse sur l'image finie, étoiles comprises ; dernière étape ; console : fond avant et après.
+
+SI :
+- image trop sombre -&gt; cible 0,13 ou 0,14
+- données très propres -&gt; 0,10 à 0,11
+
+Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="3">
+         <tr>
+            <td id="id">cible</td>
+            <td id="value">0.12</td>
+         </tr>
+         <tr>
+            <td id="id">tolerance</td>
+            <td id="value">0.005</td>
+         </tr>
+         <tr>
+            <td id="id">grille</td>
+            <td id="value">8</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
+   </instance>
    <icon id="P1_Preparation" instance="P1_Preparation_instance" xpos="30" ypos="20" workspace="Workspace01"/>
    <icon id="E00_C_Preparation_rapide" instance="E00_C_Preparation_rapide_instance" xpos="30" ypos="64" workspace="Workspace01"/>
    <icon id="E01_Mode_rapide" instance="E01_Mode_rapide_instance" xpos="30" ypos="94" workspace="Workspace01"/>
@@ -3326,4 +3396,5 @@ max($T,f1)</parameter>
    <icon id="Opt_MT_etoiles" instance="Opt_MT_etoiles_instance" xpos="786" ypos="384" workspace="Workspace01"/>
    <icon id="Opt_Etoiles_screen" instance="Opt_Etoiles_screen_instance" xpos="786" ypos="414" workspace="Workspace01"/>
    <icon id="Opt_Etoiles_reduites" instance="Opt_Etoiles_reduites_instance" xpos="786" ypos="444" workspace="Workspace01"/>
+   <icon id="Opt_Fond_auto" instance="Opt_Fond_auto_instance" xpos="786" ypos="474" workspace="Workspace01"/>
 </xpsm>
