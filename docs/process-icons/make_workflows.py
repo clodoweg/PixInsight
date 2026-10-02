@@ -454,7 +454,7 @@ D_ETOILES_LRGB = ("Etoiles_LRGB (script de la fiche, etirerL = false) : luminanc
 D_SXT_LIN = ("StarXTerminator — sur données LINÉAIRES, le plus tôt possible après BXT (RC Astro). Generate star image coché, UNSCREEN DÉCOCHÉ (réservé aux images étirées) : "
              "simple soustraction, couleurs d'étoiles les plus fidèles. N'applique pas l'autoSTF de façon permanente à l'image d'étoiles. Large overlap : décoché (recouvrement des tuiles 20 %) ; coché = 50 %, seulement si un quadrillage apparaît (environ trois fois plus lent selon RC Astro). "
              "AI11 : version complète de préférence (Lite = 75 % de mémoire en moins ; Lite.nonoise plus rapide mais sans bruit dans les zones retirées). Plus de case Linear : détection automatique. "
-             "Remove stars, spikes et aureoles cochés, reflections décoché : valeurs de l'instance de référence, non documentées par RC Astro, à laisser. "
+             "Remove stars, spikes, aureoles et reflections cochés (reflections décoché dans l'instance de référence, coché à la demande de l'utilisateur ; réglages non documentés par RC Astro, sans effet constaté sur le grand reflet d'une étoile brillante de NGC 1532). "
              "Masque noir sur un cœur de galaxie compact : zone protégée du retrait (SXT 2.2.0).")
 D_GHS1 = ("GHS, 1er étirement — Stretch factor à 0 : l'icône ne fait rien tant que tu ne l'as pas réglée. Zoome l'histogramme, clique dans l'image sur la zone intéressante la plus faible (sonde 15x15), "
           "Send to SP. Local intensity (b) = 10. Monte Stretch factor jusqu'à un pic d'histogramme à 0,25 (fond lu 0,001 : 6,5 ; 0,002 : 5,5 ; 0,005 : 4,5 ; 0,01 : 3,5). Retire l'autoSTF, active l'aperçu, affine SP. "

@@ -220,7 +220,7 @@ bxt = lambda n, co, ss, sh, ns: instance('BlurXTerminator', n, {'correct_only': 
                                                                'auto_nonstellar_psf': True, 'sharpen_nonstellar': '%.2f' % ns})
 nxt = lambda n, d, it: instance('NoiseXTerminator', n, {'denoise': '%.2f' % d, 'detail': '0.15', 'iterations': it,
                                                         'enable_color_separation': False, 'enable_frequency_separation': False})
-sxt = lambda n, un: instance('StarXTerminator', n, {'output_stars': True, 'unscreen': un})
+sxt = lambda n, un: instance('StarXTerminator', n, {'output_stars': True, 'unscreen': un, 'remove_reflections': True})   # reflections coché : demande de l'utilisateur
 rc = [
     bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50),
     bxt('BXT_RGB', False, 0.25, 0.0, 0.50),

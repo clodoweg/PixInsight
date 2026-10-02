@@ -979,7 +979,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
          <parameter id="remove_stars" value="true"/>
          <parameter id="remove_spikes" value="true"/>
          <parameter id="remove_aureoles" value="true"/>
-         <parameter id="remove_reflections" value="false"/>
+         <parameter id="remove_reflections" value="true"/>
          <parameter id="overlap" value="0.20"/>
       </instance>
    </instance>
