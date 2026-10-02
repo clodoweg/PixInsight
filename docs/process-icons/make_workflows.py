@@ -47,6 +47,8 @@ SCRIPTS = {
     'Masque_retirer': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'retirer'), ('nom', 'masque_L')], L_DRAG),
     'Fermer_vues': ('$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js', '', [('views', '')], L_GLOBAL),
     'Renommer_auto': ('$PXI_SRCDIR/scripts/clodoweg/Renommer_auto.js', '', [], L_GLOBAL),
+    'Etoiles_auto': ('$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js', '', [('vue', 'RGB_stars'), ('amount', '6'), ('satAmount', '1.3'), ('scnr', 'false')], L_DRAG),
+    'GHS_auto': ('$PXI_SRCDIR/scripts/clodoweg/GHS_auto.js', '', [('cible', '0.25'), ('b', '10'), ('spFactor', '1')], L_DRAG),
     'ImageSolver_Date': ('$PXI_SRCDIR/scripts/clodoweg/ImageSolver_Date.js', '', [('defaultDate', '2020-01-01T00:00:00')], L_DRAG),
     'LinearPatternSubtraction': ('$PXI_SRCDIR/scripts/clodoweg/LPS_UnClic.js', '',
              [('correctColumns', 'false'), ('correctEntireImage', 'true'), ('defectTableFilePath', ''), ('layersToRemove', '9'),
@@ -840,19 +842,20 @@ T_RAPIDE = {
  'LRGB': ("MODE RAPIDE LRGB — icône de repère, sans effet. Aucun réglage, pas de MARS (MGC + MARS : mode soigné). Ordre (numéros des icônes) : "
           "E00 LinearPatternSubtraction (glisse sur un master : tous les masters ouverts). E02 Renommer_auto (double-clic, Apply Global). E03 Combinaison_RGB. "
           "E04 ImageSolver sur RGB (date par défaut si absente, puis ImageSolver ; nécessaire à SPCC ; icône seule, pas de conteneur). "
-          "E05 C_RGB_rapide sur RGB (GradientCorrection, BXT Correct Only, SPCC, BXT, SXT, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond SP = HP = 0,22) : RGB étiré sans étoiles et RGB_stars. "
-          "E06 C_L_rapide sur L (GradientCorrection, BXT, SXT, NXT, fermeture de L_stars, Statistical Stretch, GHS fond). E07 Star_Stretch sur RGB_stars. "
-          "E08 C_Fin_rapide sur RGB : LRGB (L ajoutée), masque de luminance créé et attaché, Courbes, LHE, LHE_fin, masque retiré, étoiles RGB_stars ajoutées : image finie. "
-          "Pour un Boost, HDRMT_50 ou NXT final : à la place d'E08, C_Fin_sans_etoiles (options), puis l'option, puis Etoiles_screen ou Etoiles_reduites (options). Halo-B-Gon : sur RGB_stars avant E08. "
+          "E05 C_RGB_rapide sur RGB (GradientCorrection, BXT Correct Only, SPCC, BXT, SXT, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond SP = HP = 0,22, Etoiles_auto) : RGB étiré sans étoiles et RGB_stars étirée (courbe de Star Stretch, amount 6, saturation 1,3). "
+          "E06 C_L_rapide sur L (GradientCorrection, BXT, SXT, NXT, fermeture de L_stars, GHS_auto : 1er étirement GHS calculé, médiane vers 0,25, puis GHS_2_contraste et GHS_3_fond). "
+          "E07 C_Fin_rapide sur RGB : LRGB (L ajoutée), masque de luminance créé et attaché, Courbes, LHE, LHE_fin, masque retiré, étoiles RGB_stars ajoutées : image finie. "
+          "Pour un Boost, HDRMT_50 ou NXT final : à la place d'E07, C_Fin_sans_etoiles (options), puis l'option, puis Etoiles_screen ou Etoiles_reduites (options). Halo-B-Gon : sur RGB_stars avant E07. Étoiles réglées à l'œil : décoche Etoiles_auto dans E05, puis Star_Stretch (options) sur RGB_stars. "
           "ImageSolver s'arrête après la date : ImageSolver_seul des options. Une étape en erreur arrête un conteneur : lis la console."),
  'LHA': ("MODE RAPIDE LHaRGB — icône de repère, sans effet. Pas de MARS (mode soigné). "
          "E00 LinearPatternSubtraction (glisse sur un master). E02 Renommer_auto. E03 Combinaison_RGB (R, G, B restent ouvertes : R sert à Continuum_H). "
          "E04 ImageSolver sur RGB. E05 GradientCorrection sur R. E06 C_RGB_couleur_rapide sur RGB (GradientCorrection, BXT Correct Only, SPCC, BXT). "
          "E07 C_H_rapide sur H (GradientCorrection, BXT). E08 Continuum_H (k à régler), puis E09 H_dans_RGB sur RGB. "
-         "E10 C_RGB_fin_rapide sur RGB (SXT, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond 0,22). E11 C_L_rapide sur L. E12 Star_Stretch sur RGB_stars. "
-         "E13 C_Fin_rapide sur RGB (LRGB, masque attaché, Courbes, LHE, LHE_fin, masque retiré, étoiles) : image finie. Boost, HDRMT_50, NXT final : C_Fin_sans_etoiles, l'option, puis Etoiles_screen."),
+         "E10 C_RGB_fin_rapide sur RGB (SXT, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond 0,22, Etoiles_auto sur RGB_stars). E11 C_L_rapide sur L (GHS_auto, GHS_2, GHS_3). "
+         "E12 C_Fin_rapide sur RGB (LRGB, masque attaché, Courbes, LHE, LHE_fin, masque retiré, étoiles) : image finie. Boost, HDRMT_50, NXT final : C_Fin_sans_etoiles, l'option, puis Etoiles_screen."),
 }
-WHEN_R = {'GradientCorrection': "à la place de MGC_MARS si la cible est hors couverture MARS (sud au-delà de −15° environ) ou si MGC échoue",
+WHEN_R = {'Star_Stretch': "pour régler les étoiles à l'œil : décoche d'abord Etoiles_auto dans le conteneur RGB (sinon double étirement)",
+          'GradientCorrection': "à la place de MGC_MARS si la cible est hors couverture MARS (sud au-delà de −15° environ) ou si MGC échoue",
           'Etoiles_reduites': L.WHEN['Etoiles_reduites']}
 
 def write_rapide(filename, prefix, title, steps, main_spec, opt_spec):
@@ -875,26 +878,27 @@ def write_rapide(filename, prefix, title, steps, main_spec, opt_spec):
     return len(main), len(opts)
 
 def rapide_common_opts(steps):
-    return [(2, *pick(steps, 'ImageSolver_seul')),
+    return [(2, *pick(steps, 'ImageSolver_seul')), (4, *pick(steps, 'Star_Stretch')),
             (6, finition_cont(steps, 'C_Fin_sans_etoiles', avant=['LRGB_ajout_L']), ''),
             (6, *pick(steps, 'Boost_finition_light')), (6, *pick(steps, 'Boost_finition')), (6, *pick(steps, 'HDRMT_50')), (6, *pick(steps, 'NXT_final')),
             (7, *pick(steps, 'Halo_B_Gon')), (7, *pick(steps, 'MT_etoiles')), (7, *pick(steps, 'Etoiles_screen')), (7, *pick(steps, 'Etoiles_reduites'))]
 
 def rapide_end(steps):
-    return [(4, *pick(steps, 'Star_Stretch')),
-            (6, finition_cont(steps, 'C_Fin_rapide', avant=['LRGB_ajout_L'], apres=['Etoiles_screen']), '')]
+    return [(6, finition_cont(steps, 'C_Fin_rapide', avant=['LRGB_ajout_L'], apres=['Etoiles_screen']), '')]
 
 def note_rapide(prefix):
     return (1, ('Mode_rapide', '   <instance class="NoOperation" version="256" id="Mode_rapide_instance">\n      <description>%s</description>\n   </instance>' % escape(T_RAPIDE[prefix])), '')
 
 bxt_rgb = lambda: M.bxt('BXT_RGB', False, 0.25, 0.0, 0.50)
 gc_r = lambda: M.instance('GradientCorrection', 'GradientCorrection', {'generateGradientModel': False})   # mode rapide : pas de MARS
-l_rapide = lambda bxt: cont('C_L_rapide', [gc_r(), bxt, M.sxt('SXT_lineaire', False), M.nxt('NXT_L', 0.60, 1), fermer('Fermer_L_stars', 'L_stars'), stat_auto(), GHS_FOND_R()])
+# L : GHS (GHS_auto calcule le 1er étirement, puis GHS_2 et GHS_3 du mode normal) ; Statistical Stretch : RGB seulement.
+l_rapide = lambda bxt: cont('C_L_rapide', [gc_r(), bxt, M.sxt('SXT_lineaire', False), M.nxt('NXT_L', 0.60, 1), fermer('Fermer_L_stars', 'L_stars'), script('GHS_auto', ''),
+                                           ghs('GHS_2_contraste', 4, hp=0.9, sf=1.0, sp=0.35), ghs('GHS_3_fond', 10, hp=0.20, sf=1.0, sp=0.20)])
 
 rapide_lrgb = [(1, *pick(lrgb, 'LinearPatternSubtraction')), note_rapide('LRGB'), (1, *pick(lrgb, 'Renommer_auto')), (1, *pick(lrgb, 'Combinaison_RGB')),
     (2, solver_container(), ''),
     (3, cont('C_RGB_rapide', [gc_r(), M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), spcc_perso('SPCC'), bxt_rgb(), M.sxt('SXT_lineaire', False),
-                              M.nxt('NXT_RGB', 0.80, 1), stat_auto(), GHS_FOND_R()]), ''),
+                              M.nxt('NXT_RGB', 0.80, 1), stat_auto(), GHS_FOND_R(), script('Etoiles_auto', '')]), ''),
     (3, l_rapide(M.bxt('BXT_L', False, 0.25, 0.0, 0.80)), '')] + rapide_end(lrgb)
 
 rapide_lha = [(1, *pick(lhargb, 'LinearPatternSubtraction')), note_rapide('LHA'), (1, *pick(lhargb, 'Renommer_auto')), (1, *pick(lhargb, 'Combinaison_RGB')),
@@ -902,7 +906,7 @@ rapide_lha = [(1, *pick(lhargb, 'LinearPatternSubtraction')), note_rapide('LHA')
     (3, cont('C_RGB_couleur_rapide', [gc_r(), M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), spcc_perso('SPCC'), bxt_rgb()]), ''),
     (3, cont('C_H_rapide', [gc_r(), M.bxt('BXT_L_H', False, 0.25, 0.0, 0.80)]), ''),
     (3, *pick(lhargb, 'Continuum_H')), (3, *pick(lhargb, 'H_dans_RGB')),
-    (3, cont('C_RGB_fin_rapide', [M.sxt('SXT_lineaire', False), M.nxt('NXT_RGB', 0.80, 1), stat_auto(), GHS_FOND_R()]), ''),
+    (3, cont('C_RGB_fin_rapide', [M.sxt('SXT_lineaire', False), M.nxt('NXT_RGB', 0.80, 1), stat_auto(), GHS_FOND_R(), script('Etoiles_auto', '')]), ''),
     (3, l_rapide(M.bxt('BXT_L_H', False, 0.25, 0.0, 0.80)), '')] + rapide_end(lhargb)
 
 for fn, pre, title, steps, spec in [('Rapide-LRGB.xpsm', 'LRGB', 'Workflow LRGB', lrgb, rapide_lrgb),
