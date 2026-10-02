@@ -961,10 +961,10 @@ gc_r = lambda: M.instance('GradientCorrection', 'GradientCorrection', {'generate
 # Quatre variantes de C_L_rapide, dans le même fichier : la 1 au chemin principal, les 3 autres en options (P3).
 #   sxt_etire : L étirée (Statistical Stretch + fond) AVANT SXT (Unscreen), sinon SXT en linéaire ;
 #   etoilesL : luminance de L_stars ajoutée aux étoiles RGB_stars (Etoiles_LRGB) à la fin du conteneur, sinon L_stars fermée.
-RAPIDE_VARIANTES = [   # la première est le chemin principal (choix de l'utilisateur : L étirée avant SXT + luminance de L pour les étoiles)
-    ('', True, True, "L étirée avant SXT, luminance de L_stars ajoutée aux étoiles"),
-    ('_SXT_lineaire', False, False, "SXT sur L linéaire"),
-    ('_SXT_lineaire_etoilesL', False, True, "SXT sur L linéaire, luminance de L_stars ajoutée aux étoiles"),
+RAPIDE_VARIANTES = [   # la première est le chemin principal (choix de l'utilisateur : SXT sur L linéaire + luminance de L pour les étoiles)
+    ('', False, True, "SXT sur L linéaire, luminance de L_stars ajoutée aux étoiles"),
+    ('_SXT_etire_etoilesL', True, True, "L étirée avant SXT, luminance de L_stars ajoutée aux étoiles"),
+    ('_SXT_lineaire', False, False, "SXT sur L linéaire, sans luminance de L pour les étoiles"),
     ('_SXT_etire', True, False, "L étirée avant SXT, sans luminance de L pour les étoiles"),
 ]
 
@@ -1016,13 +1016,13 @@ def rapide_lha(v, sxt_etire, etoilesL):
     (3, cont('C_RGB_fin_rapide', [M.sxt('SXT_lineaire', False), M.nxt('NXT_RGB', 0.80, 1), stat_auto(), GHS_FOND_R(), script('Etoiles_auto', '')]), ''),
     (3, l_rapide(M.bxt('BXT_L_H', False, 0.25, 0.0, 0.80), sxt_etire, etoilesL), '')] + rapide_end(lhargb)
 
-V_NOTE = ("C_L_rapide : L étirée avant SXT (Unscreen) et luminance de L_stars ajoutée aux étoiles ; à la place de C_L_rapide, options de la phase 3 : "
-          "C_L_rapide_SXT_lineaire (SXT sur L linéaire), C_L_rapide_SXT_lineaire_etoilesL (SXT linéaire + luminance de L pour les étoiles), "
-          "C_L_rapide_SXT_etire (L étirée avant SXT, sans luminance de L pour les étoiles)")
-v = {'titre': V_NOTE, 'L': l_desc(True, True)}
+V_NOTE = ("C_L_rapide : SXT sur L linéaire et luminance de L_stars ajoutée aux étoiles ; à la place de C_L_rapide, options de la phase 3 : "
+          "C_L_rapide_SXT_etire_etoilesL (L étirée avant SXT, Unscreen, + luminance de L pour les étoiles), C_L_rapide_SXT_lineaire (SXT linéaire, sans luminance de L), "
+          "C_L_rapide_SXT_etire (L étirée avant SXT, sans luminance de L)")
+v = {'titre': V_NOTE, 'L': l_desc(False, True)}
 for fn, pre, title, steps, spec, bxt in [('Rapide-LRGB.xpsm', 'LRGB', 'Workflow LRGB', lrgb, rapide_lrgb, lambda: M.bxt('BXT_L', False, 0.25, 0.0, 0.80)),
                                           ('Rapide-LHaRGB.xpsm', 'LHA', 'Workflow LHaRGB', lhargb, rapide_lha, lambda: M.bxt('BXT_L_H', False, 0.25, 0.0, 0.80))]:
-    print(fn, 'principal, options :', write_rapide(fn, pre, title, steps, spec(v, True, True), prep_opts(steps) + l_opts(bxt) + rapide_common_opts(steps)))
+    print(fn, 'principal, options :', write_rapide(fn, pre, title, steps, spec(v, False, True), prep_opts(steps) + l_opts(bxt) + rapide_common_opts(steps)))
 
 DATA['header'] = M.HEADER
 json.dump(DATA, open(os.path.join(OUT, '..', 'preparer-data.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))

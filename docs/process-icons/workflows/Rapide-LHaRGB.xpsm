@@ -111,7 +111,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </instance>
    </instance>
    <instance class="NoOperation" version="256" id="E01_Mode_rapide_instance">
-      <description>MODE RAPIDE LHaRGB — C_L_rapide : L étirée avant SXT (Unscreen) et luminance de L_stars ajoutée aux étoiles ; à la place de C_L_rapide, options de la phase 3 : C_L_rapide_SXT_lineaire (SXT sur L linéaire), C_L_rapide_SXT_lineaire_etoilesL (SXT linéaire + luminance de L pour les étoiles), C_L_rapide_SXT_etire (L étirée avant SXT, sans luminance de L pour les étoiles) — icône de repère, sans effet. Pas de MARS (mode soigné). E00 C_Preparation_rapide (masters seuls ouverts ; double-clic puis Apply Global, ou glisse sur L) : Renommer_auto, LinearPatternSubtraction sur tous les masters mono, Combinaison_RGB (R, G, B restent ouvertes : R sert à Continuum_H). E02 ImageSolver sur RGB. E03 GradientCorrection sur R. E04 C_RGB_couleur_rapide sur RGB (GradientCorrection, BXT Correct Only, SPCC, BXT). E05 C_H_rapide sur H (GradientCorrection, BXT). E06 Continuum_H (k à régler), puis E07 H_dans_RGB sur RGB. E08 C_RGB_fin_rapide sur RGB (SXT, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond 0,22, Etoiles_auto sur RGB_stars). E09 C_L_rapide sur L (GradientCorrection, BXT, NXT, Statistical Stretch 0,25 sans dialogue, GHS_auto_fond : fond mesuré et amené à 0,11, puis SXT sur L étirée, Unscreen coché, puis Etoiles_LRGB : luminance 0,5 × L_stars (déjà étirée) + 0,5 × luminance RGB appliquée à RGB_stars, L_stars fermée). E10 C_Fin_rapide sur RGB (LRGB, HDRMT à 40 %, masque attaché, Courbes, LHE, LHE_fin, masque retiré, NXT_final, étoiles, Fond_auto, Boost_final, Fond_desature) : image finie  ; sans HDRMT : C_Fin_simple. Boost, HDRMT_50, HDRMT_eclat, NXT final : C_Fin_sans_etoiles, l'option, puis Etoiles_screen, puis Fond_auto. Étapes de la préparation seules : options de la phase 1.</description>
+      <description>MODE RAPIDE LHaRGB — C_L_rapide : SXT sur L linéaire et luminance de L_stars ajoutée aux étoiles ; à la place de C_L_rapide, options de la phase 3 : C_L_rapide_SXT_etire_etoilesL (L étirée avant SXT, Unscreen, + luminance de L pour les étoiles), C_L_rapide_SXT_lineaire (SXT linéaire, sans luminance de L), C_L_rapide_SXT_etire (L étirée avant SXT, sans luminance de L) — icône de repère, sans effet. Pas de MARS (mode soigné). E00 C_Preparation_rapide (masters seuls ouverts ; double-clic puis Apply Global, ou glisse sur L) : Renommer_auto, LinearPatternSubtraction sur tous les masters mono, Combinaison_RGB (R, G, B restent ouvertes : R sert à Continuum_H). E02 ImageSolver sur RGB. E03 GradientCorrection sur R. E04 C_RGB_couleur_rapide sur RGB (GradientCorrection, BXT Correct Only, SPCC, BXT). E05 C_H_rapide sur H (GradientCorrection, BXT). E06 Continuum_H (k à régler), puis E07 H_dans_RGB sur RGB. E08 C_RGB_fin_rapide sur RGB (SXT, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond 0,22, Etoiles_auto sur RGB_stars). E09 C_L_rapide sur L (GradientCorrection, BXT, SXT, NXT, Statistical Stretch 0,25 sans dialogue, GHS_auto_fond : fond mesuré et amené à 0,11, puis Etoiles_LRGB : luminance 0,5 × L_stars étirée comme les étoiles RGB + 0,5 × luminance RGB appliquée à RGB_stars, L_stars fermée). E10 C_Fin_rapide sur RGB (LRGB, HDRMT à 40 %, masque attaché, Courbes, LHE, LHE_fin, masque retiré, NXT_final, étoiles, Fond_auto, Boost_final, Fond_desature) : image finie  ; sans HDRMT : C_Fin_simple. Boost, HDRMT_50, HDRMT_eclat, NXT final : C_Fin_sans_etoiles, l'option, puis Etoiles_screen, puis Fond_auto. Étapes de la préparation seules : options de la phase 1.</description>
    </instance>
    <instance class="NoOperation" version="256" id="P1_options_instance">
       <description>OPTIONS de la phase 1 — Préparation : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
@@ -1099,6 +1099,197 @@ $T[0] + w*H_cs</parameter>
          <parameter id="lunar_planetary" value="false"/>
          <parameter id="overlap" value="0.20"/>
       </instance>
+      <instance class="StarXTerminator" version="256" enabled="true">
+         <parameter id="ml_version" value="0"/>
+         <parameter id="output_stars" value="true"/>
+         <parameter id="unscreen" value="false"/>
+         <parameter id="remove_stars" value="true"/>
+         <parameter id="remove_spikes" value="true"/>
+         <parameter id="remove_aureoles" value="true"/>
+         <parameter id="remove_reflections" value="false"/>
+         <parameter id="overlap" value="0.20"/>
+      </instance>
+      <instance class="NoiseXTerminator" version="256" enabled="true">
+         <parameter id="ml_version" value="0"/>
+         <parameter id="denoise" value="0.60"/>
+         <parameter id="enable_color_separation" value="false"/>
+         <parameter id="enable_frequency_separation" value="false"/>
+         <parameter id="denoise_intensity" value="0.90"/>
+         <parameter id="denoise_color" value="0.90"/>
+         <parameter id="denoise_high_freq" value="0.90"/>
+         <parameter id="denoise_low_freq" value="0.90"/>
+         <parameter id="denoise_intensity_high_freq" value="0.90"/>
+         <parameter id="denoise_intensity_low_freq" value="0.90"/>
+         <parameter id="denoise_color_high_freq" value="0.90"/>
+         <parameter id="denoise_color_low_freq" value="0.90"/>
+         <parameter id="frequency_scale" value="5.0"/>
+         <parameter id="iterations" value="1"/>
+         <parameter id="detail" value="0.15"/>
+         <parameter id="overlap" value="0.20"/>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/statisticalstretch.js</parameter>
+         <parameter id="md5sum">defab45bb4e2f33db39a7bb016cdefb0</parameter>
+         <table id="parameters" rows="15">
+            <tr>
+               <td id="id">targetMedian</td>
+               <td id="value">0.25</td>
+            </tr>
+            <tr>
+               <td id="id">curvesBoost</td>
+               <td id="value">0</td>
+            </tr>
+            <tr>
+               <td id="id">numIterations</td>
+               <td id="value">1</td>
+            </tr>
+            <tr>
+               <td id="id">normalizeImageRange</td>
+               <td id="value">false</td>
+            </tr>
+            <tr>
+               <td id="id">linkedStretch</td>
+               <td id="value">true</td>
+            </tr>
+            <tr>
+               <td id="id">openDialogbox</td>
+               <td id="value">false</td>
+            </tr>
+            <tr>
+               <td id="id">autoConvergence</td>
+               <td id="value">false</td>
+            </tr>
+            <tr>
+               <td id="id">blackpointSigma</td>
+               <td id="value">5</td>
+            </tr>
+            <tr>
+               <td id="id">noBlackClip</td>
+               <td id="value">false</td>
+            </tr>
+            <tr>
+               <td id="id">hdrCompress</td>
+               <td id="value">false</td>
+            </tr>
+            <tr>
+               <td id="id">hdrAmount</td>
+               <td id="value">0.25</td>
+            </tr>
+            <tr>
+               <td id="id">hdrKnee</td>
+               <td id="value">0.35</td>
+            </tr>
+            <tr>
+               <td id="id">lumaOnly</td>
+               <td id="value">false</td>
+            </tr>
+            <tr>
+               <td id="id">lumaMode</td>
+               <td id="value">rec709</td>
+            </tr>
+            <tr>
+               <td id="id">lumaBlend</td>
+               <td id="value">0.6</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/GHS_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="4">
+            <tr>
+               <td id="id">mode</td>
+               <td id="value">fond</td>
+            </tr>
+            <tr>
+               <td id="id">cible</td>
+               <td id="value">0.11</td>
+            </tr>
+            <tr>
+               <td id="id">b</td>
+               <td id="value">10</td>
+            </tr>
+            <tr>
+               <td id="id">spFactor</td>
+               <td id="value">0.87</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Etoiles_LRGB.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="6">
+            <tr>
+               <td id="id">etoilesL</td>
+               <td id="value">L_stars</td>
+            </tr>
+            <tr>
+               <td id="id">etoilesRGB</td>
+               <td id="value">RGB_stars</td>
+            </tr>
+            <tr>
+               <td id="id">etirerL</td>
+               <td id="value">true</td>
+            </tr>
+            <tr>
+               <td id="id">amount</td>
+               <td id="value">6</td>
+            </tr>
+            <tr>
+               <td id="id">partL</td>
+               <td id="value">0.5</td>
+            </tr>
+            <tr>
+               <td id="id">saturation</td>
+               <td id="value">0.35</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+   </instance>
+   <instance class="NoOperation" version="256" id="P3_options_instance">
+      <description>OPTIONS de la phase 3 — Linéaire : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
+   </instance>
+   <instance class="ProcessContainer" id="Opt_C_L_rapide_SXT_etire_etoilesL_instance">
+      <instance class="GradientCorrection" version="1" enabled="true">
+         <parameter id="reference" value="0.50"/>
+         <parameter id="lowThreshold" value="0.20"/>
+         <parameter id="lowTolerance" value="0.50"/>
+         <parameter id="highThreshold" value="0.05"/>
+         <parameter id="highTolerance" value="0.00"/>
+         <parameter id="iterations" value="15"/>
+         <parameter id="scale" value="5.00"/>
+         <parameter id="smoothness" value="0.60"/>
+         <parameter id="downsamplingFactor" value="16"/>
+         <parameter id="protection" value="true"/>
+         <parameter id="protectionThreshold" value="0.10"/>
+         <parameter id="protectionAmount" value="0.50"/>
+         <parameter id="protectionSmoothingFactor" value="16"/>
+         <parameter id="lowClippingLevel" value="0.000076"/>
+         <parameter id="automaticConvergence" value="true"/>
+         <parameter id="convergenceLimit" value="0.00001000"/>
+         <parameter id="maxIterations" value="10"/>
+         <parameter id="useSimplification" value="false"/>
+         <parameter id="simplificationDegree" value="1"/>
+         <parameter id="simplificationScale" value="1024"/>
+         <parameter id="generateSimpleModel" value="false"/>
+         <parameter id="generateGradientModel" value="false"/>
+         <parameter id="generateProtectionMasks" value="false"/>
+         <parameter id="gridSamplingDelta" value="16"/>
+      </instance>
+      <instance class="BlurXTerminator" version="256" enabled="true">
+         <parameter id="ml_version" value="4"/>
+         <parameter id="correct_only" value="false"/>
+         <parameter id="sharpen_stars" value="0.25"/>
+         <parameter id="adjust_star_halos" value="0.00"/>
+         <parameter id="nonstellar_diameter" value="0.0"/>
+         <parameter id="auto_nonstellar_psf" value="true"/>
+         <parameter id="sharpen_nonstellar" value="0.80"/>
+         <parameter id="lunar_planetary" value="false"/>
+         <parameter id="overlap" value="0.20"/>
+      </instance>
       <instance class="NoiseXTerminator" version="256" enabled="true">
          <parameter id="ml_version" value="0"/>
          <parameter id="denoise" value="0.60"/>
@@ -1248,9 +1439,6 @@ $T[0] + w*H_cs</parameter>
          </table>
          <parameter id="information"></parameter>
       </instance>
-   </instance>
-   <instance class="NoOperation" version="256" id="P3_options_instance">
-      <description>OPTIONS de la phase 3 — Linéaire : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="Opt_C_L_rapide_SXT_lineaire_instance">
       <instance class="GradientCorrection" version="1" enabled="true">
@@ -1415,194 +1603,6 @@ $T[0] + w*H_cs</parameter>
             <tr>
                <td id="id">views</td>
                <td id="value">L_stars</td>
-            </tr>
-         </table>
-         <parameter id="information"></parameter>
-      </instance>
-   </instance>
-   <instance class="ProcessContainer" id="Opt_C_L_rapide_SXT_lineaire_etoilesL_instance">
-      <instance class="GradientCorrection" version="1" enabled="true">
-         <parameter id="reference" value="0.50"/>
-         <parameter id="lowThreshold" value="0.20"/>
-         <parameter id="lowTolerance" value="0.50"/>
-         <parameter id="highThreshold" value="0.05"/>
-         <parameter id="highTolerance" value="0.00"/>
-         <parameter id="iterations" value="15"/>
-         <parameter id="scale" value="5.00"/>
-         <parameter id="smoothness" value="0.60"/>
-         <parameter id="downsamplingFactor" value="16"/>
-         <parameter id="protection" value="true"/>
-         <parameter id="protectionThreshold" value="0.10"/>
-         <parameter id="protectionAmount" value="0.50"/>
-         <parameter id="protectionSmoothingFactor" value="16"/>
-         <parameter id="lowClippingLevel" value="0.000076"/>
-         <parameter id="automaticConvergence" value="true"/>
-         <parameter id="convergenceLimit" value="0.00001000"/>
-         <parameter id="maxIterations" value="10"/>
-         <parameter id="useSimplification" value="false"/>
-         <parameter id="simplificationDegree" value="1"/>
-         <parameter id="simplificationScale" value="1024"/>
-         <parameter id="generateSimpleModel" value="false"/>
-         <parameter id="generateGradientModel" value="false"/>
-         <parameter id="generateProtectionMasks" value="false"/>
-         <parameter id="gridSamplingDelta" value="16"/>
-      </instance>
-      <instance class="BlurXTerminator" version="256" enabled="true">
-         <parameter id="ml_version" value="4"/>
-         <parameter id="correct_only" value="false"/>
-         <parameter id="sharpen_stars" value="0.25"/>
-         <parameter id="adjust_star_halos" value="0.00"/>
-         <parameter id="nonstellar_diameter" value="0.0"/>
-         <parameter id="auto_nonstellar_psf" value="true"/>
-         <parameter id="sharpen_nonstellar" value="0.80"/>
-         <parameter id="lunar_planetary" value="false"/>
-         <parameter id="overlap" value="0.20"/>
-      </instance>
-      <instance class="StarXTerminator" version="256" enabled="true">
-         <parameter id="ml_version" value="0"/>
-         <parameter id="output_stars" value="true"/>
-         <parameter id="unscreen" value="false"/>
-         <parameter id="remove_stars" value="true"/>
-         <parameter id="remove_spikes" value="true"/>
-         <parameter id="remove_aureoles" value="true"/>
-         <parameter id="remove_reflections" value="false"/>
-         <parameter id="overlap" value="0.20"/>
-      </instance>
-      <instance class="NoiseXTerminator" version="256" enabled="true">
-         <parameter id="ml_version" value="0"/>
-         <parameter id="denoise" value="0.60"/>
-         <parameter id="enable_color_separation" value="false"/>
-         <parameter id="enable_frequency_separation" value="false"/>
-         <parameter id="denoise_intensity" value="0.90"/>
-         <parameter id="denoise_color" value="0.90"/>
-         <parameter id="denoise_high_freq" value="0.90"/>
-         <parameter id="denoise_low_freq" value="0.90"/>
-         <parameter id="denoise_intensity_high_freq" value="0.90"/>
-         <parameter id="denoise_intensity_low_freq" value="0.90"/>
-         <parameter id="denoise_color_high_freq" value="0.90"/>
-         <parameter id="denoise_color_low_freq" value="0.90"/>
-         <parameter id="frequency_scale" value="5.0"/>
-         <parameter id="iterations" value="1"/>
-         <parameter id="detail" value="0.15"/>
-         <parameter id="overlap" value="0.20"/>
-      </instance>
-      <instance class="Script" version="256" enabled="true">
-         <parameter id="filePath">$PXI_SRCDIR/scripts/statisticalstretch.js</parameter>
-         <parameter id="md5sum">defab45bb4e2f33db39a7bb016cdefb0</parameter>
-         <table id="parameters" rows="15">
-            <tr>
-               <td id="id">targetMedian</td>
-               <td id="value">0.25</td>
-            </tr>
-            <tr>
-               <td id="id">curvesBoost</td>
-               <td id="value">0</td>
-            </tr>
-            <tr>
-               <td id="id">numIterations</td>
-               <td id="value">1</td>
-            </tr>
-            <tr>
-               <td id="id">normalizeImageRange</td>
-               <td id="value">false</td>
-            </tr>
-            <tr>
-               <td id="id">linkedStretch</td>
-               <td id="value">true</td>
-            </tr>
-            <tr>
-               <td id="id">openDialogbox</td>
-               <td id="value">false</td>
-            </tr>
-            <tr>
-               <td id="id">autoConvergence</td>
-               <td id="value">false</td>
-            </tr>
-            <tr>
-               <td id="id">blackpointSigma</td>
-               <td id="value">5</td>
-            </tr>
-            <tr>
-               <td id="id">noBlackClip</td>
-               <td id="value">false</td>
-            </tr>
-            <tr>
-               <td id="id">hdrCompress</td>
-               <td id="value">false</td>
-            </tr>
-            <tr>
-               <td id="id">hdrAmount</td>
-               <td id="value">0.25</td>
-            </tr>
-            <tr>
-               <td id="id">hdrKnee</td>
-               <td id="value">0.35</td>
-            </tr>
-            <tr>
-               <td id="id">lumaOnly</td>
-               <td id="value">false</td>
-            </tr>
-            <tr>
-               <td id="id">lumaMode</td>
-               <td id="value">rec709</td>
-            </tr>
-            <tr>
-               <td id="id">lumaBlend</td>
-               <td id="value">0.6</td>
-            </tr>
-         </table>
-         <parameter id="information"></parameter>
-      </instance>
-      <instance class="Script" version="256" enabled="true">
-         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/GHS_auto.js</parameter>
-         <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="4">
-            <tr>
-               <td id="id">mode</td>
-               <td id="value">fond</td>
-            </tr>
-            <tr>
-               <td id="id">cible</td>
-               <td id="value">0.11</td>
-            </tr>
-            <tr>
-               <td id="id">b</td>
-               <td id="value">10</td>
-            </tr>
-            <tr>
-               <td id="id">spFactor</td>
-               <td id="value">0.87</td>
-            </tr>
-         </table>
-         <parameter id="information"></parameter>
-      </instance>
-      <instance class="Script" version="256" enabled="true">
-         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Etoiles_LRGB.js</parameter>
-         <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="6">
-            <tr>
-               <td id="id">etoilesL</td>
-               <td id="value">L_stars</td>
-            </tr>
-            <tr>
-               <td id="id">etoilesRGB</td>
-               <td id="value">RGB_stars</td>
-            </tr>
-            <tr>
-               <td id="id">etirerL</td>
-               <td id="value">true</td>
-            </tr>
-            <tr>
-               <td id="id">amount</td>
-               <td id="value">6</td>
-            </tr>
-            <tr>
-               <td id="id">partL</td>
-               <td id="value">0.5</td>
-            </tr>
-            <tr>
-               <td id="id">saturation</td>
-               <td id="value">0.35</td>
             </tr>
          </table>
          <parameter id="information"></parameter>
@@ -4095,27 +4095,27 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <icon id="E08_C_RGB_fin_rapide" instance="E08_C_RGB_fin_rapide_instance" xpos="430" ypos="184" workspace="Workspace01"/>
    <icon id="E09_C_L_rapide" instance="E09_C_L_rapide_instance" xpos="430" ypos="214" workspace="Workspace01"/>
    <icon id="P3_options" instance="P3_options_instance" xpos="430" ypos="260" workspace="Workspace01"/>
-   <icon id="Opt_C_L_rapide_SXT_lineaire" instance="Opt_C_L_rapide_SXT_lineaire_instance" xpos="430" ypos="294" workspace="Workspace01"/>
-   <icon id="Opt_C_L_rapide_SXT_lineaire_etoilesL" instance="Opt_C_L_rapide_SXT_lineaire_etoilesL_instance" xpos="430" ypos="324" workspace="Workspace01"/>
+   <icon id="Opt_C_L_rapide_SXT_etire_etoilesL" instance="Opt_C_L_rapide_SXT_etire_etoilesL_instance" xpos="430" ypos="294" workspace="Workspace01"/>
+   <icon id="Opt_C_L_rapide_SXT_lineaire" instance="Opt_C_L_rapide_SXT_lineaire_instance" xpos="430" ypos="324" workspace="Workspace01"/>
    <icon id="Opt_C_L_rapide_SXT_etire" instance="Opt_C_L_rapide_SXT_etire_instance" xpos="430" ypos="354" workspace="Workspace01"/>
-   <icon id="P4_Etirement" instance="P4_Etirement_instance" xpos="678" ypos="20" workspace="Workspace01"/>
-   <icon id="P4_options" instance="P4_options_instance" xpos="678" ypos="80" workspace="Workspace01"/>
-   <icon id="Opt_Star_Stretch" instance="Opt_Star_Stretch_instance" xpos="678" ypos="114" workspace="Workspace01"/>
-   <icon id="P6_Finition" instance="P6_Finition_instance" xpos="838" ypos="20" workspace="Workspace01"/>
-   <icon id="E10_C_Fin_rapide" instance="E10_C_Fin_rapide_instance" xpos="838" ypos="64" workspace="Workspace01"/>
-   <icon id="P6_options" instance="P6_options_instance" xpos="838" ypos="110" workspace="Workspace01"/>
-   <icon id="Opt_C_Fin_simple" instance="Opt_C_Fin_simple_instance" xpos="838" ypos="144" workspace="Workspace01"/>
-   <icon id="Opt_C_Fin_sans_etoiles" instance="Opt_C_Fin_sans_etoiles_instance" xpos="838" ypos="174" workspace="Workspace01"/>
-   <icon id="Opt_Boost_finition_light" instance="Opt_Boost_finition_light_instance" xpos="838" ypos="204" workspace="Workspace01"/>
-   <icon id="Opt_Boost_finition" instance="Opt_Boost_finition_instance" xpos="838" ypos="234" workspace="Workspace01"/>
-   <icon id="Opt_HDRMT_50" instance="Opt_HDRMT_50_instance" xpos="838" ypos="264" workspace="Workspace01"/>
-   <icon id="Opt_HDRMT_eclat" instance="Opt_HDRMT_eclat_instance" xpos="838" ypos="294" workspace="Workspace01"/>
-   <icon id="Opt_NXT_final" instance="Opt_NXT_final_instance" xpos="838" ypos="324" workspace="Workspace01"/>
-   <icon id="Opt_Halo_B_Gon" instance="Opt_Halo_B_Gon_instance" xpos="838" ypos="354" workspace="Workspace01"/>
-   <icon id="Opt_MT_etoiles" instance="Opt_MT_etoiles_instance" xpos="838" ypos="384" workspace="Workspace01"/>
-   <icon id="Opt_Etoiles_screen" instance="Opt_Etoiles_screen_instance" xpos="838" ypos="414" workspace="Workspace01"/>
-   <icon id="Opt_Etoiles_reduites" instance="Opt_Etoiles_reduites_instance" xpos="838" ypos="444" workspace="Workspace01"/>
-   <icon id="Opt_Fond_auto" instance="Opt_Fond_auto_instance" xpos="838" ypos="474" workspace="Workspace01"/>
-   <icon id="Opt_Boost_final" instance="Opt_Boost_final_instance" xpos="838" ypos="504" workspace="Workspace01"/>
-   <icon id="Opt_Fond_desature" instance="Opt_Fond_desature_instance" xpos="838" ypos="534" workspace="Workspace01"/>
+   <icon id="P4_Etirement" instance="P4_Etirement_instance" xpos="665" ypos="20" workspace="Workspace01"/>
+   <icon id="P4_options" instance="P4_options_instance" xpos="665" ypos="80" workspace="Workspace01"/>
+   <icon id="Opt_Star_Stretch" instance="Opt_Star_Stretch_instance" xpos="665" ypos="114" workspace="Workspace01"/>
+   <icon id="P6_Finition" instance="P6_Finition_instance" xpos="825" ypos="20" workspace="Workspace01"/>
+   <icon id="E10_C_Fin_rapide" instance="E10_C_Fin_rapide_instance" xpos="825" ypos="64" workspace="Workspace01"/>
+   <icon id="P6_options" instance="P6_options_instance" xpos="825" ypos="110" workspace="Workspace01"/>
+   <icon id="Opt_C_Fin_simple" instance="Opt_C_Fin_simple_instance" xpos="825" ypos="144" workspace="Workspace01"/>
+   <icon id="Opt_C_Fin_sans_etoiles" instance="Opt_C_Fin_sans_etoiles_instance" xpos="825" ypos="174" workspace="Workspace01"/>
+   <icon id="Opt_Boost_finition_light" instance="Opt_Boost_finition_light_instance" xpos="825" ypos="204" workspace="Workspace01"/>
+   <icon id="Opt_Boost_finition" instance="Opt_Boost_finition_instance" xpos="825" ypos="234" workspace="Workspace01"/>
+   <icon id="Opt_HDRMT_50" instance="Opt_HDRMT_50_instance" xpos="825" ypos="264" workspace="Workspace01"/>
+   <icon id="Opt_HDRMT_eclat" instance="Opt_HDRMT_eclat_instance" xpos="825" ypos="294" workspace="Workspace01"/>
+   <icon id="Opt_NXT_final" instance="Opt_NXT_final_instance" xpos="825" ypos="324" workspace="Workspace01"/>
+   <icon id="Opt_Halo_B_Gon" instance="Opt_Halo_B_Gon_instance" xpos="825" ypos="354" workspace="Workspace01"/>
+   <icon id="Opt_MT_etoiles" instance="Opt_MT_etoiles_instance" xpos="825" ypos="384" workspace="Workspace01"/>
+   <icon id="Opt_Etoiles_screen" instance="Opt_Etoiles_screen_instance" xpos="825" ypos="414" workspace="Workspace01"/>
+   <icon id="Opt_Etoiles_reduites" instance="Opt_Etoiles_reduites_instance" xpos="825" ypos="444" workspace="Workspace01"/>
+   <icon id="Opt_Fond_auto" instance="Opt_Fond_auto_instance" xpos="825" ypos="474" workspace="Workspace01"/>
+   <icon id="Opt_Boost_final" instance="Opt_Boost_final_instance" xpos="825" ypos="504" workspace="Workspace01"/>
+   <icon id="Opt_Fond_desature" instance="Opt_Fond_desature_instance" xpos="825" ypos="534" workspace="Workspace01"/>
 </xpsm>
