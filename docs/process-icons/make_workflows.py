@@ -259,12 +259,15 @@ def hdrmt_50():
     """HDRMT à 50 %."""
     return _cont('HDRMT_50', hdrmt_items('0.5'))
 
-def hdrmt_eclat():
+def hdrmt_eclat_items():
     """HDRMT à 70 % (détail du cœur) puis Boost_finition_light (éclat et chaleur rendus au cœur, que HDRMT assombrit et ternit)."""
     boost = [script('Masque_L', ''), curves('Courbes_boost', k=((0, 0), (0.25, 0.24), (0.75, 0.76), (1, 1)), sat=0.57),
              M.instance('LocalHistogramEqualization', 'LHE_moyen', {'radius': 80, 'histogramBins': 'Bit10', 'slopeLimit': '2.0', 'amount': '0.120', 'circularKernel': True}),
              script('Masque_retirer', '')]
-    return _cont('HDRMT_eclat', list(hdrmt_items('0.7')) + boost)
+    return list(hdrmt_items('0.7')) + boost
+
+def hdrmt_eclat():
+    return _cont('HDRMT_eclat', hdrmt_eclat_items())
 
 def boost_container(name='Boost_finition', k=((0, 0), (0.25, 0.23), (0.75, 0.77), (1, 1)), sat=0.60, amount='0.200'):
     """Option de finition en un glisser : petite courbe (contraste + saturation) puis LHE à rayon moyen. Rejouable."""
@@ -855,7 +858,8 @@ T_RAPIDE = {
           "E02 ImageSolver sur RGB (date par défaut si absente, puis ImageSolver ; nécessaire à SPCC ; icône seule, pas de conteneur). "
           "E03 C_RGB_rapide sur RGB (GradientCorrection, BXT Correct Only, SPCC, BXT, SXT, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond SP = HP = 0,22, Etoiles_auto) : RGB étiré sans étoiles et RGB_stars étirée (courbe de Star Stretch, amount 6, saturation 1,3). "
           "E04 C_L_rapide sur L (GradientCorrection, BXT, SXT, NXT, fermeture de L_stars, Statistical Stretch 0,25 sans dialogue, puis GHS_auto_fond : fond mesuré et amené à 0,11). "
-          "E05 C_Fin_rapide sur RGB : LRGB (L ajoutée), masque de luminance créé et attaché, Courbes, LHE, LHE_fin, masque retiré, étoiles RGB_stars ajoutées : image finie. "
+          "E05 C_Fin_rapide sur RGB : LRGB (L ajoutée), masque de luminance créé et attaché, Courbes, LHE, LHE_fin, masque retiré, HDRMT_eclat (HDRMT à 70 % puis Boost léger : cœur détaillé et lumineux), étoiles RGB_stars ajoutées : image finie. "
+          "Sans HDRMT : C_Fin_simple (options). "
           "Pour un Boost, HDRMT_50, HDRMT_eclat (cœur détaillé ET lumineux) ou NXT final : à la place d'E05, C_Fin_sans_etoiles (options), puis l'option, puis Etoiles_screen ou Etoiles_reduites (options). Halo-B-Gon : sur RGB_stars avant E05. Étoiles réglées à l'œil : décoche Etoiles_auto dans E03, puis Star_Stretch (options) sur RGB_stars. "
           "COMPARER L'ÉTIREMENT DE L (options, à la place d'E04, sur une copie de L) : C_L_rapide_ghs (GHS_auto : SP = fond × 0,5, b = 6, HP 0,85, médiane vers 0,25, puis même fond 0,11) ; "
           "ou C_L_rapide_lineaire (sans étirement) puis GHS_1_premier, GHS_2_contraste, GHS_3_fond à la main. "
@@ -865,7 +869,7 @@ T_RAPIDE = {
          "E02 ImageSolver sur RGB. E03 GradientCorrection sur R. E04 C_RGB_couleur_rapide sur RGB (GradientCorrection, BXT Correct Only, SPCC, BXT). "
          "E05 C_H_rapide sur H (GradientCorrection, BXT). E06 Continuum_H (k à régler), puis E07 H_dans_RGB sur RGB. "
          "E08 C_RGB_fin_rapide sur RGB (SXT, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond 0,22, Etoiles_auto sur RGB_stars). E09 C_L_rapide sur L (Statistical Stretch, GHS_auto_fond) ; pour comparer : C_L_rapide_ghs, ou C_L_rapide_lineaire puis les 3 GHS à la main (options). "
-         "E10 C_Fin_rapide sur RGB (LRGB, masque attaché, Courbes, LHE, LHE_fin, masque retiré, étoiles) : image finie. Boost, HDRMT_50, HDRMT_eclat, NXT final : C_Fin_sans_etoiles, l'option, puis Etoiles_screen. Étapes de la préparation seules : options de la phase 1."),
+         "E10 C_Fin_rapide sur RGB (LRGB, masque attaché, Courbes, LHE, LHE_fin, masque retiré, HDRMT_eclat, étoiles) : image finie ; sans HDRMT : C_Fin_simple. Boost, HDRMT_50, HDRMT_eclat, NXT final : C_Fin_sans_etoiles, l'option, puis Etoiles_screen. Étapes de la préparation seules : options de la phase 1."),
 }
 WHEN_R = {'Etoiles_screen': "après C_Fin_sans_etoiles (et l'option choisie : Boost, HDRMT_50, HDRMT_eclat, NXT final) : remet les étoiles RGB_stars sur l'image ; dernière étape",
           'Etoiles_reduites': "À LA PLACE d'Etoiles_screen, après C_Fin_sans_etoiles : remet les étoiles en les réduisant ; dernière étape",
@@ -897,13 +901,16 @@ def write_rapide(filename, prefix, title, steps, main_spec, opt_spec):
 
 def rapide_common_opts(steps):
     return [(2, *pick(steps, 'ImageSolver_seul')), (4, *pick(steps, 'Star_Stretch')),
+            (6, finition_cont(steps, 'C_Fin_simple', avant=['LRGB_ajout_L'], apres=['Etoiles_screen']), ''),
             (6, finition_cont(steps, 'C_Fin_sans_etoiles', avant=['LRGB_ajout_L']), ''),
             (6, *pick(steps, 'Boost_finition_light')), (6, *pick(steps, 'Boost_finition')), (6, *pick(steps, 'HDRMT_50')), (6, *pick(steps, 'HDRMT_eclat')), (6, *pick(steps, 'NXT_final')),
             # étoiles dans la même colonne (P6) : après C_Fin_sans_etoiles et une option, on remet les étoiles juste en dessous
             (6, *pick(steps, 'Halo_B_Gon')), (6, *pick(steps, 'MT_etoiles')), (6, *pick(steps, 'Etoiles_screen')), (6, *pick(steps, 'Etoiles_reduites'))]
 
 def rapide_end(steps):
-    return [(6, finition_cont(steps, 'C_Fin_rapide', avant=['LRGB_ajout_L'], apres=['Etoiles_screen']), '')]
+    """Finition en un glisser : LRGB, C_Finition, HDRMT_eclat (étapes mises à plat : pas de conteneur dans un conteneur), étoiles."""
+    items = [pick(steps, b)[0] for b in ('LRGB_ajout_L', 'Masque_L', 'Courbes', 'LHE', 'LHE_fin', 'Masque_retirer')]
+    return [(6, cont('C_Fin_rapide', items + hdrmt_eclat_items() + [pick(steps, 'Etoiles_screen')[0]]), '')]
 
 def note_rapide(prefix):
     return (1, ('Mode_rapide', '   <instance class="NoOperation" version="256" id="Mode_rapide_instance">\n      <description>%s</description>\n   </instance>' % escape(T_RAPIDE[prefix])), '')
