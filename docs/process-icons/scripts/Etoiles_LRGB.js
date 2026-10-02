@@ -84,6 +84,26 @@ function main()
    if ( mix.isNull )
       throw new Error( TITLE + " : luminance mélangée non créée." );
 
+   // contrôle : écart moyen entre la luminance actuelle de RGB_stars et la luminance mélangée
+   let dId = "etoiles_ecart";
+   let D = new PixelMath;
+   D.expression = "abs(" + mixId + " - (0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2]))";
+   D.useSingleExpression = true;
+   D.createNewImage = true;
+   D.showNewImage = false;
+   D.newImageId = dId;
+   D.newImageColorSpace = PixelMath.prototype.Gray;
+   D.newImageSampleFormat = PixelMath.prototype.f32;
+   D.rescale = false;
+   D.truncate = true;
+   D.executeOn( rw.mainView );
+   let dw = ImageWindow.windowById( dId );
+   let ecart = dw.isNull ? -1 : dw.mainView.image.mean();
+   let ecartMax = dw.isNull ? -1 : dw.mainView.image.maximum();
+   if ( !dw.isNull )
+      dw.forceClose();
+   let avant = rw.mainView.image.mean();
+
    // 3. LRGBCombination : luminance seule sur RGB_stars
    let C = new LRGBCombination;
    C.channels = [ [ false, "", 1 ], [ false, "", 1 ], [ false, "", 1 ], [ true, mixId, 1 ] ];
@@ -91,13 +111,18 @@ function main()
    C.mc = mc;
    C.clipHighlights = false;
    C.noiseReduction = false;
-   C.executeOn( rw.mainView );
+   let ok = C.executeOn( rw.mainView );
+   let apres = rw.mainView.image.mean();
 
    // 4. fermetures
    mix.forceClose();
    lw.forceClose();
    console.noteln( TITLE + " : " + rgbId + " reçoit la luminance " + partL + " × " + lId + (etirerL ? " (étirée, amount " + amount + ")" : " (déjà étirée)") + " + " +
                    (1 - partL) + " × luminance RGB ; " + lId + " fermée." );
+   console.noteln( TITLE + " : LRGBCombination " + (ok ? "appliquée" : "NON appliquée") + " ; écart de luminance L / RGB avant combinaison : moyen " +
+                   ecart.toFixed( 5 ) + ", max " + ecartMax.toFixed( 3 ) + " ; moyenne de " + rgbId + " " + avant.toFixed( 5 ) + " -> " + apres.toFixed( 5 ) + "." );
+   if ( ecart >= 0 && ecart < 0.002 )
+      console.warningln( TITLE + " : L_stars et les étoiles RGB ont presque la même luminance : l'effet est à peine visible (partL plus haut pour l'accentuer)." );
 }
 
 main();
