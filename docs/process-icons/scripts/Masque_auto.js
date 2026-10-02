@@ -7,6 +7,9 @@
 //   passe à 0 (protégé), le reste va de 0 à 1 ; puis léger flou gaussien
 //   (flou = sigma en pixels, 0 = aucun) et masque ATTACHÉ à l'image (non
 //   inversé, sans affichage rouge). Un ancien masque_L est remplacé.
+// gamma = courbe du masque (1 par défaut : linéaire) : masque^gamma ; gamma > 1
+//   garde fort le masque sur ce qui est très lumineux (cœur, bras brillants) et
+//   l'affaiblit sur ce qui l'est moins (halo, bras faibles). Boost_final : 2.
 // source = nom d'une autre vue (par exemple L, sans étoiles) : la luminance du
 //   masque est prise sur cette vue au lieu de l'image cible (même taille) ;
 //   vide = l'image cible. Sert au Boost_final, sur l'image finie avec étoiles :
@@ -52,6 +55,7 @@ function main()
 
    let s = parseFloat( param( "s", "0.14" ) );
    let flou = parseFloat( param( "flou", "2" ) );
+   let gamma = parseFloat( param( "gamma", "1" ) );
 
    let old = ImageWindow.windowById( name );
    if ( !old.isNull && old.mainView.id != view.id )
@@ -74,7 +78,8 @@ function main()
    }
    let lum = src.image.isColor ? "(0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2])" : "$T";
    let P = new PixelMath;
-   P.expression = "max(0, (" + lum + " - " + s + ") / (1 - " + s + "))";
+   P.expression = gamma == 1 ? "max(0, (" + lum + " - " + s + ") / (1 - " + s + "))"
+                             : "max(0, (" + lum + " - " + s + ") / (1 - " + s + "))^" + gamma;
    P.useSingleExpression = true;
    P.createNewImage = true;
    P.showNewImage = true;
@@ -104,7 +109,7 @@ function main()
    window.maskEnabled = true;
    window.maskInverted = false;
    window.maskVisible = false;
-   console.noteln( TITLE + " : " + name + " (tiré de " + src.id + ", s = " + s + ", flou " + flou + " px) attaché à " + view.id + "." );
+   console.noteln( TITLE + " : " + name + " (tiré de " + src.id + ", s = " + s + ", gamma " + gamma + ", flou " + flou + " px) attaché à " + view.id + "." );
 }
 
 main();

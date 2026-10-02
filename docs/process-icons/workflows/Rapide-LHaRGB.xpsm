@@ -3630,7 +3630,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="5">
+         <table id="parameters" rows="6">
             <tr>
                <td id="id">mode</td>
                <td id="value">attacher</td>
@@ -3638,6 +3638,10 @@ Détails : page docs/pixinsight-workflow.html.</description>
             <tr>
                <td id="id">s</td>
                <td id="value">0.20</td>
+            </tr>
+            <tr>
+               <td id="id">gamma</td>
+               <td id="value">2</td>
             </tr>
             <tr>
                <td id="id">flou</td>
