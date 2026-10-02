@@ -2367,12 +2367,6 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="detail" value="0.15"/>
       <parameter id="overlap" value="0.20"/>
    </instance>
-   <instance class="NoOperation" version="256" id="P7_Etoiles_instance">
-      <description>PHASE 7 — Étoiles : étoiles : étirement, recombinaison, réduction. Colonne de repère, sans effet.</description>
-   </instance>
-   <instance class="NoOperation" version="256" id="P7_options_instance">
-      <description>OPTIONS de la phase 7 — Étoiles : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
-   </instance>
    <instance class="Script" version="256" id="Opt_Halo_B_Gon_instance">
       <description>OPTION — halos autour des étoiles brillantes.
 
@@ -2418,7 +2412,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       </table>
    </instance>
    <instance class="PixelMath" version="256" id="Opt_Etoiles_screen_instance">
-      <description>OPTION — si besoin.
+      <description>OPTION — après C_Fin_sans_etoiles (et l'option choisie : Boost, HDRMT_50, NXT final) : remet les étoiles RGB_stars sur l'image ; dernière étape.
 
 PRÉRÉGLÉ : ~((~$T) * (~RGB_stars)), sur l'image elle-même.
 
@@ -2457,7 +2451,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <table id="outputData" rows="0"/>
    </instance>
    <instance class="PixelMath" version="256" id="Opt_Etoiles_reduites_instance">
-      <description>OPTION — à la place d'Etoiles_screen, si les étoiles sont trop présentes (recombinaison + réduction Blanshan).
+      <description>OPTION — À LA PLACE d'Etoiles_screen, après C_Fin_sans_etoiles : remet les étoiles en les réduisant ; dernière étape.
 
 PRÉRÉGLÉ : S = 0,20 (Bill : 0,15) ; recombinaison screen + réduction Blanshan en une formule, sur l'image elle-même.
 
@@ -2531,10 +2525,8 @@ max($T,f1)</parameter>
    <icon id="Opt_Boost_finition" instance="Opt_Boost_finition_instance" xpos="786" ypos="204" workspace="Workspace01"/>
    <icon id="Opt_HDRMT_50" instance="Opt_HDRMT_50_instance" xpos="786" ypos="234" workspace="Workspace01"/>
    <icon id="Opt_NXT_final" instance="Opt_NXT_final_instance" xpos="786" ypos="264" workspace="Workspace01"/>
-   <icon id="P7_Etoiles" instance="P7_Etoiles_instance" xpos="982" ypos="20" workspace="Workspace01"/>
-   <icon id="P7_options" instance="P7_options_instance" xpos="982" ypos="80" workspace="Workspace01"/>
-   <icon id="Opt_Halo_B_Gon" instance="Opt_Halo_B_Gon_instance" xpos="982" ypos="114" workspace="Workspace01"/>
-   <icon id="Opt_MT_etoiles" instance="Opt_MT_etoiles_instance" xpos="982" ypos="144" workspace="Workspace01"/>
-   <icon id="Opt_Etoiles_screen" instance="Opt_Etoiles_screen_instance" xpos="982" ypos="174" workspace="Workspace01"/>
-   <icon id="Opt_Etoiles_reduites" instance="Opt_Etoiles_reduites_instance" xpos="982" ypos="204" workspace="Workspace01"/>
+   <icon id="Opt_Halo_B_Gon" instance="Opt_Halo_B_Gon_instance" xpos="786" ypos="294" workspace="Workspace01"/>
+   <icon id="Opt_MT_etoiles" instance="Opt_MT_etoiles_instance" xpos="786" ypos="324" workspace="Workspace01"/>
+   <icon id="Opt_Etoiles_screen" instance="Opt_Etoiles_screen_instance" xpos="786" ypos="354" workspace="Workspace01"/>
+   <icon id="Opt_Etoiles_reduites" instance="Opt_Etoiles_reduites_instance" xpos="786" ypos="384" workspace="Workspace01"/>
 </xpsm>
