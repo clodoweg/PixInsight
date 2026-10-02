@@ -107,6 +107,8 @@ S = {
     'Boost_finition': ("conteneur : petite courbe (0,25 -> 0,23 ; 0,75 -> 0,77, saturation 0,5 -> 0,60) puis LHE rayon 80, Amount 0,20", "sous Masque_L, après LHE_fin ; un glisser = un petit cran, rejoue-le pour pousser encore",
                        ["fond qui se colore ou bruit -> arrête, ou NXT final", "halo sombre autour de la galaxie -> une passe de moins"]),
     'HDRMT_50': ("conteneur : copie de l'image (vue HDR_avant), HDRMT 6 couches To lightness / Preserve hue / Lightness mask, mélange 0,5 × résultat + 0,5 × copie, puis fermeture de la copie", "glisse sur l'image sans étoiles étirée ; la copie HDR_avant est fermée automatiquement à la fin (script Fermer_vues)", ["effet trop faible -> a = 0,7 dans HDR_melange", "trop fort -> a = 0,3"]),
+    'HDRMT_eclat': ("conteneur : HDRMT à 70 % (copie HDR_avant, HDRMT 6 couches, mélange 0,7 × résultat + 0,3 × copie, copie fermée), puis Boost_finition_light (masque, courbe très légère, saturation 0,57, LHE rayon 80 Amount 0,12, masque retiré)", "glisse sur l'image sans étoiles étirée, à la place de HDRMT_50 ; HDRMT rend le détail du cœur, le Boost lui rend son éclat",
+                    ["cœur encore terne -> un Boost_finition_light de plus", "pas assez de détail -> a = 0,85 ou 1 dans HDR_melange", "trop sombre ou gris -> a = 0,5"]),
     'HDRMT': ("6 couches, 1 itération, To lightness, Preserve hue, Lightness mask", "rien",
               ["pas assez -> 2 itérations", "trop fort -> mélange 50 % avec l'original"]),
     'NBN_SHO': ("palette SHO, boosts à 0", "Lightness = H ; Shadowpoint pour un fond gris foncé ; O3 puis S2 boost peu à peu",

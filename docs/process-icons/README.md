@@ -104,6 +104,7 @@ Sinon, deux fichiers par workflow :
 | `C_Etoiles_RGB` (RGB + SHO) | RGB combiné | BXT Correct Only → SPCC → BXT → SXT |
 | `C_Finition` | image sans étoiles étirée | Masque_L (créé et attaché) → Courbes → LHE → LHE_fin → Masque_retirer |
 | `HDRMT_50` (option) | image sans étoiles étirée | copie `HDR_avant` → HDRMT → PixelMath `a·$T + (1 − a)·HDR_avant`, a = 0,5 → Fermer_vues (`HDR_avant`) |
+| `HDRMT_eclat` (option) | image sans étoiles étirée | même suite avec a = 0,7 → Masque_L → courbe très légère (saturation 0,57) → LHE rayon 80, Amount 0,12 → Masque_retirer (HDRMT puis Boost_finition_light) |
 
 Format recopié des conteneurs des icônes de theAstroShed (PixInsight 1.9.3) : instances imbriquées sans identifiant, `enabled="true"`, pas de description sur le conteneur. Pas encore testé dans PixInsight : essaie d'abord sur une copie de l'image.
 
