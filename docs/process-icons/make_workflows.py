@@ -230,6 +230,8 @@ def layout_all(main, opts):
                 y += 30
     return insts, icons
 
+CONT_LAYOUT = {}   # prefix -> (fichier Conteneurs, titre, insts, icons) : le mode rapide est ajouté en bas du même fichier
+
 def save(filename, title, insts, icons):
     xml = M.HEADER + '<!-- ' + escape(title) + ' -->\n' + '\n'.join(insts) + '\n' + '\n'.join(icons) + '\n</xpsm>\n'
     open(os.path.join(OUT, filename), 'w', encoding='utf-8').write(xml)
@@ -365,7 +367,9 @@ def write(filename, prefix, title, steps):
             if cn not in done and members[0] == b:
                 done.add(cn)
                 cmain.append((cn, ph, container('__ID__', [byb[m] for m in members])))
-    save(filename.replace('Workflow-', 'Conteneurs-'), title + ' — chemin principal avec conteneurs, options dans leur phase', *layout_all(cmain, opts))
+    cfn, ctitle = filename.replace('Workflow-', 'Conteneurs-'), title + ' — chemin principal avec conteneurs, options dans leur phase'
+    CONT_LAYOUT[prefix] = (cfn, ctitle) + tuple(layout_all(cmain, opts))
+    save(cfn, ctitle, *CONT_LAYOUT[prefix][2:])
     conts = [{'n': cn, 't': target, 'm': members} for cn, target, members in L.CONTAINERS.get(prefix, [])]
     wf = {'id': prefix, 'file': filename, 'title': title, 'steps': [], 'containers': conts, 'def': L.WF_DEFAULT.get(prefix, {})}
     for b, ph, r, x, t in entries:
@@ -932,7 +936,19 @@ def write_rapide(filename, prefix, title, steps, main_spec, opt_spec):
         return base, ph, x
     main = [prep(ph, it, d, False) for ph, it, d in main_spec]
     opts = [prep(ph, it, d, True) for ph, it, d in opt_spec]
-    save(filename, title + ' — mode rapide', *layout_all(main, opts))
+    # Mode rapide placé EN BAS du fichier Conteneurs du même workflow (demande de l'utilisateur : un seul fichier) ;
+    # toutes ses icônes sont préfixées R_ (noms uniques dans le fichier).
+    cfn, ctitle, cinsts, cicons = CONT_LAYOUT[prefix]
+    rinsts, ricons = layout_all(main, opts)
+    y0 = max(int(re.search(r'ypos="(\d+)"', i).group(1)) for i in cicons) + 110
+    note_id = 'R_MODE_RAPIDE'
+    head = ('   <instance class="NoOperation" version="256" id="%s_instance">\n      <description>%s</description>\n   </instance>'
+            % (note_id, escape("MODE RAPIDE — tout ce qui suit (icônes R_…) est le mode rapide : même ordre de colonnes, numéros R_E00, R_E01… à la suite ; options R_Opt_… sous R_P#_options. Icône de repère, sans effet.")))
+    rinsts = [re.sub(r'id="([^"]+)_instance"', r'id="R_\1_instance"', x, count=1) for x in rinsts]
+    ricons = [re.sub(r'ypos="(\d+)"', lambda m: 'ypos="%d"' % (int(m.group(1)) + y0 + 40),
+                     re.sub(r'<icon id="([^"]+)" instance="([^"]+)_instance"', r'<icon id="R_\1" instance="R_\2_instance"', x)) for x in ricons]
+    hicon = '   <icon id="%s" instance="%s_instance" xpos="30" ypos="%d" workspace="Workspace01"/>' % (note_id, note_id, y0)
+    save(cfn, ctitle + ' ; mode rapide en bas (icônes R_)', cinsts + [head] + rinsts, cicons + [hicon] + ricons)
     return len(main), len(opts)
 
 def rapide_common_opts(steps):
@@ -956,6 +972,7 @@ def rapide_end(steps):
 
 def note_rapide(prefix, v):
     t = T_RAPIDE[prefix].replace('{V}', v['titre']).replace('{L}', v['L'])
+    t = "Icônes du mode rapide en bas du fichier Conteneurs, toutes préfixées R_ (R_E00, R_E03, R_Opt_… : les numéros cités ici s'entendent avec ce préfixe). " + t
     return (1, ('Mode_rapide', '   <instance class="NoOperation" version="256" id="Mode_rapide_instance">\n      <description>%s</description>\n   </instance>' % escape(t)), '')
 
 bxt_rgb = lambda: M.bxt('BXT_RGB', False, 0.25, 0.0, 0.50)
@@ -1032,8 +1049,8 @@ V_NOTE = ("C_L_rapide : L étirée avant SXT (Unscreen) et luminance de L_stars 
           "C_L_rapide_SXT_lineaire (SXT sur L linéaire), C_L_rapide_SXT_lineaire_etoilesL (SXT linéaire + luminance de L pour les étoiles), "
           "C_L_rapide_SXT_etire (L étirée avant SXT, sans luminance de L pour les étoiles)")
 v = {'titre': V_NOTE, 'L': l_desc(True, True)}
-for fn, pre, title, steps, spec, bxt in [('Rapide-LRGB.xpsm', 'LRGB', 'Workflow LRGB', lrgb, rapide_lrgb, lambda: M.bxt('BXT_L', False, 0.25, 0.0, 0.80)),
-                                          ('Rapide-LHaRGB.xpsm', 'LHA', 'Workflow LHaRGB', lhargb, rapide_lha, lambda: M.bxt('BXT_L_H', False, 0.25, 0.0, 0.80))]:
+for fn, pre, title, steps, spec, bxt in [('Conteneurs-LRGB.xpsm (bas)', 'LRGB', 'Workflow LRGB', lrgb, rapide_lrgb, lambda: M.bxt('BXT_L', False, 0.25, 0.0, 0.80)),
+                                          ('Conteneurs-LHaRGB.xpsm (bas)', 'LHA', 'Workflow LHaRGB', lhargb, rapide_lha, lambda: M.bxt('BXT_L_H', False, 0.25, 0.0, 0.80))]:
     rgb_opt = rgb_sxt_etire_opts()[0 if pre == 'LRGB' else 1]
     # options reprises des conteneurs (demande de l'utilisateur) : Find_Background ; LHaRGB : Continuum_auto, H_dans_L
     extra = [(3, *pick(steps, 'Find_Background'))] + ([(3, *pick(steps, 'Continuum_auto')), (3, *pick(steps, 'H_dans_L'))] if pre == 'LHA' else [])
