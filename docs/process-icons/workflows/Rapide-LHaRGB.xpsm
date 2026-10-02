@@ -111,7 +111,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </instance>
    </instance>
    <instance class="NoOperation" version="256" id="E01_Mode_rapide_instance">
-      <description>MODE RAPIDE LHaRGB — C_L_rapide : L étirée avant SXT (Unscreen) et luminance de L_stars ajoutée aux étoiles ; à la place de C_L_rapide, options de la phase 3 : C_L_rapide_SXT_lineaire (SXT sur L linéaire), C_L_rapide_SXT_lineaire_etoilesL (SXT linéaire + luminance de L pour les étoiles), C_L_rapide_SXT_etire (L étirée avant SXT, sans luminance de L pour les étoiles) — icône de repère, sans effet. Pas de MARS (mode soigné). E00 C_Preparation_rapide (masters seuls ouverts ; double-clic puis Apply Global, ou glisse sur L) : Renommer_auto, LinearPatternSubtraction sur tous les masters mono, Combinaison_RGB (R, G, B restent ouvertes : R sert à Continuum_H). E02 ImageSolver sur RGB. E03 GradientCorrection sur R. E04 C_RGB_couleur_rapide sur RGB (GradientCorrection, BXT Correct Only, SPCC, BXT). E05 C_H_rapide sur H (GradientCorrection, BXT). E06 Continuum_H (k à régler), puis E07 H_dans_RGB sur RGB. E08 C_RGB_fin_rapide sur RGB (SXT, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond 0,22, Etoiles_auto sur RGB_stars). E09 C_L_rapide sur L (GradientCorrection, BXT, NXT, Statistical Stretch 0,25 sans dialogue, GHS_auto_fond : fond mesuré et amené à 0,11, puis SXT sur L étirée, Unscreen coché, puis Etoiles_LRGB : luminance 0,5 × L_stars (déjà étirée) + 0,5 × luminance RGB appliquée à RGB_stars, L_stars fermée). E10 C_Fin_rapide sur RGB (LRGB, HDRMT à 40 %, masque attaché, Courbes, LHE, LHE_fin, masque retiré, NXT_final, étoiles, Fond_auto, Boost_final, Fond_desature) : image finie  ; sans HDRMT : C_Fin_simple. Boost, HDRMT_50, HDRMT_eclat, NXT final : C_Fin_sans_etoiles, l'option, puis Etoiles_screen, puis Fond_auto. Étapes de la préparation seules : options de la phase 1.</description>
+      <description>MODE RAPIDE LHaRGB — C_L_rapide : L étirée avant SXT (Unscreen) et luminance de L_stars ajoutée aux étoiles ; à la place de C_L_rapide, options de la phase 3 : C_L_rapide_SXT_lineaire (SXT sur L linéaire), C_L_rapide_SXT_lineaire_etoilesL (SXT linéaire + luminance de L pour les étoiles), C_L_rapide_SXT_etire (L étirée avant SXT, sans luminance de L pour les étoiles) — icône de repère, sans effet. Pas de MARS (mode soigné). E00 C_Preparation_rapide (masters seuls ouverts ; double-clic puis Apply Global, ou glisse sur L) : Renommer_auto, LinearPatternSubtraction sur tous les masters mono, Combinaison_RGB (R, G, B restent ouvertes : R sert à Continuum_H). E02 ImageSolver sur RGB. E03 GradientCorrection sur R. E04 C_RGB_couleur_rapide sur RGB (GradientCorrection, BXT Correct Only, SPCC, BXT). E05 C_H_rapide sur H (GradientCorrection, BXT). E06 Continuum_H (k à régler), puis E07 H_dans_RGB sur RGB. E08 C_RGB_fin_rapide sur RGB (SXT, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond 0,22, Etoiles_auto sur RGB_stars). E09 C_L_rapide sur L (GradientCorrection, BXT, NXT, les 3 GHS (GHS_auto : 1er étirement calculé, médiane vers 0,25 ; GHS_2_contraste ; GHS_auto_fond : fond mesuré et amené à 0,11), puis SXT sur L étirée, Unscreen coché, puis Etoiles_LRGB : luminance 0,5 × L_stars (déjà étirée) + 0,5 × luminance RGB appliquée à RGB_stars, L_stars fermée). E10 C_Fin_rapide sur RGB (LRGB, HDRMT à 40 %, masque attaché, Courbes, LHE, LHE_fin, masque retiré, NXT_final, étoiles, Fond_auto, Boost_final, Fond_desature) : image finie  ; sans HDRMT : C_Fin_simple. Boost, HDRMT_50, HDRMT_eclat, NXT final : C_Fin_sans_etoiles, l'option, puis Etoiles_screen, puis Fond_auto. Étapes de la préparation seules : options de la phase 1.</description>
    </instance>
    <instance class="NoOperation" version="256" id="P1_options_instance">
       <description>OPTIONS de la phase 1 — Préparation : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
@@ -1118,71 +1118,46 @@ $T[0] + w*H_cs</parameter>
          <parameter id="overlap" value="0.20"/>
       </instance>
       <instance class="Script" version="256" enabled="true">
-         <parameter id="filePath">$PXI_SRCDIR/scripts/statisticalstretch.js</parameter>
-         <parameter id="md5sum">defab45bb4e2f33db39a7bb016cdefb0</parameter>
-         <table id="parameters" rows="15">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/GHS_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="5">
             <tr>
-               <td id="id">targetMedian</td>
+               <td id="id">mode</td>
+               <td id="value">premier</td>
+            </tr>
+            <tr>
+               <td id="id">cible</td>
                <td id="value">0.25</td>
             </tr>
             <tr>
-               <td id="id">curvesBoost</td>
-               <td id="value">0</td>
+               <td id="id">b</td>
+               <td id="value">6</td>
             </tr>
             <tr>
-               <td id="id">numIterations</td>
-               <td id="value">1</td>
+               <td id="id">spFactor</td>
+               <td id="value">0.5</td>
             </tr>
             <tr>
-               <td id="id">normalizeImageRange</td>
-               <td id="value">false</td>
-            </tr>
-            <tr>
-               <td id="id">linkedStretch</td>
-               <td id="value">true</td>
-            </tr>
-            <tr>
-               <td id="id">openDialogbox</td>
-               <td id="value">false</td>
-            </tr>
-            <tr>
-               <td id="id">autoConvergence</td>
-               <td id="value">false</td>
-            </tr>
-            <tr>
-               <td id="id">blackpointSigma</td>
-               <td id="value">5</td>
-            </tr>
-            <tr>
-               <td id="id">noBlackClip</td>
-               <td id="value">false</td>
-            </tr>
-            <tr>
-               <td id="id">hdrCompress</td>
-               <td id="value">false</td>
-            </tr>
-            <tr>
-               <td id="id">hdrAmount</td>
-               <td id="value">0.25</td>
-            </tr>
-            <tr>
-               <td id="id">hdrKnee</td>
-               <td id="value">0.35</td>
-            </tr>
-            <tr>
-               <td id="id">lumaOnly</td>
-               <td id="value">false</td>
-            </tr>
-            <tr>
-               <td id="id">lumaMode</td>
-               <td id="value">rec709</td>
-            </tr>
-            <tr>
-               <td id="id">lumaBlend</td>
-               <td id="value">0.6</td>
+               <td id="id">hp</td>
+               <td id="value">0.85</td>
             </tr>
          </table>
          <parameter id="information"></parameter>
+      </instance>
+      <instance class="GeneralizedHyperbolicStretch" version="256" enabled="true">
+         <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
+         <parameter id="stretchChannel" value="SC_RGB"/>
+         <parameter id="inverse" value="false"/>
+         <parameter id="stretchFactor" value="1.000"/>
+         <parameter id="localIntensity" value="4.000"/>
+         <parameter id="symmetryPoint" value="0.350000"/>
+         <parameter id="highlightProtection" value="0.900000"/>
+         <parameter id="shadowProtection" value="0.000000"/>
+         <parameter id="blackPoint" value="0.000000"/>
+         <parameter id="whitePoint" value="1.000000"/>
+         <parameter id="colourBlend" value="1.000"/>
+         <parameter id="clipType" value="CT_RGBBlend"/>
+         <parameter id="useRGBWorkingSpace" value="false"/>
       </instance>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/GHS_auto.js</parameter>
@@ -1454,71 +1429,46 @@ $T[0] + w*H_cs</parameter>
          <parameter id="overlap" value="0.20"/>
       </instance>
       <instance class="Script" version="256" enabled="true">
-         <parameter id="filePath">$PXI_SRCDIR/scripts/statisticalstretch.js</parameter>
-         <parameter id="md5sum">defab45bb4e2f33db39a7bb016cdefb0</parameter>
-         <table id="parameters" rows="15">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/GHS_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="5">
             <tr>
-               <td id="id">targetMedian</td>
+               <td id="id">mode</td>
+               <td id="value">premier</td>
+            </tr>
+            <tr>
+               <td id="id">cible</td>
                <td id="value">0.25</td>
             </tr>
             <tr>
-               <td id="id">curvesBoost</td>
-               <td id="value">0</td>
+               <td id="id">b</td>
+               <td id="value">6</td>
             </tr>
             <tr>
-               <td id="id">numIterations</td>
-               <td id="value">1</td>
+               <td id="id">spFactor</td>
+               <td id="value">0.5</td>
             </tr>
             <tr>
-               <td id="id">normalizeImageRange</td>
-               <td id="value">false</td>
-            </tr>
-            <tr>
-               <td id="id">linkedStretch</td>
-               <td id="value">true</td>
-            </tr>
-            <tr>
-               <td id="id">openDialogbox</td>
-               <td id="value">false</td>
-            </tr>
-            <tr>
-               <td id="id">autoConvergence</td>
-               <td id="value">false</td>
-            </tr>
-            <tr>
-               <td id="id">blackpointSigma</td>
-               <td id="value">5</td>
-            </tr>
-            <tr>
-               <td id="id">noBlackClip</td>
-               <td id="value">false</td>
-            </tr>
-            <tr>
-               <td id="id">hdrCompress</td>
-               <td id="value">false</td>
-            </tr>
-            <tr>
-               <td id="id">hdrAmount</td>
-               <td id="value">0.25</td>
-            </tr>
-            <tr>
-               <td id="id">hdrKnee</td>
-               <td id="value">0.35</td>
-            </tr>
-            <tr>
-               <td id="id">lumaOnly</td>
-               <td id="value">false</td>
-            </tr>
-            <tr>
-               <td id="id">lumaMode</td>
-               <td id="value">rec709</td>
-            </tr>
-            <tr>
-               <td id="id">lumaBlend</td>
-               <td id="value">0.6</td>
+               <td id="id">hp</td>
+               <td id="value">0.85</td>
             </tr>
          </table>
          <parameter id="information"></parameter>
+      </instance>
+      <instance class="GeneralizedHyperbolicStretch" version="256" enabled="true">
+         <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
+         <parameter id="stretchChannel" value="SC_RGB"/>
+         <parameter id="inverse" value="false"/>
+         <parameter id="stretchFactor" value="1.000"/>
+         <parameter id="localIntensity" value="4.000"/>
+         <parameter id="symmetryPoint" value="0.350000"/>
+         <parameter id="highlightProtection" value="0.900000"/>
+         <parameter id="shadowProtection" value="0.000000"/>
+         <parameter id="blackPoint" value="0.000000"/>
+         <parameter id="whitePoint" value="1.000000"/>
+         <parameter id="colourBlend" value="1.000"/>
+         <parameter id="clipType" value="CT_RGBBlend"/>
+         <parameter id="useRGBWorkingSpace" value="false"/>
       </instance>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/GHS_auto.js</parameter>
@@ -1622,71 +1572,46 @@ $T[0] + w*H_cs</parameter>
          <parameter id="overlap" value="0.20"/>
       </instance>
       <instance class="Script" version="256" enabled="true">
-         <parameter id="filePath">$PXI_SRCDIR/scripts/statisticalstretch.js</parameter>
-         <parameter id="md5sum">defab45bb4e2f33db39a7bb016cdefb0</parameter>
-         <table id="parameters" rows="15">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/GHS_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="5">
             <tr>
-               <td id="id">targetMedian</td>
+               <td id="id">mode</td>
+               <td id="value">premier</td>
+            </tr>
+            <tr>
+               <td id="id">cible</td>
                <td id="value">0.25</td>
             </tr>
             <tr>
-               <td id="id">curvesBoost</td>
-               <td id="value">0</td>
+               <td id="id">b</td>
+               <td id="value">6</td>
             </tr>
             <tr>
-               <td id="id">numIterations</td>
-               <td id="value">1</td>
+               <td id="id">spFactor</td>
+               <td id="value">0.5</td>
             </tr>
             <tr>
-               <td id="id">normalizeImageRange</td>
-               <td id="value">false</td>
-            </tr>
-            <tr>
-               <td id="id">linkedStretch</td>
-               <td id="value">true</td>
-            </tr>
-            <tr>
-               <td id="id">openDialogbox</td>
-               <td id="value">false</td>
-            </tr>
-            <tr>
-               <td id="id">autoConvergence</td>
-               <td id="value">false</td>
-            </tr>
-            <tr>
-               <td id="id">blackpointSigma</td>
-               <td id="value">5</td>
-            </tr>
-            <tr>
-               <td id="id">noBlackClip</td>
-               <td id="value">false</td>
-            </tr>
-            <tr>
-               <td id="id">hdrCompress</td>
-               <td id="value">false</td>
-            </tr>
-            <tr>
-               <td id="id">hdrAmount</td>
-               <td id="value">0.25</td>
-            </tr>
-            <tr>
-               <td id="id">hdrKnee</td>
-               <td id="value">0.35</td>
-            </tr>
-            <tr>
-               <td id="id">lumaOnly</td>
-               <td id="value">false</td>
-            </tr>
-            <tr>
-               <td id="id">lumaMode</td>
-               <td id="value">rec709</td>
-            </tr>
-            <tr>
-               <td id="id">lumaBlend</td>
-               <td id="value">0.6</td>
+               <td id="id">hp</td>
+               <td id="value">0.85</td>
             </tr>
          </table>
          <parameter id="information"></parameter>
+      </instance>
+      <instance class="GeneralizedHyperbolicStretch" version="256" enabled="true">
+         <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
+         <parameter id="stretchChannel" value="SC_RGB"/>
+         <parameter id="inverse" value="false"/>
+         <parameter id="stretchFactor" value="1.000"/>
+         <parameter id="localIntensity" value="4.000"/>
+         <parameter id="symmetryPoint" value="0.350000"/>
+         <parameter id="highlightProtection" value="0.900000"/>
+         <parameter id="shadowProtection" value="0.000000"/>
+         <parameter id="blackPoint" value="0.000000"/>
+         <parameter id="whitePoint" value="1.000000"/>
+         <parameter id="colourBlend" value="1.000"/>
+         <parameter id="clipType" value="CT_RGBBlend"/>
+         <parameter id="useRGBWorkingSpace" value="false"/>
       </instance>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/GHS_auto.js</parameter>
@@ -1800,71 +1725,46 @@ $T[0] + w*H_cs</parameter>
          <parameter id="overlap" value="0.20"/>
       </instance>
       <instance class="Script" version="256" enabled="true">
-         <parameter id="filePath">$PXI_SRCDIR/scripts/statisticalstretch.js</parameter>
-         <parameter id="md5sum">defab45bb4e2f33db39a7bb016cdefb0</parameter>
-         <table id="parameters" rows="15">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/GHS_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="5">
             <tr>
-               <td id="id">targetMedian</td>
+               <td id="id">mode</td>
+               <td id="value">premier</td>
+            </tr>
+            <tr>
+               <td id="id">cible</td>
                <td id="value">0.25</td>
             </tr>
             <tr>
-               <td id="id">curvesBoost</td>
-               <td id="value">0</td>
+               <td id="id">b</td>
+               <td id="value">6</td>
             </tr>
             <tr>
-               <td id="id">numIterations</td>
-               <td id="value">1</td>
+               <td id="id">spFactor</td>
+               <td id="value">0.5</td>
             </tr>
             <tr>
-               <td id="id">normalizeImageRange</td>
-               <td id="value">false</td>
-            </tr>
-            <tr>
-               <td id="id">linkedStretch</td>
-               <td id="value">true</td>
-            </tr>
-            <tr>
-               <td id="id">openDialogbox</td>
-               <td id="value">false</td>
-            </tr>
-            <tr>
-               <td id="id">autoConvergence</td>
-               <td id="value">false</td>
-            </tr>
-            <tr>
-               <td id="id">blackpointSigma</td>
-               <td id="value">5</td>
-            </tr>
-            <tr>
-               <td id="id">noBlackClip</td>
-               <td id="value">false</td>
-            </tr>
-            <tr>
-               <td id="id">hdrCompress</td>
-               <td id="value">false</td>
-            </tr>
-            <tr>
-               <td id="id">hdrAmount</td>
-               <td id="value">0.25</td>
-            </tr>
-            <tr>
-               <td id="id">hdrKnee</td>
-               <td id="value">0.35</td>
-            </tr>
-            <tr>
-               <td id="id">lumaOnly</td>
-               <td id="value">false</td>
-            </tr>
-            <tr>
-               <td id="id">lumaMode</td>
-               <td id="value">rec709</td>
-            </tr>
-            <tr>
-               <td id="id">lumaBlend</td>
-               <td id="value">0.6</td>
+               <td id="id">hp</td>
+               <td id="value">0.85</td>
             </tr>
          </table>
          <parameter id="information"></parameter>
+      </instance>
+      <instance class="GeneralizedHyperbolicStretch" version="256" enabled="true">
+         <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
+         <parameter id="stretchChannel" value="SC_RGB"/>
+         <parameter id="inverse" value="false"/>
+         <parameter id="stretchFactor" value="1.000"/>
+         <parameter id="localIntensity" value="4.000"/>
+         <parameter id="symmetryPoint" value="0.350000"/>
+         <parameter id="highlightProtection" value="0.900000"/>
+         <parameter id="shadowProtection" value="0.000000"/>
+         <parameter id="blackPoint" value="0.000000"/>
+         <parameter id="whitePoint" value="1.000000"/>
+         <parameter id="colourBlend" value="1.000"/>
+         <parameter id="clipType" value="CT_RGBBlend"/>
+         <parameter id="useRGBWorkingSpace" value="false"/>
       </instance>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/GHS_auto.js</parameter>

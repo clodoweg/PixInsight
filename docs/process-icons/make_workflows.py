@@ -970,7 +970,9 @@ RAPIDE_VARIANTES = [   # la première est le chemin principal (choix de l'utilis
 ]
 
 def l_rapide(bxt, sxt_etire=False, etoilesL=False, suffix=''):
-    nxt, etire = M.nxt('NXT_L', 0.60, 1), [stat_auto(), script('GHS_auto_fond', '')]
+    # L : les 3 GHS, jamais Statistical Stretch (constat de l'utilisateur : Statistical Stretch fait ressortir les halos d'étoiles sur L).
+    # GHS_1 automatique (GHS_auto : SP = fond × 0,5, b 6, HP 0,85, médiane -> 0,25), GHS_2_contraste (préréglage de la fiche), GHS_3 automatique (GHS_auto_fond -> 0,11).
+    nxt, etire = M.nxt('NXT_L', 0.60, 1), [script('GHS_auto', ''), ghs('GHS_2_contraste', 4, hp=0.9, sf=1.0, sp=0.35), script('GHS_auto_fond', '')]
     if sxt_etire:
         items = [gc_r(), bxt, nxt] + etire + [M.sxt('SXT_etire', True)]
     else:
@@ -984,9 +986,9 @@ def l_opts(bxt):
 
 def l_desc(sxt_etire, etoilesL):
     if sxt_etire:
-        d = "GradientCorrection, BXT, NXT, Statistical Stretch 0,25 sans dialogue, GHS_auto_fond : fond mesuré et amené à 0,11, puis SXT sur L étirée, Unscreen coché"
+        d = "GradientCorrection, BXT, NXT, les 3 GHS (GHS_auto : 1er étirement calculé, médiane vers 0,25 ; GHS_2_contraste ; GHS_auto_fond : fond mesuré et amené à 0,11), puis SXT sur L étirée, Unscreen coché"
     else:
-        d = "GradientCorrection, BXT, SXT, NXT, Statistical Stretch 0,25 sans dialogue, GHS_auto_fond : fond mesuré et amené à 0,11"
+        d = "GradientCorrection, BXT, SXT, NXT, les 3 GHS (GHS_auto : 1er étirement calculé, médiane vers 0,25 ; GHS_2_contraste ; GHS_auto_fond : fond mesuré et amené à 0,11)"
     if etoilesL:
         d += (", puis Etoiles_LRGB : luminance 0,5 × L_stars" + (" (déjà étirée)" if sxt_etire else " étirée comme les étoiles RGB") +
               " + 0,5 × luminance RGB appliquée à RGB_stars, L_stars fermée")
