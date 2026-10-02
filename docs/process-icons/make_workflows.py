@@ -48,8 +48,6 @@ SCRIPTS = {
     'Fermer_vues': ('$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js', '', [('views', '')], L_GLOBAL),
     'Renommer_auto': ('$PXI_SRCDIR/scripts/clodoweg/Renommer_auto.js', '', [], L_GLOBAL),
     'Etoiles_auto': ('$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js', '', [('vue', 'RGB_stars'), ('amount', '6'), ('satAmount', '1.3'), ('scnr', 'false')], L_DRAG),
-    'Halos_L': ('$PXI_SRCDIR/scripts/clodoweg/Halos_auto.js', '', [('etoiles', 'L_stars')] + [('seuil', '0.25'), ('rayon', '80'), ('gain', '200'), ('lissage', '20'), ('protegeMin', '0.09'), ('protegeMax', '0.19'), ('afficher', 'false')], L_DRAG),
-    'Halos_RGB': ('$PXI_SRCDIR/scripts/clodoweg/Halos_auto.js', '', [('etoiles', 'RGB_stars')] + [('seuil', '0.25'), ('rayon', '80'), ('gain', '200'), ('lissage', '20'), ('protegeMin', '0.09'), ('protegeMax', '0.19'), ('afficher', 'false')], L_DRAG),
     'Fond_auto': ('$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js', '', [('cible', '0.12'), ('tolerance', '0.005'), ('grille', '8')], L_DRAG),
     'GHS_auto': ('$PXI_SRCDIR/scripts/clodoweg/GHS_auto.js', '', [('mode', 'premier'), ('cible', '0.25'), ('b', '6'), ('spFactor', '0.5'), ('hp', '0.85')], L_DRAG),
     'GHS_auto_fond': ('$PXI_SRCDIR/scripts/clodoweg/GHS_auto.js', '', [('mode', 'fond'), ('cible', '0.11'), ('b', '10'), ('spFactor', '0.87')], L_DRAG),
@@ -859,8 +857,8 @@ T_RAPIDE = {
  'LRGB': ("MODE RAPIDE LRGB — icône de repère, sans effet. Aucun réglage, pas de MARS (MGC + MARS : mode soigné). Ordre (numéros des icônes) : "
           "E00 C_Preparation_rapide (masters seuls ouverts ; double-clic puis Apply Global, ou glisse sur L) : Renommer_auto (L, R, G, B d'après FILTER), LinearPatternSubtraction sur tous les masters mono ouverts, Combinaison_RGB (RGB créé, R, G, B fermées). "
           "E02 ImageSolver sur RGB (date par défaut si absente, puis ImageSolver ; nécessaire à SPCC ; icône seule, pas de conteneur). "
-          "E03 C_RGB_rapide sur RGB (GradientCorrection, BXT Correct Only, SPCC, BXT, SXT, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond SP = HP = 0,22, Halos_RGB : halos d'étoiles retirés hors galaxie, Etoiles_auto) : RGB étiré sans étoiles et RGB_stars étirée (courbe de Star Stretch, amount 6, saturation 1,3). "
-          "E04 C_L_rapide sur L (GradientCorrection, BXT, SXT, NXT, Statistical Stretch 0,25 sans dialogue, GHS_auto_fond : fond mesuré et amené à 0,11, Halos_L : halos d'étoiles retirés hors galaxie, fermeture de L_stars). "
+          "E03 C_RGB_rapide sur RGB (GradientCorrection, BXT Correct Only, SPCC, BXT, SXT, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond SP = HP = 0,22, Etoiles_auto) : RGB étiré sans étoiles et RGB_stars étirée (courbe de Star Stretch, amount 6, saturation 1,3). "
+          "E04 C_L_rapide sur L (GradientCorrection, BXT, SXT, NXT, fermeture de L_stars, Statistical Stretch 0,25 sans dialogue, GHS_auto_fond : fond mesuré et amené à 0,11). "
           "E05 C_Fin_rapide sur RGB : LRGB (L ajoutée), HDRMT à 40 % (détail du cœur), masque de luminance créé et attaché, Courbes (saturation 0,68), LHE (rayon 150), LHE_fin (rayon 40), masque retiré, étoiles RGB_stars ajoutées, Fond_auto (fond mesuré, amené à 0,12 et neutre) : image finie. "
           "Sans HDRMT : C_Fin_simple (options). "
           "Pour un Boost, HDRMT_50, HDRMT_eclat (cœur détaillé ET lumineux) ou NXT final : à la place d'E05, C_Fin_sans_etoiles (options), puis l'option, puis Etoiles_screen ou Etoiles_reduites, puis Fond_auto (options). Halo-B-Gon : sur RGB_stars avant E05. Étoiles réglées à l'œil : décoche Etoiles_auto dans E03, puis Star_Stretch (options) sur RGB_stars. "
@@ -927,14 +925,12 @@ gc_r = lambda: M.instance('GradientCorrection', 'GradientCorrection', {'generate
 # L : Statistical Stretch puis GHS_auto_fond (fond mesuré, amené à 0,11), choisi après comparaison sur une galaxie (GHS auto : fond laiteux, cœur écrasé).
 def l_rapide(bxt, mode='stat'):
     """mode stat : chemin principal ; ghs : GHS_auto puis le même fond (comparaison) ; lineaire : sans étirement (GHS à la main)."""
-    # L_stars reste ouverte jusqu'à Halos_L (zone des halos autour des étoiles brillantes), puis est fermée.
-    base = [gc_r(), bxt, M.sxt('SXT_lineaire', False), M.nxt('NXT_L', 0.60, 1)]
-    fin = [script('Halos_L', ''), fermer('Fermer_L_stars', 'L_stars')]
+    base = [gc_r(), bxt, M.sxt('SXT_lineaire', False), M.nxt('NXT_L', 0.60, 1), fermer('Fermer_L_stars', 'L_stars')]
     if mode == 'stat':
-        return cont('C_L_rapide', base + [stat_auto(), script('GHS_auto_fond', '')] + fin)
+        return cont('C_L_rapide', base + [stat_auto(), script('GHS_auto_fond', '')])
     if mode == 'ghs':
-        return cont('C_L_rapide_ghs', base + [script('GHS_auto', ''), script('GHS_auto_fond', '')] + fin)
-    return cont('C_L_rapide_lineaire', base + [fermer('Fermer_L_stars', 'L_stars')])
+        return cont('C_L_rapide_ghs', base + [script('GHS_auto', ''), script('GHS_auto_fond', '')])
+    return cont('C_L_rapide_lineaire', base)
 
 def l_opts(steps, bxt):
     """Options de L pour comparer : GHS automatique, ou linéaire + les 3 GHS à la main."""
@@ -951,7 +947,7 @@ def prep_opts(steps):
 rapide_lrgb = [prep_rapide(lrgb), note_rapide('LRGB'),
     (2, solver_container(), ''),
     (3, cont('C_RGB_rapide', [gc_r(), M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), spcc_perso('SPCC'), bxt_rgb(), M.sxt('SXT_lineaire', False),
-                              M.nxt('NXT_RGB', 0.80, 1), stat_auto(), GHS_FOND_R(), script('Halos_RGB', ''), script('Etoiles_auto', '')]), ''),
+                              M.nxt('NXT_RGB', 0.80, 1), stat_auto(), GHS_FOND_R(), script('Etoiles_auto', '')]), ''),
     (3, l_rapide(M.bxt('BXT_L', False, 0.25, 0.0, 0.80)), '')] + rapide_end(lrgb)
 
 rapide_lha = [prep_rapide(lhargb), note_rapide('LHA'),
@@ -959,7 +955,7 @@ rapide_lha = [prep_rapide(lhargb), note_rapide('LHA'),
     (3, cont('C_RGB_couleur_rapide', [gc_r(), M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), spcc_perso('SPCC'), bxt_rgb()]), ''),
     (3, cont('C_H_rapide', [gc_r(), M.bxt('BXT_L_H', False, 0.25, 0.0, 0.80)]), ''),
     (3, *pick(lhargb, 'Continuum_H')), (3, *pick(lhargb, 'H_dans_RGB')),
-    (3, cont('C_RGB_fin_rapide', [M.sxt('SXT_lineaire', False), M.nxt('NXT_RGB', 0.80, 1), stat_auto(), GHS_FOND_R(), script('Halos_RGB', ''), script('Etoiles_auto', '')]), ''),
+    (3, cont('C_RGB_fin_rapide', [M.sxt('SXT_lineaire', False), M.nxt('NXT_RGB', 0.80, 1), stat_auto(), GHS_FOND_R(), script('Etoiles_auto', '')]), ''),
     (3, l_rapide(M.bxt('BXT_L_H', False, 0.25, 0.0, 0.80)), '')] + rapide_end(lhargb)
 
 for fn, pre, title, steps, spec, bxt in [('Rapide-LRGB.xpsm', 'LRGB', 'Workflow LRGB', lrgb, rapide_lrgb, lambda: M.bxt('BXT_L', False, 0.25, 0.0, 0.80)),
