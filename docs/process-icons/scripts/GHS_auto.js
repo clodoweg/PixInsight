@@ -1,11 +1,14 @@
 // ----------------------------------------------------------------------------
 // GHS_auto.js — 1er étirement GHS calculé automatiquement (mode rapide).
 // ----------------------------------------------------------------------------
-// Remplace le réglage à la main de GHS_1 (fiche, méthode GHS) sur une image
-// sans étoiles LINÉAIRE (L dans C_L_rapide) :
+// 1er étirement GHS sans réglage, sur une image sans étoiles LINÉAIRE
+// (L dans l'option C_L_rapide_ghs du mode rapide) :
 //   - SP = médiane de l'image × spFactor (médiane = fond du ciel sur un
-//     champ de galaxie ; spFactor 1 par défaut) ;
-//   - Local intensity b = 10, LP = 0, HP = 1 (comme GHS_1) ;
+//     champ de galaxie ; spFactor 0,5 : SP sous le fond, la pente maximale
+//     ne tombe pas juste au-dessus du fond, où sont les restes de halos et
+//     les taches) ;
+//   - Local intensity b = 6 (étirement moins concentré qu'avec 10), LP = 0,
+//     HP = hp (0,85 : cœur de galaxie protégé) ;
 //   - Stretch factor cherché par dichotomie pour que la médiane arrive sur
 //     cible (0,25 par défaut, le pic visé après GHS_1) (mode = premier).
 // mode = fond : remplace GHS_3_fond sur une image déjà étirée : SP = HP =
@@ -104,8 +107,9 @@ function main()
       throw new Error( TITLE + " : aucune image." );
    let fond = param( "mode", "premier" ).toLowerCase() == "fond";
    let target = parseFloat( param( "cible", fond ? "0.11" : "0.25" ) );
-   let b = parseFloat( param( "b", "10" ) );
-   let spFactor = parseFloat( param( "spFactor", fond ? "0.87" : "1" ) );
+   let b = parseFloat( param( "b", fond ? "10" : "6" ) );
+   let spFactor = parseFloat( param( "spFactor", fond ? "0.87" : "0.5" ) );
+   let hp = parseFloat( param( "hp", "0.85" ) );
 
    let med = median( view.image );
    if ( !(med > 0) || (fond ? med <= target : med >= target) )
@@ -114,7 +118,7 @@ function main()
       return;
    }
    let SP = Math.min( med*spFactor, 0.99 );
-   let HP = fond ? SP : 1;
+   let HP = fond ? SP : Math.max( hp, SP );
    let sf = solveSF( med, target, b, SP, 0, HP, fond ? 5 : 20 );
 
    let G = new GeneralizedHyperbolicStretch;
