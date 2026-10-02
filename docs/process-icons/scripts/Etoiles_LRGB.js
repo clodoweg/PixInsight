@@ -1,13 +1,15 @@
 // ----------------------------------------------------------------------------
 // Etoiles_LRGB.js — ajoute la luminance des étoiles de L aux étoiles RGB.
 // ----------------------------------------------------------------------------
-// Option du mode rapide, entre C_L_rapide et C_Fin_rapide. Il faut :
-//   - L_stars (étoiles de L, LINÉAIRES, laissées ouvertes par C_L_rapide) ;
+// Dernière étape de C_L_rapide dans les variantes « etoilesL » du mode rapide.
+// Il faut :
+//   - L_stars (étoiles de L : linéaires si SXT a tourné sur L linéaire,
+//     déjà étirées si SXT a tourné après l'étirement ; etirerL = false) ;
 //   - RGB_stars (étoiles RGB déjà étirées par Etoiles_auto dans le conteneur
 //     RGB).
 // Étapes :
-//   1. L_stars est étirée avec la même courbe qu'Etoiles_auto :
-//      y = 3^a·x / ((3^a − 1)·x + 1), a = amount (6) ;
+//   1. si etirerL = true : L_stars est étirée avec la même courbe
+//      qu'Etoiles_auto : y = 3^a·x / ((3^a − 1)·x + 1), a = amount (6) ;
 //   2. luminance mélangée : partL × L_stars + (1 − partL) × luminance de
 //      RGB_stars (Rec. 709), partL = 0,5 : L apporte les étoiles faibles et la
 //      finesse, la moitié RGB limite le blanchiment des cœurs ;
@@ -38,6 +40,7 @@ function main()
    let amount = parseFloat( param( "amount", "6" ) );
    let partL = parseFloat( param( "partL", "0.5" ) );
    let mc = parseFloat( param( "saturation", "0.35" ) );
+   let etirerL = param( "etirerL", "true" ).toLowerCase() == "true";
 
    let lw = ImageWindow.windowById( lId );
    let rw = ImageWindow.windowById( rgbId );
@@ -48,15 +51,18 @@ function main()
    if ( lw.mainView.image.width != rw.mainView.image.width || lw.mainView.image.height != rw.mainView.image.height )
       throw new Error( TITLE + " : " + lId + " et " + rgbId + " n'ont pas la même taille (images non alignées ?)." );
 
-   // 1. étirement de L_stars, même courbe qu'Etoiles_auto
-   let k = Math.pow( 3, amount );
-   let P = new PixelMath;
-   P.expression = "(" + k + "*$T)/((" + k + " - 1)*$T + 1)";
-   P.useSingleExpression = true;
-   P.createNewImage = false;
-   P.rescale = false;
-   P.truncate = true;
-   P.executeOn( lw.mainView );
+   // 1. étirement de L_stars, même courbe qu'Etoiles_auto (sauf si déjà étirée)
+   if ( etirerL )
+   {
+      let k = Math.pow( 3, amount );
+      let P = new PixelMath;
+      P.expression = "(" + k + "*$T)/((" + k + " - 1)*$T + 1)";
+      P.useSingleExpression = true;
+      P.createNewImage = false;
+      P.rescale = false;
+      P.truncate = true;
+      P.executeOn( lw.mainView );
+   }
 
    // 2. luminance mélangée
    let mixId = "etoiles_Lmix";
@@ -90,7 +96,7 @@ function main()
    // 4. fermetures
    mix.forceClose();
    lw.forceClose();
-   console.noteln( TITLE + " : " + rgbId + " reçoit la luminance " + partL + " × " + lId + " (étirée, amount " + amount + ") + " +
+   console.noteln( TITLE + " : " + rgbId + " reçoit la luminance " + partL + " × " + lId + (etirerL ? " (étirée, amount " + amount + ")" : " (déjà étirée)") + " + " +
                    (1 - partL) + " × luminance RGB ; " + lId + " fermée." );
 }
 
