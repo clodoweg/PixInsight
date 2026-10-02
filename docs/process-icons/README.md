@@ -12,86 +12,13 @@ Les fichiers n'ont pas été testés dans PixInsight avant publication : ils ont
 
 **PixInsight 1.9.5** : les icônes n'ont pas non plus été testées dans cette version. Elles n'utilisent ni AutomaticBackgroundExtractor ni SubframeSelector, les deux process dont les instances antérieures à la 1.9.4 doivent être recréées. Les icônes-notes (scripts) ne dépendent pas de la version.
 
-## 01-PixelMath-formules.xpsm
-
-Les formules supposent des images nommées comme indiqué (renomme tes vues avec le bon identifiant avant de les appliquer). Masters narrowband : `H` (Hα), `O` (OIII), `S` (SII) ; les descriptions des icônes utilisent la même notation. Les icônes suivent la même convention (`SPFC_H`, `MGC_MARS_O`, `NXT_O_S`…) ; seules les valeurs de filtre MARS dans MGC restent `Ha` et `OIII`, noms imposés par la base.
-
-| Icône | Images attendues | Résultat |
-|---|---|---|
-| `Foraxx_SHO` | `S`, `H`, `O` (étirées, sans étoiles) | Nouvelle image RGB `SHO_Foraxx` |
-| `Foraxx_HOO` | `H`, `O` | Nouvelle image RGB `HOO_Foraxx` |
-| `HOO_simple` | `H`, `O` | R = H, G = O, B = O |
-| `HOO_Hubble` | `H`, `O` | G = 0,6·H + 0,4·O (Galactic Hunter) |
-| `DualBand_H` / `DualBand_O` | À appliquer sur l'image couleur dual-band | Nouvelles images mono `H` et `O` |
-| `Continuum_H` | `H`, `R` | `H_cs` ; ajuste `k = 0.9` dans la formule |
-| `H_dans_R` | `R`, `H_cs` | `R_H` ; ajuste `w = 1.0` |
-| `Etoiles_screen` | glisser sur l'image sans étoiles ; étoiles étirées `RGB_stars` (workflows : `NBtoRGB_stars` en SHO, `HOO_stars` en HOO) | Modifie l'image sans étoiles (pas de nouvelle vue) |
-| `Etoiles_HOO_synth` | `H_stars`, `O_stars` (linéaires) | Étoiles RGB synthétiques, G = 20 % H + 80 % O |
-| `Masque_L` / `Masque_L_mono` | Image sans étoiles étirée (couleur / mono) ; glisser l'icône dessus | Nouvelle vue mono `masque_L` : luminance Rec. 709 avec le fond coupé, `s = 0.14` par défaut (fond + 0,01). Chaque workflow l'inclut avant les courbes et LHE |
-| `Blanshan_Transfer` / `_Halo` / `_Star` | Vue sans étoiles nommée `starless` ; appliquer sur l'image avec étoiles | Version 2, identique à la page (S = 0,15) |
-| `Blanshan_Transfer_V3` / `_Halo_V3` / `_Star_V3` | Idem | Version 3 d'origine, avec les commentaires de Bill Blanshan (S = 0,20 ; Star en mode doux M = 3) |
-
-## 02-RC-Astro.xpsm (licences RC Astro requises)
-
-| Icône | Réglages |
-|---|---|
-| `BXT_CorrectOnly` | Correct Only, avant SPCC |
-| `BXT_RGB` | Sharpen Stars 0,25, Halos 0, Nonstellar 0,50, PSF automatique |
-| `BXT_L_H` | Idem, Nonstellar 0,80 |
-| `BXT_NB_combine` | Idem, Nonstellar 0,60, pour la combinaison SHO/HOO simple |
-| `NXT_L_H` | Denoise 0,60, Detail 0,15, 1 itération |
-| `NXT_RGB` | Denoise 0,80 |
-| `NXT_O_S` | Denoise 0,75 |
-| `NXT_final_etire` | Denoise 0,40, passe finale légère |
-| `SXT_lineaire` | Étoiles générées, **Unscreen décoché** (image linéaire) |
-| `SXT_etire` | Étoiles générées, Unscreen coché (image étirée uniquement) |
-
-## 03-Natifs-PixInsight.xpsm
-
-| Icône | Réglages |
-|---|---|
-| `LRGB_ajout_L` | Seul L activé (vue nommée `L`), Lightness 0,5, Saturation 0,35, réduction du bruit de chrominance |
-| `LinearFit_ref_H` | Référence : vue nommée `H` |
-| `SCNR_vert` | Green, Average Neutral, 1,0 |
-| `SCNR_SHO_partiel` | Green, Average Neutral, 0,70 |
-| `LHE_150` | Kernel radius 150, Contrast limit 2,0, Amount 0,35, noyau circulaire |
-| `HDRMT_6` | 6 couches, 1 itération, To lightness, Preserve hue, Lightness mask |
-| `MT_reduction_etoiles` | Morphological Selection 0,25, Amount 0,60, 1 itération, élément circulaire 5×5 |
-| `SPFC_RGB_filtres` | SpectrophotometricFluxCalibration pour un RGB combiné (filtres Astrodon E-series et capteur IMX571, comme l'icône SPCC : **à remplacer par ton matériel**) |
-| `SPFC_couleur_OSC` | SPFC pour une caméra couleur : filtres Bayer Sony (R/G/B-UVIRcut), QE idéale |
-| `SPFC_L` | SPFC pour un master L : Gray filter Astronomik L-2 (à remplacer par ton filtre), QE idéale |
-| `SPFC_H` / `SPFC_O` / `SPFC_S` | SPFC en Narrowband mode : 656,3 / 500,7 / 672,4 nm, bande passante 3 nm (mets celle de ton filtre) |
-| `MGC_MARS` | MultiscaleGradientCorrection : base MARS, filtres MARS L/R/G/B, Gradient scale 1024, Structure separation 3, Model smoothness 1,0, modèle affiché |
-| `MGC_MARS_H` / `MGC_MARS_O` | Idem pour un master narrowband : filtre MARS Gray = `Ha` ou `OIII` (base MARS DR2, juin 2026). Pas de bande S dans MARS : GradientCorrection ou DBE pour S |
-| `DBE_base` | DynamicBackgroundExtraction sans points : Samples per row 15, radius 15, Tolerance 0,5, Shadows relaxation 3, Smoothing 0,25, Subtract, Normalize |
-| `NBN_SHO` / `NBN_HOO` | NarrowbandNormalization, palette SHO ou HOO, valeurs par défaut, sur l'image combinée étirée sans étoiles |
-| `CC_auto_WBPP` | Auto detect, Hot sigma 2,5, Cold désactivé ; à sélectionner comme modèle dans WBPP |
-
-Les process qui dépendent de ton matériel ou de ton image (WBPP, SPCC, SPFC, DBE, MGC, GHS) sont dans les fichiers par workflow ci-dessous.
-
-## 04-Materiel-QHY600-Antlia.xpsm (ton matériel)
-
-Icônes SPCC et SPFC configurées pour **QHY600 (capteur Sony IMX455) + filtres Antlia V Pro**, avec les courbes de filtres et de capteur issues de ta base de filtres PixInsight. Les cinq workflows utilisent les mêmes réglages.
-
-| Icône | Réglages |
-|---|---|
-| `SPCC_QHY600_Antlia` | Average Spiral Galaxy ; QE Sony IMX411/455/461/533/571 ; Antlia V Pro Series R, G, B ; neutralisation du fond (−2,80 / +2,00) sur l'image entière (ou aperçu du script Find Background, voir la description) ; graphes |
-| `SPFC_RGB_QHY600_Antlia` | Image RGB combinée : Antlia V Pro R, G, B ; QE IMX455 |
-| `SPFC_L_QHY600_Antlia` | Master L : courbe approchée du filtre Antlia V Pro L (420 à 715 nm, 95 %, d'après les caractéristiques publiées, la vraie courbe n'étant pas dans ta base) ; QE IMX455 |
-| `SPFC_H/O/S_QHY600_Antlia` | Narrowband mode, 656,3 / 500,7 / 672,4 nm, bande passante 3 nm (filtres Antlia 3 nm) ; QE IMX455 |
-
 ## Workflows (dossier `workflows/`)
 
 **Le plus simple : le préparateur de la page** (section « Préparer ma photo » de `docs/pixinsight-workflow.html`). Tu choisis tes filtres, tes méthodes (gradient, étirement, palette) et tes options ; il affiche les étapes de ta photo avec ce qu'il faut régler et télécharge un `.xpsm` qui ne contient qu'elles (dans la page publiée sur claude.ai, un `.zip` à décompresser). Ses données sont dans `preparer-data.json`, régénéré avec les icônes.
 
 **Mode rapide (galaxies LRGB et LHaRGB)** : `Rapide-LRGB.xpsm` (6 icônes) et `Rapide-LHaRGB.xpsm` (11 icônes) ; `C_L_rapide` (L étirée avant SXT, Unscreen, puis Etoiles_LRGB : luminance de L pour les étoiles) au chemin principal, trois autres versions en options P3 : `C_L_rapide_SXT_lineaire`, `C_L_rapide_SXT_lineaire_etoilesL`, `C_L_rapide_SXT_etire` ; presque tout préréglé, gradient par GradientCorrection seulement (MGC + MARS réservé au mode normal) : `E00_C_Preparation_rapide` (masters seuls ouverts, Apply Global : Renommer_auto → LinearPatternSubtraction sur les masters mono → Combinaison_RGB), icône `ImageSolver` sur RGB (seule : ImageSolver échoue dans un conteneur ; nécessaire à SPCC), `C_RGB_rapide` (GradientCorrection → BXT Correct Only → SPCC → BXT → SXT → NXT → Statistical Stretch 0,25 sans dialogue → GHS fond SP = HP = 0,22 → Etoiles_auto sur RGB_stars), `C_L_rapide` (GradientCorrection → BXT → SXT → NXT → fermeture de L_stars → Statistical Stretch 0,25 sans dialogue → GHS_auto_fond, fond mesuré et amené à 0,11), puis `C_Fin_rapide` (LRGB → HDRMT à 40 % → masque attaché → Courbes, saturation 0,68 → LHE rayon 150 → LHE_fin rayon 40 → masque retiré → NXT_final (Denoise 0,40) → Etoiles_screen → Fond_auto → Boost_final (masque L sans étoiles, gamma 2, étoiles exclues ; courbes c et S) → Fond_desature). L'icône `E01_Mode_rapide` donne l'ordre. Options : LinearPatternSubtraction, Renommer_auto, Combinaison_RGB (étapes de la préparation seules), ImageSolver_seul, Star_Stretch (étoiles à l'œil : décoche d'abord Etoiles_auto dans le conteneur RGB), C_Fin_simple (finition sans HDRMT, avec étoiles), C_Fin_sans_etoiles (pour insérer un Boost, HDRMT_50, HDRMT_eclat ou NXT final avant les étoiles), Boost_finition_light, Boost_finition, HDRMT_50, NXT final, Halo-B-Gon, MT, Etoiles_screen, Etoiles_reduites. Détails : section « Mode rapide » de la page.
 
-Sinon, deux fichiers par workflow :
-
-- **`Workflow-X.xpsm` — chemin principal** : les étapes standard seulement (MGC + MARS pour le gradient, GHS pour l'étirement — en LRGB et LHaRGB : Statistical Stretch sur le RGB et GHS sur L —, NarrowbandNormalization pour la palette), numérotées `E01_WBPP`, `E02_CC_auto`…
-- **`Options-X.xpsm` — options et alternatives** (`Opt_HDRMT`, `Opt_DBE`…) : à charger seulement si besoin ; la description de chaque icône commence par `OPTION — quand l'utiliser` ou `ALTERNATIVE — à la place de quoi`.
-
-- **`Conteneurs-X.xpsm` — le fichier unique conseillé (à tester)** : le chemin principal complet ET toutes les options, rangées dans la colonne de leur phase sous une icône-titre `P#_options` (`Opt_HDRMT_50` en Finition, `Opt_DBE` en Gradient…). Dans le chemin principal, chaque suite d'étapes sans réglage intermédiaire, appliquée à la même image, est remplacée par une icône *ProcessContainer* (un clic au lieu de trois à cinq) : LRGB 17 icônes au lieu de 24, LHaRGB 23 au lieu de 28, RGB-SHO 26 au lieu de 34, SHO sans RGB 24 au lieu de 31, HOO 24 au lieu de 28. Chaque étape garde les réglages de son icône. Le préparateur fait la même chose avec la case « Regrouper en conteneurs ».
+Mode normal : **`Conteneurs-X.xpsm`, un fichier par workflow** (les anciens `Workflow-X`, `Options-X` et les icônes unitaires `01`–`04` ont été retirés à la demande de l'utilisateur, qui n'utilise que les conteneurs et le mode rapide ; ils restent dans l'historique git) : le chemin principal complet ET toutes les options, rangées dans la colonne de leur phase sous une icône-titre `P#_options` (`Opt_HDRMT_50` en Finition, `Opt_DBE` en Gradient…). Dans le chemin principal, chaque suite d'étapes sans réglage intermédiaire, appliquée à la même image, est remplacée par une icône *ProcessContainer* (un clic au lieu de trois à cinq) : LRGB 17 icônes au lieu de 24, LHaRGB 23 au lieu de 28, RGB-SHO 26 au lieu de 34, SHO sans RGB 24 au lieu de 31, HOO 24 au lieu de 28. Chaque étape garde les réglages de son icône. Le préparateur fait la même chose avec la case « Regrouper en conteneurs ».
 
 | Conteneur | Image cible | Étapes |
 |---|---|---|

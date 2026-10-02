@@ -350,8 +350,7 @@ def write(filename, prefix, title, steps):
     main = [(b, ph, x) for b, ph, r, x, t in entries if L.is_default(r, prefix)]
     opts = [(b, ph, x) for b, ph, r, x, t in entries if not L.is_default(r, prefix)]
     off = 1 if main and main[0][0] == 'LinearPatternSubtraction' else 0   # LinearPatternSubtraction = E00, la suite garde ses numéros
-    save(filename, title + ' — chemin principal', *layout(main, lambda k, b: 'E%02d_%s' % (k - off, b)))
-    save(filename.replace('Workflow-', 'Options-'), title + ' — options et alternatives', *layout(opts, lambda k, b: 'Opt_%s' % b))
+    # Workflow-X et Options-X ne sont plus écrits (demande de l'utilisateur : seulement Conteneurs-X et Rapide-X)
     # Conteneurs-X.xpsm : chemin principal complet, suites sans réglage remplacées par un ProcessContainer
     byb = {b: x for b, ph, x in main}
     used = [c for c in L.CONTAINERS.get(prefix, []) if all(m in byb for m in c[2])]
@@ -476,7 +475,7 @@ D_SCREEN = ("Recombinaison des étoiles en mode screen : ~((~$T) * (~%s)). GLISS
             "Alternative avec réduction des étoiles : icône Etoiles_reduites (à la place de celle-ci).")
 D_BL = ("Recombinaison des étoiles + réduction Bill Blanshan (Transfer V2) en une seule formule, À LA PLACE d'Etoiles_screen : GLISSE l'icône sur l'image SANS étoiles finale ; elle est modifiée directement. "
         "W = ~((~$T)*(~%s)) est l'image avec étoiles (screen), puis la formule de Bill avec Img1 = $T (sans étoiles) : même calcul que Etoiles_screen suivi de Blanshan, sans vue intermédiaire. "
-        "S = 0,20 dans cette icône (valeur de Bill : 0,15 ; plus bas = étoiles plus petites ; étoiles trop petites -> 0,25, ou saute cette étape). Les versions V3 et les méthodes Halo/Star sont dans 01-PixelMath-formules.xpsm.")
+        "S = 0,20 dans cette icône (valeur de Bill : 0,15 ; plus bas = étoiles plus petites ; étoiles trop petites -> 0,25, ou saute cette étape). Les versions V3 et les méthodes Halo/Star sont décrites dans la fiche (section réduction d'étoiles).")
 D_MT = ("Alternative : MorphologicalTransformation sur l'image d'étoiles seule (ou avec un masque d'étoiles), AVANT Etoiles_screen. Morphological Selection 0,25 (sous 0,5 = érosion), Amount 0,60, 1 itération, élément circulaire 5x5.")
 D_CURVES = ("CurvesTransformation — sur l'image sans étoiles étirée, sous masque de luminance (icône Masque_L juste avant). "
             "Préréglé : courbe en S sur RGB/K (0,25 → 0,19 ; 0,75 → 0,81) et saturation (canal S, milieu monté de 0,5 à 0,65), interpolation Akima : contraste d'environ deux passes de l'ancienne courbe légère, saturation modérée (0,72 jugé trop saturé sur NGC 1532). Trop saturé -> milieu S à 0,60 ; couleurs ternes -> 0,72 ; trop contrasté -> 0,21 / 0,79 ; pas assez -> option Boost_finition. "
@@ -847,8 +846,7 @@ for i, (item, desc) in enumerate(mat):
     item = described(item, desc)
     insts.append(shorten(item[1], '', item[0]))
     icons.append('   <icon id="%s" instance="%s_instance" xpos="30" ypos="%d" workspace="Workspace01"/>' % (item[0], item[0], 30 + 30 * i))
-open(os.path.join(OUT, '..', '04-Materiel-QHY600-Antlia.xpsm'), 'w', encoding='utf-8').write(
-    M.HEADER + '<!-- Icônes pour ' + MATERIEL + ' -->\n' + '\n'.join(insts) + '\n' + '\n'.join(icons) + '\n</xpsm>\n')
+# 04-Materiel-QHY600-Antlia.xpsm n'est plus écrit (seulement Conteneurs-X et Rapide-X)
 for fn, pre, title, steps in [
     ('Workflow-LRGB.xpsm', 'LRGB', 'Workflow LRGB', lrgb),
     ('Workflow-LHaRGB.xpsm', 'LHA', 'Workflow LHaRGB', lhargb),
