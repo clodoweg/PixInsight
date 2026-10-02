@@ -860,7 +860,7 @@ T_RAPIDE = {
           "E03 C_RGB_rapide sur RGB (GradientCorrection, BXT Correct Only, SPCC, BXT, SXT, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond SP = HP = 0,22, Etoiles_auto) : RGB étiré sans étoiles et RGB_stars étirée (courbe de Star Stretch, amount 6, saturation 1,3). "
           "E04 C_L_rapide sur L (GradientCorrection, BXT, SXT, NXT, fermeture de L_stars, Statistical Stretch 0,25 sans dialogue, puis GHS_auto_fond : fond mesuré et amené à 0,11). "
           "E05 C_Fin_rapide sur RGB : LRGB (L ajoutée), HDRMT à 40 % (détail du cœur), masque de luminance créé et attaché, Courbes (saturation 0,68), LHE (rayon 150), LHE_fin (rayon 40), masque retiré, étoiles RGB_stars ajoutées, Fond_auto (fond mesuré, amené à 0,12 et neutre) : image finie. "
-          "Ancienne finition (HDRMT après LHE, 3 LHE) : C_Fin_rapide_ancien ; sans HDRMT : C_Fin_simple (options). "
+          "Sans HDRMT : C_Fin_simple (options). "
           "Pour un Boost, HDRMT_50, HDRMT_eclat (cœur détaillé ET lumineux) ou NXT final : à la place d'E05, C_Fin_sans_etoiles (options), puis l'option, puis Etoiles_screen ou Etoiles_reduites, puis Fond_auto (options). Halo-B-Gon : sur RGB_stars avant E05. Étoiles réglées à l'œil : décoche Etoiles_auto dans E03, puis Star_Stretch (options) sur RGB_stars. "
           "COMPARER L'ÉTIREMENT DE L (options, à la place d'E04, sur une copie de L) : C_L_rapide_ghs (GHS_auto : SP = fond × 0,5, b = 6, HP 0,85, médiane vers 0,25, puis même fond 0,11) ; "
           "ou C_L_rapide_lineaire (sans étirement) puis GHS_1_premier, GHS_2_contraste, GHS_3_fond à la main. "
@@ -870,7 +870,7 @@ T_RAPIDE = {
          "E02 ImageSolver sur RGB. E03 GradientCorrection sur R. E04 C_RGB_couleur_rapide sur RGB (GradientCorrection, BXT Correct Only, SPCC, BXT). "
          "E05 C_H_rapide sur H (GradientCorrection, BXT). E06 Continuum_H (k à régler), puis E07 H_dans_RGB sur RGB. "
          "E08 C_RGB_fin_rapide sur RGB (SXT, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond 0,22, Etoiles_auto sur RGB_stars). E09 C_L_rapide sur L (Statistical Stretch, GHS_auto_fond) ; pour comparer : C_L_rapide_ghs, ou C_L_rapide_lineaire puis les 3 GHS à la main (options). "
-         "E10 C_Fin_rapide sur RGB (LRGB, HDRMT à 40 %, masque attaché, Courbes, LHE, LHE_fin, masque retiré, étoiles, Fond_auto) : image finie ; ancienne version : C_Fin_rapide_ancien ; sans HDRMT : C_Fin_simple. Boost, HDRMT_50, HDRMT_eclat, NXT final : C_Fin_sans_etoiles, l'option, puis Etoiles_screen, puis Fond_auto. Étapes de la préparation seules : options de la phase 1."),
+         "E10 C_Fin_rapide sur RGB (LRGB, HDRMT à 40 %, masque attaché, Courbes, LHE, LHE_fin, masque retiré, étoiles, Fond_auto) : image finie  ; sans HDRMT : C_Fin_simple. Boost, HDRMT_50, HDRMT_eclat, NXT final : C_Fin_sans_etoiles, l'option, puis Etoiles_screen, puis Fond_auto. Étapes de la préparation seules : options de la phase 1."),
 }
 WHEN_R = {'Fond_auto': "tout à la fin, après Etoiles_screen ou Etoiles_reduites (déjà inclus dans C_Fin_rapide et C_Fin_simple) : mesure le fond et l'amène à 0,12, neutre",
           'Etoiles_screen': "après C_Fin_sans_etoiles (et l'option choisie : Boost, HDRMT_50, HDRMT_eclat, NXT final) : remet les étoiles RGB_stars sur l'image ; dernière étape",
@@ -903,18 +903,12 @@ def write_rapide(filename, prefix, title, steps, main_spec, opt_spec):
 
 def rapide_common_opts(steps):
     return [(2, *pick(steps, 'ImageSolver_seul')), (4, *pick(steps, 'Star_Stretch')),
-            (6, fin_ancien(steps), ''),
             (6, cont('C_Fin_simple', [pick(steps, b)[0] for b in ('LRGB_ajout_L', 'Masque_L', 'Courbes', 'LHE', 'LHE_fin', 'Masque_retirer', 'Etoiles_screen')] + [script('Fond_auto', '')]), ''),
             (6, finition_cont(steps, 'C_Fin_sans_etoiles', avant=['LRGB_ajout_L']), ''),
             (6, *pick(steps, 'Boost_finition_light')), (6, *pick(steps, 'Boost_finition')), (6, *pick(steps, 'HDRMT_50')), (6, *pick(steps, 'HDRMT_eclat')), (6, *pick(steps, 'NXT_final')),
             # étoiles dans la même colonne (P6) : après C_Fin_sans_etoiles et une option, on remet les étoiles juste en dessous
             (6, *pick(steps, 'Halo_B_Gon')), (6, *pick(steps, 'MT_etoiles')), (6, *pick(steps, 'Etoiles_screen')), (6, *pick(steps, 'Etoiles_reduites')),
             (6, script('Fond_auto', ''), '')]
-
-def fin_ancien(steps):
-    """Ancienne finition (13 étapes) : LRGB, C_Finition, HDRMT_eclat mis à plat, étoiles, fond. Gardée en option pour comparer."""
-    items = [pick(steps, b)[0] for b in ('LRGB_ajout_L', 'Masque_L', 'Courbes', 'LHE', 'LHE_fin', 'Masque_retirer')]
-    return cont('C_Fin_rapide_ancien', items + hdrmt_eclat_items() + [pick(steps, 'Etoiles_screen')[0], script('Fond_auto', '')])
 
 def rapide_end(steps):
     """Finition en un glisser, dans l'ordre habituel : HDRMT d'abord (plage dynamique), puis un seul masque, une seule courbe
