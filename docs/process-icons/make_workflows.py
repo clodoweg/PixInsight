@@ -1035,7 +1035,9 @@ v = {'titre': V_NOTE, 'L': l_desc(True, True)}
 for fn, pre, title, steps, spec, bxt in [('Rapide-LRGB.xpsm', 'LRGB', 'Workflow LRGB', lrgb, rapide_lrgb, lambda: M.bxt('BXT_L', False, 0.25, 0.0, 0.80)),
                                           ('Rapide-LHaRGB.xpsm', 'LHA', 'Workflow LHaRGB', lhargb, rapide_lha, lambda: M.bxt('BXT_L_H', False, 0.25, 0.0, 0.80))]:
     rgb_opt = rgb_sxt_etire_opts()[0 if pre == 'LRGB' else 1]
-    print(fn, 'principal, options :', write_rapide(fn, pre, title, steps, spec(v, True, True), prep_opts(steps) + [(3, rgb_opt, '')] + l_opts(bxt) + rapide_common_opts(steps)))
+    # options reprises des conteneurs (demande de l'utilisateur) : Find_Background ; LHaRGB : Continuum_auto, H_dans_L
+    extra = [(3, *pick(steps, 'Find_Background'))] + ([(3, *pick(steps, 'Continuum_auto')), (3, *pick(steps, 'H_dans_L'))] if pre == 'LHA' else [])
+    print(fn, 'principal, options :', write_rapide(fn, pre, title, steps, spec(v, True, True), prep_opts(steps) + extra + [(3, rgb_opt, '')] + l_opts(bxt) + rapide_common_opts(steps)))
 
 DATA['header'] = M.HEADER
 json.dump(DATA, open(os.path.join(OUT, '..', 'preparer-data.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))

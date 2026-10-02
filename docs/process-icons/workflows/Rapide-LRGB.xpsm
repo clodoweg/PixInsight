@@ -1077,6 +1077,78 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <instance class="NoOperation" version="256" id="P3_options_instance">
       <description>OPTIONS de la phase 3 — Linéaire : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
    </instance>
+   <instance class="Script" version="256" id="Opt_Find_Background_instance">
+      <description>OPTION — champ rempli de nébuleuse : fond de référence pour SPCC.
+
+LANCEMENT : double-clic sur l'icône, puis Apply Global. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
+
+PRÉRÉGLÉ : rien.
+
+À RÉGLER : glisse sur l'image : crée l'aperçu Background ; dans SPCC, Region of Interest › From Preview.
+
+Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/FindBackground.js</parameter>
+      <parameter id="md5sum">4af61e322ea5149f93fdcfe6ef0e62bd</parameter>
+      <table id="parameters" rows="14">
+         <tr>
+            <td id="id">filterAvg</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">filterSdev</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">filterPoisonIndex</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">filterMAAD</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">filterObjects</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">printInformation</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">generatePreview</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">previewName</td>
+            <td id="value">Background</td>
+         </tr>
+         <tr>
+            <td id="id">slowSearch</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">fastSearch</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">size</td>
+            <td id="value">50</td>
+         </tr>
+         <tr>
+            <td id="id">spacingRate</td>
+            <td id="value">2</td>
+         </tr>
+         <tr>
+            <td id="id">searchGridSize</td>
+            <td id="value">100</td>
+         </tr>
+         <tr>
+            <td id="id">startingPoints</td>
+            <td id="value">40</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
+   </instance>
    <instance class="ProcessContainer" id="Opt_C_RGB_rapide_SXT_etire_instance">
       <instance class="GradientCorrection" version="1" enabled="true">
          <parameter id="reference" value="0.50"/>
@@ -3967,10 +4039,11 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <icon id="E03_C_RGB_rapide" instance="E03_C_RGB_rapide_instance" xpos="421" ypos="64" workspace="Workspace01"/>
    <icon id="E04_C_L_rapide" instance="E04_C_L_rapide_instance" xpos="421" ypos="94" workspace="Workspace01"/>
    <icon id="P3_options" instance="P3_options_instance" xpos="421" ypos="140" workspace="Workspace01"/>
-   <icon id="Opt_C_RGB_rapide_SXT_etire" instance="Opt_C_RGB_rapide_SXT_etire_instance" xpos="421" ypos="174" workspace="Workspace01"/>
-   <icon id="Opt_C_L_rapide_SXT_lineaire" instance="Opt_C_L_rapide_SXT_lineaire_instance" xpos="421" ypos="204" workspace="Workspace01"/>
-   <icon id="Opt_C_L_rapide_SXT_lineaire_etoilesL" instance="Opt_C_L_rapide_SXT_lineaire_etoilesL_instance" xpos="421" ypos="234" workspace="Workspace01"/>
-   <icon id="Opt_C_L_rapide_SXT_etire" instance="Opt_C_L_rapide_SXT_etire_instance" xpos="421" ypos="264" workspace="Workspace01"/>
+   <icon id="Opt_Find_Background" instance="Opt_Find_Background_instance" xpos="421" ypos="174" workspace="Workspace01"/>
+   <icon id="Opt_C_RGB_rapide_SXT_etire" instance="Opt_C_RGB_rapide_SXT_etire_instance" xpos="421" ypos="204" workspace="Workspace01"/>
+   <icon id="Opt_C_L_rapide_SXT_lineaire" instance="Opt_C_L_rapide_SXT_lineaire_instance" xpos="421" ypos="234" workspace="Workspace01"/>
+   <icon id="Opt_C_L_rapide_SXT_lineaire_etoilesL" instance="Opt_C_L_rapide_SXT_lineaire_etoilesL_instance" xpos="421" ypos="264" workspace="Workspace01"/>
+   <icon id="Opt_C_L_rapide_SXT_etire" instance="Opt_C_L_rapide_SXT_etire_instance" xpos="421" ypos="294" workspace="Workspace01"/>
    <icon id="P4_Etirement" instance="P4_Etirement_instance" xpos="669" ypos="20" workspace="Workspace01"/>
    <icon id="P4_options" instance="P4_options_instance" xpos="669" ypos="80" workspace="Workspace01"/>
    <icon id="Opt_GHS_1_premier" instance="Opt_GHS_1_premier_instance" xpos="669" ypos="114" workspace="Workspace01"/>
