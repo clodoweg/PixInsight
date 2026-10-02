@@ -3,7 +3,8 @@
 // ----------------------------------------------------------------------------
 // Appelle directement le moteur LPSEngine de Vicent Peris
 // (<pjsr/LinearPatternSubtraction.jsh>, livré avec PixInsight) avec des
-// réglages fixes, sur toutes les images ouvertes (par défaut) ou une seule.
+// réglages fixes, sur toutes les images MONO ouvertes (par défaut : les
+// masters ; une image couleur ouverte est ignorée) ou une seule.
 // Zone de fond : choisie automatiquement (la plus sombre) si autoBackground.
 //
 // Installation (Mac et PC) : créer le dossier clodoweg dans src/scripts de
@@ -135,8 +136,15 @@ function main()
       for ( let k = 0; k < all.length; ++k )
       {
          let id = all[ k ].mainView.id;
-         if ( id != "LS" && id != "SS" && id != "pattern" && id.indexOf( "LS" ) != 0 && id.indexOf( "SS" ) != 0 && id.indexOf( "pattern" ) != 0 )
-            windows.push( all[ k ] );
+         if ( id == "LS" || id == "SS" || id == "pattern" || id.indexOf( "LS" ) == 0 || id.indexOf( "SS" ) == 0 || id.indexOf( "pattern" ) == 0 )
+            continue;
+         // Les masters sont mono : une image couleur ouverte (RGB combiné, image traitée) n'est pas touchée.
+         if ( all[ k ].mainView.image.isColor )
+         {
+            console.writeln( TITLE + " : " + id + " (couleur) ignorée." );
+            continue;
+         }
+         windows.push( all[ k ] );
       }
    }
    else if ( Parameters.isViewTarget )
