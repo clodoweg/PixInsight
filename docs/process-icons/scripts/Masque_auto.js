@@ -14,6 +14,11 @@
 //   masque est prise sur cette vue au lieu de l'image cible (même taille) ;
 //   vide = l'image cible. Sert au Boost_final, sur l'image finie avec étoiles :
 //   masque tiré de L sans étoiles, donc les étoiles ne sont pas touchées.
+// exclure = nom d'une image d'étoiles (par exemple RGB_stars, étirée) : les
+//   étoiles sont retirées du masque (masque × (1 − min(1, exclureGain ×
+//   étoiles lissées de 3 px)), exclureGain 4). Sert au Boost_final : sans
+//   cela, les étoiles posées sur la galaxie, là où L sans étoiles est clair,
+//   seraient boostées aussi.
 // mode = retirer : détache le masque de l'image et ferme masque_L.
 //
 // Sert dans les conteneurs de finition de la fiche (C_Finition, Boost,
@@ -94,6 +99,49 @@ function main()
    if ( mask.isNull )
       throw new Error( TITLE + " : le masque " + name + " n'a pas été créé." );
 
+   let exclId = param( "exclure", "" );
+   if ( exclId.length > 0 )
+   {
+      let ew = ImageWindow.windowById( exclId );
+      if ( ew.isNull || ew.mainView.image.width != view.image.width || ew.mainView.image.height != view.image.height )
+         console.warningln( TITLE + " : image d'étoiles " + exclId + " introuvable ou de taille différente, étoiles non retirées du masque." );
+      else
+      {
+         let gain = parseFloat( param( "exclureGain", "4" ) );
+         let tmp = "masque_etoiles";
+         let o = ImageWindow.windowById( tmp );
+         if ( !o.isNull )
+            o.forceClose();
+         let E = new PixelMath;
+         E.expression = ew.mainView.image.isColor ? "0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2]" : "$T";
+         E.useSingleExpression = true;
+         E.createNewImage = true;
+         E.showNewImage = false;
+         E.newImageId = tmp;
+         E.newImageColorSpace = PixelMath.prototype.Gray;
+         E.newImageSampleFormat = PixelMath.prototype.f32;
+         E.rescale = false;
+         E.truncate = true;
+         E.executeOn( ew.mainView );
+         let tw = ImageWindow.windowById( tmp );
+         let B = new Convolution;
+         B.mode = Convolution.prototype.Parametric;
+         B.sigma = 3;
+         B.shape = 2;
+         B.aspectRatio = 1;
+         B.rotationAngle = 0;
+         B.executeOn( tw.mainView );
+         let X = new PixelMath;
+         X.expression = "$T*(1 - min(1, " + gain + "*" + tmp + "))";
+         X.useSingleExpression = true;
+         X.createNewImage = false;
+         X.rescale = false;
+         X.truncate = true;
+         X.executeOn( mask.mainView );
+         tw.forceClose();
+      }
+   }
+
    if ( flou > 0 )
    {
       let C = new Convolution;
@@ -109,7 +157,7 @@ function main()
    window.maskEnabled = true;
    window.maskInverted = false;
    window.maskVisible = false;
-   console.noteln( TITLE + " : " + name + " (tiré de " + src.id + ", s = " + s + ", gamma " + gamma + ", flou " + flou + " px) attaché à " + view.id + "." );
+   console.noteln( TITLE + " : " + name + " (tiré de " + src.id + ", s = " + s + ", gamma " + gamma + (exclId.length > 0 ? ", sans les étoiles de " + exclId : "") + ", flou " + flou + " px) attaché à " + view.id + "." );
 }
 
 main();
