@@ -5,7 +5,9 @@
 // linéaire créée par StarXTerminator), quelle que soit l'image sur laquelle
 // on glisse l'icône : elle peut donc être la dernière étape d'un conteneur
 // lancé sur RGB (C_RGB_rapide, C_RGB_fin_rapide).
-//   1. étirement y = 3^a·x / ((3^a − 1)·x + 1), a = amount (6 par défaut) ;
+//   1. étirement y = 3^a·x / ((3^a − 1)·x + 1), a = amount (6 par défaut ;
+//      0 = pas d'étirement, pour des étoiles déjà étirées : SXT passé sur
+//      l'image étirée) ;
 //      c'est la courbe de Star Stretch (SetiAstro, Franklin Marek), refaite
 //      ici avec PixelMath ;
 //   2. image couleur : ColorSaturation par teinte, satAmount × 0,4 sur les
@@ -45,14 +47,17 @@ function main()
    }
    let view = w.mainView;
 
-   let k = Math.pow( 3, amount );
-   let P = new PixelMath;
-   P.expression = "(" + k + "*$T)/((" + k + " - 1)*$T + 1)";
-   P.useSingleExpression = true;
-   P.createNewImage = false;
-   P.rescale = false;
-   P.truncate = true;
-   P.executeOn( view );
+   if ( amount > 0 )
+   {
+      let k = Math.pow( 3, amount );
+      let P = new PixelMath;
+      P.expression = "(" + k + "*$T)/((" + k + " - 1)*$T + 1)";
+      P.useSingleExpression = true;
+      P.createNewImage = false;
+      P.rescale = false;
+      P.truncate = true;
+      P.executeOn( view );
+   }
 
    if ( view.image.isColor )
    {

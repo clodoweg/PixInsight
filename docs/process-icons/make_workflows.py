@@ -49,6 +49,7 @@ SCRIPTS = {
     'Fermer_vues': ('$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js', '', [('views', '')], L_GLOBAL),
     'Renommer_auto': ('$PXI_SRCDIR/scripts/clodoweg/Renommer_auto.js', '', [], L_GLOBAL),
     'Etoiles_auto': ('$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js', '', [('vue', 'RGB_stars'), ('amount', '6'), ('satAmount', '1.3'), ('scnr', 'false')], L_DRAG),
+    'Etoiles_auto_etire': ('$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js', '', [('vue', 'RGB_stars'), ('amount', '0'), ('satAmount', '1.3'), ('scnr', 'false')], L_DRAG),
     'Etoiles_LRGB': ('$PXI_SRCDIR/scripts/clodoweg/Etoiles_LRGB.js', '', [('etoilesL', 'L_stars'), ('etoilesRGB', 'RGB_stars'), ('etirerL', 'true'), ('amount', '6'), ('partL', '0.5'), ('saturation', '0.35')], L_DRAG),
     'Etoiles_LRGB_etire': ('$PXI_SRCDIR/scripts/clodoweg/Etoiles_LRGB.js', '', [('etoilesL', 'L_stars'), ('etoilesRGB', 'RGB_stars'), ('etirerL', 'false'), ('amount', '6'), ('partL', '0.5'), ('saturation', '0.35')], L_DRAG),
     'Fond_desature': ('$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js', '', [('debut', '0.03'), ('fin', '0.15'), ('violetFin', '0.30'), ('flou', '3')], L_DRAG),
@@ -993,6 +994,13 @@ def l_desc(sxt_etire, etoilesL):
         d += ", fermeture de L_stars"
     return d
 
+def rgb_sxt_etire_opts():
+    """Options P3 : conteneur RGB avec SXT APRÈS l'étirement (Unscreen) ; RGB_stars sort déjà étirée, Etoiles_auto ne fait que la saturation (amount 0)."""
+    lrgb_c = cont('C_RGB_rapide_SXT_etire', [gc_r(), M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), spcc_perso('SPCC'), bxt_rgb(),
+                                              M.nxt('NXT_RGB', 0.80, 1), stat_auto(), GHS_FOND_R(), M.sxt('SXT_RGB_etire', True), script('Etoiles_auto_etire', '')])
+    lha_c = cont('C_RGB_fin_rapide_SXT_etire', [M.nxt('NXT_RGB', 0.80, 1), stat_auto(), GHS_FOND_R(), M.sxt('SXT_RGB_etire', True), script('Etoiles_auto_etire', '')])
+    return lrgb_c, lha_c
+
 def prep_rapide(steps):
     """E00 : renommage, LinearPatternSubtraction (masters mono ouverts), combinaison RGB, en un conteneur."""
     return (1, cont('C_Preparation_rapide', [pick(steps, b)[0] for b in ('Renommer_auto', 'LinearPatternSubtraction', 'Combinaison_RGB')]), '')
@@ -1022,7 +1030,8 @@ V_NOTE = ("C_L_rapide : L étirée avant SXT (Unscreen) et luminance de L_stars 
 v = {'titre': V_NOTE, 'L': l_desc(True, True)}
 for fn, pre, title, steps, spec, bxt in [('Rapide-LRGB.xpsm', 'LRGB', 'Workflow LRGB', lrgb, rapide_lrgb, lambda: M.bxt('BXT_L', False, 0.25, 0.0, 0.80)),
                                           ('Rapide-LHaRGB.xpsm', 'LHA', 'Workflow LHaRGB', lhargb, rapide_lha, lambda: M.bxt('BXT_L_H', False, 0.25, 0.0, 0.80))]:
-    print(fn, 'principal, options :', write_rapide(fn, pre, title, steps, spec(v, True, True), prep_opts(steps) + l_opts(bxt) + rapide_common_opts(steps)))
+    rgb_opt = rgb_sxt_etire_opts()[0 if pre == 'LRGB' else 1]
+    print(fn, 'principal, options :', write_rapide(fn, pre, title, steps, spec(v, True, True), prep_opts(steps) + [(3, rgb_opt, '')] + l_opts(bxt) + rapide_common_opts(steps)))
 
 DATA['header'] = M.HEADER
 json.dump(DATA, open(os.path.join(OUT, '..', 'preparer-data.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
