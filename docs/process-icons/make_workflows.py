@@ -847,15 +847,20 @@ T_RAPIDE = {
           "E06 C_L_rapide sur L (GradientCorrection, BXT, SXT, NXT, fermeture de L_stars, GHS_auto : 1er étirement GHS calculé, médiane vers 0,25, GHS_2_contraste, puis GHS_auto_fond : fond mesuré et amené à 0,11). "
           "E07 C_Fin_rapide sur RGB : LRGB (L ajoutée), masque de luminance créé et attaché, Courbes, LHE, LHE_fin, masque retiré, étoiles RGB_stars ajoutées : image finie. "
           "Pour un Boost, HDRMT_50 ou NXT final : à la place d'E07, C_Fin_sans_etoiles (options), puis l'option, puis Etoiles_screen ou Etoiles_reduites (options). Halo-B-Gon : sur RGB_stars avant E07. Étoiles réglées à l'œil : décoche Etoiles_auto dans E05, puis Star_Stretch (options) sur RGB_stars. "
+          "COMPARER L'ÉTIREMENT DE L (options, à la place d'E06, sur une copie de L) : C_L_rapide_stat (Statistical Stretch 0,25 puis même fond 0,11) ; "
+          "ou C_L_rapide_lineaire (sans étirement) puis GHS_1_premier, GHS_2_contraste, GHS_3_fond à la main. "
           "ImageSolver s'arrête après la date : ImageSolver_seul des options. Une étape en erreur arrête un conteneur : lis la console."),
  'LHA': ("MODE RAPIDE LHaRGB — icône de repère, sans effet. Pas de MARS (mode soigné). "
          "E00 LinearPatternSubtraction (glisse sur un master). E02 Renommer_auto. E03 Combinaison_RGB (R, G, B restent ouvertes : R sert à Continuum_H). "
          "E04 ImageSolver sur RGB. E05 GradientCorrection sur R. E06 C_RGB_couleur_rapide sur RGB (GradientCorrection, BXT Correct Only, SPCC, BXT). "
          "E07 C_H_rapide sur H (GradientCorrection, BXT). E08 Continuum_H (k à régler), puis E09 H_dans_RGB sur RGB. "
-         "E10 C_RGB_fin_rapide sur RGB (SXT, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond 0,22, Etoiles_auto sur RGB_stars). E11 C_L_rapide sur L (GHS_auto, GHS_2, GHS_auto_fond). "
+         "E10 C_RGB_fin_rapide sur RGB (SXT, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond 0,22, Etoiles_auto sur RGB_stars). E11 C_L_rapide sur L (GHS_auto, GHS_2, GHS_auto_fond) ; pour comparer : C_L_rapide_stat, ou C_L_rapide_lineaire puis les 3 GHS à la main (options). "
          "E12 C_Fin_rapide sur RGB (LRGB, masque attaché, Courbes, LHE, LHE_fin, masque retiré, étoiles) : image finie. Boost, HDRMT_50, NXT final : C_Fin_sans_etoiles, l'option, puis Etoiles_screen."),
 }
-WHEN_R = {'Star_Stretch': "pour régler les étoiles à l'œil : décoche d'abord Etoiles_auto dans le conteneur RGB (sinon double étirement)",
+WHEN_R = {'GHS_1_premier': "après C_L_rapide_lineaire, pour étirer L à la main et comparer (puis GHS_2_contraste et GHS_3_fond)",
+          'GHS_2_contraste': "après GHS_1_premier (L étirée à la main)",
+          'GHS_3_fond': "après GHS_2_contraste (L étirée à la main) : fond vers 0,11-0,13",
+          'Star_Stretch': "pour régler les étoiles à l'œil : décoche d'abord Etoiles_auto dans le conteneur RGB (sinon double étirement)",
           'GradientCorrection': "à la place de MGC_MARS si la cible est hors couverture MARS (sud au-delà de −15° environ) ou si MGC échoue",
           'Etoiles_reduites': L.WHEN['Etoiles_reduites']}
 
@@ -893,8 +898,19 @@ def note_rapide(prefix):
 bxt_rgb = lambda: M.bxt('BXT_RGB', False, 0.25, 0.0, 0.50)
 gc_r = lambda: M.instance('GradientCorrection', 'GradientCorrection', {'generateGradientModel': False})   # mode rapide : pas de MARS
 # L : GHS (GHS_auto calcule le 1er étirement, GHS_2 du mode normal, puis GHS_auto_fond mesure le fond et l'amène à 0,11) ; Statistical Stretch : RGB seulement.
-l_rapide = lambda bxt: cont('C_L_rapide', [gc_r(), bxt, M.sxt('SXT_lineaire', False), M.nxt('NXT_L', 0.60, 1), fermer('Fermer_L_stars', 'L_stars'), script('GHS_auto', ''),
-                                           ghs('GHS_2_contraste', 4, hp=0.9, sf=1.0, sp=0.35), script('GHS_auto_fond', '')])
+def l_rapide(bxt, mode='ghs'):
+    """mode ghs : chemin principal ; stat : Statistical Stretch puis le même fond (comparaison) ; lineaire : sans étirement (GHS à la main)."""
+    base = [gc_r(), bxt, M.sxt('SXT_lineaire', False), M.nxt('NXT_L', 0.60, 1), fermer('Fermer_L_stars', 'L_stars')]
+    if mode == 'ghs':
+        return cont('C_L_rapide', base + [script('GHS_auto', ''), ghs('GHS_2_contraste', 4, hp=0.9, sf=1.0, sp=0.35), script('GHS_auto_fond', '')])
+    if mode == 'stat':
+        return cont('C_L_rapide_stat', base + [stat_auto(), script('GHS_auto_fond', '')])
+    return cont('C_L_rapide_lineaire', base)
+
+def l_opts(steps, bxt):
+    """Options de L pour comparer : Statistical Stretch, ou linéaire + les 3 GHS à la main."""
+    return [(3, l_rapide(bxt(), 'stat'), ''), (3, l_rapide(bxt(), 'lineaire'), ''),
+            (4, *pick(steps, 'GHS_1_premier')), (4, *pick(steps, 'GHS_2_contraste')), (4, *pick(steps, 'GHS_3_fond'))]
 
 rapide_lrgb = [(1, *pick(lrgb, 'LinearPatternSubtraction')), note_rapide('LRGB'), (1, *pick(lrgb, 'Renommer_auto')), (1, *pick(lrgb, 'Combinaison_RGB')),
     (2, solver_container(), ''),
@@ -910,9 +926,9 @@ rapide_lha = [(1, *pick(lhargb, 'LinearPatternSubtraction')), note_rapide('LHA')
     (3, cont('C_RGB_fin_rapide', [M.sxt('SXT_lineaire', False), M.nxt('NXT_RGB', 0.80, 1), stat_auto(), GHS_FOND_R(), script('Etoiles_auto', '')]), ''),
     (3, l_rapide(M.bxt('BXT_L_H', False, 0.25, 0.0, 0.80)), '')] + rapide_end(lhargb)
 
-for fn, pre, title, steps, spec in [('Rapide-LRGB.xpsm', 'LRGB', 'Workflow LRGB', lrgb, rapide_lrgb),
-                                     ('Rapide-LHaRGB.xpsm', 'LHA', 'Workflow LHaRGB', lhargb, rapide_lha)]:
-    print(fn, 'principal, options :', write_rapide(fn, pre, title, steps, spec, rapide_common_opts(steps)))
+for fn, pre, title, steps, spec, bxt in [('Rapide-LRGB.xpsm', 'LRGB', 'Workflow LRGB', lrgb, rapide_lrgb, lambda: M.bxt('BXT_L', False, 0.25, 0.0, 0.80)),
+                                          ('Rapide-LHaRGB.xpsm', 'LHA', 'Workflow LHaRGB', lhargb, rapide_lha, lambda: M.bxt('BXT_L_H', False, 0.25, 0.0, 0.80))]:
+    print(fn, 'principal, options :', write_rapide(fn, pre, title, steps, spec, l_opts(steps, bxt) + rapide_common_opts(steps)))
 
 DATA['header'] = M.HEADER
 json.dump(DATA, open(os.path.join(OUT, '..', 'preparer-data.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
