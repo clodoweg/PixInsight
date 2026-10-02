@@ -7,6 +7,10 @@
 //   passe à 0 (protégé), le reste va de 0 à 1 ; puis léger flou gaussien
 //   (flou = sigma en pixels, 0 = aucun) et masque ATTACHÉ à l'image (non
 //   inversé, sans affichage rouge). Un ancien masque_L est remplacé.
+// source = nom d'une autre vue (par exemple L, sans étoiles) : la luminance du
+//   masque est prise sur cette vue au lieu de l'image cible (même taille) ;
+//   vide = l'image cible. Sert au Boost_final, sur l'image finie avec étoiles :
+//   masque tiré de L sans étoiles, donc les étoiles ne sont pas touchées.
 // mode = retirer : détache le masque de l'image et ferme masque_L.
 //
 // Sert dans les conteneurs de finition de la fiche (C_Finition, Boost,
@@ -56,7 +60,19 @@ function main()
       old.forceClose();
    }
 
-   let lum = view.image.isColor ? "(0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2])" : "$T";
+   let src = view;
+   let srcId = param( "source", "" );
+   if ( srcId.length > 0 )
+   {
+      let sw = ImageWindow.windowById( srcId );
+      if ( sw.isNull )
+         console.warningln( TITLE + " : vue source " + srcId + " introuvable, masque tiré de " + view.id + "." );
+      else if ( sw.mainView.image.width != view.image.width || sw.mainView.image.height != view.image.height )
+         console.warningln( TITLE + " : " + srcId + " n'a pas la taille de " + view.id + ", masque tiré de " + view.id + "." );
+      else
+         src = sw.mainView;
+   }
+   let lum = src.image.isColor ? "(0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2])" : "$T";
    let P = new PixelMath;
    P.expression = "max(0, (" + lum + " - " + s + ") / (1 - " + s + "))";
    P.useSingleExpression = true;
@@ -67,7 +83,7 @@ function main()
    P.newImageSampleFormat = PixelMath.prototype.f32;
    P.rescale = false;
    P.truncate = true;
-   P.executeOn( view );
+   P.executeOn( src );
 
    let mask = ImageWindow.windowById( name );
    if ( mask.isNull )
@@ -88,7 +104,7 @@ function main()
    window.maskEnabled = true;
    window.maskInverted = false;
    window.maskVisible = false;
-   console.noteln( TITLE + " : " + name + " (s = " + s + ", flou " + flou + " px) attaché à " + view.id + "." );
+   console.noteln( TITLE + " : " + name + " (tiré de " + src.id + ", s = " + s + ", flou " + flou + " px) attaché à " + view.id + "." );
 }
 
 main();

@@ -44,6 +44,7 @@ SCRIPTS = {
     'Combinaison_RGB': ('$PXI_SRCDIR/scripts/clodoweg/Combiner_RGB.js', '',
              [('red', 'R'), ('green', 'G'), ('blue', 'B'), ('newId', 'RGB'), ('closeSources', 'true'), ('copyKeywords', 'true')], L_GLOBAL),
     'Masque_L': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'attacher'), ('s', '0.14'), ('flou', '2'), ('nom', 'masque_L')], L_DRAG),
+    'Masque_L_source': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'attacher'), ('s', '0.14'), ('flou', '2'), ('nom', 'masque_L'), ('source', 'L')], L_DRAG),
     'Masque_retirer': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'retirer'), ('nom', 'masque_L')], L_DRAG),
     'Fermer_vues': ('$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js', '', [('views', '')], L_GLOBAL),
     'Renommer_auto': ('$PXI_SRCDIR/scripts/clodoweg/Renommer_auto.js', '', [], L_GLOBAL),
@@ -248,6 +249,25 @@ def fermer(icon, views):
     assert a in x
     x = x.replace(a, '<td id="id">views</td>\n            <td id="value">%s</td>' % views)
     return icon, x.replace('id="Fermer_vues_instance"', 'id="%s_instance"' % icon, 1)
+
+def curves_cs(name, c, s):
+    """CurvesTransformation : seulement les courbes c (chrominance) et S (saturation), le reste à l'identité."""
+    def post(t):
+        def table(tid, pts):
+            rows = ''.join('\n         <tr>\n            <td id="x" value="%.5f"/>\n            <td id="y" value="%.5f"/>\n         </tr>' % p for p in pts)
+            return '<table id="%s" rows="%d">%s\n      </table>' % (tid, len(pts), rows)
+        for tid, pts in (('K', [(0, 0), (1, 1)]), ('c', c), ('S', s)):
+            t, n = re.subn(r'<table id="%s" rows="\d+">.*?</table>' % tid, lambda m: table(tid, pts), t, flags=re.S)
+            assert n == 1
+        return t
+    return M.instance('CurvesTransformation', name, post=post)
+
+def boost_final():
+    """Option sur l'image finie (étoiles comprises) : masque tiré de L sans étoiles (les étoiles ne bougent pas), courbes c et S
+    (réglage de l'utilisateur : c 0,46094 -> 0,53646, S 0,46354 -> 0,54167), masque retiré."""
+    items = (script('Masque_L_source', ''), curves_cs('Courbes_boost_final', [(0, 0), (0.46094, 0.53646), (1, 1)], [(0, 0), (0.46354, 0.54167), (1, 1)]),
+             script('Masque_retirer', ''))
+    return 'Boost_final', container('Boost_final', [x.replace('id="%s_instance"' % n, 'id="__ID___instance"', 1) for n, x in items])
 
 def hdrmt_items(a):
     """Copie de l'image, HDRMT sur l'image, puis mélange a·résultat + (1 − a)·copie, copie fermée."""
@@ -619,7 +639,7 @@ lrgb = pre_block() + [rgb_comb_item(), (solver_container(), ''), (solver_seul(),
      "Chrominance noise reduction cochée. Couleurs délavées : L trop claire par rapport au RGB, étire-la moins. "
      "CONTRÔLE après combinaison (sonde 15x15) : cœur de galaxie R >= G, nettement au-dessus de B ; bras B au-dessus de R ; régions HII R > B > G ; aucune étoile verte ; toute une gamme d'étoiles bleues et jaune-orange ; fond R = G = B. "
      "Couleurs criardes ou bruit coloré : remonte la valeur de Saturation (plus haut = moins saturé), NXT sur le RGB. Étoiles toutes blanches : étire-les à part. Régions HII peu visibles : normal en LRGB pur, passe en LHaRGB."),
-] + finish_block() + stars_end('RGB_stars', screen_extra=SCREEN_LRGB)
+] + finish_block() + stars_end('RGB_stars', screen_extra=SCREEN_LRGB) + [(boost_final(), '')]
 
 # ---------------------------------------------------------------- LHaRGB
 lhargb = pre_block() + [rgb_comb_item(False), (solver_container(), ''), (solver_seul(), '')] + gradient_block('lha') + [
@@ -659,7 +679,7 @@ lhargb = pre_block() + [rgb_comb_item(False), (solver_container(), ''), (solver_
      "LRGBCombination sur les images étirées sans étoiles : seul L activé (vue 'L'), Lightness 0,5, Saturation 0,35, Chrominance noise reduction cochée. "
      "CONTRÔLE (sonde 15x15) : cœur de galaxie jaune (R >= G >> B), bras bleus, régions HII roses et bien visibles grâce au H (R > B > G), aucune étoile verte, fond R = G = B ; couleurs délavées : L trop claire, étire-la moins. "
      "Compare avec la copie LRGB sans H : seules les régions HII doivent changer ; si le cœur ou les étoiles ont rougi, reprends la soustraction du continuum (k)."),
-] + finish_block() + stars_end('RGB_stars', screen_extra=SCREEN_LRGB)
+] + finish_block() + stars_end('RGB_stars', screen_extra=SCREEN_LRGB) + [(boost_final(), '')]
 
 # ---------------------------------------------------------------- narrowband communs
 def nb_masters(chans):
@@ -909,7 +929,7 @@ def rapide_common_opts(steps):
             (6, *pick(steps, 'Boost_finition_light')), (6, *pick(steps, 'Boost_finition')), (6, *pick(steps, 'HDRMT_50')), (6, *pick(steps, 'HDRMT_eclat')), (6, *pick(steps, 'NXT_final')),
             # étoiles dans la même colonne (P6) : après C_Fin_sans_etoiles et une option, on remet les étoiles juste en dessous
             (6, *pick(steps, 'Halo_B_Gon')), (6, *pick(steps, 'MT_etoiles')), (6, *pick(steps, 'Etoiles_screen')), (6, *pick(steps, 'Etoiles_reduites')),
-            (6, script('Fond_auto', ''), '')]
+            (6, script('Fond_auto', ''), ''), (6, boost_final(), '')]
 
 def rapide_end(steps):
     """Finition en un glisser, dans l'ordre habituel : HDRMT d'abord (plage dynamique), puis un seul masque, une seule courbe

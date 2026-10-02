@@ -104,6 +104,7 @@ Sinon, deux fichiers par workflow :
 | `C_Etoiles_RGB` (RGB + SHO) | RGB combiné | BXT Correct Only → SPCC → BXT → SXT |
 | `C_Finition` | image sans étoiles étirée | Masque_L (créé et attaché) → Courbes → LHE → LHE_fin → Masque_retirer |
 | `HDRMT_50` (option) | image sans étoiles étirée | copie `HDR_avant` → HDRMT → PixelMath `a·$T + (1 − a)·HDR_avant`, a = 0,5 → Fermer_vues (`HDR_avant`) |
+| `Boost_final` (option, image finie) | image finie avec étoiles, L sans étoiles ouverte | Masque_L tiré de `L` (paramètre `source`) → CurvesTransformation c 0,46094 → 0,53646 et S 0,46354 → 0,54167 → Masque_retirer (LRGB, LHaRGB, modes normal et rapide) |
 | `HDRMT_eclat` (option) | image sans étoiles étirée | même suite avec a = 0,4 → Masque_L → courbe très légère (saturation 0,57) → LHE rayon 80, Amount 0,12 → Masque_retirer (HDRMT puis Boost_finition_light) |
 
 Format recopié des conteneurs des icônes de theAstroShed (PixInsight 1.9.3) : instances imbriquées sans identifiant, `enabled="true"`, pas de description sur le conteneur. Pas encore testé dans PixInsight : essaie d'abord sur une copie de l'image.
@@ -163,7 +164,7 @@ Les fichiers ont été générés par `make_workflows.py` (dans ce dossier) à p
 
 À copier une fois par ordinateur (Mac ou PC) dans `src/scripts/clodoweg/` du dossier de PixInsight, à côté de `PatternCorrection` (Mac : `/Applications/PixInsight/src/scripts/clodoweg/`) :
 
-- `Masque_auto.js` : icônes `Masque_L` (mode attacher : crée `masque_L`, luminance Rec. 709 au fond coupé à s = 0,14, flou 2 px, et l'attache à l'image) et `Masque_retirer` (détache et ferme) ; dans C_Finition, les Boost et C_Fin_rapide.
+- `Masque_auto.js` : paramètre `source` (vue dont on tire la luminance, par exemple `L` sans étoiles pour Boost_final ; vide = l'image cible) ; icônes `Masque_L` (mode attacher : crée `masque_L`, luminance Rec. 709 au fond coupé à s = 0,14, flou 2 px, et l'attache à l'image) et `Masque_retirer` (détache et ferme) ; dans C_Finition, les Boost et C_Fin_rapide.
 - `Fermer_vues.js` : ferme sans confirmation les vues listées dans son paramètre `views` (virgules) ; dernière étape des conteneurs `HDRMT_50` (copie `HDR_avant`), `C_L_lineaire`, `C_L_etoiles_bruit` et `C_L_rapide` (`L_stars`, étoiles de la luminance, inutiles) ; icône `Fermer_L_stars` dans les fichiers `Workflow-X`.
 - `Etoiles_LRGB.js` : dernière étape des options `C_L_rapide_etoilesL` et `C_L_rapide_SXT_etire_etoilesL` ; étire `L_stars` avec la courbe d'Etoiles_auto si `etirerL` = true (SXT linéaire ; false si SXT a tourné après l'étirement), crée la luminance `partL × L_stars + (1 − partL) × luminance de RGB_stars` (0,5), l'applique à `RGB_stars` par LRGBCombination (mL 0,5, mc 0,35, sans réduction de bruit), puis ferme `L_stars`. Sans cette option, `L_stars` est fermée par la finition.
 - `Fond_auto.js` : dernière étape de `C_Fin_rapide` et `C_Fin_simple` (et option seule) ; fond de chaque canal mesuré sur une grille de 8 × 8 cases (médiane du quart le plus sombre des médianes de cases, insensible à une grande galaxie), puis PixelMath `mtf(m, $T)` canal par canal pour amener le fond sur `cible` (0,12), sans écrêtage ; rien n'est fait si l'écart est sous `tolerance` (0,005) ; fond avant et après dans la console.
