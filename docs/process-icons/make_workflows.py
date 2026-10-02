@@ -925,24 +925,28 @@ def note_rapide(prefix, v):
 bxt_rgb = lambda: M.bxt('BXT_RGB', False, 0.25, 0.0, 0.50)
 gc_r = lambda: M.instance('GradientCorrection', 'GradientCorrection', {'generateGradientModel': False})   # mode rapide : pas de MARS
 # L : Statistical Stretch puis GHS_auto_fond (fond mesuré, amené à 0,11), choisi après comparaison sur une galaxie (GHS auto : fond laiteux, cœur écrasé).
-# Quatre variantes du mode rapide (un fichier chacune) : seul C_L_rapide change.
+# Quatre variantes de C_L_rapide, dans le même fichier : la 1 au chemin principal, les 3 autres en options (P3).
 #   sxt_etire : L étirée (Statistical Stretch + fond) AVANT SXT (Unscreen), sinon SXT en linéaire ;
 #   etoilesL : luminance de L_stars ajoutée aux étoiles RGB_stars (Etoiles_LRGB) à la fin du conteneur, sinon L_stars fermée.
 RAPIDE_VARIANTES = [
     ('', False, False, "variante 1 : SXT sur L linéaire"),
-    ('-etoilesL', False, True, "variante 2 : SXT sur L linéaire, luminance de L_stars ajoutée aux étoiles"),
-    ('-SXT-etire', True, False, "variante 3 : L étirée avant SXT"),
-    ('-SXT-etire-etoilesL', True, True, "variante 4 : L étirée avant SXT, luminance de L_stars ajoutée aux étoiles"),
+    ('_etoilesL', False, True, "variante 2 : SXT sur L linéaire, luminance de L_stars ajoutée aux étoiles"),
+    ('_SXT_etire', True, False, "variante 3 : L étirée avant SXT"),
+    ('_SXT_etire_etoilesL', True, True, "variante 4 : L étirée avant SXT, luminance de L_stars ajoutée aux étoiles"),
 ]
 
-def l_rapide(bxt, sxt_etire=False, etoilesL=False):
+def l_rapide(bxt, sxt_etire=False, etoilesL=False, suffix=''):
     nxt, etire = M.nxt('NXT_L', 0.60, 1), [stat_auto(), script('GHS_auto_fond', '')]
     if sxt_etire:
         items = [gc_r(), bxt, nxt] + etire + [M.sxt('SXT_etire', True)]
     else:
         items = [gc_r(), bxt, M.sxt('SXT_lineaire', False), nxt] + etire
     items += [script('Etoiles_LRGB_etire' if sxt_etire else 'Etoiles_LRGB', '')] if etoilesL else [fermer('Fermer_L_stars', 'L_stars')]
-    return cont('C_L_rapide', items)
+    return cont('C_L_rapide' + suffix, items)
+
+def l_opts(bxt):
+    """Variantes 2 à 4 de C_L_rapide, en options, à la place d'E04 (E09 en LHaRGB)."""
+    return [(3, l_rapide(bxt(), sx, et, suf), '') for suf, sx, et, t in RAPIDE_VARIANTES[1:]]
 
 def l_desc(sxt_etire, etoilesL):
     if sxt_etire:
@@ -979,11 +983,13 @@ def rapide_lha(v, sxt_etire, etoilesL):
     (3, cont('C_RGB_fin_rapide', [M.sxt('SXT_lineaire', False), M.nxt('NXT_RGB', 0.80, 1), stat_auto(), GHS_FOND_R(), script('Etoiles_auto', '')]), ''),
     (3, l_rapide(M.bxt('BXT_L_H', False, 0.25, 0.0, 0.80), sxt_etire, etoilesL), '')] + rapide_end(lhargb)
 
-for suffix, sxt_etire, etoilesL, titre in RAPIDE_VARIANTES:
-    v = {'titre': titre, 'L': l_desc(sxt_etire, etoilesL)}
-    for base, pre, title, steps, spec in [('Rapide-LRGB', 'LRGB', 'Workflow LRGB', lrgb, rapide_lrgb), ('Rapide-LHaRGB', 'LHA', 'Workflow LHaRGB', lhargb, rapide_lha)]:
-        fn = base + suffix + '.xpsm'
-        print(fn, 'principal, options :', write_rapide(fn, pre, title + ' (' + titre + ')', steps, spec(v, sxt_etire, etoilesL), prep_opts(steps) + rapide_common_opts(steps)))
+V_NOTE = ("variante 1 au chemin principal (SXT sur L linéaire) ; à la place de C_L_rapide, options de la phase 3 : "
+          "C_L_rapide_etoilesL (variante 2 : luminance de L_stars ajoutée aux étoiles), C_L_rapide_SXT_etire (variante 3 : L étirée avant SXT, Unscreen), "
+          "C_L_rapide_SXT_etire_etoilesL (variante 4 : les deux)")
+v = {'titre': V_NOTE, 'L': l_desc(False, False)}
+for fn, pre, title, steps, spec, bxt in [('Rapide-LRGB.xpsm', 'LRGB', 'Workflow LRGB', lrgb, rapide_lrgb, lambda: M.bxt('BXT_L', False, 0.25, 0.0, 0.80)),
+                                          ('Rapide-LHaRGB.xpsm', 'LHA', 'Workflow LHaRGB', lhargb, rapide_lha, lambda: M.bxt('BXT_L_H', False, 0.25, 0.0, 0.80))]:
+    print(fn, 'principal, options :', write_rapide(fn, pre, title, steps, spec(v, False, False), prep_opts(steps) + l_opts(bxt) + rapide_common_opts(steps)))
 
 DATA['header'] = M.HEADER
 json.dump(DATA, open(os.path.join(OUT, '..', 'preparer-data.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
