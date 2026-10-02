@@ -1128,17 +1128,6 @@ $T[0] + w*H_cs</parameter>
          <parameter id="overlap" value="0.20"/>
       </instance>
       <instance class="Script" version="256" enabled="true">
-         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
-         <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="1">
-            <tr>
-               <td id="id">views</td>
-               <td id="value">L_stars</td>
-            </tr>
-         </table>
-         <parameter id="information"></parameter>
-      </instance>
-      <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/statisticalstretch.js</parameter>
          <parameter id="md5sum">defab45bb4e2f33db39a7bb016cdefb0</parameter>
          <table id="parameters" rows="15">
@@ -1299,17 +1288,6 @@ $T[0] + w*H_cs</parameter>
          <parameter id="overlap" value="0.20"/>
       </instance>
       <instance class="Script" version="256" enabled="true">
-         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
-         <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="1">
-            <tr>
-               <td id="id">views</td>
-               <td id="value">L_stars</td>
-            </tr>
-         </table>
-         <parameter id="information"></parameter>
-      </instance>
-      <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/GHS_auto.js</parameter>
          <parameter id="md5sum"></parameter>
          <table id="parameters" rows="5">
@@ -1426,17 +1404,6 @@ $T[0] + w*H_cs</parameter>
          <parameter id="detail" value="0.15"/>
          <parameter id="overlap" value="0.20"/>
       </instance>
-      <instance class="Script" version="256" enabled="true">
-         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
-         <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="1">
-            <tr>
-               <td id="id">views</td>
-               <td id="value">L_stars</td>
-            </tr>
-         </table>
-         <parameter id="information"></parameter>
-      </instance>
    </instance>
    <instance class="NoOperation" version="256" id="P4_Etirement_instance">
       <description>PHASE 4 — Étirement : passage en non linéaire, même fond pour toutes les images. Colonne de repère, sans effet.</description>
@@ -1552,6 +1519,46 @@ Détails : page docs/pixinsight-workflow.html.</description>
          <tr>
             <td id="id">showPreview</td>
             <td id="value">false</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
+   </instance>
+   <instance class="Script" version="256" id="Opt_Etoiles_LRGB_instance">
+      <description>OPTION — pour des étoiles plus fines et plus nombreuses : après C_L_rapide, avant la finition ; ajoute la luminance de L_stars (50 %) aux étoiles RGB_stars ; vérifie les anneaux à 1:1.
+
+LANCEMENT : glisse l'icône sur l'image.
+
+PRÉRÉGLÉ : script Etoiles_LRGB : L_stars étirée comme Etoiles_auto (amount 6), luminance 0,5 × L_stars + 0,5 × luminance RGB appliquée à RGB_stars par LRGBCombination (saturation 0,35), puis L_stars fermée.
+
+À RÉGLER : glisse sur RGB (ou n'importe quelle image) après C_L_rapide et avant la finition.
+
+SI :
+- anneau blanc ou coloré autour des étoiles -&gt; partL 0,3, ou n'utilise pas l'option
+- cœurs trop blancs -&gt; partL 0,3 ou saturation 0,30
+
+Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Etoiles_LRGB.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="5">
+         <tr>
+            <td id="id">etoilesL</td>
+            <td id="value">L_stars</td>
+         </tr>
+         <tr>
+            <td id="id">etoilesRGB</td>
+            <td id="value">RGB_stars</td>
+         </tr>
+         <tr>
+            <td id="id">amount</td>
+            <td id="value">6</td>
+         </tr>
+         <tr>
+            <td id="id">partL</td>
+            <td id="value">0.5</td>
+         </tr>
+         <tr>
+            <td id="id">saturation</td>
+            <td id="value">0.35</td>
          </tr>
       </table>
       <parameter id="information"></parameter>
@@ -1918,6 +1925,17 @@ Détails : page docs/pixinsight-workflow.html.</description>
          </table>
          <parameter id="information"></parameter>
       </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="1">
+            <tr>
+               <td id="id">views</td>
+               <td id="value">L_stars</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
    </instance>
    <instance class="NoOperation" version="256" id="P6_options_instance">
       <description>OPTIONS de la phase 6 — Finition : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
@@ -2189,6 +2207,17 @@ Détails : page docs/pixinsight-workflow.html.</description>
          </table>
          <parameter id="information"></parameter>
       </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="1">
+            <tr>
+               <td id="id">views</td>
+               <td id="value">L_stars</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
    </instance>
    <instance class="ProcessContainer" id="Opt_C_Fin_sans_etoiles_instance">
       <instance class="LRGBCombination" version="256" enabled="true">
@@ -2405,6 +2434,17 @@ Détails : page docs/pixinsight-workflow.html.</description>
             <tr>
                <td id="id">nom</td>
                <td id="value">masque_L</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="1">
+            <tr>
+               <td id="id">views</td>
+               <td id="value">L_stars</td>
             </tr>
          </table>
          <parameter id="information"></parameter>
@@ -3357,6 +3397,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <icon id="Opt_GHS_2_contraste" instance="Opt_GHS_2_contraste_instance" xpos="626" ypos="144" workspace="Workspace01"/>
    <icon id="Opt_GHS_3_fond" instance="Opt_GHS_3_fond_instance" xpos="626" ypos="174" workspace="Workspace01"/>
    <icon id="Opt_Star_Stretch" instance="Opt_Star_Stretch_instance" xpos="626" ypos="204" workspace="Workspace01"/>
+   <icon id="Opt_Etoiles_LRGB" instance="Opt_Etoiles_LRGB_instance" xpos="626" ypos="234" workspace="Workspace01"/>
    <icon id="P6_Finition" instance="P6_Finition_instance" xpos="800" ypos="20" workspace="Workspace01"/>
    <icon id="E10_C_Fin_rapide" instance="E10_C_Fin_rapide_instance" xpos="800" ypos="64" workspace="Workspace01"/>
    <icon id="P6_options" instance="P6_options_instance" xpos="800" ypos="110" workspace="Workspace01"/>

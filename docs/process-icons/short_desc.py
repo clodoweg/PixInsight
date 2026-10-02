@@ -135,6 +135,8 @@ S = {
     'Fermer_L_stars': ("script Fermer_vues : ferme L_stars (étoiles de la luminance, inutiles)", "rien ; dans le conteneur après SXT sur L", []),
     'Etoiles_auto': ("script Etoiles_auto : étire RGB_stars avec la courbe de Star Stretch (amount 6), saturation 1,3 (0,4 × sur les rouges, 0,7 × sur les cyans), sans dialogue", "rien ; dernière étape du conteneur RGB rapide, travaille sur la vue RGB_stars",
                      ["étoiles trop grosses ou cœurs blancs -> amount 5,5", "étoiles criardes -> satAmount 1,0", "étoiles vertes -> scnr true"]),
+    'Etoiles_LRGB': ("script Etoiles_LRGB : L_stars étirée comme Etoiles_auto (amount 6), luminance 0,5 × L_stars + 0,5 × luminance RGB appliquée à RGB_stars par LRGBCombination (saturation 0,35), puis L_stars fermée", "glisse sur RGB (ou n'importe quelle image) après C_L_rapide et avant la finition",
+                     ["anneau blanc ou coloré autour des étoiles -> partL 0,3, ou n'utilise pas l'option", "cœurs trop blancs -> partL 0,3 ou saturation 0,30"]),
     'Fond_auto': ("script Fond_auto : fond de chaque canal mesuré (grille 8 × 8, quart le plus sombre des cases), puis mtf canal par canal pour l'amener à 0,12, sans écrêtage ; fond neutre", "glisse sur l'image finie, étoiles comprises ; dernière étape ; console : fond avant et après",
                   ["image trop sombre -> cible 0,13 ou 0,14", "données très propres -> 0,10 à 0,11"]),
     'GHS_auto': ("script GHS_auto : SP = médiane × 0,5, b = 6, HP 0,85, Stretch factor calculé pour amener la médiane à 0,25", "rien ; sur l'image sans étoiles linéaire, avant GHS_auto_fond",

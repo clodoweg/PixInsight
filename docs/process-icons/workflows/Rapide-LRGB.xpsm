@@ -111,7 +111,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </instance>
    </instance>
    <instance class="NoOperation" version="256" id="E01_Mode_rapide_instance">
-      <description>MODE RAPIDE LRGB — icône de repère, sans effet. Aucun réglage, pas de MARS (MGC + MARS : mode soigné). Ordre (numéros des icônes) : E00 C_Preparation_rapide (masters seuls ouverts ; double-clic puis Apply Global, ou glisse sur L) : Renommer_auto (L, R, G, B d'après FILTER), LinearPatternSubtraction sur tous les masters mono ouverts, Combinaison_RGB (RGB créé, R, G, B fermées). E02 ImageSolver sur RGB (date par défaut si absente, puis ImageSolver ; nécessaire à SPCC ; icône seule, pas de conteneur). E03 C_RGB_rapide sur RGB (GradientCorrection, BXT Correct Only, SPCC, BXT, SXT, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond SP = HP = 0,22, Etoiles_auto) : RGB étiré sans étoiles et RGB_stars étirée (courbe de Star Stretch, amount 6, saturation 1,3). E04 C_L_rapide sur L (GradientCorrection, BXT, SXT, NXT, fermeture de L_stars, Statistical Stretch 0,25 sans dialogue, GHS_auto_fond : fond mesuré et amené à 0,11). E05 C_Fin_rapide sur RGB : LRGB (L ajoutée), HDRMT à 40 % (détail du cœur), masque de luminance créé et attaché, Courbes (saturation 0,68), LHE (rayon 150), LHE_fin (rayon 40), masque retiré, étoiles RGB_stars ajoutées, Fond_auto (fond mesuré, amené à 0,12 et neutre) : image finie. Sans HDRMT : C_Fin_simple (options). Pour un Boost, HDRMT_50, HDRMT_eclat (cœur détaillé ET lumineux) ou NXT final : à la place d'E05, C_Fin_sans_etoiles (options), puis l'option, puis Etoiles_screen ou Etoiles_reduites, puis Fond_auto (options). Halo-B-Gon : sur RGB_stars avant E05. Étoiles réglées à l'œil : décoche Etoiles_auto dans E03, puis Star_Stretch (options) sur RGB_stars. COMPARER L'ÉTIREMENT DE L (options, à la place d'E04, sur une copie de L) : C_L_rapide_ghs (GHS_auto : SP = fond × 0,5, b = 6, HP 0,85, médiane vers 0,25, puis même fond 0,11) ; ou C_L_rapide_lineaire (sans étirement) puis GHS_1_premier, GHS_2_contraste, GHS_3_fond à la main. Une étape de la préparation à refaire seule : LinearPatternSubtraction, Renommer_auto, Combinaison_RGB (options). ImageSolver s'arrête après la date : ImageSolver_seul des options. Une étape en erreur arrête un conteneur : lis la console.</description>
+      <description>MODE RAPIDE LRGB — icône de repère, sans effet. Aucun réglage, pas de MARS (MGC + MARS : mode soigné). Ordre (numéros des icônes) : E00 C_Preparation_rapide (masters seuls ouverts ; double-clic puis Apply Global, ou glisse sur L) : Renommer_auto (L, R, G, B d'après FILTER), LinearPatternSubtraction sur tous les masters mono ouverts, Combinaison_RGB (RGB créé, R, G, B fermées). E02 ImageSolver sur RGB (date par défaut si absente, puis ImageSolver ; nécessaire à SPCC ; icône seule, pas de conteneur). E03 C_RGB_rapide sur RGB (GradientCorrection, BXT Correct Only, SPCC, BXT, SXT, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond SP = HP = 0,22, Etoiles_auto) : RGB étiré sans étoiles et RGB_stars étirée (courbe de Star Stretch, amount 6, saturation 1,3). E04 C_L_rapide sur L (GradientCorrection, BXT, SXT, NXT, Statistical Stretch 0,25 sans dialogue, GHS_auto_fond : fond mesuré et amené à 0,11 ; L_stars reste ouverte, fermée par la finition). Option Etoiles_LRGB (glisse sur RGB) entre E04 et E05 : luminance de L_stars ajoutée aux étoiles. E05 C_Fin_rapide sur RGB : LRGB (L ajoutée), HDRMT à 40 % (détail du cœur), masque de luminance créé et attaché, Courbes (saturation 0,68), LHE (rayon 150), LHE_fin (rayon 40), masque retiré, étoiles RGB_stars ajoutées, Fond_auto (fond mesuré, amené à 0,12 et neutre), fermeture de L_stars : image finie. Sans HDRMT : C_Fin_simple (options). Pour un Boost, HDRMT_50, HDRMT_eclat (cœur détaillé ET lumineux) ou NXT final : à la place d'E05, C_Fin_sans_etoiles (options), puis l'option, puis Etoiles_screen ou Etoiles_reduites, puis Fond_auto (options). Halo-B-Gon : sur RGB_stars avant E05. Étoiles réglées à l'œil : décoche Etoiles_auto dans E03, puis Star_Stretch (options) sur RGB_stars. COMPARER L'ÉTIREMENT DE L (options, à la place d'E04, sur une copie de L) : C_L_rapide_ghs (GHS_auto : SP = fond × 0,5, b = 6, HP 0,85, médiane vers 0,25, puis même fond 0,11) ; ou C_L_rapide_lineaire (sans étirement) puis GHS_1_premier, GHS_2_contraste, GHS_3_fond à la main. Une étape de la préparation à refaire seule : LinearPatternSubtraction, Renommer_auto, Combinaison_RGB (options). ImageSolver s'arrête après la date : ImageSolver_seul des options. Une étape en erreur arrête un conteneur : lis la console.</description>
    </instance>
    <instance class="NoOperation" version="256" id="P1_options_instance">
       <description>OPTIONS de la phase 1 — Préparation : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
@@ -978,17 +978,6 @@ Détails : page docs/pixinsight-workflow.html.</description>
          <parameter id="overlap" value="0.20"/>
       </instance>
       <instance class="Script" version="256" enabled="true">
-         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
-         <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="1">
-            <tr>
-               <td id="id">views</td>
-               <td id="value">L_stars</td>
-            </tr>
-         </table>
-         <parameter id="information"></parameter>
-      </instance>
-      <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/statisticalstretch.js</parameter>
          <parameter id="md5sum">defab45bb4e2f33db39a7bb016cdefb0</parameter>
          <table id="parameters" rows="15">
@@ -1149,17 +1138,6 @@ Détails : page docs/pixinsight-workflow.html.</description>
          <parameter id="overlap" value="0.20"/>
       </instance>
       <instance class="Script" version="256" enabled="true">
-         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
-         <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="1">
-            <tr>
-               <td id="id">views</td>
-               <td id="value">L_stars</td>
-            </tr>
-         </table>
-         <parameter id="information"></parameter>
-      </instance>
-      <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/GHS_auto.js</parameter>
          <parameter id="md5sum"></parameter>
          <table id="parameters" rows="5">
@@ -1276,17 +1254,6 @@ Détails : page docs/pixinsight-workflow.html.</description>
          <parameter id="detail" value="0.15"/>
          <parameter id="overlap" value="0.20"/>
       </instance>
-      <instance class="Script" version="256" enabled="true">
-         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
-         <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="1">
-            <tr>
-               <td id="id">views</td>
-               <td id="value">L_stars</td>
-            </tr>
-         </table>
-         <parameter id="information"></parameter>
-      </instance>
    </instance>
    <instance class="NoOperation" version="256" id="P4_Etirement_instance">
       <description>PHASE 4 — Étirement : passage en non linéaire, même fond pour toutes les images. Colonne de repère, sans effet.</description>
@@ -1402,6 +1369,46 @@ Détails : page docs/pixinsight-workflow.html.</description>
          <tr>
             <td id="id">showPreview</td>
             <td id="value">false</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
+   </instance>
+   <instance class="Script" version="256" id="Opt_Etoiles_LRGB_instance">
+      <description>OPTION — pour des étoiles plus fines et plus nombreuses : après C_L_rapide, avant la finition ; ajoute la luminance de L_stars (50 %) aux étoiles RGB_stars ; vérifie les anneaux à 1:1.
+
+LANCEMENT : glisse l'icône sur l'image.
+
+PRÉRÉGLÉ : script Etoiles_LRGB : L_stars étirée comme Etoiles_auto (amount 6), luminance 0,5 × L_stars + 0,5 × luminance RGB appliquée à RGB_stars par LRGBCombination (saturation 0,35), puis L_stars fermée.
+
+À RÉGLER : glisse sur RGB (ou n'importe quelle image) après C_L_rapide et avant la finition.
+
+SI :
+- anneau blanc ou coloré autour des étoiles -&gt; partL 0,3, ou n'utilise pas l'option
+- cœurs trop blancs -&gt; partL 0,3 ou saturation 0,30
+
+Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Etoiles_LRGB.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="5">
+         <tr>
+            <td id="id">etoilesL</td>
+            <td id="value">L_stars</td>
+         </tr>
+         <tr>
+            <td id="id">etoilesRGB</td>
+            <td id="value">RGB_stars</td>
+         </tr>
+         <tr>
+            <td id="id">amount</td>
+            <td id="value">6</td>
+         </tr>
+         <tr>
+            <td id="id">partL</td>
+            <td id="value">0.5</td>
+         </tr>
+         <tr>
+            <td id="id">saturation</td>
+            <td id="value">0.35</td>
          </tr>
       </table>
       <parameter id="information"></parameter>
@@ -1768,6 +1775,17 @@ Détails : page docs/pixinsight-workflow.html.</description>
          </table>
          <parameter id="information"></parameter>
       </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="1">
+            <tr>
+               <td id="id">views</td>
+               <td id="value">L_stars</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
    </instance>
    <instance class="NoOperation" version="256" id="P6_options_instance">
       <description>OPTIONS de la phase 6 — Finition : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
@@ -2039,6 +2057,17 @@ Détails : page docs/pixinsight-workflow.html.</description>
          </table>
          <parameter id="information"></parameter>
       </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="1">
+            <tr>
+               <td id="id">views</td>
+               <td id="value">L_stars</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
    </instance>
    <instance class="ProcessContainer" id="Opt_C_Fin_sans_etoiles_instance">
       <instance class="LRGBCombination" version="256" enabled="true">
@@ -2255,6 +2284,17 @@ Détails : page docs/pixinsight-workflow.html.</description>
             <tr>
                <td id="id">nom</td>
                <td id="value">masque_L</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="1">
+            <tr>
+               <td id="id">views</td>
+               <td id="value">L_stars</td>
             </tr>
          </table>
          <parameter id="information"></parameter>
@@ -3202,6 +3242,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <icon id="Opt_GHS_2_contraste" instance="Opt_GHS_2_contraste_instance" xpos="612" ypos="144" workspace="Workspace01"/>
    <icon id="Opt_GHS_3_fond" instance="Opt_GHS_3_fond_instance" xpos="612" ypos="174" workspace="Workspace01"/>
    <icon id="Opt_Star_Stretch" instance="Opt_Star_Stretch_instance" xpos="612" ypos="204" workspace="Workspace01"/>
+   <icon id="Opt_Etoiles_LRGB" instance="Opt_Etoiles_LRGB_instance" xpos="612" ypos="234" workspace="Workspace01"/>
    <icon id="P6_Finition" instance="P6_Finition_instance" xpos="786" ypos="20" workspace="Workspace01"/>
    <icon id="E05_C_Fin_rapide" instance="E05_C_Fin_rapide_instance" xpos="786" ypos="64" workspace="Workspace01"/>
    <icon id="P6_options" instance="P6_options_instance" xpos="786" ypos="110" workspace="Workspace01"/>
