@@ -85,7 +85,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="information"></parameter>
    </instance>
    <instance class="NoOperation" version="256" id="E01_Mode_rapide_instance">
-      <description>MODE RAPIDE LHaRGB — icône de repère, sans effet. Pas de MARS (mode soigné). E00 LinearPatternSubtraction (glisse sur un master). E02 Renommer_auto. E03 Combinaison_RGB (R, G, B restent ouvertes : R sert à Continuum_H). E04 ImageSolver sur RGB. E05 GradientCorrection sur R. E06 C_RGB_couleur_rapide sur RGB (GradientCorrection, BXT Correct Only, SPCC, BXT). E07 C_H_rapide sur H (GradientCorrection, BXT). E08 Continuum_H (k à régler), puis E09 H_dans_RGB sur RGB. E10 C_RGB_fin_rapide sur RGB (SXT, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond 0,22, Etoiles_auto sur RGB_stars). E11 C_L_rapide sur L (GHS_auto, GHS_2, GHS_3). E12 C_Fin_rapide sur RGB (LRGB, masque attaché, Courbes, LHE, LHE_fin, masque retiré, étoiles) : image finie. Boost, HDRMT_50, NXT final : C_Fin_sans_etoiles, l'option, puis Etoiles_screen.</description>
+      <description>MODE RAPIDE LHaRGB — icône de repère, sans effet. Pas de MARS (mode soigné). E00 LinearPatternSubtraction (glisse sur un master). E02 Renommer_auto. E03 Combinaison_RGB (R, G, B restent ouvertes : R sert à Continuum_H). E04 ImageSolver sur RGB. E05 GradientCorrection sur R. E06 C_RGB_couleur_rapide sur RGB (GradientCorrection, BXT Correct Only, SPCC, BXT). E07 C_H_rapide sur H (GradientCorrection, BXT). E08 Continuum_H (k à régler), puis E09 H_dans_RGB sur RGB. E10 C_RGB_fin_rapide sur RGB (SXT, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond 0,22, Etoiles_auto sur RGB_stars). E11 C_L_rapide sur L (GHS_auto, GHS_2, GHS_auto_fond). E12 C_Fin_rapide sur RGB (LRGB, masque attaché, Courbes, LHE, LHE_fin, masque retiré, étoiles) : image finie. Boost, HDRMT_50, NXT final : C_Fin_sans_etoiles, l'option, puis Etoiles_screen.</description>
    </instance>
    <instance class="Script" version="256" id="E02_Renommer_auto_instance">
       <description>LANCEMENT : double-clic sur l'icône, puis Apply Global.
@@ -1030,7 +1030,11 @@ $T[0] + w*H_cs</parameter>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/GHS_auto.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="3">
+         <table id="parameters" rows="4">
+            <tr>
+               <td id="id">mode</td>
+               <td id="value">premier</td>
+            </tr>
             <tr>
                <td id="id">cible</td>
                <td id="value">0.25</td>
@@ -1061,20 +1065,28 @@ $T[0] + w*H_cs</parameter>
          <parameter id="clipType" value="CT_RGBBlend"/>
          <parameter id="useRGBWorkingSpace" value="false"/>
       </instance>
-      <instance class="GeneralizedHyperbolicStretch" version="256" enabled="true">
-         <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
-         <parameter id="stretchChannel" value="SC_RGB"/>
-         <parameter id="inverse" value="false"/>
-         <parameter id="stretchFactor" value="1.000"/>
-         <parameter id="localIntensity" value="10.000"/>
-         <parameter id="symmetryPoint" value="0.200000"/>
-         <parameter id="highlightProtection" value="0.200000"/>
-         <parameter id="shadowProtection" value="0.000000"/>
-         <parameter id="blackPoint" value="0.000000"/>
-         <parameter id="whitePoint" value="1.000000"/>
-         <parameter id="colourBlend" value="1.000"/>
-         <parameter id="clipType" value="CT_RGBBlend"/>
-         <parameter id="useRGBWorkingSpace" value="false"/>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/GHS_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="4">
+            <tr>
+               <td id="id">mode</td>
+               <td id="value">fond</td>
+            </tr>
+            <tr>
+               <td id="id">cible</td>
+               <td id="value">0.11</td>
+            </tr>
+            <tr>
+               <td id="id">b</td>
+               <td id="value">10</td>
+            </tr>
+            <tr>
+               <td id="id">spFactor</td>
+               <td id="value">0.87</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
       </instance>
    </instance>
    <instance class="NoOperation" version="256" id="P4_Etirement_instance">

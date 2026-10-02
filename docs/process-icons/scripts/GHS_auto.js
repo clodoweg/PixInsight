@@ -7,10 +7,14 @@
 //     champ de galaxie ; spFactor 1 par défaut) ;
 //   - Local intensity b = 10, LP = 0, HP = 1 (comme GHS_1) ;
 //   - Stretch factor cherché par dichotomie pour que la médiane arrive sur
-//     cible (0,25 par défaut, le pic visé après GHS_1).
-// Puis GeneralizedHyperbolicStretch est appliqué avec ces valeurs, écrites
-// dans la console. Les passes suivantes (GHS_2_contraste, GHS_3_fond)
-// restent des icônes normales.
+//     cible (0,25 par défaut, le pic visé après GHS_1) (mode = premier).
+// mode = fond : remplace GHS_3_fond sur une image déjà étirée : SP = HP =
+//   médiane × 0,87 (comme SP = HP = 0,20 pour un fond à 0,23), b = 10, et
+//   Stretch factor cherché pour que la médiane (le fond) arrive sur cible
+//   (0,11 par défaut pour L). Le fond final ne dépend donc plus des passes
+//   précédentes.
+// GeneralizedHyperbolicStretch est appliqué avec ces valeurs ; la console
+// donne les valeurs et la médiane MESURÉE après coup.
 //
 // Équations de la transformation : documentation de GHS (David Payne et Mike
 // Cranfield), T(x) = 1 − (1 + b·D·x)^(−1/b), D = e^SF − 1.
@@ -20,7 +24,7 @@
 
 #feature-id    GHS_auto : clodoweg > GHS automatique (1er étirement)
 #feature-info  Calcule SP et Stretch factor de GHS pour amener la médiane \
-   de l'image sur une cible, puis applique GHS.
+   de l'image sur une cible (1er étirement ou fond), puis applique GHS.
 
 #define TITLE "GHS auto"
 
@@ -59,16 +63,8 @@ function ghs( x, sf, b, SP, LP, HP )
    return (y - lo)/(hi - lo);
 }
 
-function main()
+function median( img )
 {
-   let view = Parameters.isViewTarget ? Parameters.targetView : ImageWindow.activeWindow.mainView;
-   if ( view.isNull )
-      throw new Error( TITLE + " : aucune image." );
-   let target = parseFloat( param( "cible", "0.25" ) );
-   let b = parseFloat( param( "b", "10" ) );
-   let spFactor = parseFloat( param( "spFactor", "1" ) );
-
-   let img = view.image;
    let med = 0;
    for ( let c = 0; c < img.numberOfChannels; ++c )
    {
@@ -76,28 +72,50 @@ function main()
       med += img.median();
    }
    img.resetSelections();
-   med /= img.numberOfChannels;
+   return med/img.numberOfChannels;
+}
 
-   if ( !(med > 0) || med >= target )
+// Stretch factor (0 à sfMax) qui amène x sur target ; f(0) = x, f monotone en SF.
+function solveSF( x, target, b, SP, LP, HP, sfMax )
+{
+   let up = target > x;
+   let f = function( sf ) { return ghs( x, sf, b, SP, LP, HP ); };
+   if ( up ? f( sfMax ) < target : f( sfMax ) > target )
    {
-      console.warningln( TITLE + " : médiane " + med.toFixed( 5 ) + " (déjà étirée ou vide), rien n'est fait." );
+      console.warningln( TITLE + " : cible non atteinte même avec Stretch factor " + sfMax + "." );
+      return sfMax;
+   }
+   let lo = 0, hi = sfMax;
+   for ( let i = 0; i < 60; ++i )
+   {
+      let m = (lo + hi)/2;
+      if ( up ? f( m ) < target : f( m ) > target )
+         lo = m;
+      else
+         hi = m;
+   }
+   return (lo + hi)/2;
+}
+
+function main()
+{
+   let view = Parameters.isViewTarget ? Parameters.targetView : ImageWindow.activeWindow.mainView;
+   if ( view.isNull )
+      throw new Error( TITLE + " : aucune image." );
+   let fond = param( "mode", "premier" ).toLowerCase() == "fond";
+   let target = parseFloat( param( "cible", fond ? "0.11" : "0.25" ) );
+   let b = parseFloat( param( "b", "10" ) );
+   let spFactor = parseFloat( param( "spFactor", fond ? "0.87" : "1" ) );
+
+   let med = median( view.image );
+   if ( !(med > 0) || (fond ? med <= target : med >= target) )
+   {
+      console.warningln( TITLE + " : médiane " + med.toFixed( 5 ) + (fond ? " déjà sous la cible " : " déjà au-dessus de la cible ") + target + ", rien n'est fait." );
       return;
    }
    let SP = Math.min( med*spFactor, 0.99 );
-
-   let lo = 0, hi = 20;
-   if ( ghs( med, hi, b, SP, 0, 1 ) < target )
-      console.warningln( TITLE + " : cible non atteinte même avec Stretch factor 20." );
-   else
-      for ( let i = 0; i < 60; ++i )
-      {
-         let m = (lo + hi)/2;
-         if ( ghs( med, m, b, SP, 0, 1 ) < target )
-            lo = m;
-         else
-            hi = m;
-      }
-   let sf = (lo + hi)/2;
+   let HP = fond ? SP : 1;
+   let sf = solveSF( med, target, b, SP, 0, HP, fond ? 5 : 20 );
 
    let G = new GeneralizedHyperbolicStretch;
    G.stretchType = GeneralizedHyperbolicStretch.prototype.ST_GeneralisedHyperbolic;
@@ -107,14 +125,15 @@ function main()
    G.localIntensity = b;
    G.symmetryPoint = SP;
    G.shadowProtection = 0;
-   G.highlightProtection = 1;
+   G.highlightProtection = HP;
    G.blackPoint = 0;
    G.whitePoint = 1;
    G.clipType = GeneralizedHyperbolicStretch.prototype.CT_RGBBlend;
    G.executeOn( view );
 
-   console.noteln( TITLE + " : " + view.id + " médiane " + med.toFixed( 5 ) + " -> " + target +
-                   " (SP " + SP.toFixed( 5 ) + ", b " + b + ", Stretch factor " + sf.toFixed( 2 ) + ")." );
+   console.noteln( TITLE + " (" + (fond ? "fond" : "premier") + ") : " + view.id + " médiane " + med.toFixed( 5 ) + " -> " + target +
+                   " visée, " + median( view.image ).toFixed( 4 ) + " mesurée (SP " + SP.toFixed( 5 ) + ", HP " + HP.toFixed( 3 ) +
+                   ", b " + b + ", Stretch factor " + sf.toFixed( 3 ) + ")." );
 }
 
 main();
