@@ -52,6 +52,7 @@ SCRIPTS = {
     'Etoiles_LRGB': ('$PXI_SRCDIR/scripts/clodoweg/Etoiles_LRGB.js', '', [('etoilesL', 'L_stars'), ('etoilesRGB', 'RGB_stars'), ('etirerL', 'true'), ('amount', '6'), ('partL', '0.5'), ('saturation', '0.35')], L_DRAG),
     'Etoiles_LRGB_etire': ('$PXI_SRCDIR/scripts/clodoweg/Etoiles_LRGB.js', '', [('etoilesL', 'L_stars'), ('etoilesRGB', 'RGB_stars'), ('etirerL', 'false'), ('amount', '6'), ('partL', '0.5'), ('saturation', '0.35')], L_DRAG),
     'Fond_desature': ('$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js', '', [('debut', '0.03'), ('fin', '0.15'), ('violetFin', '0.30'), ('flou', '3')], L_DRAG),
+    'STF_auto': ('$PXI_SRCDIR/scripts/clodoweg/STF_auto.js', '', [('lier', 'true'), ('ombres', '-2.8'), ('fond', '0.25')], L_DRAG),
     'Fond_auto': ('$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js', '', [('cible', '0.12'), ('tolerance', '0.005'), ('grille', '8')], L_DRAG),
     'ImageSolver_Date': ('$PXI_SRCDIR/scripts/clodoweg/ImageSolver_Date.js', '', [('defaultDate', '2020-01-01T00:00:00')], L_DRAG),
     'LinearPatternSubtraction': ('$PXI_SRCDIR/scripts/clodoweg/LPS_UnClic.js', '',
@@ -907,7 +908,8 @@ T_RAPIDE = {
          "E13 Etoiles_LRGB (luminance de L_stars ajoutée aux étoiles ; saute-la pour garder les étoiles du RGB seul). "
          "E14 C_Fin_rapide sur RGB (LRGB, HDRMT à 40 %, masque attaché, Courbes, LHE, LHE_fin, masque retiré, NXT_final, étoiles, Fond_auto, Fond_desature) : image finie ; sans HDRMT : C_Fin_simple. Boost, HDRMT_50, HDRMT_eclat, NXT final : C_Fin_sans_etoiles, l'option (icônes Opt_ du workflow normal, en haut du fichier), puis Etoiles_screen, puis Fond_auto."),
 }
-WHEN_R = {'Fond_desature': "tout à la fin, si le fond du ciel garde une teinte (violet, bruit de couleur) : couleur retirée du fond seulement, galaxie et étoiles intactes",
+WHEN_R = {'STF_auto': "n'importe quand, pour voir une image linéaire (L, RGB, étoiles) : STF automatique lié, pixels inchangés ; lier = false pour neutraliser une dominante à l'écran",
+          'Fond_desature': "tout à la fin, si le fond du ciel garde une teinte (violet, bruit de couleur) : couleur retirée du fond seulement, galaxie et étoiles intactes",
           'Fond_auto': "tout à la fin, après Etoiles_screen ou Etoiles_reduites (déjà inclus dans C_Fin_rapide et C_Fin_simple) : mesure le fond et l'amène à 0,12, neutre",
           'Etoiles_screen': "après C_Fin_sans_etoiles (et l'option choisie : Boost, HDRMT_50, HDRMT_eclat, NXT final) : remet les étoiles RGB_stars sur l'image ; dernière étape",
           'Etoiles_reduites': "À LA PLACE d'Etoiles_screen, après C_Fin_sans_etoiles : remet les étoiles en les réduisant ; dernière étape",
@@ -1015,7 +1017,8 @@ v = {'titre': V_NOTE, 'L': L_DESC}
 for fn, pre, title, steps, spec, bxt in [('Conteneurs-LRGB.xpsm (bas)', 'LRGB', 'Workflow LRGB', lrgb, rapide_lrgb, lambda: M.bxt('BXT_L', False, 0.25, 0.0, 0.80)),
                                           ('Conteneurs-LHaRGB.xpsm (bas)', 'LHA', 'Workflow LHaRGB', lhargb, rapide_lha, lambda: M.bxt('BXT_L_H', False, 0.25, 0.0, 0.80))]:
     # options reprises des conteneurs : LHaRGB seulement, Continuum_auto, H_dans_L
-    extra = [(3, *pick(steps, 'Continuum_auto')), (3, *pick(steps, 'H_dans_L'))] if pre == 'LHA' else []
+    # STF_auto (demande de l'utilisateur) : voir une image linéaire, en P3
+    extra = [(3, script('STF_auto', ''), '')] + ([(3, *pick(steps, 'Continuum_auto')), (3, *pick(steps, 'H_dans_L'))] if pre == 'LHA' else [])
     print(fn, 'principal, options :', write_rapide(fn, pre, title, steps, spec(v, True, True), extra + rapide_common_opts(steps)))
 
 DATA['header'] = M.HEADER

@@ -3657,6 +3657,39 @@ $T[0] + w*H_cs</parameter>
    <instance class="NoOperation" version="256" id="R_P3_options_instance">
       <description>OPTIONS de la phase 3 — Linéaire : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
    </instance>
+   <instance class="Script" version="256" id="R_Opt_STF_auto_instance">
+      <description>OPTION — n'importe quand, pour voir une image linéaire (L, RGB, étoiles) : STF automatique lié, pixels inchangés ; lier = false pour neutraliser une dominante à l'écran.
+
+LANCEMENT : glisse l'icône sur l'image.
+
+PRÉRÉGLÉ : script STF_auto : STF automatique comme le bouton A de ScreenTransferFunction (ombres −2,8 MAD, fond 0,25), lié en RGB ; affichage seulement, pixels inchangés.
+
+À RÉGLER : glisse sur l'image à voir ; copie STF_auto.js dans src/scripts/clodoweg.
+
+SI :
+- dominante de couleur à l'écran (RGB linéaire avant SPCC) -&gt; lier false
+- image trop claire à l'écran -&gt; fond 0,15
+- retour à l'image brute -&gt; Reset de ScreenTransferFunction (F12)
+
+Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/STF_auto.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="3">
+         <tr>
+            <td id="id">lier</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">ombres</td>
+            <td id="value">-2.8</td>
+         </tr>
+         <tr>
+            <td id="id">fond</td>
+            <td id="value">0.25</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
+   </instance>
    <instance class="Script" version="256" id="R_Opt_Continuum_auto_instance">
       <description>OPTION — calcul automatique du coefficient k.
 
@@ -4876,8 +4909,9 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <icon id="R_E08_C_RGB_fin_rapide" instance="R_E08_C_RGB_fin_rapide_instance" xpos="413" ypos="718" workspace="Workspace01"/>
    <icon id="R_E09_C_L_rapide" instance="R_E09_C_L_rapide_instance" xpos="413" ypos="748" workspace="Workspace01"/>
    <icon id="R_P3_options" instance="R_P3_options_instance" xpos="413" ypos="794" workspace="Workspace01"/>
-   <icon id="R_Opt_Continuum_auto" instance="R_Opt_Continuum_auto_instance" xpos="413" ypos="828" workspace="Workspace01"/>
-   <icon id="R_Opt_H_dans_L" instance="R_Opt_H_dans_L_instance" xpos="413" ypos="858" workspace="Workspace01"/>
+   <icon id="R_Opt_STF_auto" instance="R_Opt_STF_auto_instance" xpos="413" ypos="828" workspace="Workspace01"/>
+   <icon id="R_Opt_Continuum_auto" instance="R_Opt_Continuum_auto_instance" xpos="413" ypos="858" workspace="Workspace01"/>
+   <icon id="R_Opt_H_dans_L" instance="R_Opt_H_dans_L_instance" xpos="413" ypos="888" workspace="Workspace01"/>
    <icon id="R_P4_Etirement" instance="R_P4_Etirement_instance" xpos="609" ypos="554" workspace="Workspace01"/>
    <icon id="R_E10_GHS_1_premier" instance="R_E10_GHS_1_premier_instance" xpos="609" ypos="598" workspace="Workspace01"/>
    <icon id="R_E11_GHS_2_contraste" instance="R_E11_GHS_2_contraste_instance" xpos="609" ypos="628" workspace="Workspace01"/>
