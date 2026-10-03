@@ -897,7 +897,7 @@ T_RAPIDE = {
           "E08 Etoiles_LRGB (glisse sur n'importe quelle image) : L_stars étirée comme les étoiles RGB, puis 0,5 × L_stars + 0,5 × luminance RGB appliquée à RGB_stars, L_stars fermée ; saute-la pour garder les étoiles du RGB seul. "
           "E09 C_Fin_rapide sur RGB : LRGB (L ajoutée), HDRMT à 40 % (détail du cœur), masque de luminance créé et attaché, Courbes (saturation 0,68), LHE (rayon 150), LHE_fin (rayon 40), masque retiré, NXT_final (Denoise 0,40, image sans étoiles), étoiles RGB_stars ajoutées, Fond_auto (fond mesuré, amené à 0,12 et neutre), Fond_desature (fond et violet du halo neutralisés), fermeture de L_stars : image finie. "
           "Sans HDRMT : C_Fin_simple (options). "
-          "Pour un Boost, HDRMT_50, HDRMT_eclat (cœur détaillé ET lumineux) ou NXT final : à la place d'E09, C_Fin_sans_etoiles (options), puis l'option, puis Etoiles_screen ou Etoiles_reduites, puis Fond_auto (options). Halo-B-Gon : sur RGB_stars avant E09. "
+          "Pour un Boost, HDRMT_50, HDRMT_eclat (cœur détaillé ET lumineux) ou NXT final : à la place d'E09, C_Fin_sans_etoiles (options), puis l'option, puis Etoiles_screen ou Etoiles_reduites, puis Fond_auto (options). Boost, HDRMT_50, HDRMT_eclat, NXT_final, Halo_B_Gon (sur RGB_stars avant E09), MT_etoiles, Etoiles_screen, Etoiles_reduites, Boost_final, Fond_desature : icônes Opt_ du workflow normal, en haut du fichier. "
           "Une étape en erreur arrête un conteneur : lis la console."),
  'LHA': ("MODE RAPIDE LHaRGB — {V} — icône de repère, sans effet. Pas de MARS (mode soigné). "
          "E00 C_Preparation_rapide (masters seuls ouverts ; double-clic puis Apply Global, ou glisse sur L) : Renommer_auto, LinearPatternSubtraction sur tous les masters mono, Combinaison_RGB (R, G, B restent ouvertes : R sert à Continuum_H). "
@@ -905,7 +905,7 @@ T_RAPIDE = {
          "E05 C_H_rapide sur H (GradientCorrection, BXT). E06 Continuum_H (k à régler), puis E07 H_dans_RGB sur RGB. "
          "E08 C_RGB_fin_rapide sur RGB (SXT sur RGB linéaire, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond 0,22, Etoiles_auto : courbe de Star Stretch, SCNR). E09 C_L_rapide sur L ({L}). E10 GHS_1_premier, E11 GHS_2_contraste, E12 GHS_3_fond : à la main sur L. "
          "E13 Etoiles_LRGB (luminance de L_stars ajoutée aux étoiles ; saute-la pour garder les étoiles du RGB seul). "
-         "E14 C_Fin_rapide sur RGB (LRGB, HDRMT à 40 %, masque attaché, Courbes, LHE, LHE_fin, masque retiré, NXT_final, étoiles, Fond_auto, Fond_desature ; Boost_final en option) : image finie  ; sans HDRMT : C_Fin_simple. Boost, HDRMT_50, HDRMT_eclat, NXT final : C_Fin_sans_etoiles, l'option, puis Etoiles_screen, puis Fond_auto."),
+         "E14 C_Fin_rapide sur RGB (LRGB, HDRMT à 40 %, masque attaché, Courbes, LHE, LHE_fin, masque retiré, NXT_final, étoiles, Fond_auto, Fond_desature) : image finie ; sans HDRMT : C_Fin_simple. Boost, HDRMT_50, HDRMT_eclat, NXT final : C_Fin_sans_etoiles, l'option (icônes Opt_ du workflow normal, en haut du fichier), puis Etoiles_screen, puis Fond_auto."),
 }
 WHEN_R = {'Fond_desature': "tout à la fin, si le fond du ciel garde une teinte (violet, bruit de couleur) : couleur retirée du fond seulement, galaxie et étoiles intactes",
           'Fond_auto': "tout à la fin, après Etoiles_screen ou Etoiles_reduites (déjà inclus dans C_Fin_rapide et C_Fin_simple) : mesure le fond et l'amène à 0,12, neutre",
@@ -949,10 +949,9 @@ def rapide_common_opts(steps):
     # retirées du rapide (demande de l'utilisateur) : LinearPatternSubtraction, Renommer_auto, Combinaison_RGB, ImageSolver_seul, Find_Background, Star_Stretch
     return [(6, cont('C_Fin_simple', [pick(steps, b)[0] for b in ('LRGB_ajout_L', 'Masque_L', 'Courbes', 'LHE', 'LHE_fin', 'Masque_retirer', 'Etoiles_screen')] + [script('Fond_auto', ''), fermer('Fermer_L_stars', 'L_stars')]), ''),
             (6, cont('C_Fin_sans_etoiles', [pick(steps, b)[0] for b in ('LRGB_ajout_L', 'Masque_L', 'Courbes', 'LHE', 'LHE_fin', 'Masque_retirer')] + [fermer('Fermer_L_stars', 'L_stars')]), ''),
-            (6, *pick(steps, 'Boost_finition_light')), (6, *pick(steps, 'Boost_finition')), (6, *pick(steps, 'HDRMT_50')), (6, *pick(steps, 'HDRMT_eclat')), (6, *pick(steps, 'NXT_final')),
-            # étoiles dans la même colonne (P6) : après C_Fin_sans_etoiles et une option, on remet les étoiles juste en dessous
-            (6, *pick(steps, 'Halo_B_Gon')), (6, *pick(steps, 'MT_etoiles')), (6, *pick(steps, 'Etoiles_screen')), (6, *pick(steps, 'Etoiles_reduites')),
-            (6, script('Fond_auto', ''), ''), (6, boost_final(), ''), (6, script('Fond_desature', ''), '')]
+            # Boost, HDRMT_50, HDRMT_eclat, NXT_final, Halo_B_Gon, MT_etoiles, Etoiles_screen, Etoiles_reduites, Boost_final, Fond_desature :
+            # retirées du rapide (identiques aux Opt_ du workflow normal, en haut du même fichier ; demande de l'utilisateur)
+            (6, script('Fond_auto', ''), '')]
 
 def rapide_end(steps):
     """Finition en un glisser, dans l'ordre habituel : HDRMT d'abord (plage dynamique), puis un seul masque, une seule courbe
