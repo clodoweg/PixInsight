@@ -2722,150 +2722,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       </instance>
    </instance>
    <instance class="NoOperation" version="256" id="R_E01_Mode_rapide_instance">
-      <description>Icônes du mode rapide en bas du fichier Conteneurs, toutes préfixées R_ (R_E00, R_E03, R_Opt_… : les numéros cités ici s'entendent avec ce préfixe). MODE RAPIDE LRGB — SXT toujours avant l'étirement (RGB et L) ; L étirée à la main par les 3 GHS ; luminance de L_stars ajoutée aux étoiles — icône de repère, sans effet. Aucun réglage, pas de MARS (MGC + MARS : mode soigné). Ordre (numéros des icônes) : E00 C_Preparation_rapide (masters seuls ouverts ; double-clic puis Apply Global, ou glisse sur L) : Renommer_auto (L, R, G, B d'après FILTER), LinearPatternSubtraction sur tous les masters mono ouverts, Combinaison_RGB (RGB créé, R, G, B fermées). E02 ImageSolver sur RGB (date par défaut si absente, puis ImageSolver ; nécessaire à SPCC ; icône seule, pas de conteneur). E03 C_RGB_rapide sur RGB (GradientCorrection, BXT Correct Only, SPCC, BXT, SXT sur RGB linéaire, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond SP = HP = 0,22, Etoiles_auto : courbe de Star Stretch amount 6, saturation 1,3, SCNR) : RGB étiré sans étoiles et RGB_stars étirée. E04 C_L_rapide sur L (GradientCorrection, BXT, SXT sur L linéaire, NXT ; L reste linéaire, sans étoiles ; L_stars gardée pour Etoiles_LRGB). E05 GHS_1_premier, E06 GHS_2_contraste, E07 GHS_3_fond : à la main sur L (fond final vers 0,11-0,13). E08 Etoiles_LRGB (glisse sur n'importe quelle image) : L_stars étirée comme les étoiles RGB, puis 0,5 × L_stars + 0,5 × luminance RGB appliquée à RGB_stars, L_stars fermée ; saute-la pour garder les étoiles du RGB seul. E09 C_Fin_rapide sur RGB : LRGB (L ajoutée), HDRMT à 40 % (détail du cœur), masque de luminance créé et attaché, Courbes (saturation 0,68), LHE (rayon 150), LHE_fin (rayon 40), masque retiré, NXT_final (Denoise 0,40, image sans étoiles), étoiles RGB_stars ajoutées, Fond_auto (fond mesuré, amené à 0,12 et neutre), Fond_desature (fond et violet du halo neutralisés), fermeture de L_stars : image finie. Sans HDRMT : C_Fin_simple (options). Pour un Boost, HDRMT_50, HDRMT_eclat (cœur détaillé ET lumineux) ou NXT final : à la place d'E09, C_Fin_sans_etoiles (options), puis l'option, puis Etoiles_screen ou Etoiles_reduites, puis Fond_auto (options). Halo-B-Gon : sur RGB_stars avant E09. Étoiles réglées à l'œil : décoche Etoiles_auto dans E03, puis Star_Stretch (options) sur RGB_stars. Une étape de la préparation à refaire seule : LinearPatternSubtraction, Renommer_auto, Combinaison_RGB (options). ImageSolver s'arrête après la date : ImageSolver_seul des options. Une étape en erreur arrête un conteneur : lis la console.</description>
-   </instance>
-   <instance class="NoOperation" version="256" id="R_P1_options_instance">
-      <description>OPTIONS de la phase 1 — Préparation : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
-   </instance>
-   <instance class="Script" version="256" id="R_Opt_LinearPatternSubtraction_instance">
-      <description>OPTION — lignes horizontales résiduelles visibles sur un master (motif du capteur).
-
-LANCEMENT : glisse l'icône sur l'image.
-
-PRÉRÉGLÉ : script LPS_UnClic (moteur de Vicent Peris, sans dialogue) : lignes, Correct the entire image, Layers to remove 9, Rejection limit 3, Global rejection 5, zone de fond choisie automatiquement (la plus sombre), fenêtres de travail fermées, TOUTES les images ouvertes corrigées (allOpenImages = true).
-
-À RÉGLER : une seule fois par ordinateur (Mac ou PC) : crée le dossier clodoweg dans src/scripts de PixInsight (à côté de PatternCorrection ; Mac : /Applications/PixInsight/src/scripts/clodoweg, PC : en général C:\Program Files\PixInsight\src\scripts\clodoweg ; pas le dossier scripts du premier niveau) et copies-y LPS_UnClic.js ; ensuite ouvre les masters linéaires de la cible (et rien d'autre), puis glisse l'icône sur l'un d'eux : tous sont corrigés, avant le recadrage (la correction se fait dans les images).
-
-SI :
-- corriger des colonnes -&gt; correctColumns = true dans l'icône
-- une seule image -&gt; allOpenImages = false dans l'icône, puis glisse-la sur l'image
-- artefacts -&gt; Ctrl+Z : le script est conçu pour les brutes, avant alignement
-- script introuvable -&gt; vérifie le dossier scripts/clodoweg (à recopier après une réinstallation de PixInsight) ; version avec dialogue : menu Script › Pattern Correction › LinearPatternSubtraction
-
-Détails : page docs/pixinsight-workflow.html.</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/LPS_UnClic.js</parameter>
-      <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="14">
-         <tr>
-            <td id="id">correctColumns</td>
-            <td id="value">false</td>
-         </tr>
-         <tr>
-            <td id="id">correctEntireImage</td>
-            <td id="value">true</td>
-         </tr>
-         <tr>
-            <td id="id">defectTableFilePath</td>
-            <td id="value"></td>
-         </tr>
-         <tr>
-            <td id="id">layersToRemove</td>
-            <td id="value">9</td>
-         </tr>
-         <tr>
-            <td id="id">rejectionLimit</td>
-            <td id="value">3</td>
-         </tr>
-         <tr>
-            <td id="id">globalRejection</td>
-            <td id="value">true</td>
-         </tr>
-         <tr>
-            <td id="id">globalRejectionLimit</td>
-            <td id="value">5</td>
-         </tr>
-         <tr>
-            <td id="id">autoBackground</td>
-            <td id="value">true</td>
-         </tr>
-         <tr>
-            <td id="id">backgroundReferenceLeft</td>
-            <td id="value">0</td>
-         </tr>
-         <tr>
-            <td id="id">backgroundReferenceTop</td>
-            <td id="value">0</td>
-         </tr>
-         <tr>
-            <td id="id">backgroundReferenceWidth</td>
-            <td id="value">512</td>
-         </tr>
-         <tr>
-            <td id="id">backgroundReferenceHeight</td>
-            <td id="value">512</td>
-         </tr>
-         <tr>
-            <td id="id">allOpenImages</td>
-            <td id="value">true</td>
-         </tr>
-         <tr>
-            <td id="id">closeWorkingImages</td>
-            <td id="value">true</td>
-         </tr>
-      </table>
-      <parameter id="information"></parameter>
-   </instance>
-   <instance class="Script" version="256" id="R_Opt_Renommer_auto_instance">
-      <description>OPTION — si besoin.
-
-LANCEMENT : double-clic sur l'icône, puis Apply Global.
-
-PRÉRÉGLÉ : script Renommer_auto : renomme les masters mono ouverts L, R, G, B, H, O, S d'après le mot-clé FILTER (Lum, Red, Ha, OIII...), sinon d'après le nom du fichier.
-
-À RÉGLER : une seule fois par ordinateur : copie Renommer_auto.js dans src/scripts/clodoweg ; ouvre tes masters, puis lance l'icône.
-
-SI :
-- filtre inconnu ou nom déjà pris -&gt; message dans la console, renomme cette vue à la main
-
-Détails : page docs/pixinsight-workflow.html.</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Renommer_auto.js</parameter>
-      <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="0"/>
-      <parameter id="information"></parameter>
-   </instance>
-   <instance class="Script" version="256" id="R_Opt_Combinaison_RGB_instance">
-      <description>OPTION — si besoin.
-
-LANCEMENT : double-clic sur l'icône, puis Apply Global.
-
-PRÉRÉGLÉ : script Combiner_RGB : R, G, B -&gt; image couleur 'RGB', en-tête FITS du rouge copié (coordonnées et date pour ImageSolver), puis R, G et B fermées sans demander d'enregistrer.
-
-À RÉGLER : une seule fois par ordinateur : copie Combiner_RGB.js dans src/scripts/clodoweg ; nomme tes masters R, G et B, enregistre-les si tu veux garder une version modifiée (après LPS par exemple), puis lance l'icône.
-
-SI :
-- garder R, G et B ouvertes -&gt; closeSources = false dans l'icône
-- une image 'RGB' existe déjà -&gt; ferme-la ou renomme-la
-
-Détails : page docs/pixinsight-workflow.html.</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Combiner_RGB.js</parameter>
-      <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="6">
-         <tr>
-            <td id="id">red</td>
-            <td id="value">R</td>
-         </tr>
-         <tr>
-            <td id="id">green</td>
-            <td id="value">G</td>
-         </tr>
-         <tr>
-            <td id="id">blue</td>
-            <td id="value">B</td>
-         </tr>
-         <tr>
-            <td id="id">newId</td>
-            <td id="value">RGB</td>
-         </tr>
-         <tr>
-            <td id="id">closeSources</td>
-            <td id="value">true</td>
-         </tr>
-         <tr>
-            <td id="id">copyKeywords</td>
-            <td id="value">true</td>
-         </tr>
-      </table>
-      <parameter id="information"></parameter>
+      <description>Icônes du mode rapide en bas du fichier Conteneurs, toutes préfixées R_ (R_E00, R_E03, R_Opt_… : les numéros cités ici s'entendent avec ce préfixe). MODE RAPIDE LRGB — SXT toujours avant l'étirement (RGB et L) ; L étirée à la main par les 3 GHS ; luminance de L_stars ajoutée aux étoiles — icône de repère, sans effet. Aucun réglage, pas de MARS (MGC + MARS : mode soigné). Ordre (numéros des icônes) : E00 C_Preparation_rapide (masters seuls ouverts ; double-clic puis Apply Global, ou glisse sur L) : Renommer_auto (L, R, G, B d'après FILTER), LinearPatternSubtraction sur tous les masters mono ouverts, Combinaison_RGB (RGB créé, R, G, B fermées). E02 ImageSolver sur RGB (date par défaut si absente, puis ImageSolver ; nécessaire à SPCC ; icône seule, pas de conteneur). E03 C_RGB_rapide sur RGB (GradientCorrection, BXT Correct Only, SPCC, BXT, SXT sur RGB linéaire, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond SP = HP = 0,22, Etoiles_auto : courbe de Star Stretch amount 6, saturation 1,3, SCNR) : RGB étiré sans étoiles et RGB_stars étirée. E04 C_L_rapide sur L (GradientCorrection, BXT, SXT sur L linéaire, NXT ; L reste linéaire, sans étoiles ; L_stars gardée pour Etoiles_LRGB). E05 GHS_1_premier, E06 GHS_2_contraste, E07 GHS_3_fond : à la main sur L (fond final vers 0,11-0,13). E08 Etoiles_LRGB (glisse sur n'importe quelle image) : L_stars étirée comme les étoiles RGB, puis 0,5 × L_stars + 0,5 × luminance RGB appliquée à RGB_stars, L_stars fermée ; saute-la pour garder les étoiles du RGB seul. E09 C_Fin_rapide sur RGB : LRGB (L ajoutée), HDRMT à 40 % (détail du cœur), masque de luminance créé et attaché, Courbes (saturation 0,68), LHE (rayon 150), LHE_fin (rayon 40), masque retiré, NXT_final (Denoise 0,40, image sans étoiles), étoiles RGB_stars ajoutées, Fond_auto (fond mesuré, amené à 0,12 et neutre), Fond_desature (fond et violet du halo neutralisés), fermeture de L_stars : image finie. Sans HDRMT : C_Fin_simple (options). Pour un Boost, HDRMT_50, HDRMT_eclat (cœur détaillé ET lumineux) ou NXT final : à la place d'E09, C_Fin_sans_etoiles (options), puis l'option, puis Etoiles_screen ou Etoiles_reduites, puis Fond_auto (options). Halo-B-Gon : sur RGB_stars avant E09. Une étape en erreur arrête un conteneur : lis la console.</description>
    </instance>
    <instance class="NoOperation" version="256" id="R_P2_Gradient_instance">
       <description>PHASE 2 — Gradient : image linéaire : retrait du gradient. Colonne de repère, sans effet.</description>
@@ -2890,210 +2747,6 @@ Détails : page docs/pixinsight-workflow.html.</description>
             <td id="id">defaultDate</td>
             <td id="value">2020-01-01T00:00:00</td>
          </tr>
-         <tr>
-            <td id="id">metadata_focal</td>
-            <td id="value">2939</td>
-         </tr>
-         <tr>
-            <td id="id">metadata_useFocal</td>
-            <td id="value">true</td>
-         </tr>
-         <tr>
-            <td id="id">metadata_xpixsz</td>
-            <td id="value">3.76</td>
-         </tr>
-         <tr>
-            <td id="id">metadata_resolution</td>
-            <td id="value">0.00007330116739335556</td>
-         </tr>
-         <tr>
-            <td id="id">metadata_referenceSystem</td>
-            <td id="value">ICRS</td>
-         </tr>
-         <tr>
-            <td id="id">metadata_topocentric</td>
-            <td id="value">false</td>
-         </tr>
-         <tr>
-            <td id="id">solver_version</td>
-            <td id="value">6.4.2</td>
-         </tr>
-         <tr>
-            <td id="id">solver_magnitude</td>
-            <td id="value">12</td>
-         </tr>
-         <tr>
-            <td id="id">solver_autoMagnitude</td>
-            <td id="value">true</td>
-         </tr>
-         <tr>
-            <td id="id">solver_databasePath</td>
-            <td id="value">undefined</td>
-         </tr>
-         <tr>
-            <td id="id">solver_generateErrorImg</td>
-            <td id="value">false</td>
-         </tr>
-         <tr>
-            <td id="id">solver_structureLayers</td>
-            <td id="value">5</td>
-         </tr>
-         <tr>
-            <td id="id">solver_minStructureSize</td>
-            <td id="value">0</td>
-         </tr>
-         <tr>
-            <td id="id">solver_hotPixelFilterRadius</td>
-            <td id="value">1</td>
-         </tr>
-         <tr>
-            <td id="id">solver_noiseReductionFilterRadius</td>
-            <td id="value">0</td>
-         </tr>
-         <tr>
-            <td id="id">solver_sensitivity</td>
-            <td id="value">0.5</td>
-         </tr>
-         <tr>
-            <td id="id">solver_peakResponse</td>
-            <td id="value">0.5</td>
-         </tr>
-         <tr>
-            <td id="id">solver_brightThreshold</td>
-            <td id="value">3</td>
-         </tr>
-         <tr>
-            <td id="id">solver_maxStarDistortion</td>
-            <td id="value">0.6</td>
-         </tr>
-         <tr>
-            <td id="id">solver_autoPSF</td>
-            <td id="value">false</td>
-         </tr>
-         <tr>
-            <td id="id">solver_catalogMode</td>
-            <td id="value">2</td>
-         </tr>
-         <tr>
-            <td id="id">solver_vizierServer</td>
-            <td id="value">https://vizier.cds.unistra.fr/</td>
-         </tr>
-         <tr>
-            <td id="id">solver_showStars</td>
-            <td id="value">false</td>
-         </tr>
-         <tr>
-            <td id="id">solver_showStarMatches</td>
-            <td id="value">false</td>
-         </tr>
-         <tr>
-            <td id="id">solver_showSimplifiedSurfaces</td>
-            <td id="value">false</td>
-         </tr>
-         <tr>
-            <td id="id">solver_showDistortion</td>
-            <td id="value">false</td>
-         </tr>
-         <tr>
-            <td id="id">solver_generateDistortModel</td>
-            <td id="value">false</td>
-         </tr>
-         <tr>
-            <td id="id">solver_catalog</td>
-            <td id="value">PPMXL</td>
-         </tr>
-         <tr>
-            <td id="id">solver_distortionCorrection</td>
-            <td id="value">true</td>
-         </tr>
-         <tr>
-            <td id="id">solver_rbfType</td>
-            <td id="value">101</td>
-         </tr>
-         <tr>
-            <td id="id">solver_maxSplinePoints</td>
-            <td id="value">4000</td>
-         </tr>
-         <tr>
-            <td id="id">solver_splineOrder</td>
-            <td id="value">2</td>
-         </tr>
-         <tr>
-            <td id="id">solver_splineSmoothing</td>
-            <td id="value">0.005</td>
-         </tr>
-         <tr>
-            <td id="id">solver_enableSimplifier</td>
-            <td id="value">true</td>
-         </tr>
-         <tr>
-            <td id="id">solver_simplifierRejectFraction</td>
-            <td id="value">0.1</td>
-         </tr>
-         <tr>
-            <td id="id">solver_outlierDetectionRadius</td>
-            <td id="value">160</td>
-         </tr>
-         <tr>
-            <td id="id">solver_outlierDetectionMinThreshold</td>
-            <td id="value">4</td>
-         </tr>
-         <tr>
-            <td id="id">solver_outlierDetectionSigma</td>
-            <td id="value">5</td>
-         </tr>
-         <tr>
-            <td id="id">solver_useActive</td>
-            <td id="value">true</td>
-         </tr>
-         <tr>
-            <td id="id">solver_outSuffix</td>
-            <td id="value">_ast</td>
-         </tr>
-         <tr>
-            <td id="id">solver_projection</td>
-            <td id="value">0</td>
-         </tr>
-         <tr>
-            <td id="id">solver_projectionOriginMode</td>
-            <td id="value">0</td>
-         </tr>
-         <tr>
-            <td id="id">solver_restrictToHQStars</td>
-            <td id="value">false</td>
-         </tr>
-         <tr>
-            <td id="id">solver_intersectionMode</td>
-            <td id="value">1</td>
-         </tr>
-         <tr>
-            <td id="id">solver_tryApparentCoordinates</td>
-            <td id="value">true</td>
-         </tr>
-         <tr>
-            <td id="id">solver_tryExhaustiveInitialAlignment</td>
-            <td id="value">false</td>
-         </tr>
-      </table>
-      <parameter id="information"></parameter>
-   </instance>
-   <instance class="NoOperation" version="256" id="R_P2_options_instance">
-      <description>OPTIONS de la phase 2 — Gradient : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
-   </instance>
-   <instance class="Script" version="256" id="R_Opt_ImageSolver_seul_instance">
-      <description>OPTION — secours : ImageSolver seul, si l'icône ImageSolver (date + ImageSolver) s'arrête après la date.
-
-PRÉRÉGLÉ : ImageSolver 6.4.2 seul (mêmes réglages que l'icône ImageSolver, sans l'ajout de date).
-
-À RÉGLER : secours : glisse sur l'image si l'icône ImageSolver s'arrête après la date.
-
-SI :
-- icône bloquée après une mise à jour d'ImageSolver -&gt; efface son champ MD5
-
-Détails : page docs/pixinsight-workflow.html.</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/ImageSolver/ImageSolver.js</parameter>
-      <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="46">
          <tr>
             <td id="id">metadata_focal</td>
             <td id="value">2939</td>
@@ -3589,81 +3242,6 @@ Détails : page docs/pixinsight-workflow.html.</description>
          <parameter id="overlap" value="0.20"/>
       </instance>
    </instance>
-   <instance class="NoOperation" version="256" id="R_P3_options_instance">
-      <description>OPTIONS de la phase 3 — Linéaire : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
-   </instance>
-   <instance class="Script" version="256" id="R_Opt_Find_Background_instance">
-      <description>OPTION — champ rempli de nébuleuse : fond de référence pour SPCC.
-
-LANCEMENT : double-clic sur l'icône, puis Apply Global. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
-
-PRÉRÉGLÉ : rien.
-
-À RÉGLER : glisse sur l'image : crée l'aperçu Background ; dans SPCC, Region of Interest › From Preview.
-
-Détails : page docs/pixinsight-workflow.html.</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/FindBackground.js</parameter>
-      <parameter id="md5sum">4af61e322ea5149f93fdcfe6ef0e62bd</parameter>
-      <table id="parameters" rows="14">
-         <tr>
-            <td id="id">filterAvg</td>
-            <td id="value">true</td>
-         </tr>
-         <tr>
-            <td id="id">filterSdev</td>
-            <td id="value">true</td>
-         </tr>
-         <tr>
-            <td id="id">filterPoisonIndex</td>
-            <td id="value">false</td>
-         </tr>
-         <tr>
-            <td id="id">filterMAAD</td>
-            <td id="value">false</td>
-         </tr>
-         <tr>
-            <td id="id">filterObjects</td>
-            <td id="value">false</td>
-         </tr>
-         <tr>
-            <td id="id">printInformation</td>
-            <td id="value">true</td>
-         </tr>
-         <tr>
-            <td id="id">generatePreview</td>
-            <td id="value">true</td>
-         </tr>
-         <tr>
-            <td id="id">previewName</td>
-            <td id="value">Background</td>
-         </tr>
-         <tr>
-            <td id="id">slowSearch</td>
-            <td id="value">false</td>
-         </tr>
-         <tr>
-            <td id="id">fastSearch</td>
-            <td id="value">true</td>
-         </tr>
-         <tr>
-            <td id="id">size</td>
-            <td id="value">50</td>
-         </tr>
-         <tr>
-            <td id="id">spacingRate</td>
-            <td id="value">2</td>
-         </tr>
-         <tr>
-            <td id="id">searchGridSize</td>
-            <td id="value">100</td>
-         </tr>
-         <tr>
-            <td id="id">startingPoints</td>
-            <td id="value">40</td>
-         </tr>
-      </table>
-      <parameter id="information"></parameter>
-   </instance>
    <instance class="NoOperation" version="256" id="R_P4_Etirement_instance">
       <description>PHASE 4 — Étirement : passage en non linéaire, même fond pour toutes les images. Colonne de repère, sans effet.</description>
    </instance>
@@ -3773,47 +3351,6 @@ Détails : page docs/pixinsight-workflow.html.</description>
          <tr>
             <td id="id">saturation</td>
             <td id="value">0.35</td>
-         </tr>
-      </table>
-      <parameter id="information"></parameter>
-   </instance>
-   <instance class="NoOperation" version="256" id="R_P4_options_instance">
-      <description>OPTIONS de la phase 4 — Étirement : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
-   </instance>
-   <instance class="Script" version="256" id="R_Opt_Star_Stretch_instance">
-      <description>OPTION — pour régler les étoiles à l'œil : décoche d'abord Etoiles_auto dans le conteneur RGB (sinon double étirement).
-
-LANCEMENT : glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
-
-PRÉRÉGLÉ : Stretch Amount 6, Color Boost 1,3, Remove Green (SCNR) coché.
-
-À RÉGLER : rien ; sur l'image d'étoiles linéaire.
-
-SI :
-- cœurs d'étoiles blancs (R = G = B = 1) -&gt; 5,5
-- étoiles trop grosses -&gt; 5 ou 4
-- étoiles grisées par le SCNR -&gt; décoche Remove Green
-- étoiles criardes -&gt; Color Boost 1,0
-
-Détails : page docs/pixinsight-workflow.html.</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/star_stretch.js</parameter>
-      <parameter id="md5sum">69a1ee6db4e9f5374c2cddb1e5a7f4ae</parameter>
-      <table id="parameters" rows="4">
-         <tr>
-            <td id="id">amount</td>
-            <td id="value">6</td>
-         </tr>
-         <tr>
-            <td id="id">satAmount</td>
-            <td id="value">1.3</td>
-         </tr>
-         <tr>
-            <td id="id">removeGreen</td>
-            <td id="value">true</td>
-         </tr>
-         <tr>
-            <td id="id">showPreview</td>
-            <td id="value">false</td>
          </tr>
       </table>
       <parameter id="information"></parameter>
@@ -5938,41 +5475,31 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <icon id="R_P1_Preparation" instance="R_P1_Preparation_instance" xpos="30" ypos="464" workspace="Workspace01"/>
    <icon id="R_E00_C_Preparation_rapide" instance="R_E00_C_Preparation_rapide_instance" xpos="30" ypos="508" workspace="Workspace01"/>
    <icon id="R_E01_Mode_rapide" instance="R_E01_Mode_rapide_instance" xpos="30" ypos="538" workspace="Workspace01"/>
-   <icon id="R_P1_options" instance="R_P1_options_instance" xpos="30" ypos="584" workspace="Workspace01"/>
-   <icon id="R_Opt_LinearPatternSubtraction" instance="R_Opt_LinearPatternSubtraction_instance" xpos="30" ypos="618" workspace="Workspace01"/>
-   <icon id="R_Opt_Renommer_auto" instance="R_Opt_Renommer_auto_instance" xpos="30" ypos="648" workspace="Workspace01"/>
-   <icon id="R_Opt_Combinaison_RGB" instance="R_Opt_Combinaison_RGB_instance" xpos="30" ypos="678" workspace="Workspace01"/>
-   <icon id="R_P2_Gradient" instance="R_P2_Gradient_instance" xpos="243" ypos="464" workspace="Workspace01"/>
-   <icon id="R_E02_ImageSolver" instance="R_E02_ImageSolver_instance" xpos="243" ypos="508" workspace="Workspace01"/>
-   <icon id="R_P2_options" instance="R_P2_options_instance" xpos="243" ypos="554" workspace="Workspace01"/>
-   <icon id="R_Opt_ImageSolver_seul" instance="R_Opt_ImageSolver_seul_instance" xpos="243" ypos="588" workspace="Workspace01"/>
-   <icon id="R_P3_Lineaire" instance="R_P3_Lineaire_instance" xpos="421" ypos="464" workspace="Workspace01"/>
-   <icon id="R_E03_C_RGB_rapide" instance="R_E03_C_RGB_rapide_instance" xpos="421" ypos="508" workspace="Workspace01"/>
-   <icon id="R_E04_C_L_rapide" instance="R_E04_C_L_rapide_instance" xpos="421" ypos="538" workspace="Workspace01"/>
-   <icon id="R_P3_options" instance="R_P3_options_instance" xpos="421" ypos="584" workspace="Workspace01"/>
-   <icon id="R_Opt_Find_Background" instance="R_Opt_Find_Background_instance" xpos="421" ypos="618" workspace="Workspace01"/>
-   <icon id="R_P4_Etirement" instance="R_P4_Etirement_instance" xpos="595" ypos="464" workspace="Workspace01"/>
-   <icon id="R_E05_GHS_1_premier" instance="R_E05_GHS_1_premier_instance" xpos="595" ypos="508" workspace="Workspace01"/>
-   <icon id="R_E06_GHS_2_contraste" instance="R_E06_GHS_2_contraste_instance" xpos="595" ypos="538" workspace="Workspace01"/>
-   <icon id="R_E07_GHS_3_fond" instance="R_E07_GHS_3_fond_instance" xpos="595" ypos="568" workspace="Workspace01"/>
-   <icon id="R_E08_Etoiles_LRGB" instance="R_E08_Etoiles_LRGB_instance" xpos="595" ypos="598" workspace="Workspace01"/>
-   <icon id="R_P4_options" instance="R_P4_options_instance" xpos="595" ypos="644" workspace="Workspace01"/>
-   <icon id="R_Opt_Star_Stretch" instance="R_Opt_Star_Stretch_instance" xpos="595" ypos="678" workspace="Workspace01"/>
-   <icon id="R_P6_Finition" instance="R_P6_Finition_instance" xpos="769" ypos="464" workspace="Workspace01"/>
-   <icon id="R_E09_C_Fin_rapide" instance="R_E09_C_Fin_rapide_instance" xpos="769" ypos="508" workspace="Workspace01"/>
-   <icon id="R_P6_options" instance="R_P6_options_instance" xpos="769" ypos="554" workspace="Workspace01"/>
-   <icon id="R_Opt_C_Fin_simple" instance="R_Opt_C_Fin_simple_instance" xpos="769" ypos="588" workspace="Workspace01"/>
-   <icon id="R_Opt_C_Fin_sans_etoiles" instance="R_Opt_C_Fin_sans_etoiles_instance" xpos="769" ypos="618" workspace="Workspace01"/>
-   <icon id="R_Opt_Boost_finition_light" instance="R_Opt_Boost_finition_light_instance" xpos="769" ypos="648" workspace="Workspace01"/>
-   <icon id="R_Opt_Boost_finition" instance="R_Opt_Boost_finition_instance" xpos="769" ypos="678" workspace="Workspace01"/>
-   <icon id="R_Opt_HDRMT_50" instance="R_Opt_HDRMT_50_instance" xpos="769" ypos="708" workspace="Workspace01"/>
-   <icon id="R_Opt_HDRMT_eclat" instance="R_Opt_HDRMT_eclat_instance" xpos="769" ypos="738" workspace="Workspace01"/>
-   <icon id="R_Opt_NXT_final" instance="R_Opt_NXT_final_instance" xpos="769" ypos="768" workspace="Workspace01"/>
-   <icon id="R_Opt_Halo_B_Gon" instance="R_Opt_Halo_B_Gon_instance" xpos="769" ypos="798" workspace="Workspace01"/>
-   <icon id="R_Opt_MT_etoiles" instance="R_Opt_MT_etoiles_instance" xpos="769" ypos="828" workspace="Workspace01"/>
-   <icon id="R_Opt_Etoiles_screen" instance="R_Opt_Etoiles_screen_instance" xpos="769" ypos="858" workspace="Workspace01"/>
-   <icon id="R_Opt_Etoiles_reduites" instance="R_Opt_Etoiles_reduites_instance" xpos="769" ypos="888" workspace="Workspace01"/>
-   <icon id="R_Opt_Fond_auto" instance="R_Opt_Fond_auto_instance" xpos="769" ypos="918" workspace="Workspace01"/>
-   <icon id="R_Opt_Boost_final" instance="R_Opt_Boost_final_instance" xpos="769" ypos="948" workspace="Workspace01"/>
-   <icon id="R_Opt_Fond_desature" instance="R_Opt_Fond_desature_instance" xpos="769" ypos="978" workspace="Workspace01"/>
+   <icon id="R_P2_Gradient" instance="R_P2_Gradient_instance" xpos="226" ypos="464" workspace="Workspace01"/>
+   <icon id="R_E02_ImageSolver" instance="R_E02_ImageSolver_instance" xpos="226" ypos="508" workspace="Workspace01"/>
+   <icon id="R_P3_Lineaire" instance="R_P3_Lineaire_instance" xpos="382" ypos="464" workspace="Workspace01"/>
+   <icon id="R_E03_C_RGB_rapide" instance="R_E03_C_RGB_rapide_instance" xpos="382" ypos="508" workspace="Workspace01"/>
+   <icon id="R_E04_C_L_rapide" instance="R_E04_C_L_rapide_instance" xpos="382" ypos="538" workspace="Workspace01"/>
+   <icon id="R_P4_Etirement" instance="R_P4_Etirement_instance" xpos="542" ypos="464" workspace="Workspace01"/>
+   <icon id="R_E05_GHS_1_premier" instance="R_E05_GHS_1_premier_instance" xpos="542" ypos="508" workspace="Workspace01"/>
+   <icon id="R_E06_GHS_2_contraste" instance="R_E06_GHS_2_contraste_instance" xpos="542" ypos="538" workspace="Workspace01"/>
+   <icon id="R_E07_GHS_3_fond" instance="R_E07_GHS_3_fond_instance" xpos="542" ypos="568" workspace="Workspace01"/>
+   <icon id="R_E08_Etoiles_LRGB" instance="R_E08_Etoiles_LRGB_instance" xpos="542" ypos="598" workspace="Workspace01"/>
+   <icon id="R_P6_Finition" instance="R_P6_Finition_instance" xpos="716" ypos="464" workspace="Workspace01"/>
+   <icon id="R_E09_C_Fin_rapide" instance="R_E09_C_Fin_rapide_instance" xpos="716" ypos="508" workspace="Workspace01"/>
+   <icon id="R_P6_options" instance="R_P6_options_instance" xpos="716" ypos="554" workspace="Workspace01"/>
+   <icon id="R_Opt_C_Fin_simple" instance="R_Opt_C_Fin_simple_instance" xpos="716" ypos="588" workspace="Workspace01"/>
+   <icon id="R_Opt_C_Fin_sans_etoiles" instance="R_Opt_C_Fin_sans_etoiles_instance" xpos="716" ypos="618" workspace="Workspace01"/>
+   <icon id="R_Opt_Boost_finition_light" instance="R_Opt_Boost_finition_light_instance" xpos="716" ypos="648" workspace="Workspace01"/>
+   <icon id="R_Opt_Boost_finition" instance="R_Opt_Boost_finition_instance" xpos="716" ypos="678" workspace="Workspace01"/>
+   <icon id="R_Opt_HDRMT_50" instance="R_Opt_HDRMT_50_instance" xpos="716" ypos="708" workspace="Workspace01"/>
+   <icon id="R_Opt_HDRMT_eclat" instance="R_Opt_HDRMT_eclat_instance" xpos="716" ypos="738" workspace="Workspace01"/>
+   <icon id="R_Opt_NXT_final" instance="R_Opt_NXT_final_instance" xpos="716" ypos="768" workspace="Workspace01"/>
+   <icon id="R_Opt_Halo_B_Gon" instance="R_Opt_Halo_B_Gon_instance" xpos="716" ypos="798" workspace="Workspace01"/>
+   <icon id="R_Opt_MT_etoiles" instance="R_Opt_MT_etoiles_instance" xpos="716" ypos="828" workspace="Workspace01"/>
+   <icon id="R_Opt_Etoiles_screen" instance="R_Opt_Etoiles_screen_instance" xpos="716" ypos="858" workspace="Workspace01"/>
+   <icon id="R_Opt_Etoiles_reduites" instance="R_Opt_Etoiles_reduites_instance" xpos="716" ypos="888" workspace="Workspace01"/>
+   <icon id="R_Opt_Fond_auto" instance="R_Opt_Fond_auto_instance" xpos="716" ypos="918" workspace="Workspace01"/>
+   <icon id="R_Opt_Boost_final" instance="R_Opt_Boost_final_instance" xpos="716" ypos="948" workspace="Workspace01"/>
+   <icon id="R_Opt_Fond_desature" instance="R_Opt_Fond_desature_instance" xpos="716" ypos="978" workspace="Workspace01"/>
 </xpsm>
