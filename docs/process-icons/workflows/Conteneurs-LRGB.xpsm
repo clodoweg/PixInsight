@@ -3433,38 +3433,49 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <instance class="NoOperation" version="256" id="R_P3_options_instance">
       <description>OPTIONS de la phase 3 — Linéaire : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
    </instance>
-   <instance class="Script" version="256" id="R_Opt_STF_auto_instance">
-      <description>OPTION — n'importe quand, pour voir une image linéaire (L, RGB, étoiles) : STF automatique lié, pixels inchangés ; lier = false pour neutraliser une dominante à l'écran.
+   <instance class="ScreenTransferFunction" version="256" id="R_Opt_STF_instance">
+      <description>OPTION — n'importe quand : double-clic pour ouvrir la fenêtre ScreenTransferFunction (bouton A = auto-étirement de l'affichage, Reset pour revenir), pixels inchangés.
 
-LANCEMENT : glisse l'icône sur l'image.
+PRÉRÉGLÉ : process ScreenTransferFunction (STF), réglage neutre ; affichage seulement, les pixels ne changent pas.
 
-PRÉRÉGLÉ : script STF_auto : STF automatique comme le bouton A de ScreenTransferFunction (ombres −2,8 MAD, fond 0,25), lié en RGB ; affichage seulement, pixels inchangés.
-
-À RÉGLER : glisse sur l'image à voir ; copie STF_auto.js dans src/scripts/clodoweg.
+À RÉGLER : double-clic sur l'icône : la fenêtre STF s'ouvre ; choisis l'image, puis A (Auto Stretch) ; lien R/G/B : bouton chaîne.
 
 SI :
-- dominante de couleur à l'écran (RGB linéaire avant SPCC) -&gt; lier false
-- image trop claire à l'écran -&gt; fond 0,15
-- retour à l'image brute -&gt; Reset de ScreenTransferFunction (F12)
+- revenir à l'image brute -&gt; Reset de la fenêtre STF (ou F12)
+- dominante de couleur à l'écran -&gt; décoche le lien R/G/B (chaîne), puis A
 
 Détails : page docs/pixinsight-workflow.html.</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/STF_auto.js</parameter>
-      <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="3">
+      <table id="STF" rows="4">
          <tr>
-            <td id="id">lier</td>
-            <td id="value">true</td>
+            <td id="c0" value="0.00000"/>
+            <td id="c1" value="1.00000"/>
+            <td id="m" value="0.50000"/>
+            <td id="r0" value="0.00000"/>
+            <td id="r1" value="1.00000"/>
          </tr>
          <tr>
-            <td id="id">ombres</td>
-            <td id="value">-2.8</td>
+            <td id="c0" value="0.00000"/>
+            <td id="c1" value="1.00000"/>
+            <td id="m" value="0.50000"/>
+            <td id="r0" value="0.00000"/>
+            <td id="r1" value="1.00000"/>
          </tr>
          <tr>
-            <td id="id">fond</td>
-            <td id="value">0.25</td>
+            <td id="c0" value="0.00000"/>
+            <td id="c1" value="1.00000"/>
+            <td id="m" value="0.50000"/>
+            <td id="r0" value="0.00000"/>
+            <td id="r1" value="1.00000"/>
+         </tr>
+         <tr>
+            <td id="c0" value="0.00000"/>
+            <td id="c1" value="1.00000"/>
+            <td id="m" value="0.50000"/>
+            <td id="r0" value="0.00000"/>
+            <td id="r1" value="1.00000"/>
          </tr>
       </table>
-      <parameter id="information"></parameter>
+      <parameter id="interaction" value="SeparateChannels"/>
    </instance>
    <instance class="NoOperation" version="256" id="R_P4_Etirement_instance">
       <description>PHASE 4 — Étirement : passage en non linéaire, même fond pour toutes les images. Colonne de repère, sans effet.</description>
@@ -3639,7 +3650,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <icon id="R_E03_C_RGB_rapide" instance="R_E03_C_RGB_rapide_instance" xpos="382" ypos="568" workspace="Workspace01"/>
    <icon id="R_E04_C_L_rapide" instance="R_E04_C_L_rapide_instance" xpos="382" ypos="598" workspace="Workspace01"/>
    <icon id="R_P3_options" instance="R_P3_options_instance" xpos="382" ypos="644" workspace="Workspace01"/>
-   <icon id="R_Opt_STF_auto" instance="R_Opt_STF_auto_instance" xpos="382" ypos="678" workspace="Workspace01"/>
+   <icon id="R_Opt_STF" instance="R_Opt_STF_instance" xpos="382" ypos="678" workspace="Workspace01"/>
    <icon id="R_P4_Etirement" instance="R_P4_Etirement_instance" xpos="542" ypos="524" workspace="Workspace01"/>
    <icon id="R_E05_GHS_1_premier" instance="R_E05_GHS_1_premier_instance" xpos="542" ypos="568" workspace="Workspace01"/>
    <icon id="R_E06_GHS_2_contraste" instance="R_E06_GHS_2_contraste_instance" xpos="542" ypos="598" workspace="Workspace01"/>

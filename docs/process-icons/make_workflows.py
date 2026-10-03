@@ -52,7 +52,6 @@ SCRIPTS = {
     'Etoiles_LRGB': ('$PXI_SRCDIR/scripts/clodoweg/Etoiles_LRGB.js', '', [('etoilesL', 'L_stars'), ('etoilesRGB', 'RGB_stars'), ('etirerL', 'true'), ('amount', '6'), ('partL', '0.5'), ('saturation', '0.35')], L_DRAG),
     'Etoiles_LRGB_etire': ('$PXI_SRCDIR/scripts/clodoweg/Etoiles_LRGB.js', '', [('etoilesL', 'L_stars'), ('etoilesRGB', 'RGB_stars'), ('etirerL', 'false'), ('amount', '6'), ('partL', '0.5'), ('saturation', '0.35')], L_DRAG),
     'Fond_desature': ('$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js', '', [('debut', '0.03'), ('fin', '0.15'), ('violetFin', '0.30'), ('flou', '3')], L_DRAG),
-    'STF_auto': ('$PXI_SRCDIR/scripts/clodoweg/STF_auto.js', '', [('lier', 'true'), ('ombres', '-2.8'), ('fond', '0.25')], L_DRAG),
     'Fond_auto': ('$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js', '', [('cible', '0.12'), ('tolerance', '0.005'), ('grille', '8')], L_DRAG),
     'Fond_auto_clair': ('$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js', '', [('cible', '0.14'), ('tolerance', '0.005'), ('grille', '8')], L_DRAG),
     'ImageSolver_Date': ('$PXI_SRCDIR/scripts/clodoweg/ImageSolver_Date.js', '', [('defaultDate', '2020-01-01T00:00:00')], L_DRAG),
@@ -930,7 +929,7 @@ T_RAPIDE = {
          "E13 Etoiles_LRGB (luminance de L_stars ajoutée aux étoiles ; saute-la pour garder les étoiles du RGB seul). "
          "FINITION : plus de finition rapide. Après E13, va en haut du fichier, workflow normal : P5 E21 LRGB_ajout_L, puis P6 (E22 HDRMT_40, E23 C_Finition, E24 NXT_final) et P7 (E25 Etoiles_screen, E26 C_Fond_final), chaque partie avec ses options."),
 }
-WHEN_R = {'STF_auto': "n'importe quand, pour voir une image linéaire (L, RGB, étoiles) : STF automatique lié, pixels inchangés ; lier = false pour neutraliser une dominante à l'écran",
+WHEN_R = {'STF': "n'importe quand : double-clic pour ouvrir la fenêtre ScreenTransferFunction (bouton A = auto-étirement de l'affichage, Reset pour revenir), pixels inchangés",
           'GradientCorrection': "à la place de MGC_MARS si la cible est hors couverture MARS (sud au-delà de −15° environ) ou si MGC échoue",
 }
 
@@ -964,6 +963,13 @@ def write_rapide(filename, prefix, title, steps, main_spec, opt_spec):
     hicon = '   <icon id="%s" instance="%s_instance" xpos="30" ypos="%d" workspace="Workspace01"/>' % (note_id, note_id, y0)
     save(cfn, ctitle + ' ; mode rapide en bas (icônes R_)', cinsts + [head] + rinsts, cicons + [hicon] + ricons)
     return len(main), len(opts)
+
+def stf_icon():
+    # STF neutre (c0 0, m 0,5 : aucun étirement) : l'icône sert à ouvrir la fenêtre ScreenTransferFunction
+    name, x = M.instance('ScreenTransferFunction', 'STF')
+    x = re.sub(r'<td id="c0" value="[^"]*"/>', '<td id="c0" value="0.00000"/>', x)
+    x = re.sub(r'<td id="m" value="[^"]*"/>', '<td id="m" value="0.50000"/>', x)
+    return name, x
 
 def rapide_common_opts(steps):
     # finition retirée du rapide (demande de l'utilisateur) : après Etoiles_LRGB, finition normale en haut du fichier (P5 LRGB_ajout_L, P6, P7)
@@ -1026,8 +1032,8 @@ v = {'titre': V_NOTE, 'L': L_DESC}
 for fn, pre, title, steps, spec, bxt in [('Conteneurs-LRGB.xpsm (bas)', 'LRGB', 'Workflow LRGB', lrgb, rapide_lrgb, lambda: M.bxt('BXT_L', False, 0.25, 0.0, 0.80)),
                                           ('Conteneurs-LHaRGB.xpsm (bas)', 'LHA', 'Workflow LHaRGB', lhargb, rapide_lha, lambda: M.bxt('BXT_L_H', False, 0.25, 0.0, 0.80))]:
     # options reprises des conteneurs : LHaRGB seulement, Continuum_auto, H_dans_L
-    # STF_auto (demande de l'utilisateur) : voir une image linéaire, en P3
-    extra = [(3, script('STF_auto', ''), '')] + ([(3, *pick(steps, 'Continuum_auto')), (3, *pick(steps, 'H_dans_L'))] if pre == 'LHA' else [])
+    # STF (demande de l'utilisateur) : icône du process ScreenTransferFunction lui-même (double-clic = fenêtre STF, bouton A), en P3
+    extra = [(3, stf_icon(), '')] + ([(3, *pick(steps, 'Continuum_auto')), (3, *pick(steps, 'H_dans_L'))] if pre == 'LHA' else [])
     print(fn, 'principal, options :', write_rapide(fn, pre, title, steps, spec(v, True, True), extra + rapide_common_opts(steps)))
 
 DATA['header'] = M.HEADER
