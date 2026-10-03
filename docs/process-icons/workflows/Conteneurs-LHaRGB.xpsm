@@ -1444,14 +1444,14 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <instance class="Script" version="256" id="E19_Star_Stretch_instance">
       <description>LANCEMENT : glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
 
-PRÉRÉGLÉ : Stretch Amount 6, Color Boost 1,3, SCNR décoché.
+PRÉRÉGLÉ : Stretch Amount 6, Color Boost 1,3, Remove Green (SCNR) coché.
 
 À RÉGLER : rien ; sur l'image d'étoiles linéaire.
 
 SI :
 - cœurs d'étoiles blancs (R = G = B = 1) -&gt; 5,5
 - étoiles trop grosses -&gt; 5 ou 4
-- étoile verte à la sonde (G au-dessus de R et de B) -&gt; coche Remove Green
+- étoiles grisées par le SCNR -&gt; décoche Remove Green
 - étoiles criardes -&gt; Color Boost 1,0
 
 Détails : page docs/pixinsight-workflow.html.</description>
@@ -1468,7 +1468,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
          </tr>
          <tr>
             <td id="id">removeGreen</td>
-            <td id="value">false</td>
+            <td id="value">true</td>
          </tr>
          <tr>
             <td id="id">showPreview</td>
@@ -3924,7 +3924,7 @@ $T[0] + w*H_cs</parameter>
             </tr>
             <tr>
                <td id="id">scnr</td>
-               <td id="value">false</td>
+               <td id="value">true</td>
             </tr>
          </table>
          <parameter id="information"></parameter>
@@ -4267,7 +4267,7 @@ max($T, H_cs*a)</parameter>
             </tr>
             <tr>
                <td id="id">scnr</td>
-               <td id="value">false</td>
+               <td id="value">true</td>
             </tr>
          </table>
          <parameter id="information"></parameter>
@@ -4529,14 +4529,14 @@ Détails : page docs/pixinsight-workflow.html.</description>
 
 LANCEMENT : glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
 
-PRÉRÉGLÉ : Stretch Amount 6, Color Boost 1,3, SCNR décoché.
+PRÉRÉGLÉ : Stretch Amount 6, Color Boost 1,3, Remove Green (SCNR) coché.
 
 À RÉGLER : rien ; sur l'image d'étoiles linéaire.
 
 SI :
 - cœurs d'étoiles blancs (R = G = B = 1) -&gt; 5,5
 - étoiles trop grosses -&gt; 5 ou 4
-- étoile verte à la sonde (G au-dessus de R et de B) -&gt; coche Remove Green
+- étoiles grisées par le SCNR -&gt; décoche Remove Green
 - étoiles criardes -&gt; Color Boost 1,0
 
 Détails : page docs/pixinsight-workflow.html.</description>
@@ -4553,7 +4553,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
          </tr>
          <tr>
             <td id="id">removeGreen</td>
-            <td id="value">false</td>
+            <td id="value">true</td>
          </tr>
          <tr>
             <td id="id">showPreview</td>

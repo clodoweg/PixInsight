@@ -48,8 +48,8 @@ SCRIPTS = {
     'Masque_retirer': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'retirer'), ('nom', 'masque_L')], L_DRAG),
     'Fermer_vues': ('$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js', '', [('views', '')], L_GLOBAL),
     'Renommer_auto': ('$PXI_SRCDIR/scripts/clodoweg/Renommer_auto.js', '', [], L_GLOBAL),
-    'Etoiles_auto': ('$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js', '', [('vue', 'RGB_stars'), ('amount', '6'), ('satAmount', '1.3'), ('scnr', 'false')], L_DRAG),
-    'Etoiles_auto_etire': ('$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js', '', [('vue', 'RGB_stars'), ('amount', '0'), ('satAmount', '1.3'), ('scnr', 'false')], L_DRAG),
+    'Etoiles_auto': ('$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js', '', [('vue', 'RGB_stars'), ('amount', '6'), ('satAmount', '1.3'), ('scnr', 'true')], L_DRAG),
+    'Etoiles_auto_etire': ('$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js', '', [('vue', 'RGB_stars'), ('amount', '0'), ('satAmount', '1.3'), ('scnr', 'true')], L_DRAG),
     'Etoiles_LRGB': ('$PXI_SRCDIR/scripts/clodoweg/Etoiles_LRGB.js', '', [('etoilesL', 'L_stars'), ('etoilesRGB', 'RGB_stars'), ('etirerL', 'true'), ('amount', '6'), ('partL', '0.5'), ('saturation', '0.35')], L_DRAG),
     'Etoiles_LRGB_etire': ('$PXI_SRCDIR/scripts/clodoweg/Etoiles_LRGB.js', '', [('etoilesL', 'L_stars'), ('etoilesRGB', 'RGB_stars'), ('etirerL', 'false'), ('amount', '6'), ('partL', '0.5'), ('saturation', '0.35')], L_DRAG),
     'Fond_desature': ('$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js', '', [('debut', '0.03'), ('fin', '0.15'), ('violetFin', '0.30'), ('flou', '3')], L_DRAG),
@@ -68,7 +68,7 @@ SCRIPTS = {
               ('lumaOnly', 'false'), ('lumaMode', 'rec709'), ('lumaBlend', '0.6')],
              L_DRAG + "Le dialogue s'ouvre avec les valeurs de l'icône (openDialogbox = true) ; pour étirer directement sans dialogue, mets openDialogbox à false. "),
     'Star_Stretch': ('$PXI_SRCDIR/scripts/star_stretch.js', '69a1ee6db4e9f5374c2cddb1e5a7f4ae',
-             [('amount', '6'), ('satAmount', '1.3'), ('removeGreen', 'false'), ('showPreview', 'false')],
+             [('amount', '6'), ('satAmount', '1.3'), ('removeGreen', 'true'), ('showPreview', 'false')],
              L_DRAG + "Glisse-la sur l'image d'étoiles linéaire : le dialogue s'ouvre avec Stretch Amount 6 (choix de la fiche ; défaut du script 5) et Color Boost 1,3. "),
     'Halo_B_Gon': ('$PXI_SRCDIR/scripts/Halo-B-Gon.js', 'b9427e718e2b9760704c8c738e0893b7', [],
              L_GLOBAL + "Ce script ne lit pas de paramètres d'icône : les réglages se font dans son dialogue. "),
@@ -420,7 +420,7 @@ T_STAT = ("ÉTAPE MANUELLE — Statistical Stretch (SetiAstro, script v2.3). Alt
 T_STARSTRETCH = ("ÉTAPE MANUELLE — Star Stretch (SetiAstro, script v2.6) sur l'image d'étoiles LINÉAIRE issue de SXT. Modifie l'image elle-même : garde une copie linéaire. "
                  "Étirement y = 3^a·x / ((3^a − 1)·x + 1). Stretch Amount a = 6 dans l'icône (défaut du script 5 ; 0 à 8, l'auteur conseille la prudence au-delà de 5 : cœurs blancs -> 5,5) : un pixel à 0,01 devient 0,45 à 4, 0,71 à 5, 0,88 à 6. "
                  "Color Boost 1,3 dans l'icône (défaut du script 1,0 ; 0 à 2) : saturation par teinte, 0,4 × Boost sur les rouges, 0,7 × Boost sur les cyans (couleur seulement). "
-                 "Remove Green via SCNR décoché par défaut (SCNR vert pleine force, Average Neutral). Show Preview décoché (aperçu + Refresh Preview).")
+                 "Remove Green via SCNR coché dans l'icône (SCNR vert pleine force, Average Neutral : retire la teinte cyan-vert des étoiles brillantes, demande de l'utilisateur). Show Preview décoché (aperçu + Refresh Preview).")
 T_HALO = ("ÉTAPE MANUELLE — Halo-B-Gon (SetiAstro, script v2.1) sur l'image d'étoiles seule, AVANT Etoiles_screen ; modifie l'image elle-même, garde une copie. "
           "Select stars-only image : l'image d'étoiles étirée, celle de la formule Etoiles_screen (RGB_stars ; NBtoRGB_stars en SHO ; HOO_stars en HOO). "
           "Déjà recombiné : annule Etoiles_screen (Ctrl+Z sur l'image), applique Halo-B-Gon sur l'image d'étoiles, puis relance Etoiles_screen. "
