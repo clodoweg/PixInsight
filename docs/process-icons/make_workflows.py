@@ -53,6 +53,7 @@ SCRIPTS = {
     'Etoiles_LRGB_etire': ('$PXI_SRCDIR/scripts/clodoweg/Etoiles_LRGB.js', '', [('etoilesL', 'L_stars'), ('etoilesRGB', 'RGB_stars'), ('etirerL', 'false'), ('amount', '6'), ('partL', '0.5'), ('saturation', '0.35')], L_DRAG),
     'Fond_desature': ('$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js', '', [('debut', '0.03'), ('fin', '0.15'), ('violetFin', '0.30'), ('flou', '3')], L_DRAG),
     'Fond_auto': ('$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js', '', [('cible', '0.12'), ('tolerance', '0.005'), ('grille', '8')], L_DRAG),
+    'Nettoyage_sans_etoiles': ('$PXI_SRCDIR/scripts/clodoweg/Nettoyage_sans_etoiles.js', '', [('etoiles', 'RGB_stars'), ('rayon1', '12'), ('gain1', '40'), ('rayon2', '40'), ('gain2', '200'), ('protege', '0.05'), ('flouGalaxie', '30'), ('lissage', '3'), ('afficherMasque', 'false')], L_DRAG),
     'Fond_auto_clair': ('$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js', '', [('cible', '0.14'), ('tolerance', '0.005'), ('grille', '8')], L_DRAG),
     'ImageSolver_Date': ('$PXI_SRCDIR/scripts/clodoweg/ImageSolver_Date.js', '', [('defaultDate', '2020-01-01T00:00:00')], L_DRAG),
     'LinearPatternSubtraction': ('$PXI_SRCDIR/scripts/clodoweg/LPS_UnClic.js', '',
@@ -566,7 +567,8 @@ D_FOND = ("PARTIE 5 (fond) — conteneur sur l'image FINIE, étoiles comprises :
 def finish_block(extra=None, galaxie=False):
     if galaxie:
         # finition en parties (demande de l'utilisateur) : 1 cœur (HDRMT 40 %), 2 contraste (C_Finition), 3 bruit (NXT_final), chacune avec ses options
-        b = [(_cont('HDRMT_40', hdrmt_items('0.4')), D_HDRMT40), (hdrmt_50(), ''), (hdrmt_eclat(), ''),
+        b = [(script('Nettoyage_sans_etoiles', ''), ''),   # option, avant la partie 1 : restes de halos d'étoiles (demande de l'utilisateur)
+             (_cont('HDRMT_40', hdrmt_items('0.4')), D_HDRMT40), (hdrmt_50(), ''), (hdrmt_eclat(), ''),
              (note('Masque_L', D_MASK), ''),
              (curves('Courbes'), D_CURVES), (M.instance('LocalHistogramEqualization', 'LHE', {'radius': 150, 'histogramBins': 'Bit12', 'slopeLimit': '2.0', 'amount': '0.300', 'circularKernel': True}), D_LHE),
              (M.instance('LocalHistogramEqualization', 'LHE_fin', {'radius': 40, 'histogramBins': 'Bit10', 'slopeLimit': '2.0', 'amount': '0.250', 'circularKernel': True}), D_LHE_FIN),

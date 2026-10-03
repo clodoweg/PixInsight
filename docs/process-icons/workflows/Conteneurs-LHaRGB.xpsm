@@ -1878,6 +1878,64 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <instance class="NoOperation" version="256" id="P6_options_instance">
       <description>OPTIONS de la phase 6 — Finition : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
    </instance>
+   <instance class="Script" version="256" id="Opt_Nettoyage_sans_etoiles_instance">
+      <description>OPTION — avant la partie 1, sur l'image sans étoiles juste après LRGB (RGB_stars ouverte) : taches rondes floues ou halo coloré laissés par SXT autour des étoiles.
+
+LANCEMENT : glisse l'icône sur l'image.
+
+PRÉRÉGLÉ : script Nettoyage_sans_etoiles : masque autour des étoiles de RGB_stars (flou 12 px × 40 + flou 40 px × 200 : large pour les étoiles brillantes), galaxie protégée (luminance floutée 30 px au-dessus de fond + 0,05) ; dans le masque, excès lissé au-dessus du fond retiré, bruit fin gardé.
+
+À RÉGLER : glisse sur l'image sans étoiles juste après LRGB, AVANT HDRMT_40 ; RGB_stars doit être ouverte ; vérifie à 1:1, Ctrl+Z pour annuler.
+
+SI :
+- voir ce qui est touché -&gt; afficherMasque true (vue masque_nettoyage)
+- taches encore visibles -&gt; gain1 80, gain2 400
+- grand halo d'étoile brillante encore là -&gt; rayon2 60
+- bord de la galaxie ou bras faible assombri -&gt; protege 0,03 ou flouGalaxie 50
+
+Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Nettoyage_sans_etoiles.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="9">
+         <tr>
+            <td id="id">etoiles</td>
+            <td id="value">RGB_stars</td>
+         </tr>
+         <tr>
+            <td id="id">rayon1</td>
+            <td id="value">12</td>
+         </tr>
+         <tr>
+            <td id="id">gain1</td>
+            <td id="value">40</td>
+         </tr>
+         <tr>
+            <td id="id">rayon2</td>
+            <td id="value">40</td>
+         </tr>
+         <tr>
+            <td id="id">gain2</td>
+            <td id="value">200</td>
+         </tr>
+         <tr>
+            <td id="id">protege</td>
+            <td id="value">0.05</td>
+         </tr>
+         <tr>
+            <td id="id">flouGalaxie</td>
+            <td id="value">30</td>
+         </tr>
+         <tr>
+            <td id="id">lissage</td>
+            <td id="value">3</td>
+         </tr>
+         <tr>
+            <td id="id">afficherMasque</td>
+            <td id="value">false</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
+   </instance>
    <instance class="ProcessContainer" id="Opt_HDRMT_50_instance">
       <instance class="PixelMath" version="256" enabled="true">
          <parameter id="expression">$T</parameter>
@@ -4122,21 +4180,22 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <icon id="E23_C_Finition" instance="E23_C_Finition_instance" xpos="972" ypos="94" workspace="Workspace01"/>
    <icon id="E24_NXT_final" instance="E24_NXT_final_instance" xpos="972" ypos="124" workspace="Workspace01"/>
    <icon id="P6_options" instance="P6_options_instance" xpos="972" ypos="170" workspace="Workspace01"/>
-   <icon id="Opt_HDRMT_50" instance="Opt_HDRMT_50_instance" xpos="972" ypos="204" workspace="Workspace01"/>
-   <icon id="Opt_HDRMT_eclat" instance="Opt_HDRMT_eclat_instance" xpos="972" ypos="234" workspace="Workspace01"/>
-   <icon id="Opt_Boost_finition_light" instance="Opt_Boost_finition_light_instance" xpos="972" ypos="264" workspace="Workspace01"/>
-   <icon id="Opt_Boost_finition" instance="Opt_Boost_finition_instance" xpos="972" ypos="294" workspace="Workspace01"/>
-   <icon id="Opt_NXT_final_doux" instance="Opt_NXT_final_doux_instance" xpos="972" ypos="324" workspace="Workspace01"/>
-   <icon id="Opt_NXT_final_fort" instance="Opt_NXT_final_fort_instance" xpos="972" ypos="354" workspace="Workspace01"/>
-   <icon id="P7_Etoiles" instance="P7_Etoiles_instance" xpos="1168" ypos="20" workspace="Workspace01"/>
-   <icon id="E25_Etoiles_screen" instance="E25_Etoiles_screen_instance" xpos="1168" ypos="64" workspace="Workspace01"/>
-   <icon id="E26_C_Fond_final" instance="E26_C_Fond_final_instance" xpos="1168" ypos="94" workspace="Workspace01"/>
-   <icon id="P7_options" instance="P7_options_instance" xpos="1168" ypos="140" workspace="Workspace01"/>
-   <icon id="Opt_MT_etoiles" instance="Opt_MT_etoiles_instance" xpos="1168" ypos="174" workspace="Workspace01"/>
-   <icon id="Opt_Halo_B_Gon" instance="Opt_Halo_B_Gon_instance" xpos="1168" ypos="204" workspace="Workspace01"/>
-   <icon id="Opt_Etoiles_reduites" instance="Opt_Etoiles_reduites_instance" xpos="1168" ypos="234" workspace="Workspace01"/>
-   <icon id="Opt_Boost_final" instance="Opt_Boost_final_instance" xpos="1168" ypos="264" workspace="Workspace01"/>
-   <icon id="Opt_Fond_auto_clair" instance="Opt_Fond_auto_clair_instance" xpos="1168" ypos="294" workspace="Workspace01"/>
+   <icon id="Opt_Nettoyage_sans_etoiles" instance="Opt_Nettoyage_sans_etoiles_instance" xpos="972" ypos="204" workspace="Workspace01"/>
+   <icon id="Opt_HDRMT_50" instance="Opt_HDRMT_50_instance" xpos="972" ypos="234" workspace="Workspace01"/>
+   <icon id="Opt_HDRMT_eclat" instance="Opt_HDRMT_eclat_instance" xpos="972" ypos="264" workspace="Workspace01"/>
+   <icon id="Opt_Boost_finition_light" instance="Opt_Boost_finition_light_instance" xpos="972" ypos="294" workspace="Workspace01"/>
+   <icon id="Opt_Boost_finition" instance="Opt_Boost_finition_instance" xpos="972" ypos="324" workspace="Workspace01"/>
+   <icon id="Opt_NXT_final_doux" instance="Opt_NXT_final_doux_instance" xpos="972" ypos="354" workspace="Workspace01"/>
+   <icon id="Opt_NXT_final_fort" instance="Opt_NXT_final_fort_instance" xpos="972" ypos="384" workspace="Workspace01"/>
+   <icon id="P7_Etoiles" instance="P7_Etoiles_instance" xpos="1176" ypos="20" workspace="Workspace01"/>
+   <icon id="E25_Etoiles_screen" instance="E25_Etoiles_screen_instance" xpos="1176" ypos="64" workspace="Workspace01"/>
+   <icon id="E26_C_Fond_final" instance="E26_C_Fond_final_instance" xpos="1176" ypos="94" workspace="Workspace01"/>
+   <icon id="P7_options" instance="P7_options_instance" xpos="1176" ypos="140" workspace="Workspace01"/>
+   <icon id="Opt_MT_etoiles" instance="Opt_MT_etoiles_instance" xpos="1176" ypos="174" workspace="Workspace01"/>
+   <icon id="Opt_Halo_B_Gon" instance="Opt_Halo_B_Gon_instance" xpos="1176" ypos="204" workspace="Workspace01"/>
+   <icon id="Opt_Etoiles_reduites" instance="Opt_Etoiles_reduites_instance" xpos="1176" ypos="234" workspace="Workspace01"/>
+   <icon id="Opt_Boost_final" instance="Opt_Boost_final_instance" xpos="1176" ypos="264" workspace="Workspace01"/>
+   <icon id="Opt_Fond_auto_clair" instance="Opt_Fond_auto_clair_instance" xpos="1176" ypos="294" workspace="Workspace01"/>
    <icon id="R_MODE_RAPIDE" instance="R_MODE_RAPIDE_instance" xpos="30" ypos="494" workspace="Workspace01"/>
    <icon id="R_P1_Preparation" instance="R_P1_Preparation_instance" xpos="30" ypos="554" workspace="Workspace01"/>
    <icon id="R_E00_C_Preparation_rapide" instance="R_E00_C_Preparation_rapide_instance" xpos="30" ypos="598" workspace="Workspace01"/>
