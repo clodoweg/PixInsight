@@ -106,6 +106,12 @@ S = {
     'Boost_finition_light': ("conteneur : courbe très légère (0,25 -> 0,24 ; 0,75 -> 0,76, saturation 0,5 -> 0,57) puis LHE rayon 80, Amount 0,12", "sous Masque_L, après LHE_fin ; un glisser = un petit cran", ["pas assez -> un deuxième passage, ou Boost_finition"]),
     'Boost_finition': ("conteneur : petite courbe (0,25 -> 0,23 ; 0,75 -> 0,77, saturation 0,5 -> 0,60) puis LHE rayon 80, Amount 0,20", "sous Masque_L, après LHE_fin ; un glisser = un petit cran, rejoue-le pour pousser encore",
                        ["fond qui se colore ou bruit -> arrête, ou NXT final", "halo sombre autour de la galaxie -> une passe de moins"]),
+    'HDRMT_40': ("conteneur : copie de l'image (vue HDR_avant), HDRMT 6 couches To lightness / Preserve hue / Lightness mask, mélange 0,4 × résultat + 0,6 × copie, copie fermée", "PARTIE 1 de la finition (cœur) : glisse sur l'image sans étoiles étirée, AVANT C_Finition ; options à la place : HDRMT_50 (cœur brûlé) ou HDRMT_eclat (cœur terne)",
+                 ["cœur encore brûlé -> HDRMT_50 à la place", "cœur détaillé mais terne -> HDRMT_eclat à la place", "cœur déjà bien -> saute cette icône"]),
+    'NXT_final_doux': ("Denoise 0,25, 1 itération", "PARTIE 3 (bruit), à la place de NXT_final : glisse sur l'image sans étoiles finie", ["encore trop lissé -> saute la partie 3"]),
+    'NXT_final_fort': ("Denoise 0,60, 1 itération", "PARTIE 3 (bruit), à la place de NXT_final : glisse sur l'image sans étoiles finie", ["aspect plastique -> NXT_final (0,40)"]),
+    'Fond_auto_clair': ("script Fond_auto, cible 0,14 : fond de chaque canal mesuré (grille 8 × 8), amené à 0,14 par mtf, sans écrêtage ; fond neutre", "PARTIE 5 (fond), à la place de C_Fond_final si l'image est trop sombre : glisse sur l'image finie, étoiles comprises, puis Fond_desature",
+                        ["fond encore trop sombre -> double-clic, cible 0,15"]),
     'HDRMT_50': ("conteneur : copie de l'image (vue HDR_avant), HDRMT 6 couches To lightness / Preserve hue / Lightness mask, mélange 0,5 × résultat + 0,5 × copie, puis fermeture de la copie", "glisse sur l'image sans étoiles étirée ; la copie HDR_avant est fermée automatiquement à la fin (script Fermer_vues)", ["effet trop faible -> a = 0,7 dans HDR_melange", "trop fort -> a = 0,3"]),
     'SXT_L_etire': ("StarXTerminator, Unscreen coché, sur L étirée", "glisse sur L après l'étirement (GHS ou Statistical Stretch, puis GHS_3_fond) ; garde L_stars ouverte pour Etoiles_LRGB_etire", []),
     'Etoiles_LRGB_etire': ("script Etoiles_LRGB : 0,5 × L_stars (déjà étirée) + 0,5 × luminance RGB appliquée à RGB_stars (saturation 0,35), puis L_stars fermée", "après Star_Stretch sur RGB_stars et SXT_L_etire ; glisse sur n'importe quelle image",
@@ -164,6 +170,8 @@ S = {
 
 # variantes selon le workflow
 V = {
+    ('LRGB', 'NXT_final'): ("Denoise 0,40, 1 itération", "PARTIE 3 de la finition (bruit) : glisse sur l'image sans étoiles après C_Finition (et le Boost éventuel) ; options à la place : NXT_final_doux (0,25), NXT_final_fort (0,60)", ["aspect plastique -> NXT_final_doux", "bruit encore visible -> NXT_final_fort"]),
+    ('LHA', 'NXT_final'): ("Denoise 0,40, 1 itération", "PARTIE 3 de la finition (bruit) : glisse sur l'image sans étoiles après C_Finition (et le Boost éventuel) ; options à la place : NXT_final_doux (0,25), NXT_final_fort (0,60)", ["aspect plastique -> NXT_final_doux", "bruit encore visible -> NXT_final_fort"]),
     ('NB', 'GHS_1_premier'): ("b = 10, Stretch factor 0", "étire H d'abord (pic à 0,25 ; Stretch factor 3,5 à 6,5 selon le fond lu), puis O et S jusqu'au MÊME fond (Stretch factor plus élevé)",
                               ["bruit de O ou S qui ressort -> SP trop bas, remonte-le"]),
     ('LRGB', 'GHS_3_fond'): ('b = 10, SP = HP = 0,20, Stretch factor 1 (fond à 0,23 après GHS_2)', "applique-la au RGB ET à L, mêmes réglages, AVANT LRGB ; SP = HP = fond lu - 0,03 (0,22 après Statistical Stretch à 0,25) ; Stretch factor 0,8 à 1,2 jusqu'au fond vers 0,12–0,14 sur les deux", []),

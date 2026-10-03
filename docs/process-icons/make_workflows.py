@@ -54,6 +54,7 @@ SCRIPTS = {
     'Fond_desature': ('$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js', '', [('debut', '0.03'), ('fin', '0.15'), ('violetFin', '0.30'), ('flou', '3')], L_DRAG),
     'STF_auto': ('$PXI_SRCDIR/scripts/clodoweg/STF_auto.js', '', [('lier', 'true'), ('ombres', '-2.8'), ('fond', '0.25')], L_DRAG),
     'Fond_auto': ('$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js', '', [('cible', '0.12'), ('tolerance', '0.005'), ('grille', '8')], L_DRAG),
+    'Fond_auto_clair': ('$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js', '', [('cible', '0.14'), ('tolerance', '0.005'), ('grille', '8')], L_DRAG),
     'ImageSolver_Date': ('$PXI_SRCDIR/scripts/clodoweg/ImageSolver_Date.js', '', [('defaultDate', '2020-01-01T00:00:00')], L_DRAG),
     'LinearPatternSubtraction': ('$PXI_SRCDIR/scripts/clodoweg/LPS_UnClic.js', '',
              [('correctColumns', 'false'), ('correctEntireImage', 'true'), ('defectTableFilePath', ''), ('layersToRemove', '9'),
@@ -555,7 +556,27 @@ D_MASK = ("MASQUE DE LUMINANCE créé ET attaché en un clic (script Masque_auto
           "s = 0,14 par défaut : fond final de la fiche 0,12-0,14 ; règle s = fond mesuré à la sonde 15x15 + 0,01 (vers 0,26 si le fond est encore à 0,20-0,25). Contrôle à la sonde sur masque_L : fond 0 à 0,05. "
           "Retrait : icône Masque_retirer (détache et ferme masque_L), déjà en fin de C_Finition et des Boost. HDRMT n'en a pas besoin (option Lightness mask).")
 
-def finish_block(extra=None):
+D_HDRMT40 = ("PARTIE 1 (cœur) — conteneur HDRMT à 40 % : copie de l'image (HDR_avant), HDRMultiscaleTransform 6 couches (To lightness, Preserve hue, Lightness mask), "
+             "mélange 0,4 × résultat + 0,6 × copie, copie fermée. Sur l'image sans étoiles, AVANT le contraste : détail du cœur sans l'aplatir. "
+             "Options de la partie 1, à la place : HDRMT_50 (cœur brûlé), HDRMT_eclat (cœur détaillé mais terne : HDRMT 40 % puis Boost light) ; cœur déjà parfait : saute-la.")
+D_NXT_DOUX = "PARTIE 3, option à la place de NXT_final : NoiseXTerminator Denoise 0,25, données très propres ou aspect plastique avec 0,40."
+D_NXT_FORT = "PARTIE 3, option à la place de NXT_final : NoiseXTerminator Denoise 0,60, peu de poses ou bruit encore visible dans le fond après 0,40."
+D_FOND = ("PARTIE 5 (fond) — conteneur sur l'image FINIE, étoiles comprises : Fond_auto (fond de chaque canal mesuré sur une grille 8 × 8, amené à 0,12, neutre, sans écrêtage), "
+          "puis Fond_desature (couleur et violet retirés du fond et du halo faible). Options de la partie 5 : Boost_final AVANT ce conteneur (cœur et bras brillants), Fond_auto_clair (cible 0,14, à la place) si l'image est trop sombre.")
+
+def finish_block(extra=None, galaxie=False):
+    if galaxie:
+        # finition en parties (demande de l'utilisateur) : 1 cœur (HDRMT 40 %), 2 contraste (C_Finition), 3 bruit (NXT_final), chacune avec ses options
+        b = [(_cont('HDRMT_40', hdrmt_items('0.4')), D_HDRMT40), (hdrmt_50(), ''), (hdrmt_eclat(), ''),
+             (note('Masque_L', D_MASK), ''),
+             (curves('Courbes'), D_CURVES), (M.instance('LocalHistogramEqualization', 'LHE', {'radius': 150, 'histogramBins': 'Bit12', 'slopeLimit': '2.0', 'amount': '0.300', 'circularKernel': True}), D_LHE),
+             (M.instance('LocalHistogramEqualization', 'LHE_fin', {'radius': 40, 'histogramBins': 'Bit10', 'slopeLimit': '2.0', 'amount': '0.250', 'circularKernel': True}), D_LHE_FIN),
+             (note('Masque_retirer', ''), ''),
+             (boost_container('Boost_finition_light', k=((0, 0), (0.25, 0.24), (0.75, 0.76), (1, 1)), sat=0.57, amount='0.120'), ''),
+             (boost_container(), ''),
+             (M.nxt('NXT_final', 0.40, 1), "PARTIE 3 (bruit) — " + D_NXT_F),
+             (M.nxt('NXT_final_doux', 0.25, 1), D_NXT_DOUX), (M.nxt('NXT_final_fort', 0.60, 1), D_NXT_FORT)]
+        return b
     b = [(note('Masque_L', D_MASK), ''),
          (curves('Courbes'), D_CURVES), (M.instance('LocalHistogramEqualization', 'LHE', {'radius': 150, 'histogramBins': 'Bit12', 'slopeLimit': '2.0', 'amount': '0.300', 'circularKernel': True}), D_LHE),
          (M.instance('LocalHistogramEqualization', 'LHE_fin', {'radius': 40, 'histogramBins': 'Bit10', 'slopeLimit': '2.0', 'amount': '0.250', 'circularKernel': True}), D_LHE_FIN),
@@ -567,7 +588,7 @@ def finish_block(extra=None):
         b = extra + b
     return b + [(M.nxt('NXT_final', 0.40, 1), D_NXT_F)]
 
-def stars_end(stars='RGB_stars', cms=False, screen_extra='', cms_extra='', alt=''):
+def stars_end(stars='RGB_stars', cms=False, screen_extra='', cms_extra='', alt='', galaxie=False):
     # options sur l'image d'étoiles seule : AVANT la recombinaison
     b = [(M.instance('MorphologicalTransformation', 'MT_etoiles', {'operator': 'Selection', 'numberOfIterations': 1, 'amount': '0.60', 'selectionPoint': '0.25', 'structureSize': 5}, post=M.mt_post), D_MT),
          (note('Halo_B_Gon', T_HALO), '')]
@@ -576,6 +597,9 @@ def stars_end(stars='RGB_stars', cms=False, screen_extra='', cms_extra='', alt='
     b.append((pm('Etoiles_reduites', "S=0.20;\nW=~((~$T)*(~%s));\nf1= ~((~mtf(~S,W)/~mtf(~S,$T))*~$T);\nmax($T,f1)" % stars, symbols='S, W, f1'), D_BL % stars))
     if cms:
         b.append((note('CorrectMagentaStars', T_CMS + cms_extra), ''))
+    if galaxie:
+        # partie 5 (fond) : Boost_final (option, avant), C_Fond_final = Fond_auto + Fond_desature (chemin principal), Fond_auto_clair (option)
+        return b + [(boost_final(), ''), (note('Fond_auto', D_FOND), ''), (script('Fond_desature', ''), ''), (script('Fond_auto_clair', ''), '')]
     b.append((script('Fond_desature', ''), ''))   # option, tout à la fin : couleur retirée du fond du ciel
     return b
 
@@ -653,7 +677,7 @@ lrgb = pre_block() + [rgb_comb_item(), (solver_container(), ''), (solver_seul(),
      "Chrominance noise reduction cochée. Couleurs délavées : L trop claire par rapport au RGB, étire-la moins. "
      "CONTRÔLE après combinaison (sonde 15x15) : cœur de galaxie R >= G, nettement au-dessus de B ; bras B au-dessus de R ; régions HII R > B > G ; aucune étoile verte ; toute une gamme d'étoiles bleues et jaune-orange ; fond R = G = B. "
      "Couleurs criardes ou bruit coloré : remonte la valeur de Saturation (plus haut = moins saturé), NXT sur le RGB. Étoiles toutes blanches : étire-les à part. Régions HII peu visibles : normal en LRGB pur, passe en LHaRGB."),
-] + finish_block() + stars_end('RGB_stars', screen_extra=SCREEN_LRGB) + [(boost_final(), '')]
+] + finish_block(galaxie=True) + stars_end('RGB_stars', screen_extra=SCREEN_LRGB, galaxie=True)
 
 # ---------------------------------------------------------------- LHaRGB
 lhargb = pre_block() + [rgb_comb_item(False), (solver_container(), ''), (solver_seul(), '')] + gradient_block('lha') + [
@@ -694,7 +718,7 @@ lhargb = pre_block() + [rgb_comb_item(False), (solver_container(), ''), (solver_
      "LRGBCombination sur les images étirées sans étoiles : seul L activé (vue 'L'), Lightness 0,5, Saturation 0,35, Chrominance noise reduction cochée. "
      "CONTRÔLE (sonde 15x15) : cœur de galaxie jaune (R >= G >> B), bras bleus, régions HII roses et bien visibles grâce au H (R > B > G), aucune étoile verte, fond R = G = B ; couleurs délavées : L trop claire, étire-la moins. "
      "Compare avec la copie LRGB sans H : seules les régions HII doivent changer ; si le cœur ou les étoiles ont rougi, reprends la soustraction du continuum (k)."),
-] + finish_block() + stars_end('RGB_stars', screen_extra=SCREEN_LRGB) + [(boost_final(), '')]
+] + finish_block(galaxie=True) + stars_end('RGB_stars', screen_extra=SCREEN_LRGB, galaxie=True)
 
 # ---------------------------------------------------------------- narrowband communs
 def nb_masters(chans):
@@ -896,9 +920,7 @@ T_RAPIDE = {
           "E03 C_RGB_rapide sur RGB (GradientCorrection, BXT Correct Only, SPCC, BXT, SXT sur RGB linéaire, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond SP = HP = 0,22, Etoiles_auto : courbe de Star Stretch amount 6, saturation 1,3, SCNR) : RGB étiré sans étoiles et RGB_stars étirée. "
           "E04 C_L_rapide sur L ({L}). E05 GHS_1_premier, E06 GHS_2_contraste, E07 GHS_3_fond : à la main sur L (fond final vers 0,11-0,13). "
           "E08 Etoiles_LRGB (glisse sur n'importe quelle image) : L_stars étirée comme les étoiles RGB, puis 0,5 × L_stars + 0,5 × luminance RGB appliquée à RGB_stars, L_stars fermée ; saute-la pour garder les étoiles du RGB seul. "
-          "Finition en 3 conteneurs, tous sur RGB : E09 C_Fin_1_LRGB_HDRMT (LRGB : L ajoutée, puis HDRMT à 40 %, détail du cœur) ; E10 C_Fin_2_contraste (masque de luminance créé et attaché, Courbes saturation 0,68, LHE rayon 150, LHE_fin rayon 40, masque retiré, NXT_final Denoise 0,40 sur l'image sans étoiles) ; E11 C_Fin_3_etoiles_fond (étoiles RGB_stars ajoutées, Fond_auto : fond amené à 0,12 et neutre, Fond_desature : fond et violet du halo neutralisés, fermeture de L_stars) : image finie. Regarde l'image après chaque conteneur ; une option (Boost, HDRMT_eclat, Halo_B_Gon sur RGB_stars…) se place entre E10 et E11. "
-          "Sans HDRMT : C_Fin_simple (options). "
-          "Sans HDRMT : C_Fin_sans_etoiles (options) à la place d'E09 et E10, puis E11. Options Boost, HDRMT_50, HDRMT_eclat, Halo_B_Gon, MT_etoiles, Etoiles_reduites (à la place d'E11 : puis Fond_auto), Boost_final : icônes Opt_ du workflow normal, en haut du fichier. "
+          "FINITION : plus de finition rapide. Après E08, va en haut du fichier, workflow normal : P5 E15 LRGB_ajout_L, puis P6 en 3 parties (E16 HDRMT_40, cœur ; E17 C_Finition, contraste ; E18 NXT_final, bruit) et P7 en 2 parties (E19 Etoiles_screen ; E20 C_Fond_final, Fond_auto + Fond_desature), chaque partie avec ses options (P6_options, P7_options). "
           "Une étape en erreur arrête un conteneur : lis la console."),
  'LHA': ("MODE RAPIDE LHaRGB — {V} — icône de repère, sans effet. Pas de MARS (mode soigné). "
          "E00 C_Preparation_rapide (masters seuls ouverts ; double-clic puis Apply Global, ou glisse sur L) : Renommer_auto, LinearPatternSubtraction sur tous les masters mono, Combinaison_RGB (R, G, B restent ouvertes : R sert à Continuum_H). "
@@ -906,13 +928,9 @@ T_RAPIDE = {
          "E05 C_H_rapide sur H (GradientCorrection, BXT). E06 Continuum_H (k à régler), puis E07 H_dans_RGB sur RGB. "
          "E08 C_RGB_fin_rapide sur RGB (SXT sur RGB linéaire, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond 0,22, Etoiles_auto : courbe de Star Stretch, SCNR). E09 C_L_rapide sur L ({L}). E10 GHS_1_premier, E11 GHS_2_contraste, E12 GHS_3_fond : à la main sur L. "
          "E13 Etoiles_LRGB (luminance de L_stars ajoutée aux étoiles ; saute-la pour garder les étoiles du RGB seul). "
-         "Finition en 3 conteneurs sur RGB : E14 C_Fin_1_LRGB_HDRMT (LRGB, HDRMT à 40 %), E15 C_Fin_2_contraste (masque attaché, Courbes, LHE, LHE_fin, masque retiré, NXT_final), E16 C_Fin_3_etoiles_fond (étoiles, Fond_auto, Fond_desature) : image finie. Option (Boost, HDRMT_eclat…, icônes Opt_ du workflow normal, en haut du fichier) entre E15 et E16 ; sans HDRMT : C_Fin_sans_etoiles à la place d'E14 et E15, puis E16."),
+         "FINITION : plus de finition rapide. Après E13, va en haut du fichier, workflow normal : P5 E21 LRGB_ajout_L, puis P6 (E22 HDRMT_40, E23 C_Finition, E24 NXT_final) et P7 (E25 Etoiles_screen, E26 C_Fond_final), chaque partie avec ses options."),
 }
 WHEN_R = {'STF_auto': "n'importe quand, pour voir une image linéaire (L, RGB, étoiles) : STF automatique lié, pixels inchangés ; lier = false pour neutraliser une dominante à l'écran",
-          'Fond_desature': "tout à la fin, si le fond du ciel garde une teinte (violet, bruit de couleur) : couleur retirée du fond seulement, galaxie et étoiles intactes",
-          'Fond_auto': "tout à la fin, après Etoiles_screen ou Etoiles_reduites (déjà inclus dans C_Fin_3_etoiles_fond et C_Fin_simple) : mesure le fond et l'amène à 0,12, neutre",
-          'Etoiles_screen': "après C_Fin_sans_etoiles (et l'option choisie : Boost, HDRMT_50, HDRMT_eclat, NXT final) : remet les étoiles RGB_stars sur l'image ; dernière étape",
-          'Etoiles_reduites': "À LA PLACE d'Etoiles_screen, après C_Fin_sans_etoiles : remet les étoiles en les réduisant ; dernière étape",
           'GradientCorrection': "à la place de MGC_MARS si la cible est hors couverture MARS (sud au-delà de −15° environ) ou si MGC échoue",
 }
 
@@ -948,23 +966,11 @@ def write_rapide(filename, prefix, title, steps, main_spec, opt_spec):
     return len(main), len(opts)
 
 def rapide_common_opts(steps):
-    # retirées du rapide (demande de l'utilisateur) : LinearPatternSubtraction, Renommer_auto, Combinaison_RGB, ImageSolver_seul, Find_Background, Star_Stretch
-    return [(6, cont('C_Fin_simple', [pick(steps, b)[0] for b in ('LRGB_ajout_L', 'Masque_L', 'Courbes', 'LHE', 'LHE_fin', 'Masque_retirer', 'Etoiles_screen')] + [script('Fond_auto', ''), fermer('Fermer_L_stars', 'L_stars')]), ''),
-            (6, cont('C_Fin_sans_etoiles', [pick(steps, b)[0] for b in ('LRGB_ajout_L', 'Masque_L', 'Courbes', 'LHE', 'LHE_fin', 'Masque_retirer')] + [fermer('Fermer_L_stars', 'L_stars')]), ''),
-            # Boost, HDRMT_50, HDRMT_eclat, NXT_final, Halo_B_Gon, MT_etoiles, Etoiles_screen, Etoiles_reduites, Boost_final, Fond_desature :
-            # retirées du rapide (identiques aux Opt_ du workflow normal, en haut du même fichier ; demande de l'utilisateur)
-            (6, script('Fond_auto', ''), '')]
+    # finition retirée du rapide (demande de l'utilisateur) : après Etoiles_LRGB, finition normale en haut du fichier (P5 LRGB_ajout_L, P6, P7)
+    return []
 
 def rapide_end(steps):
-    """Finition en trois conteneurs (demande de l'utilisateur), dans l'ordre habituel ; entre le 2 et le 3, place pour une option
-    (Boost, HDRMT_eclat…, icônes Opt_ du workflow normal) avant les étoiles.
-      1. LRGB (L ajoutée) puis HDRMT à 40 % (plage dynamique, avant le contraste) ;
-      2. un seul masque, une seule courbe (saturation 0,68), LHE 150 et LHE 40, masque retiré, NXT_final (image sans étoiles, après LHE) ;
-      3. étoiles, Fond_auto, Fond_desature, fermeture de L_stars (Boost_final : option seule)."""
-    c1 = cont('C_Fin_1_LRGB_HDRMT', [pick(steps, 'LRGB_ajout_L')[0]] + list(hdrmt_items('0.4')))
-    c2 = cont('C_Fin_2_contraste', [script('Masque_L', ''), curves('Courbes', sat=0.68)] + [pick(steps, b)[0] for b in ('LHE', 'LHE_fin', 'Masque_retirer', 'NXT_final')])
-    c3 = cont('C_Fin_3_etoiles_fond', [pick(steps, 'Etoiles_screen')[0], script('Fond_auto', ''), script('Fond_desature', ''), fermer('Fermer_L_stars', 'L_stars')])
-    return [(6, c1, ''), (6, c2, ''), (6, c3, '')]
+    return []
 
 def note_rapide(prefix, v):
     t = T_RAPIDE[prefix].replace('{V}', v['titre']).replace('{L}', v['L'])

@@ -22,19 +22,21 @@ PHASE = {
     'GHS_1_premier': 4, 'GHS_2_contraste': 4, 'GHS_3_fond': 4, 'Statistical_Stretch': 4, 'Star_Stretch': 4,
     'LRGB_ajout_L': 5, 'NBN_SHO': 5, 'NBN_HOO': 5, 'Foraxx_SHO': 5, 'Foraxx_HOO': 5, 'HOO_simple': 5, 'HOO_Hubble': 5,
     'Perfect_Palette_Picker': 5, 'NBColourMapper': 5, 'SCNR_SHO': 5, 'H_en_luminance': 5,
-    'Masque_L': 6, 'Masque_retirer': 6, 'Courbes': 6, 'LHE': 6, 'LHE_fin': 6, 'Boost_finition_light': 6, 'Boost_finition': 6, 'HDRMT_50': 6, 'HDRMT_eclat': 6, 'NXT_final': 6, 'Boost_final': 7, 'Fond_desature': 7,
+    'Masque_L': 6, 'Masque_retirer': 6, 'Courbes': 6, 'LHE': 6, 'LHE_fin': 6, 'Boost_finition_light': 6, 'Boost_finition': 6, 'HDRMT_50': 6, 'HDRMT_eclat': 6, 'NXT_final': 6, 'HDRMT_40': 6, 'NXT_final_doux': 6, 'NXT_final_fort': 6, 'Fond_auto': 7, 'Fond_auto_clair': 7, 'Boost_final': 7, 'Fond_desature': 7,
     'Etoiles_RGB': 7, 'Etoiles_HOO': 7, 'NB_to_RGB_Stars': 7, 'Etoiles_HOO_synth': 7, 'Etoiles_screen': 7, 'CorrectMagentaStars': 7,
     'Etoiles_reduites': 7, 'Fermer_L_stars': 3, 'MT_etoiles': 7, 'Halo_B_Gon': 7,
 }
 
 NB = ('RSHO', 'SHO', 'HOO')
 LUM = ('LRGB', 'LHA')   # workflows avec luminance : par défaut Statistical Stretch sur le RGB, GHS sur L
-OPT = {'ImageSolver_seul', 'Boost_finition_light', 'Boost_finition', 'WBPP', 'CC_auto', 'Find_Background', 'LinearFit_ref_H', 'Continuum_auto', 'H_dans_L', 'NBRGBCombination', 'HDRMT_50', 'HDRMT_eclat', 'Boost_final', 'Fond_desature', 'NXT_final',
+OPT = {'ImageSolver_seul', 'Boost_finition_light', 'Boost_finition', 'WBPP', 'CC_auto', 'Find_Background', 'LinearFit_ref_H', 'Continuum_auto', 'H_dans_L', 'NBRGBCombination', 'HDRMT_50', 'HDRMT_eclat', 'Boost_final', 'Fond_desature', 'NXT_final', 'NXT_final_doux', 'NXT_final_fort', 'Fond_auto_clair',
        'MT_etoiles', 'Halo_B_Gon', 'CorrectMagentaStars', 'SCNR_SHO', 'Perfect_Palette_Picker', 'NBColourMapper', 'H_en_luminance',
        'Etoiles_HOO_synth', 'DualBand_H', 'DualBand_O', 'SPFC_S'}
 
 
 def role(prefix, base):
+    if prefix in LUM and base in ('NXT_final', 'Fond_desature', 'Fond_auto', 'HDRMT_40'):
+        return 'core'   # galaxies : finition en parties, NXT_final et le fond dans le chemin principal (demande de l'utilisateur)
     if base in OPT or (base == 'MGC_MARS' and prefix in NB):
         return 'opt'
     if base == 'Etoiles_screen':
@@ -80,6 +82,9 @@ WHEN = {
     'H_dans_L': "régions HII plus nettes (H injecté dans la luminance)", 'NBRGBCombination': "alternative à la soustraction du continuum",
     'Boost_finition_light': "un tout petit peu plus de couleur et de contraste après LHE_fin (version douce du Boost, rejouable)",
     'Boost_finition': "encore un peu plus de couleur et de contraste après LHE_fin (rejouable)",
+    'NXT_final_doux': "partie 3, à la place de NXT_final : données très propres, ou aspect plastique avec 0,40 (Denoise 0,25)",
+    'NXT_final_fort': "partie 3, à la place de NXT_final : bruit encore visible dans le fond (Denoise 0,60)",
+    'Fond_auto_clair': "partie 5, à la place de Fond_auto dans C_Fond_final : image trop sombre, fond amené à 0,14",
     'HDRMT_50': "cœur de galaxie ou nébuleuse brillante brûlé (HDRMT appliqué à 50 %)",
     'Fond_desature': "fond du ciel teinté (violet, bruit de couleur) sur l'image finie : couleur retirée du fond seulement",
     'Boost_final': "sur l'image FINIE, étoiles comprises : un peu plus de couleur sans toucher aux étoiles (masque tiré de L sans étoiles, courbes chrominance et saturation)",
@@ -107,13 +112,14 @@ def is_default(r, prefix=None):
 # Conteneurs (ProcessContainer) : suites d'étapes sans réglage intermédiaire, appliquées à la même image.
 # nom -> (image cible, étapes). Un conteneur n'est utilisé que si toutes ses étapes sont dans la sélection.
 _FIN = ('C_Finition', "l'image sans étoiles étirée (masque créé, attaché puis retiré automatiquement)", ['Masque_L', 'Courbes', 'LHE', 'LHE_fin', 'Masque_retirer'])
+_FOND = ('C_Fond_final', "l'image finie, étoiles comprises (après Etoiles_screen et Boost_final éventuel)", ['Fond_auto', 'Fond_desature'])
 CONTAINERS = {
     'LRGB': [('C_RGB_lineaire', "l'image RGB combinée, linéaire, gradient retiré", ['BXT_CorrectOnly', 'SPCC', 'BXT_RGB', 'SXT_lineaire', 'NXT_RGB']),
              ('C_L_lineaire', "le master L, linéaire, gradient retiré (étoiles gardées jusqu'après l'étirement)", ['BXT_L', 'NXT_L']),
-             ('C_L_etoiles', "L étirée (avec ses étoiles), après Star_Stretch sur RGB_stars", ['SXT_L_etire', 'Etoiles_LRGB_etire']), _FIN],
+             ('C_L_etoiles', "L étirée (avec ses étoiles), après Star_Stretch sur RGB_stars", ['SXT_L_etire', 'Etoiles_LRGB_etire']), _FIN, _FOND],
     'LHA': [('C_RGB_couleur', "l'image RGB combinée, linéaire, gradient retiré", ['BXT_CorrectOnly', 'SPCC', 'BXT_RGB']),
             ('C_RGB_etoiles_bruit', "l'image RGB après injection de H", ['SXT_lineaire', 'NXT_RGB']),
-            ('C_L_etoiles', "L étirée (avec ses étoiles), après Star_Stretch sur RGB_stars", ['SXT_L_etire', 'Etoiles_LRGB_etire']), _FIN],
+            ('C_L_etoiles', "L étirée (avec ses étoiles), après Star_Stretch sur RGB_stars", ['SXT_L_etire', 'Etoiles_LRGB_etire']), _FIN, _FOND],
     'RSHO': [('C_SHO_lineaire', "l'image SHO combinée, linéaire", ['BXT_NB', 'SXT_lineaire']),
              ('C_Extraction_SHO', "l'image SHO sans étoiles", ['Extraire_S', 'Extraire_H', 'Extraire_O']), _FIN,
              ('C_Etoiles_RGB', "l'image RGB combinée, linéaire, gradient retiré", ['BXT_CorrectOnly', 'SPCC', 'BXT_RGB', 'SXT_RGB_lineaire'])],
