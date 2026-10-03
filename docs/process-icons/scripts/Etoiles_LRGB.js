@@ -1,10 +1,10 @@
 // ----------------------------------------------------------------------------
 // Etoiles_LRGB.js — ajoute la luminance des étoiles de L aux étoiles RGB.
 // ----------------------------------------------------------------------------
-// Dernière étape de C_L_rapide dans les variantes « etoilesL » du mode rapide.
-// Il faut :
-//   - L_stars (étoiles de L : linéaires si SXT a tourné sur L linéaire,
-//     déjà étirées si SXT a tourné après l'étirement ; etirerL = false) ;
+// Mode rapide : icône R_E08, après les 3 GHS de L (SXT tourne toujours sur
+// L linéaire dans C_L_rapide). Il faut :
+//   - L_stars (étoiles de L linéaires laissées par C_L_rapide ; etirerL =
+//     false si elles sont déjà étirées, workflow normal) ;
 //   - RGB_stars (étoiles RGB déjà étirées par Etoiles_auto dans le conteneur
 //     RGB).
 // Étapes :
