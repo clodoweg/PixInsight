@@ -1625,51 +1625,48 @@ Détails : page docs/pixinsight-workflow.html.</description>
 
 LANCEMENT : glisse l'icône sur l'image.
 
-PRÉRÉGLÉ : script Nettoyage_sans_etoiles : masque autour des étoiles de RGB_stars (flou 12 px × 40 + flou 40 px × 200 : large pour les étoiles brillantes), galaxie protégée (luminance floutée 30 px au-dessus de fond + 0,05) ; dans le masque, excès lissé au-dessus du fond retiré, bruit fin gardé.
+PRÉRÉGLÉ : script Nettoyage_sans_etoiles (calcul sur une copie à 2000 px) : seules les étoiles BRILLANTES de RGB_stars comptent (luminance floutée 20 px au-dessus de 0,05 à 0,12), zone étendue au halo ; fond LOCAL par ouverture morphologique (disque 25 px, 3 passes : taches de moins de 75 px retirées, halo de la galaxie gardé) ; galaxie et structures claires protégées ; excès au-dessus du fond local retiré, bruit fin gardé.
 
 À RÉGLER : glisse sur l'image sans étoiles juste après LRGB, AVANT HDRMT_40 ; RGB_stars doit être ouverte ; vérifie à 1:1, Ctrl+Z pour annuler.
 
 SI :
-- voir ce qui est touché -&gt; afficherMasque true (vue masque_nettoyage)
-- taches encore visibles -&gt; gain1 80, gain2 400
-- grand halo d'étoile brillante encore là -&gt; rayon2 60
-- bord de la galaxie ou bras faible assombri -&gt; protege 0,03 ou flouGalaxie 50
+- voir ce qui est touché -&gt; afficherMasque true (vue masque_nettoyage : seulement les grandes étoiles)
+- trop d'étoiles touchées -&gt; seuilBas 0,07, seuilHaut 0,15
+- halo d'une étoile moyenne encore visible -&gt; seuilBas 0,04, seuilHaut 0,09
+- grand halo encore visible -&gt; passes 5
+- bras ou petite galaxie atténué -&gt; structure 0,10
 
 Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Nettoyage_sans_etoiles.js</parameter>
       <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="9">
+      <table id="parameters" rows="8">
          <tr>
             <td id="id">etoiles</td>
             <td id="value">RGB_stars</td>
          </tr>
          <tr>
-            <td id="id">rayon1</td>
-            <td id="value">12</td>
-         </tr>
-         <tr>
-            <td id="id">gain1</td>
-            <td id="value">40</td>
-         </tr>
-         <tr>
-            <td id="id">rayon2</td>
-            <td id="value">40</td>
-         </tr>
-         <tr>
-            <td id="id">gain2</td>
-            <td id="value">200</td>
-         </tr>
-         <tr>
-            <td id="id">protege</td>
+            <td id="id">seuilBas</td>
             <td id="value">0.05</td>
          </tr>
          <tr>
-            <td id="id">flouGalaxie</td>
-            <td id="value">30</td>
+            <td id="id">seuilHaut</td>
+            <td id="value">0.12</td>
          </tr>
          <tr>
-            <td id="id">lissage</td>
+            <td id="id">etendue</td>
+            <td id="value">25</td>
+         </tr>
+         <tr>
+            <td id="id">passes</td>
             <td id="value">3</td>
+         </tr>
+         <tr>
+            <td id="id">protege</td>
+            <td id="value">0.08</td>
+         </tr>
+         <tr>
+            <td id="id">structure</td>
+            <td id="value">0.15</td>
          </tr>
          <tr>
             <td id="id">afficherMasque</td>

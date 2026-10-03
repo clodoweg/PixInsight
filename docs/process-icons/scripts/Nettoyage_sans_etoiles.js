@@ -1,37 +1,43 @@
 // ----------------------------------------------------------------------------
-// Nettoyage_sans_etoiles.js — efface les restes de halos d'étoiles (taches
-// rondes floues) de l'image sans étoiles étirée.
+// Nettoyage_sans_etoiles.js — efface les restes de halos des étoiles BRILLANTES
+// (taches rondes floues, halo coloré) de l'image sans étoiles étirée.
 // ----------------------------------------------------------------------------
 // StarXTerminator passé sur l'image linéaire laisse des halos faibles que
-// l'étirement fait ressortir (disques flous, halo bleu des étoiles brillantes).
-// Ils sont aussi clairs que les bras faibles de la galaxie : un seuil ne les
-// sépare pas. Le script les repère par leur POSITION (autour des étoiles de
-// RGB_stars) et protège la galaxie par son ÉTENDUE :
-//   1. masque des étoiles : luminance de RGB_stars floutée à deux échelles
-//      (rayon1 12 px pour les petits halos, rayon2 40 px pour les grands halos
-//      des étoiles brillantes), m = min(1, gain1 × flou1 + gain2 × flou2) :
-//      une étoile brillante couvre une zone large, une étoile faible presque
-//      rien ;
-//   2. protection de la galaxie : luminance de l'image floutée sur 30 px ;
-//      au-dessus de fond + protege (0,05), m décroît, nul à fond + 2 × protege :
-//      le corps de la galaxie et ses bras proches restent intacts ; une tache
-//      isolée, petite, est diluée par ce flou et n'est pas protégée ;
-//   3. dans le masque, chaque canal perd l'excès lissé au-dessus du fond :
-//      $T − m × max(0, lissé − fond) (lissé : flou 3 px ; fond : grille 8 × 8,
-//      quart le plus sombre des cases, comme Fond_auto). Le bruit fin est
-//      gardé (pas de plage lisse), rien n'est jamais éclairci.
-// afficherMasque = true : garde la vue masque_nettoyage pour vérifier ce qui
-// est touché (blanc = nettoyé). Glisse l'icône sur l'image SANS étoiles,
-// RGB_stars ouverte, avant HDRMT_40. Ctrl+Z pour annuler.
+// l'étirement fait ressortir. Ceux des étoiles faibles et moyennes sont
+// recouverts par les étoiles elles-mêmes (Etoiles_screen) ; ceux des étoiles
+// brillantes dépassent et restent visibles. Le script ne vise qu'eux.
+// Tout le calcul des masques se fait sur une copie réduite à 2000 px de large
+// (mêmes réglages quelle que soit la taille de l'image), puis est ramené à la
+// taille réelle :
+//   1. étoiles brillantes : luminance de RGB_stars floutée 20 px ; noyau =
+//      0 sous seuilBas (0,05), 1 au-dessus de seuilHaut (0,12) : une étoile
+//      moyenne (vers 0,06) ne compte presque pas, une brillante (0,12 à 0,37)
+//      compte entièrement ; le noyau est étendu (flou etendue 25 px × 3) pour
+//      couvrir le halo ;
+//   2. fond LOCAL : ouverture morphologique (érosion puis dilatation, disque
+//      25 px, 3 fois chacune, puis flou 8 px) : tout ce qui est plus petit
+//      qu'environ 75 px disparaît (taches, halos) ; le halo étendu de la
+//      galaxie et les dégradés restent. On ne descend jamais sous ce fond
+//      local : pas de trou noir autour de la galaxie ;
+//   3. protections : (a) galaxie par son étendue (luminance floutée 60 px
+//      au-dessus de fond + protege 0,08) ; (b) toute structure nettement plus
+//      claire que le fond local (+ 0,15 : bras, petites galaxies) ;
+//   4. dans le masque : $T − masque × max(0, lissé − fond local) (lissé :
+//      flou 1,5 px) ; le bruit fin est gardé, rien n'est éclairci.
+// afficherMasque = true : garde la vue masque_nettoyage (blanc = nettoyé ;
+// elle doit couvrir seulement les grandes étoiles et leur halo).
+// Glisse l'icône sur l'image SANS étoiles juste après LRGB, RGB_stars ouverte.
+// Ctrl+Z pour annuler.
 //
 // Installation (Mac et PC) : dans src/scripts/clodoweg de PixInsight.
 // ----------------------------------------------------------------------------
 
 #feature-id    Nettoyage_sans_etoiles : clodoweg > Nettoyage de l'image sans étoiles
-#feature-info  Efface les restes de halos d'étoiles de l'image sans étoiles, \
-   autour des étoiles de RGB_stars, sans toucher à la galaxie.
+#feature-info  Efface les restes de halos des étoiles brillantes de l'image \
+   sans étoiles, sans toucher à la galaxie.
 
 #define TITLE "Nettoyage sans etoiles"
+#define WORK 2000
 
 function param( key, value )
 {
@@ -66,6 +72,17 @@ function newView( view, id, expr, gray )
    return w;
 }
 
+function pm( w, expr )
+{
+   let P = new PixelMath;
+   P.expression = expr;
+   P.useSingleExpression = true;
+   P.createNewImage = false;
+   P.rescale = false;
+   P.truncate = true;
+   P.executeOn( w.mainView );
+}
+
 function blur( w, sigma )
 {
    if ( sigma <= 0 )
@@ -79,26 +96,53 @@ function blur( w, sigma )
    C.executeOn( w.mainView );
 }
 
-// Fond de chaque canal : médiane du quart le plus sombre des médianes de cases.
+function resize( w, width, height )
+{
+   if ( w.mainView.image.width == width && w.mainView.image.height == height )
+      return;
+   let R = new Resample;
+   R.mode = Resample.prototype.AbsolutePixels;
+   R.absoluteMode = Resample.prototype.ForceWidthAndHeight;
+   R.xSize = width;
+   R.ySize = height;
+   R.executeOn( w.mainView );
+}
+
+// Disque de diamètre 25 px pour MorphologicalTransformation.
+function morpho( w, op, n )
+{
+   let s = 25, r = (s - 1)/2, disk = [];
+   for ( let y = 0; y < s; ++y )
+      for ( let x = 0; x < s; ++x )
+         disk.push( ((x - r)*(x - r) + (y - r)*(y - r) <= r*r) ? 1 : 0 );
+   let M = new MorphologicalTransformation;
+   M.operator = op;
+   M.interlacingDistance = 1;
+   M.lowThreshold = 0;
+   M.highThreshold = 0;
+   M.numberOfIterations = n;
+   M.amount = 1;
+   M.selectionPoint = 0.5;
+   M.structureName = "";
+   M.structureSize = s;
+   M.structureWayTable = [ [ disk ] ];
+   M.executeOn( w.mainView );
+}
+
+// Fond : médiane du quart le plus sombre des médianes de cases (grille n × n).
 function background( img, n )
 {
-   let out = [];
-   for ( let c = 0; c < img.numberOfChannels; ++c )
-   {
-      let meds = [];
-      for ( let j = 0; j < n; ++j )
-         for ( let i = 0; i < n; ++i )
-         {
-            img.selectedChannel = c;
-            img.selectedRect = new Rect( Math.floor( i*img.width/n ), Math.floor( j*img.height/n ), Math.floor( (i + 1)*img.width/n ), Math.floor( (j + 1)*img.height/n ) );
-            meds.push( img.median() );
-         }
-      meds.sort( function( a, b ) { return a - b; } );
-      let q = meds.slice( 0, Math.max( 1, Math.floor( meds.length/4 ) ) );
-      out.push( q[ Math.floor( q.length/2 ) ] );
-   }
+   let meds = [];
+   for ( let j = 0; j < n; ++j )
+      for ( let i = 0; i < n; ++i )
+      {
+         img.selectedRect = new Rect( Math.floor( i*img.width/n ), Math.floor( j*img.height/n ), Math.floor( (i + 1)*img.width/n ), Math.floor( (j + 1)*img.height/n ) );
+         meds.push( img.median() );
+      }
    img.resetSelections();
-   return out;
+   meds.sort( function( a, b ) { return a - b; } );
+   let q = meds.slice( 0, Math.max( 1, Math.floor( meds.length/4 ) ) );
+   return q[ Math.floor( q.length/2 ) ];
 }
 
 function main()
@@ -107,68 +151,78 @@ function main()
    if ( view.isNull )
       throw new Error( TITLE + " : aucune image." );
    let starsId = param( "etoiles", "RGB_stars" );
-   let r1 = parseFloat( param( "rayon1", "12" ) ), g1 = parseFloat( param( "gain1", "40" ) );
-   let r2 = parseFloat( param( "rayon2", "40" ) ), g2 = parseFloat( param( "gain2", "200" ) );
-   let protege = parseFloat( param( "protege", "0.05" ) );
-   let flouGalaxie = parseFloat( param( "flouGalaxie", "30" ) );
-   let lissage = parseFloat( param( "lissage", "3" ) );
+   let seuilBas = parseFloat( param( "seuilBas", "0.05" ) );
+   let seuilHaut = parseFloat( param( "seuilHaut", "0.12" ) );
+   let etendue = parseFloat( param( "etendue", "25" ) );
+   let passes = parseInt( param( "passes", "3" ) );
+   let protege = parseFloat( param( "protege", "0.08" ) );
+   let structure = parseFloat( param( "structure", "0.15" ) );
    let afficher = param( "afficherMasque", "false" ).toLowerCase() == "true";
 
    let sw = ImageWindow.windowById( starsId );
    if ( sw.isNull )
       throw new Error( TITLE + " : la vue " + starsId + " (étoiles étirées) doit être ouverte." );
-   if ( sw.mainView.image.width != view.image.width || sw.mainView.image.height != view.image.height )
+   let W = view.image.width, H = view.image.height;
+   if ( sw.mainView.image.width != W || sw.mainView.image.height != H )
       throw new Error( TITLE + " : " + starsId + " et " + view.id + " n'ont pas la même taille." );
-
    let color = view.image.isColor;
-   let Ys = sw.mainView.image.isColor ? "(0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2])" : "$T";
-   let Yt = color ? "(0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2])" : "$T";
+   let Y = "(0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2])";
+   let w2 = Math.min( W, WORK ), h2 = Math.round( H*w2/W ), k = W/w2;
 
-   // 1. masque des étoiles à deux échelles
-   let s1 = newView( sw.mainView, "nt_s1", Ys, true );
-   let s2 = newView( sw.mainView, "nt_s2", Ys, true );
-   blur( s1, r1 );
-   blur( s2, r2 );
+   // copies réduites
+   let st = newView( sw.mainView, "nt_st", sw.mainView.image.isColor ? Y : "$T", true );
+   resize( st, w2, h2 );
+   let sl = newView( view, "nt_sl", "$T", false );
+   resize( sl, w2, h2 );
+   let sy = newView( sl.mainView, "nt_sy", color ? Y : "$T", true );
 
-   // 2. protection de la galaxie (étendue) et image lissée
-   let gw = newView( view, "nt_g", Yt, true );
-   blur( gw, flouGalaxie );
-   let lw = newView( view, "nt_lis", "$T", false );
-   blur( lw, lissage );
+   // 1. étoiles brillantes, étendues
+   blur( st, 20 );
+   pm( st, "min(1, max(0, ($T - " + seuilBas + ")/" + (seuilHaut - seuilBas) + "))" );
+   blur( st, etendue );
+   pm( st, "min(1, 3*$T)" );
 
-   let bg = background( view.image, 8 );
-   let bgY = color ? 0.2126*bg[0] + 0.7152*bg[1] + 0.0722*bg[2] : bg[0];
-   let m = "(min(1, " + g1 + "*nt_s1 + " + g2 + "*nt_s2)*(1 - min(1, max(0, (nt_g - " + (bgY + protege).toFixed( 6 ) + ")/" + protege.toFixed( 6 ) + "))))";
+   // 2. fond local (ouverture morphologique)
+   let op = newView( sl.mainView, "nt_op", "$T", false );
+   morpho( op, MorphologicalTransformation.prototype.Erosion, passes );
+   morpho( op, MorphologicalTransformation.prototype.Dilation, passes );
+   blur( op, 8 );
+   let opy = newView( op.mainView, "nt_opy", color ? Y : "$T", true );
+
+   // 3. protections
+   let bg = background( sy.mainView.image, 8 );
+   let g60 = newView( sy.mainView, "nt_g60", "$T", true );
+   blur( g60, 60 );
+   let g4 = newView( sy.mainView, "nt_g4", "$T", true );
+   blur( g4, 4 );
+   let mask = newView( st.mainView, "nt_m",
+      "$T*(1 - max(min(1, max(0, (nt_g60 - " + (bg + protege).toFixed( 6 ) + ")/" + protege + ")), " +
+      "min(1, max(0, (nt_g4 - nt_opy - " + structure + ")/0.10))))", true );
+
+   // retour à la taille réelle
+   resize( mask, W, H );
+   resize( op, W, H );
+   let li = newView( view, "nt_li", "$T", false );
+   blur( li, 1.5*k );
 
    if ( afficher )
    {
-      let mw = newView( view, "masque_nettoyage", m, true );
-      mw.show();
+      let mv = newView( mask.mainView, "masque_nettoyage", "$T", true );
+      mv.show();
    }
 
-   // 3. excès lissé au-dessus du fond retiré dans le masque
+   // 4. excès au-dessus du fond local retiré dans le masque
    let P = new PixelMath;
-   if ( color )
-   {
-      P.expression = "$T - " + m + "*max(0, nt_lis - " + bg[0].toFixed( 6 ) + ")";
-      P.expression1 = "$T - " + m + "*max(0, nt_lis - " + bg[1].toFixed( 6 ) + ")";
-      P.expression2 = "$T - " + m + "*max(0, nt_lis - " + bg[2].toFixed( 6 ) + ")";
-      P.useSingleExpression = false;
-   }
-   else
-   {
-      P.expression = "$T - " + m + "*max(0, nt_lis - " + bg[0].toFixed( 6 ) + ")";
-      P.useSingleExpression = true;
-   }
+   P.expression = "$T - nt_m*max(0, nt_li - nt_op)";
+   P.useSingleExpression = true;
    P.createNewImage = false;
    P.rescale = false;
    P.truncate = true;
    P.executeOn( view );
 
-   [ "nt_s1", "nt_s2", "nt_g", "nt_lis" ].forEach( closeView );
-   console.noteln( TITLE + " : " + view.id + " nettoyé autour des étoiles de " + starsId + " (fond " +
-                   bg.map( function( v ) { return v.toFixed( 4 ); } ).join( " / " ) + ", galaxie protégée au-dessus de " + (bgY + protege).toFixed( 3 ) +
-                   ")" + (afficher ? " ; masque gardé : masque_nettoyage." : ".") );
+   [ "nt_st", "nt_sl", "nt_sy", "nt_op", "nt_opy", "nt_g60", "nt_g4", "nt_m", "nt_li" ].forEach( closeView );
+   console.noteln( TITLE + " : " + view.id + " nettoyé autour des étoiles brillantes de " + starsId +
+                   " (calcul à " + w2 + " px, fond " + bg.toFixed( 4 ) + ")" + (afficher ? " ; masque gardé : masque_nettoyage." : ".") );
 }
 
 main();
