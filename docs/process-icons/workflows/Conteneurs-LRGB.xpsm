@@ -2722,7 +2722,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       </instance>
    </instance>
    <instance class="NoOperation" version="256" id="R_E01_Mode_rapide_instance">
-      <description>Icônes du mode rapide en bas du fichier Conteneurs, toutes préfixées R_ (R_E00, R_E03, R_Opt_… : les numéros cités ici s'entendent avec ce préfixe). MODE RAPIDE LRGB — SXT toujours avant l'étirement (RGB et L) ; L étirée à la main par les 3 GHS ; luminance de L_stars ajoutée aux étoiles — icône de repère, sans effet. Aucun réglage, pas de MARS (MGC + MARS : mode soigné). Ordre (numéros des icônes) : E00 C_Preparation_rapide (masters seuls ouverts ; double-clic puis Apply Global, ou glisse sur L) : Renommer_auto (L, R, G, B d'après FILTER), LinearPatternSubtraction sur tous les masters mono ouverts, Combinaison_RGB (RGB créé, R, G, B fermées). E02 ImageSolver sur RGB (date par défaut si absente, puis ImageSolver ; nécessaire à SPCC ; icône seule, pas de conteneur). E03 C_RGB_rapide sur RGB (GradientCorrection, BXT Correct Only, SPCC, BXT, SXT sur RGB linéaire, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond SP = HP = 0,22, Etoiles_auto : courbe de Star Stretch amount 6, saturation 1,3, SCNR) : RGB étiré sans étoiles et RGB_stars étirée. E04 C_L_rapide sur L (GradientCorrection, BXT, SXT sur L linéaire, NXT ; L reste linéaire, sans étoiles ; L_stars gardée pour Etoiles_LRGB). E05 GHS_1_premier, E06 GHS_2_contraste, E07 GHS_3_fond : à la main sur L (fond final vers 0,11-0,13). E08 Etoiles_LRGB (glisse sur n'importe quelle image) : L_stars étirée comme les étoiles RGB, puis 0,5 × L_stars + 0,5 × luminance RGB appliquée à RGB_stars, L_stars fermée ; saute-la pour garder les étoiles du RGB seul. E09 C_Fin_rapide sur RGB : LRGB (L ajoutée), HDRMT à 40 % (détail du cœur), masque de luminance créé et attaché, Courbes (saturation 0,68), LHE (rayon 150), LHE_fin (rayon 40), masque retiré, NXT_final (Denoise 0,40, image sans étoiles), étoiles RGB_stars ajoutées, Fond_auto (fond mesuré, amené à 0,12 et neutre), Fond_desature (fond et violet du halo neutralisés), fermeture de L_stars : image finie. Sans HDRMT : C_Fin_simple (options). Pour un Boost, HDRMT_50, HDRMT_eclat (cœur détaillé ET lumineux) ou NXT final : à la place d'E09, C_Fin_sans_etoiles (options), puis l'option, puis Etoiles_screen ou Etoiles_reduites, puis Fond_auto (options). Boost, HDRMT_50, HDRMT_eclat, NXT_final, Halo_B_Gon (sur RGB_stars avant E09), MT_etoiles, Etoiles_screen, Etoiles_reduites, Boost_final, Fond_desature : icônes Opt_ du workflow normal, en haut du fichier. Une étape en erreur arrête un conteneur : lis la console.</description>
+      <description>Icônes du mode rapide en bas du fichier Conteneurs, toutes préfixées R_ (R_E00, R_E03, R_Opt_… : les numéros cités ici s'entendent avec ce préfixe). MODE RAPIDE LRGB — SXT toujours avant l'étirement (RGB et L) ; L étirée à la main par les 3 GHS ; luminance de L_stars ajoutée aux étoiles — icône de repère, sans effet. Aucun réglage, pas de MARS (MGC + MARS : mode soigné). Ordre (numéros des icônes) : E00 C_Preparation_rapide (masters seuls ouverts ; double-clic puis Apply Global, ou glisse sur L) : Renommer_auto (L, R, G, B d'après FILTER), LinearPatternSubtraction sur tous les masters mono ouverts, Combinaison_RGB (RGB créé, R, G, B fermées). E02 ImageSolver sur RGB (date par défaut si absente, puis ImageSolver ; nécessaire à SPCC ; icône seule, pas de conteneur). E03 C_RGB_rapide sur RGB (GradientCorrection, BXT Correct Only, SPCC, BXT, SXT sur RGB linéaire, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond SP = HP = 0,22, Etoiles_auto : courbe de Star Stretch amount 6, saturation 1,3, SCNR) : RGB étiré sans étoiles et RGB_stars étirée. E04 C_L_rapide sur L (GradientCorrection, BXT, SXT sur L linéaire, NXT ; L reste linéaire, sans étoiles ; L_stars gardée pour Etoiles_LRGB). E05 GHS_1_premier, E06 GHS_2_contraste, E07 GHS_3_fond : à la main sur L (fond final vers 0,11-0,13). E08 Etoiles_LRGB (glisse sur n'importe quelle image) : L_stars étirée comme les étoiles RGB, puis 0,5 × L_stars + 0,5 × luminance RGB appliquée à RGB_stars, L_stars fermée ; saute-la pour garder les étoiles du RGB seul. Finition en 3 conteneurs, tous sur RGB : E09 C_Fin_1_LRGB_HDRMT (LRGB : L ajoutée, puis HDRMT à 40 %, détail du cœur) ; E10 C_Fin_2_contraste (masque de luminance créé et attaché, Courbes saturation 0,68, LHE rayon 150, LHE_fin rayon 40, masque retiré, NXT_final Denoise 0,40 sur l'image sans étoiles) ; E11 C_Fin_3_etoiles_fond (étoiles RGB_stars ajoutées, Fond_auto : fond amené à 0,12 et neutre, Fond_desature : fond et violet du halo neutralisés, fermeture de L_stars) : image finie. Regarde l'image après chaque conteneur ; une option (Boost, HDRMT_eclat, Halo_B_Gon sur RGB_stars…) se place entre E10 et E11. Sans HDRMT : C_Fin_simple (options). Sans HDRMT : C_Fin_sans_etoiles (options) à la place d'E09 et E10, puis E11. Options Boost, HDRMT_50, HDRMT_eclat, Halo_B_Gon, MT_etoiles, Etoiles_reduites (à la place d'E11 : puis Fond_auto), Boost_final : icônes Opt_ du workflow normal, en haut du fichier. Une étape en erreur arrête un conteneur : lis la console.</description>
    </instance>
    <instance class="NoOperation" version="256" id="R_P2_Gradient_instance">
       <description>PHASE 2 — Gradient : image linéaire : retrait du gradient. Colonne de repère, sans effet.</description>
@@ -3394,7 +3394,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <instance class="NoOperation" version="256" id="R_P6_Finition_instance">
       <description>PHASE 6 — Finition : contraste et saturation sur l'image sans étoiles. Colonne de repère, sans effet.</description>
    </instance>
-   <instance class="ProcessContainer" id="R_E09_C_Fin_rapide_instance">
+   <instance class="ProcessContainer" id="R_E09_C_Fin_1_LRGB_HDRMT_instance">
       <instance class="LRGBCombination" version="256" enabled="true">
          <table id="channels" rows="4">
             <tr>
@@ -3518,6 +3518,8 @@ Détails : page docs/pixinsight-workflow.html.</description>
          </table>
          <parameter id="information"></parameter>
       </instance>
+   </instance>
+   <instance class="ProcessContainer" id="R_E10_C_Fin_2_contraste_instance">
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
@@ -3723,6 +3725,8 @@ Détails : page docs/pixinsight-workflow.html.</description>
          <parameter id="detail" value="0.15"/>
          <parameter id="overlap" value="0.20"/>
       </instance>
+   </instance>
+   <instance class="ProcessContainer" id="R_E11_C_Fin_3_etoiles_fond_instance">
       <instance class="PixelMath" version="256" enabled="true">
          <parameter id="expression">~((~$T) * (~RGB_stars))</parameter>
          <parameter id="expression1"></parameter>
@@ -4320,7 +4324,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       </instance>
    </instance>
    <instance class="Script" version="256" id="R_Opt_Fond_auto_instance">
-      <description>OPTION — tout à la fin, après Etoiles_screen ou Etoiles_reduites (déjà inclus dans C_Fin_rapide et C_Fin_simple) : mesure le fond et l'amène à 0,12, neutre.
+      <description>OPTION — tout à la fin, après Etoiles_screen ou Etoiles_reduites (déjà inclus dans C_Fin_3_etoiles_fond et C_Fin_simple) : mesure le fond et l'amène à 0,12, neutre.
 
 LANCEMENT : glisse l'icône sur l'image.
 
@@ -4414,9 +4418,11 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <icon id="R_E07_GHS_3_fond" instance="R_E07_GHS_3_fond_instance" xpos="542" ypos="568" workspace="Workspace01"/>
    <icon id="R_E08_Etoiles_LRGB" instance="R_E08_Etoiles_LRGB_instance" xpos="542" ypos="598" workspace="Workspace01"/>
    <icon id="R_P6_Finition" instance="R_P6_Finition_instance" xpos="716" ypos="464" workspace="Workspace01"/>
-   <icon id="R_E09_C_Fin_rapide" instance="R_E09_C_Fin_rapide_instance" xpos="716" ypos="508" workspace="Workspace01"/>
-   <icon id="R_P6_options" instance="R_P6_options_instance" xpos="716" ypos="554" workspace="Workspace01"/>
-   <icon id="R_Opt_C_Fin_simple" instance="R_Opt_C_Fin_simple_instance" xpos="716" ypos="588" workspace="Workspace01"/>
-   <icon id="R_Opt_C_Fin_sans_etoiles" instance="R_Opt_C_Fin_sans_etoiles_instance" xpos="716" ypos="618" workspace="Workspace01"/>
-   <icon id="R_Opt_Fond_auto" instance="R_Opt_Fond_auto_instance" xpos="716" ypos="648" workspace="Workspace01"/>
+   <icon id="R_E09_C_Fin_1_LRGB_HDRMT" instance="R_E09_C_Fin_1_LRGB_HDRMT_instance" xpos="716" ypos="508" workspace="Workspace01"/>
+   <icon id="R_E10_C_Fin_2_contraste" instance="R_E10_C_Fin_2_contraste_instance" xpos="716" ypos="538" workspace="Workspace01"/>
+   <icon id="R_E11_C_Fin_3_etoiles_fond" instance="R_E11_C_Fin_3_etoiles_fond_instance" xpos="716" ypos="568" workspace="Workspace01"/>
+   <icon id="R_P6_options" instance="R_P6_options_instance" xpos="716" ypos="614" workspace="Workspace01"/>
+   <icon id="R_Opt_C_Fin_simple" instance="R_Opt_C_Fin_simple_instance" xpos="716" ypos="648" workspace="Workspace01"/>
+   <icon id="R_Opt_C_Fin_sans_etoiles" instance="R_Opt_C_Fin_sans_etoiles_instance" xpos="716" ypos="678" workspace="Workspace01"/>
+   <icon id="R_Opt_Fond_auto" instance="R_Opt_Fond_auto_instance" xpos="716" ypos="708" workspace="Workspace01"/>
 </xpsm>
