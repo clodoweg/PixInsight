@@ -1127,7 +1127,7 @@ def insert_before(steps, base, items):
     steps[i:i] = items
 
 prep_l, prep_h = prep_rapide(lrgb)[1], prep_rapide(lhargb)[1]
-insert_after(lrgb, 'Combinaison_RGB', [(prep_l, ''), (gc_solver('Solver_auto'), ''), (gc_solver('Turbo_1'), '')])
+insert_after(lrgb, 'Combinaison_RGB', [(prep_l, ''), (gc_solver('Solver_auto'), ''), (cont('Turbo_1', [pick(lrgb, b)[0] for b in ('Renommer_auto', 'LinearPatternSubtraction', 'Combinaison_RGB')] + [gc_solver('Solver_auto'), script('Turbo_1', '')]), '')])
 insert_after(lrgb, 'ImageSolver', [(gc_solver(), '')])
 
 def fin_rapide(steps):
@@ -1215,42 +1215,33 @@ def turbo_rgb_js():
     out.append('   etoilesAuto( "RGB_stars", 6, 1.3, true );   // Etoiles_auto.js, appelé directement')
     return '\n'.join(out)
 
-TURBO1_JS = r"""#engine v8
+TURBO1_JS = r"""// ----------------------------------------------------------------------------
+// Turbo_1.js — mode Turbo, étape 1, partie script (fichier GÉNÉRÉ par make_workflows.py : ne pas modifier à la main).
 // ----------------------------------------------------------------------------
-// Turbo_1.js — mode Turbo, étape 1 (fichier GÉNÉRÉ par make_workflows.py : ne pas modifier à la main).
-// ----------------------------------------------------------------------------
-// PixInsight refuse qu'un script lance un autre script (« Attempt to execute a
-// Script instance recursively »). Ce script fait donc tout lui-même :
-//   1. renommage (Renommer_auto.js), LinearPatternSubtraction sur les masters
-//      mono (LPS_UnClic.js), combinaison RGB (Combiner_RGB.js), astrométrie
-//      de toutes les images (GC_Solver_auto.js) : scripts INCLUS (leurs
-//      fonctions), pas lancés ;
-//   2. GradientCorrection sur toutes les images (GC_Solver_auto.js) ;
-//   3. sur RGB : BXT Correct Only, SPCC, BXT, SXT linéaire, NXT (réglages de
+// Dernière étape du conteneur T_Turbo_1 (Apply Global), qui lance d'abord, un
+// par un : Renommer_auto, LinearPatternSubtraction, Combinaison_RGB et
+// Solver_auto (un conteneur peut lancer des scripts ; un script ne peut pas en
+// lancer un autre : « Attempt to execute a Script instance recursively »).
+// Ce script fait ensuite, sans lancer d'autre script :
+//   1. GradientCorrection sur toutes les images ouvertes (sauf *_stars) ;
+//   2. sur RGB : BXT Correct Only, SPCC, BXT, SXT linéaire, NXT (réglages de
 //      R_C_RGB_rapide, recopiés à la génération), étirement statistique
 //      (Target Median 0,25, Blackpoint Sigma 5, lié : calcul fait ici, proche
-//      du script Statistical Stretch), GHS fond, Etoiles_auto ;
-//   4. sur L : icône R_C_L_rapide (process natifs seulement) ;
-//   5. sur L : icône R_C_Fin_GHS_rapide (GHS natifs) ;
-//   6. fermeture de L_stars.
-// Les étapes 4 et 5 lisent les icônes de l'espace de travail (réglages
-// modifiés pris en compte) ; les étapes 1 à 3 utilisent les réglages de la
-// fiche. Les réglages d'ImageSolver sont les paramètres de l'icône T_Turbo_1.
-// Lancement : masters seuls ouverts, double-clic puis Apply Global.
+//      du script Statistical Stretch), GHS fond, Etoiles_auto (inclus) ;
+//   3. sur L : icône R_C_L_rapide, puis icône R_C_Fin_GHS_rapide (process
+//      natifs, réglages lus dans les icônes) ;
+//   4. fermeture de L_stars.
+// Ancien moteur JavaScript (pas de #engine v8 : il refuse PixelMath.prototype.RGB
+// et le moteur de LinearPatternSubtraction).
 //
-// Installation : dans src/scripts/clodoweg, avec Renommer_auto.js,
-// LPS_UnClic.js, Combiner_RGB.js, GC_Solver_auto.js et Etoiles_auto.js.
+// Installation : dans src/scripts/clodoweg, avec Etoiles_auto.js.
 // ----------------------------------------------------------------------------
 
-#feature-id    Turbo_1 : clodoweg > Mode Turbo, étape 1
-#feature-info  Préparation, astrométrie, GradientCorrection, traitement \
-   linéaire de RGB et de L, fin des GHS sur L, en un clic.
+#feature-id    Turbo_1 : clodoweg > Mode Turbo, étape 1 (partie script)
+#feature-info  GradientCorrection sur toutes les images, traitement linéaire \
+   et étirement de RGB, conteneurs rapides sur L.
 
 #define CLODOWEG_TURBO
-#include "Renommer_auto.js"
-#include "LPS_UnClic.js"
-#include "Combiner_RGB.js"
-#include "GC_Solver_auto.js"
 #include "Etoiles_auto.js"
 
 #define T1_TITLE "Turbo 1"
@@ -1259,42 +1250,6 @@ function t1Param( key, value )
 {
    return Parameters.has( key ) ? Parameters.getString( key ).trim() : value;
 }
-
-// Moteur v8 (exigé par ImageSolver) : LinearPatternSubtraction.jsh, écrit pour l'ancien moteur, passe 0 à
-// Image.medianWaveletTransform() là où le moteur v8 attend un booléen (erreur « Boolean value expected »,
-// retour de l'utilisateur). En cas de refus, on réessaie en convertissant en booléen les arguments numériques,
-// en partant de la fin (le premier, le nombre de couches, n'est converti qu'en dernier recours).
-(function()
-{
-   let orig = Image.prototype.medianWaveletTransform;
-   if ( typeof orig != "function" )
-      return;
-   Image.prototype.medianWaveletTransform = function()
-   {
-      let a = Array.prototype.slice.call( arguments );
-      try
-      {
-         return orig.apply( this, a );
-      }
-      catch ( e )
-      {
-         if ( String( e ).indexOf( "Boolean" ) < 0 )
-            throw e;
-         for ( let i = a.length - 1; i >= 1; --i )
-            if ( typeof a[ i ] == "number" )
-            {
-               let b = a.slice();
-               b[ i ] = a[ i ] != 0;
-               try
-               {
-                  return orig.apply( this, b );
-               }
-               catch ( e2 ) {}
-            }
-         throw e;
-      }
-   };
-})();
 
 function etape( texte )
 {
@@ -1305,6 +1260,21 @@ function run( name, P, view )
 {
    if ( P.executeOn( view ) === false )
       throw new Error( T1_TITLE + " : " + name + " a échoué sur " + view.id + "." );
+}
+
+function gradientTout()
+{
+   let wins = ImageWindow.windows;
+   for ( let k = 0; k < wins.length; ++k )
+   {
+      let id = wins[ k ].mainView.id;
+      if ( id.indexOf( "_stars" ) >= 0 || id == "LS" || id == "SS" || id == "pattern" )
+         continue;
+      let G = new GradientCorrection;
+      G.generateGradientModel = false;
+      run( "GradientCorrection", G, wins[ k ].mainView );
+      console.writeln( T1_TITLE + " : GradientCorrection sur " + id );
+   }
 }
 
 // Étirement statistique lié : point noir = médiane − sigma × MAD normalisée (canaux moyennés),
@@ -1354,27 +1324,7 @@ function turbo1()
 {
    let vueRGB = t1Param( "vueRGB", "RGB" ), vueL = t1Param( "vueL", "L" );
    console.show();
-   etape( "renommage" );               renommerAuto();
-   etape( "LinearPatternSubtraction" );
-   try
-   {
-      lpsUnClic();
-   }
-   catch ( e )
-   {
-      // LPS n'est qu'une correction de motifs : en cas d'échec, on continue (fais-la à la main si besoin)
-      console.warningln( T1_TITLE + " : LinearPatternSubtraction sautée (" + e.message + ") ; la suite continue." );
-   }
-   // fenêtres de travail de LPS éventuellement restées ouvertes (LS, SS, pattern) : fermées pour ne pas être traitées ensuite
-   ImageWindow.windows.forEach( function( w )
-   {
-      let id = w.mainView.id;
-      if ( id.indexOf( "LS" ) == 0 || id.indexOf( "SS" ) == 0 || id.indexOf( "pattern" ) == 0 )
-         w.forceClose();
-   } );
-   etape( "combinaison RGB" );         combinerRGB();
-   etape( "astrométrie de toutes les images" ); mainGCS( { gradient: false, solve: true, solveTout: true } );
-   etape( "GradientCorrection sur toutes les images" ); mainGCS( { gradient: true, solve: false } );
+   etape( "GradientCorrection sur toutes les images" ); gradientTout();
    let rgb = ImageWindow.windowById( vueRGB );
    if ( rgb.isNull )
       throw new Error( T1_TITLE + " : vue " + vueRGB + " introuvable." );
