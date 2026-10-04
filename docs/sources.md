@@ -440,3 +440,4 @@ Points clos au dernier contrôle (30 septembre 2026) :
 - R_GC_Solver_auto renommé R_GC_Solver_auto_rapide ; R_Solver_auto en P1_rapide (4 octobre 2026, demande de l'utilisateur) : même script GC_Solver_auto.js, paramètre gradient false (ImageSolver seul).
 - Colonne P4 LRGB / LHaRGB réordonnée (4 octobre 2026, demande de l'utilisateur) : 3 GHS (L), espace, Statistical_Stretch (RGB), Star_Stretch, Etoiles_LRGB ; option SXT_non_lineaire : StarXTerminator Unscreen coché, réglage RC Astro pour images étirées (manuel déjà cité).
 - Solver_auto déplacé dans le chemin principal de P1 (E03) en LRGB et LHaRGB (4 octobre 2026, demande de l'utilisateur) ; numéros suivants décalés de 1.
+- P6_rapide (R_HDRMT_30, R_C_Finition, R_NXT_final) et P7_rapide (R_Etoiles_screen, R_C_Fond_final) (4 octobre 2026, demande de l'utilisateur) : copies exactes des icônes HDRMT_30, C_Finition, NXT_final, Etoiles_screen et C_Fond_final (RAPIDE_COPIES dans make_workflows.py).

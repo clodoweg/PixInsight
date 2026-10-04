@@ -3610,7 +3610,317 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="overlap" value="0.20"/>
    </instance>
    <instance class="NoOperation" version="256" id="P6_rapide_instance">
-      <description>MODE RAPIDE, phase 6 — Finition : pas d'icône rapide : finition en parties du chemin principal (HDRMT_40, C_Finition, NXT_final) et leurs options. Icône de repère, sans effet.</description>
+      <description>MODE RAPIDE, phase 6 — Finition : R_HDRMT_30 (HDRMT à 30 %), R_C_Finition (masque, Courbes, LHE, LHE_fin, masque retiré), R_NXT_final (Denoise 0,40), dans cet ordre, sur l'image sans étoiles après LRGB_ajout_L ; mêmes icônes que HDRMT_30 (options), C_Finition et NXT_final. Icône de repère, sans effet.</description>
+   </instance>
+   <instance class="ProcessContainer" id="R_HDRMT_30_instance">
+      <instance class="PixelMath" version="256" enabled="true">
+         <parameter id="expression">$T</parameter>
+         <parameter id="expression1"></parameter>
+         <parameter id="expression2"></parameter>
+         <parameter id="expression3"></parameter>
+         <parameter id="useSingleExpression" value="true"/>
+         <parameter id="symbols"></parameter>
+         <parameter id="clearImageCacheAndExit" value="false"/>
+         <parameter id="cacheGeneratedImages" value="false"/>
+         <parameter id="generateOutput" value="true"/>
+         <parameter id="singleThreaded" value="false"/>
+         <parameter id="optimization" value="true"/>
+         <parameter id="use64BitWorkingImage" value="false"/>
+         <parameter id="rescale" value="false"/>
+         <parameter id="rescaleLower" value="0"/>
+         <parameter id="rescaleUpper" value="1"/>
+         <parameter id="truncate" value="true"/>
+         <parameter id="truncateLower" value="0"/>
+         <parameter id="truncateUpper" value="1"/>
+         <parameter id="createNewImage" value="true"/>
+         <parameter id="showNewImage" value="true"/>
+         <parameter id="newImageId">HDR_avant</parameter>
+         <parameter id="newImageWidth" value="0"/>
+         <parameter id="newImageHeight" value="0"/>
+         <parameter id="newImageAlpha" value="false"/>
+         <parameter id="newImageColorSpace" value="SameAsTarget"/>
+         <parameter id="newImageSampleFormat" value="SameAsTarget"/>
+         <table id="outputData" rows="0"/>
+      </instance>
+      <instance class="HDRMultiscaleTransform" version="256" enabled="true">
+         <parameter id="numberOfLayers" value="6"/>
+         <parameter id="numberOfIterations" value="1"/>
+         <parameter id="invertedIterations" value="true"/>
+         <parameter id="overdrive" value="0.000"/>
+         <parameter id="medianTransform" value="false"/>
+         <parameter id="scalingFunctionData">0.003906,0.015625,0.023438,0.015625,0.003906,0.015625,0.0625,0.09375,0.0625,0.015625,0.023438,0.09375,0.140625,0.09375,0.023438,0.015625,0.0625,0.09375,0.0625,0.015625,0.003906,0.015625,0.023438,0.015625,0.003906</parameter>
+         <parameter id="scalingFunctionRowFilter">0.0625,0.25,0.375,0.25,0.0625</parameter>
+         <parameter id="scalingFunctionColFilter">0.0625,0.25,0.375,0.25,0.0625</parameter>
+         <parameter id="scalingFunctionName">B3 Spline (5)</parameter>
+         <parameter id="deringing" value="false"/>
+         <parameter id="smallScaleDeringing" value="0.000"/>
+         <parameter id="largeScaleDeringing" value="0.250"/>
+         <parameter id="outputDeringingMaps" value="false"/>
+         <parameter id="midtonesBalanceMode" value="Automatic"/>
+         <parameter id="midtonesBalance" value="0.500000"/>
+         <parameter id="toIntensity" value="false"/>
+         <parameter id="toLightness" value="true"/>
+         <parameter id="preserveHue" value="true"/>
+         <parameter id="lightnessMask" value="true"/>
+         <parameter id="intensity" value="1.00"/>
+      </instance>
+      <instance class="PixelMath" version="256" enabled="true">
+         <parameter id="expression">a = 0.3;
+   a*$T + (1 - a)*HDR_avant</parameter>
+         <parameter id="expression1"></parameter>
+         <parameter id="expression2"></parameter>
+         <parameter id="expression3"></parameter>
+         <parameter id="useSingleExpression" value="true"/>
+         <parameter id="symbols">a</parameter>
+         <parameter id="clearImageCacheAndExit" value="false"/>
+         <parameter id="cacheGeneratedImages" value="false"/>
+         <parameter id="generateOutput" value="true"/>
+         <parameter id="singleThreaded" value="false"/>
+         <parameter id="optimization" value="true"/>
+         <parameter id="use64BitWorkingImage" value="false"/>
+         <parameter id="rescale" value="false"/>
+         <parameter id="rescaleLower" value="0"/>
+         <parameter id="rescaleUpper" value="1"/>
+         <parameter id="truncate" value="true"/>
+         <parameter id="truncateLower" value="0"/>
+         <parameter id="truncateUpper" value="1"/>
+         <parameter id="createNewImage" value="false"/>
+         <parameter id="showNewImage" value="true"/>
+         <parameter id="newImageId"></parameter>
+         <parameter id="newImageWidth" value="0"/>
+         <parameter id="newImageHeight" value="0"/>
+         <parameter id="newImageAlpha" value="false"/>
+         <parameter id="newImageColorSpace" value="SameAsTarget"/>
+         <parameter id="newImageSampleFormat" value="SameAsTarget"/>
+         <table id="outputData" rows="0"/>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="1">
+            <tr>
+               <td id="id">views</td>
+               <td id="value">HDR_avant</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+   </instance>
+   <instance class="ProcessContainer" id="R_C_Finition_instance">
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="4">
+            <tr>
+               <td id="id">mode</td>
+               <td id="value">attacher</td>
+            </tr>
+            <tr>
+               <td id="id">s</td>
+               <td id="value">0.14</td>
+            </tr>
+            <tr>
+               <td id="id">flou</td>
+               <td id="value">2</td>
+            </tr>
+            <tr>
+               <td id="id">nom</td>
+               <td id="value">masque_L</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+      <instance class="CurvesTransformation" version="256" enabled="true">
+         <table id="R" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="Rt" value="AkimaSubsplines"/>
+         <table id="G" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="Gt" value="AkimaSubsplines"/>
+         <table id="B" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="Bt" value="AkimaSubsplines"/>
+         <table id="K" rows="4">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="0.25000"/>
+               <td id="y" value="0.19000"/>
+            </tr>
+            <tr>
+               <td id="x" value="0.75000"/>
+               <td id="y" value="0.81000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="Kt" value="AkimaSubsplines"/>
+         <table id="A" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="At" value="AkimaSubsplines"/>
+         <table id="L" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="Lt" value="AkimaSubsplines"/>
+         <table id="a" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="at" value="AkimaSubsplines"/>
+         <table id="b" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="bt" value="AkimaSubsplines"/>
+         <table id="c" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="ct" value="AkimaSubsplines"/>
+         <table id="H" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="Ht" value="AkimaSubsplines"/>
+         <table id="S" rows="3">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="0.50000"/>
+               <td id="y" value="0.65000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="St" value="AkimaSubsplines"/>
+      </instance>
+      <instance class="LocalHistogramEqualization" version="256" enabled="true">
+         <parameter id="radius" value="150"/>
+         <parameter id="histogramBins" value="Bit12"/>
+         <parameter id="slopeLimit" value="2.0"/>
+         <parameter id="amount" value="0.300"/>
+         <parameter id="circularKernel" value="true"/>
+      </instance>
+      <instance class="LocalHistogramEqualization" version="256" enabled="true">
+         <parameter id="radius" value="40"/>
+         <parameter id="histogramBins" value="Bit10"/>
+         <parameter id="slopeLimit" value="2.0"/>
+         <parameter id="amount" value="0.250"/>
+         <parameter id="circularKernel" value="true"/>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="2">
+            <tr>
+               <td id="id">mode</td>
+               <td id="value">retirer</td>
+            </tr>
+            <tr>
+               <td id="id">nom</td>
+               <td id="value">masque_L</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+   </instance>
+   <instance class="NoiseXTerminator" version="256" id="R_NXT_final_instance">
+      <description>PRÉRÉGLÉ : Denoise 0,40, 1 itération.
+
+À RÉGLER : PARTIE 3 de la finition (bruit) : glisse sur l'image sans étoiles après C_Finition (et le Boost éventuel) ; options à la place : NXT_final_doux (0,25), NXT_final_fort (0,60).
+
+SI :
+- aspect plastique -&gt; NXT_final_doux
+- bruit encore visible -&gt; NXT_final_fort
+
+Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="ml_version" value="0"/>
+      <parameter id="denoise" value="0.40"/>
+      <parameter id="enable_color_separation" value="false"/>
+      <parameter id="enable_frequency_separation" value="false"/>
+      <parameter id="denoise_intensity" value="0.90"/>
+      <parameter id="denoise_color" value="0.90"/>
+      <parameter id="denoise_high_freq" value="0.90"/>
+      <parameter id="denoise_low_freq" value="0.90"/>
+      <parameter id="denoise_intensity_high_freq" value="0.90"/>
+      <parameter id="denoise_intensity_low_freq" value="0.90"/>
+      <parameter id="denoise_color_high_freq" value="0.90"/>
+      <parameter id="denoise_color_low_freq" value="0.90"/>
+      <parameter id="frequency_scale" value="5.0"/>
+      <parameter id="iterations" value="1"/>
+      <parameter id="detail" value="0.15"/>
+      <parameter id="overlap" value="0.20"/>
    </instance>
    <instance class="NoOperation" version="256" id="P7_Etoiles_instance">
       <description>PHASE 7 — Étoiles : étoiles : étirement, recombinaison, réduction. Colonne de repère, sans effet.</description>
@@ -4062,7 +4372,88 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="information"></parameter>
    </instance>
    <instance class="NoOperation" version="256" id="P7_rapide_instance">
-      <description>MODE RAPIDE, phase 7 — Étoiles : pas d'icône rapide : Etoiles_screen et C_Fond_final du chemin principal ; Export_TIFF (options) pour finir hors PixInsight. Icône de repère, sans effet.</description>
+      <description>MODE RAPIDE, phase 7 — Étoiles : R_Etoiles_screen (étoiles remises) puis R_C_Fond_final (Fond_auto, Fond_desature) ; mêmes icônes que le chemin principal ; Export_TIFF (options) pour finir hors PixInsight. Icône de repère, sans effet.</description>
+   </instance>
+   <instance class="PixelMath" version="256" id="R_Etoiles_screen_instance">
+      <description>PRÉRÉGLÉ : ~((~$T) * (~RGB_stars)), sur l'image elle-même.
+
+À RÉGLER : glisse sur l'image sans étoiles finale : elle reçoit les étoiles ; étoiles étirées nommées RGB_stars (nom donné par SXT, s minuscule).
+
+SI :
+- autre nom d'étoiles -&gt; corrige-le dans la formule
+
+Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="expression">~((~$T) * (~RGB_stars))</parameter>
+      <parameter id="expression1"></parameter>
+      <parameter id="expression2"></parameter>
+      <parameter id="expression3"></parameter>
+      <parameter id="useSingleExpression" value="true"/>
+      <parameter id="symbols"></parameter>
+      <parameter id="clearImageCacheAndExit" value="false"/>
+      <parameter id="cacheGeneratedImages" value="false"/>
+      <parameter id="generateOutput" value="true"/>
+      <parameter id="singleThreaded" value="false"/>
+      <parameter id="optimization" value="true"/>
+      <parameter id="use64BitWorkingImage" value="false"/>
+      <parameter id="rescale" value="false"/>
+      <parameter id="rescaleLower" value="0"/>
+      <parameter id="rescaleUpper" value="1"/>
+      <parameter id="truncate" value="true"/>
+      <parameter id="truncateLower" value="0"/>
+      <parameter id="truncateUpper" value="1"/>
+      <parameter id="createNewImage" value="false"/>
+      <parameter id="showNewImage" value="true"/>
+      <parameter id="newImageId"></parameter>
+      <parameter id="newImageWidth" value="0"/>
+      <parameter id="newImageHeight" value="0"/>
+      <parameter id="newImageAlpha" value="false"/>
+      <parameter id="newImageColorSpace" value="SameAsTarget"/>
+      <parameter id="newImageSampleFormat" value="SameAsTarget"/>
+      <table id="outputData" rows="0"/>
+   </instance>
+   <instance class="ProcessContainer" id="R_C_Fond_final_instance">
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="3">
+            <tr>
+               <td id="id">cible</td>
+               <td id="value">0.12</td>
+            </tr>
+            <tr>
+               <td id="id">tolerance</td>
+               <td id="value">0.005</td>
+            </tr>
+            <tr>
+               <td id="id">grille</td>
+               <td id="value">8</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="4">
+            <tr>
+               <td id="id">debut</td>
+               <td id="value">0.03</td>
+            </tr>
+            <tr>
+               <td id="id">fin</td>
+               <td id="value">0.15</td>
+            </tr>
+            <tr>
+               <td id="id">violetFin</td>
+               <td id="value">0.30</td>
+            </tr>
+            <tr>
+               <td id="id">flou</td>
+               <td id="value">3</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
    </instance>
    <icon id="P1_Preparation" instance="P1_Preparation_instance" xpos="30" ypos="20" workspace="Workspace01"/>
    <icon id="E00_LinearPatternSubtraction" instance="E00_LinearPatternSubtraction_instance" xpos="30" ypos="64" workspace="Workspace01"/>
@@ -4130,6 +4521,9 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <icon id="Opt_NXT_final_doux" instance="Opt_NXT_final_doux_instance" xpos="976" ypos="384" workspace="Workspace01"/>
    <icon id="Opt_NXT_final_fort" instance="Opt_NXT_final_fort_instance" xpos="976" ypos="414" workspace="Workspace01"/>
    <icon id="P6_rapide" instance="P6_rapide_instance" xpos="976" ypos="460" workspace="Workspace01"/>
+   <icon id="R_HDRMT_30" instance="R_HDRMT_30_instance" xpos="976" ypos="494" workspace="Workspace01"/>
+   <icon id="R_C_Finition" instance="R_C_Finition_instance" xpos="976" ypos="524" workspace="Workspace01"/>
+   <icon id="R_NXT_final" instance="R_NXT_final_instance" xpos="976" ypos="554" workspace="Workspace01"/>
    <icon id="P7_Etoiles" instance="P7_Etoiles_instance" xpos="1180" ypos="20" workspace="Workspace01"/>
    <icon id="E26_Etoiles_screen" instance="E26_Etoiles_screen_instance" xpos="1180" ypos="64" workspace="Workspace01"/>
    <icon id="E27_C_Fond_final" instance="E27_C_Fond_final_instance" xpos="1180" ypos="94" workspace="Workspace01"/>
@@ -4142,4 +4536,6 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <icon id="Opt_ICC_sRGB" instance="Opt_ICC_sRGB_instance" xpos="1180" ypos="324" workspace="Workspace01"/>
    <icon id="Opt_Export_TIFF" instance="Opt_Export_TIFF_instance" xpos="1180" ypos="354" workspace="Workspace01"/>
    <icon id="P7_rapide" instance="P7_rapide_instance" xpos="1180" ypos="400" workspace="Workspace01"/>
+   <icon id="R_Etoiles_screen" instance="R_Etoiles_screen_instance" xpos="1180" ypos="434" workspace="Workspace01"/>
+   <icon id="R_C_Fond_final" instance="R_C_Fond_final_instance" xpos="1180" ypos="464" workspace="Workspace01"/>
 </xpsm>
