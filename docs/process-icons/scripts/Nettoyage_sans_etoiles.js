@@ -27,7 +27,7 @@
 //   5. TRÈS grandes étoiles (version 3, halo de plus de 75 px qui restait
 //      élargi) : luminance de RGB_stars floutée 50 px au-dessus de tresBrillant
 //      (0,05 ; l'étoile bleue de NGC 1532 vaut 0,11, les autres moins de 0,045),
-//      zone étendue (flou etendue2 60 px × 5, environ 130 px de rayon) ; fond
+//      zone étendue (flou etendue2 80 px × gain2 8, environ 170 px de rayon) ; fond
 //      local à grande échelle (ouverture sur une copie à 500 px, environ 300 px
 //      à 2000 px, après un léger flou contre le biais du bruit) ; on garde le
 //      plus grand des deux retraits.
@@ -165,7 +165,9 @@ function main()
    let protege = parseFloat( param( "protege", "0.08" ) );
    let structure = parseFloat( param( "structure", "0.15" ) );
    let tresBrillant = parseFloat( param( "tresBrillant", "0.05" ) );
-   let etendue2 = parseFloat( param( "etendue2", "60" ) );
+   let etendue2 = parseFloat( param( "etendue2", "80" ) );
+   let gain = parseFloat( param( "gain", "3" ) );     // force de l'extension (petits halos) : plus haut = masque plus large et plus plein
+   let gain2 = parseFloat( param( "gain2", "8" ) );   // idem pour les très grandes étoiles
    let afficher = param( "afficherMasque", "false" ).toLowerCase() == "true";
 
    let sw = ImageWindow.windowById( starsId );
@@ -190,13 +192,13 @@ function main()
    blur( st2, 50 );
    pm( st2, "min(1, max(0, ($T - " + tresBrillant + ")/0.03))" );
    blur( st2, etendue2 );
-   pm( st2, "min(1, 5*$T)" );
+   pm( st2, "min(1, " + gain2 + "*$T)" );
 
    // 1. étoiles brillantes, étendues
    blur( st, 20 );
    pm( st, "min(1, max(0, ($T - " + seuilBas + ")/" + (seuilHaut - seuilBas) + "))" );
    blur( st, etendue );
-   pm( st, "min(1, 3*$T)" );
+   pm( st, "min(1, " + gain + "*$T)" );
 
    // 2. fond local (ouverture morphologique)
    let op = newView( sl.mainView, "nt_op", "$T", false );
