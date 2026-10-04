@@ -23,7 +23,9 @@
 //      au-dessus de fond + protege 0,08) ; (b) toute structure nettement plus
 //      claire que le fond local (+ 0,15 : bras, petites galaxies) ;
 //   4. dans le masque : $T − masque × max(0, lissé − fond local) (lissé :
-//      flou 1,5 px) ; le bruit fin est gardé, rien n'est éclairci ;
+//      flou 1,5 px), calculé à 2000 px puis ramené à la taille réelle (une
+//      seule image pleine taille en mémoire) ; le bruit fin est gardé, rien
+//      n'est éclairci ;
 //   5. TRÈS grandes étoiles (version 3, halo de plus de 75 px qui restait
 //      élargi) : luminance de RGB_stars floutée 50 px au-dessus de tresBrillant
 //      (0,05 ; l'étoile bleue de NGC 1532 vaut 0,11, les autres moins de 0,045),
@@ -226,30 +228,30 @@ function main()
    let mask = newView( st.mainView, "nt_m", "$T*" + prot, true );
    let mask2 = newView( st2.mainView, "nt_m2", "$T*" + prot, true );
 
-   // retour à la taille réelle
-   resize( mask, W, H );
-   resize( op, W, H );
-   resize( mask2, W, H );
-   resize( op2, W, H );
-   let li = newView( view, "nt_li", "$T", false );
-   blur( li, 1.5*k );
-
+   // 4. excès au-dessus du fond local, calculé à 2000 px (léger en mémoire : une seule image ramenée à la taille réelle)
+   let li = newView( sl.mainView, "nt_li", "$T", false );
+   blur( li, 1.5 );
+   let ex = newView( sl.mainView, "nt_e", "max(nt_m*max(0, nt_li - nt_op), nt_m2*max(0, nt_li - nt_op2))", false );
    if ( afficher )
    {
       let mv = newView( mask.mainView, "masque_nettoyage", "max($T, nt_m2)", true );
+      resize( mv, W, H );
       mv.show();
    }
+   resize( ex, W, H );
 
-   // 4. excès au-dessus du fond local retiré dans le masque
+   // retrait sur l'image (rien n'est jamais éclairci)
    let P = new PixelMath;
-   P.expression = "$T - max(nt_m*max(0, nt_li - nt_op), nt_m2*max(0, nt_li - nt_op2))";
+   P.expression = "$T - nt_e";
    P.useSingleExpression = true;
    P.createNewImage = false;
    P.rescale = false;
    P.truncate = true;
-   P.executeOn( view );
+   let ok = P.executeOn( view );
 
-   [ "nt_st", "nt_st2", "nt_sl", "nt_sy", "nt_op", "nt_op2", "nt_opy", "nt_g60", "nt_g4", "nt_m", "nt_m2", "nt_li" ].forEach( closeView );
+   [ "nt_st", "nt_st2", "nt_sl", "nt_sy", "nt_op", "nt_op2", "nt_opy", "nt_g60", "nt_g4", "nt_m", "nt_m2", "nt_li", "nt_e" ].forEach( closeView );
+   if ( !ok )
+      throw new Error( TITLE + " : le retrait final a échoué (voir la console) ; l'image n'a pas été modifiée." );
    console.noteln( TITLE + " : " + view.id + " nettoyé autour des étoiles brillantes de " + starsId +
                    " (calcul à " + w2 + " px, fond " + bg.toFixed( 4 ) + ")" + (afficher ? " ; masque gardé : masque_nettoyage." : ".") );
 }
