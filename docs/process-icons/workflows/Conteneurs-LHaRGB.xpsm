@@ -2523,7 +2523,39 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="overlap" value="0.20"/>
    </instance>
    <instance class="NoOperation" version="256" id="P4_rapide_instance">
-      <description>MODE RAPIDE, phase 4 — Étirement : pas d'icône rapide : GHS_1_premier, GHS_2_contraste, GHS_3_fond sur L SEULEMENT ; saute Statistical_Stretch et Star_Stretch (RGB et étoiles déjà étirés par R_C_RGB_fin_rapide) ; puis Etoiles_LRGB. Icône de repère, sans effet.</description>
+      <description>MODE RAPIDE, phase 4 — Étirement : GHS_1_premier sur L (chemin principal, à régler), puis R_C_Fin_GHS_rapide (« fin de GHS » : GHS_2_contraste et GHS_3_fond en un glisser) sur L SEULEMENT ; saute Statistical_Stretch et Star_Stretch (RGB et étoiles déjà étirés par R_C_RGB_fin_rapide) ; puis Etoiles_LRGB. Icône de repère, sans effet.</description>
+   </instance>
+   <instance class="ProcessContainer" id="R_C_Fin_GHS_rapide_instance">
+      <instance class="GeneralizedHyperbolicStretch" version="256" enabled="true">
+         <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
+         <parameter id="stretchChannel" value="SC_RGB"/>
+         <parameter id="inverse" value="false"/>
+         <parameter id="stretchFactor" value="1.000"/>
+         <parameter id="localIntensity" value="4.000"/>
+         <parameter id="symmetryPoint" value="0.350000"/>
+         <parameter id="highlightProtection" value="0.900000"/>
+         <parameter id="shadowProtection" value="0.000000"/>
+         <parameter id="blackPoint" value="0.000000"/>
+         <parameter id="whitePoint" value="1.000000"/>
+         <parameter id="colourBlend" value="1.000"/>
+         <parameter id="clipType" value="CT_RGBBlend"/>
+         <parameter id="useRGBWorkingSpace" value="false"/>
+      </instance>
+      <instance class="GeneralizedHyperbolicStretch" version="256" enabled="true">
+         <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
+         <parameter id="stretchChannel" value="SC_RGB"/>
+         <parameter id="inverse" value="false"/>
+         <parameter id="stretchFactor" value="1.000"/>
+         <parameter id="localIntensity" value="10.000"/>
+         <parameter id="symmetryPoint" value="0.200000"/>
+         <parameter id="highlightProtection" value="0.200000"/>
+         <parameter id="shadowProtection" value="0.000000"/>
+         <parameter id="blackPoint" value="0.000000"/>
+         <parameter id="whitePoint" value="1.000000"/>
+         <parameter id="colourBlend" value="1.000"/>
+         <parameter id="clipType" value="CT_RGBBlend"/>
+         <parameter id="useRGBWorkingSpace" value="false"/>
+      </instance>
    </instance>
    <instance class="NoOperation" version="256" id="P5_Couleur_instance">
       <description>PHASE 5 — Couleur : combinaison finale et palette. Colonne de repère, sans effet.</description>
@@ -4933,6 +4965,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <icon id="P4_options" instance="P4_options_instance" xpos="625" ypos="276" workspace="Workspace01"/>
    <icon id="Opt_SXT_non_lineaire" instance="Opt_SXT_non_lineaire_instance" xpos="625" ypos="310" workspace="Workspace01"/>
    <icon id="P4_rapide" instance="P4_rapide_instance" xpos="625" ypos="356" workspace="Workspace01"/>
+   <icon id="R_C_Fin_GHS_rapide" instance="R_C_Fin_GHS_rapide_instance" xpos="625" ypos="390" workspace="Workspace01"/>
    <icon id="P5_Couleur" instance="P5_Couleur_instance" xpos="816" ypos="20" workspace="Workspace01"/>
    <icon id="E22_LRGB_ajout_L" instance="E22_LRGB_ajout_L_instance" xpos="816" ypos="64" workspace="Workspace01"/>
    <icon id="P5_rapide" instance="P5_rapide_instance" xpos="816" ypos="110" workspace="Workspace01"/>

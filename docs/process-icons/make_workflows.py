@@ -193,19 +193,19 @@ def layout(entries, naming):
         rows += 1
     return insts, icons
 
-RAPIDE = {'C_Fin_rapide', 'C_Etoiles_fond_rapide', 'C_Preparation_rapide', 'GC_Solver_auto_rapide', 'C_RGB_rapide', 'C_RGB_rapide_SXT_etire', 'C_L_rapide', 'C_RGB_fin_rapide'}
+RAPIDE = {'C_Fin_GHS_rapide', 'C_Fin_rapide', 'C_Etoiles_fond_rapide', 'C_Preparation_rapide', 'GC_Solver_auto_rapide', 'C_RGB_rapide', 'C_RGB_rapide_SXT_etire', 'C_L_rapide', 'C_RGB_fin_rapide'}
 RAPIDE_NOTE = {
     'LRGB': {1: "MODE RAPIDE (galaxies) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre : R_C_Preparation_rapide ; R_GC_Solver_auto_rapide ; R_C_RGB_rapide (ou R_C_RGB_rapide_SXT_etire) sur RGB et R_C_L_rapide sur L ; GHS_1_premier, GHS_2_contraste, GHS_3_fond sur L seulement ; Etoiles_LRGB ; LRGB_ajout_L ; finition. Phase 1 : R_C_Preparation_rapide (double-clic puis Apply Global) à la place de LinearPatternSubtraction, Renommer_auto, Combinaison_RGB et Solver_auto",
              2: "R_GC_Solver_auto_rapide à la place de toute la phase 2 : GradientCorrection sur toutes les images ouvertes (l'astrométrie est déjà faite par R_C_Preparation_rapide)",
              3: "R_C_RGB_rapide (ou R_C_RGB_rapide_SXT_etire) sur RGB à la place de C_RGB_lineaire ; R_C_L_rapide sur L à la place de C_L_lineaire ; RGB et étoiles sortent étirés, L reste linéaire",
-             4: "pas d'icône rapide : GHS_1_premier, GHS_2_contraste, GHS_3_fond sur L SEULEMENT ; saute Statistical_Stretch et Star_Stretch (RGB et étoiles déjà étirés par R_C_RGB_rapide) ; puis Etoiles_LRGB",
+             4: "GHS_1_premier sur L (chemin principal, à régler), puis R_C_Fin_GHS_rapide (« fin de GHS » : GHS_2_contraste et GHS_3_fond en un glisser) sur L SEULEMENT ; saute Statistical_Stretch et Star_Stretch (RGB et étoiles déjà étirés par R_C_RGB_rapide) ; puis Etoiles_LRGB",
              5: "pas d'icône rapide : LRGB_ajout_L du chemin principal",
              6: "R_C_Fin_rapide sur l'image sans étoiles après LRGB_ajout_L : HDRMT à 30 %, masque, Courbes, LHE, LHE_fin, masque retiré, NXT_final 0,40 en un seul conteneur (= HDRMT_30, C_Finition et NXT_final)",
              7: "R_C_Etoiles_fond_rapide sur l'image sans étoiles finie : étoiles remises (Etoiles_screen), Fond_auto (0,12), Fond_desature en un seul conteneur (= Etoiles_screen et C_Fond_final) ; Export_TIFF (options) pour finir hors PixInsight"},
     'LHA': {1: "MODE RAPIDE (galaxies) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre : R_C_Preparation_rapide ; R_GC_Solver_auto_rapide ; C_RGB_couleur sur RGB, BXT_L_H sur H, Continuum_H, H_dans_RGB, R_C_RGB_fin_rapide sur RGB, R_C_L_rapide sur L ; GHS sur L seulement ; Etoiles_LRGB ; LRGB_ajout_L ; finition. Phase 1 : R_C_Preparation_rapide (double-clic puis Apply Global) à la place de LinearPatternSubtraction, Renommer_auto, Combinaison_RGB et Solver_auto",
             2: "R_GC_Solver_auto_rapide à la place de toute la phase 2 : GradientCorrection sur toutes les images ouvertes (R et H compris, pour le continuum) ; l'astrométrie est déjà faite par R_C_Preparation_rapide",
             3: "chemin principal pour C_RGB_couleur (RGB), BXT_L_H (sur H seulement), Continuum_H et H_dans_RGB ; puis R_C_RGB_fin_rapide sur RGB à la place de C_RGB_etoiles_bruit, et R_C_L_rapide sur L à la place de BXT_L_H (sur L) et C_L_lineaire",
-            4: "pas d'icône rapide : GHS_1_premier, GHS_2_contraste, GHS_3_fond sur L SEULEMENT ; saute Statistical_Stretch et Star_Stretch (RGB et étoiles déjà étirés par R_C_RGB_fin_rapide) ; puis Etoiles_LRGB",
+            4: "GHS_1_premier sur L (chemin principal, à régler), puis R_C_Fin_GHS_rapide (« fin de GHS » : GHS_2_contraste et GHS_3_fond en un glisser) sur L SEULEMENT ; saute Statistical_Stretch et Star_Stretch (RGB et étoiles déjà étirés par R_C_RGB_fin_rapide) ; puis Etoiles_LRGB",
             5: "pas d'icône rapide : LRGB_ajout_L du chemin principal",
             6: "R_C_Fin_rapide sur l'image sans étoiles après LRGB_ajout_L : HDRMT à 30 %, masque, Courbes, LHE, LHE_fin, masque retiré, NXT_final 0,40 en un seul conteneur (= HDRMT_30, C_Finition et NXT_final)",
             7: "R_C_Etoiles_fond_rapide sur l'image sans étoiles finie : étoiles remises (Etoiles_screen), Fond_auto (0,12), Fond_desature en un seul conteneur (= Etoiles_screen et C_Fond_final) ; Export_TIFF (options) pour finir hors PixInsight"}}
@@ -1121,6 +1121,8 @@ def fin_rapide(steps):
     return c6, c7
 
 for _st in (lrgb, lhargb):
+    # P4_rapide « Fin de GHS » (demande de l'utilisateur) : GHS_2_contraste puis GHS_3_fond en un conteneur, sur L après GHS_1_premier
+    insert_after(_st, 'SXT_non_lineaire', [(cont('C_Fin_GHS_rapide', [pick(_st, b)[0] for b in ('GHS_2_contraste', 'GHS_3_fond')]), '')])
     _c6, _c7 = fin_rapide(_st)
     insert_after(_st, 'NXT_final_fort', [(_c6, '')])
     _st.append((_c7, ''))
