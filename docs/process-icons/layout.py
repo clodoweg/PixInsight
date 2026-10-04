@@ -120,10 +120,10 @@ _FOND = ('C_Fond_final', "l'image finie, étoiles comprises (après Etoiles_scre
 CONTAINERS = {
     'LRGB': [('C_RGB_lineaire', "l'image RGB combinée, linéaire, gradient retiré", ['BXT_CorrectOnly', 'SPCC', 'BXT_RGB', 'SXT_lineaire', 'NXT_RGB']),
              ('C_L_lineaire', "le master L, linéaire, gradient retiré : BXT, SXT (L_stars gardée pour Etoiles_LRGB), NXT", ['BXT_L', 'SXT_L_lineaire', 'NXT_L']),
-             ('C_L_etoiles', "L étirée (avec ses étoiles), après Star_Stretch sur RGB_stars", ['SXT_L_etire', 'Etoiles_LRGB_etire']), _FIN, _FOND],
+             _FIN, _FOND],
     'LHA': [('C_RGB_couleur', "l'image RGB combinée, linéaire, gradient retiré", ['BXT_CorrectOnly', 'SPCC', 'BXT_RGB']),
             ('C_RGB_etoiles_bruit', "l'image RGB après injection de H", ['SXT_lineaire', 'NXT_RGB']),
-            ('C_L_etoiles', "L étirée (avec ses étoiles), après Star_Stretch sur RGB_stars", ['SXT_L_etire', 'Etoiles_LRGB_etire']), _FIN, _FOND],
+            ('C_L_lineaire', "L linéaire après BXT_L_H (et H_dans_L éventuel) : SXT (L_stars gardée pour Etoiles_LRGB), NXT", ['SXT_L_lineaire', 'NXT_L']), _FIN, _FOND],
     'RSHO': [('C_SHO_lineaire', "l'image SHO combinée, linéaire", ['BXT_NB', 'SXT_lineaire']),
              ('C_Extraction_SHO', "l'image SHO sans étoiles", ['Extraire_S', 'Extraire_H', 'Extraire_O']), _FIN,
              ('C_Etoiles_RGB', "l'image RGB combinée, linéaire, gradient retiré", ['BXT_CorrectOnly', 'SPCC', 'BXT_RGB', 'SXT_RGB_lineaire'])],

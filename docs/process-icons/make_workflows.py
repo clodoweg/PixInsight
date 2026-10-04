@@ -719,15 +719,15 @@ lhargb = pre_block() + [rgb_comb_item(False), (solver_container(), ''), (solver_
      "Régions HII nettes mais couleurs délavées après LRGBCombination : a trop fort, baisse-le ou fais un mélange léger."),
     (note('NBRGBCombination', "ALTERNATIVE — NBRGBCombination (Script › Utilities) : image RGB et sa bande passante (~100 nm pour un filtre R mono), image H dans le canal R avec la bande passante de ton filtre (3, 5, 7 nm), "
           "Scale 1,2 par défaut (3 à 5 pour un H faible). Compare avec les aperçus RGB et NBRGB."), ''),
-    (M.sxt('SXT_lineaire', False), D_SXT_LIN + " Sur RGB seulement (garde les étoiles) ; L garde ses étoiles jusqu'après l'étirement (SXT_L_etire). "
+    (M.sxt('SXT_lineaire', False), D_SXT_LIN + " Sur RGB (garde les étoiles). "
      "Les étoiles RGB gardées ici contiennent l'injection de H : compare-les à la copie d'avant injection (pas plus rouges, sans halo ni anneau). "
      "Si elles sont abîmées : monte k, baisse w, ou passe SXT sur la copie du RGB non injecté et garde ses étoiles (option la plus propre)."),
     (M.nxt('NXT_RGB', 0.80, 1), "NoiseXTerminator sur RGB sans étoiles : Denoise 0,80, Detail 0,15." + NXT_C),
-    (M.nxt('NXT_L', 0.60, 1), "NoiseXTerminator sur L (avec ses étoiles, linéaire) : Denoise 0,60." + NXT_C),
+    (M.sxt('SXT_L_lineaire', False), D_SXT_LIN + " Sur L, dans C_L_lineaire (après BXT_L_H et H_dans_L éventuel ; demande de l'utilisateur) : L étirée ensuite SANS étoiles par les GHS ; L_stars (linéaire) gardée pour Etoiles_LRGB."),
+    (M.nxt('NXT_L', 0.60, 1), "NoiseXTerminator sur L (sans étoiles, linéaire) : Denoise 0,60." + NXT_C),
 ] + ghs_block(L_GHS, L_STAT, L_FOND) + [
     (note('Star_Stretch', T_STARSTRETCH + STARS_LRGB), ''),
-    (M.sxt('SXT_L_etire', True), D_SXT_L_ETIRE),
-    (note('Etoiles_LRGB_etire', D_ETOILES_LRGB), ''),
+    (note('Etoiles_LRGB', ''), ''),   # L_stars linéaire (SXT dans C_L_lineaire) étirée comme Star_Stretch (amount 6) puis ajoutée à RGB_stars
     (M.instance('LRGBCombination', 'LRGB_ajout_L', {'mL': '0.500', 'mc': '0.350', 'noiseReduction': True}, post=M.lrgb_post),
      "LRGBCombination sur les images étirées sans étoiles : seul L activé (vue 'L'), Lightness 0,5, Saturation 0,35, Chrominance noise reduction cochée. "
      "CONTRÔLE (sonde 15x15) : cœur de galaxie jaune (R >= G >> B), bras bleus, régions HII roses et bien visibles grâce au H (R > B > G), aucune étoile verte, fond R = G = B ; couleurs délavées : L trop claire, étire-la moins. "
