@@ -23,7 +23,14 @@
 //      au-dessus de fond + protege 0,08) ; (b) toute structure nettement plus
 //      claire que le fond local (+ 0,15 : bras, petites galaxies) ;
 //   4. dans le masque : $T − masque × max(0, lissé − fond local) (lissé :
-//      flou 1,5 px) ; le bruit fin est gardé, rien n'est éclairci.
+//      flou 1,5 px) ; le bruit fin est gardé, rien n'est éclairci ;
+//   5. TRÈS grandes étoiles (version 3, halo de plus de 75 px qui restait
+//      élargi) : luminance de RGB_stars floutée 50 px au-dessus de tresBrillant
+//      (0,05 ; l'étoile bleue de NGC 1532 vaut 0,11, les autres moins de 0,045),
+//      zone étendue (flou etendue2 60 px × 5, environ 130 px de rayon) ; fond
+//      local à grande échelle (ouverture sur une copie à 500 px, environ 300 px
+//      à 2000 px, après un léger flou contre le biais du bruit) ; on garde le
+//      plus grand des deux retraits.
 // afficherMasque = true : garde la vue masque_nettoyage (blanc = nettoyé ;
 // elle doit couvrir seulement les grandes étoiles et leur halo).
 // Glisse l'icône sur l'image SANS étoiles juste après LRGB, RGB_stars ouverte.
@@ -157,6 +164,8 @@ function main()
    let passes = parseInt( param( "passes", "3" ) );
    let protege = parseFloat( param( "protege", "0.08" ) );
    let structure = parseFloat( param( "structure", "0.15" ) );
+   let tresBrillant = parseFloat( param( "tresBrillant", "0.05" ) );
+   let etendue2 = parseFloat( param( "etendue2", "60" ) );
    let afficher = param( "afficherMasque", "false" ).toLowerCase() == "true";
 
    let sw = ImageWindow.windowById( starsId );
@@ -176,6 +185,13 @@ function main()
    resize( sl, w2, h2 );
    let sy = newView( sl.mainView, "nt_sy", color ? Y : "$T", true );
 
+   // 5. très grandes étoiles (avant que nt_st soit modifiée)
+   let st2 = newView( st.mainView, "nt_st2", "$T", true );
+   blur( st2, 50 );
+   pm( st2, "min(1, max(0, ($T - " + tresBrillant + ")/0.03))" );
+   blur( st2, etendue2 );
+   pm( st2, "min(1, 5*$T)" );
+
    // 1. étoiles brillantes, étendues
    blur( st, 20 );
    pm( st, "min(1, max(0, ($T - " + seuilBas + ")/" + (seuilHaut - seuilBas) + "))" );
@@ -188,6 +204,14 @@ function main()
    morpho( op, MorphologicalTransformation.prototype.Dilation, passes );
    blur( op, 8 );
    let opy = newView( op.mainView, "nt_opy", color ? Y : "$T", true );
+   // fond local à grande échelle : ouverture sur une copie 4 fois plus petite
+   let op2 = newView( sl.mainView, "nt_op2", "$T", false );
+   blur( op2, 2 );
+   resize( op2, Math.round( w2/4 ), Math.round( h2/4 ) );
+   morpho( op2, MorphologicalTransformation.prototype.Erosion, passes );
+   morpho( op2, MorphologicalTransformation.prototype.Dilation, passes );
+   resize( op2, w2, h2 );
+   blur( op2, 20 );
 
    // 3. protections
    let bg = background( sy.mainView.image, 8 );
@@ -195,32 +219,35 @@ function main()
    blur( g60, 60 );
    let g4 = newView( sy.mainView, "nt_g4", "$T", true );
    blur( g4, 4 );
-   let mask = newView( st.mainView, "nt_m",
-      "$T*(1 - max(min(1, max(0, (nt_g60 - " + (bg + protege).toFixed( 6 ) + ")/" + protege + ")), " +
-      "min(1, max(0, (nt_g4 - nt_opy - " + structure + ")/0.10))))", true );
+   let prot = "(1 - max(min(1, max(0, (nt_g60 - " + (bg + protege).toFixed( 6 ) + ")/" + protege + ")), " +
+              "min(1, max(0, (nt_g4 - nt_opy - " + structure + ")/0.10))))";
+   let mask = newView( st.mainView, "nt_m", "$T*" + prot, true );
+   let mask2 = newView( st2.mainView, "nt_m2", "$T*" + prot, true );
 
    // retour à la taille réelle
    resize( mask, W, H );
    resize( op, W, H );
+   resize( mask2, W, H );
+   resize( op2, W, H );
    let li = newView( view, "nt_li", "$T", false );
    blur( li, 1.5*k );
 
    if ( afficher )
    {
-      let mv = newView( mask.mainView, "masque_nettoyage", "$T", true );
+      let mv = newView( mask.mainView, "masque_nettoyage", "max($T, nt_m2)", true );
       mv.show();
    }
 
    // 4. excès au-dessus du fond local retiré dans le masque
    let P = new PixelMath;
-   P.expression = "$T - nt_m*max(0, nt_li - nt_op)";
+   P.expression = "$T - max(nt_m*max(0, nt_li - nt_op), nt_m2*max(0, nt_li - nt_op2))";
    P.useSingleExpression = true;
    P.createNewImage = false;
    P.rescale = false;
    P.truncate = true;
    P.executeOn( view );
 
-   [ "nt_st", "nt_sl", "nt_sy", "nt_op", "nt_opy", "nt_g60", "nt_g4", "nt_m", "nt_li" ].forEach( closeView );
+   [ "nt_st", "nt_st2", "nt_sl", "nt_sy", "nt_op", "nt_op2", "nt_opy", "nt_g60", "nt_g4", "nt_m", "nt_m2", "nt_li" ].forEach( closeView );
    console.noteln( TITLE + " : " + view.id + " nettoyé autour des étoiles brillantes de " + starsId +
                    " (calcul à " + w2 + " px, fond " + bg.toFixed( 4 ) + ")" + (afficher ? " ; masque gardé : masque_nettoyage." : ".") );
 }

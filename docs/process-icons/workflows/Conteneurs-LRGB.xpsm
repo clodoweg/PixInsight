@@ -2715,7 +2715,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
 
 LANCEMENT : glisse l'icône sur l'image.
 
-PRÉRÉGLÉ : script Nettoyage_sans_etoiles (calcul sur une copie à 2000 px) : seules les étoiles BRILLANTES de RGB_stars comptent (luminance floutée 20 px au-dessus de 0,05 à 0,12), zone étendue au halo ; fond LOCAL par ouverture morphologique (disque 25 px, 3 passes : taches de moins de 75 px retirées, halo de la galaxie gardé) ; galaxie et structures claires protégées ; excès au-dessus du fond local retiré, bruit fin gardé.
+PRÉRÉGLÉ : script Nettoyage_sans_etoiles (calcul sur une copie à 2000 px) : seules les étoiles BRILLANTES de RGB_stars comptent (luminance floutée 20 px au-dessus de 0,05 à 0,12), zone étendue au halo ; fond LOCAL par ouverture morphologique (disque 25 px, 3 passes : taches de moins de 75 px retirées, halo de la galaxie gardé) ; galaxie et structures claires protégées ; excès au-dessus du fond local retiré, bruit fin gardé ; TRÈS grandes étoiles (luminance floutée 50 px au-dessus de 0,05) : zone d'environ 130 px et fond local à grande échelle (environ 300 px).
 
 À RÉGLER : glisse sur l'image sans étoiles juste après LRGB, AVANT HDRMT_40 ; RGB_stars doit être ouverte ; vérifie à 1:1, Ctrl+Z pour annuler.
 
@@ -2723,13 +2723,14 @@ SI :
 - voir ce qui est touché -&gt; afficherMasque true (vue masque_nettoyage : seulement les grandes étoiles)
 - trop d'étoiles touchées -&gt; seuilBas 0,07, seuilHaut 0,15
 - halo d'une étoile moyenne encore visible -&gt; seuilBas 0,04, seuilHaut 0,09
-- grand halo encore visible -&gt; passes 5
+- grand halo encore visible ou élargi -&gt; etendue2 80, ou tresBrillant 0,04
+- trou sombre à la place du halo -&gt; etendue2 45
 - bras ou petite galaxie atténué -&gt; structure 0,10
 
 Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Nettoyage_sans_etoiles.js</parameter>
       <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="8">
+      <table id="parameters" rows="10">
          <tr>
             <td id="id">etoiles</td>
             <td id="value">RGB_stars</td>
@@ -2757,6 +2758,14 @@ Détails : page docs/pixinsight-workflow.html.</description>
          <tr>
             <td id="id">structure</td>
             <td id="value">0.15</td>
+         </tr>
+         <tr>
+            <td id="id">tresBrillant</td>
+            <td id="value">0.05</td>
+         </tr>
+         <tr>
+            <td id="id">etendue2</td>
+            <td id="value">60</td>
          </tr>
          <tr>
             <td id="id">afficherMasque</td>
