@@ -22,6 +22,8 @@
 #feature-info  Enregistre une copie de l'image en TIFF 16 bits, convertie en \
    sRGB avec profil ICC, pour Photoshop, Lightroom ou Affinity.
 
+#include <pjsr/UndoFlag.jsh>
+
 #define TITLE "Export TIFF"
 
 function param( key, value )
