@@ -58,7 +58,8 @@ SCRIPTS = {
     'Export_TIFF': ('$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js', '', [('nom', ''), ('suffixe', ''), ('dossier', ''), ('icc', 'true')], L_DRAG),
     'Fond_auto_clair': ('$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js', '', [('cible', '0.14'), ('tolerance', '0.005'), ('grille', '8')], L_DRAG),
     'Solver_auto': ('$PXI_SRCDIR/scripts/clodoweg/GC_Solver_auto.js', '', [('gradient', 'false'), ('solve', 'true'), ('solveTout', 'true'), ('defaultDate', '2020-01-01T00:00:00')], L_GLOBAL),
-    'Turbo_1': ('$PXI_SRCDIR/scripts/clodoweg/Turbo_1.js', '', [('vueRGB', 'RGB'), ('vueL', 'L'), ('cibleL', '0.15')], L_GLOBAL),
+    'Turbo_1': ('$PXI_SRCDIR/scripts/clodoweg/Turbo_1.js', '', [('vueRGB', 'RGB'), ('vueL', 'L')], L_GLOBAL),
+    'Turbo_2_debut': ('$PXI_SRCDIR/scripts/clodoweg/Turbo_2_debut.js', '', [('vueL', 'L')], L_DRAG),
     'GC_Solver_auto_rapide': ('$PXI_SRCDIR/scripts/clodoweg/GC_Solver_auto.js', '', [('gradient', 'true'), ('solve', 'false'), ('solveTout', 'false'), ('defaultDate', '2020-01-01T00:00:00')], L_GLOBAL),
     'ImageSolver_Date': ('$PXI_SRCDIR/scripts/clodoweg/ImageSolver_Date.js', '', [('defaultDate', '2020-01-01T00:00:00')], L_DRAG),
     'LinearPatternSubtraction': ('$PXI_SRCDIR/scripts/clodoweg/LPS_UnClic.js', '',
@@ -1141,9 +1142,9 @@ for _st in (lrgb, lhargb):
     insert_after(_st, 'SXT_non_lineaire', [(cont('C_Fin_GHS_rapide', [pick(_st, b)[0] for b in ('GHS_2_contraste', 'GHS_3_fond')]), '')])
     _c6, _c7 = fin_rapide(_st)
     if _st is lrgb:
-        # Turbo 2 (demande de l'utilisateur) : tout se fait sur RGB, donc un conteneur suffit :
-        # LRGB_ajout_L, puis le contenu de C_Fin_rapide, puis celui de C_Etoiles_fond_rapide (Export_TIFF compris)
-        _t2 = cont('Turbo_2', [pick(_st, 'LRGB_ajout_L')[0]] + list(hdrmt_items('0.3'))
+        # Turbo 2 (demande de l'utilisateur) : d'abord script Turbo_2_debut (R_C_Fin_GHS_rapide sur L, ferme L_stars),
+        # puis tout sur RGB : LRGB_ajout_L, puis le contenu de C_Fin_rapide, puis celui de C_Etoiles_fond_rapide (Export_TIFF compris)
+        _t2 = cont('Turbo_2', [script('Turbo_2_debut', ''), pick(_st, 'LRGB_ajout_L')[0]] + list(hdrmt_items('0.3'))
                    + [pick(_st, b)[0] for b in ('Masque_L', 'Courbes', 'LHE', 'LHE_fin', 'Masque_retirer', 'NXT_final', 'Etoiles_screen', 'Fond_auto', 'Fond_desature', 'Export_TIFF')])
         insert_after(_st, 'LRGB_ajout_L', [(_t2, '')])
     insert_after(_st, 'NXT_final_fort', [(_c6, '')])
@@ -1228,14 +1229,9 @@ TURBO1_JS = r"""// -------------------------------------------------------------
 //      R_C_RGB_rapide, recopiés à la génération), étirement statistique
 //      (Target Median 0,25, Blackpoint Sigma 5, lié : calcul fait ici, proche
 //      du script Statistical Stretch), GHS fond, Etoiles_auto (inclus) ;
-//   3. sur L : icône R_C_L_rapide, puis 1er étirement (à la place de
-//      GHS_1_premier, réglé à la main en mode rapide : sans lui, GHS_2 et
-//      GHS_3 travaillent sur un L encore linéaire), puis icône
-//      R_C_Fin_GHS_rapide (process natifs, réglages lus dans les icônes).
-//      1er étirement : icône *_GHS_1_premier de l'espace de travail si tu
-//      l'as réglée (Stretch factor > 0), sinon étirement statistique de L
-//      (médiane amenée à cibleL, 0,15 par défaut, Blackpoint Sigma 5) ;
-//   4. fermeture de L_stars.
+//   3. sur L : icône R_C_L_rapide (process natifs, réglages lus dans l'icône).
+// Puis il s'arrête : GHS_1_premier à la main sur L (demande de l'utilisateur),
+// puis T_Turbo_2 (qui commence par R_C_Fin_GHS_rapide sur L et ferme L_stars).
 // Ancien moteur JavaScript (pas de #engine v8 : il refuse PixelMath.prototype.RGB
 // et le moteur de LinearPatternSubtraction).
 //
@@ -1244,7 +1240,7 @@ TURBO1_JS = r"""// -------------------------------------------------------------
 
 #feature-id    Turbo_1 : clodoweg > Mode Turbo, étape 1 (partie script)
 #feature-info  GradientCorrection sur toutes les images, traitement linéaire \
-   et étirement de RGB, conteneurs rapides sur L.
+   et étirement de RGB, R_C_L_rapide sur L.
 
 #define CLODOWEG_TURBO
 #include "Etoiles_auto.js"
@@ -1325,28 +1321,6 @@ function runIcon( iconId, viewId )
       throw new Error( T1_TITLE + " : " + iconId + " a échoué sur " + viewId + "." );
 }
 
-// 1er étirement de L : l'icône GHS_1_premier si elle est réglée, sinon étirement statistique.
-function premierEtirementL( viewId )
-{
-   let w = ImageWindow.windowById( viewId );
-   if ( w.isNull )
-      throw new Error( T1_TITLE + " : vue " + viewId + " introuvable pour le 1er étirement." );
-   let ids = [];
-   try { ids = ProcessInstance.icons(); } catch ( e ) {}
-   for ( let k = 0; k < ids.length; ++k )
-      if ( /GHS_1_premier$/.test( ids[ k ] ) )
-      {
-         let P = ProcessInstance.fromIcon( ids[ k ] );
-         if ( P != null && P.stretchFactor > 0 )
-         {
-            run( ids[ k ], P, w.mainView );
-            console.writeln( T1_TITLE + " : 1er étirement de " + viewId + " par l'icône " + ids[ k ] + " (Stretch factor " + P.stretchFactor + ")." );
-            return;
-         }
-      }
-   statStretch( w.mainView, parseFloat( t1Param( "cibleL", "0.15" ) ), 5 );
-}
-
 function turbo1()
 {
    let vueRGB = t1Param( "vueRGB", "RGB" ), vueL = t1Param( "vueL", "L" );
@@ -1357,21 +1331,64 @@ function turbo1()
       throw new Error( T1_TITLE + " : vue " + vueRGB + " introuvable." );
    etape( "traitement linéaire et étirement de " + vueRGB ); rgbRapide( rgb.mainView );
    etape( "R_C_L_rapide sur " + vueL );        runIcon( "R_C_L_rapide", vueL );
-   etape( "1er étirement de " + vueL + " (à la place de GHS_1_premier)" ); premierEtirementL( vueL );
-   etape( "R_C_Fin_GHS_rapide sur " + vueL );  runIcon( "R_C_Fin_GHS_rapide", vueL );
-   let ls = ImageWindow.windowById( "L_stars" );
-   if ( !ls.isNull )
-   {
-      ls.forceClose();
-      console.noteln( T1_TITLE + " : L_stars fermée." );
-   }
-   etape( "terminé : " + vueRGB + " et " + vueL + " étirées, sans étoiles ; RGB_stars étirée. Ensuite : T_Turbo_2 sur " + vueRGB + "." );
+   etape( "terminé : " + vueRGB + " étirée, sans étoiles ; RGB_stars étirée ; " + vueL + " sans étoiles, encore linéaire. "
+          + "Ensuite : GHS_1_premier à la main sur " + vueL + ", puis T_Turbo_2 sur " + vueRGB + "." );
 }
 
 turbo1();
 """
 
 open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'scripts', 'Turbo_1.js'), 'w', encoding='utf-8').write(TURBO1_JS.replace('@@RGB@@', turbo_rgb_js()))
+
+TURBO2_DEBUT_JS = r"""// ----------------------------------------------------------------------------
+// Turbo_2_debut.js — mode Turbo, début de l'étape 2 (fichier GÉNÉRÉ par make_workflows.py : ne pas modifier à la main).
+// ----------------------------------------------------------------------------
+// Première étape du conteneur T_Turbo_2 (glissé sur RGB), après GHS_1_premier
+// fait à la main sur L :
+//   1. icône R_C_Fin_GHS_rapide (GHS_2_contraste puis GHS_3_fond) sur L,
+//      réglages lus dans l'icône (même résultat qu'en mode rapide) ;
+//   2. fermeture de L_stars (pas d'Etoiles_LRGB en mode Turbo).
+// La vue cible du conteneur (RGB) n'est pas touchée ici.
+// Paramètre : vueL (L par défaut).
+//
+// Installation : dans src/scripts/clodoweg.
+// ----------------------------------------------------------------------------
+
+#feature-id    Turbo_2_debut : clodoweg > Mode Turbo, début de l'étape 2
+#feature-info  R_C_Fin_GHS_rapide sur L, puis fermeture de L_stars.
+
+#define T2_TITLE "Turbo 2 (début)"
+
+function t2Param( key, value )
+{
+   return Parameters.has( key ) ? Parameters.getString( key ).trim() : value;
+}
+
+function turbo2Debut()
+{
+   let vueL = t2Param( "vueL", "L" );
+   let P = ProcessInstance.fromIcon( "R_C_Fin_GHS_rapide" );
+   if ( P == null )
+      throw new Error( T2_TITLE + " : icône R_C_Fin_GHS_rapide introuvable (charge Conteneurs-LRGB.xpsm)." );
+   let w = ImageWindow.windowById( vueL );
+   if ( w.isNull )
+      throw new Error( T2_TITLE + " : vue " + vueL + " introuvable." );
+   console.show();
+   console.noteln( "<end><cbr><br>" + T2_TITLE + " : R_C_Fin_GHS_rapide sur " + vueL );
+   if ( P.executeOn( w.mainView ) === false )
+      throw new Error( T2_TITLE + " : R_C_Fin_GHS_rapide a échoué sur " + vueL + "." );
+   let ls = ImageWindow.windowById( "L_stars" );
+   if ( !ls.isNull )
+   {
+      ls.forceClose();
+      console.noteln( T2_TITLE + " : L_stars fermée." );
+   }
+}
+
+turbo2Debut();
+"""
+
+open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'scripts', 'Turbo_2_debut.js'), 'w', encoding='utf-8').write(TURBO2_DEBUT_JS)
 
 DATA['header'] = M.HEADER
 json.dump(DATA, open(os.path.join(OUT, '..', 'preparer-data.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))

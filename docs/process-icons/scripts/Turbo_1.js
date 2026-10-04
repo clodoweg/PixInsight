@@ -11,14 +11,9 @@
 //      R_C_RGB_rapide, recopiés à la génération), étirement statistique
 //      (Target Median 0,25, Blackpoint Sigma 5, lié : calcul fait ici, proche
 //      du script Statistical Stretch), GHS fond, Etoiles_auto (inclus) ;
-//   3. sur L : icône R_C_L_rapide, puis 1er étirement (à la place de
-//      GHS_1_premier, réglé à la main en mode rapide : sans lui, GHS_2 et
-//      GHS_3 travaillent sur un L encore linéaire), puis icône
-//      R_C_Fin_GHS_rapide (process natifs, réglages lus dans les icônes).
-//      1er étirement : icône *_GHS_1_premier de l'espace de travail si tu
-//      l'as réglée (Stretch factor > 0), sinon étirement statistique de L
-//      (médiane amenée à cibleL, 0,15 par défaut, Blackpoint Sigma 5) ;
-//   4. fermeture de L_stars.
+//   3. sur L : icône R_C_L_rapide (process natifs, réglages lus dans l'icône).
+// Puis il s'arrête : GHS_1_premier à la main sur L (demande de l'utilisateur),
+// puis T_Turbo_2 (qui commence par R_C_Fin_GHS_rapide sur L et ferme L_stars).
 // Ancien moteur JavaScript (pas de #engine v8 : il refuse PixelMath.prototype.RGB
 // et le moteur de LinearPatternSubtraction).
 //
@@ -27,7 +22,7 @@
 
 #feature-id    Turbo_1 : clodoweg > Mode Turbo, étape 1 (partie script)
 #feature-info  GradientCorrection sur toutes les images, traitement linéaire \
-   et étirement de RGB, conteneurs rapides sur L.
+   et étirement de RGB, R_C_L_rapide sur L.
 
 #define CLODOWEG_TURBO
 #include "Etoiles_auto.js"
@@ -247,28 +242,6 @@ function runIcon( iconId, viewId )
       throw new Error( T1_TITLE + " : " + iconId + " a échoué sur " + viewId + "." );
 }
 
-// 1er étirement de L : l'icône GHS_1_premier si elle est réglée, sinon étirement statistique.
-function premierEtirementL( viewId )
-{
-   let w = ImageWindow.windowById( viewId );
-   if ( w.isNull )
-      throw new Error( T1_TITLE + " : vue " + viewId + " introuvable pour le 1er étirement." );
-   let ids = [];
-   try { ids = ProcessInstance.icons(); } catch ( e ) {}
-   for ( let k = 0; k < ids.length; ++k )
-      if ( /GHS_1_premier$/.test( ids[ k ] ) )
-      {
-         let P = ProcessInstance.fromIcon( ids[ k ] );
-         if ( P != null && P.stretchFactor > 0 )
-         {
-            run( ids[ k ], P, w.mainView );
-            console.writeln( T1_TITLE + " : 1er étirement de " + viewId + " par l'icône " + ids[ k ] + " (Stretch factor " + P.stretchFactor + ")." );
-            return;
-         }
-      }
-   statStretch( w.mainView, parseFloat( t1Param( "cibleL", "0.15" ) ), 5 );
-}
-
 function turbo1()
 {
    let vueRGB = t1Param( "vueRGB", "RGB" ), vueL = t1Param( "vueL", "L" );
@@ -279,15 +252,8 @@ function turbo1()
       throw new Error( T1_TITLE + " : vue " + vueRGB + " introuvable." );
    etape( "traitement linéaire et étirement de " + vueRGB ); rgbRapide( rgb.mainView );
    etape( "R_C_L_rapide sur " + vueL );        runIcon( "R_C_L_rapide", vueL );
-   etape( "1er étirement de " + vueL + " (à la place de GHS_1_premier)" ); premierEtirementL( vueL );
-   etape( "R_C_Fin_GHS_rapide sur " + vueL );  runIcon( "R_C_Fin_GHS_rapide", vueL );
-   let ls = ImageWindow.windowById( "L_stars" );
-   if ( !ls.isNull )
-   {
-      ls.forceClose();
-      console.noteln( T1_TITLE + " : L_stars fermée." );
-   }
-   etape( "terminé : " + vueRGB + " et " + vueL + " étirées, sans étoiles ; RGB_stars étirée. Ensuite : T_Turbo_2 sur " + vueRGB + "." );
+   etape( "terminé : " + vueRGB + " étirée, sans étoiles ; RGB_stars étirée ; " + vueL + " sans étoiles, encore linéaire. "
+          + "Ensuite : GHS_1_premier à la main sur " + vueL + ", puis T_Turbo_2 sur " + vueRGB + "." );
 }
 
 turbo1();

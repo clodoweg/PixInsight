@@ -1042,7 +1042,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Turbo_1.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="3">
+         <table id="parameters" rows="2">
             <tr>
                <td id="id">vueRGB</td>
                <td id="value">RGB</td>
@@ -1050,10 +1050,6 @@ Détails : page docs/pixinsight-workflow.html.</description>
             <tr>
                <td id="id">vueL</td>
                <td id="value">L</td>
-            </tr>
-            <tr>
-               <td id="id">cibleL</td>
-               <td id="value">0.15</td>
             </tr>
          </table>
          <parameter id="information"></parameter>
@@ -2975,6 +2971,17 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <description>MODE TURBO, phase 5 — Couleur : chaque icône T_ enchaîne plusieurs icônes rapides (R_) en un clic ; les icônes R_ doivent rester chargées. Icône de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="T_Turbo_2_instance">
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Turbo_2_debut.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="1">
+            <tr>
+               <td id="id">vueL</td>
+               <td id="value">L</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
       <instance class="LRGBCombination" version="256" enabled="true">
          <table id="channels" rows="4">
             <tr>

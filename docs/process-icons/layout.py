@@ -75,8 +75,8 @@ CHOICES = {
 
 # pour les options : quand les ajouter
 WHEN = {
-    'Turbo_1': "MODE TURBO, étape 1 : masters seuls ouverts, double-clic puis Apply Global ; conteneur qui fait préparation (renommage, LPS, combinaison), astrométrie, GradientCorrection, traitement de RGB (comme R_C_RGB_rapide), R_C_L_rapide et R_C_Fin_GHS_rapide sur L, puis ferme L_stars",
-    'Turbo_2': "MODE TURBO, étape 2 : sur RGB (sans étoiles, étirée), L ouverte et RGB_stars ouverte ; enchaîne LRGB_ajout_L, R_C_Fin_rapide et R_C_Etoiles_fond_rapide (export TIFF compris) en un seul conteneur",
+    'Turbo_1': "MODE TURBO, étape 1 : masters seuls ouverts, double-clic puis Apply Global ; conteneur qui fait préparation (renommage, LPS, combinaison), astrométrie, GradientCorrection, traitement de RGB (comme R_C_RGB_rapide), R_C_L_rapide sur L, puis s'arrête : GHS_1_premier à la main sur L, puis T_Turbo_2",
+    'Turbo_2': "MODE TURBO, étape 2 : après GHS_1_premier à la main sur L ; glisse sur RGB (sans étoiles, étirée), L et RGB_stars ouvertes ; enchaîne R_C_Fin_GHS_rapide sur L (et ferme L_stars), LRGB_ajout_L, R_C_Fin_rapide et R_C_Etoiles_fond_rapide (export TIFF compris) en un seul conteneur",
     'C_Fin_GHS_rapide': "MODE RAPIDE, « fin de GHS », à la place de GHS_2_contraste et GHS_3_fond : sur L après GHS_1_premier, avec les réglages par défaut des deux GHS",
     'C_Fin_rapide': "MODE RAPIDE, à la place de HDRMT_40, C_Finition et NXT_final : sur l'image sans étoiles après LRGB_ajout_L",
     'C_Etoiles_fond_rapide': "MODE RAPIDE, à la place d'Etoiles_screen, C_Fond_final et Export_TIFF : sur l'image sans étoiles finie, RGB_stars ouverte",
