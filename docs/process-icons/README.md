@@ -1,106 +1,48 @@
 # Icônes de process PixInsight
 
-Icônes prêtes à charger, avec les réglages de la fiche `docs/pixinsight-workflow.html`. Ce sont des **valeurs de départ** : ajuste-les sur tes images.
+Icônes prêtes à charger, avec les réglages de la fiche `docs/pixinsight-workflow.html`. Ce sont des **valeurs de départ** à ajuster sur tes images.
 
-## Charger les icônes
+## Charger
 
-1. Télécharge le fichier `.xpsm` voulu.
-2. Dans PixInsight : clic droit sur l'espace de travail › *Process Icons* › *Load Process Icons* (ou *Merge Process Icons* pour les ajouter à tes icônes existantes), puis choisis le fichier.
-3. Double-clique sur une icône pour ouvrir le process avec ses réglages, ou glisse-la sur une image pour l'appliquer directement.
+1. Prends le fichier voulu dans `workflows/` (`Conteneurs-LRGB.xpsm`, `Conteneurs-LHaRGB.xpsm`, `Conteneurs-RGB-SHO.xpsm`, `Conteneurs-SHO-sans-RGB.xpsm`, `Conteneurs-HOO.xpsm`), ou le fichier de ta photo fabriqué par le préparateur de la page (« Préparer ma photo »).
+2. PixInsight : clic droit sur l'espace de travail › *Process Icons* › *Load Process Icons*.
+3. Copie une fois tous les scripts de `scripts/` dans `src/scripts/clodoweg/` de PixInsight.
 
-Les fichiers n'ont pas été testés dans PixInsight avant publication : ils ont été construits à partir d'icônes réelles générées par PixInsight 1.9.3 (voir Sources), en ne changeant que les valeurs. Si une icône ne se charge pas, signale-le.
+## Organisation
 
-**PixInsight 1.9.5** : les icônes n'ont pas non plus été testées dans cette version. Elles n'utilisent ni AutomaticBackgroundExtractor ni SubframeSelector, les deux process dont les instances antérieures à la 1.9.4 doivent être recréées. Les icônes-notes (scripts) ne dépendent pas de la version.
+- Une colonne par phase (P1 Préparation … P7 Étoiles), avec une icône-titre en haut.
+- Dans chaque colonne : `P#_Nom` (chemin principal, `E##_`), `P#_options` (`Opt_`), `P#_rapide` (`R_`, LRGB et LHaRGB) et `P#_turbo` (`T_`, LRGB).
+- Dans le chemin principal, les suites d'étapes sans réglage sont regroupées en conteneurs (`C_…`).
+- Chaque icône a une description courte : LANCEMENT, PRÉRÉGLÉ, À RÉGLER, SI … ->.
+- LRGB et LHaRGB : L et RGB étirées avec leurs étoiles, LRGB, puis `SXT_LRGB` (Unscreen) ; les images inutiles sont fermées au fur et à mesure. Ordre détaillé : sections « Mode rapide » et workflows de la page.
+- SPCC et SPFC sont configurés pour le QHY600 et les filtres Antlia V Pro ; GHS_1 et DBE se règlent sur l'image.
 
-## Workflows (dossier `workflows/`)
+Icônes non testées par l'auteur dans PixInsight 1.9.5 : si l'une ne se charge pas, signale-la.
 
-**Le plus simple : le préparateur de la page** (section « Préparer ma photo » de `docs/pixinsight-workflow.html`). Tu choisis tes filtres, tes méthodes (gradient, étirement, palette) et tes options ; il affiche les étapes de ta photo avec ce qu'il faut régler et télécharge un `.xpsm` qui ne contient qu'elles (dans la page publiée sur claude.ai, un `.zip` à décompresser). Ses données sont dans `preparer-data.json`, régénéré avec les icônes.
+## Scripts (`scripts/`)
 
-**Solver_auto** (LRGB et LHaRGB, chemin principal P1, E03, demande de l'utilisateur) : ImageSolver seul sur les images couleur ouvertes (script GC_Solver_auto.js, gradient false). **Mode rapide (galaxies LRGB et LHaRGB)** : dans `Conteneurs-LRGB.xpsm` et `Conteneurs-LHaRGB.xpsm`, chaque colonne a trois groupes : `P#_Nom` (chemin principal), `P#_options` (Opt_…) et `P#_rapide` (R_…, demande de l'utilisateur) ; la description de chaque `P#_rapide` dit quoi faire dans la phase. LRGB : `R_C_Preparation_rapide` (P1 : Renommer_auto → LinearPatternSubtraction → Combinaison_RGB),  `R_GC_Solver_auto_rapide` (P2 : GradientCorrection sur toutes les images ouvertes, puis ImageSolver sur RGB), `R_C_RGB_rapide` (P3 : BXT Correct Only → SPCC → BXT → NXT → Statistical Stretch 0,25 sans dialogue → GHS fond SP = HP = 0,22, étoiles gardées), `R_C_L_rapide` (BXT → NXT, étoiles gardées), `R_C_LRGB_rapide` (P5 : LRGB_ajout_L avec étoiles → SXT Unscreen → Etoiles_auto_etire). LHaRGB : `R_C_Preparation_rapide`, `R_GC_Solver_auto_rapide`, `R_C_RGB_fin_rapide`, `R_C_L_rapide`. Les deux : `R_C_Fin_GHS_rapide` (P4_rapide, « fin de GHS » : GHS_2_contraste → GHS_3_fond sur L, après GHS_1_premier), `R_C_Fin_rapide` (P6_rapide : HDRMT 30 % → masque → Courbes → LHE → LHE_fin → masque retiré → NXT_final) et `R_C_Etoiles_fond_rapide` (P7_rapide : Etoiles_screen → Fond_auto → Fond_desature → Export_TIFF). Plus de GradientCorrection dans les conteneurs rapides (faite par R_GC_Solver_auto_rapide). Le reste avec le chemin principal (GHS sur L seulement — sans Statistical_Stretch ni Star_Stretch —, Etoiles_LRGB, LRGB_ajout_L, finition). Détails : section « Mode rapide » de la page.
+| Script | Rôle |
+|---|---|
+| `Renommer_auto.js` | renomme les masters L, R, G, B, H, O, S d'après FILTER |
+| `LPS_UnClic.js` | LinearPatternSubtraction sans dialogue sur tous les masters mono ouverts |
+| `Combiner_RGB.js` | R, G, B → `RGB`, en-tête du rouge copié ; ferme les masters (`garder` : R en LHaRGB) |
+| `GC_Solver_auto.js` | GradientCorrection et/ou ImageSolver sur toutes les images (icônes Solver_auto et GC_Solver_auto_rapide) |
+| `ImageSolver_Date.js` | date ajoutée si absente, puis ImageSolver avec les réglages du matériel |
+| `Masque_auto.js` | Masque_L (crée et attache masque_L), Masque_retirer |
+| `Etoiles_auto.js` | saturation et SCNR des étoiles (et étirement si amount > 0) |
+| `Fond_auto.js` | fond de chaque canal amené à 0,12 (0,14 : Fond_auto_clair) |
+| `Fond_desature.js` | retire la teinte et le violet du fond |
+| `Nettoyage_sans_etoiles.js` | restes de halos des étoiles brillantes après SXT |
+| `Export_TIFF.js` | TIFF 16 bits sRGB nommé d'après le dossier des masters ; ferme L ensuite (`fermer`) |
+| `Fermer_vues.js` | ferme les vues listées (`views`) |
+| `Turbo_1.js`, `Turbo_2_debut.js` | mode Turbo ; fichiers générés par `make_workflows.py` |
 
-**Finition normale LRGB et LHaRGB en 5 parties** (Conteneurs-LRGB / LHaRGB, après `LRGB_ajout_L`), chacune avec ses options : 0. option `Nettoyage_sans_etoiles` (script : restes de halos d'étoiles laissés par SXT, repérés autour des étoiles de RGB_stars, galaxie protégée par son étendue) ; 1. cœur `HDRMT_40` (options HDRMT_30, HDRMT_50, HDRMT_eclat) ; 2. contraste `C_Finition` (options Boost_finition_light, Boost_finition) ; 3. bruit `NXT_final` 0,40 (options NXT_final_doux 0,25, NXT_final_fort 0,60) ; 4. étoiles `Etoiles_screen` (options MT_etoiles, Halo_B_Gon, Etoiles_reduites) ; 5. fond `C_Fond_final` = Fond_auto + Fond_desature (options Boost_final_doux ou Boost_final avant, Fond_auto_clair cible 0,14). Les workflows narrowband gardent leur finition. Tous les fichiers Conteneurs : options `ICC_sRGB` (ICCProfileTransformation vers sRGB IEC61966-2.1) et `Export_TIFF` (script : copie TIFF 16 bits sRGB, profil ICC intégré, nommée d'après le dossier des masters, ex. NGC1532.tiff, sans espace, pour Photoshop / Lightroom / Affinity) en fin de P7.
+## Régénérer
 
-Mode normal : **`Conteneurs-X.xpsm`, un fichier par workflow** (les anciens `Workflow-X`, `Options-X` et les icônes unitaires `01`–`04` ont été retirés à la demande de l'utilisateur, qui n'utilise que les conteneurs et le mode rapide ; ils restent dans l'historique git) : le chemin principal complet ET toutes les options, rangées dans la colonne de leur phase sous une icône-titre `P#_options` (`Opt_HDRMT_50` en Finition, `Opt_DBE` en Gradient…). Dans le chemin principal, chaque suite d'étapes sans réglage intermédiaire, appliquée à la même image, est remplacée par une icône *ProcessContainer* (un clic au lieu de trois à cinq) : LRGB 17 icônes au lieu de 24, LHaRGB 23 au lieu de 28, RGB-SHO 26 au lieu de 34, SHO sans RGB 24 au lieu de 31, HOO 24 au lieu de 28. Chaque étape garde les réglages de son icône. Le préparateur fait la même chose avec la case « Regrouper en conteneurs ».
-
-| Conteneur | Image cible | Étapes |
-|---|---|---|
-| `C_RGB_lineaire` (LRGB) | RGB combiné, linéaire, gradient retiré | BXT Correct Only → SPCC → BXT → NXT (étoiles gardées : SXT après LRGB, icône `SXT_LRGB`) |
-| `C_L_lineaire` (LRGB) | master L | BXT → NXT (étoiles gardées) ; puis GHS sur L avec ses étoiles, `LRGB_ajout_L` avec étoiles, puis `SXT_LRGB` (Unscreen coché) sur l'image combinée : plus de Star_Stretch ni d'Etoiles_LRGB en LRGB (demande de l'utilisateur) |
-| `C_RGB_couleur` (LHaRGB) | RGB combiné | BXT Correct Only → SPCC → BXT |
-| LHaRGB, suite | RGB après injection de H, L | NXT_RGB et NXT_L seuls (étoiles gardées), GHS avec étoiles, `LRGB_ajout_L` avec étoiles, puis `SXT_LRGB` (Unscreen) : comme le LRGB (demande de l'utilisateur) ; plus de C_RGB_etoiles_bruit, C_L_lineaire, Star_Stretch ni Etoiles_LRGB |
-| `C_SHO_lineaire`, `C_HOO_lineaire` | combinaison narrowband linéaire | BXT → SXT |
-| `C_Extraction_SHO`, `C_Extraction_HOO`, `C_Extraction_etoiles` | image sans étoiles (ou d'étoiles) | extraction des canaux |
-| `C_Etoiles_RGB` (RGB + SHO) | RGB combiné | BXT Correct Only → SPCC → BXT → SXT |
-| `C_Finition` | image sans étoiles étirée | Masque_L (créé et attaché) → Courbes → LHE → LHE_fin → Masque_retirer |
-| `HDRMT_50` (option) | image sans étoiles étirée | copie `HDR_avant` → HDRMT → PixelMath `a·$T + (1 − a)·HDR_avant`, a = 0,5 → Fermer_vues (`HDR_avant`) |
-| `Boost_final` (option, image finie) | image finie avec étoiles, L sans étoiles ouverte | Masque_L tiré de `L` (paramètre `source`, s = 0,20, `gamma` 2 : masque² = fort sur le très lumineux, faible sur le halo ; `exclure` = RGB_stars : étoiles retirées du masque) → CurvesTransformation c 0,46094 → 0,53646 et S 0,46354 → 0,54167 → Masque_retirer (LRGB, LHaRGB, modes normal et rapide) |
-| `HDRMT_eclat` (option) | image sans étoiles étirée | même suite avec a = 0,4 → Masque_L → courbe très légère (saturation 0,57) → LHE rayon 80, Amount 0,12 → Masque_retirer (HDRMT puis Boost_finition_light) |
-
-Format recopié des conteneurs des icônes de theAstroShed (PixInsight 1.9.3) : instances imbriquées sans identifiant, `enabled="true"`, pas de description sur le conteneur. Pas encore testé dans PixInsight : essaie d'abord sur une copie de l'image.
-
-Dans les trois fichiers, **une colonne par phase**, avec une icône-titre sans effet en haut (`P1_Preparation`, `P2_Gradient`, `P3_Lineaire`, `P4_Etirement`, `P5_Couleur`, `P6_Finition`, `P7_Etoiles`). **Chaque icône porte une description courte** : `PRÉRÉGLÉ` (ce que l'icône règle déjà), `À RÉGLER` (ce qu'il te reste à faire) et `SI … ->` (quoi changer selon le symptôme), plus le mode de lancement pour les scripts. Textes dans `short_desc.py`, phases et rôles dans `layout.py` ; explications complètes dans les fiches de la page.
-
-| Workflow | Principal | Options | Contenu |
-|---|---|---|---|
-| LRGB | 24 | 12 | Prétraitement, combinaison RGB, MGC, BXT Correct Only, SPCC, BXT, NXT, GHS avec étoiles, LRGBCombination avec étoiles, SXT étirée (Unscreen), finition, étoiles |
-| LHaRGB | 28 | 15 | LRGB + soustraction du continuum et H dans le rouge ; Continuum_auto (SetiAstro) au chemin principal ; options : H dans L, NBRGBCombination |
-| RGB-SHO | 34 | 19 | Masters narrowband, combinaison SHO simple, BXT, SXT, extraction, NarrowbandNormalization, étoiles RGB ; options : Foraxx, Perfect Palette Picker, NBColourMapper, SCNR, LinearFit |
-| SHO-sans-RGB | 31 | 19 | Idem sans RGB, étoiles narrowband par NB to RGB Star Combination ; options : étoiles HOO synthétiques, CorrectMagentaStars |
-| HOO | 28 | 19 | Combinaison HOO, NarrowbandNormalization HOO ; options : extraction dual-band (caméra couleur), Foraxx HOO, variante Hubble, H en luminance |
-
-(Les nombres ne comptent pas les icônes-titres. Masters déjà empilés : WBPP et CosmeticCorrection sont en options, pour repartir des brutes. Première étape de chaque workflow : `E00_LinearPatternSubtraction` (les autres étapes gardent leurs numéros), qui retire les lignes résiduelles du capteur sur tous les masters ouverts : lance `scripts/LPS_UnClic.js` (moteur de Vicent Peris appelé sans dialogue, zone de fond automatique), à copier une fois par ordinateur (Mac ou PC) dans `src/scripts/clodoweg/` du dossier de PixInsight, à côté de `PatternCorrection` (Mac : `/Applications/PixInsight/src/scripts/clodoweg/` ; PC : en général `C:\Program Files\PixInsight\src\scripts\clodoweg\` ; pas le dossier `scripts` du premier niveau) : l'icône pointe vers `$PXI_SRCDIR/scripts/clodoweg/LPS_UnClic.js`.)
-
-**Trois sortes d'icônes :**
-
-- **Process réglés** : s'appliquent directement (PixelMath, BlurXTerminator, NoiseXTerminator, StarXTerminator, LRGBCombination, LinearFit, SCNR, LHE, HDRMT, MorphologicalTransformation, CurvesTransformation, GradientCorrection, NarrowbandNormalization SHO et HOO, CosmeticCorrection).
-- **Process à compléter sur ton image ou ton matériel** :
-  - `MGC_MARS`, `MGC_MARS_H`, `MGC_MARS_O` : charge la base MARS (DR2) dans les préférences de MGC si elle ne l'est pas. Les icônes H et O sont dans les workflows LHaRGB (H seulement), RGB-SHO, SHO sans RGB et HOO.
-  - `DBE` : icône réelle, sans points (ils dépendent de l'image).
-  - `SPCC` et `SPFC_…` : configurés pour ton matériel (QHY600 + Antlia V Pro). Bande passante narrowband 3 nm (filtres Antlia 3 nm).
-  - `GHS_1_premier`, `GHS_2_contraste`, `GHS_3_fond` : Local intensity et protections réglés, mais **SP à choisir sur ton image** ; GHS_1 : Stretch factor 0 et SP 0 ; GHS_2 : Stretch factor 1 et SP 0,35 (valeurs de départ) ; GHS_3 : Stretch factor 1 et SP = HP = 0,20 (fond à 0,23 après GHS_2). Chaîne calculée pour un pic à 0,25 après GHS_1 (l'icône ne fait rien tant que tu ne l'as pas réglée). Leurs descriptions donnent les repères de niveau : fond vers 0,20–0,25 après le 1er étirement, 0,12–0,14 (30–35 sur 255) dans l'image finale, jamais 0.
-  - `Courbes` : légère courbe en S et saturation, à ajuster à l'œil.
-- **Icônes de script** (process *Script*) : elles lancent directement le script, avec ses paramètres préréglés quand le script les lit.
-
-  | Script | Lancement | Paramètres préréglés | Empreinte MD5 |
-  |---|---|---|---|
-  | Statistical Stretch | glisser sur l'image | oui (Target Median 0,25, Linked, Blackpoint Sigma 5…), dialogue ouvert | oui |
-  | Star Stretch | glisser sur l'image d'étoiles | oui (Stretch Amount 6, Color Boost 1,3) | oui |
-  | Find Background | activer l'image puis glisser | oui (aperçu « Background », recherche rapide), sans dialogue | oui |
-  | Automatic Continuum Subtraction | double-clic puis *Apply Global* | oui (Starry, sortie linéaire, sans réduction de bruit) | oui |
-  | NB to RGB Star Combination | glisser sur une image | non : la v1.6 ne relit pas les paramètres d'icône | oui |
-  | Halo-B-Gon, Perfect Palette Picker | double-clic puis *Apply Global* | non : ces scripts n'en lisent pas | oui |
-  | CorrectMagentaStars | glisser sur l'image (s'applique sans dialogue) | oui (Amount 0,8) | vide |
-  | WBPP 3.1, ImageSolver | double-clic puis *Apply Global* | non (WBPP garde ses réglages lui-même ; code d'ImageSolver 1.9.5 non public) | vide |
-
-  Chemins en `$PXI_SRCDIR/scripts/…`, valables sur toute installation. Scripts SetiAstro : fichiers de l'archive `SetiAstroScripts09.19.2026.zip` (dépôt 1.9.4 à 1.9.5), dont l'icône porte l'empreinte MD5 ; après une mise à jour d'un script, PixInsight bloque l'icône : double-clique-la, efface le champ MD5, réenregistre-la. Scripts livrés avec PixInsight : chemins relevés dans des icônes réelles (ImageSolver, CorrectMagentaStars) ou dans psf-guard pour WBPP 3.1 sous PixInsight 1.9.5 ; empreinte laissée vide, donc sans vérification.
-- **Icônes-notes** (process *NoOperation*, sans effet) : en-têtes d'étape, et deux scripts dont le chemin d'installation n'a pas pu être vérifié : NBColourMapper (paquet inaccessible, serveur anti-robots) et NBRGBCombination (livré avec PixInsight, chemin inconnu). Leur description donne tous les réglages.
-
-ChannelCombination et ChannelExtraction sont remplacés par des icônes PixelMath équivalentes (par exemple `$T[1]` pour extraire le canal vert).
-
-Les fichiers ont été générés par `make_workflows.py` (dans ce dossier) à partir des modèles vérifiés.
-
-**Régénérer tout** (icônes 01–04, workflows, options, conteneurs, données du préparateur et page) : `sh docs/process-icons/build/build.sh`. Le dossier `build/` contient les modèles d'instances (`templates.json`, `all.x`, `FromLukeAndBill.xpsm`, issus des icônes de theAstroShed, licence Apache 2.0 dans `LICENSE-theAstroShed-icons`), le script du préparateur (`prep_build.py`), la conversion page du dépôt ↔ source de l'artifact (`page.py`) et un audit des réglages (`audit_icons.py`, à lancer depuis `docs/process-icons`).
+`sh docs/process-icons/build/build.sh` : icônes, `preparer-data.json` et page. Générateurs : `make_workflows.py` (étapes par workflow, conteneurs rapides et Turbo), `layout.py` (phases, rôles, conteneurs), `short_desc.py` (descriptions), `make_icons.py` (instances). Le dossier `build/` contient les modèles d'instances (`templates.json`, `all.x`, `FromLukeAndBill.xpsm`, issus des icônes de theAstroShed, licence Apache 2.0 dans `LICENSE-theAstroShed-icons`), le préparateur (`prep_build.py`), la conversion page ↔ artifact (`page.py`) et un audit des réglages (`audit_icons.py`).
 
 ## Sources
 
-- SPFC, MGC et DBE n'ont pas de modèle `.xpsm` public : leurs icônes sont construites à partir de la liste de paramètres du code d'AutoIntegrate, au format des paramètres communs avec SPCC (modèle réel) ; courbes de filtres et de capteur tirées du même code et de l'icône SPCC de theAstroShed (`spfc_curves.json`).
-
-- [theAstroShed, icônes de process](https://github.com/jamiesmith/pixinsight-icons) : fichiers `.xpsm` générés par PixInsight 1.9.3, utilisés comme modèles (noms de paramètres, versions, valeurs d'énumération) ; formules Foraxx identiques ; formules de Bill Blanshan V3 (`FromLukeAndBill.xpsm`).
-- [AutoIntegrate](https://github.com/jarmoruuth/AutoIntegrate) : opérateur `Selection` de MorphologicalTransformation et masque circulaire 5×5 ; formules de Bill Blanshan V2 ; paramètres de MultiscaleGradientCorrection.
-- Les modèles de SPCC (*Average Spiral Galaxy*), GradientCorrection, GHS, CurvesTransformation, NarrowbandNormalization et l'usage de NoOperation comme icône-note avec description viennent aussi des fichiers de theAstroShed.
-
-## Scripts de la fiche (dossier `scripts/`)
-
-À copier une fois par ordinateur (Mac ou PC) dans `src/scripts/clodoweg/` du dossier de PixInsight, à côté de `PatternCorrection` (Mac : `/Applications/PixInsight/src/scripts/clodoweg/`) :
-
-- `Masque_auto.js` : paramètre `exclure` (image d'étoiles retirée du masque : masque × (1 − min(1, `exclureGain` 4 × étoiles lissées 3 px))) ; paramètre `gamma` (masque^gamma, 1 par défaut ; 2 pour Boost_final) ; paramètre `source` (vue dont on tire la luminance, par exemple `L` sans étoiles pour Boost_final ; vide = l'image cible) ; icônes `Masque_L` (mode attacher : crée `masque_L`, luminance Rec. 709 au fond coupé à s = 0,14, flou 2 px, et l'attache à l'image) et `Masque_retirer` (détache et ferme) ; dans C_Finition, les Boost.
-- `Fermer_vues.js` : ferme sans confirmation les vues listées dans son paramètre `views` (virgules) ; dernière étape des conteneurs `HDRMT_50` (copie `HDR_avant`), `C_L_lineaire`, `C_L_etoiles_bruit` et `C_L_rapide` (`L_stars`, étoiles de la luminance, inutiles) ; icône `Fermer_L_stars` dans les fichiers `Workflow-X`.
-- `Etoiles_LRGB.js` : dernière étape de `C_L_rapide` (et de l'option `C_L_rapide_SXT_lineaire_etoilesL`) ; icône `Etoiles_LRGB_etire` des workflows normaux LRGB et LHaRGB ; étire `L_stars` avec la courbe d'Etoiles_auto si `etirerL` = true (SXT linéaire ; false si SXT a tourné après l'étirement), crée la luminance `partL × L_stars + (1 − partL) × luminance de RGB_stars` (0,5), l'applique à `RGB_stars` par LRGBCombination (mL 0,5, mc 0,35, sans réduction de bruit), puis ferme `L_stars`. Sans cette option, `L_stars` est fermée par la finition.
-- `Fond_desature.js` : option de fin (mode rapide et tous les workflows normaux) ; fond mesuré sur la luminance (grille 8 × 8) ; anti-violet : `G = G + (max(G, min(R, B)) − G)·m`, m = 1 sous fond + `fin` (0,15), 0 au-dessus de fond + `violetFin` (0,30) ; puis désaturation `Y + ($T − Y)·w`, w = rampe de la luminance lissée (`flou` 3 px) entre fond + `debut` (0,03) et fond + `fin` (0,15).
-- `Fond_auto.js` : dans `C_Fond_final` (partie 5 de la finition LRGB / LHaRGB) ; variante `Fond_auto_clair` (cible 0,14) (et option seule) ; fond de chaque canal mesuré sur une grille de 8 × 8 cases (médiane du quart le plus sombre des médianes de cases, insensible à une grande galaxie), puis PixelMath `mtf(m, $T)` canal par canal pour amener le fond sur `cible` (0,12), sans écrêtage ; rien n'est fait si l'écart est sous `tolerance` (0,005) ; fond avant et après dans la console.
-- `Etoiles_auto.js` : étirement des étoiles sans dialogue, dernière étape de `C_RGB_rapide` et `C_RGB_fin_rapide` ; travaille sur la vue `vue` (RGB_stars) quelle que soit la cible : PixelMath `3^a·x / ((3^a − 1)·x + 1)` (courbe de Star Stretch, a = amount 6), puis ColorSaturation par teinte (satAmount 1,3 : 0,4 × sur les rouges, 0,7 × sur les cyans), SCNR vert si `scnr = true`. Réécriture de la formule, pas de code de SetiAstro.
-- `Renommer_auto.js` : première icône de chaque workflow (`Renommer_auto`) ; renomme les masters mono ouverts L, R, G, B, H, O, S d'après le mot-clé FILTER (Lum, Red, Ha, OIII, SII…), sinon d'après le nom du fichier (`FILTER-Ha`, `_L_`) ; images couleur et noms déjà pris laissés tels quels, avec un message dans la console. Double-clic puis Apply Global.
-- `LPS_UnClic.js` : LinearPatternSubtraction sans dialogue (icône `E00_LinearPatternSubtraction`, première étape de tous les workflows ; dans `E00_C_Preparation_rapide` des modes rapides). Toutes les images mono ouvertes sont corrigées, les images couleur sont ignorées.
-- `Combiner_RGB.js` : icône `Combinaison_RGB` des workflows ; combine les masters R, G, B en `RGB`, copie l'en-tête FITS du rouge (coordonnées et date pour ImageSolver), puis ferme R, G et B sans demander d'enregistrer (`closeSources = false` pour les garder). Double-clic puis Apply Global.
-- `ImageSolver_Date.js` : icône `ImageSolver` des workflows (une seule icône, pas de conteneur : dans un ProcessContainer, ImageSolver échoue avec « The image is already being processed ») ; ajoute `DATE-OBS = 2020-01-01` aux images sans date, puis résout l'image avec le moteur d'ImageSolver inclus comme bibliothèque (comme WBPP : `#include "../ImageSolver/ImageSolver.js"`) et les réglages de l'icône, ceux d'ImageSolver (`$PXI_SRCDIR/scripts/ImageSolver/ImageSolver.js`, version 6.4.2) avec focale 2 939 mm, pixel 3,76 µm, catalogue automatique et correction de distorsion. Glisser l'icône `ImageSolver` sur l'image suffit.
-
+- [theAstroShed, icônes de process](https://github.com/jamiesmith/pixinsight-icons) : fichiers `.xpsm` de PixInsight 1.9.3 utilisés comme modèles (paramètres, versions, énumérations, format des conteneurs) ; formules Foraxx ; formules de Bill Blanshan V3.
+- [AutoIntegrate](https://github.com/jarmoruuth/AutoIntegrate) : paramètres de SPFC, MGC et DBE (pas de modèle `.xpsm` public), courbes de filtres et de capteur (`spfc_curves.json`), MorphologicalTransformation, formules de Bill Blanshan V2.
+- Scripts SetiAstro : chemins et empreintes MD5 de l'archive `SetiAstroScripts09.19.2026.zip`. Liste complète : `docs/sources.md`.
