@@ -940,6 +940,16 @@ Détails : page docs/pixinsight-workflow.html.</description>
          <parameter id="lunar_planetary" value="false"/>
          <parameter id="overlap" value="0.20"/>
       </instance>
+      <instance class="StarXTerminator" version="256" enabled="true">
+         <parameter id="ml_version" value="0"/>
+         <parameter id="output_stars" value="true"/>
+         <parameter id="unscreen" value="false"/>
+         <parameter id="remove_stars" value="true"/>
+         <parameter id="remove_spikes" value="true"/>
+         <parameter id="remove_aureoles" value="true"/>
+         <parameter id="remove_reflections" value="true"/>
+         <parameter id="overlap" value="0.20"/>
+      </instance>
       <instance class="NoiseXTerminator" version="256" enabled="true">
          <parameter id="ml_version" value="0"/>
          <parameter id="denoise" value="0.60"/>
@@ -1219,48 +1229,48 @@ Détails : page docs/pixinsight-workflow.html.</description>
       </table>
       <parameter id="information"></parameter>
    </instance>
-   <instance class="ProcessContainer" id="E14_C_L_etoiles_instance">
-      <instance class="StarXTerminator" version="256" enabled="true">
-         <parameter id="ml_version" value="0"/>
-         <parameter id="output_stars" value="true"/>
-         <parameter id="unscreen" value="true"/>
-         <parameter id="remove_stars" value="true"/>
-         <parameter id="remove_spikes" value="true"/>
-         <parameter id="remove_aureoles" value="true"/>
-         <parameter id="remove_reflections" value="true"/>
-         <parameter id="overlap" value="0.20"/>
-      </instance>
-      <instance class="Script" version="256" enabled="true">
-         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Etoiles_LRGB.js</parameter>
-         <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="6">
-            <tr>
-               <td id="id">etoilesL</td>
-               <td id="value">L_stars</td>
-            </tr>
-            <tr>
-               <td id="id">etoilesRGB</td>
-               <td id="value">RGB_stars</td>
-            </tr>
-            <tr>
-               <td id="id">etirerL</td>
-               <td id="value">false</td>
-            </tr>
-            <tr>
-               <td id="id">amount</td>
-               <td id="value">6</td>
-            </tr>
-            <tr>
-               <td id="id">partL</td>
-               <td id="value">0.5</td>
-            </tr>
-            <tr>
-               <td id="id">saturation</td>
-               <td id="value">0.35</td>
-            </tr>
-         </table>
-         <parameter id="information"></parameter>
-      </instance>
+   <instance class="Script" version="256" id="E14_Etoiles_LRGB_instance">
+      <description>LANCEMENT : glisse l'icône sur l'image.
+
+PRÉRÉGLÉ : script Etoiles_LRGB : L_stars (linéaire) étirée avec la courbe de Star Stretch / Etoiles_auto (amount 6), luminance 0,5 × L_stars + 0,5 × luminance RGB appliquée à RGB_stars par LRGBCombination (saturation 0,35), puis L_stars fermée.
+
+À RÉGLER : glisse sur n'importe quelle image, après l'étirement des étoiles RGB (Star_Stretch, ou Etoiles_auto en rapide) et avant LRGB_ajout_L ; L_stars vient de SXT sur L linéaire (C_L_lineaire, ou C_L_rapide en rapide) ; saute-la pour garder les étoiles du RGB seul.
+
+SI :
+- anneau blanc ou coloré autour des étoiles -&gt; partL 0,3, ou n'utilise pas l'option
+- cœurs trop blancs -&gt; partL 0,3 ou saturation 0,30
+- Star_Stretch réglé à un autre Stretch Amount -&gt; même valeur dans amount
+
+Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Etoiles_LRGB.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="6">
+         <tr>
+            <td id="id">etoilesL</td>
+            <td id="value">L_stars</td>
+         </tr>
+         <tr>
+            <td id="id">etoilesRGB</td>
+            <td id="value">RGB_stars</td>
+         </tr>
+         <tr>
+            <td id="id">etirerL</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">amount</td>
+            <td id="value">6</td>
+         </tr>
+         <tr>
+            <td id="id">partL</td>
+            <td id="value">0.5</td>
+         </tr>
+         <tr>
+            <td id="id">saturation</td>
+            <td id="value">0.35</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
    </instance>
    <instance class="NoOperation" version="256" id="P5_Couleur_instance">
       <description>PHASE 5 — Couleur : combinaison finale et palette. Colonne de repère, sans effet.</description>
@@ -3756,13 +3766,14 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <instance class="Script" version="256" id="R_E08_Etoiles_LRGB_instance">
       <description>LANCEMENT : glisse l'icône sur l'image.
 
-PRÉRÉGLÉ : script Etoiles_LRGB : L_stars étirée comme Etoiles_auto (amount 6), luminance 0,5 × L_stars + 0,5 × luminance RGB appliquée à RGB_stars par LRGBCombination (saturation 0,35), puis L_stars fermée.
+PRÉRÉGLÉ : script Etoiles_LRGB : L_stars (linéaire) étirée avec la courbe de Star Stretch / Etoiles_auto (amount 6), luminance 0,5 × L_stars + 0,5 × luminance RGB appliquée à RGB_stars par LRGBCombination (saturation 0,35), puis L_stars fermée.
 
-À RÉGLER : glisse sur RGB (ou n'importe quelle image) après C_L_rapide et avant la finition.
+À RÉGLER : glisse sur n'importe quelle image, après l'étirement des étoiles RGB (Star_Stretch, ou Etoiles_auto en rapide) et avant LRGB_ajout_L ; L_stars vient de SXT sur L linéaire (C_L_lineaire, ou C_L_rapide en rapide) ; saute-la pour garder les étoiles du RGB seul.
 
 SI :
 - anneau blanc ou coloré autour des étoiles -&gt; partL 0,3, ou n'utilise pas l'option
 - cœurs trop blancs -&gt; partL 0,3 ou saturation 0,30
+- Star_Stretch réglé à un autre Stretch Amount -&gt; même valeur dans amount
 
 Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Etoiles_LRGB.js</parameter>
@@ -3822,7 +3833,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <icon id="E11_Statistical_Stretch" instance="E11_Statistical_Stretch_instance" xpos="604" ypos="124" workspace="Workspace01"/>
    <icon id="E12_GHS_3_fond" instance="E12_GHS_3_fond_instance" xpos="604" ypos="154" workspace="Workspace01"/>
    <icon id="E13_Star_Stretch" instance="E13_Star_Stretch_instance" xpos="604" ypos="184" workspace="Workspace01"/>
-   <icon id="E14_C_L_etoiles" instance="E14_C_L_etoiles_instance" xpos="604" ypos="214" workspace="Workspace01"/>
+   <icon id="E14_Etoiles_LRGB" instance="E14_Etoiles_LRGB_instance" xpos="604" ypos="214" workspace="Workspace01"/>
    <icon id="P5_Couleur" instance="P5_Couleur_instance" xpos="795" ypos="20" workspace="Workspace01"/>
    <icon id="E15_LRGB_ajout_L" instance="E15_LRGB_ajout_L_instance" xpos="795" ypos="64" workspace="Workspace01"/>
    <icon id="P6_Finition" instance="P6_Finition_instance" xpos="955" ypos="20" workspace="Workspace01"/>

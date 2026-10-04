@@ -25,8 +25,8 @@ Mode normal : **`Conteneurs-X.xpsm`, un fichier par workflow** (les anciens `Wor
 | Conteneur | Image cible | Étapes |
 |---|---|---|
 | `C_RGB_lineaire` (LRGB) | RGB combiné, linéaire, gradient retiré | BXT Correct Only → SPCC → BXT → SXT → NXT |
-| `C_L_lineaire` (LRGB) | master L | BXT → NXT (étoiles gardées jusqu'après l'étirement) |
-| `C_L_etoiles` (LRGB, LHaRGB) | L étirée, après Star_Stretch sur RGB_stars | SXT_L_etire (Unscreen) → Etoiles_LRGB_etire (luminance de L_stars ajoutée à RGB_stars, L_stars fermée) |
+| `C_L_lineaire` (LRGB) | master L | BXT → SXT (linéaire, L_stars gardée) → NXT ; puis GHS sur L sans étoiles, et `Etoiles_LRGB` (L_stars étirée comme Star_Stretch, amount 6, ajoutée à RGB_stars) après Star_Stretch |
+| `C_L_etoiles` (LHaRGB) | L étirée, après Star_Stretch sur RGB_stars | SXT_L_etire (Unscreen) → Etoiles_LRGB_etire (luminance de L_stars ajoutée à RGB_stars, L_stars fermée) |
 | `C_RGB_couleur` (LHaRGB) | RGB combiné | BXT Correct Only → SPCC → BXT |
 | `C_RGB_etoiles_bruit` (LHaRGB) | RGB après injection de H | SXT → NXT |
 | `C_SHO_lineaire`, `C_HOO_lineaire` | combinaison narrowband linéaire | BXT → SXT |

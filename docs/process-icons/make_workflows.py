@@ -679,13 +679,13 @@ lrgb = pre_block() + [rgb_comb_item(), (solver_container(), ''), (solver_seul(),
     spcc(),
     (M.bxt('BXT_RGB', False, 0.25, 0.0, 0.50), "BlurXTerminator complet sur RGB, APRÈS SPCC : Sharpen Stars 0,25 (0 à 0,5), Adjust Star Halos 0, PSF automatique, Sharpen Nonstellar 0,50 (le détail viendra de L). Avant toute réduction de bruit." + BXT_C),
     (M.bxt('BXT_L', False, 0.25, 0.0, 0.80), "BlurXTerminator complet sur L (linéaire, gradient retiré) : Sharpen Stars 0,25, Halos 0, Sharpen Nonstellar 0,80 (0,70 à 0,90), plus fort que sur RGB car la luminance porte le détail. Si vers ou pores à 100 % : baisse Nonstellar." + BXT_C),
-    (M.sxt('SXT_lineaire', False), D_SXT_LIN + " Sur RGB seulement (garde les étoiles : ce sont celles de l'image finale). L garde ses étoiles jusqu'après l'étirement (SXT_L_etire)."),
+    (M.sxt('SXT_L_lineaire', False), D_SXT_LIN + " Sur L, dans C_L_lineaire après BXT_L (demande de l'utilisateur) : L étirée ensuite SANS étoiles par les GHS (pas de halos d'étoiles poussés par l'étirement) ; L_stars (linéaire) gardée pour Etoiles_LRGB."),
+    (M.sxt('SXT_lineaire', False), D_SXT_LIN + " Sur RGB (garde les étoiles : ce sont celles de l'image finale)."),
     (M.nxt('NXT_RGB', 0.80, 1), "NoiseXTerminator sur RGB sans étoiles : Denoise 0,80 (0,70 à 0,90), Detail 0,15. Toujours après BXT. Fonctionne en linéaire ou après étirement (RC Astro)." + NXT_C),
-    (M.nxt('NXT_L', 0.60, 1), "NoiseXTerminator sur L (avec ses étoiles, linéaire) : Denoise 0,60 (0,50 à 0,70) pour garder le détail fin." + NXT_C),
+    (M.nxt('NXT_L', 0.60, 1), "NoiseXTerminator sur L (sans étoiles, linéaire) : Denoise 0,60 (0,50 à 0,70) pour garder le détail fin." + NXT_C),
 ] + ghs_block(L_GHS, L_STAT, L_FOND) + [
     (note('Star_Stretch', T_STARSTRETCH + STARS_LRGB), ''),
-    (M.sxt('SXT_L_etire', True), D_SXT_L_ETIRE),
-    (note('Etoiles_LRGB_etire', D_ETOILES_LRGB), ''),
+    (note('Etoiles_LRGB', ''), ''),   # L_stars linéaire (SXT dans C_L_lineaire) étirée comme Star_Stretch (amount 6) puis ajoutée à RGB_stars
     (M.instance('LRGBCombination', 'LRGB_ajout_L', {'mL': '0.500', 'mc': '0.350', 'noiseReduction': True}, post=M.lrgb_post),
      "LRGBCombination sur les images étirées et SANS étoiles : seul L activé (renomme ta luminance 'L'), glisse le triangle sur le RGB. Lightness 0,5 ; Saturation 0,35 (plus bas = plus saturé ; ternes -> 0,30) ; "
      "Chrominance noise reduction cochée. Couleurs délavées : L trop claire par rapport au RGB, étire-la moins. "

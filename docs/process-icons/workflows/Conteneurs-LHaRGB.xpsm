@@ -4244,13 +4244,14 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <instance class="Script" version="256" id="R_E13_Etoiles_LRGB_instance">
       <description>LANCEMENT : glisse l'icône sur l'image.
 
-PRÉRÉGLÉ : script Etoiles_LRGB : L_stars étirée comme Etoiles_auto (amount 6), luminance 0,5 × L_stars + 0,5 × luminance RGB appliquée à RGB_stars par LRGBCombination (saturation 0,35), puis L_stars fermée.
+PRÉRÉGLÉ : script Etoiles_LRGB : L_stars (linéaire) étirée avec la courbe de Star Stretch / Etoiles_auto (amount 6), luminance 0,5 × L_stars + 0,5 × luminance RGB appliquée à RGB_stars par LRGBCombination (saturation 0,35), puis L_stars fermée.
 
-À RÉGLER : glisse sur RGB (ou n'importe quelle image) après C_L_rapide et avant la finition.
+À RÉGLER : glisse sur n'importe quelle image, après l'étirement des étoiles RGB (Star_Stretch, ou Etoiles_auto en rapide) et avant LRGB_ajout_L ; L_stars vient de SXT sur L linéaire (C_L_lineaire, ou C_L_rapide en rapide) ; saute-la pour garder les étoiles du RGB seul.
 
 SI :
 - anneau blanc ou coloré autour des étoiles -&gt; partL 0,3, ou n'utilise pas l'option
 - cœurs trop blancs -&gt; partL 0,3 ou saturation 0,30
+- Star_Stretch réglé à un autre Stretch Amount -&gt; même valeur dans amount
 
 Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Etoiles_LRGB.js</parameter>

@@ -16,7 +16,7 @@ PHASE = {
     'ImageSolver': 2, 'ImageSolver_seul': 2, 'SPFC_RGB_filtres': 2, 'SPFC_L': 2, 'SPFC_H': 2, 'SPFC_O': 2, 'SPFC_S': 2, 'MGC_MARS': 2, 'MGC_MARS_H': 2, 'MGC_MARS_O': 2,
     'GradientCorrection': 2, 'DBE': 2, 'LinearFit_ref_H': 2,
     'BXT_CorrectOnly': 3, 'Find_Background': 3, 'SPCC': 3, 'BXT_RGB': 3, 'BXT_L': 3, 'BXT_L_H': 3, 'BXT_NB': 3, 'Combinaison_SHO': 3, 'Combinaison_HOO': 3,
-    'Continuum_H': 3, 'Continuum_auto': 3, 'H_dans_RGB': 3, 'H_dans_L': 3, 'NBRGBCombination': 3, 'SXT_lineaire': 3, 'SXT_RGB_lineaire': 3, 'SXT_L_etire': 4, 'Etoiles_LRGB_etire': 4,
+    'Continuum_H': 3, 'Continuum_auto': 3, 'H_dans_RGB': 3, 'H_dans_L': 3, 'NBRGBCombination': 3, 'SXT_lineaire': 3, 'SXT_RGB_lineaire': 3, 'SXT_L_etire': 4, 'Etoiles_LRGB_etire': 4, 'SXT_L_lineaire': 3, 'Etoiles_LRGB': 4,
     'Extraire_S': 3, 'Extraire_H': 3, 'Extraire_O': 3, 'Extraire_S_stars': 3, 'Extraire_H_stars': 3, 'Extraire_O_stars': 3,
     'NXT_RGB': 3, 'NXT_L': 3, 'NXT_H': 3, 'NXT_O_S': 3,
     'GHS_1_premier': 4, 'GHS_2_contraste': 4, 'GHS_3_fond': 4, 'Statistical_Stretch': 4, 'Star_Stretch': 4,
@@ -119,7 +119,7 @@ _FIN = ('C_Finition', "l'image sans étoiles étirée (masque créé, attaché p
 _FOND = ('C_Fond_final', "l'image finie, étoiles comprises (après Etoiles_screen et Boost_final éventuel)", ['Fond_auto', 'Fond_desature'])
 CONTAINERS = {
     'LRGB': [('C_RGB_lineaire', "l'image RGB combinée, linéaire, gradient retiré", ['BXT_CorrectOnly', 'SPCC', 'BXT_RGB', 'SXT_lineaire', 'NXT_RGB']),
-             ('C_L_lineaire', "le master L, linéaire, gradient retiré (étoiles gardées jusqu'après l'étirement)", ['BXT_L', 'NXT_L']),
+             ('C_L_lineaire', "le master L, linéaire, gradient retiré : BXT, SXT (L_stars gardée pour Etoiles_LRGB), NXT", ['BXT_L', 'SXT_L_lineaire', 'NXT_L']),
              ('C_L_etoiles', "L étirée (avec ses étoiles), après Star_Stretch sur RGB_stars", ['SXT_L_etire', 'Etoiles_LRGB_etire']), _FIN, _FOND],
     'LHA': [('C_RGB_couleur', "l'image RGB combinée, linéaire, gradient retiré", ['BXT_CorrectOnly', 'SPCC', 'BXT_RGB']),
             ('C_RGB_etoiles_bruit', "l'image RGB après injection de H", ['SXT_lineaire', 'NXT_RGB']),
