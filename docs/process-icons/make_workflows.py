@@ -889,14 +889,6 @@ for i, (item, desc) in enumerate(mat):
     insts.append(shorten(item[1], '', item[0]))
     icons.append('   <icon id="%s" instance="%s_instance" xpos="30" ypos="%d" workspace="Workspace01"/>' % (item[0], item[0], 30 + 30 * i))
 # 04-Materiel-QHY600-Antlia.xpsm n'est plus écrit (seulement Conteneurs-X et Rapide-X)
-for fn, pre, title, steps in [
-    ('Workflow-LRGB.xpsm', 'LRGB', 'Workflow LRGB', lrgb),
-    ('Workflow-LHaRGB.xpsm', 'LHA', 'Workflow LHaRGB', lhargb),
-    ('Workflow-RGB-SHO.xpsm', 'RSHO', 'Workflow RGB + SHO (étoiles RGB)', rgbsho),
-    ('Workflow-SHO-sans-RGB.xpsm', 'SHO', 'Workflow SHO sans RGB', sho),
-    ('Workflow-HOO.xpsm', 'HOO', 'Workflow HOO', hoo),
-]:
-    print(fn, 'principal, options, avec conteneurs :', write(fn, pre, title, steps))
 
 # ---------------------------------------------------------------- MODE RAPIDE (LRGB, LHaRGB)
 # Un fichier Rapide-X.xpsm : moins de clics, presque aucun réglage. MGC reste une icône à part (la liste des
@@ -945,10 +937,7 @@ T_RAPIDE = {
          "E13 Etoiles_LRGB (luminance de L_stars ajoutée aux étoiles ; saute-la pour garder les étoiles du RGB seul). "
          "FINITION : plus de finition rapide. Après E13, va en haut du fichier, workflow normal : P5 E21 LRGB_ajout_L, puis P6 (E22 HDRMT_40, E23 C_Finition, E24 NXT_final) et P7 (E25 Etoiles_screen, E26 C_Fond_final), chaque partie avec ses options."),
 }
-WHEN_R = {'C_RGB_rapide_SXT_etire': "À LA PLACE de C_RGB_rapide, sur RGB : même conteneur mais StarXTerminator APRÈS l'étirement (Unscreen coché) ; étoiles déjà étirées (Etoiles_auto sans étirement : saturation et SCNR seulement) ; à comparer avec le défaut (SXT linéaire)",
-          'STF': "n'importe quand : double-clic pour ouvrir la fenêtre ScreenTransferFunction (bouton A = auto-étirement de l'affichage, Reset pour revenir), pixels inchangés",
-          'GradientCorrection': "à la place de MGC_MARS si la cible est hors couverture MARS (sud au-delà de −15° environ) ou si MGC échoue",
-}
+WHEN_R = {}
 
 def write_rapide(filename, prefix, title, steps, main_spec, opt_spec):
     """main_spec / opt_spec : listes de (phase, item, description) ; description '' = celle du workflow ou aucune (conteneur)."""
@@ -1050,14 +1039,32 @@ def rapide_lha(v, sxt_etire, etoilesL):
     (3, rgb_rapide()[1], ''),
     (3, l_rapide(M.bxt('BXT_L_H', False, 0.25, 0.0, 0.80)), '')] + l_ghs(lhargb) + [(4, script('Etoiles_LRGB', ''), '')] + rapide_end(lhargb)
 
-V_NOTE = "SXT toujours avant l'étirement (RGB et L) ; L étirée à la main par les 3 GHS ; luminance de L_stars ajoutée aux étoiles"
-v = {'titre': V_NOTE, 'L': L_DESC}
-for fn, pre, title, steps, spec, bxt in [('Conteneurs-LRGB.xpsm (bas)', 'LRGB', 'Workflow LRGB', lrgb, rapide_lrgb, lambda: M.bxt('BXT_L', False, 0.25, 0.0, 0.80)),
-                                          ('Conteneurs-LHaRGB.xpsm (bas)', 'LHA', 'Workflow LHaRGB', lhargb, rapide_lha, lambda: M.bxt('BXT_L_H', False, 0.25, 0.0, 0.80))]:
-    # options reprises des conteneurs : LHaRGB seulement, Continuum_auto, H_dans_L
-    # STF (demande de l'utilisateur) : icône du process ScreenTransferFunction lui-même (double-clic = fenêtre STF, bouton A), en P3
-    extra = [(3, stf_icon(), '')] + ([(3, rgb_rapide_sxt_etire(), '')] if pre == 'LRGB' else []) + ([(3, *pick(steps, 'Continuum_auto')), (3, *pick(steps, 'H_dans_L'))] if pre == 'LHA' else [])
-    print(fn, 'principal, options :', write_rapide(fn, pre, title, steps, spec(v, True, True), extra + rapide_common_opts(steps)))
+# Mode rapide rangé dans les colonnes d'options du workflow normal (demande de l'utilisateur) : plus de section R_ en bas.
+# Les icônes identiques au normal (ImageSolver, GradientCorrection, Continuum_H, H_dans_RGB, GHS, Etoiles_LRGB…) ne sont pas doublées.
+def insert_after(steps, base, items):
+    i = next(k for k, (it, d) in enumerate(steps) if it[0] == base)
+    steps[i + 1:i + 1] = items
+
+def insert_before(steps, base, items):
+    i = next(k for k, (it, d) in enumerate(steps) if it[0] == base)
+    steps[i:i] = items
+
+prep_l, prep_h = prep_rapide(lrgb)[1], prep_rapide(lhargb)[1]
+insert_after(lrgb, 'Combinaison_RGB', [(note('Mode_rapide', ''), ''), (prep_l, '')])
+insert_before(lrgb, 'GHS_1_premier', [(rgb_rapide()[0], ''), (rgb_rapide_sxt_etire(), ''), (l_rapide(M.bxt('BXT_L', False, 0.25, 0.0, 0.80)), ''), (stf_icon(), '')])
+insert_after(lhargb, 'Combinaison_RGB', [(note('Mode_rapide', ''), ''), (prep_h, '')])
+insert_before(lhargb, 'GHS_1_premier', [(cont('C_RGB_couleur_rapide', [gc_r(), M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), spcc_perso('SPCC'), bxt_rgb()]), ''),
+                                        (cont('C_H_rapide', [gc_r(), M.bxt('BXT_L_H', False, 0.25, 0.0, 0.80)]), ''),
+                                        (rgb_rapide()[1], ''), (l_rapide(M.bxt('BXT_L_H', False, 0.25, 0.0, 0.80)), ''), (stf_icon(), '')])
+
+for fn, pre, title, steps in [
+    ('Workflow-LRGB.xpsm', 'LRGB', 'Workflow LRGB', lrgb),
+    ('Workflow-LHaRGB.xpsm', 'LHA', 'Workflow LHaRGB', lhargb),
+    ('Workflow-RGB-SHO.xpsm', 'RSHO', 'Workflow RGB + SHO (étoiles RGB)', rgbsho),
+    ('Workflow-SHO-sans-RGB.xpsm', 'SHO', 'Workflow SHO sans RGB', sho),
+    ('Workflow-HOO.xpsm', 'HOO', 'Workflow HOO', hoo),
+]:
+    print(fn, 'principal, options, avec conteneurs :', write(fn, pre, title, steps))
 
 DATA['header'] = M.HEADER
 json.dump(DATA, open(os.path.join(OUT, '..', 'preparer-data.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
