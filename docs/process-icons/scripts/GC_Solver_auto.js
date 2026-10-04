@@ -7,7 +7,8 @@
 //      modèle de gradient (generateGradientModel décoché) ; gradient = false :
 //      pas de GradientCorrection (icône R_Solver_auto : ImageSolver seul) ;
 //   2. ImageSolver sur les images COULEUR seulement (RGB : c'est elle qui sert
-//      à SPCC) ; solveTout = true : sur toutes les images. Date par défaut
+//      à SPCC) ; solveTout = true : sur toutes les images ; solve = false : pas
+//      d'ImageSolver (GradientCorrection seule). Date par défaut
 //      ajoutée si l'image n'en a pas (comme ImageSolver_Date.js), puis moteur
 //      d'ImageSolver (script livré avec PixInsight) inclus comme bibliothèque,
 //      avec les réglages du matériel portés par l'icône.
@@ -93,6 +94,7 @@ function mainGCS()
 {
    let solveTout = gcsParam( "solveTout", "false" ).toLowerCase() == "true";
    let avecGradient = gcsParam( "gradient", "true" ).toLowerCase() == "true";
+   let avecSolve = gcsParam( "solve", "true" ).toLowerCase() == "true";   // solve = false : GradientCorrection seule (R_GC_Solver_auto_rapide)
    let wins = ImageWindow.windows.filter( function( w ) { return !w.mainView.id.endsWith( "_stars" ); } );
    if ( wins.length == 0 )
       throw new Error( GCS_TITLE + " : aucune image ouverte." );
@@ -108,7 +110,7 @@ function mainGCS()
             gradient( w.mainView );
             etapes.push( "GradientCorrection" );
          }
-         if ( solveTout || w.mainView.image.isColor )
+         if ( avecSolve && (solveTout || w.mainView.image.isColor) )
          {
             if ( !Parameters.has( "metadata_focal" ) )
                throw new Error( "icône sans réglages d'ImageSolver" );
@@ -116,7 +118,7 @@ function mainGCS()
             solve( w );
             etapes.push( "ImageSolver" );
          }
-         bilan.push( id + " : " + (etapes.length ? etapes.join( " + " ) : "rien (image mono, solveTout false)") );
+         bilan.push( id + " : " + (etapes.length ? etapes.join( " + " ) : "rien") );
       }
       catch ( e )
       {

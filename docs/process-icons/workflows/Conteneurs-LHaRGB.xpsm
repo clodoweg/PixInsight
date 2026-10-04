@@ -141,25 +141,29 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <instance class="Script" version="256" id="E03_Solver_auto_instance">
       <description>LANCEMENT : double-clic sur l'icône, puis Apply Global.
 
-PRÉRÉGLÉ : script GC_Solver_auto.js avec gradient false : ImageSolver (date par défaut si absente, réglages du matériel) sur les images couleur ouvertes, sans GradientCorrection ; images *_stars ignorées ; une erreur n'arrête pas les autres.
+PRÉRÉGLÉ : script GC_Solver_auto.js (gradient false, solveTout true) : ImageSolver (date par défaut si absente, réglages du matériel) sur TOUTES les images ouvertes, sans GradientCorrection ; images *_stars ignorées ; une erreur n'arrête pas les autres.
 
-À RÉGLER : double-clic puis Apply Global, après Combinaison_RGB (ou R_C_Preparation_rapide) ; ensuite ImageSolver (phase 2) est inutile sur RGB ; copie GC_Solver_auto.js dans src/scripts/clodoweg.
+À RÉGLER : double-clic puis Apply Global, après Combinaison_RGB ; déjà inclus dans R_C_Preparation_rapide ; ensuite ImageSolver (phase 2) est inutile ; copie GC_Solver_auto.js dans src/scripts/clodoweg.
 
 SI :
-- résoudre aussi L, H… -&gt; solveTout true
-- ajouter la GradientCorrection -&gt; gradient true (= R_GC_Solver_auto_rapide)
+- seulement la RGB -&gt; solveTout false
+- une image en erreur -&gt; lis le bilan en fin de console, refais-la avec ImageSolver
 
 Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/GC_Solver_auto.js</parameter>
       <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="49">
+      <table id="parameters" rows="50">
          <tr>
             <td id="id">gradient</td>
             <td id="value">false</td>
          </tr>
          <tr>
+            <td id="id">solve</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
             <td id="id">solveTout</td>
-            <td id="value">false</td>
+            <td id="value">true</td>
          </tr>
          <tr>
             <td id="id">defaultDate</td>
@@ -409,7 +413,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <table id="defects" rows="0"/>
    </instance>
    <instance class="NoOperation" version="256" id="P1_rapide_instance">
-      <description>MODE RAPIDE, phase 1 — Préparation : MODE RAPIDE (galaxies) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre : R_C_Preparation_rapide ; R_GC_Solver_auto_rapide ; C_RGB_couleur sur RGB, BXT_L_H sur H, Continuum_H, H_dans_RGB, R_C_RGB_fin_rapide sur RGB, R_C_L_rapide sur L ; GHS sur L seulement ; Etoiles_LRGB ; LRGB_ajout_L ; finition. Phase 1 : R_C_Preparation_rapide à la place de LinearPatternSubtraction, Renommer_auto et Combinaison_RGB. Icône de repère, sans effet.</description>
+      <description>MODE RAPIDE, phase 1 — Préparation : MODE RAPIDE (galaxies) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre : R_C_Preparation_rapide ; R_GC_Solver_auto_rapide ; C_RGB_couleur sur RGB, BXT_L_H sur H, Continuum_H, H_dans_RGB, R_C_RGB_fin_rapide sur RGB, R_C_L_rapide sur L ; GHS sur L seulement ; Etoiles_LRGB ; LRGB_ajout_L ; finition. Phase 1 : R_C_Preparation_rapide (double-clic puis Apply Global) à la place de LinearPatternSubtraction, Renommer_auto, Combinaison_RGB et Solver_auto. Icône de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="R_C_Preparation_rapide_instance">
       <instance class="Script" version="256" enabled="true">
@@ -508,6 +512,213 @@ Détails : page docs/pixinsight-workflow.html.</description>
             <tr>
                <td id="id">copyKeywords</td>
                <td id="value">true</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/GC_Solver_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="50">
+            <tr>
+               <td id="id">gradient</td>
+               <td id="value">false</td>
+            </tr>
+            <tr>
+               <td id="id">solve</td>
+               <td id="value">true</td>
+            </tr>
+            <tr>
+               <td id="id">solveTout</td>
+               <td id="value">true</td>
+            </tr>
+            <tr>
+               <td id="id">defaultDate</td>
+               <td id="value">2020-01-01T00:00:00</td>
+            </tr>
+            <tr>
+               <td id="id">metadata_focal</td>
+               <td id="value">2939</td>
+            </tr>
+            <tr>
+               <td id="id">metadata_useFocal</td>
+               <td id="value">true</td>
+            </tr>
+            <tr>
+               <td id="id">metadata_xpixsz</td>
+               <td id="value">3.76</td>
+            </tr>
+            <tr>
+               <td id="id">metadata_resolution</td>
+               <td id="value">0.00007330116739335556</td>
+            </tr>
+            <tr>
+               <td id="id">metadata_referenceSystem</td>
+               <td id="value">ICRS</td>
+            </tr>
+            <tr>
+               <td id="id">metadata_topocentric</td>
+               <td id="value">false</td>
+            </tr>
+            <tr>
+               <td id="id">solver_version</td>
+               <td id="value">6.4.2</td>
+            </tr>
+            <tr>
+               <td id="id">solver_magnitude</td>
+               <td id="value">12</td>
+            </tr>
+            <tr>
+               <td id="id">solver_autoMagnitude</td>
+               <td id="value">true</td>
+            </tr>
+            <tr>
+               <td id="id">solver_databasePath</td>
+               <td id="value">undefined</td>
+            </tr>
+            <tr>
+               <td id="id">solver_generateErrorImg</td>
+               <td id="value">false</td>
+            </tr>
+            <tr>
+               <td id="id">solver_structureLayers</td>
+               <td id="value">5</td>
+            </tr>
+            <tr>
+               <td id="id">solver_minStructureSize</td>
+               <td id="value">0</td>
+            </tr>
+            <tr>
+               <td id="id">solver_hotPixelFilterRadius</td>
+               <td id="value">1</td>
+            </tr>
+            <tr>
+               <td id="id">solver_noiseReductionFilterRadius</td>
+               <td id="value">0</td>
+            </tr>
+            <tr>
+               <td id="id">solver_sensitivity</td>
+               <td id="value">0.5</td>
+            </tr>
+            <tr>
+               <td id="id">solver_peakResponse</td>
+               <td id="value">0.5</td>
+            </tr>
+            <tr>
+               <td id="id">solver_brightThreshold</td>
+               <td id="value">3</td>
+            </tr>
+            <tr>
+               <td id="id">solver_maxStarDistortion</td>
+               <td id="value">0.6</td>
+            </tr>
+            <tr>
+               <td id="id">solver_autoPSF</td>
+               <td id="value">false</td>
+            </tr>
+            <tr>
+               <td id="id">solver_catalogMode</td>
+               <td id="value">2</td>
+            </tr>
+            <tr>
+               <td id="id">solver_vizierServer</td>
+               <td id="value">https://vizier.cds.unistra.fr/</td>
+            </tr>
+            <tr>
+               <td id="id">solver_showStars</td>
+               <td id="value">false</td>
+            </tr>
+            <tr>
+               <td id="id">solver_showStarMatches</td>
+               <td id="value">false</td>
+            </tr>
+            <tr>
+               <td id="id">solver_showSimplifiedSurfaces</td>
+               <td id="value">false</td>
+            </tr>
+            <tr>
+               <td id="id">solver_showDistortion</td>
+               <td id="value">false</td>
+            </tr>
+            <tr>
+               <td id="id">solver_generateDistortModel</td>
+               <td id="value">false</td>
+            </tr>
+            <tr>
+               <td id="id">solver_catalog</td>
+               <td id="value">PPMXL</td>
+            </tr>
+            <tr>
+               <td id="id">solver_distortionCorrection</td>
+               <td id="value">true</td>
+            </tr>
+            <tr>
+               <td id="id">solver_rbfType</td>
+               <td id="value">101</td>
+            </tr>
+            <tr>
+               <td id="id">solver_maxSplinePoints</td>
+               <td id="value">4000</td>
+            </tr>
+            <tr>
+               <td id="id">solver_splineOrder</td>
+               <td id="value">2</td>
+            </tr>
+            <tr>
+               <td id="id">solver_splineSmoothing</td>
+               <td id="value">0.005</td>
+            </tr>
+            <tr>
+               <td id="id">solver_enableSimplifier</td>
+               <td id="value">true</td>
+            </tr>
+            <tr>
+               <td id="id">solver_simplifierRejectFraction</td>
+               <td id="value">0.1</td>
+            </tr>
+            <tr>
+               <td id="id">solver_outlierDetectionRadius</td>
+               <td id="value">160</td>
+            </tr>
+            <tr>
+               <td id="id">solver_outlierDetectionMinThreshold</td>
+               <td id="value">4</td>
+            </tr>
+            <tr>
+               <td id="id">solver_outlierDetectionSigma</td>
+               <td id="value">5</td>
+            </tr>
+            <tr>
+               <td id="id">solver_useActive</td>
+               <td id="value">true</td>
+            </tr>
+            <tr>
+               <td id="id">solver_outSuffix</td>
+               <td id="value">_ast</td>
+            </tr>
+            <tr>
+               <td id="id">solver_projection</td>
+               <td id="value">0</td>
+            </tr>
+            <tr>
+               <td id="id">solver_projectionOriginMode</td>
+               <td id="value">0</td>
+            </tr>
+            <tr>
+               <td id="id">solver_restrictToHQStars</td>
+               <td id="value">false</td>
+            </tr>
+            <tr>
+               <td id="id">solver_intersectionMode</td>
+               <td id="value">1</td>
+            </tr>
+            <tr>
+               <td id="id">solver_tryApparentCoordinates</td>
+               <td id="value">true</td>
+            </tr>
+            <tr>
+               <td id="id">solver_tryExhaustiveInitialAlignment</td>
+               <td id="value">false</td>
             </tr>
          </table>
          <parameter id="information"></parameter>
@@ -1212,28 +1423,31 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="samplesPerRow" value="15"/>
    </instance>
    <instance class="NoOperation" version="256" id="P2_rapide_instance">
-      <description>MODE RAPIDE, phase 2 — Gradient : R_GC_Solver_auto_rapide à la place de toute la phase 2 : GradientCorrection sur toutes les images ouvertes (R et H compris, pour le continuum), puis ImageSolver sur RGB. Icône de repère, sans effet.</description>
+      <description>MODE RAPIDE, phase 2 — Gradient : R_GC_Solver_auto_rapide à la place de toute la phase 2 : GradientCorrection sur toutes les images ouvertes (R et H compris, pour le continuum) ; l'astrométrie est déjà faite par R_C_Preparation_rapide. Icône de repère, sans effet.</description>
    </instance>
    <instance class="Script" version="256" id="R_GC_Solver_auto_rapide_instance">
-      <description>MODE RAPIDE, à la place d'ImageSolver : GradientCorrection sur TOUTES les images ouvertes, puis ImageSolver sur les images couleur (RGB) ; à faire AVANT C_RGB_rapide et C_L_rapide (sans GradientCorrection).
+      <description>MODE RAPIDE, à la place de la phase 2 : GradientCorrection sur TOUTES les images ouvertes (plus d'ImageSolver : fait par Solver_auto en phase 1) ; à faire AVANT C_RGB_rapide et C_L_rapide (sans GradientCorrection).
 
 LANCEMENT : double-clic sur l'icône, puis Apply Global.
 
-PRÉRÉGLÉ : script GC_Solver_auto_rapide : GradientCorrection (sans modèle de gradient) sur toutes les images ouvertes, puis ImageSolver (date par défaut si absente, réglages du matériel) sur les images couleur ; images *_stars ignorées ; une erreur n'arrête pas les autres.
+PRÉRÉGLÉ : script GC_Solver_auto.js (gradient true, solve false) : GradientCorrection (sans modèle de gradient) sur TOUTES les images ouvertes, sans ImageSolver ; images *_stars ignorées ; une erreur n'arrête pas les autres.
 
-À RÉGLER : double-clic puis Apply Global, masters et RGB ouverts ; copie GC_Solver_auto.js dans src/scripts/clodoweg ; à faire AVANT C_RGB_rapide et C_L_rapide, qui n'ont plus de GradientCorrection.
+À RÉGLER : double-clic puis Apply Global, masters et RGB ouverts, après R_C_Preparation_rapide ; à faire AVANT C_RGB_rapide et C_L_rapide, qui n'ont plus de GradientCorrection.
 
 SI :
-- résoudre aussi L, H… -&gt; solveTout true
-- une image en erreur -&gt; lis le bilan en fin de console, refais-la avec ImageSolver ou Opt_ImageSolver_seul
+- ImageSolver pas encore fait -&gt; solve true (sur les images couleur)
 
 Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/GC_Solver_auto.js</parameter>
       <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="49">
+      <table id="parameters" rows="50">
          <tr>
             <td id="id">gradient</td>
             <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">solve</td>
+            <td id="value">false</td>
          </tr>
          <tr>
             <td id="id">solveTout</td>
