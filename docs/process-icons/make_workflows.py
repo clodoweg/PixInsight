@@ -58,7 +58,7 @@ SCRIPTS = {
     'Export_TIFF': ('$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js', '', [('nom', ''), ('suffixe', ''), ('dossier', ''), ('icc', 'true')], L_DRAG),
     'Fond_auto_clair': ('$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js', '', [('cible', '0.14'), ('tolerance', '0.005'), ('grille', '8')], L_DRAG),
     'Solver_auto': ('$PXI_SRCDIR/scripts/clodoweg/GC_Solver_auto.js', '', [('gradient', 'false'), ('solve', 'true'), ('solveTout', 'true'), ('defaultDate', '2020-01-01T00:00:00')], L_GLOBAL),
-    'Turbo_1': ('$PXI_SRCDIR/scripts/clodoweg/Turbo_1.js', '', [('vueRGB', 'RGB'), ('vueL', 'L')], L_GLOBAL),
+    'Turbo_1': ('$PXI_SRCDIR/scripts/clodoweg/Turbo_1.js', '', [('vueRGB', 'RGB'), ('vueL', 'L'), ('cibleL', '0.15')], L_GLOBAL),
     'GC_Solver_auto_rapide': ('$PXI_SRCDIR/scripts/clodoweg/GC_Solver_auto.js', '', [('gradient', 'true'), ('solve', 'false'), ('solveTout', 'false'), ('defaultDate', '2020-01-01T00:00:00')], L_GLOBAL),
     'ImageSolver_Date': ('$PXI_SRCDIR/scripts/clodoweg/ImageSolver_Date.js', '', [('defaultDate', '2020-01-01T00:00:00')], L_DRAG),
     'LinearPatternSubtraction': ('$PXI_SRCDIR/scripts/clodoweg/LPS_UnClic.js', '',
@@ -1228,8 +1228,13 @@ TURBO1_JS = r"""// -------------------------------------------------------------
 //      R_C_RGB_rapide, recopiés à la génération), étirement statistique
 //      (Target Median 0,25, Blackpoint Sigma 5, lié : calcul fait ici, proche
 //      du script Statistical Stretch), GHS fond, Etoiles_auto (inclus) ;
-//   3. sur L : icône R_C_L_rapide, puis icône R_C_Fin_GHS_rapide (process
-//      natifs, réglages lus dans les icônes) ;
+//   3. sur L : icône R_C_L_rapide, puis 1er étirement (à la place de
+//      GHS_1_premier, réglé à la main en mode rapide : sans lui, GHS_2 et
+//      GHS_3 travaillent sur un L encore linéaire), puis icône
+//      R_C_Fin_GHS_rapide (process natifs, réglages lus dans les icônes).
+//      1er étirement : icône *_GHS_1_premier de l'espace de travail si tu
+//      l'as réglée (Stretch factor > 0), sinon étirement statistique de L
+//      (médiane amenée à cibleL, 0,15 par défaut, Blackpoint Sigma 5) ;
 //   4. fermeture de L_stars.
 // Ancien moteur JavaScript (pas de #engine v8 : il refuse PixelMath.prototype.RGB
 // et le moteur de LinearPatternSubtraction).
@@ -1320,6 +1325,28 @@ function runIcon( iconId, viewId )
       throw new Error( T1_TITLE + " : " + iconId + " a échoué sur " + viewId + "." );
 }
 
+// 1er étirement de L : l'icône GHS_1_premier si elle est réglée, sinon étirement statistique.
+function premierEtirementL( viewId )
+{
+   let w = ImageWindow.windowById( viewId );
+   if ( w.isNull )
+      throw new Error( T1_TITLE + " : vue " + viewId + " introuvable pour le 1er étirement." );
+   let ids = [];
+   try { ids = ProcessInstance.icons(); } catch ( e ) {}
+   for ( let k = 0; k < ids.length; ++k )
+      if ( /GHS_1_premier$/.test( ids[ k ] ) )
+      {
+         let P = ProcessInstance.fromIcon( ids[ k ] );
+         if ( P != null && P.stretchFactor > 0 )
+         {
+            run( ids[ k ], P, w.mainView );
+            console.writeln( T1_TITLE + " : 1er étirement de " + viewId + " par l'icône " + ids[ k ] + " (Stretch factor " + P.stretchFactor + ")." );
+            return;
+         }
+      }
+   statStretch( w.mainView, parseFloat( t1Param( "cibleL", "0.15" ) ), 5 );
+}
+
 function turbo1()
 {
    let vueRGB = t1Param( "vueRGB", "RGB" ), vueL = t1Param( "vueL", "L" );
@@ -1330,6 +1357,7 @@ function turbo1()
       throw new Error( T1_TITLE + " : vue " + vueRGB + " introuvable." );
    etape( "traitement linéaire et étirement de " + vueRGB ); rgbRapide( rgb.mainView );
    etape( "R_C_L_rapide sur " + vueL );        runIcon( "R_C_L_rapide", vueL );
+   etape( "1er étirement de " + vueL + " (à la place de GHS_1_premier)" ); premierEtirementL( vueL );
    etape( "R_C_Fin_GHS_rapide sur " + vueL );  runIcon( "R_C_Fin_GHS_rapide", vueL );
    let ls = ImageWindow.windowById( "L_stars" );
    if ( !ls.isNull )

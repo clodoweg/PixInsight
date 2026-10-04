@@ -1042,7 +1042,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Turbo_1.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="2">
+         <table id="parameters" rows="3">
             <tr>
                <td id="id">vueRGB</td>
                <td id="value">RGB</td>
@@ -1050,6 +1050,10 @@ Détails : page docs/pixinsight-workflow.html.</description>
             <tr>
                <td id="id">vueL</td>
                <td id="value">L</td>
+            </tr>
+            <tr>
+               <td id="id">cibleL</td>
+               <td id="value">0.15</td>
             </tr>
          </table>
          <parameter id="information"></parameter>
