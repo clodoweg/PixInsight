@@ -1008,16 +1008,16 @@ gc_r = lambda: M.instance('GradientCorrection', 'GradientCorrection', {'generate
 # L en mode rapide (choix de l'utilisateur) : SXT TOUJOURS avant l'étirement. C_L_rapide = GC, BXT, SXT linéaire, NXT, puis
 # les 3 GHS à la main, puis Etoiles_LRGB (L_stars linéaire étirée comme les étoiles RGB, luminance ajoutée à RGB_stars).
 def l_rapide(bxt):
-    return cont('C_L_rapide', [gc_r(), bxt, M.sxt('SXT_lineaire', False), M.nxt('NXT_L', 0.60, 1)])
+    return cont('C_L_rapide', [bxt, M.sxt('SXT_lineaire', False), M.nxt('NXT_L', 0.60, 1)])
 
 def l_ghs(steps):
     return [(4, *pick(steps, 'GHS_1_premier')), (4, *pick(steps, 'GHS_2_contraste')), (4, *pick(steps, 'GHS_3_fond'))]
 
-L_DESC = "GradientCorrection, BXT, SXT sur L linéaire, NXT ; L reste linéaire, sans étoiles ; L_stars gardée pour Etoiles_LRGB"
+L_DESC = "BXT, SXT sur L linéaire, NXT ; L reste linéaire, sans étoiles ; L_stars gardée pour Etoiles_LRGB"
 
 def rgb_rapide():
     """Chemin principal (choix de l'utilisateur) : SXT sur RGB LINÉAIRE, étoiles étirées par Etoiles_auto (courbe de Star Stretch, amount 6, SCNR)."""
-    lrgb_c = cont('C_RGB_rapide', [gc_r(), M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), spcc_perso('SPCC'), bxt_rgb(), M.sxt('SXT_lineaire', False),
+    lrgb_c = cont('C_RGB_rapide', [M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), spcc_perso('SPCC'), bxt_rgb(), M.sxt('SXT_lineaire', False),
                                     M.nxt('NXT_RGB', 0.80, 1), stat_auto(), GHS_FOND_R(), script('Etoiles_auto', '')])
     lha_c = cont('C_RGB_fin_rapide', [M.sxt('SXT_lineaire', False), M.nxt('NXT_RGB', 0.80, 1), stat_auto(), GHS_FOND_R(), script('Etoiles_auto', '')])
     return lrgb_c, lha_c
@@ -1025,7 +1025,7 @@ def rgb_rapide():
 def rgb_rapide_sxt_etire():
     """Option LRGB (demande de l'utilisateur) : comme C_RGB_rapide, mais SXT APRÈS l'étirement (Unscreen coché) ;
     les étoiles sortent déjà étirées : Etoiles_auto_etire (amount 0) ne fait que la saturation et le SCNR."""
-    return cont('C_RGB_rapide_SXT_etire', [gc_r(), M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), spcc_perso('SPCC'), bxt_rgb(),
+    return cont('C_RGB_rapide_SXT_etire', [M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), spcc_perso('SPCC'), bxt_rgb(),
                                             M.nxt('NXT_RGB', 0.80, 1), stat_auto(), GHS_FOND_R(), M.sxt('SXT_etire', True), script('Etoiles_auto_etire', '')])
 
 def prep_rapide(steps):

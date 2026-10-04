@@ -75,12 +75,12 @@ CHOICES = {
 
 # pour les options : quand les ajouter
 WHEN = {
-    'GC_Solver_auto': "MODE RAPIDE, à la place d'ImageSolver : GradientCorrection sur TOUTES les images ouvertes, puis ImageSolver sur les images couleur (RGB) ; ensuite décoche la GradientCorrection des conteneurs rapides",
+    'GC_Solver_auto': "MODE RAPIDE, à la place d'ImageSolver : GradientCorrection sur TOUTES les images ouvertes, puis ImageSolver sur les images couleur (RGB) ; à faire AVANT C_RGB_rapide et C_L_rapide (sans GradientCorrection)",
     'Mode_rapide': "repère du mode rapide (galaxies), sans effet : lis sa description pour l'ordre",
     'C_Preparation_rapide': "MODE RAPIDE, à la place d'E00 à E02 : masters seuls ouverts, double-clic puis Apply Global (ou glisse sur L) : Renommer_auto, LinearPatternSubtraction, Combinaison_RGB en un seul conteneur",
-    'C_RGB_rapide': "MODE RAPIDE, à la place de C_RGB_lineaire, Statistical_Stretch, GHS_3_fond (sur RGB) et Star_Stretch : sur RGB après ImageSolver ; GradientCorrection, BXT Correct Only, SPCC, BXT, SXT linéaire, NXT, Statistical Stretch sans dialogue, GHS fond, Etoiles_auto",
+    'C_RGB_rapide': "MODE RAPIDE, à la place de C_RGB_lineaire, Statistical_Stretch, GHS_3_fond (sur RGB) et Star_Stretch : sur RGB après GC_Solver_auto ; BXT Correct Only, SPCC, BXT, SXT linéaire, NXT, Statistical Stretch sans dialogue, GHS fond, Etoiles_auto",
     'C_RGB_rapide_SXT_etire': "MODE RAPIDE, à la place de C_RGB_rapide : même conteneur mais StarXTerminator APRÈS l'étirement (Unscreen coché) ; étoiles déjà étirées (Etoiles_auto sans étirement : saturation et SCNR seulement)",
-    'C_L_rapide': "MODE RAPIDE, à la place de C_L_lineaire : sur L ; GradientCorrection, BXT, SXT linéaire (L_stars gardée), NXT ; ensuite les GHS du chemin principal sur L",
+    'C_L_rapide': "MODE RAPIDE, à la place de C_L_lineaire : sur L après GC_Solver_auto ; BXT, SXT linéaire (L_stars gardée), NXT ; ensuite les GHS du chemin principal sur L",
     'STF': "n'importe quand : double-clic pour ouvrir la fenêtre ScreenTransferFunction (bouton A = auto-étirement de l'affichage, Reset pour revenir), pixels inchangés",
     'C_RGB_couleur_rapide': "MODE RAPIDE LHaRGB, à la place de C_RGB_couleur : sur RGB ; GradientCorrection, BXT Correct Only, SPCC, BXT",
     'C_H_rapide': "MODE RAPIDE LHaRGB, à la place de BXT_L_H sur H : sur H ; GradientCorrection, BXT ; puis Continuum_H et H_dans_RGB du chemin principal",

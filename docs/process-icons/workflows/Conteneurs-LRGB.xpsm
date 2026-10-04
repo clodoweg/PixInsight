@@ -201,7 +201,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <instance class="NoOperation" version="256" id="Opt_Mode_rapide_instance">
       <description>OPTION — repère du mode rapide (galaxies), sans effet : lis sa description pour l'ordre.
 
-PRÉRÉGLÉ : MODE RAPIDE (galaxies) — icône de repère, sans effet. Ordre LRGB : C_Preparation_rapide (P1 options) ; ImageSolver (E03) ; C_RGB_rapide sur RGB (ou C_RGB_rapide_SXT_etire) et C_L_rapide sur L (P3 options) ; puis chemin principal : GHS_1_premier, GHS_2_contraste, GHS_3_fond sur L SEULEMENT (le RGB est déjà étiré), pas de Statistical_Stretch ni de Star_Stretch (étoiles déjà étirées), Etoiles_LRGB, LRGB_ajout_L et la finition en 5 parties. LHaRGB : C_Preparation_rapide ; ImageSolver ; GradientCorrection seule sur R (P2 options) ; C_RGB_couleur_rapide sur RGB, C_H_rapide sur H, Continuum_H et H_dans_RGB (chemin principal), C_RGB_fin_rapide sur RGB, C_L_rapide sur L ; puis comme en LRGB.
+PRÉRÉGLÉ : MODE RAPIDE (galaxies) — icône de repère, sans effet. Ordre LRGB : C_Preparation_rapide (P1 options) ; GC_Solver_auto (P2 options : GradientCorrection sur toutes les images puis ImageSolver) ; C_RGB_rapide sur RGB (ou C_RGB_rapide_SXT_etire) et C_L_rapide sur L (P3 options) ; puis chemin principal : GHS_1_premier, GHS_2_contraste, GHS_3_fond sur L SEULEMENT (le RGB est déjà étiré), pas de Statistical_Stretch ni de Star_Stretch (étoiles déjà étirées), Etoiles_LRGB, LRGB_ajout_L et la finition en 5 parties. LHaRGB : C_Preparation_rapide ; ImageSolver ; GradientCorrection seule sur R (P2 options) ; C_RGB_couleur_rapide sur RGB, C_H_rapide sur H, Continuum_H et H_dans_RGB (chemin principal), C_RGB_fin_rapide sur RGB, C_L_rapide sur L ; puis comme en LRGB.
 
 À RÉGLER : rien ; c'est un mémo.
 
@@ -654,13 +654,13 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <description>OPTIONS de la phase 2 — Gradient : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
    </instance>
    <instance class="Script" version="256" id="Opt_GC_Solver_auto_instance">
-      <description>OPTION — MODE RAPIDE, à la place d'ImageSolver : GradientCorrection sur TOUTES les images ouvertes, puis ImageSolver sur les images couleur (RGB) ; ensuite décoche la GradientCorrection des conteneurs rapides.
+      <description>OPTION — MODE RAPIDE, à la place d'ImageSolver : GradientCorrection sur TOUTES les images ouvertes, puis ImageSolver sur les images couleur (RGB) ; à faire AVANT C_RGB_rapide et C_L_rapide (sans GradientCorrection).
 
 LANCEMENT : double-clic sur l'icône, puis Apply Global.
 
 PRÉRÉGLÉ : script GC_Solver_auto : GradientCorrection (sans modèle de gradient) sur toutes les images ouvertes, puis ImageSolver (date par défaut si absente, réglages du matériel) sur les images couleur ; images *_stars ignorées ; une erreur n'arrête pas les autres.
 
-À RÉGLER : double-clic puis Apply Global, masters et RGB ouverts ; copie GC_Solver_auto.js dans src/scripts/clodoweg ; ensuite décoche GradientCorrection dans les conteneurs rapides (double passe inutile).
+À RÉGLER : double-clic puis Apply Global, masters et RGB ouverts ; copie GC_Solver_auto.js dans src/scripts/clodoweg ; à faire AVANT C_RGB_rapide et C_L_rapide, qui n'ont plus de GradientCorrection.
 
 SI :
 - résoudre aussi L, H… -&gt; solveTout true
@@ -1368,32 +1368,6 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="information"></parameter>
    </instance>
    <instance class="ProcessContainer" id="Opt_C_RGB_rapide_instance">
-      <instance class="GradientCorrection" version="1" enabled="true">
-         <parameter id="reference" value="0.50"/>
-         <parameter id="lowThreshold" value="0.20"/>
-         <parameter id="lowTolerance" value="0.50"/>
-         <parameter id="highThreshold" value="0.05"/>
-         <parameter id="highTolerance" value="0.00"/>
-         <parameter id="iterations" value="15"/>
-         <parameter id="scale" value="5.00"/>
-         <parameter id="smoothness" value="0.60"/>
-         <parameter id="downsamplingFactor" value="16"/>
-         <parameter id="protection" value="true"/>
-         <parameter id="protectionThreshold" value="0.10"/>
-         <parameter id="protectionAmount" value="0.50"/>
-         <parameter id="protectionSmoothingFactor" value="16"/>
-         <parameter id="lowClippingLevel" value="0.000076"/>
-         <parameter id="automaticConvergence" value="true"/>
-         <parameter id="convergenceLimit" value="0.00001000"/>
-         <parameter id="maxIterations" value="10"/>
-         <parameter id="useSimplification" value="false"/>
-         <parameter id="simplificationDegree" value="1"/>
-         <parameter id="simplificationScale" value="1024"/>
-         <parameter id="generateSimpleModel" value="false"/>
-         <parameter id="generateGradientModel" value="false"/>
-         <parameter id="generateProtectionMasks" value="false"/>
-         <parameter id="gridSamplingDelta" value="16"/>
-      </instance>
       <instance class="BlurXTerminator" version="256" enabled="true">
          <parameter id="ml_version" value="4"/>
          <parameter id="correct_only" value="true"/>
@@ -1606,32 +1580,6 @@ Détails : page docs/pixinsight-workflow.html.</description>
       </instance>
    </instance>
    <instance class="ProcessContainer" id="Opt_C_RGB_rapide_SXT_etire_instance">
-      <instance class="GradientCorrection" version="1" enabled="true">
-         <parameter id="reference" value="0.50"/>
-         <parameter id="lowThreshold" value="0.20"/>
-         <parameter id="lowTolerance" value="0.50"/>
-         <parameter id="highThreshold" value="0.05"/>
-         <parameter id="highTolerance" value="0.00"/>
-         <parameter id="iterations" value="15"/>
-         <parameter id="scale" value="5.00"/>
-         <parameter id="smoothness" value="0.60"/>
-         <parameter id="downsamplingFactor" value="16"/>
-         <parameter id="protection" value="true"/>
-         <parameter id="protectionThreshold" value="0.10"/>
-         <parameter id="protectionAmount" value="0.50"/>
-         <parameter id="protectionSmoothingFactor" value="16"/>
-         <parameter id="lowClippingLevel" value="0.000076"/>
-         <parameter id="automaticConvergence" value="true"/>
-         <parameter id="convergenceLimit" value="0.00001000"/>
-         <parameter id="maxIterations" value="10"/>
-         <parameter id="useSimplification" value="false"/>
-         <parameter id="simplificationDegree" value="1"/>
-         <parameter id="simplificationScale" value="1024"/>
-         <parameter id="generateSimpleModel" value="false"/>
-         <parameter id="generateGradientModel" value="false"/>
-         <parameter id="generateProtectionMasks" value="false"/>
-         <parameter id="gridSamplingDelta" value="16"/>
-      </instance>
       <instance class="BlurXTerminator" version="256" enabled="true">
          <parameter id="ml_version" value="4"/>
          <parameter id="correct_only" value="true"/>
@@ -1844,32 +1792,6 @@ Détails : page docs/pixinsight-workflow.html.</description>
       </instance>
    </instance>
    <instance class="ProcessContainer" id="Opt_C_L_rapide_instance">
-      <instance class="GradientCorrection" version="1" enabled="true">
-         <parameter id="reference" value="0.50"/>
-         <parameter id="lowThreshold" value="0.20"/>
-         <parameter id="lowTolerance" value="0.50"/>
-         <parameter id="highThreshold" value="0.05"/>
-         <parameter id="highTolerance" value="0.00"/>
-         <parameter id="iterations" value="15"/>
-         <parameter id="scale" value="5.00"/>
-         <parameter id="smoothness" value="0.60"/>
-         <parameter id="downsamplingFactor" value="16"/>
-         <parameter id="protection" value="true"/>
-         <parameter id="protectionThreshold" value="0.10"/>
-         <parameter id="protectionAmount" value="0.50"/>
-         <parameter id="protectionSmoothingFactor" value="16"/>
-         <parameter id="lowClippingLevel" value="0.000076"/>
-         <parameter id="automaticConvergence" value="true"/>
-         <parameter id="convergenceLimit" value="0.00001000"/>
-         <parameter id="maxIterations" value="10"/>
-         <parameter id="useSimplification" value="false"/>
-         <parameter id="simplificationDegree" value="1"/>
-         <parameter id="simplificationScale" value="1024"/>
-         <parameter id="generateSimpleModel" value="false"/>
-         <parameter id="generateGradientModel" value="false"/>
-         <parameter id="generateProtectionMasks" value="false"/>
-         <parameter id="gridSamplingDelta" value="16"/>
-      </instance>
       <instance class="BlurXTerminator" version="256" enabled="true">
          <parameter id="ml_version" value="4"/>
          <parameter id="correct_only" value="false"/>

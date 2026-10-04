@@ -13,9 +13,9 @@
 // Une image en erreur n'arrête pas les autres : la console donne le détail.
 // Les images au nom se terminant par « _stars » sont ignorées.
 //
-// Après ce script, les conteneurs rapides refont une GradientCorrection
-// (C_RGB_rapide, C_L_rapide…) : décoche-la dans le conteneur (double-clic),
-// une deuxième passe n'apporte rien.
+// À lancer AVANT C_RGB_rapide, C_RGB_rapide_SXT_etire et C_L_rapide, qui n'ont
+// plus de GradientCorrection. En LHaRGB, C_RGB_couleur_rapide et C_H_rapide en
+// ont encore une : décoche-la (double-clic sur le conteneur) après ce script.
 //
 // #engine v8 : exigé par le code d'ImageSolver (syntaxe class).
 // Installation (Mac et PC) : dans src/scripts/clodoweg de PixInsight, à côté
