@@ -467,6 +467,19 @@ details.more > summary:hover { color: var(--accent); }
       <li><strong>Lightroom</strong>, si tu veux : import du JPEG ou du PSD pour le catalogue et les exports web.</li>
     </ol>
     <p>Pour une série de galaxies : enregistre les étapes 2 et 3 comme une action Photoshop ou un paramètre prédéfini Camera Raw, et ne retouche à la main que l'étape 4. Pas de nouvel étirement après l'export : le TIFF 16 bits est fait pour des retouches légères.</p>
+    <h4>Même marche à suivre dans Affinity</h4>
+    <ol>
+      <li><strong>PixInsight</strong> : <code style="font-family:var(--mono)">Opt_Export_TIFF</code> (TIFF 16 bits sRGB), comme pour Photoshop.</li>
+      <li><strong>Affinity</strong> (version gratuite unifiée de Canva, espace Photo) : ouvre le TIFF ; en haut du document, vérifie RGB/16 et sRGB (Document › Convertir le format / profil ICC si besoin). Tout ce qui suit se fait en calques de réglage ou de filtre en direct : rien n'est détruit, chaque réglage reste modifiable.</li>
+      <li><strong>TSL</strong> (calque de réglage HSL) : choisis le point de couleur bleu, élargis les repères de la roue jusqu'aux cyans, saturation −10 à −15 (bras trop cyan).</li>
+      <li><strong>Vibrance</strong> (calque de réglage Vibrance) : +5 à +10.</li>
+      <li><strong>Clarté</strong> (Calque › Nouveau calque de filtre en direct › Netteté › Clarté) : faible, 5 à 10 %, avec un rayon moyen ; plus fort, le bruit ressort.</li>
+      <li><strong>Histogramme</strong> (studio Histogramme) : le noir ne doit pas être écrêté (fond déjà à 0,12).</li>
+      <li><strong>Retouches</strong> : nouveau calque pixel vide au-dessus, outil Pinceau d'inpainting ou Pinceau correcteur, option « Calques actuel et inférieurs », sur une traînée de satellite ou un défaut.</li>
+      <li><strong>Halo coloré d'une étoile brillante</strong>, si besoin : un deuxième calque HSL (bleus, saturation baissée), masque inversé (tout noir) puis peint en blanc seulement sur le halo.</li>
+      <li><strong>Enregistrement</strong> : fichier .af (calques gardés), puis Fichier › Exporter, JPEG, profil sRGB.</li>
+    </ol>
+    <p>Pour une série : enregistre les étapes 3 à 5 comme macro (studio Macro : Enregistrer, puis Enregistrer dans la bibliothèque), applicable d'un clic ou par Fichier › Traitement par lots. Les macros astro gratuites de James Ritson s'ajoutent à la bibliothèque de macros (réduction d'étoiles, séparation étoiles / fond).</p>
     <h3>Options rangées dans le même fichier</h3>
     <ul>
       <li><strong>Boost_final</strong> (partie 5, icône Opt_Boost_final, avant C_Fond_final) : sur l'image FINIE, étoiles comprises. Masque de luminance tiré de <code style="font-family:var(--mono)">L</code> sans étoiles, dont on retire aussi les étoiles de <code style="font-family:var(--mono)">RGB_stars</code> (aucune étoile n'est touchée, même sur la galaxie), puis CurvesTransformation sur la chrominance (c : 0,46 → 0,54) et la saturation (S : 0,46 → 0,54), puis masque retiré. Rejouable. <code style="font-family:var(--mono)">L</code> doit être encore ouverte.</li>
