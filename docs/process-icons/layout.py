@@ -29,7 +29,7 @@ PHASE = {
 
 NB = ('RSHO', 'SHO', 'HOO')
 LUM = ('LRGB', 'LHA')   # workflows avec luminance : par défaut Statistical Stretch sur le RGB, GHS sur L
-OPT = {'ImageSolver_seul', 'Boost_finition_light', 'Boost_finition', 'WBPP', 'CC_auto', 'Find_Background', 'LinearFit_ref_H', 'Continuum_auto', 'H_dans_L', 'NBRGBCombination', 'HDRMT_30', 'HDRMT_50', 'HDRMT_eclat', 'Boost_final', 'Fond_desature', 'NXT_final', 'NXT_final_doux', 'NXT_final_fort', 'Fond_auto_clair', 'Nettoyage_sans_etoiles', 'ICC_sRGB', 'Export_TIFF', 'GC_Solver_auto_rapide', 'Solver_auto', 'SXT_non_lineaire', 'Mode_rapide', 'C_Preparation_rapide', 'C_RGB_rapide', 'C_RGB_rapide_SXT_etire', 'C_L_rapide', 'STF', 'C_RGB_couleur_rapide', 'C_H_rapide', 'C_RGB_fin_rapide',
+OPT = {'ImageSolver_seul', 'Boost_finition_light', 'Boost_finition', 'WBPP', 'CC_auto', 'Find_Background', 'LinearFit_ref_H', 'Continuum_auto', 'H_dans_L', 'NBRGBCombination', 'HDRMT_30', 'HDRMT_50', 'HDRMT_eclat', 'Boost_final', 'Fond_desature', 'NXT_final', 'NXT_final_doux', 'NXT_final_fort', 'Fond_auto_clair', 'Nettoyage_sans_etoiles', 'ICC_sRGB', 'Export_TIFF', 'GC_Solver_auto_rapide', 'SXT_non_lineaire', 'Mode_rapide', 'C_Preparation_rapide', 'C_RGB_rapide', 'C_RGB_rapide_SXT_etire', 'C_L_rapide', 'STF', 'C_RGB_couleur_rapide', 'C_H_rapide', 'C_RGB_fin_rapide',
        'MT_etoiles', 'Halo_B_Gon', 'CorrectMagentaStars', 'SCNR_SHO', 'Perfect_Palette_Picker', 'NBColourMapper', 'H_en_luminance',
        'Etoiles_HOO_synth', 'DualBand_H', 'DualBand_O', 'SPFC_S'}
 
@@ -76,7 +76,6 @@ CHOICES = {
 # pour les options : quand les ajouter
 WHEN = {
     'SXT_non_lineaire': "double-clic : ouvre StarXTerminator réglé pour une image ÉTIRÉE (Unscreen coché, Generate star image coché) ; à glisser sur une image non linéaire qui a encore des étoiles",
-    'Solver_auto': "MODE RAPIDE : ImageSolver sur les images couleur ouvertes (toutes avec solveTout), SANS GradientCorrection, en fin de préparation ; si tu l'utilises, GC_Solver_auto_rapide refera l'astrométrie : mets solveTout false et ne garde que sa GradientCorrection, ou passe gradient à true ici",
     'GC_Solver_auto_rapide': "MODE RAPIDE, à la place d'ImageSolver : GradientCorrection sur TOUTES les images ouvertes, puis ImageSolver sur les images couleur (RGB) ; à faire AVANT C_RGB_rapide et C_L_rapide (sans GradientCorrection)",
     'Mode_rapide': "repère du mode rapide (galaxies), sans effet : lis sa description pour l'ordre",
     'C_Preparation_rapide': "MODE RAPIDE, à la place d'E00 à E02 : masters seuls ouverts, double-clic puis Apply Global (ou glisse sur L) : Renommer_auto, LinearPatternSubtraction, Combinaison_RGB en un seul conteneur",
