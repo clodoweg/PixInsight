@@ -465,3 +465,86 @@ Points clos au dernier contrôle (30 septembre 2026) :
 - Passe de simplification de la documentation (4 octobre 2026, demande de l'utilisateur : « refais une passe sur la doc et supprime tout ce qui n'est pas essentiel, qui est trop, inutile ou superflu » ; choix : tout garder, mais plus court) : page réduite d’environ 29 000 à 16 000 mots de texte (colonnes « Source » des tableaux retirées : les sources restent dans ce fichier ; blocs « Par filtre » des fiches outils retirés ; historique et détails répétés supprimés) ; README des icônes et idees-acceleration.md réécrits.
 - Etoiles_grosses.js (4 octobre 2026, demande de l'utilisateur : « je voudrais pouvoir réduire juste les grosses [étoiles] », Etoiles_reduites réduisant toutes les étoiles) : script de la fiche ; masque par ouverture morphologique (MorphologicalTransformation, disque de 7 px sur une copie à 2000 px, même principe que Nettoyage_sans_etoiles), puis mtf(0,70) sur la luminance avec le même facteur sur R, G, B. Réglages par défaut choisis par simulation sur des étoiles synthétiques (faible et moyenne : masque 0 ; brillante : 0,35 ; très brillante : 1), non testés dans PixInsight.
 - Halo-B-Gon et petites étoiles (4 octobre 2026, retour de l'utilisateur : « il réduit et efface aussi toutes les petites étoiles ») : cohérent avec le code lu (v2.1 : masque = luminosité inversée moins les petites structures, qui ne protège que les cœurs ; courbe 0,75 → 0,40 sur les tons moyens, dont sont faites les petites étoiles). Descriptions mises à jour : Etoiles_grosses conseillé à la place.
+
+## Critique LRGB et LHaRGB (4 octobre 2026)
+
+Demande de l'utilisateur : « aller chercher encore de nouvelles sources sur Internet, et refaire une complète critique de mes process icônes en LRGB et HaRGB ». Rapport : `docs/critique-lrgb-lhargb.html`. Sources nouvelles (*(résumé)* : vue seulement par moteur de recherche, Cloudy Nights et AstroBin bloquant la lecture directe) :
+
+- Tutoriel — [Urban Astrophotography, IntegerResample : quand binner](https://urbanastrophotography.com/pixinsight-guide-integerresample-knowing-when-to-bin-your-data/)
+- Officiel — [Forum PixInsight, CMOS software binning et SNR](https://pixinsight.com/forum/index.php?threads/cmos-software-binning-integerresample-and-increase-in-snr.15983/) *(résumé)*
+- Forum — [Stargazers Lounge, BXT et données suréchantillonnées](https://stargazerslounge.com/topic/404242-blurxterminator-and-oversampled-data/) *(résumé)*
+- Tutoriel — [AstroWorldCreations, How bad is oversampling?](https://www.astroworldcreations.com/blog/oversampling) *(résumé)*
+- Tutoriel — [Galactic Hunter, ajouter le Hα au RGB des galaxies](https://www.galactic-hunter.com/post/hargb-combination-pixinsight)
+- Forum — [Cloudy Nights, combiner Hα et LRGB dans les galaxies](https://www.cloudynights.com/forums/topic/751206-how-to-combine-ha-with-lrgb-in-galaxies/) *(résumé)*
+- Forum — [Combining Ha with LRGB](https://www.cloudynights.com/forums/topic/876046-combining-ha-with-lrgb-will-this-work/) *(résumé)*
+- Tutoriel — [Starlust Astroguide, MAS – Multiscale Adaptive Stretch](https://astroguide.starlust.de/html/MAS-MultiscaleAdaptiveStretch.html)
+- Officiel — [PixInsight Development, The MultiscaleAdaptiveStretch Tool](https://pixinsight.net/dev/index.php?threads/the-multiscaleadaptivestretch-tool.3/) *(résumé)*
+- Forum — [AstroBin, MAS in PixInsight](https://app.astrobin.com/forum/topic/211006/multiscale-adaptive-stretch-mas-in-pixinsight) *(résumé)*
+- Forum — [Cloudy Nights, MAS vs VeraLux](https://www.cloudynights.com/forums/topic/988998-multiscale-adaptive-stretch-pixinsights-answer-to-veralux-hypermetric-stretch/) *(résumé)*
+- Forum — [Cloudy Nights, new MAS](https://www.cloudynights.com/forums/topic/988990-pixinsight-new-multiscaleadaptivestretch-mas/) *(résumé)*
+- Forum — [Cloudy Nights, BXT introducing artifacts](https://www.cloudynights.com/forums/topic/956850-blurxterminator-introducing-artifacts/) *(résumé)*
+- Forum — [Stargazers Lounge, BXT AI4](https://stargazerslounge.com/topic/417114-blur-xterminator-ai4-disaster/) *(résumé)*
+- Forum — [IceInSpace, BlurXterminator](https://www.iceinspace.com.au/forum/archive/index.php/t-203665.html) *(résumé)*
+- Officiel — [Cosmic Photons, script SyntheticLuminance](https://www.cosmicphotons.com/pi-scripts/syntheticluminance/) *(résumé)*
+- Forum — [AstroBin, Synthetic Super Luminance Made Easy](https://app.astrobin.com/forum/topic/254071/pleiades-astrophoto-pixinsight/synthetic-super-luminance-made-easy) *(résumé)*
+- Forum — [Cloudy Nights, super luminance](https://www.cloudynights.com/topic/788128-some-questions-around-super-luminance/) *(résumé)*
+- Forum — [Stargazers Lounge, M33 with Super Luminance](https://stargazerslounge.com/topic/278949-m33-with-super-luminance/) *(résumé)*
+- Tutoriel — [Ron Brecher, NGC 7640 (C14 + QHY600M bin 2)](https://astrodoc.ca/ngc-7640/)
+- Forum — [Cloudy Nights, QHY600M : régler la vitesse USB contre le FPN](https://www.cloudynights.com/forums/topic/804987-qhy600m-tuning-the-usb-speed-to-minimize-fpn/) *(résumé)*
+- Forum — [AstroBin, QHY600 banding issues and mode choices](https://www.astrobin.com/forum/c/equipment-forums/qhyccd-qhy600ph-m/qhy600-banding-issues-and-mode-choices/) *(résumé)*
+- Tutoriel — [Atscope, QHY600m review](http://www.atscope.com.au/BRO/tutorials/QHY600.html) *(résumé)*
+- Tutoriel — [ScopeTrader, PixInsight 1.9.5](https://scopetrader.com/pixinsight-1.9.5-lockhart-update-brings-machine-learning-and-speed/)
+- Forum — [AstroBin, MARS DR2 et luminance](https://app.astrobin.com/forum/topic/245953/pixinsight-gradient-correction-issues-with-mars-dr2-and-luminance-frame) *(résumé)*
+- Forum — [AstroBin, MARS DR2 release](https://app.astrobin.com/forum/topic/242060/mars-dr2-release-for-pixinsight-msgc) *(résumé)*
+- Forum — [Cloudy Nights, GradientCorrection vs GraXpert](https://www.cloudynights.com/forums/topic/915961-gradient-correction-vs-graxpert/) *(résumé)*
+- Tutoriel — [Brian G. Weber, New Gradient Correction](https://blog.briangweber.com/gradient-correction/) *(résumé)*
+- Tutoriel — [Ron Brecher, NGC 2903](https://astrodoc.ca/ngc-2903/)
+- Tutoriel — [Cosgrove's Cosmos, Markarian's Chain LRGB (2025)](https://cosgrovescosmos.com/projects/markarians-chain-4-22-25)
+- Tutoriel — [How I Processed M81, M82 & NGC 3077](https://cosgrovescosmos.com/image-processing/m81-82-ngc3077-process)
+- Forum — [Cloudy Nights, test de NoiseXTerminator](https://www.cloudynights.com/articles/astro-gear-today/reviews/software/noise-be-gone33-testing-rc-astro-noisexterminator-r4568/) *(résumé)*
+- Tutoriel — [Astrocamp, quand utiliser NoiseXTerminator](https://astrocamp.eu/en/sqsa-when-to-use-noise-x-terminator/) *(résumé)*
+- Forum — [AstroBin, MLDenoise](https://app.astrobin.com/forum/topic/254863/pleiades-astrophoto-pixinsight/mldenoise) *(résumé)*
+- Forum — [Cloudy Nights, nouvel outil de réduction de bruit PixInsight](https://www.cloudynights.com/forums/topic/1003457-pis-new-noise-reduction-tool-preview-available-only-for-arm-macs/) *(résumé)*
+- Tutoriel — [Adam Block Studios, M51 (soustraction du continuum)](https://www.adamblockstudios.com/categories/m51) *(résumé)*
+- Tutoriel — [Ron Brecher, M51](https://astrodoc.ca/m51/)
+- Officiel — [NightPhotons, PhotometricContinuumSubtraction](https://www.nightphotons.com/software/photometric-continuum-subtraction/)
+- Officiel — [GitHub charleshagen/pixinsight](https://github.com/charleshagen/pixinsight) *(résumé)*
+- Tutoriel — [Ron Brecher, M101 (QHY600M en Hα)](https://astrodoc.ca/m101/)
+- Tutoriel — [Cosgrove's Cosmos, M31 en LHaRGB](https://cosgrovescosmos.com/projects/m31-lhargb)
+- Forum — [AstroBin, How should I combine Ha with LRGB?](https://app.astrobin.com/forum/topic/30628/how-should-i-combine-ha-with-lrgb) *(résumé)*
+- Forum — [Stargazers Lounge, Ha et OIII dans un LRGB d'Andromède](https://stargazerslounge.com/topic/428143-how-to-add-oiii-and-ha-in-lrgb-andromeda-galaxy/) *(résumé)*
+- Forum — [AstroBin, Adding L data to RGB in PixInsight](https://ssr.app.astrobin.com/forum/topic/211402/processing/adding-l-data-to-rgb-data-in-pixinsight) *(résumé)*
+- Officiel — [GitHub, VeraLux pour PixInsight](https://github.com/lucasssvaz/VeraLuxPorting) *(résumé)*
+- Tutoriel — [Sky and Rockets, VeraLux HMS](https://skyandrockets.blogspot.com/2025/12/experimenting-with-new-pixinsight-tool.html) *(résumé)*
+- Forum — [Stargazers Lounge, VeraLux Hypermetric Stretch](https://stargazerslounge.com/topic/440732-siril-veralux-hypermetric-stretch/) *(résumé)*
+- Officiel — [Forum PixInsight, RGB/LRGB combination : linéaire ou non (Juan Conejero)](https://pixinsight.com/forum/index.php?threads/rgb-lrgb-combination-linear-vs-non-linear.17893/)
+- Tutoriel — [The Astro Geeks, PixInsight LRGB pas à pas](https://www.theastrogeek.com/dark_sky_journal/pixinsight-lrgb-combine-tutorial)
+- Forum — [Cloudy Nights, garder la couleur des étoiles en LRGB](https://www.cloudynights.com/forums/topic/533065-keeping-star-color-in-pixinsight-lrgb/) *(résumé)*
+- Forum — [red star blowouts on LRGB](https://www.cloudynights.com/topic/678404-pi-issues-with-red-star-blowouts-on-lrgb-combination/) *(résumé)*
+- Tutoriel — [ScopeTrader, Adding Luminance](https://scopetrader.com/adding-luminance:-the-missing-layer-for-sharper-astrophotography/) *(résumé)*
+- Officiel — [Forum PixInsight, Combining Lum with RGB](https://pixinsight.com/forum/index.php?threads/combining-lum-with-rgb.8823/) *(résumé)*
+- Tutoriel — [Ron Brecher, NGC 4236](https://astrodoc.ca/ngc-4236/) *(résumé)*
+- Tutoriel — [bf-astro, HDRMultiscaleTransform](http://bf-astro.com/tutorial/HDRMultiscaleTrans.htm) *(résumé)*
+- Tutoriel — [Sky at Night, galaxies vues par la tranche](https://www.skyatnightmagazine.com/astrophotography/astrophoto-tips/image-processing-edge-on-galaxies) *(résumé)*
+- Officiel — [Forum PixInsight, Enhancing Dust Lanes](https://pixinsight.com/forum/index.php?threads/enhancing-dust-lanes.22459/) *(résumé)*
+- Tutoriel — [The Coldest Nights, Multiscale star reduction](https://thecoldestnights.com/2020/08/pixinsight-multiscale-star-reduction/)
+- Officiel — [MKStarReduction](https://mhkastro.github.io/MKStarReduction/) *(résumé)*
+- Forum — [Cloudy Nights, MKStarReduction v1.0](https://www.cloudynights.com/forums/topic/1005960-new-star-reduction-script-mkstarreduction-v10-for-pixinsight/) *(résumé)*
+- Tutoriel — [DeepSkyColors, Star size reduction](https://www.deepskycolors.com/apps/star-size-reduction-via-morphological-transformations/) *(résumé)*
+- Forum — [Stargazers Lounge, réduire seulement les plus grosses étoiles](https://stargazerslounge.com/topic/324234-reducing-only-the-biggest-brightest-stars-in-pi/) *(résumé)*
+- Officiel — [Forum PixInsight, New script ScreenStars](https://pixinsight.com/forum/index.php?threads/new-script-screenstars.21098/) *(résumé)*
+- Officiel — [RS Astro, ReintegrateStars](https://www.rsastro.com/reintegratestars/) *(résumé)*
+- Tutoriel — [Sky at Night, améliorer les fonds de ciel](https://www.skyatnightmagazine.com/astrophotography/astrophoto-tips/improve-sky-backgrounds) *(résumé)*
+- Forum — [Cloudy Nights, noirceur optimale du fond](https://www.cloudynights.com/forums/topic/819146-what-is-the-optimal-background-blackness-is-it-subjective/) *(résumé)*
+- Tutoriel — [Utah Desert Remote, combiner RGB et narrowband](https://utahdesertremote.com/simplifying-the-process-of-combining-rgb-and-narrowband-data/) *(résumé)*
+- Tutoriel — [Ron Brecher, combiner couleur et narrowband (NBRGBCombination)](https://astrodoc.ca/combining-colour-narrowband-images/)
+- Tutoriel — [Sky at Night, renforcer une galaxie sans toucher aux étoiles](https://www.skyatnightmagazine.com/astrophotography/astrophoto-tips/pixinsight-enhance-galaxy-brightness-without-affecting-stars)
+- Forum — [Linear image StarXterminator](https://www.cloudynights.com/forums/topic/874541-linear-image-starxterminator/) *(résumé)*
+- Officiel — [Forum PixInsight, Star De-emphasizer (méthode Adam Block)](https://pixinsight.com/forum/index.php?threads/star-de-emphasizer-script-adam-blocks-star-reduction-method.16034/) *(résumé)*
+- Tutoriel — [Chaotic Nebula, SPCC (G2V ou Average Spiral)](https://chaoticnebula.com/color-balancing-with-pixinsight-spectrophotometric-color-calibration/) *(résumé)*
+- Officiel — [Forum PixInsight, SPCC white reference](https://pixinsight.com/forum/index.php?threads/spcc-white-reference-use-stars-in-image-option.22049/) *(résumé)*
+- Tutoriel — [Siril, tutoriel GHS (HP et b contre l'éclatement des étoiles)](https://siril.org/tutorials/ghs/) *(résumé)*
+- Forum — [Cloudy Nights, Proper blending of Ha with LRGB](https://www.cloudynights.com/forums/topic/822468-proper-blending-of-ha-w-lrgb/) *(résumé)*
+- Forum — [AstroBin, Hα non linéaire et LRGB](https://ssr.app.astrobin.com/forum/topic/168568/pleiades-astrophoto-pixinsight/integrating-ha-non-linear-master-with-lrgb-or-rgb-non-linear-master-without-using-pixelmath) *(résumé)*
+
+Non vérifié : réglages de Ron Brecher et Dave Cosgrove lus sur leurs pages (pratique d'imageurs, pas de documentation éditeur) ; plages BXT pour galaxies (Sharpen Stars 0,15–0,20, Nonstellar 0,20–0,35) issues d'un résumé de forum ; paramètres de MAS d'après Starlust Astroguide, l'article PixInsight n'ayant pas pu être lu.
