@@ -58,6 +58,7 @@ SCRIPTS = {
     'Export_TIFF': ('$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js', '', [('nom', ''), ('suffixe', ''), ('dossier', ''), ('icc', 'true')], L_DRAG),
     'Fond_auto_clair': ('$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js', '', [('cible', '0.14'), ('tolerance', '0.005'), ('grille', '8')], L_DRAG),
     'Solver_auto': ('$PXI_SRCDIR/scripts/clodoweg/GC_Solver_auto.js', '', [('gradient', 'false'), ('solve', 'true'), ('solveTout', 'true'), ('defaultDate', '2020-01-01T00:00:00')], L_GLOBAL),
+    'Turbo_1': ('$PXI_SRCDIR/scripts/clodoweg/Turbo_1.js', '', [('vueRGB', 'RGB'), ('vueL', 'L')], L_GLOBAL),
     'GC_Solver_auto_rapide': ('$PXI_SRCDIR/scripts/clodoweg/GC_Solver_auto.js', '', [('gradient', 'true'), ('solve', 'false'), ('solveTout', 'false'), ('defaultDate', '2020-01-01T00:00:00')], L_GLOBAL),
     'ImageSolver_Date': ('$PXI_SRCDIR/scripts/clodoweg/ImageSolver_Date.js', '', [('defaultDate', '2020-01-01T00:00:00')], L_DRAG),
     'LinearPatternSubtraction': ('$PXI_SRCDIR/scripts/clodoweg/LPS_UnClic.js', '',
@@ -193,6 +194,7 @@ def layout(entries, naming):
         rows += 1
     return insts, icons
 
+TURBO = {'Turbo_1'}   # mode Turbo (demande de l'utilisateur) : groupe P#_turbo, icônes T_…
 RAPIDE = {'C_Fin_GHS_rapide', 'C_Fin_rapide', 'C_Etoiles_fond_rapide', 'C_Preparation_rapide', 'GC_Solver_auto_rapide', 'C_RGB_rapide', 'C_RGB_rapide_SXT_etire', 'C_L_rapide', 'C_RGB_fin_rapide'}
 RAPIDE_NOTE = {
     'LRGB': {1: "MODE RAPIDE (galaxies) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre : R_C_Preparation_rapide ; R_GC_Solver_auto_rapide ; R_C_RGB_rapide (ou R_C_RGB_rapide_SXT_etire) sur RGB et R_C_L_rapide sur L ; GHS_1_premier, GHS_2_contraste, GHS_3_fond sur L seulement ; Etoiles_LRGB ; LRGB_ajout_L ; finition. Phase 1 : R_C_Preparation_rapide (double-clic puis Apply Global) à la place de LinearPatternSubtraction, Renommer_auto, Combinaison_RGB et Solver_auto",
@@ -210,7 +212,7 @@ RAPIDE_NOTE = {
             6: "R_C_Fin_rapide sur l'image sans étoiles après LRGB_ajout_L : HDRMT à 30 %, masque, Courbes, LHE, LHE_fin, masque retiré, NXT_final 0,40 en un seul conteneur (= HDRMT_30, C_Finition et NXT_final)",
             7: "R_C_Etoiles_fond_rapide sur l'image sans étoiles finie : étoiles remises (Etoiles_screen), Fond_auto (0,12), Fond_desature en un seul conteneur (= Etoiles_screen et C_Fond_final) ; Export_TIFF (options) pour finir hors PixInsight"}}
 
-def layout_all(main, opts, rapide=None, notes=None):
+def layout_all(main, opts, rapide=None, notes=None, turbo=None):
     """Une colonne par phase : icône-titre, étapes du chemin principal (E01…), puis icône « options » et options (Opt_…)."""
     insts, icons = [], []
     phases = sorted({e[1] for e in main} | {e[1] for e in opts})
@@ -221,7 +223,7 @@ def layout_all(main, opts, rapide=None, notes=None):
                 k += 1
                 numbered.append(('E%02d_%s' % (k, b), p, xml))
     cols = [[header_icon(ph)[0], 'P%d_options' % ph, 'P%d_rapide' % ph] + [n for n, p, x in numbered if p == ph] + ['Opt_%s' % b for b, p, x in opts if p == ph]
-            + ['R_%s' % b for b, p, x in (rapide or []) if p == ph] for ph in phases]
+            + ['R_%s' % b for b, p, x in (rapide or []) if p == ph] + ['P%d_turbo' % ph] + ['T_%s' % b for b, p, x in (turbo or []) if p == ph] for ph in phases]
     xs = xs_of(cols)
     for c, ph in enumerate(phases):
         x = xs[c]
@@ -261,6 +263,19 @@ def layout_all(main, opts, rapide=None, notes=None):
                 if p != ph:
                     continue
                 name = 'R_%s' % b
+                insts.append(xml.replace('id="__ID___instance"', 'id="%s_instance"' % name, 1))
+                icons.append('   <icon id="%s" instance="%s_instance" xpos="%d" ypos="%d" workspace="Workspace01"/>' % (name, name, x, y))
+                y += 30
+        mine_t = [e for e in (turbo or []) if e[1] == ph]
+        if mine_t:   # groupe P#_turbo (demande de l'utilisateur) : seulement dans les colonnes qui ont une icône Turbo
+            y += 16
+            tn = 'P%d_turbo' % ph
+            insts.append('   <instance class="NoOperation" version="256" id="%s_instance">\n      <description>%s</description>\n   </instance>'
+                         % (tn, escape('MODE TURBO, phase %d — %s : chaque icône T_ enchaîne plusieurs icônes rapides (R_) en un clic ; les icônes R_ doivent rester chargées. Icône de repère, sans effet.' % (ph, L.PHASES[ph - 1]))))
+            icons.append('   <icon id="%s" instance="%s_instance" xpos="%d" ypos="%d" workspace="Workspace01"/>' % (tn, tn, x, y))
+            y += 34
+            for b, p, xml in mine_t:
+                name = 'T_%s' % b
                 insts.append(xml.replace('id="__ID___instance"', 'id="%s_instance"' % name, 1))
                 icons.append('   <icon id="%s" instance="%s_instance" xpos="%d" ypos="%d" workspace="Workspace01"/>' % (name, name, x, y))
                 y += 30
@@ -392,7 +407,7 @@ def write(filename, prefix, title, steps):
             item = described(item, desc)
         xml = shorten(item[1], prefix, base)
         r = L.role(prefix, base)
-        if base in RAPIDE:
+        if base in RAPIDE or base in TURBO:
             tag = '%s.\n\n' % L.WHEN[base]
         elif r == 'opt':
             tag = 'OPTION — %s.\n\n' % L.WHEN[base]
@@ -421,8 +436,9 @@ def write(filename, prefix, title, steps):
                 cmain.append((cn, ph, container('__ID__', [byb[m] for m in members])))
     cfn, ctitle = filename.replace('Workflow-', 'Conteneurs-'), title + ' — chemin principal avec conteneurs, options dans leur phase'
     rap = [o for o in opts if o[0] in RAPIDE]
-    opts = [o for o in opts if o[0] not in RAPIDE]
-    CONT_LAYOUT[prefix] = (cfn, ctitle) + tuple(layout_all(cmain, opts, rap, RAPIDE_NOTE.get(prefix)))
+    tur = [o for o in opts if o[0] in TURBO]
+    opts = [o for o in opts if o[0] not in RAPIDE and o[0] not in TURBO]
+    CONT_LAYOUT[prefix] = (cfn, ctitle) + tuple(layout_all(cmain, opts, rap, RAPIDE_NOTE.get(prefix), tur))
     save(cfn, ctitle, *CONT_LAYOUT[prefix][2:])
     conts = [{'n': cn, 't': target, 'm': members} for cn, target, members in L.CONTAINERS.get(prefix, [])]
     wf = {'id': prefix, 'file': filename, 'title': title, 'steps': [], 'containers': conts, 'def': L.WF_DEFAULT.get(prefix, {})}
@@ -1111,7 +1127,7 @@ def insert_before(steps, base, items):
     steps[i:i] = items
 
 prep_l, prep_h = prep_rapide(lrgb)[1], prep_rapide(lhargb)[1]
-insert_after(lrgb, 'Combinaison_RGB', [(prep_l, ''), (gc_solver('Solver_auto'), '')])
+insert_after(lrgb, 'Combinaison_RGB', [(prep_l, ''), (gc_solver('Solver_auto'), ''), (script('Turbo_1', ''), '')])
 insert_after(lrgb, 'ImageSolver', [(gc_solver(), '')])
 
 def fin_rapide(steps):
@@ -1127,7 +1143,7 @@ for _st in (lrgb, lhargb):
     insert_after(_st, 'NXT_final_fort', [(_c6, '')])
     _st.append((_c7, ''))
 insert_before(lrgb, 'GHS_1_premier', [(rgb_rapide()[0], ''), (rgb_rapide_sxt_etire(), ''), (l_rapide(M.bxt('BXT_L', False, 0.25, 0.0, 0.80)), ''), (stf_icon(), '')])
-insert_after(lhargb, 'Combinaison_RGB', [(prep_h, ''), (gc_solver('Solver_auto'), '')])
+insert_after(lhargb, 'Combinaison_RGB', [(prep_h, ''), (gc_solver('Solver_auto'), '')])   # Turbo_1 : LRGB seulement (R_C_RGB_rapide n'existe pas en LHaRGB)
 insert_after(lhargb, 'ImageSolver', [(gc_solver(), '')])
 # LHaRGB : C_RGB_couleur_rapide et C_H_rapide sans GradientCorrection = C_RGB_couleur et BXT_L_H du chemin principal : supprimés
 insert_before(lhargb, 'GHS_1_premier', [(rgb_rapide()[1], ''), (l_rapide(M.bxt('BXT_L_H', False, 0.25, 0.0, 0.80)), ''), (stf_icon(), '')])
