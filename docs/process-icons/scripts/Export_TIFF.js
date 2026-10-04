@@ -17,6 +17,9 @@
 //      OBJECT de l'image, sinon identifiant de la vue ; dossier personnel.
 //      Paramètres : nom (force le nom), dossier (force le dossier), suffixe
 //      (ajouté au nom, vide par défaut). Un fichier existant est remplacé.
+//   4. fermer : vues fermées APRÈS l'export (séparées par des virgules ; L
+//      dans les icônes : L ne sert plus, image finie ; jamais l'image
+//      exportée elle-même ; vues absentes ignorées).
 // Le profil ICC est intégré selon les préférences de PixInsight (Edit >
 // Global Preferences > Color Management : Embed ICC profiles, coché par
 // défaut).
@@ -83,6 +86,7 @@ function main()
    let dossier = param( "dossier", "" );
    let nom = param( "nom", "" );
    let icc = param( "icc", "true" ).toLowerCase() == "true";
+   let fermer = param( "fermer", "" );
 
    let dir = objectDir();
    if ( nom.length == 0 )
@@ -121,6 +125,21 @@ function main()
    if ( !ok )
       throw new Error( TITLE + " : échec de l'enregistrement de " + path + "." );
    console.noteln( TITLE + " : " + path + " (TIFF 16 bits" + (icc && img.isColor ? ", sRGB IEC61966-2.1" : "") + ")." );
+
+   // 4. vues dont on n'a plus besoin (demande de l'utilisateur : fermer au fur et à mesure)
+   let ids = fermer.split( "," );
+   for ( let k = 0; k < ids.length; ++k )
+   {
+      let id = ids[ k ].trim();
+      if ( id.length == 0 || id == view.id )
+         continue;
+      let fw = ImageWindow.windowById( id );
+      if ( !fw.isNull && fw.mainView.id != view.window.mainView.id )
+      {
+         fw.forceClose();
+         console.noteln( TITLE + " : " + id + " fermée." );
+      }
+   }
 }
 
 main();

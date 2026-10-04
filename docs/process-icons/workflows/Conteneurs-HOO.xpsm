@@ -2768,9 +2768,9 @@ Détails : page docs/pixinsight-workflow.html.</description>
 
 LANCEMENT : glisse l'icône sur l'image.
 
-PRÉRÉGLÉ : script Export_TIFF : copie de l'image en entiers 16 bits, convertie en sRGB IEC61966-2.1 (icc = true), enregistrée en TIFF (.tiff) sous le NOM DE L'OBJET, sans espace (NGC 1532 -&gt; NGC1532), = nom du dossier des masters ouverts (L, R, G, B, H…), dossiers génériques (master, lights, output, WBPP…) sautés ; enregistrée dans ce dossier ; l'image ouverte ne change pas.
+PRÉRÉGLÉ : script Export_TIFF : copie de l'image en entiers 16 bits, convertie en sRGB IEC61966-2.1 (icc = true), enregistrée en TIFF (.tiff) sous le NOM DE L'OBJET, sans espace (NGC 1532 -&gt; NGC1532), = nom du dossier des masters ouverts (L, R, G, B, H…), dossiers génériques (master, lights, output, WBPP…) sautés ; enregistrée dans ce dossier ; l'image ouverte ne change pas ; ensuite L fermée (paramètre fermer).
 
-À RÉGLER : glisse sur l'image finie (après C_Fond_final), L encore ouverte ; copie Export_TIFF.js dans src/scripts/clodoweg.
+À RÉGLER : glisse sur l'image finie (après C_Fond_final), L encore ouverte (fermée après l'export) ; copie Export_TIFF.js dans src/scripts/clodoweg.
 
 SI :
 - aucun master ouvert -&gt; mot-clé OBJECT, sinon nom de la vue, dans ton dossier personnel
@@ -2782,7 +2782,7 @@ SI :
 Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js</parameter>
       <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="4">
+      <table id="parameters" rows="5">
          <tr>
             <td id="id">nom</td>
             <td id="value"></td>
@@ -2798,6 +2798,10 @@ Détails : page docs/pixinsight-workflow.html.</description>
          <tr>
             <td id="id">icc</td>
             <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">fermer</td>
+            <td id="value">L</td>
          </tr>
       </table>
       <parameter id="information"></parameter>

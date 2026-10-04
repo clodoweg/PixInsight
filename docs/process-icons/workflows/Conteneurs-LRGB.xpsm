@@ -114,7 +114,7 @@ SI :
 Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Combiner_RGB.js</parameter>
       <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="6">
+      <table id="parameters" rows="7">
          <tr>
             <td id="id">red</td>
             <td id="value">R</td>
@@ -138,6 +138,10 @@ Détails : page docs/pixinsight-workflow.html.</description>
          <tr>
             <td id="id">copyKeywords</td>
             <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">garder</td>
+            <td id="value"></td>
          </tr>
       </table>
       <parameter id="information"></parameter>
@@ -492,7 +496,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Combiner_RGB.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="6">
+         <table id="parameters" rows="7">
             <tr>
                <td id="id">red</td>
                <td id="value">R</td>
@@ -516,6 +520,10 @@ Détails : page docs/pixinsight-workflow.html.</description>
             <tr>
                <td id="id">copyKeywords</td>
                <td id="value">true</td>
+            </tr>
+            <tr>
+               <td id="id">garder</td>
+               <td id="value"></td>
             </tr>
          </table>
          <parameter id="information"></parameter>
@@ -804,7 +812,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Combiner_RGB.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="6">
+         <table id="parameters" rows="7">
             <tr>
                <td id="id">red</td>
                <td id="value">R</td>
@@ -828,6 +836,10 @@ Détails : page docs/pixinsight-workflow.html.</description>
             <tr>
                <td id="id">copyKeywords</td>
                <td id="value">true</td>
+            </tr>
+            <tr>
+               <td id="id">garder</td>
+               <td id="value"></td>
             </tr>
          </table>
          <parameter id="information"></parameter>
@@ -3163,9 +3175,20 @@ Détails : page docs/pixinsight-workflow.html.</description>
          <parameter id="information"></parameter>
       </instance>
       <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="1">
+            <tr>
+               <td id="id">views</td>
+               <td id="value">RGB_stars</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="4">
+         <table id="parameters" rows="5">
             <tr>
                <td id="id">nom</td>
                <td id="value"></td>
@@ -3181,6 +3204,10 @@ Détails : page docs/pixinsight-workflow.html.</description>
             <tr>
                <td id="id">icc</td>
                <td id="value">true</td>
+            </tr>
+            <tr>
+               <td id="id">fermer</td>
+               <td id="value">L</td>
             </tr>
          </table>
          <parameter id="information"></parameter>
@@ -4848,6 +4875,17 @@ Détails : page docs/pixinsight-workflow.html.</description>
          </table>
          <parameter id="information"></parameter>
       </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="1">
+            <tr>
+               <td id="id">views</td>
+               <td id="value">RGB_stars</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
    </instance>
    <instance class="NoOperation" version="256" id="P7_options_instance">
       <description>OPTIONS de la phase 7 — Étoiles : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
@@ -5412,9 +5450,9 @@ Détails : page docs/pixinsight-workflow.html.</description>
 
 LANCEMENT : glisse l'icône sur l'image.
 
-PRÉRÉGLÉ : script Export_TIFF : copie de l'image en entiers 16 bits, convertie en sRGB IEC61966-2.1 (icc = true), enregistrée en TIFF (.tiff) sous le NOM DE L'OBJET, sans espace (NGC 1532 -&gt; NGC1532), = nom du dossier des masters ouverts (L, R, G, B, H…), dossiers génériques (master, lights, output, WBPP…) sautés ; enregistrée dans ce dossier ; l'image ouverte ne change pas.
+PRÉRÉGLÉ : script Export_TIFF : copie de l'image en entiers 16 bits, convertie en sRGB IEC61966-2.1 (icc = true), enregistrée en TIFF (.tiff) sous le NOM DE L'OBJET, sans espace (NGC 1532 -&gt; NGC1532), = nom du dossier des masters ouverts (L, R, G, B, H…), dossiers génériques (master, lights, output, WBPP…) sautés ; enregistrée dans ce dossier ; l'image ouverte ne change pas ; ensuite L fermée (paramètre fermer).
 
-À RÉGLER : glisse sur l'image finie (après C_Fond_final), L encore ouverte ; copie Export_TIFF.js dans src/scripts/clodoweg.
+À RÉGLER : glisse sur l'image finie (après C_Fond_final), L encore ouverte (fermée après l'export) ; copie Export_TIFF.js dans src/scripts/clodoweg.
 
 SI :
 - aucun master ouvert -&gt; mot-clé OBJECT, sinon nom de la vue, dans ton dossier personnel
@@ -5426,7 +5464,7 @@ SI :
 Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js</parameter>
       <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="4">
+      <table id="parameters" rows="5">
          <tr>
             <td id="id">nom</td>
             <td id="value"></td>
@@ -5442,6 +5480,10 @@ Détails : page docs/pixinsight-workflow.html.</description>
          <tr>
             <td id="id">icc</td>
             <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">fermer</td>
+            <td id="value">L</td>
          </tr>
       </table>
       <parameter id="information"></parameter>
@@ -5522,9 +5564,20 @@ Détails : page docs/pixinsight-workflow.html.</description>
          <parameter id="information"></parameter>
       </instance>
       <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="1">
+            <tr>
+               <td id="id">views</td>
+               <td id="value">RGB_stars</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="4">
+         <table id="parameters" rows="5">
             <tr>
                <td id="id">nom</td>
                <td id="value"></td>
@@ -5540,6 +5593,10 @@ Détails : page docs/pixinsight-workflow.html.</description>
             <tr>
                <td id="id">icc</td>
                <td id="value">true</td>
+            </tr>
+            <tr>
+               <td id="id">fermer</td>
+               <td id="value">L</td>
             </tr>
          </table>
          <parameter id="information"></parameter>

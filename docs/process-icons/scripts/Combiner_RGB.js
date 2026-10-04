@@ -2,6 +2,9 @@
 // Combiner_RGB.js — combine les masters R, G, B en une image couleur, copie
 // l'en-tête FITS du master rouge (coordonnées, date… utiles à ImageSolver),
 // puis ferme les masters R, G et B.
+// Paramètre « garder » : masters à laisser ouverts (séparés par des virgules,
+// par exemple R en LHaRGB, où R sert encore à Continuum_auto) ; les autres
+// sont fermés si closeSources = true.
 // ----------------------------------------------------------------------------
 // Les fermetures se font sans demander d'enregistrer (forceClose) : enregistre
 // d'abord les masters si tu veux garder une version modifiée (par exemple
@@ -24,13 +27,14 @@
 function combinerRGB()
 {
    let red = "R", green = "G", blue = "B", newId = "RGB";
-   let closeSources = true, copyKeywords = true;
+   let closeSources = true, copyKeywords = true, garder = [];
    if ( Parameters.has( "red" ) ) red = Parameters.getString( "red" ).trim();
    if ( Parameters.has( "green" ) ) green = Parameters.getString( "green" ).trim();
    if ( Parameters.has( "blue" ) ) blue = Parameters.getString( "blue" ).trim();
    if ( Parameters.has( "newId" ) ) newId = Parameters.getString( "newId" ).trim();
    if ( Parameters.has( "closeSources" ) ) closeSources = Parameters.getBoolean( "closeSources" );
    if ( Parameters.has( "copyKeywords" ) ) copyKeywords = Parameters.getBoolean( "copyKeywords" );
+   if ( Parameters.has( "garder" ) ) garder = Parameters.getString( "garder" ).split( "," ).map( function( x ) { return x.trim(); } );
 
    let ids = [ red, green, blue ];
    let windows = [];
@@ -66,14 +70,19 @@ function combinerRGB()
    if ( copyKeywords )
       rgb.keywords = windows[ 0 ].keywords;
 
+   let fermees = [];
    if ( closeSources )
       for ( let i = 0; i < 3; ++i )
-         windows[ i ].forceClose();
+         if ( garder.indexOf( ids[ i ] ) < 0 )
+         {
+            windows[ i ].forceClose();
+            fermees.push( ids[ i ] );
+         }
 
    rgb.show();
    rgb.bringToFront();
    console.noteln( "<end><cbr>" + CRGB_TITLE + " : '" + newId + "' créée" + ( copyKeywords ? ", en-tête de '" + red + "' copié" : "" ) +
-                   ( closeSources ? ", " + ids.join( ", " ) + " fermées." : "." ) );
+                   ( fermees.length ? ", " + fermees.join( ", " ) + " fermée(s)." : "." ) );
 }
 
 #ifndef CLODOWEG_TURBO

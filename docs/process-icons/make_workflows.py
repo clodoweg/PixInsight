@@ -42,7 +42,7 @@ SCRIPTS = {
              [('metadata_focal', '2939'), ('metadata_useFocal', 'true'), ('metadata_xpixsz', '3.76'), ('metadata_resolution', '0.00007330116739335556'), ('metadata_referenceSystem', 'ICRS'), ('metadata_topocentric', 'false'), ('solver_version', '6.4.2'), ('solver_magnitude', '12'), ('solver_autoMagnitude', 'true'), ('solver_databasePath', 'undefined'), ('solver_generateErrorImg', 'false'), ('solver_structureLayers', '5'), ('solver_minStructureSize', '0'), ('solver_hotPixelFilterRadius', '1'), ('solver_noiseReductionFilterRadius', '0'), ('solver_sensitivity', '0.5'), ('solver_peakResponse', '0.5'), ('solver_brightThreshold', '3'), ('solver_maxStarDistortion', '0.6'), ('solver_autoPSF', 'false'), ('solver_catalogMode', '2'), ('solver_vizierServer', 'https://vizier.cds.unistra.fr/'), ('solver_showStars', 'false'), ('solver_showStarMatches', 'false'), ('solver_showSimplifiedSurfaces', 'false'), ('solver_showDistortion', 'false'), ('solver_generateDistortModel', 'false'), ('solver_catalog', 'PPMXL'), ('solver_distortionCorrection', 'true'), ('solver_rbfType', '101'), ('solver_maxSplinePoints', '4000'), ('solver_splineOrder', '2'), ('solver_splineSmoothing', '0.005'), ('solver_enableSimplifier', 'true'), ('solver_simplifierRejectFraction', '0.1'), ('solver_outlierDetectionRadius', '160'), ('solver_outlierDetectionMinThreshold', '4'), ('solver_outlierDetectionSigma', '5'), ('solver_useActive', 'true'), ('solver_outSuffix', '_ast'), ('solver_projection', '0'), ('solver_projectionOriginMode', '0'), ('solver_restrictToHQStars', 'false'), ('solver_intersectionMode', '1'), ('solver_tryApparentCoordinates', 'true'), ('solver_tryExhaustiveInitialAlignment', 'false')],
              L_DRAG),
     'Combinaison_RGB': ('$PXI_SRCDIR/scripts/clodoweg/Combiner_RGB.js', '',
-             [('red', 'R'), ('green', 'G'), ('blue', 'B'), ('newId', 'RGB'), ('closeSources', 'true'), ('copyKeywords', 'true')], L_GLOBAL),
+             [('red', 'R'), ('green', 'G'), ('blue', 'B'), ('newId', 'RGB'), ('closeSources', 'true'), ('copyKeywords', 'true'), ('garder', '')], L_GLOBAL),
     'Masque_L': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'attacher'), ('s', '0.14'), ('flou', '2'), ('nom', 'masque_L')], L_DRAG),
     'Masque_L_source': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'attacher'), ('s', '0.20'), ('gamma', '2'), ('flou', '2'), ('nom', 'masque_L'), ('source', 'L'), ('exclure', 'RGB_stars'), ('exclureGain', '4')], L_DRAG),
     'Masque_retirer': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'retirer'), ('nom', 'masque_L')], L_DRAG),
@@ -55,7 +55,7 @@ SCRIPTS = {
     'Fond_desature': ('$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js', '', [('debut', '0.03'), ('fin', '0.15'), ('violetFin', '0.30'), ('flou', '3')], L_DRAG),
     'Fond_auto': ('$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js', '', [('cible', '0.12'), ('tolerance', '0.005'), ('grille', '8')], L_DRAG),
     'Nettoyage_sans_etoiles': ('$PXI_SRCDIR/scripts/clodoweg/Nettoyage_sans_etoiles.js', '', [('etoiles', 'RGB_stars'), ('seuilBas', '0.05'), ('seuilHaut', '0.12'), ('etendue', '25'), ('passes', '3'), ('protege', '0.08'), ('structure', '0.15'), ('compact', '0.05'), ('tresBrillant', '0.05'), ('etendue2', '80'), ('gain', '3'), ('gain2', '8'), ('afficherMasque', 'false')], L_DRAG),
-    'Export_TIFF': ('$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js', '', [('nom', ''), ('suffixe', ''), ('dossier', ''), ('icc', 'true')], L_DRAG),
+    'Export_TIFF': ('$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js', '', [('nom', ''), ('suffixe', ''), ('dossier', ''), ('icc', 'true'), ('fermer', 'L')], L_DRAG),   # fermer : L fermée après l'export (demande de l'utilisateur)
     'Fond_auto_clair': ('$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js', '', [('cible', '0.14'), ('tolerance', '0.005'), ('grille', '8')], L_DRAG),
     'Solver_auto': ('$PXI_SRCDIR/scripts/clodoweg/GC_Solver_auto.js', '', [('gradient', 'false'), ('solve', 'true'), ('solveTout', 'true'), ('defaultDate', '2020-01-01T00:00:00')], L_GLOBAL),
     'Turbo_1': ('$PXI_SRCDIR/scripts/clodoweg/Turbo_1.js', '', [('vueRGB', 'RGB'), ('vueL', 'L')], L_GLOBAL),
@@ -690,7 +690,9 @@ def stars_end(stars='RGB_stars', cms=False, screen_extra='', cms_extra='', alt='
         b.append((note('CorrectMagentaStars', T_CMS + cms_extra), ''))
     if galaxie:
         # partie 5 (fond) : Boost_final (option, avant), C_Fond_final = Fond_auto + Fond_desature (chemin principal), Fond_auto_clair (option)
-        return b + [(boost_final(True), ''), (boost_final(), ''), (note('Fond_auto', D_FOND), ''), (script('Fond_desature', ''), ''), (script('Fond_auto_clair', ''), '')] + EXPORT
+        return b + [(boost_final(True), ''), (boost_final(), ''), (note('Fond_auto', D_FOND), ''), (script('Fond_desature', ''), ''),
+                    (fermer('Fermer_etoiles', stars), ''),   # dans C_Fond_final (demande de l'utilisateur) : étoiles déjà remises
+                    (script('Fond_auto_clair', ''), '')] + EXPORT
     b.append((script('Fond_desature', ''), ''))   # option, tout à la fin : couleur retirée du fond du ciel
     return b + EXPORT
 
@@ -718,8 +720,10 @@ L_FOND = " LRGB : applique-la au RGB ET à L avec les mêmes réglages, avant LR
 def rgb_comb(close=True):
     n, x = note('Combinaison_RGB', '')
     if not close:
-        x = x.replace('<td id="id">closeSources</td>\n            <td id="value">true</td>', '<td id="id">closeSources</td>\n            <td id="value">false</td>')
-        assert 'closeSources</td>\n            <td id="value">false' in x
+        # LHaRGB (demande de l'utilisateur : fermer au fur et à mesure) : G et B fermées, R gardée pour Continuum_auto
+        a = '<td id="id">garder</td>\n            <td id="value"></td>'
+        assert a in x
+        x = x.replace(a, a.replace('<td id="value"></td>', '<td id="value">R</td>'))
     return n, x
 
 rgb_comb_item = lambda close=True: (rgb_comb(close), '')
@@ -818,6 +822,7 @@ lhargb = pre_block() + [rgb_comb_item(False), (solver_container(), ''), (solver_
           "Scale 1,2 par défaut (3 à 5 pour un H faible). Compare avec les aperçus RGB et NBRGB."), ''),
     # LHaRGB (demande de l'utilisateur, comme le LRGB) : pas de SXT en linéaire ; L et RGB étirées AVEC leurs étoiles, LRGB, puis SXT_LRGB (Unscreen)
     (M.nxt('NXT_RGB', 0.80, 1), "NoiseXTerminator sur RGB (linéaire, après H_dans_RGB, AVEC ses étoiles : SXT vient après LRGB) : Denoise 0,80, Detail 0,15." + NXT_C),
+    (fermer('Fermer_continuum', 'H, R, HaNB'), ''),   # dans C_RGB_bruit (demande de l'utilisateur : fermer au fur et à mesure) ; H_dans_L éventuel fait avant
     (M.nxt('NXT_L', 0.60, 1), "NoiseXTerminator sur L (linéaire, après BXT_L_H et H_dans_L éventuel, AVEC ses étoiles) : Denoise 0,60." + NXT_C),
 ] + lum_ghs_block(etoiles=True) + [
     (M.instance('LRGBCombination', 'LRGB_ajout_L', {'mL': '0.500', 'mc': '0.350', 'noiseReduction': True}, post=M.lrgb_post),
@@ -1104,7 +1109,7 @@ def rgb_rapide():
     # LRGB (demande de l'utilisateur) : étoiles gardées, pas de SXT ni d'Etoiles_auto (SXT après LRGB, dans C_LRGB_rapide)
     lrgb_c = cont('C_RGB_rapide', [M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), spcc_perso('SPCC'), bxt_rgb(),
                                     M.nxt('NXT_RGB', 0.80, 1), stat_auto(), GHS_FOND_R()])
-    lha_c = cont('C_RGB_fin_rapide', [M.nxt('NXT_RGB', 0.80, 1), stat_auto(), GHS_FOND_R()])   # LHaRGB : étoiles gardées aussi (demande de l'utilisateur)
+    lha_c = cont('C_RGB_fin_rapide', [M.nxt('NXT_RGB', 0.80, 1), stat_auto(), GHS_FOND_R(), fermer('Fermer_continuum', 'H, R, HaNB')])   # LHaRGB : étoiles gardées aussi (demande de l'utilisateur)
     return lrgb_c, lha_c
 
 def lrgb_rapide(steps):
@@ -1151,7 +1156,7 @@ insert_after(lrgb, 'ImageSolver', [(gc_solver(), '')])
 def fin_rapide(steps):
     """P6_rapide et P7_rapide (demande de l'utilisateur) : un conteneur par phase avec les étapes de la finition."""
     c6 = cont('C_Fin_rapide', list(hdrmt_items('0.3')) + [pick(steps, b)[0] for b in ('Masque_L', 'Courbes', 'LHE', 'LHE_fin', 'Masque_retirer', 'NXT_final')])
-    c7 = cont('C_Etoiles_fond_rapide', [pick(steps, b)[0] for b in ('Etoiles_screen', 'Fond_auto', 'Fond_desature', 'Export_TIFF')])   # Export_TIFF en dernier (demande de l'utilisateur)
+    c7 = cont('C_Etoiles_fond_rapide', [pick(steps, b)[0] for b in ('Etoiles_screen', 'Fond_auto', 'Fond_desature', 'Fermer_etoiles', 'Export_TIFF')])   # Export_TIFF en dernier (demande de l'utilisateur)
     return c6, c7
 
 for _st in (lrgb, lhargb):
@@ -1162,7 +1167,7 @@ for _st in (lrgb, lhargb):
         # Turbo 2 (demande de l'utilisateur) : d'abord script Turbo_2_debut (R_C_Fin_GHS_rapide sur L),
         # puis tout sur RGB : contenu de C_LRGB_rapide (LRGB avec étoiles, SXT, Etoiles_auto_etire), de C_Fin_rapide, de C_Etoiles_fond_rapide (Export_TIFF compris)
         _t2 = cont('Turbo_2', [script('Turbo_2_debut', '')] + [pick(_st, b)[0] for b in ('LRGB_ajout_L', 'SXT_LRGB', 'Etoiles_auto_etire')] + list(hdrmt_items('0.3'))
-                   + [pick(_st, b)[0] for b in ('Masque_L', 'Courbes', 'LHE', 'LHE_fin', 'Masque_retirer', 'NXT_final', 'Etoiles_screen', 'Fond_auto', 'Fond_desature', 'Export_TIFF')])
+                   + [pick(_st, b)[0] for b in ('Masque_L', 'Courbes', 'LHE', 'LHE_fin', 'Masque_retirer', 'NXT_final', 'Etoiles_screen', 'Fond_auto', 'Fond_desature', 'Fermer_etoiles', 'Export_TIFF')])
         insert_after(_st, 'Etoiles_auto_etire', [(lrgb_rapide(_st), ''), (_t2, '')])
     else:
         insert_after(_st, 'Etoiles_auto_etire', [(lrgb_rapide(_st), '')])

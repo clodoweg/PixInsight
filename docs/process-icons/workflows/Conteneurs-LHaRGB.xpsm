@@ -103,14 +103,14 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <instance class="Script" version="256" id="E02_Combinaison_RGB_instance">
       <description>LANCEMENT : double-clic sur l'icône, puis Apply Global.
 
-PRÉRÉGLÉ : script Combiner_RGB : R, G, B -&gt; image couleur 'RGB', en-tête FITS du rouge copié ; R, G et B restent OUVERTES (closeSources = false : R sert à Continuum_auto).
+PRÉRÉGLÉ : script Combiner_RGB : R, G, B -&gt; image couleur 'RGB', en-tête FITS du rouge copié ; G et B fermées, R gardée OUVERTE (garder = R : elle sert à Continuum_auto, puis C_RGB_bruit la ferme).
 
-À RÉGLER : nomme tes masters R, G et B (ou Renommer_auto), puis lance l'icône ; ferme G et B toi-même.
+À RÉGLER : nomme tes masters R, G et B (ou Renommer_auto), puis lance l'icône.
 
 Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Combiner_RGB.js</parameter>
       <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="6">
+      <table id="parameters" rows="7">
          <tr>
             <td id="id">red</td>
             <td id="value">R</td>
@@ -129,11 +129,15 @@ Détails : page docs/pixinsight-workflow.html.</description>
          </tr>
          <tr>
             <td id="id">closeSources</td>
-            <td id="value">false</td>
+            <td id="value">true</td>
          </tr>
          <tr>
             <td id="id">copyKeywords</td>
             <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">garder</td>
+            <td id="value">R</td>
          </tr>
       </table>
       <parameter id="information"></parameter>
@@ -488,7 +492,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Combiner_RGB.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="6">
+         <table id="parameters" rows="7">
             <tr>
                <td id="id">red</td>
                <td id="value">R</td>
@@ -507,11 +511,15 @@ Détails : page docs/pixinsight-workflow.html.</description>
             </tr>
             <tr>
                <td id="id">closeSources</td>
-               <td id="value">false</td>
+               <td id="value">true</td>
             </tr>
             <tr>
                <td id="id">copyKeywords</td>
                <td id="value">true</td>
+            </tr>
+            <tr>
+               <td id="id">garder</td>
+               <td id="value">R</td>
             </tr>
          </table>
          <parameter id="information"></parameter>
@@ -1824,32 +1832,36 @@ $T[0] + w*HaNB</parameter>
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
-   <instance class="NoiseXTerminator" version="256" id="E14_NXT_RGB_instance">
-      <description>PRÉRÉGLÉ : Denoise 0,80, 1 itération, séparations décochées.
-
-À RÉGLER : rien ; après BXT.
-
-SI :
-- aspect plastique -&gt; 0,70
-- taches de couleur -&gt; Color separation, Denoise color plus haut
-
-Détails : page docs/pixinsight-workflow.html.</description>
-      <parameter id="ml_version" value="0"/>
-      <parameter id="denoise" value="0.80"/>
-      <parameter id="enable_color_separation" value="false"/>
-      <parameter id="enable_frequency_separation" value="false"/>
-      <parameter id="denoise_intensity" value="0.90"/>
-      <parameter id="denoise_color" value="0.90"/>
-      <parameter id="denoise_high_freq" value="0.90"/>
-      <parameter id="denoise_low_freq" value="0.90"/>
-      <parameter id="denoise_intensity_high_freq" value="0.90"/>
-      <parameter id="denoise_intensity_low_freq" value="0.90"/>
-      <parameter id="denoise_color_high_freq" value="0.90"/>
-      <parameter id="denoise_color_low_freq" value="0.90"/>
-      <parameter id="frequency_scale" value="5.0"/>
-      <parameter id="iterations" value="1"/>
-      <parameter id="detail" value="0.15"/>
-      <parameter id="overlap" value="0.20"/>
+   <instance class="ProcessContainer" id="E14_C_RGB_bruit_instance">
+      <instance class="NoiseXTerminator" version="256" enabled="true">
+         <parameter id="ml_version" value="0"/>
+         <parameter id="denoise" value="0.80"/>
+         <parameter id="enable_color_separation" value="false"/>
+         <parameter id="enable_frequency_separation" value="false"/>
+         <parameter id="denoise_intensity" value="0.90"/>
+         <parameter id="denoise_color" value="0.90"/>
+         <parameter id="denoise_high_freq" value="0.90"/>
+         <parameter id="denoise_low_freq" value="0.90"/>
+         <parameter id="denoise_intensity_high_freq" value="0.90"/>
+         <parameter id="denoise_intensity_low_freq" value="0.90"/>
+         <parameter id="denoise_color_high_freq" value="0.90"/>
+         <parameter id="denoise_color_low_freq" value="0.90"/>
+         <parameter id="frequency_scale" value="5.0"/>
+         <parameter id="iterations" value="1"/>
+         <parameter id="detail" value="0.15"/>
+         <parameter id="overlap" value="0.20"/>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="1">
+            <tr>
+               <td id="id">views</td>
+               <td id="value">H, R, HaNB</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
    </instance>
    <instance class="NoiseXTerminator" version="256" id="E15_NXT_L_instance">
       <description>PRÉRÉGLÉ : Denoise 0,60, 1 itération.
@@ -2152,6 +2164,17 @@ Détails : page docs/pixinsight-workflow.html.</description>
          <parameter id="colourBlend" value="1.000"/>
          <parameter id="clipType" value="CT_RGBBlend"/>
          <parameter id="useRGBWorkingSpace" value="false"/>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="1">
+            <tr>
+               <td id="id">views</td>
+               <td id="value">H, R, HaNB</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
       </instance>
    </instance>
    <instance class="ProcessContainer" id="R_C_L_rapide_instance">
@@ -4201,6 +4224,17 @@ Détails : page docs/pixinsight-workflow.html.</description>
          </table>
          <parameter id="information"></parameter>
       </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="1">
+            <tr>
+               <td id="id">views</td>
+               <td id="value">RGB_stars</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
    </instance>
    <instance class="NoOperation" version="256" id="P7_options_instance">
       <description>OPTIONS de la phase 7 — Étoiles : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
@@ -4765,9 +4799,9 @@ Détails : page docs/pixinsight-workflow.html.</description>
 
 LANCEMENT : glisse l'icône sur l'image.
 
-PRÉRÉGLÉ : script Export_TIFF : copie de l'image en entiers 16 bits, convertie en sRGB IEC61966-2.1 (icc = true), enregistrée en TIFF (.tiff) sous le NOM DE L'OBJET, sans espace (NGC 1532 -&gt; NGC1532), = nom du dossier des masters ouverts (L, R, G, B, H…), dossiers génériques (master, lights, output, WBPP…) sautés ; enregistrée dans ce dossier ; l'image ouverte ne change pas.
+PRÉRÉGLÉ : script Export_TIFF : copie de l'image en entiers 16 bits, convertie en sRGB IEC61966-2.1 (icc = true), enregistrée en TIFF (.tiff) sous le NOM DE L'OBJET, sans espace (NGC 1532 -&gt; NGC1532), = nom du dossier des masters ouverts (L, R, G, B, H…), dossiers génériques (master, lights, output, WBPP…) sautés ; enregistrée dans ce dossier ; l'image ouverte ne change pas ; ensuite L fermée (paramètre fermer).
 
-À RÉGLER : glisse sur l'image finie (après C_Fond_final), L encore ouverte ; copie Export_TIFF.js dans src/scripts/clodoweg.
+À RÉGLER : glisse sur l'image finie (après C_Fond_final), L encore ouverte (fermée après l'export) ; copie Export_TIFF.js dans src/scripts/clodoweg.
 
 SI :
 - aucun master ouvert -&gt; mot-clé OBJECT, sinon nom de la vue, dans ton dossier personnel
@@ -4779,7 +4813,7 @@ SI :
 Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js</parameter>
       <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="4">
+      <table id="parameters" rows="5">
          <tr>
             <td id="id">nom</td>
             <td id="value"></td>
@@ -4795,6 +4829,10 @@ Détails : page docs/pixinsight-workflow.html.</description>
          <tr>
             <td id="id">icc</td>
             <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">fermer</td>
+            <td id="value">L</td>
          </tr>
       </table>
       <parameter id="information"></parameter>
@@ -4875,9 +4913,20 @@ Détails : page docs/pixinsight-workflow.html.</description>
          <parameter id="information"></parameter>
       </instance>
       <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="1">
+            <tr>
+               <td id="id">views</td>
+               <td id="value">RGB_stars</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="4">
+         <table id="parameters" rows="5">
             <tr>
                <td id="id">nom</td>
                <td id="value"></td>
@@ -4893,6 +4942,10 @@ Détails : page docs/pixinsight-workflow.html.</description>
             <tr>
                <td id="id">icc</td>
                <td id="value">true</td>
+            </tr>
+            <tr>
+               <td id="id">fermer</td>
+               <td id="value">L</td>
             </tr>
          </table>
          <parameter id="information"></parameter>
@@ -4926,7 +4979,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <icon id="E11_BXT_L_H" instance="E11_BXT_L_H_instance" xpos="434" ypos="94" workspace="Workspace01"/>
    <icon id="E12_Continuum_auto" instance="E12_Continuum_auto_instance" xpos="434" ypos="124" workspace="Workspace01"/>
    <icon id="E13_H_dans_RGB" instance="E13_H_dans_RGB_instance" xpos="434" ypos="154" workspace="Workspace01"/>
-   <icon id="E14_NXT_RGB" instance="E14_NXT_RGB_instance" xpos="434" ypos="184" workspace="Workspace01"/>
+   <icon id="E14_C_RGB_bruit" instance="E14_C_RGB_bruit_instance" xpos="434" ypos="184" workspace="Workspace01"/>
    <icon id="E15_NXT_L" instance="E15_NXT_L_instance" xpos="434" ypos="214" workspace="Workspace01"/>
    <icon id="P3_options" instance="P3_options_instance" xpos="434" ypos="260" workspace="Workspace01"/>
    <icon id="Opt_Find_Background" instance="Opt_Find_Background_instance" xpos="434" ypos="294" workspace="Workspace01"/>
