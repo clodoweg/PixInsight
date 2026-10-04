@@ -54,6 +54,7 @@ SCRIPTS = {
     'Fond_desature': ('$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js', '', [('debut', '0.03'), ('fin', '0.15'), ('violetFin', '0.30'), ('flou', '3')], L_DRAG),
     'Fond_auto': ('$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js', '', [('cible', '0.12'), ('tolerance', '0.005'), ('grille', '8')], L_DRAG),
     'Nettoyage_sans_etoiles': ('$PXI_SRCDIR/scripts/clodoweg/Nettoyage_sans_etoiles.js', '', [('etoiles', 'RGB_stars'), ('seuilBas', '0.05'), ('seuilHaut', '0.12'), ('etendue', '25'), ('passes', '3'), ('protege', '0.08'), ('structure', '0.15'), ('afficherMasque', 'false')], L_DRAG),
+    'Export_TIFF': ('$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js', '', [('suffixe', '_final'), ('dossier', ''), ('icc', 'true')], L_DRAG),
     'Fond_auto_clair': ('$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js', '', [('cible', '0.14'), ('tolerance', '0.005'), ('grille', '8')], L_DRAG),
     'ImageSolver_Date': ('$PXI_SRCDIR/scripts/clodoweg/ImageSolver_Date.js', '', [('defaultDate', '2020-01-01T00:00:00')], L_DRAG),
     'LinearPatternSubtraction': ('$PXI_SRCDIR/scripts/clodoweg/LPS_UnClic.js', '',
@@ -589,6 +590,18 @@ def finish_block(extra=None, galaxie=False):
         b = extra + b
     return b + [(M.nxt('NXT_final', 0.40, 1), D_NXT_F)]
 
+def icc_srgb():
+    # ICCProfileTransformation vers sRGB IEC61966-2.1 (paramètres du module ICCProfileTransformation de PixInsight)
+    return 'ICC_sRGB', ('   <instance class="ICCProfileTransformation" version="256" id="ICC_sRGB_instance">\n'
+                        '      <parameter id="targetProfile">sRGB IEC61966-2.1</parameter>\n'
+                        '      <parameter id="toDefaultProfile" value="false"/>\n'
+                        '      <parameter id="renderingIntent" value="Perceptual"/>\n'
+                        '      <parameter id="useBlackPointCompensation" value="true"/>\n'
+                        '      <parameter id="useFloatingPointTransformation" value="true"/>\n'
+                        '   </instance>')
+
+EXPORT = [(icc_srgb(), ''), (script('Export_TIFF', ''), '')]   # options, tout à la fin : finition hors PixInsight (demande de l'utilisateur)
+
 def stars_end(stars='RGB_stars', cms=False, screen_extra='', cms_extra='', alt='', galaxie=False):
     # options sur l'image d'étoiles seule : AVANT la recombinaison
     b = [(M.instance('MorphologicalTransformation', 'MT_etoiles', {'operator': 'Selection', 'numberOfIterations': 1, 'amount': '0.60', 'selectionPoint': '0.25', 'structureSize': 5}, post=M.mt_post), D_MT),
@@ -600,9 +613,9 @@ def stars_end(stars='RGB_stars', cms=False, screen_extra='', cms_extra='', alt='
         b.append((note('CorrectMagentaStars', T_CMS + cms_extra), ''))
     if galaxie:
         # partie 5 (fond) : Boost_final (option, avant), C_Fond_final = Fond_auto + Fond_desature (chemin principal), Fond_auto_clair (option)
-        return b + [(boost_final(), ''), (note('Fond_auto', D_FOND), ''), (script('Fond_desature', ''), ''), (script('Fond_auto_clair', ''), '')]
+        return b + [(boost_final(), ''), (note('Fond_auto', D_FOND), ''), (script('Fond_desature', ''), ''), (script('Fond_auto_clair', ''), '')] + EXPORT
     b.append((script('Fond_desature', ''), ''))   # option, tout à la fin : couleur retirée du fond du ciel
-    return b
+    return b + EXPORT
 
 def ghs_block(extra_desc='', stat_extra='', fond_extra=''):
     return [(ghs('GHS_1_premier', 10), D_GHS1 + extra_desc), (ghs('GHS_2_contraste', 4, hp=0.9, sf=1.0, sp=0.35), D_GHS2), (note('Statistical_Stretch', T_STAT + stat_extra), ''), (ghs('GHS_3_fond', 10, hp=0.20, sf=1.0, sp=0.20), D_GHS3 + fond_extra)]

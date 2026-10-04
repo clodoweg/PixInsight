@@ -2688,6 +2688,56 @@ Détails : page docs/pixinsight-workflow.html.</description>
       </table>
       <parameter id="information"></parameter>
    </instance>
+   <instance class="ICCProfileTransformation" version="256" id="Opt_ICC_sRGB_instance">
+      <description>OPTION — tout à la fin, avant une finition dans Photoshop, Lightroom ou Affinity : image convertie en sRGB IEC61966-2.1 (couleurs identiques dans l'autre logiciel).
+
+PRÉRÉGLÉ : ICCProfileTransformation : vers sRGB IEC61966-2.1, Convert to the specified profile, rendu Perceptual, compensation du point noir.
+
+À RÉGLER : glisse sur l'image finie avant l'export (Export_TIFF le fait aussi sur sa copie : cette icône sert si tu enregistres toi-même).
+
+SI :
+- impression ou Adobe RGB voulu -&gt; change le profil cible dans l'icône
+
+Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="targetProfile">sRGB IEC61966-2.1</parameter>
+      <parameter id="toDefaultProfile" value="false"/>
+      <parameter id="renderingIntent" value="Perceptual"/>
+      <parameter id="useBlackPointCompensation" value="true"/>
+      <parameter id="useFloatingPointTransformation" value="true"/>
+   </instance>
+   <instance class="Script" version="256" id="Opt_Export_TIFF_instance">
+      <description>OPTION — tout à la fin : copie enregistrée en TIFF 16 bits sRGB, profil ICC intégré, pour Photoshop, Lightroom ou Affinity.
+
+LANCEMENT : glisse l'icône sur l'image.
+
+PRÉRÉGLÉ : script Export_TIFF : copie de l'image en entiers 16 bits, convertie en sRGB IEC61966-2.1 (icc = true), enregistrée en TIFF dans le dossier de l'image : identifiant de la vue + _final.tif ; l'image ouverte ne change pas.
+
+À RÉGLER : glisse sur l'image finie (après C_Fond_final) ; copie Export_TIFF.js dans src/scripts/clodoweg ; profil intégré si Embed ICC profiles est coché (Global Preferences &gt; Color Management, coché par défaut).
+
+SI :
+- image jamais enregistrée -&gt; fichier dans ton dossier personnel, ou remplis dossier
+- autre nom -&gt; change suffixe
+- garder le profil actuel -&gt; icc false
+
+Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="3">
+         <tr>
+            <td id="id">suffixe</td>
+            <td id="value">_final</td>
+         </tr>
+         <tr>
+            <td id="id">dossier</td>
+            <td id="value"></td>
+         </tr>
+         <tr>
+            <td id="id">icc</td>
+            <td id="value">true</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
+   </instance>
    <icon id="P1_Preparation" instance="P1_Preparation_instance" xpos="30" ypos="20" workspace="Workspace01"/>
    <icon id="E00_LinearPatternSubtraction" instance="E00_LinearPatternSubtraction_instance" xpos="30" ypos="64" workspace="Workspace01"/>
    <icon id="E01_Renommer_auto" instance="E01_Renommer_auto_instance" xpos="30" ypos="94" workspace="Workspace01"/>
@@ -2747,4 +2797,6 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <icon id="Opt_Etoiles_screen" instance="Opt_Etoiles_screen_instance" xpos="1217" ypos="294" workspace="Workspace01"/>
    <icon id="Opt_CorrectMagentaStars" instance="Opt_CorrectMagentaStars_instance" xpos="1217" ypos="324" workspace="Workspace01"/>
    <icon id="Opt_Fond_desature" instance="Opt_Fond_desature_instance" xpos="1217" ypos="354" workspace="Workspace01"/>
+   <icon id="Opt_ICC_sRGB" instance="Opt_ICC_sRGB_instance" xpos="1217" ypos="384" workspace="Workspace01"/>
+   <icon id="Opt_Export_TIFF" instance="Opt_Export_TIFF_instance" xpos="1217" ypos="414" workspace="Workspace01"/>
 </xpsm>
