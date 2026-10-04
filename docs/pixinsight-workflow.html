@@ -450,6 +450,23 @@ details.more > summary:hover { color: var(--accent); }
     </table></div>
     <h3>Finition hors PixInsight (Photoshop, Lightroom, Affinity)</h3>
     <p>Après la partie 5, deux options en fin de P7 (tous les fichiers Conteneurs) : <code style="font-family:var(--mono)">Opt_ICC_sRGB</code> (ICCProfileTransformation vers sRGB IEC61966-2.1, rendu Perceptual, compensation du point noir) et <code style="font-family:var(--mono)">Opt_Export_TIFF</code> (script : copie de l'image en TIFF 16 bits, convertie en sRGB, profil ICC intégré, enregistrée dans le dossier de l'image sous <em>nom de la vue</em>_final.tif ; l'image ouverte ne change pas). Export_TIFF convertit déjà sa copie : ICC_sRGB sert seulement si tu enregistres toi-même. 16 bits suffisent pour une image déjà étirée ; ensuite, seulement des retouches légères (TSL bleu/cyan, vibrance, retouches au pinceau), pas de nouvel étirement. Profil intégré si <em>Embed ICC profiles</em> est coché (Global Preferences › Color Management). Script à copier : <a href="https://github.com/clodoweg/PixInsight/blob/main/docs/process-icons/scripts/Export_TIFF.js" style="color:var(--accent)">Export_TIFF.js</a>.</p>
+    <h4>Quel logiciel pour l'image finale (Photoshop, Lightroom, Affinity)</h4>
+    <ul>
+      <li><strong>Photoshop pour la finition</strong> : le filtre Camera Raw (Filtre › Filtre Camera Raw) utilise le même moteur que Lightroom (mêmes curseurs : TSL, vibrance, clarté, courbe des tons), avec en plus les calques et les masques pour les retouches localisées. Seul des trois à accepter Astronomy Tools.</li>
+      <li><strong>Lightroom pour ranger et exporter</strong> : catalogue, mots-clés, exports en série (JPEG pour le web, AstroBin, tailles différentes). Rien de plus pour l'astro.</li>
+      <li><strong>Affinity en réserve</strong> : à peu près les mêmes outils que Photoshop ; utile seulement pour les macros gratuites de James Ritson.</li>
+    </ul>
+    <h4>Marche à suivre pour chaque image</h4>
+    <ol>
+      <li><strong>PixInsight</strong> : tout jusqu'à C_Fond_final, puis <code style="font-family:var(--mono)">Opt_Export_TIFF</code> (TIFF 16 bits sRGB).</li>
+      <li><strong>Photoshop</strong> : ouvre le TIFF, puis Calque › Objet dynamique › Convertir en objet dynamique (le filtre Camera Raw reste modifiable).</li>
+      <li><strong>Filtre Camera Raw</strong>, toujours léger : TSL, saturation des bleus et des cyans −10 à −15 (bras trop cyan) ; vibrance +5 à +10 ; clarté +5 au maximum, texture 0 (au-delà, le bruit ressort) ; l'histogramme ne doit pas toucher le noir (fond déjà à 0,12).</li>
+      <li><strong>Calque vide au-dessus</strong> : correcteur localisé, mode « Échantillonner tous les calques », pour une traînée de satellite ou un défaut.</li>
+      <li><strong>Halo coloré d'une étoile brillante</strong>, si besoin : calque de réglage Teinte/Saturation (saturation du bleu baissée), masque peint seulement sur le halo.</li>
+      <li><strong>Enregistrement</strong> : PSD (calques gardés), puis Fichier › Exporter › Exporter sous, JPEG sRGB.</li>
+      <li><strong>Lightroom</strong>, si tu veux : import du JPEG ou du PSD pour le catalogue et les exports web.</li>
+    </ol>
+    <p>Pour une série de galaxies : enregistre les étapes 2 et 3 comme une action Photoshop ou un paramètre prédéfini Camera Raw, et ne retouche à la main que l'étape 4. Pas de nouvel étirement après l'export : le TIFF 16 bits est fait pour des retouches légères.</p>
     <h3>Options rangées dans le même fichier</h3>
     <ul>
       <li><strong>Boost_final</strong> (partie 5, icône Opt_Boost_final, avant C_Fond_final) : sur l'image FINIE, étoiles comprises. Masque de luminance tiré de <code style="font-family:var(--mono)">L</code> sans étoiles, dont on retire aussi les étoiles de <code style="font-family:var(--mono)">RGB_stars</code> (aucune étoile n'est touchée, même sur la galaxie), puis CurvesTransformation sur la chrominance (c : 0,46 → 0,54) et la saturation (S : 0,46 → 0,54), puis masque retiré. Rejouable. <code style="font-family:var(--mono)">L</code> doit être encore ouverte.</li>
