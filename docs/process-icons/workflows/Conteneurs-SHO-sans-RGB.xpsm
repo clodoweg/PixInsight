@@ -2710,22 +2710,28 @@ Détails : page docs/pixinsight-workflow.html.</description>
 
 LANCEMENT : glisse l'icône sur l'image.
 
-PRÉRÉGLÉ : script Export_TIFF : copie de l'image en entiers 16 bits, convertie en sRGB IEC61966-2.1 (icc = true), enregistrée en TIFF dans le dossier de l'image : identifiant de la vue + _final.tif ; l'image ouverte ne change pas.
+PRÉRÉGLÉ : script Export_TIFF : copie de l'image en entiers 16 bits, convertie en sRGB IEC61966-2.1 (icc = true), enregistrée en TIFF sous le NOM DE L'OBJET = nom du dossier des masters ouverts (L, R, G, B, H…), dossiers génériques (master, lights, output, WBPP…) sautés ; enregistrée dans ce dossier ; l'image ouverte ne change pas.
 
-À RÉGLER : glisse sur l'image finie (après C_Fond_final) ; copie Export_TIFF.js dans src/scripts/clodoweg ; profil intégré si Embed ICC profiles est coché (Global Preferences &gt; Color Management, coché par défaut).
+À RÉGLER : glisse sur l'image finie (après C_Fond_final), L encore ouverte ; copie Export_TIFF.js dans src/scripts/clodoweg.
 
 SI :
-- image jamais enregistrée -&gt; fichier dans ton dossier personnel, ou remplis dossier
-- autre nom -&gt; change suffixe
+- aucun master ouvert -&gt; mot-clé OBJECT, sinon nom de la vue, dans ton dossier personnel
+- autre nom -&gt; remplis nom
+- autre dossier -&gt; remplis dossier
+- garder plusieurs versions -&gt; suffixe (ex. _v2)
 - garder le profil actuel -&gt; icc false
 
 Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js</parameter>
       <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="3">
+      <table id="parameters" rows="4">
+         <tr>
+            <td id="id">nom</td>
+            <td id="value"></td>
+         </tr>
          <tr>
             <td id="id">suffixe</td>
-            <td id="value">_final</td>
+            <td id="value"></td>
          </tr>
          <tr>
             <td id="id">dossier</td>
