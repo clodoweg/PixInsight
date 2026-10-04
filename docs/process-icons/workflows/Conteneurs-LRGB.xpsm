@@ -4917,7 +4917,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       </table>
    </instance>
    <instance class="Script" version="256" id="Opt_Halo_B_Gon_instance">
-      <description>OPTION — halos autour des étoiles brillantes.
+      <description>OPTION — halos autour des étoiles brillantes ; attention, réduit aussi les petites étoiles (pour les grosses seulement : Etoiles_grosses).
 
 LANCEMENT : double-clic sur l'icône, puis Apply Global. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
 
@@ -4926,6 +4926,7 @@ PRÉRÉGLÉ : rien (réglages dans le dialogue).
 À RÉGLER : Select stars-only image = l'image d'étoiles étirée (RGB_stars ; NBtoRGB_stars en SHO ; HOO_stars en HOO), AVANT Etoiles_screen ; Reduction Amount Low ; Linear Data décoché.
 
 SI :
+- petites étoiles réduites ou effacées aussi (son masque ne protège que les cœurs) -&gt; Etoiles_grosses à la place
 - pas assez -&gt; relance en Low (Med = 4 courbes, High = 9)
 
 Détails : page docs/pixinsight-workflow.html.</description>
@@ -4944,6 +4945,7 @@ PRÉRÉGLÉ : script Etoiles_grosses : masque des grosses étoiles (ouverture mo
 À RÉGLER : glisse sur RGB_stars juste AVANT Etoiles_screen (Etoiles_screen ensuite, pas Etoiles_reduites) ; en rapide, avant R_C_Etoiles_fond_rapide ; copie Etoiles_grosses.js dans src/scripts/clodoweg.
 
 SI :
+- halo large pas entièrement réduit -&gt; etendue 10 à 12
 - moyennes étoiles touchées aussi -&gt; taille 9 ou 11
 - certaines grosses pas réduites -&gt; taille 5, ou seuil 0,10
 - pas assez réduites -&gt; force 0,80 (0,5 = rien)

@@ -500,6 +500,7 @@ T_HALO = ("ÉTAPE MANUELLE — Halo-B-Gon (SetiAstro, script v2.1) sur l'image d
           "Déjà recombiné : annule Etoiles_screen (Ctrl+Z sur l'image), applique Halo-B-Gon sur l'image d'étoiles, puis relance Etoiles_screen. "
           "Masque de luminosité inversé moins les petites structures (cœurs protégés), puis courbe qui assombrit les tons moyens (0,75 → 0,40). "
           "Reduction Amount, Low par défaut : Extra Low = 1 courbe douce (0,75 → 0,575) ; Low = 1 passe, 1 courbe ; Med = 2 passes × 2 courbes (4) ; High = 3 passes × 3 courbes (9). "
+          "ATTENTION : la courbe assombrit aussi les petites étoiles (elles sont surtout faites de tons moyens) ; pour ne réduire que les grosses étoiles et leur halo : icône Etoiles_grosses. "
           "Commence par Extra Low ou Low. Linear Data décoché par défaut ; coché, le script étire (mtf 0,25^5), traite puis rend l'image linéaire : seulement si l'image est encore linéaire.")
 T_CMS = ("ÉTAPE MANUELLE — CorrectMagentaStars (Script › Utilities). Sur l'image SHO finale avec étoiles. Amount 0,8 (défaut, 0 à 1). "
          "Le script inverse l'image, retire le vert avec SCNR (le magenta inversé), puis réinverse.")
