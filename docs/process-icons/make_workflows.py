@@ -192,7 +192,24 @@ def layout(entries, naming):
         rows += 1
     return insts, icons
 
-def layout_all(main, opts):
+RAPIDE = {'C_Preparation_rapide', 'GC_Solver_auto', 'C_RGB_rapide', 'C_RGB_rapide_SXT_etire', 'C_L_rapide', 'C_RGB_fin_rapide'}
+RAPIDE_NOTE = {
+    'LRGB': {1: "MODE RAPIDE (galaxies) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre : R_C_Preparation_rapide ; R_GC_Solver_auto ; R_C_RGB_rapide (ou R_C_RGB_rapide_SXT_etire) sur RGB et R_C_L_rapide sur L ; GHS_1_premier, GHS_2_contraste, GHS_3_fond sur L seulement ; Etoiles_LRGB ; LRGB_ajout_L ; finition. Phase 1 : R_C_Preparation_rapide à la place de LinearPatternSubtraction, Renommer_auto et Combinaison_RGB",
+             2: "R_GC_Solver_auto à la place de toute la phase 2 : GradientCorrection sur toutes les images ouvertes, puis ImageSolver sur RGB",
+             3: "R_C_RGB_rapide (ou R_C_RGB_rapide_SXT_etire) sur RGB à la place de C_RGB_lineaire ; R_C_L_rapide sur L à la place de C_L_lineaire ; RGB et étoiles sortent étirés, L reste linéaire",
+             4: "pas d'icône rapide : GHS_1_premier, GHS_2_contraste, GHS_3_fond sur L SEULEMENT ; saute Statistical_Stretch et Star_Stretch (RGB et étoiles déjà étirés par R_C_RGB_rapide) ; puis Etoiles_LRGB",
+             5: "pas d'icône rapide : LRGB_ajout_L du chemin principal",
+             6: "pas d'icône rapide : finition en parties du chemin principal (HDRMT_40, C_Finition, NXT_final) et leurs options",
+             7: "pas d'icône rapide : Etoiles_screen et C_Fond_final du chemin principal ; Export_TIFF (options) pour finir hors PixInsight"},
+    'LHA': {1: "MODE RAPIDE (galaxies) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre : R_C_Preparation_rapide ; R_GC_Solver_auto ; C_RGB_couleur sur RGB, BXT_L_H sur H, Continuum_H, H_dans_RGB, R_C_RGB_fin_rapide sur RGB, R_C_L_rapide sur L ; GHS sur L seulement ; Etoiles_LRGB ; LRGB_ajout_L ; finition. Phase 1 : R_C_Preparation_rapide à la place de LinearPatternSubtraction, Renommer_auto et Combinaison_RGB",
+            2: "R_GC_Solver_auto à la place de toute la phase 2 : GradientCorrection sur toutes les images ouvertes (R et H compris, pour le continuum), puis ImageSolver sur RGB",
+            3: "chemin principal pour C_RGB_couleur (RGB), BXT_L_H (sur H seulement), Continuum_H et H_dans_RGB ; puis R_C_RGB_fin_rapide sur RGB à la place de C_RGB_etoiles_bruit, et R_C_L_rapide sur L à la place de BXT_L_H (sur L) et C_L_lineaire",
+            4: "pas d'icône rapide : GHS_1_premier, GHS_2_contraste, GHS_3_fond sur L SEULEMENT ; saute Statistical_Stretch et Star_Stretch (RGB et étoiles déjà étirés par R_C_RGB_fin_rapide) ; puis Etoiles_LRGB",
+            5: "pas d'icône rapide : LRGB_ajout_L du chemin principal",
+            6: "pas d'icône rapide : finition en parties du chemin principal (HDRMT_40, C_Finition, NXT_final) et leurs options",
+            7: "pas d'icône rapide : Etoiles_screen et C_Fond_final du chemin principal ; Export_TIFF (options) pour finir hors PixInsight"}}
+
+def layout_all(main, opts, rapide=None, notes=None):
     """Une colonne par phase : icône-titre, étapes du chemin principal (E01…), puis icône « options » et options (Opt_…)."""
     insts, icons = [], []
     phases = sorted({e[1] for e in main} | {e[1] for e in opts})
@@ -202,8 +219,8 @@ def layout_all(main, opts):
             if p == ph:
                 k += 1
                 numbered.append(('E%02d_%s' % (k, b), p, xml))
-    cols = [[header_icon(ph)[0], 'P%d_options' % ph] + [n for n, p, x in numbered if p == ph] + ['Opt_%s' % b for b, p, x in opts if p == ph]
-            for ph in phases]
+    cols = [[header_icon(ph)[0], 'P%d_options' % ph, 'P%d_rapide' % ph] + [n for n, p, x in numbered if p == ph] + ['Opt_%s' % b for b, p, x in opts if p == ph]
+            + ['R_%s' % b for b, p, x in (rapide or []) if p == ph] for ph in phases]
     xs = xs_of(cols)
     for c, ph in enumerate(phases):
         x = xs[c]
@@ -227,6 +244,20 @@ def layout_all(main, opts):
             y += 34
             for b, p, xml in mine:
                 name = 'Opt_%s' % b
+                insts.append(xml.replace('id="__ID___instance"', 'id="%s_instance"' % name, 1))
+                icons.append('   <icon id="%s" instance="%s_instance" xpos="%d" ypos="%d" workspace="Workspace01"/>' % (name, name, x, y))
+                y += 30
+        if notes:   # groupe P#_rapide (demande de l'utilisateur) : dans toutes les colonnes des fichiers qui ont un mode rapide
+            y += 16
+            rn = 'P%d_rapide' % ph
+            insts.append('   <instance class="NoOperation" version="256" id="%s_instance">\n      <description>%s</description>\n   </instance>'
+                         % (rn, escape('MODE RAPIDE, phase %d — %s : %s. Icône de repère, sans effet.' % (ph, L.PHASES[ph - 1], notes[ph]))))
+            icons.append('   <icon id="%s" instance="%s_instance" xpos="%d" ypos="%d" workspace="Workspace01"/>' % (rn, rn, x, y))
+            y += 34
+            for b, p, xml in (rapide or []):
+                if p != ph:
+                    continue
+                name = 'R_%s' % b
                 insts.append(xml.replace('id="__ID___instance"', 'id="%s_instance"' % name, 1))
                 icons.append('   <icon id="%s" instance="%s_instance" xpos="%d" ypos="%d" workspace="Workspace01"/>' % (name, name, x, y))
                 y += 30
@@ -354,7 +385,9 @@ def write(filename, prefix, title, steps):
             item = described(item, desc)
         xml = shorten(item[1], prefix, base)
         r = L.role(prefix, base)
-        if r == 'opt':
+        if base in RAPIDE:
+            tag = '%s.\n\n' % L.WHEN[base]
+        elif r == 'opt':
             tag = 'OPTION — %s.\n\n' % L.WHEN[base]
         elif not L.is_default(r, prefix):
             tag = 'ALTERNATIVE — %s.\n\n' % label(r)
@@ -380,7 +413,9 @@ def write(filename, prefix, title, steps):
                 done.add(cn)
                 cmain.append((cn, ph, container('__ID__', [byb[m] for m in members])))
     cfn, ctitle = filename.replace('Workflow-', 'Conteneurs-'), title + ' — chemin principal avec conteneurs, options dans leur phase'
-    CONT_LAYOUT[prefix] = (cfn, ctitle) + tuple(layout_all(cmain, opts))
+    rap = [o for o in opts if o[0] in RAPIDE]
+    opts = [o for o in opts if o[0] not in RAPIDE]
+    CONT_LAYOUT[prefix] = (cfn, ctitle) + tuple(layout_all(cmain, opts, rap, RAPIDE_NOTE.get(prefix)))
     save(cfn, ctitle, *CONT_LAYOUT[prefix][2:])
     conts = [{'n': cn, 't': target, 'm': members} for cn, target, members in L.CONTAINERS.get(prefix, [])]
     wf = {'id': prefix, 'file': filename, 'title': title, 'steps': [], 'containers': conts, 'def': L.WF_DEFAULT.get(prefix, {})}
@@ -1061,14 +1096,13 @@ def insert_before(steps, base, items):
     steps[i:i] = items
 
 prep_l, prep_h = prep_rapide(lrgb)[1], prep_rapide(lhargb)[1]
-insert_after(lrgb, 'Combinaison_RGB', [(note('Mode_rapide', ''), ''), (prep_l, '')])
+insert_after(lrgb, 'Combinaison_RGB', [(prep_l, '')])
 insert_after(lrgb, 'ImageSolver', [(gc_solver(), '')])
 insert_before(lrgb, 'GHS_1_premier', [(rgb_rapide()[0], ''), (rgb_rapide_sxt_etire(), ''), (l_rapide(M.bxt('BXT_L', False, 0.25, 0.0, 0.80)), ''), (stf_icon(), '')])
-insert_after(lhargb, 'Combinaison_RGB', [(note('Mode_rapide', ''), ''), (prep_h, '')])
+insert_after(lhargb, 'Combinaison_RGB', [(prep_h, '')])
 insert_after(lhargb, 'ImageSolver', [(gc_solver(), '')])
-insert_before(lhargb, 'GHS_1_premier', [(cont('C_RGB_couleur_rapide', [gc_r(), M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), spcc_perso('SPCC'), bxt_rgb()]), ''),
-                                        (cont('C_H_rapide', [gc_r(), M.bxt('BXT_L_H', False, 0.25, 0.0, 0.80)]), ''),
-                                        (rgb_rapide()[1], ''), (l_rapide(M.bxt('BXT_L_H', False, 0.25, 0.0, 0.80)), ''), (stf_icon(), '')])
+# LHaRGB : C_RGB_couleur_rapide et C_H_rapide sans GradientCorrection = C_RGB_couleur et BXT_L_H du chemin principal : supprimés
+insert_before(lhargb, 'GHS_1_premier', [(rgb_rapide()[1], ''), (l_rapide(M.bxt('BXT_L_H', False, 0.25, 0.0, 0.80)), ''), (stf_icon(), '')])
 
 for fn, pre, title, steps in [
     ('Workflow-LRGB.xpsm', 'LRGB', 'Workflow LRGB', lrgb),
