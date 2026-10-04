@@ -194,7 +194,7 @@ def layout(entries, naming):
         rows += 1
     return insts, icons
 
-TURBO = {'Turbo_1'}   # mode Turbo (demande de l'utilisateur) : groupe P#_turbo, icônes T_…
+TURBO = {'Turbo_1', 'Turbo_2'}   # mode Turbo (demande de l'utilisateur) : groupe P#_turbo, icônes T_…
 RAPIDE = {'C_Fin_GHS_rapide', 'C_Fin_rapide', 'C_Etoiles_fond_rapide', 'C_Preparation_rapide', 'GC_Solver_auto_rapide', 'C_RGB_rapide', 'C_RGB_rapide_SXT_etire', 'C_L_rapide', 'C_RGB_fin_rapide'}
 RAPIDE_NOTE = {
     'LRGB': {1: "MODE RAPIDE (galaxies) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre : R_C_Preparation_rapide ; R_GC_Solver_auto_rapide ; R_C_RGB_rapide (ou R_C_RGB_rapide_SXT_etire) sur RGB et R_C_L_rapide sur L ; GHS_1_premier, GHS_2_contraste, GHS_3_fond sur L seulement ; Etoiles_LRGB ; LRGB_ajout_L ; finition. Phase 1 : R_C_Preparation_rapide (double-clic puis Apply Global) à la place de LinearPatternSubtraction, Renommer_auto, Combinaison_RGB et Solver_auto",
@@ -1140,6 +1140,12 @@ for _st in (lrgb, lhargb):
     # P4_rapide « Fin de GHS » (demande de l'utilisateur) : GHS_2_contraste puis GHS_3_fond en un conteneur, sur L après GHS_1_premier
     insert_after(_st, 'SXT_non_lineaire', [(cont('C_Fin_GHS_rapide', [pick(_st, b)[0] for b in ('GHS_2_contraste', 'GHS_3_fond')]), '')])
     _c6, _c7 = fin_rapide(_st)
+    if _st is lrgb:
+        # Turbo 2 (demande de l'utilisateur) : tout se fait sur RGB, donc un conteneur suffit :
+        # LRGB_ajout_L, puis le contenu de C_Fin_rapide, puis celui de C_Etoiles_fond_rapide (Export_TIFF compris)
+        _t2 = cont('Turbo_2', [pick(_st, 'LRGB_ajout_L')[0]] + list(hdrmt_items('0.3'))
+                   + [pick(_st, b)[0] for b in ('Masque_L', 'Courbes', 'LHE', 'LHE_fin', 'Masque_retirer', 'NXT_final', 'Etoiles_screen', 'Fond_auto', 'Fond_desature', 'Export_TIFF')])
+        insert_after(_st, 'LRGB_ajout_L', [(_t2, '')])
     insert_after(_st, 'NXT_final_fort', [(_c6, '')])
     _st.append((_c7, ''))
 insert_before(lrgb, 'GHS_1_premier', [(rgb_rapide()[0], ''), (rgb_rapide_sxt_etire(), ''), (l_rapide(M.bxt('BXT_L', False, 0.25, 0.0, 0.80)), ''), (stf_icon(), '')])
