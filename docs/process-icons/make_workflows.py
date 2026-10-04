@@ -57,6 +57,7 @@ SCRIPTS = {
     'Nettoyage_sans_etoiles': ('$PXI_SRCDIR/scripts/clodoweg/Nettoyage_sans_etoiles.js', '', [('etoiles', 'RGB_stars'), ('seuilBas', '0.05'), ('seuilHaut', '0.12'), ('etendue', '25'), ('passes', '3'), ('protege', '0.08'), ('structure', '0.15'), ('afficherMasque', 'false')], L_DRAG),
     'Export_TIFF': ('$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js', '', [('nom', ''), ('suffixe', ''), ('dossier', ''), ('icc', 'true')], L_DRAG),
     'Fond_auto_clair': ('$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js', '', [('cible', '0.14'), ('tolerance', '0.005'), ('grille', '8')], L_DRAG),
+    'GC_Solver_auto': ('$PXI_SRCDIR/scripts/clodoweg/GC_Solver_auto.js', '', [('solveTout', 'false'), ('defaultDate', '2020-01-01T00:00:00')], L_GLOBAL),
     'ImageSolver_Date': ('$PXI_SRCDIR/scripts/clodoweg/ImageSolver_Date.js', '', [('defaultDate', '2020-01-01T00:00:00')], L_DRAG),
     'LinearPatternSubtraction': ('$PXI_SRCDIR/scripts/clodoweg/LPS_UnClic.js', '',
              [('correctColumns', 'false'), ('correctEntireImage', 'true'), ('defectTableFilePath', ''), ('layersToRemove', '9'),
@@ -321,6 +322,16 @@ def solver_container():
                    lambda m: '<table id="parameters" rows="%d">%s%s\n      </table>' % (int(m.group(1)) + len(extra), m.group(2), rows), x, count=1, flags=re.S)
     assert n == 1
     return 'ImageSolver', x.replace('id="ImageSolver_Date_instance"', 'id="ImageSolver_instance"', 1)
+
+def gc_solver():
+    """Mode rapide (demande de l'utilisateur) : GradientCorrection sur toutes les images ouvertes puis ImageSolver (images couleur),
+    avec les réglages d'ImageSolver du matériel, comme solver_container."""
+    name, x = script('GC_Solver_auto', '')
+    rows = ''.join('\n         <tr>\n            <td id="id">%s</td>\n            <td id="value">%s</td>\n         </tr>' % (escape(k), escape(v)) for k, v in SCRIPTS['ImageSolver'][2])
+    x, n = re.subn(r'<table id="parameters" rows="(\d+)">(.*?)\n      </table>',
+                   lambda m: '<table id="parameters" rows="%d">%s%s\n      </table>' % (int(m.group(1)) + len(SCRIPTS['ImageSolver'][2]), m.group(2), rows), x, count=1, flags=re.S)
+    assert n == 1
+    return name, x
 
 def solver_seul():
     n, x = script('ImageSolver', '')
@@ -1051,8 +1062,10 @@ def insert_before(steps, base, items):
 
 prep_l, prep_h = prep_rapide(lrgb)[1], prep_rapide(lhargb)[1]
 insert_after(lrgb, 'Combinaison_RGB', [(note('Mode_rapide', ''), ''), (prep_l, '')])
+insert_after(lrgb, 'ImageSolver', [(gc_solver(), '')])
 insert_before(lrgb, 'GHS_1_premier', [(rgb_rapide()[0], ''), (rgb_rapide_sxt_etire(), ''), (l_rapide(M.bxt('BXT_L', False, 0.25, 0.0, 0.80)), ''), (stf_icon(), '')])
 insert_after(lhargb, 'Combinaison_RGB', [(note('Mode_rapide', ''), ''), (prep_h, '')])
+insert_after(lhargb, 'ImageSolver', [(gc_solver(), '')])
 insert_before(lhargb, 'GHS_1_premier', [(cont('C_RGB_couleur_rapide', [gc_r(), M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), spcc_perso('SPCC'), bxt_rgb()]), ''),
                                         (cont('C_H_rapide', [gc_r(), M.bxt('BXT_L_H', False, 0.25, 0.0, 0.80)]), ''),
                                         (rgb_rapide()[1], ''), (l_rapide(M.bxt('BXT_L_H', False, 0.25, 0.0, 0.80)), ''), (stf_icon(), '')])
