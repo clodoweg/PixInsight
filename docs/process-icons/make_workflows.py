@@ -552,6 +552,10 @@ D_SCREEN = ("Recombinaison des étoiles en mode screen : ~((~$T) * (~%s)). GLISS
 D_BL = ("Recombinaison des étoiles + réduction Bill Blanshan (Transfer V2) en une seule formule, À LA PLACE d'Etoiles_screen : GLISSE l'icône sur l'image SANS étoiles finale ; elle est modifiée directement. "
         "W = ~((~$T)*(~%s)) est l'image avec étoiles (screen), puis la formule de Bill avec Img1 = $T (sans étoiles) : même calcul que Etoiles_screen suivi de Blanshan, sans vue intermédiaire. "
         "S = 0,20 dans cette icône (valeur de Bill : 0,15 ; plus bas = étoiles plus petites ; étoiles trop petites -> 0,25, ou saute cette étape). Les versions V3 et les méthodes Halo/Star sont décrites dans la fiche (section réduction d'étoiles).")
+D_PLAFOND = ("Plafond des cœurs d'étoiles, AVANT la réintégration : GLISSE l'icône sur l'image d'étoiles seule (RGB_stars, ou celle de ton workflow), juste avant Etoiles_screen ou Etoiles_reduites. "
+             "m = max(R, G, B) du pixel ; au-dessus de s = 0,70, les trois canaux sont multipliés par le même facteur 1 − k·t² (t de 0 à 1 entre s et 1) : un cœur à 1 descend à 0,94 (k = 0,06), "
+             "une étoile sous 0,70 ne change pas, et le rapport R:G:B est gardé (la couleur ne se délave pas). Ne recrée pas la couleur d'un cœur saturé à la prise de vue (R = G = B = 1 reste blanc, à 0,94). "
+             "Encore trop blanc : k = 0,10 ; étoiles moyennes touchées : s = 0,80. Rejouable, Ctrl+Z pour revenir.")
 D_MT = ("Alternative : MorphologicalTransformation sur l'image d'étoiles seule (ou avec un masque d'étoiles), AVANT Etoiles_screen. Morphological Selection 0,25 (sous 0,5 = érosion), Amount 0,60, 1 itération, élément circulaire 5x5.")
 D_CURVES = ("CurvesTransformation — sur l'image sans étoiles étirée, sous masque de luminance (icône Masque_L juste avant). "
             "Préréglé : courbe en S sur RGB/K (0,25 → 0,19 ; 0,75 → 0,81) et saturation (canal S, milieu monté de 0,5 à 0,65), interpolation Akima : contraste d'environ deux passes de l'ancienne courbe légère, saturation modérée (0,72 jugé trop saturé sur NGC 1532). Trop saturé -> milieu S à 0,60 ; couleurs ternes -> 0,72 ; trop contrasté -> 0,21 / 0,79 ; pas assez -> option Boost_finition. "
@@ -676,7 +680,9 @@ EXPORT = [(icc_srgb(), ''), (script('Export_TIFF', ''), '')]   # options, tout �
 def stars_end(stars='RGB_stars', cms=False, screen_extra='', cms_extra='', alt='', galaxie=False):
     # options sur l'image d'étoiles seule : AVANT la recombinaison
     b = [(M.instance('MorphologicalTransformation', 'MT_etoiles', {'operator': 'Selection', 'numberOfIterations': 1, 'amount': '0.60', 'selectionPoint': '0.25', 'structureSize': 5}, post=M.mt_post), D_MT),
-         (note('Halo_B_Gon', T_HALO), '')]
+         (note('Halo_B_Gon', T_HALO), ''),
+         # option (demande de l'utilisateur) : cœurs d'étoiles qui ne touchent plus 1, avant la réintégration
+         (pm('Etoiles_plafond', 's = 0.70;\nk = 0.06;\nm = max($T[0], $T[1], $T[2]);\nt = max(0, (m - s)/(1 - s));\n$T*(1 - k*t*t)', symbols='s, k, m, t'), D_PLAFOND)]
     b.append((pm('Etoiles_screen', '~((~$T) * (~%s))' % stars),
               D_SCREEN % (stars, stars) + alt + screen_extra))
     b.append((pm('Etoiles_reduites', "S=0.20;\nW=~((~$T)*(~%s));\nf1= ~((~mtf(~S,W)/~mtf(~S,$T))*~$T);\nmax($T,f1)" % stars, symbols='S, W, f1'), D_BL % stars))
