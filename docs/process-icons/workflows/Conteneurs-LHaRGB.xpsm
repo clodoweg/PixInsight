@@ -3610,9 +3610,9 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="overlap" value="0.20"/>
    </instance>
    <instance class="NoOperation" version="256" id="P6_rapide_instance">
-      <description>MODE RAPIDE, phase 6 — Finition : R_HDRMT_30 (HDRMT à 30 %), R_C_Finition (masque, Courbes, LHE, LHE_fin, masque retiré), R_NXT_final (Denoise 0,40), dans cet ordre, sur l'image sans étoiles après LRGB_ajout_L ; mêmes icônes que HDRMT_30 (options), C_Finition et NXT_final. Icône de repère, sans effet.</description>
+      <description>MODE RAPIDE, phase 6 — Finition : R_C_Fin_rapide sur l'image sans étoiles après LRGB_ajout_L : HDRMT à 30 %, masque, Courbes, LHE, LHE_fin, masque retiré, NXT_final 0,40 en un seul conteneur (= HDRMT_30, C_Finition et NXT_final). Icône de repère, sans effet.</description>
    </instance>
-   <instance class="ProcessContainer" id="R_HDRMT_30_instance">
+   <instance class="ProcessContainer" id="R_C_Fin_rapide_instance">
       <instance class="PixelMath" version="256" enabled="true">
          <parameter id="expression">$T</parameter>
          <parameter id="expression1"></parameter>
@@ -3705,8 +3705,6 @@ Détails : page docs/pixinsight-workflow.html.</description>
          </table>
          <parameter id="information"></parameter>
       </instance>
-   </instance>
-   <instance class="ProcessContainer" id="R_C_Finition_instance">
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
@@ -3894,33 +3892,24 @@ Détails : page docs/pixinsight-workflow.html.</description>
          </table>
          <parameter id="information"></parameter>
       </instance>
-   </instance>
-   <instance class="NoiseXTerminator" version="256" id="R_NXT_final_instance">
-      <description>PRÉRÉGLÉ : Denoise 0,40, 1 itération.
-
-À RÉGLER : PARTIE 3 de la finition (bruit) : glisse sur l'image sans étoiles après C_Finition (et le Boost éventuel) ; options à la place : NXT_final_doux (0,25), NXT_final_fort (0,60).
-
-SI :
-- aspect plastique -&gt; NXT_final_doux
-- bruit encore visible -&gt; NXT_final_fort
-
-Détails : page docs/pixinsight-workflow.html.</description>
-      <parameter id="ml_version" value="0"/>
-      <parameter id="denoise" value="0.40"/>
-      <parameter id="enable_color_separation" value="false"/>
-      <parameter id="enable_frequency_separation" value="false"/>
-      <parameter id="denoise_intensity" value="0.90"/>
-      <parameter id="denoise_color" value="0.90"/>
-      <parameter id="denoise_high_freq" value="0.90"/>
-      <parameter id="denoise_low_freq" value="0.90"/>
-      <parameter id="denoise_intensity_high_freq" value="0.90"/>
-      <parameter id="denoise_intensity_low_freq" value="0.90"/>
-      <parameter id="denoise_color_high_freq" value="0.90"/>
-      <parameter id="denoise_color_low_freq" value="0.90"/>
-      <parameter id="frequency_scale" value="5.0"/>
-      <parameter id="iterations" value="1"/>
-      <parameter id="detail" value="0.15"/>
-      <parameter id="overlap" value="0.20"/>
+      <instance class="NoiseXTerminator" version="256" enabled="true">
+         <parameter id="ml_version" value="0"/>
+         <parameter id="denoise" value="0.40"/>
+         <parameter id="enable_color_separation" value="false"/>
+         <parameter id="enable_frequency_separation" value="false"/>
+         <parameter id="denoise_intensity" value="0.90"/>
+         <parameter id="denoise_color" value="0.90"/>
+         <parameter id="denoise_high_freq" value="0.90"/>
+         <parameter id="denoise_low_freq" value="0.90"/>
+         <parameter id="denoise_intensity_high_freq" value="0.90"/>
+         <parameter id="denoise_intensity_low_freq" value="0.90"/>
+         <parameter id="denoise_color_high_freq" value="0.90"/>
+         <parameter id="denoise_color_low_freq" value="0.90"/>
+         <parameter id="frequency_scale" value="5.0"/>
+         <parameter id="iterations" value="1"/>
+         <parameter id="detail" value="0.15"/>
+         <parameter id="overlap" value="0.20"/>
+      </instance>
    </instance>
    <instance class="NoOperation" version="256" id="P7_Etoiles_instance">
       <description>PHASE 7 — Étoiles : étoiles : étirement, recombinaison, réduction. Colonne de repère, sans effet.</description>
@@ -4372,46 +4361,38 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="information"></parameter>
    </instance>
    <instance class="NoOperation" version="256" id="P7_rapide_instance">
-      <description>MODE RAPIDE, phase 7 — Étoiles : R_Etoiles_screen (étoiles remises) puis R_C_Fond_final (Fond_auto, Fond_desature) ; mêmes icônes que le chemin principal ; Export_TIFF (options) pour finir hors PixInsight. Icône de repère, sans effet.</description>
+      <description>MODE RAPIDE, phase 7 — Étoiles : R_C_Etoiles_fond_rapide sur l'image sans étoiles finie : étoiles remises (Etoiles_screen), Fond_auto (0,12), Fond_desature en un seul conteneur (= Etoiles_screen et C_Fond_final) ; Export_TIFF (options) pour finir hors PixInsight. Icône de repère, sans effet.</description>
    </instance>
-   <instance class="PixelMath" version="256" id="R_Etoiles_screen_instance">
-      <description>PRÉRÉGLÉ : ~((~$T) * (~RGB_stars)), sur l'image elle-même.
-
-À RÉGLER : glisse sur l'image sans étoiles finale : elle reçoit les étoiles ; étoiles étirées nommées RGB_stars (nom donné par SXT, s minuscule).
-
-SI :
-- autre nom d'étoiles -&gt; corrige-le dans la formule
-
-Détails : page docs/pixinsight-workflow.html.</description>
-      <parameter id="expression">~((~$T) * (~RGB_stars))</parameter>
-      <parameter id="expression1"></parameter>
-      <parameter id="expression2"></parameter>
-      <parameter id="expression3"></parameter>
-      <parameter id="useSingleExpression" value="true"/>
-      <parameter id="symbols"></parameter>
-      <parameter id="clearImageCacheAndExit" value="false"/>
-      <parameter id="cacheGeneratedImages" value="false"/>
-      <parameter id="generateOutput" value="true"/>
-      <parameter id="singleThreaded" value="false"/>
-      <parameter id="optimization" value="true"/>
-      <parameter id="use64BitWorkingImage" value="false"/>
-      <parameter id="rescale" value="false"/>
-      <parameter id="rescaleLower" value="0"/>
-      <parameter id="rescaleUpper" value="1"/>
-      <parameter id="truncate" value="true"/>
-      <parameter id="truncateLower" value="0"/>
-      <parameter id="truncateUpper" value="1"/>
-      <parameter id="createNewImage" value="false"/>
-      <parameter id="showNewImage" value="true"/>
-      <parameter id="newImageId"></parameter>
-      <parameter id="newImageWidth" value="0"/>
-      <parameter id="newImageHeight" value="0"/>
-      <parameter id="newImageAlpha" value="false"/>
-      <parameter id="newImageColorSpace" value="SameAsTarget"/>
-      <parameter id="newImageSampleFormat" value="SameAsTarget"/>
-      <table id="outputData" rows="0"/>
-   </instance>
-   <instance class="ProcessContainer" id="R_C_Fond_final_instance">
+   <instance class="ProcessContainer" id="R_C_Etoiles_fond_rapide_instance">
+      <instance class="PixelMath" version="256" enabled="true">
+         <parameter id="expression">~((~$T) * (~RGB_stars))</parameter>
+         <parameter id="expression1"></parameter>
+         <parameter id="expression2"></parameter>
+         <parameter id="expression3"></parameter>
+         <parameter id="useSingleExpression" value="true"/>
+         <parameter id="symbols"></parameter>
+         <parameter id="clearImageCacheAndExit" value="false"/>
+         <parameter id="cacheGeneratedImages" value="false"/>
+         <parameter id="generateOutput" value="true"/>
+         <parameter id="singleThreaded" value="false"/>
+         <parameter id="optimization" value="true"/>
+         <parameter id="use64BitWorkingImage" value="false"/>
+         <parameter id="rescale" value="false"/>
+         <parameter id="rescaleLower" value="0"/>
+         <parameter id="rescaleUpper" value="1"/>
+         <parameter id="truncate" value="true"/>
+         <parameter id="truncateLower" value="0"/>
+         <parameter id="truncateUpper" value="1"/>
+         <parameter id="createNewImage" value="false"/>
+         <parameter id="showNewImage" value="true"/>
+         <parameter id="newImageId"></parameter>
+         <parameter id="newImageWidth" value="0"/>
+         <parameter id="newImageHeight" value="0"/>
+         <parameter id="newImageAlpha" value="false"/>
+         <parameter id="newImageColorSpace" value="SameAsTarget"/>
+         <parameter id="newImageSampleFormat" value="SameAsTarget"/>
+         <table id="outputData" rows="0"/>
+      </instance>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js</parameter>
          <parameter id="md5sum"></parameter>
@@ -4521,9 +4502,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <icon id="Opt_NXT_final_doux" instance="Opt_NXT_final_doux_instance" xpos="976" ypos="384" workspace="Workspace01"/>
    <icon id="Opt_NXT_final_fort" instance="Opt_NXT_final_fort_instance" xpos="976" ypos="414" workspace="Workspace01"/>
    <icon id="P6_rapide" instance="P6_rapide_instance" xpos="976" ypos="460" workspace="Workspace01"/>
-   <icon id="R_HDRMT_30" instance="R_HDRMT_30_instance" xpos="976" ypos="494" workspace="Workspace01"/>
-   <icon id="R_C_Finition" instance="R_C_Finition_instance" xpos="976" ypos="524" workspace="Workspace01"/>
-   <icon id="R_NXT_final" instance="R_NXT_final_instance" xpos="976" ypos="554" workspace="Workspace01"/>
+   <icon id="R_C_Fin_rapide" instance="R_C_Fin_rapide_instance" xpos="976" ypos="494" workspace="Workspace01"/>
    <icon id="P7_Etoiles" instance="P7_Etoiles_instance" xpos="1180" ypos="20" workspace="Workspace01"/>
    <icon id="E26_Etoiles_screen" instance="E26_Etoiles_screen_instance" xpos="1180" ypos="64" workspace="Workspace01"/>
    <icon id="E27_C_Fond_final" instance="E27_C_Fond_final_instance" xpos="1180" ypos="94" workspace="Workspace01"/>
@@ -4536,6 +4515,5 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <icon id="Opt_ICC_sRGB" instance="Opt_ICC_sRGB_instance" xpos="1180" ypos="324" workspace="Workspace01"/>
    <icon id="Opt_Export_TIFF" instance="Opt_Export_TIFF_instance" xpos="1180" ypos="354" workspace="Workspace01"/>
    <icon id="P7_rapide" instance="P7_rapide_instance" xpos="1180" ypos="400" workspace="Workspace01"/>
-   <icon id="R_Etoiles_screen" instance="R_Etoiles_screen_instance" xpos="1180" ypos="434" workspace="Workspace01"/>
-   <icon id="R_C_Fond_final" instance="R_C_Fond_final_instance" xpos="1180" ypos="464" workspace="Workspace01"/>
+   <icon id="R_C_Etoiles_fond_rapide" instance="R_C_Etoiles_fond_rapide_instance" xpos="1180" ypos="434" workspace="Workspace01"/>
 </xpsm>

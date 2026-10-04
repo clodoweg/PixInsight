@@ -193,23 +193,22 @@ def layout(entries, naming):
         rows += 1
     return insts, icons
 
-RAPIDE = {'C_Preparation_rapide', 'GC_Solver_auto_rapide', 'C_RGB_rapide', 'C_RGB_rapide_SXT_etire', 'C_L_rapide', 'C_RGB_fin_rapide'}
-RAPIDE_COPIES = ['HDRMT_30', 'C_Finition', 'NXT_final', 'Etoiles_screen', 'C_Fond_final']
+RAPIDE = {'C_Fin_rapide', 'C_Etoiles_fond_rapide', 'C_Preparation_rapide', 'GC_Solver_auto_rapide', 'C_RGB_rapide', 'C_RGB_rapide_SXT_etire', 'C_L_rapide', 'C_RGB_fin_rapide'}
 RAPIDE_NOTE = {
     'LRGB': {1: "MODE RAPIDE (galaxies) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre : R_C_Preparation_rapide ; R_GC_Solver_auto_rapide ; R_C_RGB_rapide (ou R_C_RGB_rapide_SXT_etire) sur RGB et R_C_L_rapide sur L ; GHS_1_premier, GHS_2_contraste, GHS_3_fond sur L seulement ; Etoiles_LRGB ; LRGB_ajout_L ; finition. Phase 1 : R_C_Preparation_rapide à la place de LinearPatternSubtraction, Renommer_auto et Combinaison_RGB",
              2: "R_GC_Solver_auto_rapide à la place de toute la phase 2 : GradientCorrection sur toutes les images ouvertes, puis ImageSolver sur RGB",
              3: "R_C_RGB_rapide (ou R_C_RGB_rapide_SXT_etire) sur RGB à la place de C_RGB_lineaire ; R_C_L_rapide sur L à la place de C_L_lineaire ; RGB et étoiles sortent étirés, L reste linéaire",
              4: "pas d'icône rapide : GHS_1_premier, GHS_2_contraste, GHS_3_fond sur L SEULEMENT ; saute Statistical_Stretch et Star_Stretch (RGB et étoiles déjà étirés par R_C_RGB_rapide) ; puis Etoiles_LRGB",
              5: "pas d'icône rapide : LRGB_ajout_L du chemin principal",
-             6: "R_HDRMT_30 (HDRMT à 30 %), R_C_Finition (masque, Courbes, LHE, LHE_fin, masque retiré), R_NXT_final (Denoise 0,40), dans cet ordre, sur l'image sans étoiles après LRGB_ajout_L ; mêmes icônes que HDRMT_30 (options), C_Finition et NXT_final",
-             7: "R_Etoiles_screen (étoiles remises) puis R_C_Fond_final (Fond_auto, Fond_desature) ; mêmes icônes que le chemin principal ; Export_TIFF (options) pour finir hors PixInsight"},
+             6: "R_C_Fin_rapide sur l'image sans étoiles après LRGB_ajout_L : HDRMT à 30 %, masque, Courbes, LHE, LHE_fin, masque retiré, NXT_final 0,40 en un seul conteneur (= HDRMT_30, C_Finition et NXT_final)",
+             7: "R_C_Etoiles_fond_rapide sur l'image sans étoiles finie : étoiles remises (Etoiles_screen), Fond_auto (0,12), Fond_desature en un seul conteneur (= Etoiles_screen et C_Fond_final) ; Export_TIFF (options) pour finir hors PixInsight"},
     'LHA': {1: "MODE RAPIDE (galaxies) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre : R_C_Preparation_rapide ; R_GC_Solver_auto_rapide ; C_RGB_couleur sur RGB, BXT_L_H sur H, Continuum_H, H_dans_RGB, R_C_RGB_fin_rapide sur RGB, R_C_L_rapide sur L ; GHS sur L seulement ; Etoiles_LRGB ; LRGB_ajout_L ; finition. Phase 1 : R_C_Preparation_rapide à la place de LinearPatternSubtraction, Renommer_auto et Combinaison_RGB",
             2: "R_GC_Solver_auto_rapide à la place de toute la phase 2 : GradientCorrection sur toutes les images ouvertes (R et H compris, pour le continuum), puis ImageSolver sur RGB",
             3: "chemin principal pour C_RGB_couleur (RGB), BXT_L_H (sur H seulement), Continuum_H et H_dans_RGB ; puis R_C_RGB_fin_rapide sur RGB à la place de C_RGB_etoiles_bruit, et R_C_L_rapide sur L à la place de BXT_L_H (sur L) et C_L_lineaire",
             4: "pas d'icône rapide : GHS_1_premier, GHS_2_contraste, GHS_3_fond sur L SEULEMENT ; saute Statistical_Stretch et Star_Stretch (RGB et étoiles déjà étirés par R_C_RGB_fin_rapide) ; puis Etoiles_LRGB",
             5: "pas d'icône rapide : LRGB_ajout_L du chemin principal",
-            6: "R_HDRMT_30 (HDRMT à 30 %), R_C_Finition (masque, Courbes, LHE, LHE_fin, masque retiré), R_NXT_final (Denoise 0,40), dans cet ordre, sur l'image sans étoiles après LRGB_ajout_L ; mêmes icônes que HDRMT_30 (options), C_Finition et NXT_final",
-            7: "R_Etoiles_screen (étoiles remises) puis R_C_Fond_final (Fond_auto, Fond_desature) ; mêmes icônes que le chemin principal ; Export_TIFF (options) pour finir hors PixInsight"}}
+            6: "R_C_Fin_rapide sur l'image sans étoiles après LRGB_ajout_L : HDRMT à 30 %, masque, Courbes, LHE, LHE_fin, masque retiré, NXT_final 0,40 en un seul conteneur (= HDRMT_30, C_Finition et NXT_final)",
+            7: "R_C_Etoiles_fond_rapide sur l'image sans étoiles finie : étoiles remises (Etoiles_screen), Fond_auto (0,12), Fond_desature en un seul conteneur (= Etoiles_screen et C_Fond_final) ; Export_TIFF (options) pour finir hors PixInsight"}}
 
 def layout_all(main, opts, rapide=None, notes=None):
     """Une colonne par phase : icône-titre, étapes du chemin principal (E01…), puis icône « options » et options (Opt_…)."""
@@ -420,12 +419,6 @@ def write(filename, prefix, title, steps):
     cfn, ctitle = filename.replace('Workflow-', 'Conteneurs-'), title + ' — chemin principal avec conteneurs, options dans leur phase'
     rap = [o for o in opts if o[0] in RAPIDE]
     opts = [o for o in opts if o[0] not in RAPIDE]
-    if prefix in RAPIDE_NOTE:
-        # P6_rapide et P7_rapide (demande de l'utilisateur) : copies d'icônes du chemin principal ou des options, nommées R_…
-        pool = {b: (ph, x) for b, ph, x in cmain + opts}
-        for b in RAPIDE_COPIES:
-            ph, x = pool[b]
-            rap.append((b, ph, x))
     CONT_LAYOUT[prefix] = (cfn, ctitle) + tuple(layout_all(cmain, opts, rap, RAPIDE_NOTE.get(prefix)))
     save(cfn, ctitle, *CONT_LAYOUT[prefix][2:])
     conts = [{'n': cn, 't': target, 'm': members} for cn, target, members in L.CONTAINERS.get(prefix, [])]
@@ -1116,6 +1109,17 @@ def insert_before(steps, base, items):
 prep_l, prep_h = prep_rapide(lrgb)[1], prep_rapide(lhargb)[1]
 insert_after(lrgb, 'Combinaison_RGB', [(prep_l, ''), (gc_solver('Solver_auto'), '')])
 insert_after(lrgb, 'ImageSolver', [(gc_solver(), '')])
+
+def fin_rapide(steps):
+    """P6_rapide et P7_rapide (demande de l'utilisateur) : un conteneur par phase avec les étapes de la finition."""
+    c6 = cont('C_Fin_rapide', list(hdrmt_items('0.3')) + [pick(steps, b)[0] for b in ('Masque_L', 'Courbes', 'LHE', 'LHE_fin', 'Masque_retirer', 'NXT_final')])
+    c7 = cont('C_Etoiles_fond_rapide', [pick(steps, b)[0] for b in ('Etoiles_screen', 'Fond_auto', 'Fond_desature')])
+    return c6, c7
+
+for _st in (lrgb, lhargb):
+    _c6, _c7 = fin_rapide(_st)
+    insert_after(_st, 'NXT_final_fort', [(_c6, '')])
+    _st.append((_c7, ''))
 insert_before(lrgb, 'GHS_1_premier', [(rgb_rapide()[0], ''), (rgb_rapide_sxt_etire(), ''), (l_rapide(M.bxt('BXT_L', False, 0.25, 0.0, 0.80)), ''), (stf_icon(), '')])
 insert_after(lhargb, 'Combinaison_RGB', [(prep_h, ''), (gc_solver('Solver_auto'), '')])
 insert_after(lhargb, 'ImageSolver', [(gc_solver(), '')])
