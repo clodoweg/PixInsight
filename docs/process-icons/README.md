@@ -33,6 +33,7 @@ Icônes non testées par l'auteur dans PixInsight 1.9.5 : si l'une ne se charge 
 | `Fond_auto.js` | fond de chaque canal amené à 0,12 (0,14 : Fond_auto_clair) |
 | `Fond_desature.js` | retire la teinte et le violet du fond |
 | `Nettoyage_sans_etoiles.js` | restes de halos des étoiles brillantes après SXT |
+| `Etoiles_grosses.js` | réduit seulement les grosses étoiles de RGB_stars, avant Etoiles_screen |
 | `Export_TIFF.js` | TIFF 16 bits sRGB nommé d'après le dossier des masters ; ferme L ensuite (`fermer`) |
 | `Fermer_vues.js` | ferme les vues listées (`views`) |
 | `Turbo_1.js`, `Turbo_2_debut.js` | mode Turbo ; fichiers générés par `make_workflows.py` |

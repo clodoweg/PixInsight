@@ -3159,6 +3159,48 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <table id="parameters" rows="0"/>
       <parameter id="information"></parameter>
    </instance>
+   <instance class="Script" version="256" id="Opt_Etoiles_grosses_instance">
+      <description>OPTION — grosses étoiles trop présentes, mais Etoiles_reduites réduirait toutes les étoiles : glisse sur l'image d'étoiles (RGB_stars) AVANT Etoiles_screen ; en rapide, avant R_C_Etoiles_fond_rapide.
+
+LANCEMENT : glisse l'icône sur l'image.
+
+PRÉRÉGLÉ : script Etoiles_grosses : masque des grosses étoiles (ouverture morphologique, disque de 7 px sur une copie à 2000 px, au-dessus de 0,15, étendu au halo) ; sous le masque, luminance -&gt; mtf(0,70, Y), même facteur sur R, G, B : couleur gardée, petites étoiles intactes.
+
+À RÉGLER : glisse sur RGB_stars juste AVANT Etoiles_screen (Etoiles_screen ensuite, pas Etoiles_reduites) ; en rapide, avant R_C_Etoiles_fond_rapide ; copie Etoiles_grosses.js dans src/scripts/clodoweg.
+
+SI :
+- moyennes étoiles touchées aussi -&gt; taille 9 ou 11
+- certaines grosses pas réduites -&gt; taille 5, ou seuil 0,10
+- pas assez réduites -&gt; force 0,80 (0,5 = rien)
+- voir ce qui est réduit -&gt; afficherMasque true (vue masque_grosses)
+
+Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Etoiles_grosses.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="5">
+         <tr>
+            <td id="id">taille</td>
+            <td id="value">7</td>
+         </tr>
+         <tr>
+            <td id="id">seuil</td>
+            <td id="value">0.15</td>
+         </tr>
+         <tr>
+            <td id="id">etendue</td>
+            <td id="value">6</td>
+         </tr>
+         <tr>
+            <td id="id">force</td>
+            <td id="value">0.70</td>
+         </tr>
+         <tr>
+            <td id="id">afficherMasque</td>
+            <td id="value">false</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
+   </instance>
    <instance class="PixelMath" version="256" id="Opt_Etoiles_plafond_instance">
       <description>OPTION — cœurs d'étoiles cramés à 1 (blanc pur) : glisse sur l'image d'étoiles (RGB_stars) AVANT Etoiles_screen ; en rapide, avant R_C_Etoiles_fond_rapide.
 
@@ -3426,10 +3468,11 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <icon id="Opt_Find_Background" instance="Opt_Find_Background_instance" xpos="1199" ypos="324" workspace="Workspace01"/>
    <icon id="Opt_MT_etoiles" instance="Opt_MT_etoiles_instance" xpos="1199" ypos="354" workspace="Workspace01"/>
    <icon id="Opt_Halo_B_Gon" instance="Opt_Halo_B_Gon_instance" xpos="1199" ypos="384" workspace="Workspace01"/>
-   <icon id="Opt_Etoiles_plafond" instance="Opt_Etoiles_plafond_instance" xpos="1199" ypos="414" workspace="Workspace01"/>
-   <icon id="Opt_Etoiles_screen" instance="Opt_Etoiles_screen_instance" xpos="1199" ypos="444" workspace="Workspace01"/>
-   <icon id="Opt_CorrectMagentaStars" instance="Opt_CorrectMagentaStars_instance" xpos="1199" ypos="474" workspace="Workspace01"/>
-   <icon id="Opt_Fond_desature" instance="Opt_Fond_desature_instance" xpos="1199" ypos="504" workspace="Workspace01"/>
-   <icon id="Opt_ICC_sRGB" instance="Opt_ICC_sRGB_instance" xpos="1199" ypos="534" workspace="Workspace01"/>
-   <icon id="Opt_Export_TIFF" instance="Opt_Export_TIFF_instance" xpos="1199" ypos="564" workspace="Workspace01"/>
+   <icon id="Opt_Etoiles_grosses" instance="Opt_Etoiles_grosses_instance" xpos="1199" ypos="414" workspace="Workspace01"/>
+   <icon id="Opt_Etoiles_plafond" instance="Opt_Etoiles_plafond_instance" xpos="1199" ypos="444" workspace="Workspace01"/>
+   <icon id="Opt_Etoiles_screen" instance="Opt_Etoiles_screen_instance" xpos="1199" ypos="474" workspace="Workspace01"/>
+   <icon id="Opt_CorrectMagentaStars" instance="Opt_CorrectMagentaStars_instance" xpos="1199" ypos="504" workspace="Workspace01"/>
+   <icon id="Opt_Fond_desature" instance="Opt_Fond_desature_instance" xpos="1199" ypos="534" workspace="Workspace01"/>
+   <icon id="Opt_ICC_sRGB" instance="Opt_ICC_sRGB_instance" xpos="1199" ypos="564" workspace="Workspace01"/>
+   <icon id="Opt_Export_TIFF" instance="Opt_Export_TIFF_instance" xpos="1199" ypos="594" workspace="Workspace01"/>
 </xpsm>
