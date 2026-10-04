@@ -232,6 +232,8 @@ def layout_all(main, opts, rapide=None, notes=None):
         for name, p, xml in numbered:
             if p != ph:
                 continue
+            if notes and name.endswith('_Statistical_Stretch'):
+                y += 16   # LRGB / LHaRGB : petit espace entre les 3 GHS (L) et Statistical_Stretch, Star_Stretch, Etoiles_LRGB
             insts.append(xml.replace('id="__ID___instance"', 'id="%s_instance"' % name, 1))
             icons.append('   <icon id="%s" instance="%s_instance" xpos="%d" ypos="%d" workspace="Workspace01"/>' % (name, name, x, y))
             y += 30
@@ -666,6 +668,11 @@ def stars_end(stars='RGB_stars', cms=False, screen_extra='', cms_extra='', alt='
     b.append((script('Fond_desature', ''), ''))   # option, tout à la fin : couleur retirée du fond du ciel
     return b + EXPORT
 
+def lum_ghs_block():
+    """LRGB / LHaRGB (demande de l'utilisateur) : les 3 GHS d'abord (L), puis Statistical_Stretch (RGB), Star_Stretch, Etoiles_LRGB."""
+    b = ghs_block(L_GHS, L_STAT, L_FOND)
+    return [x for x in b if x[0][0] != 'Statistical_Stretch'] + [x for x in b if x[0][0] == 'Statistical_Stretch']
+
 def ghs_block(extra_desc='', stat_extra='', fond_extra=''):
     return [(ghs('GHS_1_premier', 10), D_GHS1 + extra_desc), (ghs('GHS_2_contraste', 4, hp=0.9, sf=1.0, sp=0.35), D_GHS2), (note('Statistical_Stretch', T_STAT + stat_extra), ''), (ghs('GHS_3_fond', 10, hp=0.20, sf=1.0, sp=0.20), D_GHS3 + fond_extra)]
 
@@ -732,9 +739,10 @@ lrgb = pre_block() + [rgb_comb_item(), (solver_container(), ''), (solver_seul(),
     (M.sxt('SXT_lineaire', False), D_SXT_LIN + " Sur RGB (garde les étoiles : ce sont celles de l'image finale)."),
     (M.nxt('NXT_RGB', 0.80, 1), "NoiseXTerminator sur RGB sans étoiles : Denoise 0,80 (0,70 à 0,90), Detail 0,15. Toujours après BXT. Fonctionne en linéaire ou après étirement (RC Astro)." + NXT_C),
     (M.nxt('NXT_L', 0.60, 1), "NoiseXTerminator sur L (sans étoiles, linéaire) : Denoise 0,60 (0,50 à 0,70) pour garder le détail fin." + NXT_C),
-] + ghs_block(L_GHS, L_STAT, L_FOND) + [
+] + lum_ghs_block() + [
     (note('Star_Stretch', T_STARSTRETCH + STARS_LRGB), ''),
     (note('Etoiles_LRGB', ''), ''),   # L_stars linéaire (SXT dans C_L_lineaire) étirée comme Star_Stretch (amount 6) puis ajoutée à RGB_stars
+    (M.sxt('SXT_non_lineaire', True), ''),   # option : SXT Unscreen coché, sur une image étirée (demande de l'utilisateur)
     (M.instance('LRGBCombination', 'LRGB_ajout_L', {'mL': '0.500', 'mc': '0.350', 'noiseReduction': True}, post=M.lrgb_post),
      "LRGBCombination sur les images étirées et SANS étoiles : seul L activé (renomme ta luminance 'L'), glisse le triangle sur le RGB. Lightness 0,5 ; Saturation 0,35 (plus bas = plus saturé ; ternes -> 0,30) ; "
      "Chrominance noise reduction cochée. Couleurs délavées : L trop claire par rapport au RGB, étire-la moins. "
@@ -774,9 +782,10 @@ lhargb = pre_block() + [rgb_comb_item(False), (solver_container(), ''), (solver_
     (M.nxt('NXT_RGB', 0.80, 1), "NoiseXTerminator sur RGB sans étoiles : Denoise 0,80, Detail 0,15." + NXT_C),
     (M.sxt('SXT_L_lineaire', False), D_SXT_LIN + " Sur L, dans C_L_lineaire (après BXT_L_H et H_dans_L éventuel ; demande de l'utilisateur) : L étirée ensuite SANS étoiles par les GHS ; L_stars (linéaire) gardée pour Etoiles_LRGB."),
     (M.nxt('NXT_L', 0.60, 1), "NoiseXTerminator sur L (sans étoiles, linéaire) : Denoise 0,60." + NXT_C),
-] + ghs_block(L_GHS, L_STAT, L_FOND) + [
+] + lum_ghs_block() + [
     (note('Star_Stretch', T_STARSTRETCH + STARS_LRGB), ''),
     (note('Etoiles_LRGB', ''), ''),   # L_stars linéaire (SXT dans C_L_lineaire) étirée comme Star_Stretch (amount 6) puis ajoutée à RGB_stars
+    (M.sxt('SXT_non_lineaire', True), ''),   # option : SXT Unscreen coché, sur une image étirée (demande de l'utilisateur)
     (M.instance('LRGBCombination', 'LRGB_ajout_L', {'mL': '0.500', 'mc': '0.350', 'noiseReduction': True}, post=M.lrgb_post),
      "LRGBCombination sur les images étirées sans étoiles : seul L activé (vue 'L'), Lightness 0,5, Saturation 0,35, Chrominance noise reduction cochée. "
      "CONTRÔLE (sonde 15x15) : cœur de galaxie jaune (R >= G >> B), bras bleus, régions HII roses et bien visibles grâce au H (R > B > G), aucune étoile verte, fond R = G = B ; couleurs délavées : L trop claire, étire-la moins. "

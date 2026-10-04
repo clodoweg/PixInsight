@@ -2109,12 +2109,32 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="clipType" value="CT_RGBBlend"/>
       <parameter id="useRGBWorkingSpace" value="false"/>
    </instance>
-   <instance class="Script" version="256" id="E17_Statistical_Stretch_instance">
+   <instance class="GeneralizedHyperbolicStretch" version="256" id="E17_GHS_3_fond_instance">
+      <description>PRÉRÉGLÉ : b = 10, SP = HP = 0,20, Stretch factor 1 (fond à 0,23 après GHS_2).
+
+À RÉGLER : sur L après GHS_2 ; puis, après Statistical_Stretch, aussi sur le RGB (SP = HP = 0,22), AVANT LRGB ; SP = HP = fond lu - 0,03 (0,22 après Statistical Stretch à 0,25) ; Stretch factor 0,8 à 1,2 jusqu'au fond vers 0,12–0,14 sur les deux.
+
+Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
+      <parameter id="stretchChannel" value="SC_RGB"/>
+      <parameter id="inverse" value="false"/>
+      <parameter id="stretchFactor" value="1.000"/>
+      <parameter id="localIntensity" value="10.000"/>
+      <parameter id="symmetryPoint" value="0.200000"/>
+      <parameter id="highlightProtection" value="0.200000"/>
+      <parameter id="shadowProtection" value="0.000000"/>
+      <parameter id="blackPoint" value="0.000000"/>
+      <parameter id="whitePoint" value="1.000000"/>
+      <parameter id="colourBlend" value="1.000"/>
+      <parameter id="clipType" value="CT_RGBBlend"/>
+      <parameter id="useRGBWorkingSpace" value="false"/>
+   </instance>
+   <instance class="Script" version="256" id="E18_Statistical_Stretch_instance">
       <description>LANCEMENT : glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
 
 PRÉRÉGLÉ : Target Median 0,25, Blackpoint Sigma 5, Linked coché, reste par défaut.
 
-À RÉGLER : sur le RGB sans étoiles (L passe par GHS) ; puis GHS_3_fond sur les deux, avant LRGB.
+À RÉGLER : sur le RGB sans étoiles, APRÈS les 3 GHS sur L ; puis repasse GHS_3_fond sur le RGB (SP = HP = 0,22) pour le même fond que L, avant LRGB.
 
 SI :
 - couleurs ternes -&gt; Saturation plus basse dans LRGB, ou Luma Only coché
@@ -2186,26 +2206,6 @@ Détails : page docs/pixinsight-workflow.html.</description>
          </tr>
       </table>
       <parameter id="information"></parameter>
-   </instance>
-   <instance class="GeneralizedHyperbolicStretch" version="256" id="E18_GHS_3_fond_instance">
-      <description>PRÉRÉGLÉ : b = 10, SP = HP = 0,20, Stretch factor 1 (fond à 0,23 après GHS_2).
-
-À RÉGLER : applique-la au RGB ET à L, mêmes réglages, AVANT LRGB ; SP = HP = fond lu - 0,03 (0,22 après Statistical Stretch à 0,25) ; Stretch factor 0,8 à 1,2 jusqu'au fond vers 0,12–0,14 sur les deux.
-
-Détails : page docs/pixinsight-workflow.html.</description>
-      <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
-      <parameter id="stretchChannel" value="SC_RGB"/>
-      <parameter id="inverse" value="false"/>
-      <parameter id="stretchFactor" value="1.000"/>
-      <parameter id="localIntensity" value="10.000"/>
-      <parameter id="symmetryPoint" value="0.200000"/>
-      <parameter id="highlightProtection" value="0.200000"/>
-      <parameter id="shadowProtection" value="0.000000"/>
-      <parameter id="blackPoint" value="0.000000"/>
-      <parameter id="whitePoint" value="1.000000"/>
-      <parameter id="colourBlend" value="1.000"/>
-      <parameter id="clipType" value="CT_RGBBlend"/>
-      <parameter id="useRGBWorkingSpace" value="false"/>
    </instance>
    <instance class="Script" version="256" id="E19_Star_Stretch_instance">
       <description>LANCEMENT : glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
@@ -2285,6 +2285,30 @@ Détails : page docs/pixinsight-workflow.html.</description>
          </tr>
       </table>
       <parameter id="information"></parameter>
+   </instance>
+   <instance class="NoOperation" version="256" id="P4_options_instance">
+      <description>OPTIONS de la phase 4 — Étirement : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
+   </instance>
+   <instance class="StarXTerminator" version="256" id="Opt_SXT_non_lineaire_instance">
+      <description>OPTION — double-clic : ouvre StarXTerminator réglé pour une image ÉTIRÉE (Unscreen coché, Generate star image coché) ; à glisser sur une image non linéaire qui a encore des étoiles.
+
+PRÉRÉGLÉ : StarXTerminator, Unscreen coché (image étirée), Generate star image coché, Remove reflections coché.
+
+À RÉGLER : double-clic pour ouvrir StarXTerminator avec ces réglages, ou glisse sur une image NON linéaire avec étoiles ; garde l'image d'étoiles.
+
+SI :
+- image encore linéaire -&gt; SXT_lineaire (Unscreen décoché)
+- quadrillage -&gt; Large overlap
+
+Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="ml_version" value="0"/>
+      <parameter id="output_stars" value="true"/>
+      <parameter id="unscreen" value="true"/>
+      <parameter id="remove_stars" value="true"/>
+      <parameter id="remove_spikes" value="true"/>
+      <parameter id="remove_aureoles" value="true"/>
+      <parameter id="remove_reflections" value="true"/>
+      <parameter id="overlap" value="0.20"/>
    </instance>
    <instance class="NoOperation" version="256" id="P4_rapide_instance">
       <description>MODE RAPIDE, phase 4 — Étirement : pas d'icône rapide : GHS_1_premier, GHS_2_contraste, GHS_3_fond sur L SEULEMENT ; saute Statistical_Stretch et Star_Stretch (RGB et étoiles déjà étirés par R_C_RGB_fin_rapide) ; puis Etoiles_LRGB. Icône de repère, sans effet.</description>
@@ -4084,11 +4108,13 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <icon id="P4_Etirement" instance="P4_Etirement_instance" xpos="625" ypos="20" workspace="Workspace01"/>
    <icon id="E15_GHS_1_premier" instance="E15_GHS_1_premier_instance" xpos="625" ypos="64" workspace="Workspace01"/>
    <icon id="E16_GHS_2_contraste" instance="E16_GHS_2_contraste_instance" xpos="625" ypos="94" workspace="Workspace01"/>
-   <icon id="E17_Statistical_Stretch" instance="E17_Statistical_Stretch_instance" xpos="625" ypos="124" workspace="Workspace01"/>
-   <icon id="E18_GHS_3_fond" instance="E18_GHS_3_fond_instance" xpos="625" ypos="154" workspace="Workspace01"/>
-   <icon id="E19_Star_Stretch" instance="E19_Star_Stretch_instance" xpos="625" ypos="184" workspace="Workspace01"/>
-   <icon id="E20_Etoiles_LRGB" instance="E20_Etoiles_LRGB_instance" xpos="625" ypos="214" workspace="Workspace01"/>
-   <icon id="P4_rapide" instance="P4_rapide_instance" xpos="625" ypos="260" workspace="Workspace01"/>
+   <icon id="E17_GHS_3_fond" instance="E17_GHS_3_fond_instance" xpos="625" ypos="124" workspace="Workspace01"/>
+   <icon id="E18_Statistical_Stretch" instance="E18_Statistical_Stretch_instance" xpos="625" ypos="170" workspace="Workspace01"/>
+   <icon id="E19_Star_Stretch" instance="E19_Star_Stretch_instance" xpos="625" ypos="200" workspace="Workspace01"/>
+   <icon id="E20_Etoiles_LRGB" instance="E20_Etoiles_LRGB_instance" xpos="625" ypos="230" workspace="Workspace01"/>
+   <icon id="P4_options" instance="P4_options_instance" xpos="625" ypos="276" workspace="Workspace01"/>
+   <icon id="Opt_SXT_non_lineaire" instance="Opt_SXT_non_lineaire_instance" xpos="625" ypos="310" workspace="Workspace01"/>
+   <icon id="P4_rapide" instance="P4_rapide_instance" xpos="625" ypos="356" workspace="Workspace01"/>
    <icon id="P5_Couleur" instance="P5_Couleur_instance" xpos="816" ypos="20" workspace="Workspace01"/>
    <icon id="E21_LRGB_ajout_L" instance="E21_LRGB_ajout_L_instance" xpos="816" ypos="64" workspace="Workspace01"/>
    <icon id="P5_rapide" instance="P5_rapide_instance" xpos="816" ypos="110" workspace="Workspace01"/>
