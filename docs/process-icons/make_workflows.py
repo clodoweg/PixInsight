@@ -559,7 +559,7 @@ D_MASK = ("MASQUE DE LUMINANCE créé ET attaché en un clic (script Masque_auto
 
 D_HDRMT40 = ("PARTIE 1 (cœur) — conteneur HDRMT à 40 % : copie de l'image (HDR_avant), HDRMultiscaleTransform 6 couches (To lightness, Preserve hue, Lightness mask), "
              "mélange 0,4 × résultat + 0,6 × copie, copie fermée. Sur l'image sans étoiles, AVANT le contraste : détail du cœur sans l'aplatir. "
-             "Options de la partie 1, à la place : HDRMT_50 (cœur brûlé), HDRMT_eclat (cœur détaillé mais terne : HDRMT 40 % puis Boost light) ; cœur déjà parfait : saute-la.")
+             "Options de la partie 1, à la place : HDRMT_30 (effet plus léger), HDRMT_50 (cœur brûlé), HDRMT_eclat (cœur détaillé mais terne : HDRMT 40 % puis Boost light) ; cœur déjà parfait : saute-la.")
 D_NXT_DOUX = "PARTIE 3, option à la place de NXT_final : NoiseXTerminator Denoise 0,25, données très propres ou aspect plastique avec 0,40."
 D_NXT_FORT = "PARTIE 3, option à la place de NXT_final : NoiseXTerminator Denoise 0,60, peu de poses ou bruit encore visible dans le fond après 0,40."
 D_FOND = ("PARTIE 5 (fond) — conteneur sur l'image FINIE, étoiles comprises : Fond_auto (fond de chaque canal mesuré sur une grille 8 × 8, amené à 0,12, neutre, sans écrêtage), "
@@ -569,7 +569,7 @@ def finish_block(extra=None, galaxie=False):
     if galaxie:
         # finition en parties (demande de l'utilisateur) : 1 cœur (HDRMT 40 %), 2 contraste (C_Finition), 3 bruit (NXT_final), chacune avec ses options
         b = [(script('Nettoyage_sans_etoiles', ''), ''),   # option, avant la partie 1 : restes de halos d'étoiles (demande de l'utilisateur)
-             (_cont('HDRMT_40', hdrmt_items('0.4')), D_HDRMT40), (hdrmt_50(), ''), (hdrmt_eclat(), ''),
+             (_cont('HDRMT_40', hdrmt_items('0.4')), D_HDRMT40), (_cont('HDRMT_30', hdrmt_items('0.3')), ''), (hdrmt_50(), ''), (hdrmt_eclat(), ''),
              (note('Masque_L', D_MASK), ''),
              (curves('Courbes'), D_CURVES), (M.instance('LocalHistogramEqualization', 'LHE', {'radius': 150, 'histogramBins': 'Bit12', 'slopeLimit': '2.0', 'amount': '0.300', 'circularKernel': True}), D_LHE),
              (M.instance('LocalHistogramEqualization', 'LHE_fin', {'radius': 40, 'histogramBins': 'Bit10', 'slopeLimit': '2.0', 'amount': '0.250', 'circularKernel': True}), D_LHE_FIN),
@@ -585,7 +585,7 @@ def finish_block(extra=None, galaxie=False):
          (note('Masque_retirer', ''), ''),
          (boost_container('Boost_finition_light', k=((0, 0), (0.25, 0.24), (0.75, 0.76), (1, 1)), sat=0.57, amount='0.120'), ''),
          (boost_container(), ''),
-         (hdrmt_50(), ''), (hdrmt_eclat(), '')]
+         (_cont('HDRMT_30', hdrmt_items('0.3')), ''), (hdrmt_50(), ''), (hdrmt_eclat(), '')]
     if extra:
         b = extra + b
     return b + [(M.nxt('NXT_final', 0.40, 1), D_NXT_F)]

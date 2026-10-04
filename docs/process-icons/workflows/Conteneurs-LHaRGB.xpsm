@@ -1933,6 +1933,100 @@ Détails : page docs/pixinsight-workflow.html.</description>
       </table>
       <parameter id="information"></parameter>
    </instance>
+   <instance class="ProcessContainer" id="Opt_HDRMT_30_instance">
+      <instance class="PixelMath" version="256" enabled="true">
+         <parameter id="expression">$T</parameter>
+         <parameter id="expression1"></parameter>
+         <parameter id="expression2"></parameter>
+         <parameter id="expression3"></parameter>
+         <parameter id="useSingleExpression" value="true"/>
+         <parameter id="symbols"></parameter>
+         <parameter id="clearImageCacheAndExit" value="false"/>
+         <parameter id="cacheGeneratedImages" value="false"/>
+         <parameter id="generateOutput" value="true"/>
+         <parameter id="singleThreaded" value="false"/>
+         <parameter id="optimization" value="true"/>
+         <parameter id="use64BitWorkingImage" value="false"/>
+         <parameter id="rescale" value="false"/>
+         <parameter id="rescaleLower" value="0"/>
+         <parameter id="rescaleUpper" value="1"/>
+         <parameter id="truncate" value="true"/>
+         <parameter id="truncateLower" value="0"/>
+         <parameter id="truncateUpper" value="1"/>
+         <parameter id="createNewImage" value="true"/>
+         <parameter id="showNewImage" value="true"/>
+         <parameter id="newImageId">HDR_avant</parameter>
+         <parameter id="newImageWidth" value="0"/>
+         <parameter id="newImageHeight" value="0"/>
+         <parameter id="newImageAlpha" value="false"/>
+         <parameter id="newImageColorSpace" value="SameAsTarget"/>
+         <parameter id="newImageSampleFormat" value="SameAsTarget"/>
+         <table id="outputData" rows="0"/>
+      </instance>
+      <instance class="HDRMultiscaleTransform" version="256" enabled="true">
+         <parameter id="numberOfLayers" value="6"/>
+         <parameter id="numberOfIterations" value="1"/>
+         <parameter id="invertedIterations" value="true"/>
+         <parameter id="overdrive" value="0.000"/>
+         <parameter id="medianTransform" value="false"/>
+         <parameter id="scalingFunctionData">0.003906,0.015625,0.023438,0.015625,0.003906,0.015625,0.0625,0.09375,0.0625,0.015625,0.023438,0.09375,0.140625,0.09375,0.023438,0.015625,0.0625,0.09375,0.0625,0.015625,0.003906,0.015625,0.023438,0.015625,0.003906</parameter>
+         <parameter id="scalingFunctionRowFilter">0.0625,0.25,0.375,0.25,0.0625</parameter>
+         <parameter id="scalingFunctionColFilter">0.0625,0.25,0.375,0.25,0.0625</parameter>
+         <parameter id="scalingFunctionName">B3 Spline (5)</parameter>
+         <parameter id="deringing" value="false"/>
+         <parameter id="smallScaleDeringing" value="0.000"/>
+         <parameter id="largeScaleDeringing" value="0.250"/>
+         <parameter id="outputDeringingMaps" value="false"/>
+         <parameter id="midtonesBalanceMode" value="Automatic"/>
+         <parameter id="midtonesBalance" value="0.500000"/>
+         <parameter id="toIntensity" value="false"/>
+         <parameter id="toLightness" value="true"/>
+         <parameter id="preserveHue" value="true"/>
+         <parameter id="lightnessMask" value="true"/>
+         <parameter id="intensity" value="1.00"/>
+      </instance>
+      <instance class="PixelMath" version="256" enabled="true">
+         <parameter id="expression">a = 0.3;
+   a*$T + (1 - a)*HDR_avant</parameter>
+         <parameter id="expression1"></parameter>
+         <parameter id="expression2"></parameter>
+         <parameter id="expression3"></parameter>
+         <parameter id="useSingleExpression" value="true"/>
+         <parameter id="symbols">a</parameter>
+         <parameter id="clearImageCacheAndExit" value="false"/>
+         <parameter id="cacheGeneratedImages" value="false"/>
+         <parameter id="generateOutput" value="true"/>
+         <parameter id="singleThreaded" value="false"/>
+         <parameter id="optimization" value="true"/>
+         <parameter id="use64BitWorkingImage" value="false"/>
+         <parameter id="rescale" value="false"/>
+         <parameter id="rescaleLower" value="0"/>
+         <parameter id="rescaleUpper" value="1"/>
+         <parameter id="truncate" value="true"/>
+         <parameter id="truncateLower" value="0"/>
+         <parameter id="truncateUpper" value="1"/>
+         <parameter id="createNewImage" value="false"/>
+         <parameter id="showNewImage" value="true"/>
+         <parameter id="newImageId"></parameter>
+         <parameter id="newImageWidth" value="0"/>
+         <parameter id="newImageHeight" value="0"/>
+         <parameter id="newImageAlpha" value="false"/>
+         <parameter id="newImageColorSpace" value="SameAsTarget"/>
+         <parameter id="newImageSampleFormat" value="SameAsTarget"/>
+         <table id="outputData" rows="0"/>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="1">
+            <tr>
+               <td id="id">views</td>
+               <td id="value">HDR_avant</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+   </instance>
    <instance class="ProcessContainer" id="Opt_HDRMT_50_instance">
       <instance class="PixelMath" version="256" enabled="true">
          <parameter id="expression">$T</parameter>
@@ -4234,12 +4328,13 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <icon id="E24_NXT_final" instance="E24_NXT_final_instance" xpos="972" ypos="124" workspace="Workspace01"/>
    <icon id="P6_options" instance="P6_options_instance" xpos="972" ypos="170" workspace="Workspace01"/>
    <icon id="Opt_Nettoyage_sans_etoiles" instance="Opt_Nettoyage_sans_etoiles_instance" xpos="972" ypos="204" workspace="Workspace01"/>
-   <icon id="Opt_HDRMT_50" instance="Opt_HDRMT_50_instance" xpos="972" ypos="234" workspace="Workspace01"/>
-   <icon id="Opt_HDRMT_eclat" instance="Opt_HDRMT_eclat_instance" xpos="972" ypos="264" workspace="Workspace01"/>
-   <icon id="Opt_Boost_finition_light" instance="Opt_Boost_finition_light_instance" xpos="972" ypos="294" workspace="Workspace01"/>
-   <icon id="Opt_Boost_finition" instance="Opt_Boost_finition_instance" xpos="972" ypos="324" workspace="Workspace01"/>
-   <icon id="Opt_NXT_final_doux" instance="Opt_NXT_final_doux_instance" xpos="972" ypos="354" workspace="Workspace01"/>
-   <icon id="Opt_NXT_final_fort" instance="Opt_NXT_final_fort_instance" xpos="972" ypos="384" workspace="Workspace01"/>
+   <icon id="Opt_HDRMT_30" instance="Opt_HDRMT_30_instance" xpos="972" ypos="234" workspace="Workspace01"/>
+   <icon id="Opt_HDRMT_50" instance="Opt_HDRMT_50_instance" xpos="972" ypos="264" workspace="Workspace01"/>
+   <icon id="Opt_HDRMT_eclat" instance="Opt_HDRMT_eclat_instance" xpos="972" ypos="294" workspace="Workspace01"/>
+   <icon id="Opt_Boost_finition_light" instance="Opt_Boost_finition_light_instance" xpos="972" ypos="324" workspace="Workspace01"/>
+   <icon id="Opt_Boost_finition" instance="Opt_Boost_finition_instance" xpos="972" ypos="354" workspace="Workspace01"/>
+   <icon id="Opt_NXT_final_doux" instance="Opt_NXT_final_doux_instance" xpos="972" ypos="384" workspace="Workspace01"/>
+   <icon id="Opt_NXT_final_fort" instance="Opt_NXT_final_fort_instance" xpos="972" ypos="414" workspace="Workspace01"/>
    <icon id="P7_Etoiles" instance="P7_Etoiles_instance" xpos="1176" ypos="20" workspace="Workspace01"/>
    <icon id="E25_Etoiles_screen" instance="E25_Etoiles_screen_instance" xpos="1176" ypos="64" workspace="Workspace01"/>
    <icon id="E26_C_Fond_final" instance="E26_C_Fond_final_instance" xpos="1176" ypos="94" workspace="Workspace01"/>
@@ -4251,27 +4346,27 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <icon id="Opt_Fond_auto_clair" instance="Opt_Fond_auto_clair_instance" xpos="1176" ypos="294" workspace="Workspace01"/>
    <icon id="Opt_ICC_sRGB" instance="Opt_ICC_sRGB_instance" xpos="1176" ypos="324" workspace="Workspace01"/>
    <icon id="Opt_Export_TIFF" instance="Opt_Export_TIFF_instance" xpos="1176" ypos="354" workspace="Workspace01"/>
-   <icon id="R_MODE_RAPIDE" instance="R_MODE_RAPIDE_instance" xpos="30" ypos="494" workspace="Workspace01"/>
-   <icon id="R_P1_Preparation" instance="R_P1_Preparation_instance" xpos="30" ypos="554" workspace="Workspace01"/>
-   <icon id="R_E00_C_Preparation_rapide" instance="R_E00_C_Preparation_rapide_instance" xpos="30" ypos="598" workspace="Workspace01"/>
-   <icon id="R_E01_Mode_rapide" instance="R_E01_Mode_rapide_instance" xpos="30" ypos="628" workspace="Workspace01"/>
-   <icon id="R_P2_Gradient" instance="R_P2_Gradient_instance" xpos="226" ypos="554" workspace="Workspace01"/>
-   <icon id="R_E02_ImageSolver" instance="R_E02_ImageSolver_instance" xpos="226" ypos="598" workspace="Workspace01"/>
-   <icon id="R_E03_GradientCorrection" instance="R_E03_GradientCorrection_instance" xpos="226" ypos="628" workspace="Workspace01"/>
-   <icon id="R_P3_Lineaire" instance="R_P3_Lineaire_instance" xpos="413" ypos="554" workspace="Workspace01"/>
-   <icon id="R_E04_C_RGB_couleur_rapide" instance="R_E04_C_RGB_couleur_rapide_instance" xpos="413" ypos="598" workspace="Workspace01"/>
-   <icon id="R_E05_C_H_rapide" instance="R_E05_C_H_rapide_instance" xpos="413" ypos="628" workspace="Workspace01"/>
-   <icon id="R_E06_Continuum_H" instance="R_E06_Continuum_H_instance" xpos="413" ypos="658" workspace="Workspace01"/>
-   <icon id="R_E07_H_dans_RGB" instance="R_E07_H_dans_RGB_instance" xpos="413" ypos="688" workspace="Workspace01"/>
-   <icon id="R_E08_C_RGB_fin_rapide" instance="R_E08_C_RGB_fin_rapide_instance" xpos="413" ypos="718" workspace="Workspace01"/>
-   <icon id="R_E09_C_L_rapide" instance="R_E09_C_L_rapide_instance" xpos="413" ypos="748" workspace="Workspace01"/>
-   <icon id="R_P3_options" instance="R_P3_options_instance" xpos="413" ypos="794" workspace="Workspace01"/>
-   <icon id="R_Opt_STF" instance="R_Opt_STF_instance" xpos="413" ypos="828" workspace="Workspace01"/>
-   <icon id="R_Opt_Continuum_auto" instance="R_Opt_Continuum_auto_instance" xpos="413" ypos="858" workspace="Workspace01"/>
-   <icon id="R_Opt_H_dans_L" instance="R_Opt_H_dans_L_instance" xpos="413" ypos="888" workspace="Workspace01"/>
-   <icon id="R_P4_Etirement" instance="R_P4_Etirement_instance" xpos="609" ypos="554" workspace="Workspace01"/>
-   <icon id="R_E10_GHS_1_premier" instance="R_E10_GHS_1_premier_instance" xpos="609" ypos="598" workspace="Workspace01"/>
-   <icon id="R_E11_GHS_2_contraste" instance="R_E11_GHS_2_contraste_instance" xpos="609" ypos="628" workspace="Workspace01"/>
-   <icon id="R_E12_GHS_3_fond" instance="R_E12_GHS_3_fond_instance" xpos="609" ypos="658" workspace="Workspace01"/>
-   <icon id="R_E13_Etoiles_LRGB" instance="R_E13_Etoiles_LRGB_instance" xpos="609" ypos="688" workspace="Workspace01"/>
+   <icon id="R_MODE_RAPIDE" instance="R_MODE_RAPIDE_instance" xpos="30" ypos="524" workspace="Workspace01"/>
+   <icon id="R_P1_Preparation" instance="R_P1_Preparation_instance" xpos="30" ypos="584" workspace="Workspace01"/>
+   <icon id="R_E00_C_Preparation_rapide" instance="R_E00_C_Preparation_rapide_instance" xpos="30" ypos="628" workspace="Workspace01"/>
+   <icon id="R_E01_Mode_rapide" instance="R_E01_Mode_rapide_instance" xpos="30" ypos="658" workspace="Workspace01"/>
+   <icon id="R_P2_Gradient" instance="R_P2_Gradient_instance" xpos="226" ypos="584" workspace="Workspace01"/>
+   <icon id="R_E02_ImageSolver" instance="R_E02_ImageSolver_instance" xpos="226" ypos="628" workspace="Workspace01"/>
+   <icon id="R_E03_GradientCorrection" instance="R_E03_GradientCorrection_instance" xpos="226" ypos="658" workspace="Workspace01"/>
+   <icon id="R_P3_Lineaire" instance="R_P3_Lineaire_instance" xpos="413" ypos="584" workspace="Workspace01"/>
+   <icon id="R_E04_C_RGB_couleur_rapide" instance="R_E04_C_RGB_couleur_rapide_instance" xpos="413" ypos="628" workspace="Workspace01"/>
+   <icon id="R_E05_C_H_rapide" instance="R_E05_C_H_rapide_instance" xpos="413" ypos="658" workspace="Workspace01"/>
+   <icon id="R_E06_Continuum_H" instance="R_E06_Continuum_H_instance" xpos="413" ypos="688" workspace="Workspace01"/>
+   <icon id="R_E07_H_dans_RGB" instance="R_E07_H_dans_RGB_instance" xpos="413" ypos="718" workspace="Workspace01"/>
+   <icon id="R_E08_C_RGB_fin_rapide" instance="R_E08_C_RGB_fin_rapide_instance" xpos="413" ypos="748" workspace="Workspace01"/>
+   <icon id="R_E09_C_L_rapide" instance="R_E09_C_L_rapide_instance" xpos="413" ypos="778" workspace="Workspace01"/>
+   <icon id="R_P3_options" instance="R_P3_options_instance" xpos="413" ypos="824" workspace="Workspace01"/>
+   <icon id="R_Opt_STF" instance="R_Opt_STF_instance" xpos="413" ypos="858" workspace="Workspace01"/>
+   <icon id="R_Opt_Continuum_auto" instance="R_Opt_Continuum_auto_instance" xpos="413" ypos="888" workspace="Workspace01"/>
+   <icon id="R_Opt_H_dans_L" instance="R_Opt_H_dans_L_instance" xpos="413" ypos="918" workspace="Workspace01"/>
+   <icon id="R_P4_Etirement" instance="R_P4_Etirement_instance" xpos="609" ypos="584" workspace="Workspace01"/>
+   <icon id="R_E10_GHS_1_premier" instance="R_E10_GHS_1_premier_instance" xpos="609" ypos="628" workspace="Workspace01"/>
+   <icon id="R_E11_GHS_2_contraste" instance="R_E11_GHS_2_contraste_instance" xpos="609" ypos="658" workspace="Workspace01"/>
+   <icon id="R_E12_GHS_3_fond" instance="R_E12_GHS_3_fond_instance" xpos="609" ypos="688" workspace="Workspace01"/>
+   <icon id="R_E13_Etoiles_LRGB" instance="R_E13_Etoiles_LRGB_instance" xpos="609" ypos="718" workspace="Workspace01"/>
 </xpsm>
