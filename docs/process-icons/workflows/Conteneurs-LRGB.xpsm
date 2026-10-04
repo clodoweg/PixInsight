@@ -2611,7 +2611,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <description>OPTIONS de la phase 5 — Couleur : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
    </instance>
    <instance class="Script" version="256" id="Opt_Etoiles_auto_etire_instance">
-      <description>OPTION — LRGB, après SXT_LRGB : étoiles ternes ou un peu vertes ; glisse sur n'importe quelle image (traite RGB_stars) : saturation 1,3 et SCNR, sans étirement (étoiles déjà étirées).
+      <description>OPTION — après SXT_LRGB : étoiles ternes ou un peu vertes ; glisse sur n'importe quelle image (traite RGB_stars) : saturation 1,3 et SCNR, sans étirement (étoiles déjà étirées).
 
 LANCEMENT : glisse l'icône sur l'image.
 
@@ -4464,7 +4464,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="overlap" value="0.20"/>
    </instance>
    <instance class="NoOperation" version="256" id="P6_rapide_instance">
-      <description>MODE RAPIDE, phase 6 — Finition : R_C_Fin_rapide sur l'image sans étoiles après LRGB_ajout_L : HDRMT à 30 %, masque, Courbes, LHE, LHE_fin, masque retiré, NXT_final 0,40 en un seul conteneur (= HDRMT_30, C_Finition et NXT_final). Icône de repère, sans effet.</description>
+      <description>MODE RAPIDE, phase 6 — Finition : R_C_Fin_rapide sur l'image sans étoiles après SXT_LRGB (ou R_C_LRGB_rapide) : HDRMT à 30 %, masque, Courbes, LHE, LHE_fin, masque retiré, NXT_final 0,40 en un seul conteneur (= HDRMT_30, C_Finition et NXT_final). Icône de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="R_C_Fin_rapide_instance">
       <instance class="PixelMath" version="256" enabled="true">

@@ -26,9 +26,8 @@ Mode normal : **`Conteneurs-X.xpsm`, un fichier par workflow** (les anciens `Wor
 |---|---|---|
 | `C_RGB_lineaire` (LRGB) | RGB combiné, linéaire, gradient retiré | BXT Correct Only → SPCC → BXT → NXT (étoiles gardées : SXT après LRGB, icône `SXT_LRGB`) |
 | `C_L_lineaire` (LRGB) | master L | BXT → NXT (étoiles gardées) ; puis GHS sur L avec ses étoiles, `LRGB_ajout_L` avec étoiles, puis `SXT_LRGB` (Unscreen coché) sur l'image combinée : plus de Star_Stretch ni d'Etoiles_LRGB en LRGB (demande de l'utilisateur) |
-| `C_L_lineaire` (LHaRGB) | L linéaire, après BXT_L_H (et H_dans_L éventuel) | SXT (linéaire, L_stars gardée) → NXT ; puis GHS sur L sans étoiles, et `Etoiles_LRGB` après Star_Stretch, comme en LRGB |
 | `C_RGB_couleur` (LHaRGB) | RGB combiné | BXT Correct Only → SPCC → BXT |
-| `C_RGB_etoiles_bruit` (LHaRGB) | RGB après injection de H | SXT → NXT |
+| LHaRGB, suite | RGB après injection de H, L | NXT_RGB et NXT_L seuls (étoiles gardées), GHS avec étoiles, `LRGB_ajout_L` avec étoiles, puis `SXT_LRGB` (Unscreen) : comme le LRGB (demande de l'utilisateur) ; plus de C_RGB_etoiles_bruit, C_L_lineaire, Star_Stretch ni Etoiles_LRGB |
 | `C_SHO_lineaire`, `C_HOO_lineaire` | combinaison narrowband linéaire | BXT → SXT |
 | `C_Extraction_SHO`, `C_Extraction_HOO`, `C_Extraction_etoiles` | image sans étoiles (ou d'étoiles) | extraction des canaux |
 | `C_Etoiles_RGB` (RGB + SHO) | RGB combiné | BXT Correct Only → SPCC → BXT → SXT |
@@ -44,7 +43,7 @@ Dans les trois fichiers, **une colonne par phase**, avec une icône-titre sans e
 | Workflow | Principal | Options | Contenu |
 |---|---|---|---|
 | LRGB | 24 | 12 | Prétraitement, combinaison RGB, MGC, BXT Correct Only, SPCC, BXT, NXT, GHS avec étoiles, LRGBCombination avec étoiles, SXT étirée (Unscreen), finition, étoiles |
-| LHaRGB | 28 | 15 | LRGB + soustraction du continuum et H dans le rouge ; options : calcul automatique de k, H dans L, NBRGBCombination |
+| LHaRGB | 28 | 15 | LRGB + soustraction du continuum et H dans le rouge ; Continuum_auto (SetiAstro) au chemin principal ; options : H dans L, NBRGBCombination |
 | RGB-SHO | 34 | 19 | Masters narrowband, combinaison SHO simple, BXT, SXT, extraction, NarrowbandNormalization, étoiles RGB ; options : Foraxx, Perfect Palette Picker, NBColourMapper, SCNR, LinearFit |
 | SHO-sans-RGB | 31 | 19 | Idem sans RGB, étoiles narrowband par NB to RGB Star Combination ; options : étoiles HOO synthétiques, CorrectMagentaStars |
 | HOO | 28 | 19 | Combinaison HOO, NarrowbandNormalization HOO ; options : extraction dual-band (caméra couleur), Foraxx HOO, variante Hubble, H en luminance |
