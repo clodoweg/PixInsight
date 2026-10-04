@@ -199,7 +199,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <table id="defects" rows="0"/>
    </instance>
    <instance class="NoOperation" version="256" id="P1_rapide_instance">
-      <description>MODE RAPIDE, phase 1 — Préparation : MODE RAPIDE (galaxies) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre : R_C_Preparation_rapide ; R_GC_Solver_auto ; R_C_RGB_rapide (ou R_C_RGB_rapide_SXT_etire) sur RGB et R_C_L_rapide sur L ; GHS_1_premier, GHS_2_contraste, GHS_3_fond sur L seulement ; Etoiles_LRGB ; LRGB_ajout_L ; finition. Phase 1 : R_C_Preparation_rapide à la place de LinearPatternSubtraction, Renommer_auto et Combinaison_RGB. Icône de repère, sans effet.</description>
+      <description>MODE RAPIDE, phase 1 — Préparation : MODE RAPIDE (galaxies) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre : R_C_Preparation_rapide ; R_GC_Solver_auto_rapide ; R_C_RGB_rapide (ou R_C_RGB_rapide_SXT_etire) sur RGB et R_C_L_rapide sur L ; GHS_1_premier, GHS_2_contraste, GHS_3_fond sur L seulement ; Etoiles_LRGB ; LRGB_ajout_L ; finition. Phase 1 : R_C_Preparation_rapide à la place de LinearPatternSubtraction, Renommer_auto et Combinaison_RGB ; R_Solver_auto (ImageSolver seul sur les images ouvertes, sans GradientCorrection) si tu veux résoudre dès la préparation. Icône de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="R_C_Preparation_rapide_instance">
       <instance class="Script" version="256" enabled="true">
@@ -302,6 +302,222 @@ Détails : page docs/pixinsight-workflow.html.</description>
          </table>
          <parameter id="information"></parameter>
       </instance>
+   </instance>
+   <instance class="Script" version="256" id="R_Solver_auto_instance">
+      <description>MODE RAPIDE : ImageSolver sur les images couleur ouvertes (toutes avec solveTout), SANS GradientCorrection, en fin de préparation ; si tu l'utilises, GC_Solver_auto_rapide refera l'astrométrie : mets solveTout false et ne garde que sa GradientCorrection, ou passe gradient à true ici.
+
+LANCEMENT : double-clic sur l'icône, puis Apply Global.
+
+PRÉRÉGLÉ : script GC_Solver_auto.js avec gradient false : ImageSolver (date par défaut si absente, réglages du matériel) sur les images couleur ouvertes, sans GradientCorrection ; images *_stars ignorées ; une erreur n'arrête pas les autres.
+
+À RÉGLER : double-clic puis Apply Global, après R_C_Preparation_rapide ; copie GC_Solver_auto.js dans src/scripts/clodoweg.
+
+SI :
+- résoudre aussi L, H… -&gt; solveTout true
+- ajouter la GradientCorrection -&gt; gradient true (= R_GC_Solver_auto_rapide)
+
+Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/GC_Solver_auto.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="49">
+         <tr>
+            <td id="id">gradient</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">solveTout</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">defaultDate</td>
+            <td id="value">2020-01-01T00:00:00</td>
+         </tr>
+         <tr>
+            <td id="id">metadata_focal</td>
+            <td id="value">2939</td>
+         </tr>
+         <tr>
+            <td id="id">metadata_useFocal</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">metadata_xpixsz</td>
+            <td id="value">3.76</td>
+         </tr>
+         <tr>
+            <td id="id">metadata_resolution</td>
+            <td id="value">0.00007330116739335556</td>
+         </tr>
+         <tr>
+            <td id="id">metadata_referenceSystem</td>
+            <td id="value">ICRS</td>
+         </tr>
+         <tr>
+            <td id="id">metadata_topocentric</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">solver_version</td>
+            <td id="value">6.4.2</td>
+         </tr>
+         <tr>
+            <td id="id">solver_magnitude</td>
+            <td id="value">12</td>
+         </tr>
+         <tr>
+            <td id="id">solver_autoMagnitude</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">solver_databasePath</td>
+            <td id="value">undefined</td>
+         </tr>
+         <tr>
+            <td id="id">solver_generateErrorImg</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">solver_structureLayers</td>
+            <td id="value">5</td>
+         </tr>
+         <tr>
+            <td id="id">solver_minStructureSize</td>
+            <td id="value">0</td>
+         </tr>
+         <tr>
+            <td id="id">solver_hotPixelFilterRadius</td>
+            <td id="value">1</td>
+         </tr>
+         <tr>
+            <td id="id">solver_noiseReductionFilterRadius</td>
+            <td id="value">0</td>
+         </tr>
+         <tr>
+            <td id="id">solver_sensitivity</td>
+            <td id="value">0.5</td>
+         </tr>
+         <tr>
+            <td id="id">solver_peakResponse</td>
+            <td id="value">0.5</td>
+         </tr>
+         <tr>
+            <td id="id">solver_brightThreshold</td>
+            <td id="value">3</td>
+         </tr>
+         <tr>
+            <td id="id">solver_maxStarDistortion</td>
+            <td id="value">0.6</td>
+         </tr>
+         <tr>
+            <td id="id">solver_autoPSF</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">solver_catalogMode</td>
+            <td id="value">2</td>
+         </tr>
+         <tr>
+            <td id="id">solver_vizierServer</td>
+            <td id="value">https://vizier.cds.unistra.fr/</td>
+         </tr>
+         <tr>
+            <td id="id">solver_showStars</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">solver_showStarMatches</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">solver_showSimplifiedSurfaces</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">solver_showDistortion</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">solver_generateDistortModel</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">solver_catalog</td>
+            <td id="value">PPMXL</td>
+         </tr>
+         <tr>
+            <td id="id">solver_distortionCorrection</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">solver_rbfType</td>
+            <td id="value">101</td>
+         </tr>
+         <tr>
+            <td id="id">solver_maxSplinePoints</td>
+            <td id="value">4000</td>
+         </tr>
+         <tr>
+            <td id="id">solver_splineOrder</td>
+            <td id="value">2</td>
+         </tr>
+         <tr>
+            <td id="id">solver_splineSmoothing</td>
+            <td id="value">0.005</td>
+         </tr>
+         <tr>
+            <td id="id">solver_enableSimplifier</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">solver_simplifierRejectFraction</td>
+            <td id="value">0.1</td>
+         </tr>
+         <tr>
+            <td id="id">solver_outlierDetectionRadius</td>
+            <td id="value">160</td>
+         </tr>
+         <tr>
+            <td id="id">solver_outlierDetectionMinThreshold</td>
+            <td id="value">4</td>
+         </tr>
+         <tr>
+            <td id="id">solver_outlierDetectionSigma</td>
+            <td id="value">5</td>
+         </tr>
+         <tr>
+            <td id="id">solver_useActive</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">solver_outSuffix</td>
+            <td id="value">_ast</td>
+         </tr>
+         <tr>
+            <td id="id">solver_projection</td>
+            <td id="value">0</td>
+         </tr>
+         <tr>
+            <td id="id">solver_projectionOriginMode</td>
+            <td id="value">0</td>
+         </tr>
+         <tr>
+            <td id="id">solver_restrictToHQStars</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">solver_intersectionMode</td>
+            <td id="value">1</td>
+         </tr>
+         <tr>
+            <td id="id">solver_tryApparentCoordinates</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">solver_tryExhaustiveInitialAlignment</td>
+            <td id="value">false</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
    </instance>
    <instance class="NoOperation" version="256" id="P2_Gradient_instance">
       <description>PHASE 2 — Gradient : image linéaire : retrait du gradient. Colonne de repère, sans effet.</description>
@@ -924,14 +1140,14 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="samplesPerRow" value="15"/>
    </instance>
    <instance class="NoOperation" version="256" id="P2_rapide_instance">
-      <description>MODE RAPIDE, phase 2 — Gradient : R_GC_Solver_auto à la place de toute la phase 2 : GradientCorrection sur toutes les images ouvertes, puis ImageSolver sur RGB. Icône de repère, sans effet.</description>
+      <description>MODE RAPIDE, phase 2 — Gradient : R_GC_Solver_auto_rapide à la place de toute la phase 2 : GradientCorrection sur toutes les images ouvertes, puis ImageSolver sur RGB. Icône de repère, sans effet.</description>
    </instance>
-   <instance class="Script" version="256" id="R_GC_Solver_auto_instance">
+   <instance class="Script" version="256" id="R_GC_Solver_auto_rapide_instance">
       <description>MODE RAPIDE, à la place d'ImageSolver : GradientCorrection sur TOUTES les images ouvertes, puis ImageSolver sur les images couleur (RGB) ; à faire AVANT C_RGB_rapide et C_L_rapide (sans GradientCorrection).
 
 LANCEMENT : double-clic sur l'icône, puis Apply Global.
 
-PRÉRÉGLÉ : script GC_Solver_auto : GradientCorrection (sans modèle de gradient) sur toutes les images ouvertes, puis ImageSolver (date par défaut si absente, réglages du matériel) sur les images couleur ; images *_stars ignorées ; une erreur n'arrête pas les autres.
+PRÉRÉGLÉ : script GC_Solver_auto_rapide : GradientCorrection (sans modèle de gradient) sur toutes les images ouvertes, puis ImageSolver (date par défaut si absente, réglages du matériel) sur les images couleur ; images *_stars ignorées ; une erreur n'arrête pas les autres.
 
 À RÉGLER : double-clic puis Apply Global, masters et RGB ouverts ; copie GC_Solver_auto.js dans src/scripts/clodoweg ; à faire AVANT C_RGB_rapide et C_L_rapide, qui n'ont plus de GradientCorrection.
 
@@ -942,7 +1158,11 @@ SI :
 Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/GC_Solver_auto.js</parameter>
       <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="48">
+      <table id="parameters" rows="49">
+         <tr>
+            <td id="id">gradient</td>
+            <td id="value">true</td>
+         </tr>
          <tr>
             <td id="id">solveTout</td>
             <td id="value">false</td>
@@ -3869,6 +4089,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <icon id="Opt_CC_auto" instance="Opt_CC_auto_instance" xpos="30" ypos="234" workspace="Workspace01"/>
    <icon id="P1_rapide" instance="P1_rapide_instance" xpos="30" ypos="280" workspace="Workspace01"/>
    <icon id="R_C_Preparation_rapide" instance="R_C_Preparation_rapide_instance" xpos="30" ypos="314" workspace="Workspace01"/>
+   <icon id="R_Solver_auto" instance="R_Solver_auto_instance" xpos="30" ypos="344" workspace="Workspace01"/>
    <icon id="P2_Gradient" instance="P2_Gradient_instance" xpos="243" ypos="20" workspace="Workspace01"/>
    <icon id="E03_ImageSolver" instance="E03_ImageSolver_instance" xpos="243" ypos="64" workspace="Workspace01"/>
    <icon id="E04_SPFC_RGB_filtres" instance="E04_SPFC_RGB_filtres_instance" xpos="243" ypos="94" workspace="Workspace01"/>
@@ -3879,52 +4100,52 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <icon id="Opt_GradientCorrection" instance="Opt_GradientCorrection_instance" xpos="243" ypos="264" workspace="Workspace01"/>
    <icon id="Opt_DBE" instance="Opt_DBE_instance" xpos="243" ypos="294" workspace="Workspace01"/>
    <icon id="P2_rapide" instance="P2_rapide_instance" xpos="243" ypos="340" workspace="Workspace01"/>
-   <icon id="R_GC_Solver_auto" instance="R_GC_Solver_auto_instance" xpos="243" ypos="374" workspace="Workspace01"/>
-   <icon id="P3_Lineaire" instance="P3_Lineaire_instance" xpos="430" ypos="20" workspace="Workspace01"/>
-   <icon id="E07_C_RGB_lineaire" instance="E07_C_RGB_lineaire_instance" xpos="430" ypos="64" workspace="Workspace01"/>
-   <icon id="E08_C_L_lineaire" instance="E08_C_L_lineaire_instance" xpos="430" ypos="94" workspace="Workspace01"/>
-   <icon id="P3_options" instance="P3_options_instance" xpos="430" ypos="140" workspace="Workspace01"/>
-   <icon id="Opt_Find_Background" instance="Opt_Find_Background_instance" xpos="430" ypos="174" workspace="Workspace01"/>
-   <icon id="Opt_STF" instance="Opt_STF_instance" xpos="430" ypos="204" workspace="Workspace01"/>
-   <icon id="P3_rapide" instance="P3_rapide_instance" xpos="430" ypos="250" workspace="Workspace01"/>
-   <icon id="R_C_RGB_rapide" instance="R_C_RGB_rapide_instance" xpos="430" ypos="284" workspace="Workspace01"/>
-   <icon id="R_C_RGB_rapide_SXT_etire" instance="R_C_RGB_rapide_SXT_etire_instance" xpos="430" ypos="314" workspace="Workspace01"/>
-   <icon id="R_C_L_rapide" instance="R_C_L_rapide_instance" xpos="430" ypos="344" workspace="Workspace01"/>
-   <icon id="P4_Etirement" instance="P4_Etirement_instance" xpos="626" ypos="20" workspace="Workspace01"/>
-   <icon id="E09_GHS_1_premier" instance="E09_GHS_1_premier_instance" xpos="626" ypos="64" workspace="Workspace01"/>
-   <icon id="E10_GHS_2_contraste" instance="E10_GHS_2_contraste_instance" xpos="626" ypos="94" workspace="Workspace01"/>
-   <icon id="E11_Statistical_Stretch" instance="E11_Statistical_Stretch_instance" xpos="626" ypos="124" workspace="Workspace01"/>
-   <icon id="E12_GHS_3_fond" instance="E12_GHS_3_fond_instance" xpos="626" ypos="154" workspace="Workspace01"/>
-   <icon id="E13_Star_Stretch" instance="E13_Star_Stretch_instance" xpos="626" ypos="184" workspace="Workspace01"/>
-   <icon id="E14_Etoiles_LRGB" instance="E14_Etoiles_LRGB_instance" xpos="626" ypos="214" workspace="Workspace01"/>
-   <icon id="P4_rapide" instance="P4_rapide_instance" xpos="626" ypos="260" workspace="Workspace01"/>
-   <icon id="P5_Couleur" instance="P5_Couleur_instance" xpos="817" ypos="20" workspace="Workspace01"/>
-   <icon id="E15_LRGB_ajout_L" instance="E15_LRGB_ajout_L_instance" xpos="817" ypos="64" workspace="Workspace01"/>
-   <icon id="P5_rapide" instance="P5_rapide_instance" xpos="817" ypos="110" workspace="Workspace01"/>
-   <icon id="P6_Finition" instance="P6_Finition_instance" xpos="977" ypos="20" workspace="Workspace01"/>
-   <icon id="E16_HDRMT_40" instance="E16_HDRMT_40_instance" xpos="977" ypos="64" workspace="Workspace01"/>
-   <icon id="E17_C_Finition" instance="E17_C_Finition_instance" xpos="977" ypos="94" workspace="Workspace01"/>
-   <icon id="E18_NXT_final" instance="E18_NXT_final_instance" xpos="977" ypos="124" workspace="Workspace01"/>
-   <icon id="P6_options" instance="P6_options_instance" xpos="977" ypos="170" workspace="Workspace01"/>
-   <icon id="Opt_Nettoyage_sans_etoiles" instance="Opt_Nettoyage_sans_etoiles_instance" xpos="977" ypos="204" workspace="Workspace01"/>
-   <icon id="Opt_HDRMT_30" instance="Opt_HDRMT_30_instance" xpos="977" ypos="234" workspace="Workspace01"/>
-   <icon id="Opt_HDRMT_50" instance="Opt_HDRMT_50_instance" xpos="977" ypos="264" workspace="Workspace01"/>
-   <icon id="Opt_HDRMT_eclat" instance="Opt_HDRMT_eclat_instance" xpos="977" ypos="294" workspace="Workspace01"/>
-   <icon id="Opt_Boost_finition_light" instance="Opt_Boost_finition_light_instance" xpos="977" ypos="324" workspace="Workspace01"/>
-   <icon id="Opt_Boost_finition" instance="Opt_Boost_finition_instance" xpos="977" ypos="354" workspace="Workspace01"/>
-   <icon id="Opt_NXT_final_doux" instance="Opt_NXT_final_doux_instance" xpos="977" ypos="384" workspace="Workspace01"/>
-   <icon id="Opt_NXT_final_fort" instance="Opt_NXT_final_fort_instance" xpos="977" ypos="414" workspace="Workspace01"/>
-   <icon id="P6_rapide" instance="P6_rapide_instance" xpos="977" ypos="460" workspace="Workspace01"/>
-   <icon id="P7_Etoiles" instance="P7_Etoiles_instance" xpos="1181" ypos="20" workspace="Workspace01"/>
-   <icon id="E19_Etoiles_screen" instance="E19_Etoiles_screen_instance" xpos="1181" ypos="64" workspace="Workspace01"/>
-   <icon id="E20_C_Fond_final" instance="E20_C_Fond_final_instance" xpos="1181" ypos="94" workspace="Workspace01"/>
-   <icon id="P7_options" instance="P7_options_instance" xpos="1181" ypos="140" workspace="Workspace01"/>
-   <icon id="Opt_MT_etoiles" instance="Opt_MT_etoiles_instance" xpos="1181" ypos="174" workspace="Workspace01"/>
-   <icon id="Opt_Halo_B_Gon" instance="Opt_Halo_B_Gon_instance" xpos="1181" ypos="204" workspace="Workspace01"/>
-   <icon id="Opt_Etoiles_reduites" instance="Opt_Etoiles_reduites_instance" xpos="1181" ypos="234" workspace="Workspace01"/>
-   <icon id="Opt_Boost_final" instance="Opt_Boost_final_instance" xpos="1181" ypos="264" workspace="Workspace01"/>
-   <icon id="Opt_Fond_auto_clair" instance="Opt_Fond_auto_clair_instance" xpos="1181" ypos="294" workspace="Workspace01"/>
-   <icon id="Opt_ICC_sRGB" instance="Opt_ICC_sRGB_instance" xpos="1181" ypos="324" workspace="Workspace01"/>
-   <icon id="Opt_Export_TIFF" instance="Opt_Export_TIFF_instance" xpos="1181" ypos="354" workspace="Workspace01"/>
-   <icon id="P7_rapide" instance="P7_rapide_instance" xpos="1181" ypos="400" workspace="Workspace01"/>
+   <icon id="R_GC_Solver_auto_rapide" instance="R_GC_Solver_auto_rapide_instance" xpos="243" ypos="374" workspace="Workspace01"/>
+   <icon id="P3_Lineaire" instance="P3_Lineaire_instance" xpos="434" ypos="20" workspace="Workspace01"/>
+   <icon id="E07_C_RGB_lineaire" instance="E07_C_RGB_lineaire_instance" xpos="434" ypos="64" workspace="Workspace01"/>
+   <icon id="E08_C_L_lineaire" instance="E08_C_L_lineaire_instance" xpos="434" ypos="94" workspace="Workspace01"/>
+   <icon id="P3_options" instance="P3_options_instance" xpos="434" ypos="140" workspace="Workspace01"/>
+   <icon id="Opt_Find_Background" instance="Opt_Find_Background_instance" xpos="434" ypos="174" workspace="Workspace01"/>
+   <icon id="Opt_STF" instance="Opt_STF_instance" xpos="434" ypos="204" workspace="Workspace01"/>
+   <icon id="P3_rapide" instance="P3_rapide_instance" xpos="434" ypos="250" workspace="Workspace01"/>
+   <icon id="R_C_RGB_rapide" instance="R_C_RGB_rapide_instance" xpos="434" ypos="284" workspace="Workspace01"/>
+   <icon id="R_C_RGB_rapide_SXT_etire" instance="R_C_RGB_rapide_SXT_etire_instance" xpos="434" ypos="314" workspace="Workspace01"/>
+   <icon id="R_C_L_rapide" instance="R_C_L_rapide_instance" xpos="434" ypos="344" workspace="Workspace01"/>
+   <icon id="P4_Etirement" instance="P4_Etirement_instance" xpos="630" ypos="20" workspace="Workspace01"/>
+   <icon id="E09_GHS_1_premier" instance="E09_GHS_1_premier_instance" xpos="630" ypos="64" workspace="Workspace01"/>
+   <icon id="E10_GHS_2_contraste" instance="E10_GHS_2_contraste_instance" xpos="630" ypos="94" workspace="Workspace01"/>
+   <icon id="E11_Statistical_Stretch" instance="E11_Statistical_Stretch_instance" xpos="630" ypos="124" workspace="Workspace01"/>
+   <icon id="E12_GHS_3_fond" instance="E12_GHS_3_fond_instance" xpos="630" ypos="154" workspace="Workspace01"/>
+   <icon id="E13_Star_Stretch" instance="E13_Star_Stretch_instance" xpos="630" ypos="184" workspace="Workspace01"/>
+   <icon id="E14_Etoiles_LRGB" instance="E14_Etoiles_LRGB_instance" xpos="630" ypos="214" workspace="Workspace01"/>
+   <icon id="P4_rapide" instance="P4_rapide_instance" xpos="630" ypos="260" workspace="Workspace01"/>
+   <icon id="P5_Couleur" instance="P5_Couleur_instance" xpos="821" ypos="20" workspace="Workspace01"/>
+   <icon id="E15_LRGB_ajout_L" instance="E15_LRGB_ajout_L_instance" xpos="821" ypos="64" workspace="Workspace01"/>
+   <icon id="P5_rapide" instance="P5_rapide_instance" xpos="821" ypos="110" workspace="Workspace01"/>
+   <icon id="P6_Finition" instance="P6_Finition_instance" xpos="981" ypos="20" workspace="Workspace01"/>
+   <icon id="E16_HDRMT_40" instance="E16_HDRMT_40_instance" xpos="981" ypos="64" workspace="Workspace01"/>
+   <icon id="E17_C_Finition" instance="E17_C_Finition_instance" xpos="981" ypos="94" workspace="Workspace01"/>
+   <icon id="E18_NXT_final" instance="E18_NXT_final_instance" xpos="981" ypos="124" workspace="Workspace01"/>
+   <icon id="P6_options" instance="P6_options_instance" xpos="981" ypos="170" workspace="Workspace01"/>
+   <icon id="Opt_Nettoyage_sans_etoiles" instance="Opt_Nettoyage_sans_etoiles_instance" xpos="981" ypos="204" workspace="Workspace01"/>
+   <icon id="Opt_HDRMT_30" instance="Opt_HDRMT_30_instance" xpos="981" ypos="234" workspace="Workspace01"/>
+   <icon id="Opt_HDRMT_50" instance="Opt_HDRMT_50_instance" xpos="981" ypos="264" workspace="Workspace01"/>
+   <icon id="Opt_HDRMT_eclat" instance="Opt_HDRMT_eclat_instance" xpos="981" ypos="294" workspace="Workspace01"/>
+   <icon id="Opt_Boost_finition_light" instance="Opt_Boost_finition_light_instance" xpos="981" ypos="324" workspace="Workspace01"/>
+   <icon id="Opt_Boost_finition" instance="Opt_Boost_finition_instance" xpos="981" ypos="354" workspace="Workspace01"/>
+   <icon id="Opt_NXT_final_doux" instance="Opt_NXT_final_doux_instance" xpos="981" ypos="384" workspace="Workspace01"/>
+   <icon id="Opt_NXT_final_fort" instance="Opt_NXT_final_fort_instance" xpos="981" ypos="414" workspace="Workspace01"/>
+   <icon id="P6_rapide" instance="P6_rapide_instance" xpos="981" ypos="460" workspace="Workspace01"/>
+   <icon id="P7_Etoiles" instance="P7_Etoiles_instance" xpos="1185" ypos="20" workspace="Workspace01"/>
+   <icon id="E19_Etoiles_screen" instance="E19_Etoiles_screen_instance" xpos="1185" ypos="64" workspace="Workspace01"/>
+   <icon id="E20_C_Fond_final" instance="E20_C_Fond_final_instance" xpos="1185" ypos="94" workspace="Workspace01"/>
+   <icon id="P7_options" instance="P7_options_instance" xpos="1185" ypos="140" workspace="Workspace01"/>
+   <icon id="Opt_MT_etoiles" instance="Opt_MT_etoiles_instance" xpos="1185" ypos="174" workspace="Workspace01"/>
+   <icon id="Opt_Halo_B_Gon" instance="Opt_Halo_B_Gon_instance" xpos="1185" ypos="204" workspace="Workspace01"/>
+   <icon id="Opt_Etoiles_reduites" instance="Opt_Etoiles_reduites_instance" xpos="1185" ypos="234" workspace="Workspace01"/>
+   <icon id="Opt_Boost_final" instance="Opt_Boost_final_instance" xpos="1185" ypos="264" workspace="Workspace01"/>
+   <icon id="Opt_Fond_auto_clair" instance="Opt_Fond_auto_clair_instance" xpos="1185" ypos="294" workspace="Workspace01"/>
+   <icon id="Opt_ICC_sRGB" instance="Opt_ICC_sRGB_instance" xpos="1185" ypos="324" workspace="Workspace01"/>
+   <icon id="Opt_Export_TIFF" instance="Opt_Export_TIFF_instance" xpos="1185" ypos="354" workspace="Workspace01"/>
+   <icon id="P7_rapide" instance="P7_rapide_instance" xpos="1185" ypos="400" workspace="Workspace01"/>
 </xpsm>

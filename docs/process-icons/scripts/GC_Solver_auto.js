@@ -3,8 +3,9 @@
 // ouvertes, puis ImageSolver.
 // ----------------------------------------------------------------------------
 // Pour chaque image ouverte (vues principales) :
-//   1. GradientCorrection, réglages par défaut, sans modèle de gradient
-//      (generateGradientModel décoché), comme dans les conteneurs rapides ;
+//   1. gradient = true (défaut) : GradientCorrection, réglages par défaut, sans
+//      modèle de gradient (generateGradientModel décoché) ; gradient = false :
+//      pas de GradientCorrection (icône R_Solver_auto : ImageSolver seul) ;
 //   2. ImageSolver sur les images COULEUR seulement (RGB : c'est elle qui sert
 //      à SPCC) ; solveTout = true : sur toutes les images. Date par défaut
 //      ajoutée si l'image n'en a pas (comme ImageSolver_Date.js), puis moteur
@@ -91,6 +92,7 @@ function gradient( view )
 function mainGCS()
 {
    let solveTout = gcsParam( "solveTout", "false" ).toLowerCase() == "true";
+   let avecGradient = gcsParam( "gradient", "true" ).toLowerCase() == "true";
    let wins = ImageWindow.windows.filter( function( w ) { return !w.mainView.id.endsWith( "_stars" ); } );
    if ( wins.length == 0 )
       throw new Error( GCS_TITLE + " : aucune image ouverte." );
@@ -101,8 +103,11 @@ function mainGCS()
       let w = wins[ i ], id = w.mainView.id, etapes = [];
       try
       {
-         gradient( w.mainView );
-         etapes.push( "GradientCorrection" );
+         if ( avecGradient )
+         {
+            gradient( w.mainView );
+            etapes.push( "GradientCorrection" );
+         }
          if ( solveTout || w.mainView.image.isColor )
          {
             if ( !Parameters.has( "metadata_focal" ) )
@@ -111,7 +116,7 @@ function mainGCS()
             solve( w );
             etapes.push( "ImageSolver" );
          }
-         bilan.push( id + " : " + etapes.join( " + " ) );
+         bilan.push( id + " : " + (etapes.length ? etapes.join( " + " ) : "rien (image mono, solveTout false)") );
       }
       catch ( e )
       {
