@@ -302,15 +302,18 @@ def curves_cs(name, c, s):
         return t
     return M.instance('CurvesTransformation', name, post=post)
 
-def boost_final_items():
+def boost_final_items(doux=False):
     """Image finie (étoiles comprises) : masque tiré de L sans étoiles, étoiles de RGB_stars retirées, courbes c et S
-    (réglage de l'utilisateur : c 0,46094 -> 0,53646, S 0,46354 -> 0,54167), masque retiré."""
-    return [script('Masque_L_source', ''), curves_cs('Courbes_boost_final', [(0, 0), (0.46094, 0.53646), (1, 1)], [(0, 0), (0.46354, 0.54167), (1, 1)]),
+    (réglage de l'utilisateur : c 0,46094 -> 0,53646, S 0,46354 -> 0,54167), masque retiré.
+    doux (demande de l'utilisateur) : même masque, montée des courbes divisée par deux (c -> 0,49870, S -> 0,50261)."""
+    c, s = ((0.46094, 0.49870), (0.46354, 0.50261)) if doux else ((0.46094, 0.53646), (0.46354, 0.54167))
+    return [script('Masque_L_source', ''), curves_cs('Courbes_boost_final', [(0, 0), c, (1, 1)], [(0, 0), s, (1, 1)]),
             script('Masque_retirer', '')]
 
-def boost_final():
-    items = boost_final_items()
-    return 'Boost_final', container('Boost_final', [x.replace('id="%s_instance"' % n, 'id="__ID___instance"', 1) for n, x in items])
+def boost_final(doux=False):
+    items = boost_final_items(doux)
+    name = 'Boost_final_doux' if doux else 'Boost_final'
+    return name, container(name, [x.replace('id="%s_instance"' % n, 'id="__ID___instance"', 1) for n, x in items])
 
 def hdrmt_items(a):
     """Copie de l'image, HDRMT sur l'image, puis mélange a·résultat + (1 − a)·copie, copie fermée."""
@@ -664,7 +667,7 @@ def stars_end(stars='RGB_stars', cms=False, screen_extra='', cms_extra='', alt='
         b.append((note('CorrectMagentaStars', T_CMS + cms_extra), ''))
     if galaxie:
         # partie 5 (fond) : Boost_final (option, avant), C_Fond_final = Fond_auto + Fond_desature (chemin principal), Fond_auto_clair (option)
-        return b + [(boost_final(), ''), (note('Fond_auto', D_FOND), ''), (script('Fond_desature', ''), ''), (script('Fond_auto_clair', ''), '')] + EXPORT
+        return b + [(boost_final(True), ''), (boost_final(), ''), (note('Fond_auto', D_FOND), ''), (script('Fond_desature', ''), ''), (script('Fond_auto_clair', ''), '')] + EXPORT
     b.append((script('Fond_desature', ''), ''))   # option, tout à la fin : couleur retirée du fond du ciel
     return b + EXPORT
 
@@ -1113,7 +1116,7 @@ insert_after(lrgb, 'ImageSolver', [(gc_solver(), '')])
 def fin_rapide(steps):
     """P6_rapide et P7_rapide (demande de l'utilisateur) : un conteneur par phase avec les étapes de la finition."""
     c6 = cont('C_Fin_rapide', list(hdrmt_items('0.3')) + [pick(steps, b)[0] for b in ('Masque_L', 'Courbes', 'LHE', 'LHE_fin', 'Masque_retirer', 'NXT_final')])
-    c7 = cont('C_Etoiles_fond_rapide', [pick(steps, b)[0] for b in ('Etoiles_screen', 'Fond_auto', 'Fond_desature')])
+    c7 = cont('C_Etoiles_fond_rapide', [pick(steps, b)[0] for b in ('Etoiles_screen', 'Fond_auto', 'Fond_desature', 'Export_TIFF')])   # Export_TIFF en dernier (demande de l'utilisateur)
     return c6, c7
 
 for _st in (lrgb, lhargb):
