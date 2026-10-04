@@ -11,8 +11,9 @@
 //      viennent les masters (L, R, G, B, H… encore ouverts, ou toute image
 //      ouverte depuis un fichier) ; un dossier au nom générique (master,
 //      masters, lights, output, WBPP…) est sauté au profit du dossier parent.
-//      Ex. : /Astro/NGC1532/master/masterLight_L.xisf -> NGC1532.tif, enregistré
-//      dans /Astro/NGC1532/. Si aucune image ouverte n'a de fichier : mot-clé
+//      Ex. : /Astro/NGC1532/master/masterLight_L.xisf -> NGC1532.tiff, enregistré
+//      dans /Astro/NGC1532/. Espaces toujours retirés : « NGC 1532 » -> NGC1532.
+//      Si aucune image ouverte n'a de fichier : mot-clé
 //      OBJECT de l'image, sinon identifiant de la vue ; dossier personnel.
 //      Paramètres : nom (force le nom), dossier (force le dossier), suffixe
 //      (ajouté au nom, vide par défaut). Un fichier existant est remplacé.
@@ -88,12 +89,12 @@ function main()
       nom = dir.length > 0 ? lastName( dir ) : keyword( view, "OBJECT" );
    if ( nom.length == 0 )
       nom = view.id;
-   nom = nom.replace( /[\/\\:*?"<>|]/g, "_" ).trim();
+   nom = nom.replace( /\s+/g, "" ).replace( /[\/\\:*?"<>|]/g, "_" );   // jamais d'espace (demande de l'utilisateur) : NGC 1532 -> NGC1532
    if ( dossier.length == 0 )
       dossier = dir.length > 0 ? dir : File.homeDirectory;
    if ( !dossier.endsWith( "/" ) )
       dossier += "/";
-   let path = dossier + nom + suffixe + ".tif";
+   let path = dossier + nom + suffixe.replace( /\s+/g, "" ) + ".tiff";
 
    // 1. copie 16 bits
    let img = view.image;
