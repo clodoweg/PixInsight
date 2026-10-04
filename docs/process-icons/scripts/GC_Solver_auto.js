@@ -27,9 +27,13 @@
 
 #engine v8
 
+#ifndef CLODOWEG_TURBO
 #feature-id    GC_Solver_auto : clodoweg > GradientCorrection et ImageSolver sur toutes les images
+#endif
+#ifndef CLODOWEG_TURBO
 #feature-info  GradientCorrection sur toutes les images ouvertes, puis \
    ImageSolver sur les images couleur (ou toutes).
+#endif
 
 #define USE_SOLVER_LIBRARY true
 #define SETTINGS_MODULE "ImageSolver"
@@ -90,11 +94,12 @@ function gradient( view )
    G.executeOn( view );
 }
 
-function mainGCS()
+function mainGCS( opts )
 {
-   let solveTout = gcsParam( "solveTout", "false" ).toLowerCase() == "true";
-   let avecGradient = gcsParam( "gradient", "true" ).toLowerCase() == "true";
-   let avecSolve = gcsParam( "solve", "true" ).toLowerCase() == "true";   // solve = false : GradientCorrection seule (R_GC_Solver_auto_rapide)
+   opts = opts || {};
+   let solveTout = ("solveTout" in opts) ? opts.solveTout : gcsParam( "solveTout", "false" ).toLowerCase() == "true";
+   let avecGradient = ("gradient" in opts) ? opts.gradient : gcsParam( "gradient", "true" ).toLowerCase() == "true";
+   let avecSolve = ("solve" in opts) ? opts.solve : gcsParam( "solve", "true" ).toLowerCase() == "true";   // solve = false : GradientCorrection seule (R_GC_Solver_auto_rapide)
    let wins = ImageWindow.windows.filter( function( w ) { return !w.mainView.id.endsWith( "_stars" ); } );
    if ( wins.length == 0 )
       throw new Error( GCS_TITLE + " : aucune image ouverte." );
@@ -129,4 +134,6 @@ function mainGCS()
    bilan.forEach( function( l ) { console.noteln( "   " + l ); } );
 }
 
+#ifndef CLODOWEG_TURBO
 mainGCS();
+#endif

@@ -12,12 +12,16 @@
 // PixInsight, à côté du dossier PatternCorrection.
 // ----------------------------------------------------------------------------
 
+#ifndef CLODOWEG_TURBO
 #feature-id    Combiner_RGB : clodoweg > Combiner R, G, B
+#endif
+#ifndef CLODOWEG_TURBO
 #feature-info  Combine R, G, B en RGB, copie l'en-tête du rouge et ferme R, G, B.
+#endif
 
-#define TITLE "Combiner RGB"
+#define CRGB_TITLE "Combiner RGB"
 
-function main()
+function combinerRGB()
 {
    let red = "R", green = "G", blue = "B", newId = "RGB";
    let closeSources = true, copyKeywords = true;
@@ -34,11 +38,11 @@ function main()
    {
       let w = ImageWindow.windowById( ids[ i ] );
       if ( w.isNull )
-         throw new Error( TITLE + " : aucune image nommée '" + ids[ i ] + "'. Renomme tes masters R, G et B." );
+         throw new Error( CRGB_TITLE + " : aucune image nommée '" + ids[ i ] + "'. Renomme tes masters R, G et B." );
       windows.push( w );
    }
    if ( !ImageWindow.windowById( newId ).isNull )
-      throw new Error( TITLE + " : une image '" + newId + "' existe déjà ; ferme-la ou renomme-la." );
+      throw new Error( CRGB_TITLE + " : une image '" + newId + "' existe déjà ; ferme-la ou renomme-la." );
 
    let P = new PixelMath;
    P.expression = red;
@@ -53,11 +57,11 @@ function main()
    P.rescale = false;
    P.truncate = true;
    if ( !P.executeOn( windows[ 0 ].mainView ) )
-      throw new Error( TITLE + " : échec de la combinaison." );
+      throw new Error( CRGB_TITLE + " : échec de la combinaison." );
 
    let rgb = ImageWindow.windowById( newId );
    if ( rgb.isNull )
-      throw new Error( TITLE + " : image '" + newId + "' introuvable après la combinaison." );
+      throw new Error( CRGB_TITLE + " : image '" + newId + "' introuvable après la combinaison." );
 
    if ( copyKeywords )
       rgb.keywords = windows[ 0 ].keywords;
@@ -68,8 +72,10 @@ function main()
 
    rgb.show();
    rgb.bringToFront();
-   console.noteln( "<end><cbr>" + TITLE + " : '" + newId + "' créée" + ( copyKeywords ? ", en-tête de '" + red + "' copié" : "" ) +
+   console.noteln( "<end><cbr>" + CRGB_TITLE + " : '" + newId + "' créée" + ( copyKeywords ? ", en-tête de '" + red + "' copié" : "" ) +
                    ( closeSources ? ", " + ids.join( ", " ) + " fermées." : "." ) );
 }
 
-main();
+#ifndef CLODOWEG_TURBO
+combinerRGB();
+#endif

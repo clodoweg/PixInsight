@@ -732,23 +732,23 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <description>MODE TURBO, phase 1 — Préparation : chaque icône T_ enchaîne plusieurs icônes rapides (R_) en un clic ; les icônes R_ doivent rester chargées. Icône de repère, sans effet.</description>
    </instance>
    <instance class="Script" version="256" id="T_Turbo_1_instance">
-      <description>MODE TURBO, étape 1 : masters seuls ouverts, double-clic puis Apply Global ; enchaîne R_C_Preparation_rapide, R_GC_Solver_auto_rapide, R_C_RGB_rapide (RGB), R_C_L_rapide (L), R_C_Fin_GHS_rapide (L), puis ferme L_stars.
+      <description>MODE TURBO, étape 1 : masters seuls ouverts, double-clic puis Apply Global ; fait en un clic préparation, astrométrie, GradientCorrection, traitement de RGB (comme R_C_RGB_rapide), R_C_L_rapide et R_C_Fin_GHS_rapide sur L, puis ferme L_stars.
 
 LANCEMENT : double-clic sur l'icône, puis Apply Global.
 
-PRÉRÉGLÉ : script Turbo_1 : lance les icônes R_C_Preparation_rapide (global), R_GC_Solver_auto_rapide (global), R_C_RGB_rapide (sur RGB), R_C_L_rapide (sur L), R_C_Fin_GHS_rapide (sur L), puis ferme L_stars ; les icônes sont lues dans l'espace de travail (réglages modifiés pris en compte).
+PRÉRÉGLÉ : script Turbo_1 (un seul script, PixInsight refusant qu'un script en lance un autre) : renommage, LinearPatternSubtraction, combinaison RGB, astrométrie de toutes les images, GradientCorrection de toutes les images, puis sur RGB BXT Correct Only, SPCC, BXT, SXT linéaire, NXT, étirement statistique (médiane 0,25), GHS fond, Etoiles_auto ; sur L les icônes R_C_L_rapide et R_C_Fin_GHS_rapide ; L_stars fermée.
 
-À RÉGLER : masters seuls ouverts ; double-clic puis Apply Global ; les icônes R_ doivent être chargées ; copie Turbo_1.js dans src/scripts/clodoweg.
+À RÉGLER : masters seuls ouverts ; double-clic puis Apply Global ; R_C_L_rapide et R_C_Fin_GHS_rapide chargées ; copie Turbo_1.js et les scripts qu'il inclut (Renommer_auto, LPS_UnClic, Combiner_RGB, GC_Solver_auto, Etoiles_auto) dans src/scripts/clodoweg.
 
 SI :
-- une étape échoue -&gt; la console dit laquelle ; reprends à la main avec les icônes R_ à partir de celle-là
+- une étape échoue -&gt; la console dit laquelle ; reprends avec les icônes R_ à partir de celle-là
 - autres noms de vues -&gt; vueRGB, vueL
 - GHS_1_premier n'est pas fait : L n'est étirée que par GHS_2 et GHS_3
 
 Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Turbo_1.js</parameter>
       <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="2">
+      <table id="parameters" rows="48">
          <tr>
             <td id="id">vueRGB</td>
             <td id="value">RGB</td>
@@ -756,6 +756,190 @@ Détails : page docs/pixinsight-workflow.html.</description>
          <tr>
             <td id="id">vueL</td>
             <td id="value">L</td>
+         </tr>
+         <tr>
+            <td id="id">metadata_focal</td>
+            <td id="value">2939</td>
+         </tr>
+         <tr>
+            <td id="id">metadata_useFocal</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">metadata_xpixsz</td>
+            <td id="value">3.76</td>
+         </tr>
+         <tr>
+            <td id="id">metadata_resolution</td>
+            <td id="value">0.00007330116739335556</td>
+         </tr>
+         <tr>
+            <td id="id">metadata_referenceSystem</td>
+            <td id="value">ICRS</td>
+         </tr>
+         <tr>
+            <td id="id">metadata_topocentric</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">solver_version</td>
+            <td id="value">6.4.2</td>
+         </tr>
+         <tr>
+            <td id="id">solver_magnitude</td>
+            <td id="value">12</td>
+         </tr>
+         <tr>
+            <td id="id">solver_autoMagnitude</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">solver_databasePath</td>
+            <td id="value">undefined</td>
+         </tr>
+         <tr>
+            <td id="id">solver_generateErrorImg</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">solver_structureLayers</td>
+            <td id="value">5</td>
+         </tr>
+         <tr>
+            <td id="id">solver_minStructureSize</td>
+            <td id="value">0</td>
+         </tr>
+         <tr>
+            <td id="id">solver_hotPixelFilterRadius</td>
+            <td id="value">1</td>
+         </tr>
+         <tr>
+            <td id="id">solver_noiseReductionFilterRadius</td>
+            <td id="value">0</td>
+         </tr>
+         <tr>
+            <td id="id">solver_sensitivity</td>
+            <td id="value">0.5</td>
+         </tr>
+         <tr>
+            <td id="id">solver_peakResponse</td>
+            <td id="value">0.5</td>
+         </tr>
+         <tr>
+            <td id="id">solver_brightThreshold</td>
+            <td id="value">3</td>
+         </tr>
+         <tr>
+            <td id="id">solver_maxStarDistortion</td>
+            <td id="value">0.6</td>
+         </tr>
+         <tr>
+            <td id="id">solver_autoPSF</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">solver_catalogMode</td>
+            <td id="value">2</td>
+         </tr>
+         <tr>
+            <td id="id">solver_vizierServer</td>
+            <td id="value">https://vizier.cds.unistra.fr/</td>
+         </tr>
+         <tr>
+            <td id="id">solver_showStars</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">solver_showStarMatches</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">solver_showSimplifiedSurfaces</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">solver_showDistortion</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">solver_generateDistortModel</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">solver_catalog</td>
+            <td id="value">PPMXL</td>
+         </tr>
+         <tr>
+            <td id="id">solver_distortionCorrection</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">solver_rbfType</td>
+            <td id="value">101</td>
+         </tr>
+         <tr>
+            <td id="id">solver_maxSplinePoints</td>
+            <td id="value">4000</td>
+         </tr>
+         <tr>
+            <td id="id">solver_splineOrder</td>
+            <td id="value">2</td>
+         </tr>
+         <tr>
+            <td id="id">solver_splineSmoothing</td>
+            <td id="value">0.005</td>
+         </tr>
+         <tr>
+            <td id="id">solver_enableSimplifier</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">solver_simplifierRejectFraction</td>
+            <td id="value">0.1</td>
+         </tr>
+         <tr>
+            <td id="id">solver_outlierDetectionRadius</td>
+            <td id="value">160</td>
+         </tr>
+         <tr>
+            <td id="id">solver_outlierDetectionMinThreshold</td>
+            <td id="value">4</td>
+         </tr>
+         <tr>
+            <td id="id">solver_outlierDetectionSigma</td>
+            <td id="value">5</td>
+         </tr>
+         <tr>
+            <td id="id">solver_useActive</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">solver_outSuffix</td>
+            <td id="value">_ast</td>
+         </tr>
+         <tr>
+            <td id="id">solver_projection</td>
+            <td id="value">0</td>
+         </tr>
+         <tr>
+            <td id="id">solver_projectionOriginMode</td>
+            <td id="value">0</td>
+         </tr>
+         <tr>
+            <td id="id">solver_restrictToHQStars</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">solver_intersectionMode</td>
+            <td id="value">1</td>
+         </tr>
+         <tr>
+            <td id="id">solver_tryApparentCoordinates</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">solver_tryExhaustiveInitialAlignment</td>
+            <td id="value">false</td>
          </tr>
       </table>
       <parameter id="information"></parameter>

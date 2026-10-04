@@ -17,11 +17,15 @@
 // traitées.
 // ----------------------------------------------------------------------------
 
+#ifndef CLODOWEG_TURBO
 #feature-id    Renommer_auto : clodoweg > Renommer les masters
+#endif
+#ifndef CLODOWEG_TURBO
 #feature-info  Renomme les masters ouverts L, R, G, B, H, O, S d'après le \
    mot-clé FILTER (ou le nom du fichier).
+#endif
 
-#define TITLE "Renommer auto"
+#define REN_TITLE "Renommer auto"
 
 // Nom de filtre (en-tête ou morceau du nom de fichier) -> nom de vue.
 function filterToId( text )
@@ -83,7 +87,7 @@ function fromFileName( window )
    return "";
 }
 
-function main()
+function renommerAuto()
 {
    console.show();
    let windows = ImageWindow.windows;
@@ -107,7 +111,7 @@ function main()
       }
       if ( id.length == 0 )
       {
-         console.warningln( TITLE + " : filtre inconnu pour '" + view.id + "' : renomme-la à la main." );
+         console.warningln( REN_TITLE + " : filtre inconnu pour '" + view.id + "' : renomme-la à la main." );
          ++skipped;
          continue;
       }
@@ -115,7 +119,7 @@ function main()
          continue;
       if ( used[ id ] )
       {
-         console.warningln( TITLE + " : '" + view.id + "' serait '" + id + "', mais ce nom est déjà pris : non renommée." );
+         console.warningln( REN_TITLE + " : '" + view.id + "' serait '" + id + "', mais ce nom est déjà pris : non renommée." );
          ++skipped;
          continue;
       }
@@ -123,10 +127,12 @@ function main()
       view.id = id;
       used[ id ] = true;
       delete used[ old ];
-      console.noteln( TITLE + " : '" + old + "' -> '" + id + "' (" + source + ")" );
+      console.noteln( REN_TITLE + " : '" + old + "' -> '" + id + "' (" + source + ")" );
       ++done;
    }
-   console.noteln( "<end><cbr>" + TITLE + " : " + done + " vue(s) renommée(s), " + skipped + " à vérifier." );
+   console.noteln( "<end><cbr>" + REN_TITLE + " : " + done + " vue(s) renommée(s), " + skipped + " à vérifier." );
 }
 
-main();
+#ifndef CLODOWEG_TURBO
+renommerAuto();
+#endif

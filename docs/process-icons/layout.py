@@ -75,7 +75,7 @@ CHOICES = {
 
 # pour les options : quand les ajouter
 WHEN = {
-    'Turbo_1': "MODE TURBO, étape 1 : masters seuls ouverts, double-clic puis Apply Global ; enchaîne R_C_Preparation_rapide, R_GC_Solver_auto_rapide, R_C_RGB_rapide (RGB), R_C_L_rapide (L), R_C_Fin_GHS_rapide (L), puis ferme L_stars",
+    'Turbo_1': "MODE TURBO, étape 1 : masters seuls ouverts, double-clic puis Apply Global ; fait en un clic préparation, astrométrie, GradientCorrection, traitement de RGB (comme R_C_RGB_rapide), R_C_L_rapide et R_C_Fin_GHS_rapide sur L, puis ferme L_stars",
     'Turbo_2': "MODE TURBO, étape 2 : sur RGB (sans étoiles, étirée), L ouverte et RGB_stars ouverte ; enchaîne LRGB_ajout_L, R_C_Fin_rapide et R_C_Etoiles_fond_rapide (export TIFF compris) en un seul conteneur",
     'C_Fin_GHS_rapide': "MODE RAPIDE, « fin de GHS », à la place de GHS_2_contraste et GHS_3_fond : sur L après GHS_1_premier, avec les réglages par défaut des deux GHS",
     'C_Fin_rapide': "MODE RAPIDE, à la place de HDRMT_40, C_Finition et NXT_final : sur l'image sans étoiles après LRGB_ajout_L",

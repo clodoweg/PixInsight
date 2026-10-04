@@ -17,13 +17,17 @@
 // double-clic sur l'icône et Apply Global.
 // ----------------------------------------------------------------------------
 
+#ifndef CLODOWEG_TURBO
 #feature-id    LPS_UnClic : Pattern Correction > LPS un clic
+#endif
+#ifndef CLODOWEG_TURBO
 #feature-info  LinearPatternSubtraction sans dialogue (moteur de Vicent Peris), \
    zone de fond automatique, image active ou toutes les images ouvertes.
+#endif
 
 #include <pjsr/LinearPatternSubtraction.jsh>
 
-#define TITLE "LPS un clic"
+#define LPS_TITLE "LPS un clic"
 
 function LPS1Parameters()
 {
@@ -88,7 +92,7 @@ function correctWindow( window, P )
    window.bringToFront();
    processEvents();
    if ( ImageWindow.activeWindow.mainView.id != window.mainView.id )
-      throw new Error( TITLE + " : impossible d'activer l'image " + window.mainView.id );
+      throw new Error( LPS_TITLE + " : impossible d'activer l'image " + window.mainView.id );
 
    let engine = new LPSEngine();
    engine.targetIsActiveImage = true;
@@ -117,13 +121,13 @@ function correctWindow( window, P )
       }
    }
    console.writeln( format( "<end><cbr>%s : %s — fond %d, %d, %d x %d — %s",
-      TITLE, window.mainView.id, engine.backgroundReferenceLeft, engine.backgroundReferenceTop,
+      LPS_TITLE, window.mainView.id, engine.backgroundReferenceLeft, engine.backgroundReferenceTop,
       engine.backgroundReferenceWidth, engine.backgroundReferenceHeight,
       P.correctColumns ? "colonnes" : "lignes" ) );
    engine.execute();
 }
 
-function main()
+function lpsUnClic()
 {
    let P = new LPS1Parameters;
    P.import();
@@ -141,7 +145,7 @@ function main()
          // Les masters sont mono : une image couleur ouverte (RGB combiné, image traitée) n'est pas touchée.
          if ( all[ k ].mainView.image.isColor )
          {
-            console.writeln( TITLE + " : " + id + " (couleur) ignorée." );
+            console.writeln( LPS_TITLE + " : " + id + " (couleur) ignorée." );
             continue;
          }
          windows.push( all[ k ] );
@@ -153,7 +157,7 @@ function main()
       windows.push( ImageWindow.activeWindow );
 
    if ( windows.length == 0 )
-      throw new Error( TITLE + " : aucune image ouverte." );
+      throw new Error( LPS_TITLE + " : aucune image ouverte." );
 
    let T = new ElapsedTime;
    for ( let k = 0; k < windows.length; ++k )
@@ -162,7 +166,9 @@ function main()
       if ( console.abortRequested )
          break;
    }
-   console.noteln( "<end><cbr>" + TITLE + " : " + windows.length + " image(s) corrigée(s) en " + T.text );
+   console.noteln( "<end><cbr>" + LPS_TITLE + " : " + windows.length + " image(s) corrigée(s) en " + T.text );
 }
 
-main();
+#ifndef CLODOWEG_TURBO
+lpsUnClic();
+#endif

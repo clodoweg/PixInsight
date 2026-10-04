@@ -1127,7 +1127,7 @@ def insert_before(steps, base, items):
     steps[i:i] = items
 
 prep_l, prep_h = prep_rapide(lrgb)[1], prep_rapide(lhargb)[1]
-insert_after(lrgb, 'Combinaison_RGB', [(prep_l, ''), (gc_solver('Solver_auto'), ''), (script('Turbo_1', ''), '')])
+insert_after(lrgb, 'Combinaison_RGB', [(prep_l, ''), (gc_solver('Solver_auto'), ''), (gc_solver('Turbo_1'), '')])
 insert_after(lrgb, 'ImageSolver', [(gc_solver(), '')])
 
 def fin_rapide(steps):
@@ -1162,6 +1162,186 @@ for fn, pre, title, steps in [
     ('Workflow-HOO.xpsm', 'HOO', 'Workflow HOO', hoo),
 ]:
     print(fn, 'principal, options, avec conteneurs :', write(fn, pre, title, steps))
+
+
+# ---------------------------------------------------------------- Mode Turbo : Turbo_1.js généré
+# PixInsight refuse qu'un script lance une instance Script (« Attempt to execute a Script instance recursively »,
+# retour de l'utilisateur) : Turbo_1.js inclut les scripts de la fiche (fonctions, sans les lancer) et exécute
+# directement les process natifs, dont le code est produit ici à partir des réglages des icônes.
+import xml.etree.ElementTree as ET
+
+def _js_val(cls, v):
+    if v in ('true', 'false'):
+        return v
+    try:
+        float(v)
+        return v
+    except ValueError:
+        return '%s.prototype.%s' % (cls, v)
+
+def inst_js(item, var='P'):
+    """Instance XML d'un process natif -> code PJSR qui crée l'instance avec les mêmes paramètres."""
+    x = re.sub(r'<description>.*?</description>', '', item[1], flags=re.S)
+    x = re.sub(r'<time[^>]*/>', '', x)
+    e = ET.fromstring(x.strip())
+    cls = e.get('class')
+    lines = ['   let %s = new %s;' % (var, cls)]
+    for c in e:
+        pid = c.get('id')
+        if c.tag == 'parameter':
+            if c.get('value') is not None:
+                lines.append('   %s.%s = %s;' % (var, pid, _js_val(cls, c.get('value'))))
+            else:
+                lines.append('   %s.%s = %s;' % (var, pid, json.dumps(c.text or '')))
+        elif c.tag == 'table':
+            rows = []
+            for tr in c:
+                cells = []
+                for td in tr:
+                    cells.append(_js_val(cls, td.get('value')) if td.get('value') is not None else json.dumps(td.text or ''))
+                rows.append('[' + ', '.join(cells) + ']')
+            lines.append('   %s.%s = [%s];' % (var, pid, ', '.join(rows)))
+    return '\n'.join(lines)
+
+def turbo_rgb_js():
+    steps = [('BXT_CorrectOnly', M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50)), ('SPCC', spcc_perso('SPCC')), ('BXT_RGB', bxt_rgb()),
+             ('SXT_lineaire', M.sxt('SXT_lineaire', False)), ('NXT_RGB', M.nxt('NXT_RGB', 0.80, 1))]
+    out = []
+    for name, it in steps:
+        out.append('   {\n   // %s (mêmes réglages que dans R_C_RGB_rapide)\n%s\n   run( "%s", P, view );\n   }' % (name, inst_js(it).replace('\n   ', '\n      ').replace('   let', '      let', 1), name))
+    out.append('   statStretch( view, 0.25, 5 );   // à la place du script Statistical Stretch (Target Median 0,25, Blackpoint Sigma 5, lié)')
+    g = GHS_FOND_R()
+    out.append('   {\n   // GHS_fond (SP = HP = 0,22)\n%s\n   run( "GHS_fond", P, view );\n   }' % inst_js(g).replace('\n   ', '\n      ').replace('   let', '      let', 1))
+    out.append('   etoilesAuto( "RGB_stars", 6, 1.3, true );   // Etoiles_auto.js, appelé directement')
+    return '\n'.join(out)
+
+TURBO1_JS = r"""#engine v8
+// ----------------------------------------------------------------------------
+// Turbo_1.js — mode Turbo, étape 1 (fichier GÉNÉRÉ par make_workflows.py : ne pas modifier à la main).
+// ----------------------------------------------------------------------------
+// PixInsight refuse qu'un script lance un autre script (« Attempt to execute a
+// Script instance recursively »). Ce script fait donc tout lui-même :
+//   1. renommage (Renommer_auto.js), LinearPatternSubtraction sur les masters
+//      mono (LPS_UnClic.js), combinaison RGB (Combiner_RGB.js), astrométrie
+//      de toutes les images (GC_Solver_auto.js) : scripts INCLUS (leurs
+//      fonctions), pas lancés ;
+//   2. GradientCorrection sur toutes les images (GC_Solver_auto.js) ;
+//   3. sur RGB : BXT Correct Only, SPCC, BXT, SXT linéaire, NXT (réglages de
+//      R_C_RGB_rapide, recopiés à la génération), étirement statistique
+//      (Target Median 0,25, Blackpoint Sigma 5, lié : calcul fait ici, proche
+//      du script Statistical Stretch), GHS fond, Etoiles_auto ;
+//   4. sur L : icône R_C_L_rapide (process natifs seulement) ;
+//   5. sur L : icône R_C_Fin_GHS_rapide (GHS natifs) ;
+//   6. fermeture de L_stars.
+// Les étapes 4 et 5 lisent les icônes de l'espace de travail (réglages
+// modifiés pris en compte) ; les étapes 1 à 3 utilisent les réglages de la
+// fiche. Les réglages d'ImageSolver sont les paramètres de l'icône T_Turbo_1.
+// Lancement : masters seuls ouverts, double-clic puis Apply Global.
+//
+// Installation : dans src/scripts/clodoweg, avec Renommer_auto.js,
+// LPS_UnClic.js, Combiner_RGB.js, GC_Solver_auto.js et Etoiles_auto.js.
+// ----------------------------------------------------------------------------
+
+#feature-id    Turbo_1 : clodoweg > Mode Turbo, étape 1
+#feature-info  Préparation, astrométrie, GradientCorrection, traitement \
+   linéaire de RGB et de L, fin des GHS sur L, en un clic.
+
+#define CLODOWEG_TURBO
+#include "Renommer_auto.js"
+#include "LPS_UnClic.js"
+#include "Combiner_RGB.js"
+#include "GC_Solver_auto.js"
+#include "Etoiles_auto.js"
+
+#define T1_TITLE "Turbo 1"
+
+function t1Param( key, value )
+{
+   return Parameters.has( key ) ? Parameters.getString( key ).trim() : value;
+}
+
+function etape( texte )
+{
+   console.noteln( "<end><cbr><br>" + T1_TITLE + " : " + texte );
+}
+
+function run( name, P, view )
+{
+   if ( P.executeOn( view ) === false )
+      throw new Error( T1_TITLE + " : " + name + " a échoué sur " + view.id + "." );
+}
+
+// Étirement statistique lié : point noir = médiane − sigma × MAD normalisée (canaux moyennés),
+// remise à l'échelle, puis fonction de transfert des tons moyens qui amène la médiane sur la cible.
+function statStretch( view, cible, sigma )
+{
+   let img = view.image, n = img.numberOfChannels, med = 0, mad = 0;
+   for ( let c = 0; c < n; ++c )
+   {
+      img.selectedChannel = c;
+      med += img.median();
+      mad += img.MAD();
+   }
+   img.resetSelections();
+   med /= n; mad = 1.4826*mad/n;
+   let bp = Math.max( 0, med - sigma*mad );
+   let m1 = (med - bp)/(1 - bp);
+   let M = m1*(cible - 1)/(2*cible*m1 - cible - m1);
+   let P = new PixelMath;
+   P.expression = "mtf(" + M.toFixed( 8 ) + ", max(0, ($T - " + bp.toFixed( 8 ) + ")/" + (1 - bp).toFixed( 8 ) + "))";
+   P.useSingleExpression = true;
+   P.createNewImage = false;
+   P.rescale = false;
+   P.truncate = true;
+   run( "Etirement statistique", P, view );
+   console.writeln( T1_TITLE + " : étirement statistique, point noir " + bp.toFixed( 5 ) + ", médiane " + med.toFixed( 5 ) + " -> " + cible );
+}
+
+function rgbRapide( view )
+{
+@@RGB@@
+}
+
+function runIcon( iconId, viewId )
+{
+   let P = ProcessInstance.fromIcon( iconId );
+   if ( P == null )
+      throw new Error( T1_TITLE + " : icône " + iconId + " introuvable (charge Conteneurs-LRGB.xpsm)." );
+   let w = ImageWindow.windowById( viewId );
+   if ( w.isNull )
+      throw new Error( T1_TITLE + " : vue " + viewId + " introuvable pour " + iconId + "." );
+   if ( P.executeOn( w.mainView ) === false )
+      throw new Error( T1_TITLE + " : " + iconId + " a échoué sur " + viewId + "." );
+}
+
+function turbo1()
+{
+   let vueRGB = t1Param( "vueRGB", "RGB" ), vueL = t1Param( "vueL", "L" );
+   console.show();
+   etape( "renommage" );               renommerAuto();
+   etape( "LinearPatternSubtraction" ); lpsUnClic();
+   etape( "combinaison RGB" );         combinerRGB();
+   etape( "astrométrie de toutes les images" ); mainGCS( { gradient: false, solve: true, solveTout: true } );
+   etape( "GradientCorrection sur toutes les images" ); mainGCS( { gradient: true, solve: false } );
+   let rgb = ImageWindow.windowById( vueRGB );
+   if ( rgb.isNull )
+      throw new Error( T1_TITLE + " : vue " + vueRGB + " introuvable." );
+   etape( "traitement linéaire et étirement de " + vueRGB ); rgbRapide( rgb.mainView );
+   etape( "R_C_L_rapide sur " + vueL );        runIcon( "R_C_L_rapide", vueL );
+   etape( "R_C_Fin_GHS_rapide sur " + vueL );  runIcon( "R_C_Fin_GHS_rapide", vueL );
+   let ls = ImageWindow.windowById( "L_stars" );
+   if ( !ls.isNull )
+   {
+      ls.forceClose();
+      console.noteln( T1_TITLE + " : L_stars fermée." );
+   }
+   etape( "terminé : " + vueRGB + " et " + vueL + " étirées, sans étoiles ; RGB_stars étirée. Ensuite : T_Turbo_2 sur " + vueRGB + "." );
+}
+
+turbo1();
+"""
+
+open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'scripts', 'Turbo_1.js'), 'w', encoding='utf-8').write(TURBO1_JS.replace('@@RGB@@', turbo_rgb_js()))
 
 DATA['header'] = M.HEADER
 json.dump(DATA, open(os.path.join(OUT, '..', 'preparer-data.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))

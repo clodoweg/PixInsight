@@ -21,28 +21,34 @@
 // Installation (Mac et PC) : dans src/scripts/clodoweg de PixInsight.
 // ----------------------------------------------------------------------------
 
+#ifndef CLODOWEG_TURBO
 #feature-id    Etoiles_auto : clodoweg > Étirement des étoiles sans dialogue
+#endif
+#ifndef CLODOWEG_TURBO
 #feature-info  Étire l'image d'étoiles linéaire (RGB_stars) avec la courbe \
    de Star Stretch, sature les couleurs, sans dialogue.
+#endif
 
-#define TITLE "Etoiles auto"
+#define EA_TITLE "Etoiles auto"
 
-function param( key, value )
+function eaParam( key, value )
 {
    return Parameters.has( key ) ? Parameters.getString( key ).trim() : value;
 }
 
-function main()
+function etoilesAutoMain()
 {
-   let id = param( "vue", "RGB_stars" );
-   let amount = parseFloat( param( "amount", "6" ) );
-   let sat = parseFloat( param( "satAmount", "1.3" ) );
-   let scnr = param( "scnr", "false" ).toLowerCase() == "true";
+   etoilesAuto( eaParam( "vue", "RGB_stars" ), parseFloat( eaParam( "amount", "6" ) ),
+                parseFloat( eaParam( "satAmount", "1.3" ) ), eaParam( "scnr", "false" ).toLowerCase() == "true" );
+}
 
+// Aussi appelée par Turbo_1.js (inclusion, sans lancer de script).
+function etoilesAuto( id, amount, sat, scnr )
+{
    let w = ImageWindow.windowById( id );
    if ( w.isNull )
    {
-      console.warningln( TITLE + " : vue " + id + " introuvable, rien n'est fait." );
+      console.warningln( EA_TITLE + " : vue " + id + " introuvable, rien n'est fait." );
       return;
    }
    let view = w.mainView;
@@ -79,7 +85,9 @@ function main()
          S.executeOn( view );
       }
    }
-   console.noteln( TITLE + " : " + id + " étirée (amount " + amount + ", saturation " + sat + (scnr ? ", SCNR" : "") + ")." );
+   console.noteln( EA_TITLE + " : " + id + " étirée (amount " + amount + ", saturation " + sat + (scnr ? ", SCNR" : "") + ")." );
 }
 
-main();
+#ifndef CLODOWEG_TURBO
+etoilesAutoMain();
+#endif
