@@ -22,14 +22,14 @@ PHASE = {
     'GHS_1_premier': 4, 'GHS_2_contraste': 4, 'GHS_3_fond': 4, 'Statistical_Stretch': 4, 'Star_Stretch': 4,
     'LRGB_ajout_L': 5, 'NBN_SHO': 5, 'NBN_HOO': 5, 'Foraxx_SHO': 5, 'Foraxx_HOO': 5, 'HOO_simple': 5, 'HOO_Hubble': 5,
     'Perfect_Palette_Picker': 5, 'NBColourMapper': 5, 'SCNR_SHO': 5, 'H_en_luminance': 5,
-    'Masque_L': 6, 'Masque_retirer': 6, 'Courbes': 6, 'LHE': 6, 'LHE_fin': 6, 'Boost_finition_light': 6, 'Boost_finition': 6, 'HDRMT_50': 6, 'HDRMT_eclat': 6, 'NXT_final': 6, 'HDRMT_40': 6, 'Mode_rapide': 1, 'Turbo_1': 1, 'Turbo_2': 5, 'C_Fin_GHS_rapide': 4, 'Boost_final_doux': 7, 'C_Fin_rapide': 6, 'C_Etoiles_fond_rapide': 7, 'SXT_non_lineaire': 4, 'GC_Solver_auto_rapide': 2, 'Solver_auto': 1, 'C_Preparation_rapide': 1, 'C_RGB_rapide': 3, 'C_RGB_rapide_SXT_etire': 3, 'C_L_rapide': 3, 'STF': 3, 'C_RGB_couleur_rapide': 3, 'C_H_rapide': 3, 'C_RGB_fin_rapide': 3, 'HDRMT_30': 6, 'Nettoyage_sans_etoiles': 6, 'ICC_sRGB': 7, 'Export_TIFF': 7, 'NXT_final_doux': 6, 'NXT_final_fort': 6, 'Fond_auto': 7, 'Fond_auto_clair': 7, 'Boost_final': 7, 'Fond_desature': 7,
+    'Masque_L': 6, 'Masque_retirer': 6, 'Courbes': 6, 'LHE': 6, 'LHE_fin': 6, 'Boost_finition_light': 6, 'Boost_finition': 6, 'HDRMT_50': 6, 'HDRMT_eclat': 6, 'NXT_final': 6, 'HDRMT_40': 6, 'Mode_rapide': 1, 'Turbo_1': 1, 'Turbo_2': 5, 'C_Fin_GHS_rapide': 4, 'Boost_final_doux': 7, 'C_Fin_rapide': 6, 'C_Etoiles_fond_rapide': 7, 'SXT_non_lineaire': 4, 'GC_Solver_auto_rapide': 2, 'Solver_auto': 1, 'C_Preparation_rapide': 1, 'C_RGB_rapide': 3, 'SXT_LRGB': 5, 'C_LRGB_rapide': 5, 'Etoiles_auto_etire': 5, 'C_L_rapide': 3, 'STF': 3, 'C_RGB_couleur_rapide': 3, 'C_H_rapide': 3, 'C_RGB_fin_rapide': 3, 'HDRMT_30': 6, 'Nettoyage_sans_etoiles': 6, 'ICC_sRGB': 7, 'Export_TIFF': 7, 'NXT_final_doux': 6, 'NXT_final_fort': 6, 'Fond_auto': 7, 'Fond_auto_clair': 7, 'Boost_final': 7, 'Fond_desature': 7,
     'Etoiles_RGB': 7, 'Etoiles_HOO': 7, 'NB_to_RGB_Stars': 7, 'Etoiles_HOO_synth': 7, 'Etoiles_screen': 7, 'CorrectMagentaStars': 7,
     'Etoiles_reduites': 7, 'Fermer_L_stars': 3, 'MT_etoiles': 7, 'Halo_B_Gon': 7,
 }
 
 NB = ('RSHO', 'SHO', 'HOO')
 LUM = ('LRGB', 'LHA')   # workflows avec luminance : par défaut Statistical Stretch sur le RGB, GHS sur L
-OPT = {'ImageSolver_seul', 'Boost_finition_light', 'Boost_finition', 'WBPP', 'CC_auto', 'Find_Background', 'LinearFit_ref_H', 'Continuum_auto', 'H_dans_L', 'NBRGBCombination', 'HDRMT_30', 'HDRMT_50', 'HDRMT_eclat', 'Boost_final', 'Fond_desature', 'NXT_final', 'NXT_final_doux', 'NXT_final_fort', 'Fond_auto_clair', 'Nettoyage_sans_etoiles', 'ICC_sRGB', 'Export_TIFF', 'GC_Solver_auto_rapide', 'Boost_final_doux', 'Turbo_1', 'Turbo_2', 'C_Fin_GHS_rapide', 'SXT_non_lineaire', 'C_Fin_rapide', 'C_Etoiles_fond_rapide', 'Mode_rapide', 'C_Preparation_rapide', 'C_RGB_rapide', 'C_RGB_rapide_SXT_etire', 'C_L_rapide', 'STF', 'C_RGB_couleur_rapide', 'C_H_rapide', 'C_RGB_fin_rapide',
+OPT = {'ImageSolver_seul', 'Boost_finition_light', 'Boost_finition', 'WBPP', 'CC_auto', 'Find_Background', 'LinearFit_ref_H', 'Continuum_auto', 'H_dans_L', 'NBRGBCombination', 'HDRMT_30', 'HDRMT_50', 'HDRMT_eclat', 'Boost_final', 'Fond_desature', 'NXT_final', 'NXT_final_doux', 'NXT_final_fort', 'Fond_auto_clair', 'Nettoyage_sans_etoiles', 'ICC_sRGB', 'Export_TIFF', 'GC_Solver_auto_rapide', 'Boost_final_doux', 'Turbo_1', 'Turbo_2', 'C_Fin_GHS_rapide', 'SXT_non_lineaire', 'C_Fin_rapide', 'C_Etoiles_fond_rapide', 'Mode_rapide', 'C_Preparation_rapide', 'C_RGB_rapide', 'C_LRGB_rapide', 'Etoiles_auto_etire', 'C_L_rapide', 'STF', 'C_RGB_couleur_rapide', 'C_H_rapide', 'C_RGB_fin_rapide',
        'MT_etoiles', 'Halo_B_Gon', 'CorrectMagentaStars', 'SCNR_SHO', 'Perfect_Palette_Picker', 'NBColourMapper', 'H_en_luminance',
        'Etoiles_HOO_synth', 'DualBand_H', 'DualBand_O', 'SPFC_S'}
 
@@ -75,8 +75,8 @@ CHOICES = {
 
 # pour les options : quand les ajouter
 WHEN = {
-    'Turbo_1': "MODE TURBO, étape 1 : masters seuls ouverts, double-clic puis Apply Global ; conteneur qui fait préparation (renommage, LPS, combinaison), astrométrie, GradientCorrection, traitement de RGB (comme R_C_RGB_rapide), R_C_L_rapide sur L, puis s'arrête : GHS_1_premier à la main sur L, puis T_Turbo_2",
-    'Turbo_2': "MODE TURBO, étape 2 : après GHS_1_premier à la main sur L ; glisse sur RGB (sans étoiles, étirée), L et RGB_stars ouvertes ; enchaîne R_C_Fin_GHS_rapide sur L (et ferme L_stars), LRGB_ajout_L, R_C_Fin_rapide et R_C_Etoiles_fond_rapide (export TIFF compris) en un seul conteneur",
+    'Turbo_1': "MODE TURBO, étape 1 : masters seuls ouverts, double-clic puis Apply Global ; conteneur qui fait préparation (renommage, LPS, combinaison), astrométrie, GradientCorrection, traitement de RGB avec ses étoiles (comme R_C_RGB_rapide), R_C_L_rapide sur L, puis s'arrête : GHS_1_premier à la main sur L, puis T_Turbo_2",
+    'Turbo_2': "MODE TURBO, étape 2 : après GHS_1_premier à la main sur L ; glisse sur RGB (étirée, avec étoiles), L ouverte ; enchaîne R_C_Fin_GHS_rapide sur L, R_C_LRGB_rapide (LRGB, SXT, étoiles), R_C_Fin_rapide et R_C_Etoiles_fond_rapide (export TIFF compris) en un seul conteneur",
     'C_Fin_GHS_rapide': "MODE RAPIDE, « fin de GHS », à la place de GHS_2_contraste et GHS_3_fond : sur L après GHS_1_premier, avec les réglages par défaut des deux GHS",
     'C_Fin_rapide': "MODE RAPIDE, à la place de HDRMT_40, C_Finition et NXT_final : sur l'image sans étoiles après LRGB_ajout_L",
     'C_Etoiles_fond_rapide': "MODE RAPIDE, à la place d'Etoiles_screen, C_Fond_final et Export_TIFF : sur l'image sans étoiles finie, RGB_stars ouverte",
@@ -84,9 +84,10 @@ WHEN = {
     'GC_Solver_auto_rapide': "MODE RAPIDE, à la place de la phase 2 : GradientCorrection sur TOUTES les images ouvertes (plus d'ImageSolver : fait par Solver_auto en phase 1) ; à faire AVANT C_RGB_rapide et C_L_rapide (sans GradientCorrection)",
     'Mode_rapide': "repère du mode rapide (galaxies), sans effet : lis sa description pour l'ordre",
     'C_Preparation_rapide': "MODE RAPIDE, à la place d'E00 à E03 : masters seuls ouverts, double-clic puis Apply Global (pas en glissant : ImageSolver échoue sur une image en cours de traitement) : Renommer_auto, LinearPatternSubtraction, Combinaison_RGB, Solver_auto (ImageSolver sur toutes les images) en un seul conteneur",
-    'C_RGB_rapide': "MODE RAPIDE, à la place de C_RGB_lineaire, Statistical_Stretch, GHS_3_fond (sur RGB) et Star_Stretch : sur RGB après GC_Solver_auto_rapide ; BXT Correct Only, SPCC, BXT, SXT linéaire, NXT, Statistical Stretch sans dialogue, GHS fond, Etoiles_auto",
-    'C_RGB_rapide_SXT_etire': "MODE RAPIDE, à la place de C_RGB_rapide : même conteneur mais StarXTerminator APRÈS l'étirement (Unscreen coché) ; étoiles déjà étirées (Etoiles_auto sans étirement : saturation et SCNR seulement)",
-    'C_L_rapide': "MODE RAPIDE, à la place de C_L_lineaire : sur L après GC_Solver_auto_rapide ; BXT, SXT linéaire (L_stars gardée), NXT ; ensuite les GHS du chemin principal sur L",
+    'C_RGB_rapide': "MODE RAPIDE, à la place de C_RGB_lineaire, Statistical_Stretch et GHS_3_fond (sur RGB) : sur RGB après GC_Solver_auto_rapide ; BXT Correct Only, SPCC, BXT, NXT, Statistical Stretch sans dialogue, GHS fond ; étoiles gardées (SXT après LRGB)",
+    'C_LRGB_rapide': "MODE RAPIDE LRGB, à la place de LRGB_ajout_L et SXT_LRGB : glisse sur RGB étiré avec étoiles, L étirée ouverte ; LRGB_ajout_L, SXT Unscreen (RGB_stars créée), Etoiles_auto_etire (saturation et SCNR des étoiles)",
+    'Etoiles_auto_etire': "LRGB, après SXT_LRGB : étoiles ternes ou un peu vertes ; glisse sur n'importe quelle image (traite RGB_stars) : saturation 1,3 et SCNR, sans étirement (étoiles déjà étirées)",
+    'C_L_rapide': "MODE RAPIDE, à la place de C_L_lineaire : sur L après GC_Solver_auto_rapide ; ensuite GHS_1_premier sur L, puis R_C_Fin_GHS_rapide",
     'STF': "n'importe quand : double-clic pour ouvrir la fenêtre ScreenTransferFunction (bouton A = auto-étirement de l'affichage, Reset pour revenir), pixels inchangés",
     'C_RGB_couleur_rapide': "MODE RAPIDE LHaRGB, à la place de C_RGB_couleur : sur RGB ; GradientCorrection, BXT Correct Only, SPCC, BXT",
     'C_H_rapide': "MODE RAPIDE LHaRGB, à la place de BXT_L_H sur H : sur H ; GradientCorrection, BXT ; puis Continuum_H et H_dans_RGB du chemin principal",
@@ -136,8 +137,9 @@ def is_default(r, prefix=None):
 _FIN = ('C_Finition', "l'image sans étoiles étirée (masque créé, attaché puis retiré automatiquement)", ['Masque_L', 'Courbes', 'LHE', 'LHE_fin', 'Masque_retirer'])
 _FOND = ('C_Fond_final', "l'image finie, étoiles comprises (après Etoiles_screen et Boost_final éventuel)", ['Fond_auto', 'Fond_desature'])
 CONTAINERS = {
-    'LRGB': [('C_RGB_lineaire', "l'image RGB combinée, linéaire, gradient retiré", ['BXT_CorrectOnly', 'SPCC', 'BXT_RGB', 'SXT_lineaire', 'NXT_RGB']),
-             ('C_L_lineaire', "le master L, linéaire, gradient retiré : BXT, SXT (L_stars gardée pour Etoiles_LRGB), NXT", ['BXT_L', 'SXT_L_lineaire', 'NXT_L']),
+    # LRGB (demande de l'utilisateur) : étoiles gardées jusqu'à LRGB, SXT_LRGB ensuite
+    'LRGB': [('C_RGB_lineaire', "l'image RGB combinée, linéaire, gradient retiré (étoiles gardées)", ['BXT_CorrectOnly', 'SPCC', 'BXT_RGB', 'NXT_RGB']),
+             ('C_L_lineaire', "le master L, linéaire, gradient retiré : BXT, NXT (étoiles gardées)", ['BXT_L', 'NXT_L']),
              _FIN, _FOND],
     'LHA': [('C_RGB_couleur', "l'image RGB combinée, linéaire, gradient retiré", ['BXT_CorrectOnly', 'SPCC', 'BXT_RGB']),
             ('C_RGB_etoiles_bruit', "l'image RGB après injection de H", ['SXT_lineaire', 'NXT_RGB']),

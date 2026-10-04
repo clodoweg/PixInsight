@@ -7,25 +7,22 @@
 // lancer un autre : « Attempt to execute a Script instance recursively »).
 // Ce script fait ensuite, sans lancer d'autre script :
 //   1. GradientCorrection sur toutes les images ouvertes (sauf *_stars) ;
-//   2. sur RGB : BXT Correct Only, SPCC, BXT, SXT linéaire, NXT (réglages de
-//      R_C_RGB_rapide, recopiés à la génération), étirement statistique
-//      (Target Median 0,25, Blackpoint Sigma 5, lié : calcul fait ici, proche
-//      du script Statistical Stretch), GHS fond, Etoiles_auto (inclus) ;
-//   3. sur L : icône R_C_L_rapide (process natifs, réglages lus dans l'icône).
+//   2. sur RGB : BXT Correct Only, SPCC, BXT, NXT (réglages de R_C_RGB_rapide,
+//      recopiés à la génération), étirement statistique (Target Median 0,25,
+//      Blackpoint Sigma 5, lié : calcul fait ici, proche du script Statistical
+//      Stretch), GHS fond ; étoiles GARDÉES (SXT après LRGB, dans T_Turbo_2) ;
+//   3. sur L : icône R_C_L_rapide (BXT, NXT ; étoiles gardées).
 // Puis il s'arrête : GHS_1_premier à la main sur L (demande de l'utilisateur),
 // puis T_Turbo_2 (qui commence par R_C_Fin_GHS_rapide sur L et ferme L_stars).
 // Ancien moteur JavaScript (pas de #engine v8 : il refuse PixelMath.prototype.RGB
 // et le moteur de LinearPatternSubtraction).
 //
-// Installation : dans src/scripts/clodoweg, avec Etoiles_auto.js.
+// Installation : dans src/scripts/clodoweg.
 // ----------------------------------------------------------------------------
 
 #feature-id    Turbo_1 : clodoweg > Mode Turbo, étape 1 (partie script)
 #feature-info  GradientCorrection sur toutes les images, traitement linéaire \
    et étirement de RGB, R_C_L_rapide sur L.
-
-#define CLODOWEG_TURBO
-#include "Etoiles_auto.js"
 
 #define T1_TITLE "Turbo 1"
 
@@ -175,19 +172,6 @@ function rgbRapide( view )
    run( "BXT_RGB", P, view );
    }
    {
-   // SXT_lineaire (mêmes réglages que dans R_C_RGB_rapide)
-      let P = new StarXTerminator;
-      P.ml_version = 0;
-      P.output_stars = true;
-      P.unscreen = false;
-      P.remove_stars = true;
-      P.remove_spikes = true;
-      P.remove_aureoles = true;
-      P.remove_reflections = true;
-      P.overlap = 0.20;
-   run( "SXT_lineaire", P, view );
-   }
-   {
    // NXT_RGB (mêmes réglages que dans R_C_RGB_rapide)
       let P = new NoiseXTerminator;
       P.ml_version = 0;
@@ -227,7 +211,6 @@ function rgbRapide( view )
       P.useRGBWorkingSpace = false;
    run( "GHS_fond", P, view );
    }
-   etoilesAuto( "RGB_stars", 6, 1.3, true );   // Etoiles_auto.js, appelé directement
 }
 
 function runIcon( iconId, viewId )
@@ -252,7 +235,7 @@ function turbo1()
       throw new Error( T1_TITLE + " : vue " + vueRGB + " introuvable." );
    etape( "traitement linéaire et étirement de " + vueRGB ); rgbRapide( rgb.mainView );
    etape( "R_C_L_rapide sur " + vueL );        runIcon( "R_C_L_rapide", vueL );
-   etape( "terminé : " + vueRGB + " étirée, sans étoiles ; RGB_stars étirée ; " + vueL + " sans étoiles, encore linéaire. "
+   etape( "terminé : " + vueRGB + " étirée, avec ses étoiles ; " + vueL + " avec ses étoiles, encore linéaire. "
           + "Ensuite : GHS_1_premier à la main sur " + vueL + ", puis T_Turbo_2 sur " + vueRGB + "." );
 }
 

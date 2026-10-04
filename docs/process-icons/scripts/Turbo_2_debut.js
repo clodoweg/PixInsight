@@ -3,9 +3,8 @@
 // ----------------------------------------------------------------------------
 // Première étape du conteneur T_Turbo_2 (glissé sur RGB), après GHS_1_premier
 // fait à la main sur L :
-//   1. icône R_C_Fin_GHS_rapide (GHS_2_contraste puis GHS_3_fond) sur L,
-//      réglages lus dans l'icône (même résultat qu'en mode rapide) ;
-//   2. fermeture de L_stars (pas d'Etoiles_LRGB en mode Turbo).
+//   icône R_C_Fin_GHS_rapide (GHS_2_contraste puis GHS_3_fond) sur L,
+//   réglages lus dans l'icône (même résultat qu'en mode rapide).
 // La vue cible du conteneur (RGB) n'est pas touchée ici.
 // Paramètre : vueL (L par défaut).
 //
@@ -13,7 +12,7 @@
 // ----------------------------------------------------------------------------
 
 #feature-id    Turbo_2_debut : clodoweg > Mode Turbo, début de l'étape 2
-#feature-info  R_C_Fin_GHS_rapide sur L, puis fermeture de L_stars.
+#feature-info  R_C_Fin_GHS_rapide sur L.
 
 #define T2_TITLE "Turbo 2 (début)"
 
@@ -35,12 +34,6 @@ function turbo2Debut()
    console.noteln( "<end><cbr><br>" + T2_TITLE + " : R_C_Fin_GHS_rapide sur " + vueL );
    if ( P.executeOn( w.mainView ) === false )
       throw new Error( T2_TITLE + " : R_C_Fin_GHS_rapide a échoué sur " + vueL + "." );
-   let ls = ImageWindow.windowById( "L_stars" );
-   if ( !ls.isNull )
-   {
-      ls.forceClose();
-      console.noteln( T2_TITLE + " : L_stars fermée." );
-   }
 }
 
 turbo2Debut();
