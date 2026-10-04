@@ -16,7 +16,7 @@ PHASE = {
     'ImageSolver': 2, 'ImageSolver_seul': 2, 'SPFC_RGB_filtres': 2, 'SPFC_L': 2, 'SPFC_H': 2, 'SPFC_O': 2, 'SPFC_S': 2, 'MGC_MARS': 2, 'MGC_MARS_H': 2, 'MGC_MARS_O': 2,
     'GradientCorrection': 2, 'DBE': 2, 'LinearFit_ref_H': 2,
     'BXT_CorrectOnly': 3, 'Find_Background': 3, 'SPCC': 3, 'BXT_RGB': 3, 'BXT_L': 3, 'BXT_L_H': 3, 'BXT_NB': 3, 'Combinaison_SHO': 3, 'Combinaison_HOO': 3,
-    'Continuum_H': 3, 'Continuum_auto': 3, 'H_dans_RGB': 3, 'H_dans_L': 3, 'NBRGBCombination': 3, 'SXT_lineaire': 3, 'SXT_RGB_lineaire': 3, 'SXT_L_etire': 4, 'Etoiles_LRGB_etire': 4, 'SXT_L_lineaire': 3, 'Etoiles_LRGB': 4,
+    'Continuum_auto': 3, 'H_dans_RGB': 3, 'H_dans_L': 3, 'NBRGBCombination': 3, 'SXT_lineaire': 3, 'SXT_RGB_lineaire': 3, 'SXT_L_etire': 4, 'Etoiles_LRGB_etire': 4, 'SXT_L_lineaire': 3, 'Etoiles_LRGB': 4,
     'Extraire_S': 3, 'Extraire_H': 3, 'Extraire_O': 3, 'Extraire_S_stars': 3, 'Extraire_H_stars': 3, 'Extraire_O_stars': 3,
     'NXT_RGB': 3, 'NXT_L': 3, 'NXT_H': 3, 'NXT_O_S': 3,
     'GHS_1_premier': 4, 'GHS_2_contraste': 4, 'GHS_3_fond': 4, 'Statistical_Stretch': 4, 'Star_Stretch': 4,
@@ -29,7 +29,7 @@ PHASE = {
 
 NB = ('RSHO', 'SHO', 'HOO')
 LUM = ('LRGB', 'LHA')   # workflows avec luminance : par défaut Statistical Stretch sur le RGB, GHS sur L
-OPT = {'ImageSolver_seul', 'Boost_finition_light', 'Boost_finition', 'WBPP', 'CC_auto', 'Find_Background', 'LinearFit_ref_H', 'Continuum_auto', 'H_dans_L', 'NBRGBCombination', 'HDRMT_30', 'HDRMT_50', 'HDRMT_eclat', 'Boost_final', 'Fond_desature', 'NXT_final', 'NXT_final_doux', 'NXT_final_fort', 'Fond_auto_clair', 'Nettoyage_sans_etoiles', 'ICC_sRGB', 'Export_TIFF', 'GC_Solver_auto_rapide', 'Boost_final_doux', 'Turbo_1', 'Turbo_2', 'C_Fin_GHS_rapide', 'SXT_non_lineaire', 'C_Fin_rapide', 'C_Etoiles_fond_rapide', 'Mode_rapide', 'C_Preparation_rapide', 'C_RGB_rapide', 'C_LRGB_rapide', 'Etoiles_auto_etire', 'C_L_rapide', 'STF', 'C_RGB_couleur_rapide', 'C_H_rapide', 'C_RGB_fin_rapide',
+OPT = {'ImageSolver_seul', 'Boost_finition_light', 'Boost_finition', 'WBPP', 'CC_auto', 'Find_Background', 'LinearFit_ref_H', 'H_dans_L', 'NBRGBCombination', 'HDRMT_30', 'HDRMT_50', 'HDRMT_eclat', 'Boost_final', 'Fond_desature', 'NXT_final', 'NXT_final_doux', 'NXT_final_fort', 'Fond_auto_clair', 'Nettoyage_sans_etoiles', 'ICC_sRGB', 'Export_TIFF', 'GC_Solver_auto_rapide', 'Boost_final_doux', 'Turbo_1', 'Turbo_2', 'C_Fin_GHS_rapide', 'SXT_non_lineaire', 'C_Fin_rapide', 'C_Etoiles_fond_rapide', 'Mode_rapide', 'C_Preparation_rapide', 'C_RGB_rapide', 'C_LRGB_rapide', 'Etoiles_auto_etire', 'C_L_rapide', 'STF', 'C_RGB_couleur_rapide', 'C_H_rapide', 'C_RGB_fin_rapide',
        'MT_etoiles', 'Halo_B_Gon', 'Etoiles_plafond', 'CorrectMagentaStars', 'SCNR_SHO', 'Perfect_Palette_Picker', 'NBColourMapper', 'H_en_luminance',
        'Etoiles_HOO_synth', 'DualBand_H', 'DualBand_O', 'SPFC_S'}
 
@@ -90,13 +90,13 @@ WHEN = {
     'C_L_rapide': "MODE RAPIDE, à la place de C_L_lineaire : sur L après GC_Solver_auto_rapide ; ensuite GHS_1_premier sur L, puis R_C_Fin_GHS_rapide",
     'STF': "n'importe quand : double-clic pour ouvrir la fenêtre ScreenTransferFunction (bouton A = auto-étirement de l'affichage, Reset pour revenir), pixels inchangés",
     'C_RGB_couleur_rapide': "MODE RAPIDE LHaRGB, à la place de C_RGB_couleur : sur RGB ; GradientCorrection, BXT Correct Only, SPCC, BXT",
-    'C_H_rapide': "MODE RAPIDE LHaRGB, à la place de BXT_L_H sur H : sur H ; GradientCorrection, BXT ; puis Continuum_H et H_dans_RGB du chemin principal",
+    'C_H_rapide': "MODE RAPIDE LHaRGB, à la place de BXT_L_H sur H : sur H ; GradientCorrection, BXT ; puis Continuum_auto et H_dans_RGB du chemin principal",
     'C_RGB_fin_rapide': "MODE RAPIDE LHaRGB, à la place de C_RGB_etoiles_bruit, Statistical_Stretch, GHS_3_fond (sur RGB) et Star_Stretch : sur RGB après H_dans_RGB ; SXT linéaire, NXT, Statistical Stretch sans dialogue, GHS fond, Etoiles_auto",
 
     'LinearPatternSubtraction': "lignes horizontales résiduelles visibles sur un master (motif du capteur)",
     'WBPP': "seulement si tu repars des brutes (masters pas encore empilés)", 'CC_auto': "avec WBPP, si tu repars des brutes",
     'Find_Background': "champ rempli de nébuleuse : fond de référence pour SPCC",
-    'LinearFit_ref_H': "fonds très différents entre H, O et S (conseillé avec Foraxx)", 'Continuum_auto': "calcul automatique du coefficient k",
+    'LinearFit_ref_H': "fonds très différents entre H, O et S (conseillé avec Foraxx)", 
     'H_dans_L': "régions HII plus nettes (H injecté dans la luminance)", 'NBRGBCombination': "alternative à la soustraction du continuum",
     'Boost_finition_light': "un tout petit peu plus de couleur et de contraste après LHE_fin (version douce du Boost, rejouable)",
     'Boost_finition': "encore un peu plus de couleur et de contraste après LHE_fin (rejouable)",

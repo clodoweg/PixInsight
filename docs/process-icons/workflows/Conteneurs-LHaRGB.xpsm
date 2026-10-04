@@ -103,7 +103,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <instance class="Script" version="256" id="E02_Combinaison_RGB_instance">
       <description>LANCEMENT : double-clic sur l'icône, puis Apply Global.
 
-PRÉRÉGLÉ : script Combiner_RGB : R, G, B -&gt; image couleur 'RGB', en-tête FITS du rouge copié ; R, G et B restent OUVERTES (closeSources = false : R sert à Continuum_H).
+PRÉRÉGLÉ : script Combiner_RGB : R, G, B -&gt; image couleur 'RGB', en-tête FITS du rouge copié ; R, G et B restent OUVERTES (closeSources = false : R sert à Continuum_auto).
 
 À RÉGLER : nomme tes masters R, G et B (ou Renommer_auto), puis lance l'icône ; ferme G et B toi-même.
 
@@ -413,7 +413,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <table id="defects" rows="0"/>
    </instance>
    <instance class="NoOperation" version="256" id="P1_rapide_instance">
-      <description>MODE RAPIDE, phase 1 — Préparation : MODE RAPIDE (galaxies) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre : R_C_Preparation_rapide ; R_GC_Solver_auto_rapide ; C_RGB_couleur sur RGB, BXT_L_H sur H, Continuum_H, H_dans_RGB, R_C_RGB_fin_rapide sur RGB, R_C_L_rapide sur L ; GHS sur L seulement ; Etoiles_LRGB ; LRGB_ajout_L ; finition. Phase 1 : R_C_Preparation_rapide (double-clic puis Apply Global) à la place de LinearPatternSubtraction, Renommer_auto, Combinaison_RGB et Solver_auto. Icône de repère, sans effet.</description>
+      <description>MODE RAPIDE, phase 1 — Préparation : MODE RAPIDE (galaxies) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre : R_C_Preparation_rapide ; R_GC_Solver_auto_rapide ; C_RGB_couleur sur RGB, BXT_L_H sur H, Continuum_auto, H_dans_RGB, R_C_RGB_fin_rapide sur RGB, R_C_L_rapide sur L ; GHS sur L seulement ; Etoiles_LRGB ; LRGB_ajout_L ; finition. Phase 1 : R_C_Preparation_rapide (double-clic puis Apply Global) à la place de LinearPatternSubtraction, Renommer_auto, Combinaison_RGB et Solver_auto. Icône de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="R_C_Preparation_rapide_instance">
       <instance class="Script" version="256" enabled="true">
@@ -1746,47 +1746,47 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="lunar_planetary" value="false"/>
       <parameter id="overlap" value="0.20"/>
    </instance>
-   <instance class="PixelMath" version="256" id="E12_Continuum_H_instance">
-      <description>PRÉRÉGLÉ : k = 0,9 ; crée H_cs.
+   <instance class="Script" version="256" id="E12_Continuum_auto_instance">
+      <description>LANCEMENT : double-clic sur l'icône, puis Apply Global. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
 
-À RÉGLER : vues nommées H et R (linéaires) ; ajuste k de 0,8 à 1.
+PRÉRÉGLÉ : script SetiAstro ContinuumSubtraction.js : Starry, sortie linéaire seule, pas de réduction de bruit ; coefficient calculé automatiquement ; crée HaNB (gris, linéaire).
+
+À RÉGLER : double-clic puis Apply Global ; dans le dialogue : Ha = H, Red (or RGB) = R (ou le RGB calibré), le reste vide ; Execute.
 
 SI :
-- étoiles ou disque encore visibles dans H_cs -&gt; monte k
-- H_cs trop sombre ou négatif -&gt; baisse k
+- vue créée HaNB1 -&gt; renomme-la HaNB (ou ferme l'ancienne HaNB avant)
+- étoiles ou disque encore visibles dans HaNB -&gt; relance avec Starless
+- cœur rougi dans l'image finale -&gt; baisse w dans H_dans_RGB
 
 Détails : page docs/pixinsight-workflow.html.</description>
-      <parameter id="expression">k = 0.9;
-H - k*(R - med(R))</parameter>
-      <parameter id="expression1"></parameter>
-      <parameter id="expression2"></parameter>
-      <parameter id="expression3"></parameter>
-      <parameter id="useSingleExpression" value="true"/>
-      <parameter id="symbols">k</parameter>
-      <parameter id="clearImageCacheAndExit" value="false"/>
-      <parameter id="cacheGeneratedImages" value="false"/>
-      <parameter id="generateOutput" value="true"/>
-      <parameter id="singleThreaded" value="false"/>
-      <parameter id="optimization" value="true"/>
-      <parameter id="use64BitWorkingImage" value="false"/>
-      <parameter id="rescale" value="false"/>
-      <parameter id="rescaleLower" value="0"/>
-      <parameter id="rescaleUpper" value="1"/>
-      <parameter id="truncate" value="true"/>
-      <parameter id="truncateLower" value="0"/>
-      <parameter id="truncateUpper" value="1"/>
-      <parameter id="createNewImage" value="true"/>
-      <parameter id="showNewImage" value="true"/>
-      <parameter id="newImageId">H_cs</parameter>
-      <parameter id="newImageWidth" value="0"/>
-      <parameter id="newImageHeight" value="0"/>
-      <parameter id="newImageAlpha" value="false"/>
-      <parameter id="newImageColorSpace" value="Gray"/>
-      <parameter id="newImageSampleFormat" value="SameAsTarget"/>
-      <table id="outputData" rows="0"/>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/ContinuumSubtraction.js</parameter>
+      <parameter id="md5sum">e795144823fb111101f269c22eaaf8cf</parameter>
+      <table id="parameters" rows="5">
+         <tr>
+            <td id="id">applyNoiseReduction</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">noiseReductionMethod</td>
+            <td id="value">NoiseXterminator</td>
+         </tr>
+         <tr>
+            <td id="id">starrySelected</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">outputLinearImageOnly</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">aiModel</td>
+            <td id="value">2.0.0</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
    </instance>
    <instance class="PixelMath" version="256" id="E13_H_dans_RGB_instance">
-      <description>PRÉRÉGLÉ : w = 1,0 ; R' = R + w·H_cs.
+      <description>PRÉRÉGLÉ : w = 1,0 ; R' = R + w·HaNB.
 
 À RÉGLER : glisse sur le RGB linéaire calibré ; w entre 0,5 et 2.
 
@@ -1796,7 +1796,7 @@ SI :
 
 Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="expression">w = 1.0;
-$T[0] + w*H_cs</parameter>
+$T[0] + w*HaNB</parameter>
       <parameter id="expression1">$T[1]</parameter>
       <parameter id="expression2">$T[2]</parameter>
       <parameter id="expression3"></parameter>
@@ -1959,55 +1959,19 @@ Détails : page docs/pixinsight-workflow.html.</description>
       </table>
       <parameter id="information"></parameter>
    </instance>
-   <instance class="Script" version="256" id="Opt_Continuum_auto_instance">
-      <description>OPTION — calcul automatique du coefficient k.
-
-LANCEMENT : double-clic sur l'icône, puis Apply Global. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
-
-PRÉRÉGLÉ : Starry, sortie linéaire, pas de réduction de bruit.
-
-À RÉGLER : choisis H et R dans le dialogue.
-
-Détails : page docs/pixinsight-workflow.html.</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/ContinuumSubtraction.js</parameter>
-      <parameter id="md5sum">e795144823fb111101f269c22eaaf8cf</parameter>
-      <table id="parameters" rows="5">
-         <tr>
-            <td id="id">applyNoiseReduction</td>
-            <td id="value">false</td>
-         </tr>
-         <tr>
-            <td id="id">noiseReductionMethod</td>
-            <td id="value">NoiseXterminator</td>
-         </tr>
-         <tr>
-            <td id="id">starrySelected</td>
-            <td id="value">true</td>
-         </tr>
-         <tr>
-            <td id="id">outputLinearImageOnly</td>
-            <td id="value">true</td>
-         </tr>
-         <tr>
-            <td id="id">aiModel</td>
-            <td id="value">2.0.0</td>
-         </tr>
-      </table>
-      <parameter id="information"></parameter>
-   </instance>
    <instance class="PixelMath" version="256" id="Opt_H_dans_L_instance">
       <description>OPTION — régions HII plus nettes (H injecté dans la luminance).
 
-PRÉRÉGLÉ : a = 1,0 ; L = max(L, a·H_cs), sur L elle-même.
+PRÉRÉGLÉ : a = 1,0 ; L = max(L, a·HaNB), sur L elle-même.
 
-À RÉGLER : glisse sur L ; H_cs doit exister.
+À RÉGLER : glisse sur L ; HaNB (Continuum_auto) doit exister.
 
 SI :
 - couleurs délavées -&gt; baisse a
 
 Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="expression">a = 1.0;
-max($T, H_cs*a)</parameter>
+max($T, HaNB*a)</parameter>
       <parameter id="expression1"></parameter>
       <parameter id="expression2"></parameter>
       <parameter id="expression3"></parameter>
@@ -2092,7 +2056,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="interaction" value="SeparateChannels"/>
    </instance>
    <instance class="NoOperation" version="256" id="P3_rapide_instance">
-      <description>MODE RAPIDE, phase 3 — Linéaire : chemin principal pour C_RGB_couleur (RGB), BXT_L_H (sur H seulement), Continuum_H et H_dans_RGB ; puis R_C_RGB_fin_rapide sur RGB à la place de C_RGB_etoiles_bruit, et R_C_L_rapide sur L à la place de BXT_L_H (sur L) et C_L_lineaire. Icône de repère, sans effet.</description>
+      <description>MODE RAPIDE, phase 3 — Linéaire : chemin principal pour C_RGB_couleur (RGB), BXT_L_H (sur H seulement), Continuum_auto et H_dans_RGB ; puis R_C_RGB_fin_rapide sur RGB à la place de C_RGB_etoiles_bruit, et R_C_L_rapide sur L à la place de BXT_L_H (sur L) et C_L_lineaire. Icône de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="R_C_RGB_fin_rapide_instance">
       <instance class="StarXTerminator" version="256" enabled="true">
@@ -4987,19 +4951,18 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <icon id="P3_Lineaire" instance="P3_Lineaire_instance" xpos="434" ypos="20" workspace="Workspace01"/>
    <icon id="E10_C_RGB_couleur" instance="E10_C_RGB_couleur_instance" xpos="434" ypos="64" workspace="Workspace01"/>
    <icon id="E11_BXT_L_H" instance="E11_BXT_L_H_instance" xpos="434" ypos="94" workspace="Workspace01"/>
-   <icon id="E12_Continuum_H" instance="E12_Continuum_H_instance" xpos="434" ypos="124" workspace="Workspace01"/>
+   <icon id="E12_Continuum_auto" instance="E12_Continuum_auto_instance" xpos="434" ypos="124" workspace="Workspace01"/>
    <icon id="E13_H_dans_RGB" instance="E13_H_dans_RGB_instance" xpos="434" ypos="154" workspace="Workspace01"/>
    <icon id="E14_C_RGB_etoiles_bruit" instance="E14_C_RGB_etoiles_bruit_instance" xpos="434" ypos="184" workspace="Workspace01"/>
    <icon id="E15_C_L_lineaire" instance="E15_C_L_lineaire_instance" xpos="434" ypos="214" workspace="Workspace01"/>
    <icon id="P3_options" instance="P3_options_instance" xpos="434" ypos="260" workspace="Workspace01"/>
    <icon id="Opt_Find_Background" instance="Opt_Find_Background_instance" xpos="434" ypos="294" workspace="Workspace01"/>
-   <icon id="Opt_Continuum_auto" instance="Opt_Continuum_auto_instance" xpos="434" ypos="324" workspace="Workspace01"/>
-   <icon id="Opt_H_dans_L" instance="Opt_H_dans_L_instance" xpos="434" ypos="354" workspace="Workspace01"/>
-   <icon id="Opt_NBRGBCombination" instance="Opt_NBRGBCombination_instance" xpos="434" ypos="384" workspace="Workspace01"/>
-   <icon id="Opt_STF" instance="Opt_STF_instance" xpos="434" ypos="414" workspace="Workspace01"/>
-   <icon id="P3_rapide" instance="P3_rapide_instance" xpos="434" ypos="460" workspace="Workspace01"/>
-   <icon id="R_C_RGB_fin_rapide" instance="R_C_RGB_fin_rapide_instance" xpos="434" ypos="494" workspace="Workspace01"/>
-   <icon id="R_C_L_rapide" instance="R_C_L_rapide_instance" xpos="434" ypos="524" workspace="Workspace01"/>
+   <icon id="Opt_H_dans_L" instance="Opt_H_dans_L_instance" xpos="434" ypos="324" workspace="Workspace01"/>
+   <icon id="Opt_NBRGBCombination" instance="Opt_NBRGBCombination_instance" xpos="434" ypos="354" workspace="Workspace01"/>
+   <icon id="Opt_STF" instance="Opt_STF_instance" xpos="434" ypos="384" workspace="Workspace01"/>
+   <icon id="P3_rapide" instance="P3_rapide_instance" xpos="434" ypos="430" workspace="Workspace01"/>
+   <icon id="R_C_RGB_fin_rapide" instance="R_C_RGB_fin_rapide_instance" xpos="434" ypos="464" workspace="Workspace01"/>
+   <icon id="R_C_L_rapide" instance="R_C_L_rapide_instance" xpos="434" ypos="494" workspace="Workspace01"/>
    <icon id="P4_Etirement" instance="P4_Etirement_instance" xpos="625" ypos="20" workspace="Workspace01"/>
    <icon id="E16_GHS_1_premier" instance="E16_GHS_1_premier_instance" xpos="625" ypos="64" workspace="Workspace01"/>
    <icon id="E17_GHS_2_contraste" instance="E17_GHS_2_contraste_instance" xpos="625" ypos="94" workspace="Workspace01"/>

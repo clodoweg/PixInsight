@@ -84,7 +84,7 @@ SCRIPTS = {
     'Continuum_auto': ('$PXI_SRCDIR/scripts/ContinuumSubtraction.js', 'e795144823fb111101f269c22eaaf8cf',
              [('applyNoiseReduction', 'false'), ('noiseReductionMethod', 'NoiseXterminator'), ('starrySelected', 'true'),
               ('outputLinearImageOnly', 'true'), ('aiModel', '2.0.0')],
-             L_GLOBAL + "Préréglé pour ce workflow : images avec étoiles (Starry), sortie linéaire seule (Output Linear Image Only, pour injecter H_cs en linéaire), "
+             L_GLOBAL + "Préréglé pour ce workflow : images avec étoiles (Starry), sortie linéaire seule (Output Linear Image Only, pour injecter HaNB en linéaire), "
              "sans réduction de bruit intégrée (NXT se fait à part). "),
     'Perfect_Palette_Picker': ('$PXI_SRCDIR/scripts/PerfectPalettePicker.js', '0ffff6a0fb869acfc4f9ee3ad81b6338', [],
              L_GLOBAL + "Ce script ne lit pas de paramètres d'icône : choisis les vues et Linear Input Data dans son dialogue. "),
@@ -205,9 +205,9 @@ RAPIDE_NOTE = {
              5: "R_C_LRGB_rapide sur RGB (L ouverte) à la place de LRGB_ajout_L et SXT_LRGB : L ajoutée, étoiles comprises, puis SXT Unscreen (RGB_stars créée), puis Etoiles_auto_etire (saturation et SCNR des étoiles)",
              6: "R_C_Fin_rapide sur l'image sans étoiles après LRGB_ajout_L : HDRMT à 30 %, masque, Courbes, LHE, LHE_fin, masque retiré, NXT_final 0,40 en un seul conteneur (= HDRMT_30, C_Finition et NXT_final)",
              7: "R_C_Etoiles_fond_rapide sur l'image sans étoiles finie : étoiles remises (Etoiles_screen), Fond_auto (0,12), Fond_desature en un seul conteneur (= Etoiles_screen et C_Fond_final) ; Export_TIFF (options) pour finir hors PixInsight"},
-    'LHA': {1: "MODE RAPIDE (galaxies) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre : R_C_Preparation_rapide ; R_GC_Solver_auto_rapide ; C_RGB_couleur sur RGB, BXT_L_H sur H, Continuum_H, H_dans_RGB, R_C_RGB_fin_rapide sur RGB, R_C_L_rapide sur L ; GHS sur L seulement ; Etoiles_LRGB ; LRGB_ajout_L ; finition. Phase 1 : R_C_Preparation_rapide (double-clic puis Apply Global) à la place de LinearPatternSubtraction, Renommer_auto, Combinaison_RGB et Solver_auto",
+    'LHA': {1: "MODE RAPIDE (galaxies) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre : R_C_Preparation_rapide ; R_GC_Solver_auto_rapide ; C_RGB_couleur sur RGB, BXT_L_H sur H, Continuum_auto, H_dans_RGB, R_C_RGB_fin_rapide sur RGB, R_C_L_rapide sur L ; GHS sur L seulement ; Etoiles_LRGB ; LRGB_ajout_L ; finition. Phase 1 : R_C_Preparation_rapide (double-clic puis Apply Global) à la place de LinearPatternSubtraction, Renommer_auto, Combinaison_RGB et Solver_auto",
             2: "R_GC_Solver_auto_rapide à la place de toute la phase 2 : GradientCorrection sur toutes les images ouvertes (R et H compris, pour le continuum) ; l'astrométrie est déjà faite par R_C_Preparation_rapide",
-            3: "chemin principal pour C_RGB_couleur (RGB), BXT_L_H (sur H seulement), Continuum_H et H_dans_RGB ; puis R_C_RGB_fin_rapide sur RGB à la place de C_RGB_etoiles_bruit, et R_C_L_rapide sur L à la place de BXT_L_H (sur L) et C_L_lineaire",
+            3: "chemin principal pour C_RGB_couleur (RGB), BXT_L_H (sur H seulement), Continuum_auto et H_dans_RGB ; puis R_C_RGB_fin_rapide sur RGB à la place de C_RGB_etoiles_bruit, et R_C_L_rapide sur L à la place de BXT_L_H (sur L) et C_L_lineaire",
             4: "GHS_1_premier sur L (chemin principal, à régler), puis R_C_Fin_GHS_rapide (« fin de GHS » : GHS_2_contraste et GHS_3_fond en un glisser) sur L SEULEMENT ; saute Statistical_Stretch et Star_Stretch (RGB et étoiles déjà étirés par R_C_RGB_fin_rapide) ; puis Etoiles_LRGB",
             5: "pas d'icône rapide : LRGB_ajout_L du chemin principal",
             6: "R_C_Fin_rapide sur l'image sans étoiles après LRGB_ajout_L : HDRMT à 30 %, masque, Courbes, LHE, LHE_fin, masque retiré, NXT_final 0,40 en un seul conteneur (= HDRMT_30, C_Finition et NXT_final)",
@@ -796,22 +796,23 @@ lhargb = pre_block() + [rgb_comb_item(False), (solver_container(), ''), (solver_
     spcc(),
     (M.bxt('BXT_RGB', False, 0.25, 0.0, 0.50), "BlurXTerminator complet sur RGB, après SPCC : Sharpen Stars 0,25, Halos 0, Nonstellar 0,50." + BXT_C),
     (M.bxt('BXT_L_H', False, 0.25, 0.0, 0.80), "BlurXTerminator complet sur L et sur le master H (mono, linéaires) : Sharpen Stars 0,25, Halos 0, Nonstellar 0,80. Déconvolue AVANT tout mélange (soustraction du continuum, injection)." + BXT_C),
-    (pm('Continuum_H', 'k = 0.9;\nH - k*(R - med(R))', symbols='k', new_image=True, new_id='H_cs', space='Gray'),
-     "Soustraction du continuum : H_cs = H - k*(R - med(R)). Vues 'H' et 'R' (master rouge linéaire, gradient retiré). Ajuste k (0,8 à 1) jusqu'à faire disparaître étoiles et disque galactique. "
-     "med(R) garde le niveau du fond. Limite : résidus sur les étoiles (PSF différentes). "
-     "CONTRÔLE : dans H_cs, étoiles et disque galactique ont disparu, il ne reste que les taches HII sur un fond sombre proche de 0. "
-     "Continuum mal soustrait = cœur et halo de la galaxie rougis et étoiles à halo rouge dans l'image finale : augmente k. NXT sur H_cs avant injection si son fond est granuleux."),
-    (note('Continuum_auto', "OPTION — Automatic Continuum Subtraction (SetiAstro, script) : choisis H et R ; le script calcule le coefficient. Contrôle que les étoiles disparaissent de H_cs."), ''),
-    (pm('H_dans_RGB', 'w = 1.0;\n$T[0] + w*H_cs', '$T[1]', '$T[2]', symbols='w'),
-     "Injection de H_cs dans le rouge : applique sur l'image RGB (linéaire, calibrée) ; R' = R + w*H_cs, G et B inchangés. w de 0,5 à 2 selon l'effet voulu. "
+    # Continuum_H (PixelMath, k à la main) supprimé (demande de l'utilisateur) : Continuum_auto au chemin principal
+    (note('Continuum_auto', "Soustraction du continuum AUTOMATIQUE (SetiAstro, Automatic Continuum Subtraction, ContinuumSubtraction.js), au chemin principal (demande de l'utilisateur, à la place de l'ancien Continuum_H). "
+          "Double-clic puis Apply Global : dans le dialogue, Ha = H (master linéaire, BXT fait), Red (or RGB) = R (master rouge linéaire, gradient retiré) ou le RGB calibré ; le reste vide ; Execute. "
+          "Le script combine H et R, neutralise le fond et égalise les deux canaux sur le fond (le coefficient se calcule tout seul), puis HaNB = H − 0,9·(R − med(R)) (Starry), en niveaux de gris, LINÉAIRE. "
+          "Il crée la vue HaNB (HaNB1… si elle existe déjà : renomme-la HaNB, ou ferme l'ancienne avant). "
+          "CONTRÔLE : dans HaNB, étoiles et disque galactique presque disparus, il reste les taches HII sur un fond proche de 0. "
+          "Continuum mal soustrait (cœur et halo de la galaxie rougis, étoiles à halo rouge dans l'image finale) : relance avec Starless, ou réduis w dans H_dans_RGB. NXT sur HaNB avant injection si son fond est granuleux."), ''),
+    (pm('H_dans_RGB', 'w = 1.0;\n$T[0] + w*HaNB', '$T[1]', '$T[2]', symbols='w'),
+     "Injection de HaNB dans le rouge : applique sur l'image RGB (linéaire, calibrée) ; R' = R + w*HaNB, G et B inchangés. w de 0,5 à 2 selon l'effet voulu. "
      "Garde une copie du RGB avant injection pour comparer. RENDU VISÉ : identique au LRGB partout, sauf les régions HII, rose à rouge rosé (Hα + Hβ), plus visibles mais ponctuelles ; cœur, bras, étoiles et fond inchangés. "
      "CONTRÔLE à la sonde 15x15 : région HII R nettement au-dessus de G et B avec B >= G ; cœur R >= G >> B comme en LRGB ; fond R = G = B. "
-     "Taches HII rouge vif : baisse w. Régions HII invisibles : monte w ou injecte aussi dans L. Fond rouge : bruit de H_cs injecté. Cœur ou étoiles rougis : continuum mal soustrait (icône précédente). "
-     "ÉTOILES : l'injection se fait avant SXT, donc les étoiles gardées viennent du RGB injecté ; tout résidu d'étoile dans H_cs passe dans leur rouge. Défauts : étoiles rougies ou à halo rouge (k trop faible), "
+     "Taches HII rouge vif : baisse w. Régions HII invisibles : monte w ou injecte aussi dans L. Fond rouge : bruit de HaNB injecté. Cœur ou étoiles rougis : continuum mal soustrait (Continuum_auto). "
+     "ÉTOILES : l'injection se fait avant SXT, donc les étoiles gardées viennent du RGB injecté ; tout résidu d'étoile dans HaNB passe dans leur rouge. Défauts : étoiles rougies ou à halo rouge (continuum mal soustrait), "
      "anneaux clairs ou sombres (PSF différentes entre H et R, inévitable en partie), étoiles grossies (w trop fort). Standard : comme en LRGB, et pas plus rouges que sur la copie avant injection. "
      "OPTION la plus propre : SXT sur une copie du RGB AVANT injection, garde ces étoiles-là, et injecte le H seulement dans l'image sans étoiles."),
-    (pm('H_dans_L', 'a = 1.0;\nmax($T, H_cs*a)', symbols='a'),
-     "Option : injection de H dans la luminance, L' = max(L, a*H_cs) : GLISSE l'icône sur L (modifiée directement, pas de nouvelle vue). Vue 'H_cs' requise. Rend les régions HII plus nettes. "
+    (pm('H_dans_L', 'a = 1.0;\nmax($T, HaNB*a)', symbols='a'),
+     "Option : injection de H dans la luminance, L' = max(L, a*HaNB) : GLISSE l'icône sur L (modifiée directement, pas de nouvelle vue). Vue 'HaNB' requise. Rend les régions HII plus nettes. "
      "Régions HII nettes mais couleurs délavées après LRGBCombination : a trop fort, baisse-le ou fais un mélange léger."),
     (note('NBRGBCombination', "ALTERNATIVE — NBRGBCombination (Script › Utilities) : image RGB et sa bande passante (~100 nm pour un filtre R mono), image H dans le canal R avec la bande passante de ton filtre (3, 5, 7 nm), "
           "Scale 1,2 par défaut (3 à 5 pour un H faible). Compare avec les aperçus RGB et NBRGB."), ''),
@@ -1026,9 +1027,9 @@ T_RAPIDE = {
           "FINITION : plus de finition rapide. Après E08, va en haut du fichier, workflow normal : P5 E15 LRGB_ajout_L, puis P6 en 3 parties (E16 HDRMT_40, cœur ; E17 C_Finition, contraste ; E18 NXT_final, bruit) et P7 en 2 parties (E19 Etoiles_screen ; E20 C_Fond_final, Fond_auto + Fond_desature), chaque partie avec ses options (P6_options, P7_options). "
           "Une étape en erreur arrête un conteneur : lis la console."),
  'LHA': ("MODE RAPIDE LHaRGB — {V} — icône de repère, sans effet. Pas de MARS (mode soigné). "
-         "E00 C_Preparation_rapide (masters seuls ouverts ; double-clic puis Apply Global, ou glisse sur L) : Renommer_auto, LinearPatternSubtraction sur tous les masters mono, Combinaison_RGB (R, G, B restent ouvertes : R sert à Continuum_H). "
+         "E00 C_Preparation_rapide (masters seuls ouverts ; double-clic puis Apply Global, ou glisse sur L) : Renommer_auto, LinearPatternSubtraction sur tous les masters mono, Combinaison_RGB (R, G, B restent ouvertes : R sert à Continuum_auto). "
          "E02 ImageSolver sur RGB. E03 GradientCorrection sur R. E04 C_RGB_couleur_rapide sur RGB (GradientCorrection, BXT Correct Only, SPCC, BXT). "
-         "E05 C_H_rapide sur H (GradientCorrection, BXT). E06 Continuum_H (k à régler), puis E07 H_dans_RGB sur RGB. "
+         "E05 C_H_rapide sur H (GradientCorrection, BXT). E06 Continuum_auto, puis E07 H_dans_RGB sur RGB. "
          "E08 C_RGB_fin_rapide sur RGB (SXT sur RGB linéaire, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond 0,22, Etoiles_auto : courbe de Star Stretch, SCNR). E09 C_L_rapide sur L ({L}). E10 GHS_1_premier, E11 GHS_2_contraste, E12 GHS_3_fond : à la main sur L. "
          "E13 Etoiles_LRGB (luminance de L_stars ajoutée aux étoiles ; saute-la pour garder les étoiles du RGB seul). "
          "FINITION : plus de finition rapide. Après E13, va en haut du fichier, workflow normal : P5 E21 LRGB_ajout_L, puis P6 (E22 HDRMT_40, E23 C_Finition, E24 NXT_final) et P7 (E25 Etoiles_screen, E26 C_Fond_final), chaque partie avec ses options."),
@@ -1129,15 +1130,15 @@ def rapide_lrgb(v, sxt_etire, etoilesL):
 
 def rapide_lha(v, sxt_etire, etoilesL):
     return [prep_rapide(lhargb), note_rapide('LHA', v),
-    (2, solver_container(), ''), (2, gc_r(), "GradientCorrection seul, sur le master R (gardé ouvert pour Continuum_H), valeurs par défaut."),
+    (2, solver_container(), ''), (2, gc_r(), "GradientCorrection seul, sur le master R (gardé ouvert pour Continuum_auto), valeurs par défaut."),
     (3, cont('C_RGB_couleur_rapide', [gc_r(), M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), spcc_perso('SPCC'), bxt_rgb()]), ''),
     (3, cont('C_H_rapide', [gc_r(), M.bxt('BXT_L_H', False, 0.25, 0.0, 0.80)]), ''),
-    (3, *pick(lhargb, 'Continuum_H')), (3, *pick(lhargb, 'H_dans_RGB')),
+    (3, *pick(lhargb, 'Continuum_auto')), (3, *pick(lhargb, 'H_dans_RGB')),
     (3, rgb_rapide()[1], ''),
     (3, l_rapide(M.bxt('BXT_L_H', False, 0.25, 0.0, 0.80)), '')] + l_ghs(lhargb) + [(4, script('Etoiles_LRGB', ''), '')] + rapide_end(lhargb)
 
 # Mode rapide rangé dans les colonnes d'options du workflow normal (demande de l'utilisateur) : plus de section R_ en bas.
-# Les icônes identiques au normal (ImageSolver, GradientCorrection, Continuum_H, H_dans_RGB, GHS, Etoiles_LRGB…) ne sont pas doublées.
+# Les icônes identiques au normal (ImageSolver, GradientCorrection, Continuum_auto, H_dans_RGB, GHS, Etoiles_LRGB…) ne sont pas doublées.
 def insert_after(steps, base, items):
     i = next(k for k, (it, d) in enumerate(steps) if it[0] == base)
     steps[i + 1:i + 1] = items
