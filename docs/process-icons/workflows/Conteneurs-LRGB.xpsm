@@ -2726,12 +2726,14 @@ SI :
 - halo d'une très grande étoile pas entièrement couvert -&gt; etendue2 100 et gain2 10 (masque plus large et plein)
 - halo d'une étoile brillante moyenne pas couvert -&gt; etendue 35 et gain 4
 - trou sombre à la place du halo -&gt; etendue2 60 et gain2 5
+- anneau sombre autour d'une petite galaxie dans un halo -&gt; compact 0,03
+- un seul passage : chaque passage en plus assombrit un peu (Ctrl+Z puis réglages)
 - bras ou petite galaxie atténué -&gt; structure 0,10
 
 Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Nettoyage_sans_etoiles.js</parameter>
       <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="12">
+      <table id="parameters" rows="13">
          <tr>
             <td id="id">etoiles</td>
             <td id="value">RGB_stars</td>
@@ -2759,6 +2761,10 @@ Détails : page docs/pixinsight-workflow.html.</description>
          <tr>
             <td id="id">structure</td>
             <td id="value">0.15</td>
+         </tr>
+         <tr>
+            <td id="id">compact</td>
+            <td id="value">0.05</td>
          </tr>
          <tr>
             <td id="id">tresBrillant</td>

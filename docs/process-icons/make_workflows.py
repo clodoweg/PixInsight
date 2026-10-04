@@ -54,7 +54,7 @@ SCRIPTS = {
     'Etoiles_LRGB_etire': ('$PXI_SRCDIR/scripts/clodoweg/Etoiles_LRGB.js', '', [('etoilesL', 'L_stars'), ('etoilesRGB', 'RGB_stars'), ('etirerL', 'false'), ('amount', '6'), ('partL', '0.5'), ('saturation', '0.35')], L_DRAG),
     'Fond_desature': ('$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js', '', [('debut', '0.03'), ('fin', '0.15'), ('violetFin', '0.30'), ('flou', '3')], L_DRAG),
     'Fond_auto': ('$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js', '', [('cible', '0.12'), ('tolerance', '0.005'), ('grille', '8')], L_DRAG),
-    'Nettoyage_sans_etoiles': ('$PXI_SRCDIR/scripts/clodoweg/Nettoyage_sans_etoiles.js', '', [('etoiles', 'RGB_stars'), ('seuilBas', '0.05'), ('seuilHaut', '0.12'), ('etendue', '25'), ('passes', '3'), ('protege', '0.08'), ('structure', '0.15'), ('tresBrillant', '0.05'), ('etendue2', '80'), ('gain', '3'), ('gain2', '8'), ('afficherMasque', 'false')], L_DRAG),
+    'Nettoyage_sans_etoiles': ('$PXI_SRCDIR/scripts/clodoweg/Nettoyage_sans_etoiles.js', '', [('etoiles', 'RGB_stars'), ('seuilBas', '0.05'), ('seuilHaut', '0.12'), ('etendue', '25'), ('passes', '3'), ('protege', '0.08'), ('structure', '0.15'), ('compact', '0.05'), ('tresBrillant', '0.05'), ('etendue2', '80'), ('gain', '3'), ('gain2', '8'), ('afficherMasque', 'false')], L_DRAG),
     'Export_TIFF': ('$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js', '', [('nom', ''), ('suffixe', ''), ('dossier', ''), ('icc', 'true')], L_DRAG),
     'Fond_auto_clair': ('$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js', '', [('cible', '0.14'), ('tolerance', '0.005'), ('grille', '8')], L_DRAG),
     'Solver_auto': ('$PXI_SRCDIR/scripts/clodoweg/GC_Solver_auto.js', '', [('gradient', 'false'), ('solveTout', 'false'), ('defaultDate', '2020-01-01T00:00:00')], L_GLOBAL),

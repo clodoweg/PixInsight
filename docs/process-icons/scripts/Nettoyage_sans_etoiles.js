@@ -26,6 +26,11 @@
 //      flou 1,5 px), calculé à 2000 px puis ramené à la taille réelle (une
 //      seule image pleine taille en mémoire) ; le bruit fin est gardé, rien
 //      n'est éclairci ;
+//   protections (version 4) : (b) élargie (flou 6 px × 2) ; (c) petits objets
+//      compacts (petites galaxies dans un halo) plus clairs que le fond local
+//      de compact (0,05), protection étendue (flou 4 px × 3) : plus d'anneau
+//      sombre autour ; image lissée à 4 px et fond local remonté du biais de
+//      l'ouverture : un deuxième passage n'assombrit presque plus ;
 //   5. TRÈS grandes étoiles (version 3, halo de plus de 75 px qui restait
 //      élargi) : luminance de RGB_stars floutée 50 px au-dessus de tresBrillant
 //      (0,05 ; l'étoile bleue de NGC 1532 vaut 0,11, les autres moins de 0,045),
@@ -154,6 +159,39 @@ function background( img, n )
    return q[ Math.floor( q.length/2 ) ];
 }
 
+// Écart médian entre l'image lissée et le fond local (le ciel occupe presque toute l'image : la médiane est
+// celle du ciel), ajouté au fond local.
+function correctBias( opw, liw )
+{
+   let id = "nt_bias";
+   let n = opw.mainView.image.numberOfChannels;
+   let d = newView( liw.mainView, id, "$T - " + opw.mainView.id + " + 0.5", false );
+   let corr = [];
+   let img = d.mainView.image;
+   for ( let c = 0; c < n; ++c )
+   {
+      img.selectedChannel = c;
+      corr.push( img.median() - 0.5 );
+   }
+   img.resetSelections();
+   closeView( id );
+   let P = new PixelMath;
+   P.expression = "$T + " + corr[ 0 ].toFixed( 6 );
+   if ( n > 1 )
+   {
+      P.expression1 = "$T + " + corr[ 1 ].toFixed( 6 );
+      P.expression2 = "$T + " + corr[ 2 ].toFixed( 6 );
+      P.useSingleExpression = false;
+   }
+   else
+      P.useSingleExpression = true;
+   P.createNewImage = false;
+   P.rescale = false;
+   P.truncate = true;
+   P.executeOn( opw.mainView );
+   return corr;
+}
+
 function main()
 {
    let view = Parameters.isViewTarget ? Parameters.targetView : ImageWindow.activeWindow.mainView;
@@ -166,6 +204,7 @@ function main()
    let passes = parseInt( param( "passes", "3" ) );
    let protege = parseFloat( param( "protege", "0.08" ) );
    let structure = parseFloat( param( "structure", "0.15" ) );
+   let compact = parseFloat( param( "compact", "0.05" ) );
    let tresBrillant = parseFloat( param( "tresBrillant", "0.05" ) );
    let etendue2 = parseFloat( param( "etendue2", "80" ) );
    let gain = parseFloat( param( "gain", "3" ) );     // force de l'extension (petits halos) : plus haut = masque plus large et plus plein
@@ -199,6 +238,9 @@ function main()
    // 1. étoiles brillantes, étendues
    blur( st, 20 );
    pm( st, "min(1, max(0, ($T - " + seuilBas + ")/" + (seuilHaut - seuilBas) + "))" );
+   let core = newView( st.mainView, "nt_core", "$T", true );   // l'étoile elle-même (avant extension)
+   blur( core, 8 );
+   pm( core, "min(1, 3*$T)" );
    blur( st, etendue );
    pm( st, "min(1, " + gain + "*$T)" );
 
@@ -223,14 +265,27 @@ function main()
    blur( g60, 60 );
    let g4 = newView( sy.mainView, "nt_g4", "$T", true );
    blur( g4, 4 );
-   let prot = "(1 - max(min(1, max(0, (nt_g60 - " + (bg + protege).toFixed( 6 ) + ")/" + protege + ")), " +
-              "min(1, max(0, (nt_g4 - nt_opy - " + structure + ")/0.10))))";
+   // (b) structures claires (bras…), protection élargie (flou 6 px × 2) pour une transition douce
+   let p2 = newView( sy.mainView, "nt_p2", "min(1, max(0, (nt_g4 - nt_opy - " + structure + ")/0.10))", true );
+   blur( p2, 6 );
+   pm( p2, "min(1, 2*$T)" );
+   // (c) petits objets compacts (petites galaxies dans un halo) : plus clairs que le fond local de 0,05,
+   //     protection étendue (flou 4 px × 3) pour ne pas laisser d'anneau sombre, sauf sur l'étoile elle-même
+   let g1 = newView( sy.mainView, "nt_g1", "$T", true );
+   blur( g1, 1 );
+   let p3 = newView( sy.mainView, "nt_p3", "min(1, max(0, (nt_g1 - nt_opy - " + compact + ")/0.05))", true );
+   blur( p3, 4 );
+   pm( p3, "min(1, 3*$T)*(1 - nt_core)" );
+   let prot = "(1 - max(min(1, max(0, (nt_g60 - " + (bg + protege).toFixed( 6 ) + ")/" + protege + ")), max(nt_p2, nt_p3)))";
    let mask = newView( st.mainView, "nt_m", "$T*" + prot, true );
    let mask2 = newView( st2.mainView, "nt_m2", "$T*" + prot, true );
 
    // 4. excès au-dessus du fond local, calculé à 2000 px (léger en mémoire : une seule image ramenée à la taille réelle)
    let li = newView( sl.mainView, "nt_li", "$T", false );
-   blur( li, 1.5 );
+   blur( li, 4 );   // assez lissé pour que le bruit ne soit pas retiré (sinon chaque passage assombrit)
+   // biais de l'ouverture (l'érosion suit le bas du bruit) : fonds locaux remontés au niveau du ciel
+   correctBias( op, li );
+   correctBias( op2, li );
    let ex = newView( sl.mainView, "nt_e", "max(nt_m*max(0, nt_li - nt_op), nt_m2*max(0, nt_li - nt_op2))", false );
    if ( afficher )
    {
@@ -249,7 +304,7 @@ function main()
    P.truncate = true;
    let ok = P.executeOn( view );
 
-   [ "nt_st", "nt_st2", "nt_sl", "nt_sy", "nt_op", "nt_op2", "nt_opy", "nt_g60", "nt_g4", "nt_m", "nt_m2", "nt_li", "nt_e" ].forEach( closeView );
+   [ "nt_st", "nt_st2", "nt_sl", "nt_sy", "nt_op", "nt_op2", "nt_opy", "nt_g60", "nt_g4", "nt_g1", "nt_core", "nt_p2", "nt_p3", "nt_m", "nt_m2", "nt_li", "nt_e" ].forEach( closeView );
    if ( !ok )
       throw new Error( TITLE + " : le retrait final a échoué (voir la console) ; l'image n'a pas été modifiée." );
    console.noteln( TITLE + " : " + view.id + " nettoyé autour des étoiles brillantes de " + starsId +
