@@ -1260,6 +1260,42 @@ function t1Param( key, value )
    return Parameters.has( key ) ? Parameters.getString( key ).trim() : value;
 }
 
+// Moteur v8 (exigé par ImageSolver) : LinearPatternSubtraction.jsh, écrit pour l'ancien moteur, passe 0 à
+// Image.medianWaveletTransform() là où le moteur v8 attend un booléen (erreur « Boolean value expected »,
+// retour de l'utilisateur). En cas de refus, on réessaie en convertissant en booléen les arguments numériques,
+// en partant de la fin (le premier, le nombre de couches, n'est converti qu'en dernier recours).
+(function()
+{
+   let orig = Image.prototype.medianWaveletTransform;
+   if ( typeof orig != "function" )
+      return;
+   Image.prototype.medianWaveletTransform = function()
+   {
+      let a = Array.prototype.slice.call( arguments );
+      try
+      {
+         return orig.apply( this, a );
+      }
+      catch ( e )
+      {
+         if ( String( e ).indexOf( "Boolean" ) < 0 )
+            throw e;
+         for ( let i = a.length - 1; i >= 1; --i )
+            if ( typeof a[ i ] == "number" )
+            {
+               let b = a.slice();
+               b[ i ] = a[ i ] != 0;
+               try
+               {
+                  return orig.apply( this, b );
+               }
+               catch ( e2 ) {}
+            }
+         throw e;
+      }
+   };
+})();
+
 function etape( texte )
 {
    console.noteln( "<end><cbr><br>" + T1_TITLE + " : " + texte );
@@ -1319,7 +1355,23 @@ function turbo1()
    let vueRGB = t1Param( "vueRGB", "RGB" ), vueL = t1Param( "vueL", "L" );
    console.show();
    etape( "renommage" );               renommerAuto();
-   etape( "LinearPatternSubtraction" ); lpsUnClic();
+   etape( "LinearPatternSubtraction" );
+   try
+   {
+      lpsUnClic();
+   }
+   catch ( e )
+   {
+      // LPS n'est qu'une correction de motifs : en cas d'échec, on continue (fais-la à la main si besoin)
+      console.warningln( T1_TITLE + " : LinearPatternSubtraction sautée (" + e.message + ") ; la suite continue." );
+   }
+   // fenêtres de travail de LPS éventuellement restées ouvertes (LS, SS, pattern) : fermées pour ne pas être traitées ensuite
+   ImageWindow.windows.forEach( function( w )
+   {
+      let id = w.mainView.id;
+      if ( id.indexOf( "LS" ) == 0 || id.indexOf( "SS" ) == 0 || id.indexOf( "pattern" ) == 0 )
+         w.forceClose();
+   } );
    etape( "combinaison RGB" );         combinerRGB();
    etape( "astrométrie de toutes les images" ); mainGCS( { gradient: false, solve: true, solveTout: true } );
    etape( "GradientCorrection sur toutes les images" ); mainGCS( { gradient: true, solve: false } );
