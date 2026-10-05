@@ -728,3 +728,8 @@ Fait : icône T_Turbo_debut (LRGB et LHaRGB, colonne P1, groupe P1_turbo) : un P
 
 Demande : « rajoute un NXT apres etoiles screen et met le aussi dans le rapide, pour faire une toute derniere reduction de bruit »
 Fait : NXT_dernier (NoiseXTerminator Denoise 0,25, 1 itération, réglage léger choisi parce que NXT_final 0,40 a déjà débruité l'image sans étoiles) au chemin principal juste après Etoiles_screen (LRGB E24, LHaRGB E31) et dans R_C_Etoiles_fond_rapide entre Etoiles_screen et Export_TIFF.
+
+### LRGB terminé ; ménage (5 octobre 2026)
+
+Demande : « j'ai fini pour le LRGB. Ca marche bien. Supprime idees-acceleration.md et critique-lrgb-lhargb.html. Dans claude.md : L étirée à la main par les 3 GHS, jamais par Statistical Stretch (RGB seulement) ; -> MET a jour pour dire que c'est MAS pour RGB ; supprime idees-acceleration.md »
+Fait : docs/idees-acceleration.md et docs/critique-lrgb-lhargb.html supprimés (les mentions plus haut dans ce fichier restent comme historique) ; CLAUDE.md : RGB étiré par MAS (Statistical Stretch en option), lien vers idees-acceleration.md retiré, LRGB noté comme validé.

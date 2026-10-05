@@ -34,7 +34,7 @@ Chaque script de `docs/process-icons/scripts/` a une fenêtre de réglages (dema
 
 PixInsight 1.9.5 sur **PC Windows** ; CDK17 (2 939 mm) + QHY600 (IMX455) ; filtres Antlia V Pro LRGB et Antlia 3 nm (Ha, OIII, SII) ; RC Astro (BXT, NXT, SXT) ; module GHS. Une centaine de galaxies, **masters déjà empilés** ; aussi **beaucoup de SHO et de RGB + SHO** (nébuleuses). Travail fait d'abord sur les galaxies (`Conteneurs-LRGB`, `Conteneurs-LHaRGB`) ; prochaine étape annoncée : beaucoup de demandes sur `Conteneurs-SHO-sans-RGB` et `Conteneurs-RGB-SHO` (HOO existe aussi). Préférences fixes :
 - jamais d'espace dans les noms de fichiers ou de vues ; export nommé d'après le dossier des masters (`NGC1532.tiff`) ;
-- L étirée à la main par les 3 GHS, jamais par Statistical Stretch (RGB seulement) ;
+- L étirée à la main par les 3 GHS (sans étoiles) ; RGB étiré par MAS avec ses étoiles (Statistical Stretch seulement en option, à la place de MAS) ;
 - pas de DynamicCrop ; sorties de contrôle désactivées (GradientCorrection sans modèle, SPCC sans graphes) ;
 - vues narrowband nommées H, O, S ; pas de vues intermédiaires (les icônes modifient $T) ;
 - images inutiles fermées au fur et à mesure par les icônes.
@@ -70,6 +70,6 @@ Process galaxies (demande de l'utilisateur, 5 octobre 2026) : L sans étoiles, R
 
 ## Pistes non commencées
 
-Voir `docs/idees-acceleration.md` (inventaire automatique des cibles, traitement en série). Points ouverts : section « Non vérifié » de `docs/sources.md`.
+Points ouverts : section « Non vérifié » de `docs/sources.md`. Workflow LRGB terminé et validé par l'utilisateur (5 octobre 2026) ; prochains chantiers : LHaRGB, puis SHO et RGB + SHO.
 
 - Options supprimées des workflows galaxies (demande de l'utilisateur, 5 octobre 2026) : GraXpert, Coeurs_etoiles, RepairedHSV, VeraLux_HMS, Etoiles_auto_etire, MKStarReduction, Etoiles_grosses, Etoiles_couleur (script Etoiles_couleur.js supprimé), puis Etoiles_plafond. Ne pas les remettre sans demande.
