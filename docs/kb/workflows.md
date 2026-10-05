@@ -24,7 +24,7 @@ P4| E10 GHS_1_premier, E11 GHS_2_contraste, E14 GHS_3_fond (chemin principal)| L
 P4_rapide| R_C_RGB_etire_rapide| RGB linéaire avec étoiles| MAS (fond 0,15), SXT Unscreen (crée RGB_stars), GHS fond (SP = HP = 0,12)  
 P5_rapide| R_C_LRGB_rapide| RGB sans étoiles, L ouverte| LRGB_ajout_L (Saturation 0,5) seul  
 P6_rapide| R_C_Fin_rapide| image sans étoiles| HDRMT 30 %, masque, Courbes, LHE, LHE_fin, masque retiré, NXT 0,40  
-P7_rapide| R_C_Etoiles_fond_rapide| image sans étoiles finie| SCNR vert 1,0, Fond_desature, Fond_auto (0,12), Etoiles_screen, Export_TIFF (ferme L et RGB_stars). Avant, sur RGB_stars si besoin : Opt_Etoiles_grosses, Opt_Etoiles_plafond  
+P7_rapide| R_C_Etoiles_fond_rapide| image sans étoiles finie| SCNR vert 1,0, Fond_desature, Fond_auto (0,12), Etoiles_screen, Export_TIFF (aucune vue fermée). Avant, sur RGB_stars si besoin : Opt_Etoiles_grosses, Opt_Etoiles_plafond  
 
 Chemin principal LRGB : E08 C_RGB_lineaire, E09 C_L_lineaire (finit par SXT_L_lineaire), E10 GHS_1, E11 GHS_2 (L), E12 MAS, E13 SXT_RGB_etire (RGB), E14 GHS_3_fond (L et RGB), E15 LRGB_ajout_L, E16 HDRMT_30, E17 C_Finition, E18 NXT_final, E19 SCNR_vert, E20 Fond_desature, E21 Fond_auto (tous trois sur l'image sans étoiles), E22 Etoiles_screen. Statistical_Stretch est une option.
 
@@ -36,7 +36,7 @@ Icône| Ferme
 ---|---  
 Combinaison_RGB| LRGB : R, G, B ; LHaRGB : G, B (R sert à Continuum_auto)  
 LHaRGB : C_RGB_bruit| H, R, HaNB (fais Opt_H_dans_L avant)  
-Export_TIFF (aussi dans R_C_Etoiles_fond_rapide)| L et RGB_stars, après l'export (paramètre `fermer`)  
+Export_TIFF| plus rien (demande de l'utilisateur) ; ferme L et RGB_stars à la main si besoin  
   
 ### Finition du workflow normal en 5 parties
 Après E15 LRGB_ajout_L (E22 en LHaRGB). Regarde l'image après chaque partie ; les options sont rangées dans P6_options et P7_options. Numéros LRGB (LHaRGB entre parenthèses).

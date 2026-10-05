@@ -17,9 +17,7 @@
 //      OBJECT de l'image, sinon identifiant de la vue ; dossier personnel.
 //      Paramètres : nom (force le nom), dossier (force le dossier), suffixe
 //      (ajouté au nom, vide par défaut). Un fichier existant est remplacé.
-//   4. fermer : vues fermées APRÈS l'export (séparées par des virgules ; L
-//      dans les icônes : L ne sert plus, image finie ; jamais l'image
-//      exportée elle-même ; vues absentes ignorées).
+// Aucune vue n'est fermée (demande de l'utilisateur).
 // Le profil ICC est intégré selon les préférences de PixInsight (Edit >
 // Global Preferences > Color Management : Embed ICC profiles, coché par
 // défaut).
@@ -77,7 +75,7 @@ function keyword( view, name )
 function etParams()
 {
    return { nom: cwParam( "nom", "" ), suffixe: cwParam( "suffixe", "" ), dossier: cwParam( "dossier", "" ),
-            icc: cwBool( "icc", true ), fermer: cwParam( "fermer", "" ) };
+            icc: cwBool( "icc", true ) };
 }
 
 function etExport( p )
@@ -86,7 +84,6 @@ function etExport( p )
    Parameters.set( "suffixe", p.suffixe );
    Parameters.set( "dossier", p.dossier );
    Parameters.set( "icc", p.icc ? "true" : "false" );
-   Parameters.set( "fermer", p.fermer );
 }
 
 // Chemin du fichier : nom et dossier vides = d'après le dossier des masters ouverts.
@@ -109,7 +106,7 @@ function etPath( view, p )
 function etDialog( p, view )
 {
    let d = new CWDialog( TITLE, "<b>Export TIFF</b> : copie de l'image en TIFF 16 bits, convertie en sRGB avec profil ICC, " +
-                         "pour Photoshop, Lightroom ou Affinity. L'image ouverte ne change pas.", "Fermer ensuite :" );
+                         "pour Photoshop, Lightroom ou Affinity. L'image ouverte ne change pas.", "Dossier :" );
    let sel = { view: view };
    let pathLabel = null;
    function refresh()
@@ -133,7 +130,6 @@ function etDialog( p, view )
       }
    } );
    d.check( "Convertir en sRGB IEC61966-2.1 (profil ICC intégré)", p.icc, "", function( c ) { p.icc = c; } );
-   d.edit( "Fermer ensuite :", p.fermer, "Vues fermées après l'export, séparées par des virgules (L, RGB_stars).", function( t ) { p.fermer = t; } );
    pathLabel = d.info( "" );
    refresh();
    d.onExport = function() { etExport( p ); };
@@ -160,7 +156,7 @@ function main()
 
 function etRun( view, p )
 {
-   let icc = p.icc, fermer = p.fermer;
+   let icc = p.icc;
    let path = etPath( view, p );
 
    // 1. copie 16 bits
@@ -188,21 +184,6 @@ function etRun( view, p )
    if ( !ok )
       throw new Error( TITLE + " : échec de l'enregistrement de " + path + "." );
    console.noteln( TITLE + " : " + path + " (TIFF 16 bits" + (icc && img.isColor ? ", sRGB IEC61966-2.1" : "") + ")." );
-
-   // 4. vues dont on n'a plus besoin (demande de l'utilisateur : fermer au fur et à mesure)
-   let ids = fermer.split( "," );
-   for ( let k = 0; k < ids.length; ++k )
-   {
-      let id = ids[ k ].trim();
-      if ( id.length == 0 || id == view.id )
-         continue;
-      let fw = ImageWindow.windowById( id );
-      if ( !fw.isNull && fw.mainView.id != view.window.mainView.id )
-      {
-         fw.forceClose();
-         console.noteln( TITLE + " : " + id + " fermée." );
-      }
-   }
 }
 
 main();
