@@ -46,10 +46,7 @@ SCRIPTS = {
     'Masque_retirer': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'retirer'), ('nom', 'masque_L')], L_DRAG),
     'Fermer_vues': ('$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js', '', [('views', '')], L_GLOBAL),
     'Renommer_auto': ('$PXI_SRCDIR/scripts/clodoweg/Renommer_auto.js', '', [], L_GLOBAL),
-    'Etoiles_auto': ('$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js', '', [('vue', 'RGB_stars'), ('amount', '6'), ('satAmount', '1.3'), ('scnr', 'true')], L_DRAG),
     'Etoiles_auto_etire': ('$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js', '', [('vue', 'RGB_stars'), ('amount', '0'), ('satAmount', '1.3'), ('scnr', 'true')], L_DRAG),   # étoiles déjà étirées (SXT après l'étirement) : saturation et SCNR seulement
-    'Etoiles_LRGB': ('$PXI_SRCDIR/scripts/clodoweg/Etoiles_LRGB.js', '', [('etoilesL', 'L_stars'), ('etoilesRGB', 'RGB_stars'), ('etirerL', 'true'), ('amount', '6'), ('partL', '0.5'), ('saturation', '0.35')], L_DRAG),
-    'Etoiles_LRGB_etire': ('$PXI_SRCDIR/scripts/clodoweg/Etoiles_LRGB.js', '', [('etoilesL', 'L_stars'), ('etoilesRGB', 'RGB_stars'), ('etirerL', 'false'), ('amount', '6'), ('partL', '0.5'), ('saturation', '0.35')], L_DRAG),
     'Fond_desature': ('$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js', '', [('debut', '0.03'), ('fin', '0.15'), ('violetFin', '0.30'), ('flou', '3')], L_DRAG),
     'Fond_auto': ('$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js', '', [('cible', '0.12'), ('tolerance', '0.005'), ('grille', '8')], L_DRAG),
     'Nettoyage_sans_etoiles': ('$PXI_SRCDIR/scripts/clodoweg/Nettoyage_sans_etoiles.js', '', [('etoiles', 'RGB_stars'), ('seuilBas', '0.05'), ('seuilHaut', '0.12'), ('etendue', '25'), ('passes', '3'), ('protege', '0.08'), ('structure', '0.15'), ('compact', '0.05'), ('tresBrillant', '0.05'), ('etendue2', '80'), ('gain', '3'), ('gain2', '8'), ('afficherMasque', 'false')], L_DRAG),
@@ -533,9 +530,6 @@ D_BXT_CO = ("BlurXTerminator — Correct Only, AVANT SPCC (manuel RC Astro) : co
 D_SXT_L_ETIRE = ("StarXTerminator sur L ÉTIRÉE (après GHS ou Statistical Stretch et GHS_3_fond), Unscreen coché (image étirée, RC Astro). "
                  "Retirer les étoiles de L après l'étirement enlève aussi leurs halos diffus, qui ressortent en taches rondes si SXT tourne sur L linéaire (constat sur NGC 1532). "
                  "Les étoiles de L (L_stars, déjà étirées) servent ensuite à Etoiles_LRGB_etire.")
-D_ETOILES_LRGB = ("Etoiles_LRGB (script de la fiche, etirerL = false) : luminance 0,5 × L_stars (déjà étirée par SXT sur L étirée) + 0,5 × luminance de RGB_stars, "
-                  "appliquée à RGB_stars (déjà étirée par Star_Stretch) par LRGBCombination (saturation 0,35), puis L_stars fermée. Étoiles plus fines et plus nombreuses. "
-                  "Vérifie à 1:1 : cœurs trop blancs ou anneau autour des étoiles -> partL 0,3.")
 D_SXT_LIN = ("StarXTerminator — sur données LINÉAIRES, le plus tôt possible après BXT (RC Astro). Generate star image coché, UNSCREEN DÉCOCHÉ (réservé aux images étirées) : "
              "simple soustraction, couleurs d'étoiles les plus fidèles. N'applique pas l'autoSTF de façon permanente à l'image d'étoiles. Large overlap : décoché (recouvrement des tuiles 20 %) ; coché = 50 %, seulement si un quadrillage apparaît (environ trois fois plus lent selon RC Astro). "
              "AI11 : version complète de préférence (Lite = 75 % de mémoire en moins ; Lite.nonoise plus rapide mais sans bruit dans les zones retirées). Plus de case Linear : détection automatique. "
@@ -709,12 +703,6 @@ def stars_end(stars='RGB_stars', cms=False, screen_extra='', cms_extra='', alt='
     b.append((script('Fond_desature', ''), ''))   # option, tout à la fin : couleur retirée du fond du ciel
     return b + EXPORT
 
-def lum_ghs_block(etoiles=False):
-    """LRGB / LHaRGB (demande de l'utilisateur) : les 3 GHS d'abord (L), puis Statistical_Stretch (RGB), Star_Stretch, Etoiles_LRGB.
-    etoiles = True (LRGB, demande de l'utilisateur) : L et RGB étirées AVEC leurs étoiles."""
-    b = ghs_block(L_GHS_ET, L_STAT_ET, L_FOND) if etoiles else ghs_block(L_GHS, L_STAT, L_FOND)
-    return [x for x in b if x[0][0] != 'Statistical_Stretch'] + [x for x in b if x[0][0] == 'Statistical_Stretch']
-
 def ghs_block(extra_desc='', stat_extra='', fond_extra=''):
     return [(ghs('GHS_1_premier', 10), D_GHS1 + extra_desc), (ghs('GHS_2_contraste', 4, hp=0.9, sf=1.0, sp=0.35), D_GHS2), (note('Statistical_Stretch', T_STAT + stat_extra), ''), (ghs('GHS_3_fond', 10, hp=0.20, sf=1.0, sp=0.20), D_GHS3 + fond_extra)]
 
@@ -723,12 +711,6 @@ L_GHS = (" LRGB, méthode par défaut : GHS_1 et GHS_2 sur L sans étoiles seule
 L_STAT = (" LRGB, méthode par défaut : sur le RGB sans étoiles seulement (il ne donne que la couleur), Target Median 0,25 ; L passe par GHS. "
           "Si tu as choisi Statistical Stretch sur tout : même Target Median pour L. Ensuite GHS_3_fond sur les deux avant LRGB. "
           "Couleurs ternes : Saturation plus basse dans LRGBCombination, ou Luma Only coché.")
-L_GHS_ET = (" LRGB, méthode par défaut : GHS_1 et GHS_2 sur L AVEC ses étoiles (L porte le détail ; SXT viendra après LRGB) ; le RGB passe par Statistical Stretch. "
-            "Étoiles : HP (Highlight protection) sous leur cœur si elles grossissent trop. "
-            "Si tu as choisi GHS sur tout : aussi sur le RGB, jusqu'au MÊME fond et à une médiane proche.")
-L_STAT_ET = (" LRGB, méthode par défaut : sur le RGB AVEC ses étoiles (il ne donne que la couleur), Target Median 0,25 ; L passe par GHS. "
-             "Si tu as choisi Statistical Stretch sur tout : même Target Median pour L. Ensuite GHS_3_fond sur les deux avant LRGB. "
-             "Couleurs ternes : Saturation plus basse dans LRGBCombination, ou Luma Only coché.")
 L_FOND = " LRGB : applique-la au RGB ET à L avec les mêmes réglages, avant LRGBCombination, pour qu'elles arrivent au même fond (0,12-0,14)."
 # Process galaxies (demande de l'utilisateur, 5 octobre 2026) : L sans étoiles (SXT linéaire) étirée par GHS ; RGB étiré par MAS AVEC ses étoiles,
 # puis SXT (Unscreen) -> RGB_stars ; LRGB sur les deux images sans étoiles ; RGB_stars remises à la fin.
@@ -806,11 +788,6 @@ SCREEN_LRGB = (" LRGB — CONTRÔLE après recombinaison, à 100 % : étoiles de
 SCREEN_LRGB_ET = (" LRGB — CONTRÔLE après recombinaison, à 100 % : étoiles de la même couleur que sur RGB_stars (sortie de SXT_RGB_etire, étoiles du RGB étiré par MAS) ; "
                   "pas d'anneau sombre ni de halo coloré autour des étoiles ; étoiles ni grossies ni trop présentes (sinon Etoiles_reduites) ; "
                   "fond toujours R = G = B (fond éclairci : fond de l'image d'étoiles pas à 0).")
-D_SXT_LRGB = ("StarXTerminator sur l'image LRGB ÉTIRÉE, juste après LRGB_ajout_L (demande de l'utilisateur : étirements et LRGB faits AVEC les étoiles, SXT seulement ensuite). "
-              "Unscreen COCHÉ (image étirée, RC Astro) : l'image d'étoiles RGB_stars se remet ensuite en mode screen (Etoiles_screen) sans anneau. Generate star image coché, Remove reflections coché. "
-              "Glisse sur RGB (après LRGB) ; garde RGB_stars ouverte jusqu'à Etoiles_screen. CONTRÔLE à 100 % : pas de taches rondes ni de halos restés dans l'image sans étoiles "
-              "(sinon Nettoyage_sans_etoiles), pas de morceaux de galaxie dans RGB_stars.")
-
 lrgb = pre_block() + [rgb_comb_item(), (solver_container(), ''), (solver_seul(), '')] + gradient_block('rgb') + [
     (M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), D_BXT_CO + BXT_C),
     (note('Find_Background', T_FINDBG), ''),
@@ -1045,60 +1022,7 @@ def pick(steps, base):
             return item, desc
     raise KeyError(base)
 
-def finition_cont(steps, name='C_Finition', avant=(), apres=()):
-    """Masque attaché, Courbes, LHE, LHE_fin, masque retiré ; avant/après : étapes (bases) ajoutées autour."""
-    bases = list(avant) + ['Masque_L', 'Courbes', 'LHE', 'LHE_fin', 'Masque_retirer'] + list(apres)
-    return cont(name, [pick(steps, b)[0] for b in bases])
-
-T_RAPIDE = {
- 'LRGB': ("MODE RAPIDE LRGB — {V} — icône de repère, sans effet. Aucun réglage, pas de MARS (MGC + MARS : mode soigné). Ordre (numéros des icônes) : "
-          "E00 C_Preparation_rapide (masters seuls ouverts ; double-clic puis Apply Global, ou glisse sur L) : Renommer_auto (L, R, G, B d'après FILTER), LinearPatternSubtraction sur tous les masters mono ouverts, Combinaison_RGB (RGB créé, R, G, B fermées). "
-          "E02 ImageSolver sur RGB (date par défaut si absente, puis ImageSolver ; nécessaire à SPCC ; icône seule, pas de conteneur). "
-          "E03 C_RGB_rapide sur RGB (GradientCorrection, BXT Correct Only, SPCC, BXT, SXT sur RGB linéaire, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond SP = HP = 0,22, Etoiles_auto : courbe de Star Stretch amount 6, saturation 1,3, SCNR) : RGB étiré sans étoiles et RGB_stars étirée. "
-          "E04 C_L_rapide sur L ({L}). E05 GHS_1_premier, E06 GHS_2_contraste, E07 GHS_3_fond : à la main sur L (fond final vers 0,11-0,13). "
-          "E08 Etoiles_LRGB (glisse sur n'importe quelle image) : L_stars étirée comme les étoiles RGB, puis 0,5 × L_stars + 0,5 × luminance RGB appliquée à RGB_stars, L_stars fermée ; saute-la pour garder les étoiles du RGB seul. "
-          "FINITION : plus de finition rapide. Après E08, va en haut du fichier, workflow normal : P5 E15 LRGB_ajout_L, puis P6 en 3 parties (E16 HDRMT_40, cœur ; E17 C_Finition, contraste ; E18 NXT_final, bruit) et P7 en 2 parties (E19 Etoiles_screen ; E20 C_Fond_final, Fond_auto + Fond_desature), chaque partie avec ses options (P6_options, P7_options). "
-          "Une étape en erreur arrête un conteneur : lis la console."),
- 'LHA': ("MODE RAPIDE LHaRGB — {V} — icône de repère, sans effet. Pas de MARS (mode soigné). "
-         "E00 C_Preparation_rapide (masters seuls ouverts ; double-clic puis Apply Global, ou glisse sur L) : Renommer_auto, LinearPatternSubtraction sur tous les masters mono, Combinaison_RGB (R, G, B restent ouvertes : R sert à Continuum_auto). "
-         "E02 ImageSolver sur RGB. E03 GradientCorrection sur R. E04 C_RGB_couleur_rapide sur RGB (GradientCorrection, BXT Correct Only, SPCC, BXT). "
-         "E05 C_H_rapide sur H (GradientCorrection, BXT). E06 Continuum_auto, puis E07 H_dans_RGB sur RGB. "
-         "E08 C_RGB_fin_rapide sur RGB (SXT sur RGB linéaire, NXT, Statistical Stretch 0,25 sans dialogue, GHS fond 0,22, Etoiles_auto : courbe de Star Stretch, SCNR). E09 C_L_rapide sur L ({L}). E10 GHS_1_premier, E11 GHS_2_contraste, E12 GHS_3_fond : à la main sur L. "
-         "E13 Etoiles_LRGB (luminance de L_stars ajoutée aux étoiles ; saute-la pour garder les étoiles du RGB seul). "
-         "FINITION : plus de finition rapide. Après E13, va en haut du fichier, workflow normal : P5 E21 LRGB_ajout_L, puis P6 (E22 HDRMT_40, E23 C_Finition, E24 NXT_final) et P7 (E25 Etoiles_screen, E26 C_Fond_final), chaque partie avec ses options."),
-}
 WHEN_R = {}
-
-def write_rapide(filename, prefix, title, steps, main_spec, opt_spec):
-    """main_spec / opt_spec : listes de (phase, item, description) ; description '' = celle du workflow ou aucune (conteneur)."""
-    def prep(ph, item, desc, opt):
-        base = item[0]
-        item = renamed(item, '__ID__')
-        x = item[1]
-        if 'class="ProcessContainer"' not in x:
-            if 'class="NoOperation"' not in x and '<description>' not in x:
-                item = described(item, desc)
-            x = item[1] if base == 'Mode_rapide' else shorten(item[1], prefix, base)
-            if opt:
-                tag = 'OPTION — %s.\n\n' % opt_lines(WHEN_R.get(base) or L.WHEN.get(base, 'si besoin'))
-                x = x.replace('<description>', '<description>' + escape(tag), 1)
-        return base, ph, x
-    main = [prep(ph, it, d, False) for ph, it, d in main_spec]
-    opts = [prep(ph, it, d, True) for ph, it, d in opt_spec]
-    # Mode rapide placé EN BAS du fichier Conteneurs du même workflow (demande de l'utilisateur : un seul fichier) ;
-    # toutes ses icônes sont préfixées R_ (noms uniques dans le fichier).
-    cfn, ctitle, cinsts, cicons = CONT_LAYOUT[prefix]
-    rinsts, ricons = layout_all(main, opts)
-    y0 = max(int(re.search(r'ypos="(\d+)"', i).group(1)) for i in cicons) + 110
-    note_id = 'R_MODE_RAPIDE'
-    head = ('   <instance class="NoOperation" version="256" id="%s_instance">\n      <description>%s</description>\n   </instance>'
-            % (note_id, escape("MODE RAPIDE — tout ce qui suit (icônes R_…) est le mode rapide : même ordre de colonnes, numéros R_E00, R_E01… à la suite ; options R_Opt_… sous R_P#_options. Icône de repère, sans effet.")))
-    rinsts = [re.sub(r'id="([^"]+)_instance"', r'id="R_\1_instance"', x, count=1) for x in rinsts]
-    ricons = [re.sub(r'ypos="(\d+)"', lambda m: 'ypos="%d"' % (int(m.group(1)) + y0 + 40),
-                     re.sub(r'<icon id="([^"]+)" instance="([^"]+)_instance"', r'<icon id="R_\1" instance="R_\2_instance"', x)) for x in ricons]
-    hicon = '   <icon id="%s" instance="%s_instance" xpos="30" ypos="%d" workspace="Workspace01"/>' % (note_id, note_id, y0)
-    save(cfn, ctitle + ' ; mode rapide en bas (icônes R_)', cinsts + [head] + rinsts, cicons + [hicon] + ricons)
-    return len(main), len(opts)
 
 def stf_icon():
     # STF neutre (c0 0, m 0,5 : aucun étirement) : l'icône sert à ouvrir la fenêtre ScreenTransferFunction
@@ -1107,18 +1031,6 @@ def stf_icon():
     x = re.sub(r'<td id="m" value="[^"]*"/>', '<td id="m" value="0.50000"/>', x)
     return name, x
 
-def rapide_common_opts(steps):
-    # finition retirée du rapide (demande de l'utilisateur) : après Etoiles_LRGB, finition normale en haut du fichier (P5 LRGB_ajout_L, P6, P7)
-    return []
-
-def rapide_end(steps):
-    return []
-
-def note_rapide(prefix, v):
-    t = T_RAPIDE[prefix].replace('{V}', v['titre']).replace('{L}', v['L'])
-    t = "Icônes du mode rapide en bas du fichier Conteneurs, toutes préfixées R_ (R_E00, R_E03, R_Opt_… : les numéros cités ici s'entendent avec ce préfixe). " + t
-    return (1, ('Mode_rapide', '   <instance class="NoOperation" version="256" id="Mode_rapide_instance">\n      <description>%s</description>\n   </instance>' % escape(t)), '')
-
 bxt_rgb = lambda: M.bxt('BXT_RGB', False, 0.25, 0.0, 0.50)
 gc_r = lambda: M.instance('GradientCorrection', 'GradientCorrection', {'generateGradientModel': False})   # mode rapide : pas de MARS
 # Quatre variantes de C_L_rapide, dans le même fichier : la 1 au chemin principal, les 3 autres en options (P3).
@@ -1126,23 +1038,6 @@ gc_r = lambda: M.instance('GradientCorrection', 'GradientCorrection', {'generate
 #   etoilesL : luminance de L_stars ajoutée aux étoiles RGB_stars (Etoiles_LRGB) à la fin du conteneur, sinon L_stars fermée.
 # L en mode rapide (choix de l'utilisateur) : SXT TOUJOURS avant l'étirement. C_L_rapide = GC, BXT, SXT linéaire, NXT, puis
 # les 3 GHS à la main, puis Etoiles_LRGB (L_stars linéaire étirée comme les étoiles RGB, luminance ajoutée à RGB_stars).
-def l_rapide(bxt, sxt=True):
-    # LRGB (demande de l'utilisateur) : sxt = False, L garde ses étoiles jusqu'à LRGB
-    return cont('C_L_rapide', [bxt] + ([M.sxt('SXT_lineaire', False)] if sxt else []) + [M.nxt('NXT_L', 0.60, 1)])
-
-def l_ghs(steps):
-    return [(4, *pick(steps, 'GHS_1_premier')), (4, *pick(steps, 'GHS_2_contraste')), (4, *pick(steps, 'GHS_3_fond'))]
-
-L_DESC = "BXT, SXT sur L linéaire, NXT ; L reste linéaire, sans étoiles ; L_stars gardée pour Etoiles_LRGB"
-
-def rgb_rapide():
-    """Chemin principal (choix de l'utilisateur) : SXT sur RGB LINÉAIRE, étoiles étirées par Etoiles_auto (courbe de Star Stretch, amount 6, SCNR)."""
-    # LRGB (demande de l'utilisateur) : étoiles gardées, pas de SXT ni d'Etoiles_auto (SXT après LRGB, dans C_LRGB_rapide)
-    lrgb_c = cont('C_RGB_rapide', [M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), spcc_perso('SPCC'), bxt_rgb(),
-                                    M.nxt('NXT_RGB', 0.80, 1), stat_auto(), GHS_FOND_R()])
-    lha_c = cont('C_RGB_fin_rapide', [M.nxt('NXT_RGB', 0.80, 1), stat_auto(), GHS_FOND_R(), fermer('Fermer_continuum', 'H, R, HaNB')])   # LHaRGB : étoiles gardées aussi (demande de l'utilisateur)
-    return lrgb_c, lha_c
-
 def lineaire_rapide(etapes):
     """P3_rapide (demande de l'utilisateur) : une seule icône qui lance les icônes du chemin principal sur RGB et L (script Lineaire_auto.js)."""
     n, x = script('Lineaire_rapide', '')
@@ -1162,24 +1057,6 @@ def prep_rapide(steps):
     """E00 : renommage, LinearPatternSubtraction (masters mono ouverts), combinaison RGB, en un conteneur."""
     # Solver_auto en dernier (demande de l'utilisateur) : ImageSolver sur toutes les images ; conteneur lancé en Apply Global
     return (1, cont('C_Preparation_rapide', [pick(steps, b)[0] for b in ('Renommer_auto', 'LinearPatternSubtraction', 'Combinaison_RGB')] + [gc_solver('Solver_auto')]), '')
-
-def prep_opts(steps):
-    return [(1, *pick(steps, b)) for b in ('LinearPatternSubtraction', 'Renommer_auto', 'Combinaison_RGB')]
-
-def rapide_lrgb(v, sxt_etire, etoilesL):
-    return [prep_rapide(lrgb), note_rapide('LRGB', v),
-    (2, solver_container(), ''),
-    (3, rgb_rapide()[0], ''),
-    (3, l_rapide(M.bxt('BXT_L', False, 0.25, 0.0, 0.80)), '')] + l_ghs(lrgb) + [(4, script('Etoiles_LRGB', ''), '')] + rapide_end(lrgb)
-
-def rapide_lha(v, sxt_etire, etoilesL):
-    return [prep_rapide(lhargb), note_rapide('LHA', v),
-    (2, solver_container(), ''), (2, gc_r(), "GradientCorrection seul, sur le master R (gardé ouvert pour Continuum_auto), valeurs par défaut."),
-    (3, cont('C_RGB_couleur_rapide', [gc_r(), M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), spcc_perso('SPCC'), bxt_rgb()]), ''),
-    (3, cont('C_H_rapide', [gc_r(), M.bxt('BXT_L_H', False, 0.25, 0.0, 0.80)]), ''),
-    (3, *pick(lhargb, 'Continuum_auto')), (3, *pick(lhargb, 'H_dans_RGB')),
-    (3, rgb_rapide()[1], ''),
-    (3, l_rapide(M.bxt('BXT_L_H', False, 0.25, 0.0, 0.80)), '')] + l_ghs(lhargb) + [(4, script('Etoiles_LRGB', ''), '')] + rapide_end(lhargb)
 
 # Mode rapide rangé dans les colonnes d'options du workflow normal (demande de l'utilisateur) : plus de section R_ en bas.
 # Les icônes identiques au normal (ImageSolver, GradientCorrection, Continuum_auto, H_dans_RGB, GHS, Etoiles_LRGB…) ne sont pas doublées.

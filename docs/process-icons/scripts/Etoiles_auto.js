@@ -21,13 +21,9 @@
 // Installation (Mac et PC) : dans src/scripts/clodoweg de PixInsight.
 // ----------------------------------------------------------------------------
 
-#ifndef CLODOWEG_TURBO
 #feature-id    Etoiles_auto : clodoweg > Étirement des étoiles sans dialogue
-#endif
-#ifndef CLODOWEG_TURBO
 #feature-info  Étire l'image d'étoiles linéaire (RGB_stars) avec la courbe \
    de Star Stretch, sature les couleurs, sans dialogue.
-#endif
 
 #define EA_TITLE "Etoiles auto"
 
@@ -42,7 +38,6 @@ function etoilesAutoMain()
                 parseFloat( eaParam( "satAmount", "1.3" ) ), eaParam( "scnr", "false" ).toLowerCase() == "true" );
 }
 
-// Aussi appelée par Turbo_1.js (inclusion, sans lancer de script).
 function etoilesAuto( id, amount, sat, scnr )
 {
    let w = ImageWindow.windowById( id );
@@ -88,6 +83,4 @@ function etoilesAuto( id, amount, sat, scnr )
    console.noteln( EA_TITLE + " : " + id + " étirée (amount " + amount + ", saturation " + sat + (scnr ? ", SCNR" : "") + ")." );
 }
 
-#ifndef CLODOWEG_TURBO
 etoilesAutoMain();
-#endif

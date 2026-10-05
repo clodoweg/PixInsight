@@ -17,13 +17,9 @@
 // double-clic sur l'icône et Apply Global.
 // ----------------------------------------------------------------------------
 
-#ifndef CLODOWEG_TURBO
 #feature-id    LPS_UnClic : Pattern Correction > LPS un clic
-#endif
-#ifndef CLODOWEG_TURBO
 #feature-info  LinearPatternSubtraction sans dialogue (moteur de Vicent Peris), \
    zone de fond automatique, image active ou toutes les images ouvertes.
-#endif
 
 #include <pjsr/LinearPatternSubtraction.jsh>
 
@@ -169,6 +165,4 @@ function lpsUnClic()
    console.noteln( "<end><cbr>" + LPS_TITLE + " : " + windows.length + " image(s) corrigée(s) en " + T.text );
 }
 
-#ifndef CLODOWEG_TURBO
 lpsUnClic();
-#endif

@@ -15,12 +15,8 @@
 // PixInsight, à côté du dossier PatternCorrection.
 // ----------------------------------------------------------------------------
 
-#ifndef CLODOWEG_TURBO
 #feature-id    Combiner_RGB : clodoweg > Combiner R, G, B
-#endif
-#ifndef CLODOWEG_TURBO
 #feature-info  Combine R, G, B en RGB, copie l'en-tête du rouge et ferme R, G, B.
-#endif
 
 #define CRGB_TITLE "Combiner RGB"
 
@@ -85,6 +81,4 @@ function combinerRGB()
                    ( fermees.length ? ", " + fermees.join( ", " ) + " fermée(s)." : "." ) );
 }
 
-#ifndef CLODOWEG_TURBO
 combinerRGB();
-#endif

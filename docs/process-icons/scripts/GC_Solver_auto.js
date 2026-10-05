@@ -27,13 +27,9 @@
 
 #engine v8
 
-#ifndef CLODOWEG_TURBO
 #feature-id    GC_Solver_auto : clodoweg > GradientCorrection et ImageSolver sur toutes les images
-#endif
-#ifndef CLODOWEG_TURBO
 #feature-info  GradientCorrection sur toutes les images ouvertes, puis \
    ImageSolver sur les images couleur (ou toutes).
-#endif
 
 #define USE_SOLVER_LIBRARY true
 #define SETTINGS_MODULE "ImageSolver"
@@ -134,6 +130,4 @@ function mainGCS( opts )
    bilan.forEach( function( l ) { console.noteln( "   " + l ); } );
 }
 
-#ifndef CLODOWEG_TURBO
 mainGCS();
-#endif

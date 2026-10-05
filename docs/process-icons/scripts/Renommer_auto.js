@@ -17,13 +17,9 @@
 // traitées.
 // ----------------------------------------------------------------------------
 
-#ifndef CLODOWEG_TURBO
 #feature-id    Renommer_auto : clodoweg > Renommer les masters
-#endif
-#ifndef CLODOWEG_TURBO
 #feature-info  Renomme les masters ouverts L, R, G, B, H, O, S d'après le \
    mot-clé FILTER (ou le nom du fichier).
-#endif
 
 #define REN_TITLE "Renommer auto"
 
@@ -133,6 +129,4 @@ function renommerAuto()
    console.noteln( "<end><cbr>" + REN_TITLE + " : " + done + " vue(s) renommée(s), " + skipped + " à vérifier." );
 }
 
-#ifndef CLODOWEG_TURBO
 renommerAuto();
-#endif
