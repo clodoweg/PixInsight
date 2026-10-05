@@ -35,6 +35,7 @@
 #define SETTINGS_MODULE "ImageSolver"
 #include "../ImageSolver/ImageSolver.js"
 
+#define CLODOWEG_V8
 #include "clodoweg_ui.jsh"
 
 var GCS_TITLE = "GC_Solver_auto";

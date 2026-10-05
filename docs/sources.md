@@ -606,4 +606,6 @@ Question de l'utilisateur : « quel est la difference entre utiliser MAS ou GHS 
 
 - Export_TIFF ne ferme plus aucune vue (paramètre fermer retiré du script, de la fenêtre et des icônes) (5 octobre 2026). Demande de l'utilisateur : « enlève le fait de tout fermer dans export tiff ».
 
+- Retour de l'utilisateur (5 octobre 2026) : GC_Solver_auto en erreur « Identifier 'HorizontalSizer' has already been declared » (moteur v8) ; corrigé : variante v8 du fichier commun clodoweg_ui.jsh (CLODOWEG_V8), d'après ImageSolverDialog.js du PJSR (class extends Dialog, TextAlignment).
+
 Non vérifié : réglages de Ron Brecher et Dave Cosgrove lus sur leurs pages (pratique d'imageurs, pas de documentation éditeur) ; plages BXT pour galaxies (Sharpen Stars 0,15–0,20, Nonstellar 0,20–0,35) issues d'un résumé de forum ; paramètres de MAS d'après Starlust Astroguide, l'article PixInsight n'ayant pas pu être lu ; version de l'instance GraXpert (256 supposé ; MAS confirmé par l'utilisateur le 5 octobre 2026) ; chemins des scripts VeraLux et MKStarReduction (icônes-notes) ; formule H_dans_RGB_v2 (part de 0,2 pour Hβ, choix de l'utilisateur à tester).

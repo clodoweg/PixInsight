@@ -19,9 +19,19 @@
 #ifndef CLODOWEG_UI_JSH
 #define CLODOWEG_UI_JSH
 
+// Moteur v8 (#engine v8, scripts qui incluent ImageSolver) : définir CLODOWEG_V8
+// AVANT d'inclure ce fichier. En v8, HorizontalSizer et VerticalSizer existent
+// déjà (pas de pjsr/Sizer.jsh, sinon « Identifier 'HorizontalSizer' has already
+// been declared »), l'alignement s'écrit TextAlignment.Right et la fenêtre se
+// construit avec class ... extends Dialog.
+#ifdef CLODOWEG_V8
+#define CW_ALIGN_RIGHT (TextAlignment.Right | TextAlignment.VertCenter)
+#else
 #include <pjsr/Sizer.jsh>
 #include <pjsr/TextAlign.jsh>
 #include <pjsr/NumericControl.jsh>
+#define CW_ALIGN_RIGHT (TextAlign_Right | TextAlign_VertCenter)
+#endif
 
 function cwParam( key, value )
 {
@@ -119,33 +129,30 @@ function cwRun( title, run )
 // Méthodes : numeric, check, edit, viewList, combo, info, group / endGroup,
 // button (bouton en bas), onExport (paramètres -> Parameters.set), validate
 // (renvoie un message d'erreur ou ""), finish( texte du bouton OK ).
-function CWDialog( title, help, longestLabel )
+function cwBuildDialog( dlg, title, help, longestLabel )
 {
-   this.__base__ = Dialog;
-   this.__base__();
-   let dlg = this;
-   this.windowTitle = title;
-   this.labelWidth = this.font.width( longestLabel || "Paramètre :" ) + 10;
-   this.onExport = null;
-   this.validate = null;
-   this.extraButtons = [];
+   dlg.windowTitle = title;
+   dlg.labelWidth = dlg.font.width( longestLabel || "Paramètre :" ) + 10;
+   dlg.onExport = null;
+   dlg.validate = null;
+   dlg.extraButtons = [];
 
-   this.helpLabel = new Label( this );
-   this.helpLabel.wordWrapping = true;
-   this.helpLabel.useRichText = true;
-   this.helpLabel.minWidth = 480;
-   this.helpLabel.text = help;
+   dlg.helpLabel = new Label( dlg );
+   dlg.helpLabel.wordWrapping = true;
+   dlg.helpLabel.useRichText = true;
+   dlg.helpLabel.minWidth = 480;
+   dlg.helpLabel.text = help;
 
-   this.rows = new VerticalSizer;
-   this.rows.spacing = 6;
-   this.target = this.rows;
+   dlg.rows = new VerticalSizer;
+   dlg.rows.spacing = 6;
+   dlg.target = dlg.rows;
 
    function labelFor( text )
    {
       let l = new Label( dlg );
       l.text = text;
       l.minWidth = dlg.labelWidth;
-      l.textAlignment = TextAlign_Right | TextAlign_VertCenter;
+      l.textAlignment = CW_ALIGN_RIGHT;
       return l;
    }
 
@@ -160,7 +167,7 @@ function CWDialog( title, help, longestLabel )
       dlg.target.add( s );
    }
 
-   this.group = function( title )
+   dlg.group = function( title )
    {
       let g = new GroupBox( dlg );
       g.title = title;
@@ -172,12 +179,12 @@ function CWDialog( title, help, longestLabel )
       return g;
    };
 
-   this.endGroup = function()
+   dlg.endGroup = function()
    {
       dlg.target = dlg.rows;
    };
 
-   this.numeric = function( text, lo, hi, prec, value, tip, onChange )
+   dlg.numeric = function( text, lo, hi, prec, value, tip, onChange )
    {
       let c = new NumericControl( dlg );
       c.label.text = text;
@@ -194,7 +201,7 @@ function CWDialog( title, help, longestLabel )
       return c;
    };
 
-   this.check = function( text, checked, tip, onCheck )
+   dlg.check = function( text, checked, tip, onCheck )
    {
       let c = new CheckBox( dlg );
       c.text = text;
@@ -209,7 +216,7 @@ function CWDialog( title, help, longestLabel )
       return c;
    };
 
-   this.edit = function( text, value, tip, onChange )
+   dlg.edit = function( text, value, tip, onChange )
    {
       let e = new Edit( dlg );
       e.text = value;
@@ -219,7 +226,7 @@ function CWDialog( title, help, longestLabel )
       return e;
    };
 
-   this.viewList = function( text, view, tip, onSelect )
+   dlg.viewList = function( text, view, tip, onSelect )
    {
       let v = new ViewList( dlg );
       v.getMainViews();
@@ -231,7 +238,7 @@ function CWDialog( title, help, longestLabel )
       return v;
    };
 
-   this.combo = function( text, items, index, tip, onChange )
+   dlg.combo = function( text, items, index, tip, onChange )
    {
       let c = new ComboBox( dlg );
       for ( let k = 0; k < items.length; ++k )
@@ -243,7 +250,7 @@ function CWDialog( title, help, longestLabel )
       return c;
    };
 
-   this.info = function( text )
+   dlg.info = function( text )
    {
       let l = new Label( dlg );
       l.wordWrapping = true;
@@ -253,7 +260,7 @@ function CWDialog( title, help, longestLabel )
       return l;
    };
 
-   this.button = function( text, tip, onClick )
+   dlg.button = function( text, tip, onClick )
    {
       let b = new PushButton( dlg );
       b.text = text;
@@ -263,7 +270,7 @@ function CWDialog( title, help, longestLabel )
       return b;
    };
 
-   this.finish = function( okText )
+   dlg.finish = function( okText )
    {
       let bar = new HorizontalSizer;
       bar.spacing = 6;
@@ -278,7 +285,7 @@ function CWDialog( title, help, longestLabel )
             this.hasFocus = true;
             this.pushed = false;
             dlg.onExport();
-            this.dialog.newInstance();
+            dlg.newInstance();
          };
          bar.add( ni );
       }
@@ -312,6 +319,23 @@ function CWDialog( title, help, longestLabel )
       dlg.adjustToContents();
    };
 }
+#ifdef CLODOWEG_V8
+var CWDialog = class extends Dialog
+{
+   constructor( title, help, longestLabel )
+   {
+      super();
+      cwBuildDialog( this, title, help, longestLabel );
+   }
+};
+#else
+function CWDialog( title, help, longestLabel )
+{
+   this.__base__ = Dialog;
+   this.__base__();
+   cwBuildDialog( this, title, help, longestLabel );
+}
 CWDialog.prototype = new Dialog;
+#endif
 
 #endif
