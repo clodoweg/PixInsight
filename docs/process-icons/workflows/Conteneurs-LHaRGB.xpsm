@@ -1795,94 +1795,36 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="lunar_planetary" value="false"/>
       <parameter id="overlap" value="0.20"/>
    </instance>
-   <instance class="ProcessContainer" id="E12_C_Continuum_instance">
-      <description>LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;CONTENEUR : Continuum_PCS, HaNB_PCS, Fermer_H_sub.&#10;&#10;SUR : n'importe quelle image (H et R ouvertes, linéaires, alignées) : PhotometricContinuumSubtraction sans fenêtre (H_sub), recopié en HaNB, H_sub fermée.&#10;&#10;Double-clic sur le conteneur pour voir ou changer les réglages de chaque étape.</description>
-      <instance class="Script" version="256" enabled="true">
-         <parameter id="filePath">$PXI_SRCDIR/scripts/NightPhotons/PhotometricContinuumSubtraction.js</parameter>
-         <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="8">
-            <tr>
-               <td id="id">NarrowbandStarViewID</td>
-               <td id="value">H</td>
-            </tr>
-            <tr>
-               <td id="id">BroadbandChannels</td>
-               <td id="value">R</td>
-            </tr>
-            <tr>
-               <td id="id">StarlessEnabled</td>
-               <td id="value">false</td>
-            </tr>
-            <tr>
-               <td id="id">StarRemovalMethod</td>
-               <td id="value">1</td>
-            </tr>
-            <tr>
-               <td id="id">MaximumStars</td>
-               <td id="value">400</td>
-            </tr>
-            <tr>
-               <td id="id">MaximumPeak</td>
-               <td id="value">0.8</td>
-            </tr>
-            <tr>
-               <td id="id">GeneratePlot</td>
-               <td id="value">false</td>
-            </tr>
-            <tr>
-               <td id="id">KeepComposite</td>
-               <td id="value">false</td>
-            </tr>
-         </table>
-         <parameter id="information"></parameter>
-      </instance>
-      <instance class="PixelMath" version="256" enabled="true">
-         <parameter id="expression">H_sub</parameter>
-         <parameter id="expression1"></parameter>
-         <parameter id="expression2"></parameter>
-         <parameter id="expression3"></parameter>
-         <parameter id="useSingleExpression" value="true"/>
-         <parameter id="symbols"></parameter>
-         <parameter id="clearImageCacheAndExit" value="false"/>
-         <parameter id="cacheGeneratedImages" value="false"/>
-         <parameter id="generateOutput" value="true"/>
-         <parameter id="singleThreaded" value="false"/>
-         <parameter id="optimization" value="true"/>
-         <parameter id="use64BitWorkingImage" value="false"/>
-         <parameter id="rescale" value="false"/>
-         <parameter id="rescaleLower" value="0"/>
-         <parameter id="rescaleUpper" value="1"/>
-         <parameter id="truncate" value="true"/>
-         <parameter id="truncateLower" value="0"/>
-         <parameter id="truncateUpper" value="1"/>
-         <parameter id="createNewImage" value="true"/>
-         <parameter id="showNewImage" value="true"/>
-         <parameter id="newImageId">HaNB</parameter>
-         <parameter id="newImageWidth" value="0"/>
-         <parameter id="newImageHeight" value="0"/>
-         <parameter id="newImageAlpha" value="false"/>
-         <parameter id="newImageColorSpace" value="Gray"/>
-         <parameter id="newImageSampleFormat" value="SameAsTarget"/>
-         <table id="outputData" rows="0"/>
-      </instance>
-      <instance class="Script" version="256" enabled="true">
-         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
-         <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="2">
-            <tr>
-               <td id="id">views</td>
-               <td id="value">H_sub</td>
-            </tr>
-            <tr>
-               <td id="id">dialogue</td>
-               <td id="value">false</td>
-            </tr>
-         </table>
-         <parameter id="information"></parameter>
-      </instance>
+   <instance class="Script" version="256" id="E12_Continuum_auto_instance">
+      <description>LANCEMENT : double-clic sur l'icône, puis Apply Global. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.&#10;&#10;PRÉRÉGLÉ : script SetiAstro ContinuumSubtraction.js : Starry, sortie linéaire seule, pas de réduction de bruit ; coefficient calculé automatiquement ; crée HaNB (gris, linéaire).&#10;&#10;À RÉGLER : double-clic puis Apply Global ; dans le dialogue : Ha = H, Red (or RGB) = R (ou le RGB calibré), le reste vide ; Execute.&#10;&#10;SI :&#10;- vue créée HaNB1 -&gt; renomme-la HaNB (ou ferme l'ancienne HaNB avant)&#10;- étoiles ou disque encore visibles dans HaNB -&gt; relance avec Starless&#10;- cœur rougi dans l'image finale -&gt; baisse w dans H_dans_RGB</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/ContinuumSubtraction.js</parameter>
+      <parameter id="md5sum">e795144823fb111101f269c22eaaf8cf</parameter>
+      <table id="parameters" rows="5">
+         <tr>
+            <td id="id">applyNoiseReduction</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">noiseReductionMethod</td>
+            <td id="value">NoiseXterminator</td>
+         </tr>
+         <tr>
+            <td id="id">starrySelected</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">outputLinearImageOnly</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">aiModel</td>
+            <td id="value">2.0.0</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
    </instance>
    <instance class="PixelMath" version="256" id="E13_Ha_screen_instance">
-      <description>PRÉRÉGLÉ : PixelMath sur le RGB, même calcul que CombineHaWithRGB (Amount Q = 2,0, Beta 0) : R' = combine(R, Q·(HaNB − méd(HaNB)) au-dessus de la médiane, screen) ; G et B inchangés ; seule différence : la courbe Background 0,015 du script, qui change le fond de HaNB de moins de 1,5 % de sa médiane, n'est pas faite.&#10;&#10;À RÉGLER : glisse sur le RGB linéaire après C_Continuum (HaNB ouverte) ; ensuite C_RGB_bruit.&#10;&#10;SI :&#10;- régions HII trop rouges -&gt; double-clic, Q = 1,5&#10;- trop discrètes -&gt; Q = 2,5&#10;- rose plutôt que rouge -&gt; B : $T[2] + 0.2*Q*iif(HaNB &gt; med(HaNB), HaNB - med(HaNB), 0)&#10;- fond rouge et bruité -&gt; CombineHaWithRGB (options) avec Background, ou NXT sur HaNB avant</description>
+      <description>PRÉRÉGLÉ : PixelMath sur le RGB, même calcul que CombineHaWithRGB (Amount Q = 2,0, Beta 0) : R' = combine(R, Q·(HaNB − méd(HaNB)) au-dessus de la médiane, screen) ; G et B inchangés ; seule différence : la courbe Background 0,015 du script, qui change le fond de HaNB de moins de 1,5 % de sa médiane, n'est pas faite.&#10;&#10;À RÉGLER : glisse sur le RGB linéaire après Continuum_auto (HaNB ouverte) ; ensuite C_RGB_bruit.&#10;&#10;SI :&#10;- régions HII trop rouges -&gt; double-clic, Q = 1,5&#10;- trop discrètes -&gt; Q = 2,5&#10;- rose plutôt que rouge -&gt; B : $T[2] + 0.2*Q*iif(HaNB &gt; med(HaNB), HaNB - med(HaNB), 0)&#10;- fond rouge et bruité -&gt; CombineHaWithRGB (options) avec Background, ou NXT sur HaNB avant</description>
       <parameter id="expression">Q = 2.0;
 combine($T[0], Q*iif(HaNB &gt; med(HaNB), HaNB - med(HaNB), 0), op_screen())</parameter>
       <parameter id="expression1">$T[1]</parameter>
@@ -2045,34 +1987,6 @@ combine($T[0], Q*iif(HaNB &gt; med(HaNB), HaNB - med(HaNB), 0), op_screen())</pa
       </table>
       <parameter id="information"></parameter>
    </instance>
-   <instance class="Script" version="256" id="Opt_Continuum_auto_instance">
-      <description>OPTION — à la place de C_Continuum : continuum par le script SetiAstro (fenêtre à remplir : Ha = H, Red = R), crée HaNB.&#10;&#10;LANCEMENT : double-clic sur l'icône, puis Apply Global. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.&#10;&#10;PRÉRÉGLÉ : script SetiAstro ContinuumSubtraction.js : Starry, sortie linéaire seule, pas de réduction de bruit ; coefficient calculé automatiquement ; crée HaNB (gris, linéaire).&#10;&#10;À RÉGLER : double-clic puis Apply Global ; dans le dialogue : Ha = H, Red (or RGB) = R (ou le RGB calibré), le reste vide ; Execute.&#10;&#10;SI :&#10;- vue créée HaNB1 -&gt; renomme-la HaNB (ou ferme l'ancienne HaNB avant)&#10;- étoiles ou disque encore visibles dans HaNB -&gt; relance avec Starless&#10;- cœur rougi dans l'image finale -&gt; baisse w dans H_dans_RGB</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/ContinuumSubtraction.js</parameter>
-      <parameter id="md5sum">e795144823fb111101f269c22eaaf8cf</parameter>
-      <table id="parameters" rows="5">
-         <tr>
-            <td id="id">applyNoiseReduction</td>
-            <td id="value">false</td>
-         </tr>
-         <tr>
-            <td id="id">noiseReductionMethod</td>
-            <td id="value">NoiseXterminator</td>
-         </tr>
-         <tr>
-            <td id="id">starrySelected</td>
-            <td id="value">true</td>
-         </tr>
-         <tr>
-            <td id="id">outputLinearImageOnly</td>
-            <td id="value">true</td>
-         </tr>
-         <tr>
-            <td id="id">aiModel</td>
-            <td id="value">2.0.0</td>
-         </tr>
-      </table>
-      <parameter id="information"></parameter>
-   </instance>
    <instance class="Script" version="256" id="Opt_CombineHaWithRGB_instance">
       <description>OPTION — à la place de Ha_screen, pour l'aperçu et la réduction du bruit de H (Background, Sigma) : double-clic puis Apply Global, fenêtre du script (RGB, H Alpha = HaNB)&#10;Ne pas le glisser (erreur « already being processed »).&#10;&#10;LANCEMENT : glisse l'icône sur l'image.&#10;&#10;PRÉRÉGLÉ : script CombineHaWithRGB (PixInsight Toolbox, Jürgen Terpe) : H Alpha = HaNB, Amount 2,0, Beta 0, Background 0,015, Sigma 0, Linear Image coché, canaux liés.&#10;&#10;À RÉGLER : option, à la place de Ha_screen : double-clic puis Apply Global : fenêtre du script avec aperçu (choisis RGB et H Alpha = HaNB) ; ne pas glisser l'icône (le script échoue : « The image is already being processed ») ; ensuite C_RGB_bruit.&#10;&#10;SI :&#10;- régions HII trop rouges -&gt; Amount 1,5&#10;- trop discrètes -&gt; Amount 2,5&#10;- rose plutôt que rouge -&gt; Beta 0,1 à 0,2&#10;- bruit rouge dans le fond -&gt; Background plus haut, ou Sigma 1</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/Toolbox/CombineHaToRGB.js</parameter>
@@ -2114,7 +2028,7 @@ combine($T[0], Q*iif(HaNB &gt; med(HaNB), HaNB - med(HaNB), 0), op_screen())</pa
       <parameter id="information"></parameter>
    </instance>
    <instance class="PixelMath" version="256" id="Opt_H_dans_RGB_instance">
-      <description>OPTION — à la place de Ha_screen : injection simple R + w·HaNB (PixelMath), sur le RGB linéaire après Continuum_auto.&#10;&#10;PRÉRÉGLÉ : w = 1,0 ; R' = R + w·HaNB.&#10;&#10;À RÉGLER : option, à la place de Ha_screen : glisse sur le RGB linéaire calibré, après C_Continuum ; w entre 0,5 et 2 ; ensuite C_RGB_bruit.&#10;&#10;SI :&#10;- régions HII rouge vif -&gt; baisse w&#10;- invisibles -&gt; monte w</description>
+      <description>OPTION — à la place de Ha_screen : injection simple R + w·HaNB (PixelMath), sur le RGB linéaire après Continuum_auto.&#10;&#10;PRÉRÉGLÉ : w = 1,0 ; R' = R + w·HaNB.&#10;&#10;À RÉGLER : option, à la place de Ha_screen : glisse sur le RGB linéaire calibré, après Continuum_auto ; w entre 0,5 et 2 ; ensuite C_RGB_bruit.&#10;&#10;SI :&#10;- régions HII rouge vif -&gt; baisse w&#10;- invisibles -&gt; monte w</description>
       <parameter id="expression">w = 1.0;
 $T[0] + w*HaNB</parameter>
       <parameter id="expression1">$T[1]</parameter>
@@ -2244,10 +2158,10 @@ max($T, HaNB*a)</parameter>
       <parameter id="interaction" value="SeparateChannels"/>
    </instance>
    <instance class="NoOperation" version="256" id="P3_rapide_instance">
-      <description>MODE RAPIDE, phase 3 — Linéaire : R_Lineaire_rapide (double-clic puis Apply Global) à la place de C_RGB_couleur, BXT_L_H, NXT_L et SXT_L_lineaire ; puis R_C_Ha_rapide glissé sur RGB à la place de C_Continuum, Ha_screen et C_RGB_bruit : continuum (PhotometricContinuumSubtraction, sans fenêtre), HaNB injecté en screen, NXT, H, R et HaNB fermées. Icône de repère, sans effet.</description>
+      <description>MODE RAPIDE, phase 3 — Linéaire : R_Lineaire_rapide (double-clic puis Apply Global) à la place de C_RGB_couleur, BXT_L_H, NXT_L et SXT_L_lineaire ; puis E12_Continuum_auto À LA MAIN (fenêtre du script) ; puis R_C_Ha_rapide glissé sur RGB à la place de Ha_screen et C_RGB_bruit : HaNB injecté en screen, NXT, H, R et HaNB fermées. Icône de repère, sans effet.</description>
    </instance>
    <instance class="Script" version="256" id="R_Lineaire_rapide_instance">
-      <description>MODE RAPIDE, à la place de la phase 3 du chemin principal : double-clic puis Apply Global ; lance les icônes du chemin principal sur RGB et L (LRGB : C_RGB_lineaire et C_L_lineaire ; LHaRGB : C_RGB_couleur, BXT_L_H sur L et H, NXT_L) ; RGB et L restent linéaires, avec leurs étoiles.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Lineaire_auto.js, etapes = C_RGB_couleur&gt;RGB ; BXT_L_H&gt;L,H ; NXT_L&gt;L ; SXT_L_lineaire&gt;L : C_RGB_couleur (BXT Correct Only, SPCC, BXT) sur RGB, BXT (Nonstellar 0,80) sur L et H, NXT 0,60 sur L, SXT sur L (L sans étoiles) ; images linéaires.&#10;&#10;À RÉGLER : double-clic puis Apply Global, après R_Gradient_auto_rapide ; Conteneurs-LHaRGB chargé ; ensuite R_C_Ha_rapide glissé sur RGB, puis GHS_1_premier sur L.&#10;&#10;SI :&#10;- H_dans_L voulu -&gt; il se fait après (NXT_L déjà passé sur L)&#10;- une étape échoue -&gt; la console dit laquelle</description>
+      <description>MODE RAPIDE, à la place de la phase 3 du chemin principal : double-clic puis Apply Global ; lance les icônes du chemin principal sur RGB et L (LRGB : C_RGB_lineaire et C_L_lineaire ; LHaRGB : C_RGB_couleur, BXT_L_H sur L et H, NXT_L) ; RGB et L restent linéaires, avec leurs étoiles.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Lineaire_auto.js, etapes = C_RGB_couleur&gt;RGB ; BXT_L_H&gt;L,H ; NXT_L&gt;L ; SXT_L_lineaire&gt;L : C_RGB_couleur (BXT Correct Only, SPCC, BXT) sur RGB, BXT (Nonstellar 0,80) sur L et H, NXT 0,60 sur L, SXT sur L (L sans étoiles) ; images linéaires.&#10;&#10;À RÉGLER : double-clic puis Apply Global, après R_Gradient_auto_rapide ; Conteneurs-LHaRGB chargé ; ensuite E12_Continuum_auto à la main, puis R_C_Ha_rapide glissé sur RGB, puis GHS_1_premier sur L.&#10;&#10;SI :&#10;- H_dans_L voulu -&gt; il se fait après (NXT_L déjà passé sur L)&#10;- une étape échoue -&gt; la console dit laquelle</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="1">
@@ -2259,90 +2173,7 @@ max($T, HaNB*a)</parameter>
       <parameter id="information"></parameter>
    </instance>
    <instance class="ProcessContainer" id="R_C_Ha_rapide_instance">
-      <description>MODE RAPIDE, à la place de C_Continuum, Ha_screen et C_RGB_bruit : après R_Lineaire_rapide, glisse sur RGB linéaire (H et R ouvertes).&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : PhotometricContinuumSubtraction (H, R, sans fenêtre) -&gt; HaNB, Ha_screen (R en screen avec 2 × HaNB), NXT 0,80, puis H, R et HaNB fermées (= C_Continuum, Ha_screen, C_RGB_bruit).&#10;&#10;À RÉGLER : après R_Lineaire_rapide (H, R, RGB linéaires ouvertes) : glisse sur le RGB ; ensuite GHS_1_premier sur L ; dépôt NightPhotons installé.&#10;&#10;SI :&#10;- régions HII trop rouges ou trop discrètes -&gt; double-clic sur le conteneur, Ha_screen : Q = 1,5 ou 2,5&#10;- H_dans_L voulu -&gt; chemin principal (C_Continuum, H_dans_L, Ha_screen, C_RGB_bruit) à la place&#10;- « No stars detected » -&gt; Continuum_PCS : MaximumPeak 0,9</description>
-      <instance class="Script" version="256" enabled="true">
-         <parameter id="filePath">$PXI_SRCDIR/scripts/NightPhotons/PhotometricContinuumSubtraction.js</parameter>
-         <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="8">
-            <tr>
-               <td id="id">NarrowbandStarViewID</td>
-               <td id="value">H</td>
-            </tr>
-            <tr>
-               <td id="id">BroadbandChannels</td>
-               <td id="value">R</td>
-            </tr>
-            <tr>
-               <td id="id">StarlessEnabled</td>
-               <td id="value">false</td>
-            </tr>
-            <tr>
-               <td id="id">StarRemovalMethod</td>
-               <td id="value">1</td>
-            </tr>
-            <tr>
-               <td id="id">MaximumStars</td>
-               <td id="value">400</td>
-            </tr>
-            <tr>
-               <td id="id">MaximumPeak</td>
-               <td id="value">0.8</td>
-            </tr>
-            <tr>
-               <td id="id">GeneratePlot</td>
-               <td id="value">false</td>
-            </tr>
-            <tr>
-               <td id="id">KeepComposite</td>
-               <td id="value">false</td>
-            </tr>
-         </table>
-         <parameter id="information"></parameter>
-      </instance>
-      <instance class="PixelMath" version="256" enabled="true">
-         <parameter id="expression">H_sub</parameter>
-         <parameter id="expression1"></parameter>
-         <parameter id="expression2"></parameter>
-         <parameter id="expression3"></parameter>
-         <parameter id="useSingleExpression" value="true"/>
-         <parameter id="symbols"></parameter>
-         <parameter id="clearImageCacheAndExit" value="false"/>
-         <parameter id="cacheGeneratedImages" value="false"/>
-         <parameter id="generateOutput" value="true"/>
-         <parameter id="singleThreaded" value="false"/>
-         <parameter id="optimization" value="true"/>
-         <parameter id="use64BitWorkingImage" value="false"/>
-         <parameter id="rescale" value="false"/>
-         <parameter id="rescaleLower" value="0"/>
-         <parameter id="rescaleUpper" value="1"/>
-         <parameter id="truncate" value="true"/>
-         <parameter id="truncateLower" value="0"/>
-         <parameter id="truncateUpper" value="1"/>
-         <parameter id="createNewImage" value="true"/>
-         <parameter id="showNewImage" value="true"/>
-         <parameter id="newImageId">HaNB</parameter>
-         <parameter id="newImageWidth" value="0"/>
-         <parameter id="newImageHeight" value="0"/>
-         <parameter id="newImageAlpha" value="false"/>
-         <parameter id="newImageColorSpace" value="Gray"/>
-         <parameter id="newImageSampleFormat" value="SameAsTarget"/>
-         <table id="outputData" rows="0"/>
-      </instance>
-      <instance class="Script" version="256" enabled="true">
-         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
-         <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="2">
-            <tr>
-               <td id="id">views</td>
-               <td id="value">H_sub</td>
-            </tr>
-            <tr>
-               <td id="id">dialogue</td>
-               <td id="value">false</td>
-            </tr>
-         </table>
-         <parameter id="information"></parameter>
-      </instance>
+      <description>MODE RAPIDE, à la place de Ha_screen et C_RGB_bruit : après Continuum_auto (fait à la main, HaNB ouverte), glisse sur RGB linéaire.&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : Ha_screen (R en screen avec 2 × (HaNB − méd HaNB), calcul de CombineHaWithRGB), NXT 0,80, puis H, R et HaNB fermées (= Ha_screen et C_RGB_bruit).&#10;&#10;À RÉGLER : après R_Lineaire_rapide puis E12_Continuum_auto à la main (HaNB créée) : glisse sur le RGB linéaire ; ensuite GHS_1_premier sur L.&#10;&#10;SI :&#10;- régions HII trop rouges ou trop discrètes -&gt; double-clic sur le conteneur, Ha_screen : Q = 1,5 ou 2,5&#10;- H_dans_L voulu -&gt; fais-le AVANT ce conteneur (il ferme HaNB)&#10;- vue créée HaNB1 par Continuum_auto -&gt; renomme-la HaNB avant</description>
       <instance class="PixelMath" version="256" enabled="true">
          <parameter id="expression">Q = 2.0;
    combine($T[0], Q*iif(HaNB &gt; med(HaNB), HaNB - med(HaNB), 0), op_screen())</parameter>
@@ -5536,23 +5367,22 @@ max($T,f1)</parameter>
    <icon id="P3_Lineaire" instance="P3_Lineaire_instance" xpos="430" ypos="20" workspace="Workspace01"/>
    <icon id="E10_C_RGB_couleur" instance="E10_C_RGB_couleur_instance" xpos="430" ypos="64" workspace="Workspace01"/>
    <icon id="E11_BXT_L_H" instance="E11_BXT_L_H_instance" xpos="430" ypos="94" workspace="Workspace01"/>
-   <icon id="E12_C_Continuum" instance="E12_C_Continuum_instance" xpos="430" ypos="124" workspace="Workspace01"/>
+   <icon id="E12_Continuum_auto" instance="E12_Continuum_auto_instance" xpos="430" ypos="124" workspace="Workspace01"/>
    <icon id="E13_Ha_screen" instance="E13_Ha_screen_instance" xpos="430" ypos="154" workspace="Workspace01"/>
    <icon id="E14_C_RGB_bruit" instance="E14_C_RGB_bruit_instance" xpos="430" ypos="184" workspace="Workspace01"/>
    <icon id="E15_NXT_L" instance="E15_NXT_L_instance" xpos="430" ypos="214" workspace="Workspace01"/>
    <icon id="E16_SXT_L_lineaire" instance="E16_SXT_L_lineaire_instance" xpos="430" ypos="244" workspace="Workspace01"/>
    <icon id="P3_options" instance="P3_options_instance" xpos="430" ypos="290" workspace="Workspace01"/>
    <icon id="Opt_Find_Background" instance="Opt_Find_Background_instance" xpos="430" ypos="324" workspace="Workspace01"/>
-   <icon id="Opt_Continuum_auto" instance="Opt_Continuum_auto_instance" xpos="430" ypos="354" workspace="Workspace01"/>
-   <icon id="Opt_CombineHaWithRGB" instance="Opt_CombineHaWithRGB_instance" xpos="430" ypos="384" workspace="Workspace01"/>
-   <icon id="Opt_H_dans_RGB" instance="Opt_H_dans_RGB_instance" xpos="430" ypos="414" workspace="Workspace01"/>
-   <icon id="Opt_H_dans_RGB_v2" instance="Opt_H_dans_RGB_v2_instance" xpos="430" ypos="444" workspace="Workspace01"/>
-   <icon id="Opt_H_dans_L" instance="Opt_H_dans_L_instance" xpos="430" ypos="474" workspace="Workspace01"/>
-   <icon id="Opt_NBRGBCombination" instance="Opt_NBRGBCombination_instance" xpos="430" ypos="504" workspace="Workspace01"/>
-   <icon id="Opt_STF" instance="Opt_STF_instance" xpos="430" ypos="534" workspace="Workspace01"/>
-   <icon id="P3_rapide" instance="P3_rapide_instance" xpos="430" ypos="580" workspace="Workspace01"/>
-   <icon id="R_Lineaire_rapide" instance="R_Lineaire_rapide_instance" xpos="430" ypos="614" workspace="Workspace01"/>
-   <icon id="R_C_Ha_rapide" instance="R_C_Ha_rapide_instance" xpos="430" ypos="644" workspace="Workspace01"/>
+   <icon id="Opt_CombineHaWithRGB" instance="Opt_CombineHaWithRGB_instance" xpos="430" ypos="354" workspace="Workspace01"/>
+   <icon id="Opt_H_dans_RGB" instance="Opt_H_dans_RGB_instance" xpos="430" ypos="384" workspace="Workspace01"/>
+   <icon id="Opt_H_dans_RGB_v2" instance="Opt_H_dans_RGB_v2_instance" xpos="430" ypos="414" workspace="Workspace01"/>
+   <icon id="Opt_H_dans_L" instance="Opt_H_dans_L_instance" xpos="430" ypos="444" workspace="Workspace01"/>
+   <icon id="Opt_NBRGBCombination" instance="Opt_NBRGBCombination_instance" xpos="430" ypos="474" workspace="Workspace01"/>
+   <icon id="Opt_STF" instance="Opt_STF_instance" xpos="430" ypos="504" workspace="Workspace01"/>
+   <icon id="P3_rapide" instance="P3_rapide_instance" xpos="430" ypos="550" workspace="Workspace01"/>
+   <icon id="R_Lineaire_rapide" instance="R_Lineaire_rapide_instance" xpos="430" ypos="584" workspace="Workspace01"/>
+   <icon id="R_C_Ha_rapide" instance="R_C_Ha_rapide_instance" xpos="430" ypos="614" workspace="Workspace01"/>
    <icon id="P4_Etirement" instance="P4_Etirement_instance" xpos="608" ypos="20" workspace="Workspace01"/>
    <icon id="E17_GHS_1_premier" instance="E17_GHS_1_premier_instance" xpos="608" ypos="64" workspace="Workspace01"/>
    <icon id="E18_GHS_2_contraste" instance="E18_GHS_2_contraste_instance" xpos="608" ypos="94" workspace="Workspace01"/>

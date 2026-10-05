@@ -44,7 +44,6 @@ GraXpertModule (process)| DeepSkyForge (pont vers GraXpert)| Retrait du gradient
 PixInsight Toolbox (CombineHaWithRGB…)Scripts| Jürgen Terpe| Icône de test CombineHaWithRGB (H dans RGB)| `https://www.ideviceapps.de/PixInsight/Utilities/`  
 VeraLux SuiteScript| Lucas Svaz (portage de VeraLux, Riccardo Paterniti)| (icône de test VeraLux_HMS supprimée)| `https://raw.githubusercontent.com/lucasssvaz/VeraLuxPorting/main/dist/`  
 MK Star ReductionScript| M. H. Kim| (icône de test MKStarReduction supprimée)| Site de l'auteur : https://mhkastro.github.io/MKStarReduction/ (dépôt non vérifié)  
-PhotometricContinuumSubtractionScript| Charles Hagen (NightPhotons)| LHaRGB : continuum de H sans fenêtre (icône Continuum_PCS dans C_Continuum et R_C_Ha_rapide). Paquet pour 1.9.4 à 1.9.10| `https://raw.githubusercontent.com/charleshagen/pixinsight/main/updates/`  
 CorrectMagentaStarsScript| Roberto Sartori & Edoardo Luca Radice| Étoiles magenta en SHO. Déjà livré avec PixInsight : Script › Utilities| Aucun dépôt à ajouter  
 Foraxx dynamiqueFormule PixelMath| Communauté| Palette SHO dynamique| Aucun dépôt (formule à copier)
 

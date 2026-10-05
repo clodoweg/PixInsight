@@ -782,3 +782,8 @@ Fait : C_Continuum (Continuum_PCS, HaNB = H_sub, Fermer H_sub) en E12, Continuum
 
 Question de l'utilisateur sur R_C_Ha_rapide : « dans R_C_Ha_rapide tu utilise H alors qu'il faudrait utiliser HaNB_tmp non ? » (réponse : H est l'entrée du continuum ; HaNB_tmp… sont des images internes de CombineHaToRGB).
 Réponse sur Saturation_grosses : « bizarre Saturation_grosses car ca marchait sur LRGB. Touche pas pour l'instant je te dirais plus tard si j'ai un pb dessus » : rien changé.
+
+### Retour à Continuum_auto (5 octobre 2026)
+
+Demande : « non c'est moche je veux utiliser Opt_Continuum_auto comme avant »
+Fait : PhotometricContinuumSubtraction retiré (C_Continuum, Continuum_PCS, HaNB_PCS, Fermer_H_sub ; dépôt NightPhotons retiré de depots-pixinsight.txt) ; E12 = Continuum_auto (SetiAstro, à la main) ; R_C_Ha_rapide = Ha_screen, NXT, fermeture (après Continuum_auto). Ha_screen reste en E13. LRGB inchangé.
