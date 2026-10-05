@@ -421,7 +421,8 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <table id="defects" rows="0"/>
    </instance>
    <instance class="Script" version="256" id="Opt_Binning_x2_instance">
-      <description>OPTION — traitement 4 fois plus rapide et moins de bruit (0,528″/px au lieu de 0,264″/px, l'image du CDK17 est suréchantillonnée) : double-clic puis Apply Global juste après Solver_auto, toutes les images divisées par 2 ; pour un grand tirage, Agrandir_x2 avant l'export.
+      <description>OPTION — traitement 4 fois plus rapide et moins de bruit (0,528″/px au lieu de 0,264″/px, l'image du CDK17 est suréchantillonnée) : double-clic puis Apply Global juste après Solver_auto, toutes les images divisées par 2
+Pour un grand tirage, Agrandir_x2 avant l'export.
 
 LANCEMENT : double-clic sur l'icône, puis Apply Global.
 
@@ -1713,7 +1714,8 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="samplesPerRow" value="15"/>
    </instance>
    <instance class="GraXpert" version="256" id="Opt_GraXpert_instance">
-      <description>OPTION — TEST, à la place de MGC ou GradientCorrection : gradient retiré par l'IA de GraXpert (module GraXpert et logiciel GraXpert 2.2.1 ou plus installés) ; glisse sur chaque master linéaire.
+      <description>OPTION — TEST, à la place de MGC ou GradientCorrection : gradient retiré par l'IA de GraXpert (module GraXpert et logiciel GraXpert 2.2.1 ou plus installés)
+Glisse sur chaque master linéaire.
 
 PRÉRÉGLÉ : module GraXpert : Background Extraction (IA) coché, Correction par défaut (Subtraction), Smoothing 0, fond non affiché, débruitage décoché, image remplacée ; version de l'icône NON VÉRIFIÉE.
 
@@ -2569,7 +2571,8 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <description>OPTIONS de la phase 4 — Étirement : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
    </instance>
    <instance class="MultiscaleAdaptiveStretch" version="256" id="Opt_MAS_instance">
-      <description>OPTION — TEST, à la place des GHS ou de Statistical Stretch : MultiscaleAdaptiveStretch avec tes réglages (fond 0,15, saturation) ; glisse sur l'image LINÉAIRE.
+      <description>OPTION — TEST, à la place des GHS ou de Statistical Stretch : MultiscaleAdaptiveStretch avec tes réglages (fond 0,15, saturation)
+Glisse sur l'image LINÉAIRE.
 
 PRÉRÉGLÉ : MultiscaleAdaptiveStretch, tes réglages : Aggressiveness 0,70, Target background 0,150, Dynamic range compression 0,40, Contrast recovery coché (séparation 1024, intensité 1,0), saturation cochée (0,75, boost 0,50, masque de luminosité) ; version de l'icône NON VÉRIFIÉE.
 
@@ -2707,7 +2710,8 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <description>OPTIONS de la phase 5 — Couleur : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
    </instance>
    <instance class="Script" version="256" id="Opt_Etoiles_auto_etire_instance">
-      <description>OPTION — après SXT_LRGB : étoiles ternes ou un peu vertes ; glisse sur n'importe quelle image (traite RGB_stars) : saturation 1,3 et SCNR, sans étirement (étoiles déjà étirées).
+      <description>OPTION — après SXT_LRGB : étoiles ternes ou un peu vertes
+Glisse sur n'importe quelle image (traite RGB_stars) : saturation 1,3 et SCNR, sans étirement (étoiles déjà étirées).
 
 LANCEMENT : glisse l'icône sur l'image.
 
@@ -5019,7 +5023,8 @@ Détails : page docs/pixinsight-workflow.html.</description>
       </table>
    </instance>
    <instance class="Script" version="256" id="Opt_Halo_B_Gon_instance">
-      <description>OPTION — halos autour des étoiles brillantes ; attention, réduit aussi les petites étoiles (pour les grosses seulement : Etoiles_grosses).
+      <description>OPTION — halos autour des étoiles brillantes
+Attention, réduit aussi les petites étoiles (pour les grosses seulement : Etoiles_grosses).
 
 LANCEMENT : double-clic sur l'icône, puis Apply Global. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
 
@@ -5038,7 +5043,8 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="information"></parameter>
    </instance>
    <instance class="Script" version="256" id="Opt_Etoiles_grosses_instance">
-      <description>OPTION — grosses étoiles trop présentes, mais Etoiles_reduites réduirait toutes les étoiles : glisse sur l'image d'étoiles (RGB_stars) AVANT Etoiles_screen ; en rapide, avant R_C_Etoiles_fond_rapide.
+      <description>OPTION — grosses étoiles trop présentes, mais Etoiles_reduites réduirait toutes les étoiles : glisse sur l'image d'étoiles (RGB_stars) AVANT Etoiles_screen
+En rapide, avant R_C_Etoiles_fond_rapide.
 
 LANCEMENT : glisse l'icône sur l'image.
 
@@ -5081,7 +5087,8 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="information"></parameter>
    </instance>
    <instance class="PixelMath" version="256" id="Opt_Etoiles_plafond_instance">
-      <description>OPTION — cœurs d'étoiles cramés à 1 (blanc pur) : glisse sur l'image d'étoiles (RGB_stars) AVANT Etoiles_screen ; en rapide, avant R_C_Etoiles_fond_rapide.
+      <description>OPTION — cœurs d'étoiles cramés à 1 (blanc pur) : glisse sur l'image d'étoiles (RGB_stars) AVANT Etoiles_screen
+En rapide, avant R_C_Etoiles_fond_rapide.
 
 PRÉRÉGLÉ : PixelMath sur l'image d'étoiles : m = max(R, G, B) ; au-dessus de s = 0,70, les 3 canaux × (1 − k·t²), k = 0,06 : cœur à 1 -&gt; 0,94, couleur (rapport R:G:B) gardée, étoiles sous 0,70 inchangées.
 
@@ -5584,7 +5591,8 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="information"></parameter>
    </instance>
    <instance class="Resample" version="256" id="Opt_Agrandir_x2_instance">
-      <description>OPTION — après Binning_x2, pour un grand tirage : image agrandie 2 fois (Lanczos 3) juste avant Export_TIFF ; ne recrée pas le détail perdu.
+      <description>OPTION — après Binning_x2, pour un grand tirage : image agrandie 2 fois (Lanczos 3) juste avant Export_TIFF
+Ne recrée pas le détail perdu.
 
 PRÉRÉGLÉ : Resample : × 2 en largeur et hauteur, Lanczos 3, seuil d'écrêtage 0,30.
 

@@ -14,6 +14,9 @@ CSS = '''/*prep-css*/
 .prep fieldset { border: 1px solid var(--line); border-radius: 6px; background: var(--surface); padding: 12px 14px; margin: 0; min-width: 0; }
 .prep legend { font-family: var(--display); font-weight: 700; font-size: 14px; padding: 0 6px; }
 .prep .opts { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 6px 14px; }
+.prep .optlist { grid-template-columns: 1fr; gap: 14px; max-width: 760px; }
+.prep .optlist label span > b { font-weight: 700; }
+.prep .optlist small { margin-top: 2px; line-height: 1.5; }
 .prep label { display: flex; gap: 8px; align-items: flex-start; font-size: 15px; cursor: pointer; min-width: 0; }
 .prep label input { margin-top: 4px; flex: none; accent-color: var(--accent); }
 .prep label small { display: block; color: var(--muted); font-size: 13px; }
@@ -77,11 +80,13 @@ JS = r'''<script>
         return '<label><input type="radio" name="prep-' + k + '" value="' + o[0] + '"' + (c[k] === o[0] ? ' checked' : '') + '><span>' + esc(o[1]) + '</span></label>';
       }).join('') + '</div>';
     }).join('');
+    // options : une idée par ligne (demande de l'utilisateur), découpage aux « ; »
+    function lines(t) { return t.split(' ; ').map(function (x) { x = x.trim(); return esc(x.charAt(0).toUpperCase() + x.slice(1)); }).join('<br>'); }
     var html = '', last = 0;
     w.steps.forEach(function (s) {
       if (s.r !== 'opt') return;
-      if (s.p !== last) { html += (last ? '</div>' : '') + '<div class="ph">' + esc(D.phases[s.p - 1]) + '</div><div class="opts">'; last = s.p; }
-      html += '<label><input type="checkbox" data-b="' + s.b + '"' + ((st.opt || {})[s.b] ? ' checked' : '') + '><span>' + esc(s.b.replace(/_/g, ' ')) + '<small>' + esc(s.w) + '</small></span></label>';
+      if (s.p !== last) { html += (last ? '</div>' : '') + '<div class="ph">' + esc(D.phases[s.p - 1]) + '</div><div class="opts optlist">'; last = s.p; }
+      html += '<label><input type="checkbox" data-b="' + s.b + '"' + ((st.opt || {})[s.b] ? ' checked' : '') + '><span><b>' + esc(s.b.replace(/_/g, ' ')) + '</b><small>' + lines(s.w) + '</small></span></label>';
     });
     $('prep-opts').innerHTML = html + (last ? '</div>' : '');
     $('prep-cont').checked = !!st.cont;

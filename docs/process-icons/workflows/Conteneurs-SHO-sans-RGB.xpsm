@@ -2663,7 +2663,8 @@ Détails : page docs/pixinsight-workflow.html.</description>
       </table>
    </instance>
    <instance class="Script" version="256" id="Opt_Halo_B_Gon_instance">
-      <description>OPTION — halos autour des étoiles brillantes ; attention, réduit aussi les petites étoiles (pour les grosses seulement : Etoiles_grosses).
+      <description>OPTION — halos autour des étoiles brillantes
+Attention, réduit aussi les petites étoiles (pour les grosses seulement : Etoiles_grosses).
 
 LANCEMENT : double-clic sur l'icône, puis Apply Global. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
 
@@ -2682,7 +2683,8 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="information"></parameter>
    </instance>
    <instance class="Script" version="256" id="Opt_Etoiles_grosses_instance">
-      <description>OPTION — grosses étoiles trop présentes, mais Etoiles_reduites réduirait toutes les étoiles : glisse sur l'image d'étoiles (RGB_stars) AVANT Etoiles_screen ; en rapide, avant R_C_Etoiles_fond_rapide.
+      <description>OPTION — grosses étoiles trop présentes, mais Etoiles_reduites réduirait toutes les étoiles : glisse sur l'image d'étoiles (RGB_stars) AVANT Etoiles_screen
+En rapide, avant R_C_Etoiles_fond_rapide.
 
 LANCEMENT : glisse l'icône sur l'image.
 
@@ -2725,7 +2727,8 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="information"></parameter>
    </instance>
    <instance class="PixelMath" version="256" id="Opt_Etoiles_plafond_instance">
-      <description>OPTION — cœurs d'étoiles cramés à 1 (blanc pur) : glisse sur l'image d'étoiles (RGB_stars) AVANT Etoiles_screen ; en rapide, avant R_C_Etoiles_fond_rapide.
+      <description>OPTION — cœurs d'étoiles cramés à 1 (blanc pur) : glisse sur l'image d'étoiles (RGB_stars) AVANT Etoiles_screen
+En rapide, avant R_C_Etoiles_fond_rapide.
 
 PRÉRÉGLÉ : PixelMath sur l'image d'étoiles : m = max(R, G, B) ; au-dessus de s = 0,70, les 3 canaux × (1 − k·t²), k = 0,06 : cœur à 1 -&gt; 0,94, couleur (rapport R:G:B) gardée, étoiles sous 0,70 inchangées.
 

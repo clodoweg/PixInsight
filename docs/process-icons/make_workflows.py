@@ -151,6 +151,11 @@ def ghs(name, b, hp=1.0, lp=0.0, channel='SC_RGB', sf=0.0, sp=0.0):
 def pm(*a, **k):
     return M.pixelmath(*a, **k)
 
+def opt_lines(t):
+    """Texte « quand l'utiliser » d'une option : une idée par ligne (demande de l'utilisateur), découpé aux « ; »."""
+    parts = [x.strip() for x in t.split(' ; ')]
+    return '\n'.join(parts[:1] + [x[:1].upper() + x[1:] for x in parts[1:]])
+
 def shorten(xml, prefix, base):
     """Remplace la description détaillée par la version courte (préréglé / à régler / si ... ->)."""
     drag = md5 = None
@@ -415,7 +420,7 @@ def write(filename, prefix, title, steps):
         if base in RAPIDE or base in TURBO:
             tag = '%s.\n\n' % L.WHEN[base]
         elif r == 'opt':
-            tag = 'OPTION — %s.\n\n' % L.WHEN[base]
+            tag = 'OPTION — %s.\n\n' % opt_lines(L.WHEN[base])
         elif not L.is_default(r, prefix):
             tag = 'ALTERNATIVE — %s.\n\n' % label(r)
         else:
@@ -1055,7 +1060,7 @@ def write_rapide(filename, prefix, title, steps, main_spec, opt_spec):
                 item = described(item, desc)
             x = item[1] if base == 'Mode_rapide' else shorten(item[1], prefix, base)
             if opt:
-                tag = 'OPTION — %s.\n\n' % (WHEN_R.get(base) or L.WHEN.get(base, 'si besoin'))
+                tag = 'OPTION — %s.\n\n' % opt_lines(WHEN_R.get(base) or L.WHEN.get(base, 'si besoin'))
                 x = x.replace('<description>', '<description>' + escape(tag), 1)
         return base, ph, x
     main = [prep(ph, it, d, False) for ph, it, d in main_spec]
