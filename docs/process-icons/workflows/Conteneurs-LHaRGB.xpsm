@@ -2127,22 +2127,43 @@ max($T, HaNB*a)</parameter>
       <parameter id="interaction" value="SeparateChannels"/>
    </instance>
    <instance class="NoOperation" version="256" id="P3_rapide_instance">
-      <description>MODE RAPIDE, phase 3 — Linéaire : R_Lineaire_rapide (double-clic puis Apply Global) à la place de C_RGB_couleur, BXT_L_H, NXT_L et SXT_L_lineaire ; puis R_C_Ha_rapide glissé sur RGB à la place de CombineHaWithRGB et C_RGB_bruit : H ajouté au rouge en screen (calcul de CombineHaWithRGB), NXT, H, R fermées ; continuum en option (Continuum_auto, à la main, avant). Icône de repère, sans effet.</description>
+      <description>MODE RAPIDE, phase 3 — Linéaire : R_C_P3_rapide (double-clic puis Apply Global) à la place de toute la phase 3 : C_RGB_couleur sur RGB, BXT_L_H sur L et H, NXT_L et SXT_L_lineaire sur L, puis R_C_Ha_rapide sur RGB (H ajouté au rouge en screen, NXT), puis H, R fermées ; R_C_Ha_rapide doit rester chargée ; continuum en option (chemin principal). Icône de repère, sans effet.</description>
    </instance>
-   <instance class="Script" version="256" id="R_Lineaire_rapide_instance">
-      <description>MODE RAPIDE, à la place de la phase 3 du chemin principal : double-clic puis Apply Global ; lance les icônes du chemin principal sur RGB et L (LRGB : C_RGB_lineaire et C_L_lineaire ; LHaRGB : C_RGB_couleur, BXT_L_H sur L et H, NXT_L) ; RGB et L restent linéaires, avec leurs étoiles.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Lineaire_auto.js, etapes = C_RGB_couleur&gt;RGB ; BXT_L_H&gt;L,H ; NXT_L&gt;L ; SXT_L_lineaire&gt;L : C_RGB_couleur (BXT Correct Only, SPCC, BXT) sur RGB, BXT (Nonstellar 0,80) sur L et H, NXT 0,60 sur L, SXT sur L (L sans étoiles) ; images linéaires.&#10;&#10;À RÉGLER : double-clic puis Apply Global, après R_Gradient_auto_rapide ; Conteneurs-LHaRGB chargé ; ensuite R_C_Ha_rapide glissé sur RGB, puis GHS_1_premier sur L.&#10;&#10;SI :&#10;- H_dans_L voulu -&gt; il se fait après (NXT_L déjà passé sur L)&#10;- une étape échoue -&gt; la console dit laquelle</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js</parameter>
-      <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="1">
-         <tr>
-            <td id="id">etapes</td>
-            <td id="value">C_RGB_couleur&gt;RGB ; BXT_L_H&gt;L,H ; NXT_L&gt;L ; SXT_L_lineaire&gt;L</td>
-         </tr>
-      </table>
-      <parameter id="information"></parameter>
+   <instance class="ProcessContainer" id="R_C_P3_rapide_instance">
+      <description>MODE RAPIDE, à la place de toute la phase 3 : après R_Gradient_auto_rapide, double-clic puis Apply Global (pas en glissant) ; RGB, L, H et R ouvertes ; Conteneurs-LHaRGB chargé (R_C_Ha_rapide comprise).&#10;&#10;LANCEMENT : double-clic sur l'icône, puis Apply Global (rond bleu) : ce conteneur ne contient que des scripts, qui trouvent les vues par leur nom ; pas en glissant.&#10;&#10;PRÉRÉGLÉ : conteneur, en une fois : Lineaire_auto (C_RGB_couleur sur RGB, BXT_L_H sur L et H, NXT_L et SXT_L_lineaire sur L, puis R_C_Ha_rapide sur RGB : H en screen dans le rouge, NXT 0,80), puis H, R et HaNB fermées.&#10;&#10;À RÉGLER : après R_Gradient_auto_rapide : double-clic puis Apply Global (pas en glissant) ; Conteneurs-LHaRGB chargé, R_C_Ha_rapide comprise ; ensuite GHS_1_premier sur L.&#10;&#10;SI :&#10;- une étape échoue -&gt; la console dit laquelle&#10;- H_dans_L voulu -&gt; chemin principal à la place (ce conteneur ferme H)&#10;- étoiles ou cœur rougis -&gt; chemin principal avec Opt_Continuum_auto</description>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="2">
+            <tr>
+               <td id="id">etapes</td>
+               <td id="value">C_RGB_couleur&gt;RGB ; BXT_L_H&gt;L,H ; NXT_L&gt;L ; SXT_L_lineaire&gt;L ; R_C_Ha_rapide&gt;RGB</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="2">
+            <tr>
+               <td id="id">views</td>
+               <td id="value">H, R, HaNB</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
    </instance>
    <instance class="ProcessContainer" id="R_C_Ha_rapide_instance">
-      <description>MODE RAPIDE, à la place de CombineHaWithRGB et C_RGB_bruit : après R_Lineaire_rapide, glisse sur RGB linéaire (H ouverte).&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : Ha_screen (H ajouté au rouge en screen, 2 × (H − méd H), calcul de CombineHaWithRGB), NXT 0,80, puis H, R (et HaNB) fermées (= CombineHaWithRGB et C_RGB_bruit).&#10;&#10;À RÉGLER : après R_Lineaire_rapide : glisse sur le RGB linéaire (H ouverte) ; ensuite GHS_1_premier sur L.&#10;&#10;SI :&#10;- régions HII trop rouges ou trop discrètes -&gt; double-clic sur le conteneur, Ha_screen : Q = 1,5 ou 2,5&#10;- H_dans_L voulu -&gt; fais-le AVANT ce conteneur (il ferme H)&#10;- étoiles ou cœur rougis -&gt; chemin principal avec Opt_Continuum_auto</description>
+      <description>MODE RAPIDE : lancée par R_C_P3_rapide (laisse-la chargée) ; seule, glisse sur RGB linéaire après les BXT (H ouverte) à la place de CombineHaWithRGB et du NXT de C_RGB_bruit.&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : Ha_screen (H ajouté au rouge en screen, 2 × (H − méd H), calcul de CombineHaWithRGB), NXT 0,80 sur le RGB.&#10;&#10;À RÉGLER : rien : lancé par R_C_P3_rapide (garde l'icône chargée) ; seul : glisse sur le RGB après les BXT, puis ferme H et R à la main.&#10;&#10;SI :&#10;- régions HII trop rouges ou trop discrètes -&gt; double-clic sur ce conteneur, Ha_screen : Q = 1,5 ou 2,5 (R_C_P3_rapide l'utilise tel quel)</description>
       <instance class="PixelMath" version="256" enabled="true">
          <parameter id="expression">Q = 2.0;
    h = min(1, Q*iif(H &gt; med(H), H - med(H), 0));
@@ -2191,21 +2212,6 @@ max($T, HaNB*a)</parameter>
          <parameter id="iterations" value="1"/>
          <parameter id="detail" value="0.15"/>
          <parameter id="overlap" value="0.20"/>
-      </instance>
-      <instance class="Script" version="256" enabled="true">
-         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
-         <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="2">
-            <tr>
-               <td id="id">views</td>
-               <td id="value">H, R, HaNB</td>
-            </tr>
-            <tr>
-               <td id="id">dialogue</td>
-               <td id="value">false</td>
-            </tr>
-         </table>
-         <parameter id="information"></parameter>
       </instance>
    </instance>
    <instance class="NoOperation" version="256" id="P4_Etirement_instance">
@@ -5350,7 +5356,7 @@ max($T,f1)</parameter>
    <icon id="Opt_NBRGBCombination" instance="Opt_NBRGBCombination_instance" xpos="430" ypos="444" workspace="Workspace01"/>
    <icon id="Opt_STF" instance="Opt_STF_instance" xpos="430" ypos="474" workspace="Workspace01"/>
    <icon id="P3_rapide" instance="P3_rapide_instance" xpos="430" ypos="520" workspace="Workspace01"/>
-   <icon id="R_Lineaire_rapide" instance="R_Lineaire_rapide_instance" xpos="430" ypos="554" workspace="Workspace01"/>
+   <icon id="R_C_P3_rapide" instance="R_C_P3_rapide_instance" xpos="430" ypos="554" workspace="Workspace01"/>
    <icon id="R_C_Ha_rapide" instance="R_C_Ha_rapide_instance" xpos="430" ypos="584" workspace="Workspace01"/>
    <icon id="P4_Etirement" instance="P4_Etirement_instance" xpos="608" ypos="20" workspace="Workspace01"/>
    <icon id="E16_GHS_1_premier" instance="E16_GHS_1_premier_instance" xpos="608" ypos="64" workspace="Workspace01"/>
