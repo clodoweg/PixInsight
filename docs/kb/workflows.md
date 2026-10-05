@@ -1,6 +1,6 @@
 # Workflows LRGB et LHaRGB (les seuls utilisés)
 
-Ordre des étapes, ce que fait chaque étape et pourquoi, mode rapide et Turbo, images fermées, finition en parties, standards de couleur et d'étoiles. Les réglages exacts des icônes sont dans `icones-LRGB.md` et `icones-LHaRGB.md`.
+Ordre des étapes, ce que fait chaque étape et pourquoi, mode rapide, images fermées, finition en parties, standards de couleur et d'étoiles. Les réglages exacts des icônes sont dans `icones-LRGB.md` et `icones-LHaRGB.md`.
 
 Issu de l'ancienne fiche HTML `docs/pixinsight-workflow.html` (octobre 2026) ; sources dans `docs/sources.md`.
 
@@ -27,19 +27,12 @@ P7_rapide| R_C_Etoiles_fond_rapide| image sans étoiles finie| Etoiles_screen, F
 ### LHaRGB : l'ordre
 R_C_Preparation_rapide, R_Gradient_auto_rapide ; chemin principal pour C_RGB_couleur (RGB), BXT_L_H (H), E12 Continuum_auto (crée HaNB) et H_dans_RGB (Opt_H_dans_L ensuite si besoin) ; puis R_C_RGB_fin_rapide sur RGB (NXT, Statistical Stretch, GHS fond) et R_C_L_rapide sur L ; puis comme en LRGB : GHS_1 et R_C_Fin_GHS_rapide sur L, R_C_LRGB_rapide, R_C_Fin_rapide, R_C_Etoiles_fond_rapide.
 
-### Mode Turbo (LRGB)
-1. `T_Turbo_1` (P1_turbo) : masters seuls ouverts, double-clic puis Apply Global. Préparation, Solver_auto, GradientCorrection sur toutes les images, traitement de RGB (comme R_C_RGB_rapide), R_C_L_rapide sur L.
-2. **GHS_1_premier à la main sur L.**
-3. `T_Turbo_2` (P5_turbo), glissé sur RGB : R_C_Fin_GHS_rapide sur L, puis R_C_LRGB_rapide, R_C_Fin_rapide et R_C_Etoiles_fond_rapide. L'image est finie et exportée. Pour une option de finition, fais plutôt les icônes rapides séparément.
-
-Une étape en erreur arrête le conteneur : lis la console, puis reprends avec les icônes R_ à partir de celle-là.
-
 ### Images fermées au fur et à mesure
 Icône| Ferme  
 ---|---  
 Combinaison_RGB| LRGB : R, G, B ; LHaRGB : G, B (R sert à Continuum_auto)  
 LHaRGB : C_RGB_bruit ou R_C_RGB_fin_rapide| H, R, HaNB (fais Opt_H_dans_L avant)  
-C_Fond_final, R_C_Etoiles_fond_rapide, T_Turbo_2| RGB_stars (Boost_final se fait avant)  
+C_Fond_final, R_C_Etoiles_fond_rapide| RGB_stars (Boost_final se fait avant)  
 Export_TIFF| L, après l'export (paramètre `fermer` vide pour la garder)  
   
 ### Finition du workflow normal en 5 parties

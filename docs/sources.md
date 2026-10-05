@@ -561,4 +561,6 @@ Demande de l'utilisateur : « ajoute Binning_x2 et Agrandir_x2, la nouvelle form
 
 - R_GC_Solver_auto_rapide remplacée par R_Gradient_auto_rapide, script Gradient_auto.js : GradientCorrection seule sur toutes les images ouvertes, sans ImageSolver (5 octobre 2026). Demande de l'utilisateur : « Il ne doit pas faire Solver, juste Gradient sur tous les fichiers ouvert. »
 
+- Mode Turbo supprimé : icônes T_Turbo_1, T_Turbo_2, scripts Turbo_1.js et Turbo_2_debut.js (5 octobre 2026). Demande de l'utilisateur : « enleve les turbo (script et icons) ».
+
 Non vérifié : réglages de Ron Brecher et Dave Cosgrove lus sur leurs pages (pratique d'imageurs, pas de documentation éditeur) ; plages BXT pour galaxies (Sharpen Stars 0,15–0,20, Nonstellar 0,20–0,35) issues d'un résumé de forum ; paramètres de MAS d'après Starlust Astroguide, l'article PixInsight n'ayant pas pu être lu ; versions des instances MAS et GraXpert (256 supposé) ; chemins des scripts VeraLux et MKStarReduction (icônes-notes) ; formule H_dans_RGB_v2 (part de 0,2 pour Hβ, choix de l'utilisateur à tester).

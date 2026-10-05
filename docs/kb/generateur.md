@@ -1,12 +1,12 @@
 # Modifier les icônes de process : le générateur
 
-Tout est produit par `sh docs/process-icons/build/build.sh` ; ne jamais éditer à la main les `.xpsm`, `icones-*.md`, `scripts/Turbo_1.js`, `scripts/Turbo_2_debut.js`.
+Tout est produit par `sh docs/process-icons/build/build.sh` ; ne jamais éditer à la main les `.xpsm`, `icones-*.md`.
 
 ## Fichiers
 
 | Fichier | Rôle |
 |---|---|
-| `docs/process-icons/make_workflows.py` | Listes d'étapes `lrgb` et `lhargb` (et narrowband), réglages des icônes, conteneurs rapides et Turbo, scripts Turbo générés. |
+| `docs/process-icons/make_workflows.py` | Listes d'étapes `lrgb` et `lhargb` (et narrowband), réglages des icônes. |
 | `docs/process-icons/layout.py` | `PHASE` (colonne P1 à P7), `OPT` (options), `role()` (core / opt / alternative), `WHEN` (texte « quand l'utiliser » d'une option), `CONTAINERS` (conteneurs C_ du chemin principal). |
 | `docs/process-icons/short_desc.py` | Descriptions courtes : `S[base] = (PRÉRÉGLÉ, À RÉGLER, [SI ...])`, variantes par workflow dans `V[(prefix, base)]` (prefix `LRGB`, `LHA`, `NB`…). |
 | `docs/process-icons/make_icons.py` | Construction des instances : `instance(cls, name, values, texts, post)` à partir d'un modèle réel (`build/templates.json`), `build(cls, version, name, params)` pour une classe sans modèle, `pixelmath(...)`. |
@@ -25,7 +25,7 @@ Tout est produit par `sh docs/process-icons/build/build.sh` ; ne jamais éditer 
 - `cont(nom, [items])` ou `_cont` : ProcessContainer ; `fermer(icone, 'vue1, vue2')` : script Fermer_vues réglé.
 - `pick(steps, base)`, `insert_after(steps, base, items)`, `insert_before(...)` : placer une icône dans une liste.
 - `lum_ghs_block`, `finish_block(galaxie=True)`, `stars_end(...)`, `gradient_block(...)`, `pre_block()` : blocs communs.
-- Mode rapide : `prep_rapide`, `rgb_rapide`, `l_rapide`, `lrgb_rapide`, `fin_rapide` ; Turbo : conteneurs `Turbo_1`, `Turbo_2` et gabarits `TURBO1_JS`, `TURBO2_DEBUT_JS`.
+- Mode rapide : `prep_rapide`, `rgb_rapide`, `l_rapide`, `lrgb_rapide`, `fin_rapide`.
 
 ## Ajouter ou modifier une icône (check-list)
 
@@ -42,7 +42,6 @@ Tout est produit par `sh docs/process-icons/build/build.sh` ; ne jamais éditer 
 - Un script ne peut pas lancer une instance Script ; un ProcessContainer peut enchaîner des scripts. `ProcessInstance.fromIcon(id)` exécute une icône de process natif.
 - `#engine v8` (ImageSolver) casse l'ancien code (`PixelMath.prototype.RGB`, LinearPatternSubtraction.jsh).
 - ImageSolver échoue sur l'image glissée dans un conteneur : conteneurs avec Solver_auto en Apply Global.
-- Scripts inclus dans Turbo : gardes `#ifndef CLODOWEG_TURBO`, noms de fonctions uniques.
 - Jamais de guillemets dans un paramètre de Script. Pas d'espace dans les noms.
 - Instance native : `<instance class="X" version="256">`, `<parameter id="p" value="v"/>`, enums par identifiant d'élément (ex. `RelativeDimensions`). Paramètre absent : valeur par défaut (supposé, non vérifié).
 - IntegerResample et Resample mettent à jour la solution astrométrique.

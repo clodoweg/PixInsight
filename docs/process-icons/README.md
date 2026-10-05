@@ -11,7 +11,7 @@ Icônes prêtes à charger, réglages expliqués dans `docs/kb/`. Ce sont des **
 ## Organisation
 
 - Une colonne par phase (P1 Préparation … P7 Étoiles), avec une icône-titre en haut.
-- Dans chaque colonne : `P#_Nom` (chemin principal, `E##_`), `P#_options` (`Opt_`), `P#_rapide` (`R_`, LRGB et LHaRGB) et `P#_turbo` (`T_`, LRGB).
+- Dans chaque colonne : `P#_Nom` (chemin principal, `E##_`), `P#_options` (`Opt_`), `P#_rapide` (`R_`, LRGB et LHaRGB).
 - Dans le chemin principal, les suites d'étapes sans réglage sont regroupées en conteneurs (`C_…`).
 - Chaque icône a une description courte : LANCEMENT, PRÉRÉGLÉ, À RÉGLER, SI … ->.
 - LRGB et LHaRGB : L et RGB étirées avec leurs étoiles, LRGB, puis `SXT_LRGB` (Unscreen) ; les images inutiles sont fermées au fur et à mesure. Ordre détaillé : sections « Mode rapide » et workflows de la page.
@@ -37,11 +37,10 @@ Icônes non testées par l'auteur dans PixInsight 1.9.5 : si l'une ne se charge 
 | `Etoiles_grosses.js` | réduit seulement les grosses étoiles de RGB_stars, avant Etoiles_screen |
 | `Export_TIFF.js` | TIFF 16 bits sRGB nommé d'après le dossier des masters ; ferme L ensuite (`fermer`) |
 | `Fermer_vues.js` | ferme les vues listées (`views`) |
-| `Turbo_1.js`, `Turbo_2_debut.js` | mode Turbo ; fichiers générés par `make_workflows.py` |
 
 ## Régénérer
 
-`sh docs/process-icons/build/build.sh` : icônes et `docs/kb/icones-*.md`. Générateurs : `make_workflows.py` (étapes par workflow, conteneurs rapides et Turbo), `layout.py` (phases, rôles, conteneurs), `short_desc.py` (descriptions), `make_icons.py` (instances). Le dossier `build/` contient les modèles d'instances (`templates.json`, `all.x`, `FromLukeAndBill.xpsm`, issus des icônes de theAstroShed, licence Apache 2.0 dans `LICENSE-theAstroShed-icons`), la référence des icônes (`kb_icons.py`) et un audit des réglages (`audit_icons.py`).
+`sh docs/process-icons/build/build.sh` : icônes et `docs/kb/icones-*.md`. Générateurs : `make_workflows.py` (étapes par workflow, conteneurs rapides), `layout.py` (phases, rôles, conteneurs), `short_desc.py` (descriptions), `make_icons.py` (instances). Le dossier `build/` contient les modèles d'instances (`templates.json`, `all.x`, `FromLukeAndBill.xpsm`, issus des icônes de theAstroShed, licence Apache 2.0 dans `LICENSE-theAstroShed-icons`), la référence des icônes (`kb_icons.py`) et un audit des réglages (`audit_icons.py`).
 
 ## Sources
 

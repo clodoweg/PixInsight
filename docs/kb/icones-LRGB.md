@@ -2,7 +2,7 @@
 
 Fichier GÉNÉRÉ par `docs/process-icons/build/build.sh` (kb_icons.py) à partir de l'xpsm : ne pas éditer ; pour changer une icône, modifier le générateur (voir `generateur.md`).
 
-Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rapide, `T_` mode Turbo, `C_` conteneur. Les icônes `P#_…` sont des repères de colonne.
+Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rapide, `C_` conteneur. Les icônes `P#_…` sont des repères de colonne.
 
 ## P1_Preparation
 
@@ -124,24 +124,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
    4. Script
       script `$PXI_SRCDIR/scripts/clodoweg/GC_Solver_auto.js`
       paramètres : `gradient=false`, `solve=true`, `solveTout=true`, `defaultDate=2020-01-01T00:00:00`, `metadata_focal=2939`, `metadata_xpixsz=3.76`, `solver_catalogMode=2`, `solver_distortionCorrection=true`, `(+ 42 autres réglages ImageSolver)`
-
-### P1_turbo
-
-#### T_Turbo_1 — ProcessContainer
-   1. Script
-      script `$PXI_SRCDIR/scripts/clodoweg/Renommer_auto.js`
-   2. Script
-      script `$PXI_SRCDIR/scripts/clodoweg/LPS_UnClic.js`
-      paramètres : `correctColumns=false`, `correctEntireImage=true`, `defectTableFilePath=`, `layersToRemove=9`, `rejectionLimit=3`, `globalRejection=true`, `globalRejectionLimit=5`, `autoBackground=true`, `backgroundReferenceLeft=0`, `backgroundReferenceTop=0`, `backgroundReferenceWidth=512`, `backgroundReferenceHeight=512`, `allOpenImages=true`, `closeWorkingImages=true`
-   3. Script
-      script `$PXI_SRCDIR/scripts/clodoweg/Combiner_RGB.js`
-      paramètres : `red=R`, `green=G`, `blue=B`, `newId=RGB`, `closeSources=true`, `copyKeywords=true`, `garder=`
-   4. Script
-      script `$PXI_SRCDIR/scripts/clodoweg/GC_Solver_auto.js`
-      paramètres : `gradient=false`, `solve=true`, `solveTout=true`, `defaultDate=2020-01-01T00:00:00`, `metadata_focal=2939`, `metadata_xpixsz=3.76`, `solver_catalogMode=2`, `solver_distortionCorrection=true`, `(+ 42 autres réglages ImageSolver)`
-   5. Script
-      script `$PXI_SRCDIR/scripts/clodoweg/Turbo_1.js`
-      paramètres : `vueRGB=RGB`, `vueL=L`
 
 ## P2_Gradient
 
@@ -439,7 +421,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > PRÉRÉGLÉ : script Etoiles_auto, amount 0 (étoiles déjà étirées) : saturation 1,3 (0,4 × rouges, 0,7 × cyans) et SCNR vert seulement.
 > 
-> À RÉGLER : glisse sur n'importe quelle image après SXT_LRGB (traite RGB_stars) ; dans R_C_LRGB_rapide et T_Turbo_2 : rien.
+> À RÉGLER : glisse sur n'importe quelle image après SXT_LRGB (traite RGB_stars) ; dans R_C_LRGB_rapide : rien.
 > 
 > SI :
 > - étoiles criardes -> satAmount 1,0
@@ -455,57 +437,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
    3. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js`
       paramètres : `vue=RGB_stars`, `amount=0`, `satAmount=1.3`, `scnr=true`
-
-### P5_turbo
-
-#### T_Turbo_2 — ProcessContainer
-   1. Script
-      script `$PXI_SRCDIR/scripts/clodoweg/Turbo_2_debut.js`
-      paramètres : `vueL=L`
-   2. LRGBCombination
-      mL=0.500 ; mc=0.350 ; clipHighlights=false ; noiseReduction=true ; layersRemoved=4 ; layersProtected=2 ; inheritAstrometricSolution=true ; table channels (4 lignes)
-   3. StarXTerminator
-      ml_version=0 ; output_stars=true ; unscreen=true ; remove_stars=true ; remove_spikes=true ; remove_aureoles=true ; remove_reflections=true ; overlap=0.20
-   4. Script
-      script `$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js`
-      paramètres : `vue=RGB_stars`, `amount=0`, `satAmount=1.3`, `scnr=true`
-   5. PixelMath
-      expression = `$T` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=true ; showNewImage=true ; newImageId=HDR_avant ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
-   6. HDRMultiscaleTransform
-      numberOfLayers=6 ; numberOfIterations=1 ; invertedIterations=true ; overdrive=0.000 ; medianTransform=false ; scalingFunctionData=0.003906,0.015625,0.023438,0.015625,0.003906,0.015625,0.0625,0.09375,0.0625,0… ; scalingFunctionRowFilter=0.0625,0.25,0.375,0.25,0.0625 ; scalingFunctionColFilter=0.0625,0.25,0.375,0.25,0.0625 ; scalingFunctionName=B3 Spline (5) ; deringing=false ; smallScaleDeringing=0.000 ; largeScaleDeringing=0.250 ; outputDeringingMaps=false ; midtonesBalanceMode=Automatic ; midtonesBalance=0.500000 ; toIntensity=false ; toLightness=true ; preserveHue=true ; lightnessMask=true ; intensity=1.00
-   7. PixelMath
-      expression = `a = 0.3;    a*$T + (1 - a)*HDR_avant` ; useSingleExpression=true ; symbols = `a` ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
-   8. Script
-      script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
-      paramètres : `views=HDR_avant`
-   9. Script
-      script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
-      paramètres : `mode=attacher`, `s=0.14`, `flou=2`, `nom=masque_L`
-   10. CurvesTransformation
-      Rt=AkimaSubsplines ; Gt=AkimaSubsplines ; Bt=AkimaSubsplines ; Kt=AkimaSubsplines ; At=AkimaSubsplines ; Lt=AkimaSubsplines ; at=AkimaSubsplines ; bt=AkimaSubsplines ; ct=AkimaSubsplines ; Ht=AkimaSubsplines ; St=AkimaSubsplines ; table R (2 lignes) ; table G (2 lignes) ; table B (2 lignes) ; table K (4 lignes) ; table A (2 lignes) ; table L (2 lignes) ; table a (2 lignes) ; table b (2 lignes) ; table c (2 lignes) ; table H (2 lignes) ; table S (3 lignes)
-   11. LocalHistogramEqualization
-      radius=150 ; histogramBins=Bit12 ; slopeLimit=2.0 ; amount=0.300 ; circularKernel=true
-   12. LocalHistogramEqualization
-      radius=40 ; histogramBins=Bit10 ; slopeLimit=2.0 ; amount=0.250 ; circularKernel=true
-   13. Script
-      script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
-      paramètres : `mode=retirer`, `nom=masque_L`
-   14. NoiseXTerminator
-      ml_version=0 ; denoise=0.40 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
-   15. PixelMath
-      expression = `~((~$T) * (~RGB_stars))` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
-   16. Script
-      script `$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js`
-      paramètres : `cible=0.12`, `tolerance=0.005`, `grille=8`
-   17. Script
-      script `$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js`
-      paramètres : `debut=0.03`, `fin=0.15`, `violetFin=0.30`, `flou=3`
-   18. Script
-      script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
-      paramètres : `views=RGB_stars`
-   19. Script
-      script `$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js`
-      paramètres : `nom=`, `suffixe=`, `dossier=`, `icc=true`, `fermer=L`
 
 ## P6_Finition
 

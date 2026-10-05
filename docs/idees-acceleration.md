@@ -1,6 +1,6 @@
 # Idées pour aller plus vite (non commencées)
 
-Déjà fait : WBPP en option, conteneurs rapides et Turbo (LRGB), renommage automatique, recombinaison + réduction Blanshan en une formule (Etoiles_reduites).
+Déjà fait : WBPP en option, conteneurs rapides (Turbo supprimé en octobre 2026), renommage automatique, recombinaison + réduction Blanshan en une formule (Etoiles_reduites).
 
 1. **Narrowband sans séparer les canaux** : NXT sur l'image SHO combinée, Statistical Stretch non lié (même médiane par canal), puis NarrowbandNormalization ; environ 8 icônes de moins. À valider sur une photo par comparaison.
 2. **Espace de travail dédié** : garder les icônes chargées plutôt que les recharger à chaque photo.

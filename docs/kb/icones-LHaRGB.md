@@ -2,7 +2,7 @@
 
 Fichier GÉNÉRÉ par `docs/process-icons/build/build.sh` (kb_icons.py) à partir de l'xpsm : ne pas éditer ; pour changer une icône, modifier le générateur (voir `generateur.md`).
 
-Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rapide, `T_` mode Turbo, `C_` conteneur. Les icônes `P#_…` sont des repères de colonne.
+Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rapide, `C_` conteneur. Les icônes `P#_…` sont des repères de colonne.
 
 ## P1_Preparation
 
@@ -531,7 +531,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > PRÉRÉGLÉ : script Etoiles_auto, amount 0 (étoiles déjà étirées) : saturation 1,3 (0,4 × rouges, 0,7 × cyans) et SCNR vert seulement.
 > 
-> À RÉGLER : glisse sur n'importe quelle image après SXT_LRGB (traite RGB_stars) ; dans R_C_LRGB_rapide et T_Turbo_2 : rien.
+> À RÉGLER : glisse sur n'importe quelle image après SXT_LRGB (traite RGB_stars) ; dans R_C_LRGB_rapide : rien.
 > 
 > SI :
 > - étoiles criardes -> satAmount 1,0

@@ -7,7 +7,7 @@ Source de référence pour répondre aux questions de l'utilisateur et modifier 
 | Question | Fichier |
 |---|---|
 | Que fait l'icône X, ses réglages exacts, sa place, sa description | `icones-LRGB.md`, `icones-LHaRGB.md` (GÉNÉRÉS depuis les xpsm : toujours à jour) |
-| Ordre des étapes, pourquoi, mode rapide, Turbo, images fermées, finition, standards couleur et étoiles | `workflows.md` |
+| Ordre des étapes, pourquoi, mode rapide, images fermées, finition, standards couleur et étoiles | `workflows.md` |
 | Réglages d'un outil, symptôme → correction, méthode | `outils.md` |
 | GHS en détail, réduction d'étoiles Blanshan, masques, règles d'or | `techniques.md` |
 | Outils et dépôts à installer, WBPP, phase linéaire commune | `preparation.md` (dépôts : `../depots-pixinsight.txt`) |

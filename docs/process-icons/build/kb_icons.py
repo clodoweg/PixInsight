@@ -64,7 +64,7 @@ def main(src_dir, out_dir):
         lines = ['# Icônes du fichier Conteneurs-%s.xpsm' % wf, '',
                  "Fichier GÉNÉRÉ par `docs/process-icons/build/build.sh` (kb_icons.py) à partir de l'xpsm : ne pas éditer ; "
                  'pour changer une icône, modifier le générateur (voir `generateur.md`).', '',
-                 'Préfixes : `E##_` chemin principal (dans l\'ordre), `Opt_` option, `R_` mode rapide, `T_` mode Turbo, `C_` conteneur. '
+                 'Préfixes : `E##_` chemin principal (dans l\'ordre), `Opt_` option, `R_` mode rapide, `C_` conteneur. '
                  'Les icônes `P#_…` sont des repères de colonne.', '']
         for ic in icons:
             iid = ic.get('id')

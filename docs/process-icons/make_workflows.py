@@ -1,4 +1,4 @@
-"""Génère les fichiers workflows/Conteneurs-X.xpsm (une colonne par phase : chemin principal, options, rapide, Turbo).
+"""Génère les fichiers workflows/Conteneurs-X.xpsm (une colonne par phase : chemin principal, options, rapide).
 Réutilise les modèles et fonctions de make_icons.py (instances réelles PixInsight 1.9.3)."""
 import os, re, sys, tempfile
 from xml.sax.saxutils import escape
@@ -60,8 +60,6 @@ SCRIPTS = {
     'DarkStructureEnhance': ('$PXI_SRCDIR/scripts/misc/DarkStructureEnhance.js', '', [], L_GLOBAL + "Ce script ne lit pas de paramètres d'icône : les réglages se font dans son dialogue. "),   # script livré avec PixInsight (test)
     'Fond_auto_clair': ('$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js', '', [('cible', '0.14'), ('tolerance', '0.005'), ('grille', '8')], L_DRAG),
     'Solver_auto': ('$PXI_SRCDIR/scripts/clodoweg/GC_Solver_auto.js', '', [('gradient', 'false'), ('solve', 'true'), ('solveTout', 'true'), ('defaultDate', '2020-01-01T00:00:00')], L_GLOBAL),
-    'Turbo_1': ('$PXI_SRCDIR/scripts/clodoweg/Turbo_1.js', '', [('vueRGB', 'RGB'), ('vueL', 'L')], L_GLOBAL),
-    'Turbo_2_debut': ('$PXI_SRCDIR/scripts/clodoweg/Turbo_2_debut.js', '', [('vueL', 'L')], L_DRAG),
     'Gradient_auto_rapide': ('$PXI_SRCDIR/scripts/clodoweg/Gradient_auto.js', '', [], L_GLOBAL),   # GradientCorrection seule, sans ImageSolver (demande de l'utilisateur)
     'ImageSolver_Date': ('$PXI_SRCDIR/scripts/clodoweg/ImageSolver_Date.js', '', [('defaultDate', '2020-01-01T00:00:00')], L_DRAG),
     'LinearPatternSubtraction': ('$PXI_SRCDIR/scripts/clodoweg/LPS_UnClic.js', '',
@@ -202,7 +200,7 @@ def layout(entries, naming):
         rows += 1
     return insts, icons
 
-TURBO = {'Turbo_1', 'Turbo_2'}   # mode Turbo (demande de l'utilisateur) : groupe P#_turbo, icônes T_…
+TURBO = set()   # mode Turbo supprimé (demande de l'utilisateur, 5 octobre 2026)
 RAPIDE = {'C_Fin_GHS_rapide', 'C_Fin_rapide', 'C_Etoiles_fond_rapide', 'C_Preparation_rapide', 'Gradient_auto_rapide', 'C_RGB_rapide', 'C_L_rapide', 'C_RGB_fin_rapide', 'C_LRGB_rapide'}
 RAPIDE_NOTE = {
     'LRGB': {1: "MODE RAPIDE (galaxies) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre (étoiles gardées jusqu'à LRGB) : R_C_Preparation_rapide ; R_Gradient_auto_rapide ; R_C_RGB_rapide sur RGB et R_C_L_rapide sur L ; GHS_1_premier puis R_C_Fin_GHS_rapide sur L seulement ; R_C_LRGB_rapide (LRGB, puis SXT) ; finition. Phase 1 : R_C_Preparation_rapide (double-clic puis Apply Global) à la place de LinearPatternSubtraction, Renommer_auto, Combinaison_RGB et Solver_auto",
@@ -1161,7 +1159,7 @@ def insert_before(steps, base, items):
     steps[i:i] = items
 
 prep_l, prep_h = prep_rapide(lrgb)[1], prep_rapide(lhargb)[1]
-insert_after(lrgb, 'Combinaison_RGB', [(prep_l, ''), (gc_solver('Solver_auto'), ''), (cont('Turbo_1', [pick(lrgb, b)[0] for b in ('Renommer_auto', 'LinearPatternSubtraction', 'Combinaison_RGB')] + [gc_solver('Solver_auto'), script('Turbo_1', '')]), '')])
+insert_after(lrgb, 'Combinaison_RGB', [(prep_l, ''), (gc_solver('Solver_auto'), '')])
 insert_after(lrgb, 'ImageSolver', [(script('Gradient_auto_rapide', ''), '')])
 
 def fin_rapide(steps):
@@ -1174,18 +1172,11 @@ for _st in (lrgb, lhargb):
     # P4_rapide « Fin de GHS » (demande de l'utilisateur) : GHS_2_contraste puis GHS_3_fond en un conteneur, sur L après GHS_1_premier
     insert_after(_st, 'Statistical_Stretch', [(cont('C_Fin_GHS_rapide', [pick(_st, b)[0] for b in ('GHS_2_contraste', 'GHS_3_fond')]), '')])
     _c6, _c7 = fin_rapide(_st)
-    if _st is lrgb:
-        # Turbo 2 (demande de l'utilisateur) : d'abord script Turbo_2_debut (R_C_Fin_GHS_rapide sur L),
-        # puis tout sur RGB : contenu de C_LRGB_rapide (LRGB avec étoiles, SXT, Etoiles_auto_etire), de C_Fin_rapide, de C_Etoiles_fond_rapide (Export_TIFF compris)
-        _t2 = cont('Turbo_2', [script('Turbo_2_debut', '')] + [pick(_st, b)[0] for b in ('LRGB_ajout_L', 'SXT_LRGB', 'Etoiles_auto_etire')] + list(hdrmt_items('0.3'))
-                   + [pick(_st, b)[0] for b in ('Masque_L', 'Courbes', 'LHE', 'LHE_fin', 'Masque_retirer', 'NXT_final', 'Etoiles_screen', 'Fond_auto', 'Fond_desature', 'Fermer_etoiles', 'Export_TIFF')])
-        insert_after(_st, 'Etoiles_auto_etire', [(lrgb_rapide(_st), ''), (_t2, '')])
-    else:
-        insert_after(_st, 'Etoiles_auto_etire', [(lrgb_rapide(_st), '')])
+    insert_after(_st, 'Etoiles_auto_etire', [(lrgb_rapide(_st), '')])
     insert_after(_st, 'NXT_final_fort', [(_c6, '')])
     _st.append((_c7, ''))
 insert_before(lrgb, 'GHS_1_premier', [(rgb_rapide()[0], ''), (l_rapide(M.bxt('BXT_L', False, 0.25, 0.0, 0.80), sxt=False), ''), (stf_icon(), '')])
-insert_after(lhargb, 'Combinaison_RGB', [(prep_h, ''), (gc_solver('Solver_auto'), '')])   # Turbo_1 : LRGB seulement (R_C_RGB_rapide n'existe pas en LHaRGB)
+insert_after(lhargb, 'Combinaison_RGB', [(prep_h, ''), (gc_solver('Solver_auto'), '')])
 insert_after(lhargb, 'ImageSolver', [(script('Gradient_auto_rapide', ''), '')])
 # LHaRGB : C_RGB_couleur_rapide et C_H_rapide sans GradientCorrection = C_RGB_couleur et BXT_L_H du chemin principal : supprimés
 insert_before(lhargb, 'GHS_1_premier', [(rgb_rapide()[1], ''), (l_rapide(M.bxt('BXT_L_H', False, 0.25, 0.0, 0.80), sxt=False), ''), (stf_icon(), '')])
@@ -1231,218 +1222,3 @@ for fn, pre, title, steps in [
     print(fn, 'principal, options, avec conteneurs :', write(fn, pre, title, steps))
 
 
-# ---------------------------------------------------------------- Mode Turbo : Turbo_1.js généré
-# PixInsight refuse qu'un script lance une instance Script (« Attempt to execute a Script instance recursively »,
-# retour de l'utilisateur) : Turbo_1.js inclut les scripts de la fiche (fonctions, sans les lancer) et exécute
-# directement les process natifs, dont le code est produit ici à partir des réglages des icônes.
-import xml.etree.ElementTree as ET
-
-def _js_val(cls, v):
-    if v in ('true', 'false'):
-        return v
-    try:
-        float(v)
-        return v
-    except ValueError:
-        return '%s.prototype.%s' % (cls, v)
-
-def inst_js(item, var='P'):
-    """Instance XML d'un process natif -> code PJSR qui crée l'instance avec les mêmes paramètres."""
-    x = re.sub(r'<description>.*?</description>', '', item[1], flags=re.S)
-    x = re.sub(r'<time[^>]*/>', '', x)
-    e = ET.fromstring(x.strip())
-    cls = e.get('class')
-    lines = ['   let %s = new %s;' % (var, cls)]
-    for c in e:
-        pid = c.get('id')
-        if c.tag == 'parameter':
-            if c.get('value') is not None:
-                lines.append('   %s.%s = %s;' % (var, pid, _js_val(cls, c.get('value'))))
-            else:
-                lines.append('   %s.%s = %s;' % (var, pid, json.dumps(c.text or '')))
-        elif c.tag == 'table':
-            rows = []
-            for tr in c:
-                cells = []
-                for td in tr:
-                    cells.append(_js_val(cls, td.get('value')) if td.get('value') is not None else json.dumps(td.text or ''))
-                rows.append('[' + ', '.join(cells) + ']')
-            lines.append('   %s.%s = [%s];' % (var, pid, ', '.join(rows)))
-    return '\n'.join(lines)
-
-def turbo_rgb_js():
-    steps = [('BXT_CorrectOnly', M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50)), ('SPCC', spcc_perso('SPCC')), ('BXT_RGB', bxt_rgb()),
-             ('NXT_RGB', M.nxt('NXT_RGB', 0.80, 1))]   # étoiles gardées (LRGB, demande de l'utilisateur) : SXT après LRGB, dans T_Turbo_2
-    out = []
-    for name, it in steps:
-        out.append('   {\n   // %s (mêmes réglages que dans R_C_RGB_rapide)\n%s\n   run( "%s", P, view );\n   }' % (name, inst_js(it).replace('\n   ', '\n      ').replace('   let', '      let', 1), name))
-    out.append('   statStretch( view, 0.25, 5 );   // à la place du script Statistical Stretch (Target Median 0,25, Blackpoint Sigma 5, lié)')
-    g = GHS_FOND_R()
-    out.append('   {\n   // GHS_fond (SP = HP = 0,22)\n%s\n   run( "GHS_fond", P, view );\n   }' % inst_js(g).replace('\n   ', '\n      ').replace('   let', '      let', 1))
-    return '\n'.join(out)
-
-TURBO1_JS = r"""// ----------------------------------------------------------------------------
-// Turbo_1.js — mode Turbo, étape 1, partie script (fichier GÉNÉRÉ par make_workflows.py : ne pas modifier à la main).
-// ----------------------------------------------------------------------------
-// Dernière étape du conteneur T_Turbo_1 (Apply Global), qui lance d'abord, un
-// par un : Renommer_auto, LinearPatternSubtraction, Combinaison_RGB et
-// Solver_auto (un conteneur peut lancer des scripts ; un script ne peut pas en
-// lancer un autre : « Attempt to execute a Script instance recursively »).
-// Ce script fait ensuite, sans lancer d'autre script :
-//   1. GradientCorrection sur toutes les images ouvertes (sauf *_stars) ;
-//   2. sur RGB : BXT Correct Only, SPCC, BXT, NXT (réglages de R_C_RGB_rapide,
-//      recopiés à la génération), étirement statistique (Target Median 0,25,
-//      Blackpoint Sigma 5, lié : calcul fait ici, proche du script Statistical
-//      Stretch), GHS fond ; étoiles GARDÉES (SXT après LRGB, dans T_Turbo_2) ;
-//   3. sur L : icône R_C_L_rapide (BXT, NXT ; étoiles gardées).
-// Puis il s'arrête : GHS_1_premier à la main sur L (demande de l'utilisateur),
-// puis T_Turbo_2 (qui commence par R_C_Fin_GHS_rapide sur L et ferme L_stars).
-// Ancien moteur JavaScript (pas de #engine v8 : il refuse PixelMath.prototype.RGB
-// et le moteur de LinearPatternSubtraction).
-//
-// Installation : dans src/scripts/clodoweg.
-// ----------------------------------------------------------------------------
-
-#feature-id    Turbo_1 : clodoweg > Mode Turbo, étape 1 (partie script)
-#feature-info  GradientCorrection sur toutes les images, traitement linéaire \
-   et étirement de RGB, R_C_L_rapide sur L.
-
-#define T1_TITLE "Turbo 1"
-
-function t1Param( key, value )
-{
-   return Parameters.has( key ) ? Parameters.getString( key ).trim() : value;
-}
-
-function etape( texte )
-{
-   console.noteln( "<end><cbr><br>" + T1_TITLE + " : " + texte );
-}
-
-function run( name, P, view )
-{
-   if ( P.executeOn( view ) === false )
-      throw new Error( T1_TITLE + " : " + name + " a échoué sur " + view.id + "." );
-}
-
-function gradientTout()
-{
-   let wins = ImageWindow.windows;
-   for ( let k = 0; k < wins.length; ++k )
-   {
-      let id = wins[ k ].mainView.id;
-      if ( id.indexOf( "_stars" ) >= 0 || id == "LS" || id == "SS" || id == "pattern" )
-         continue;
-      let G = new GradientCorrection;
-      G.generateGradientModel = false;
-      run( "GradientCorrection", G, wins[ k ].mainView );
-      console.writeln( T1_TITLE + " : GradientCorrection sur " + id );
-   }
-}
-
-// Étirement statistique lié : point noir = médiane − sigma × MAD normalisée (canaux moyennés),
-// remise à l'échelle, puis fonction de transfert des tons moyens qui amène la médiane sur la cible.
-function statStretch( view, cible, sigma )
-{
-   let img = view.image, n = img.numberOfChannels, med = 0, mad = 0;
-   for ( let c = 0; c < n; ++c )
-   {
-      img.selectedChannel = c;
-      med += img.median();
-      mad += img.MAD();
-   }
-   img.resetSelections();
-   med /= n; mad = 1.4826*mad/n;
-   let bp = Math.max( 0, med - sigma*mad );
-   let m1 = (med - bp)/(1 - bp);
-   let M = m1*(cible - 1)/(2*cible*m1 - cible - m1);
-   let P = new PixelMath;
-   P.expression = "mtf(" + M.toFixed( 8 ) + ", max(0, ($T - " + bp.toFixed( 8 ) + ")/" + (1 - bp).toFixed( 8 ) + "))";
-   P.useSingleExpression = true;
-   P.createNewImage = false;
-   P.rescale = false;
-   P.truncate = true;
-   run( "Etirement statistique", P, view );
-   console.writeln( T1_TITLE + " : étirement statistique, point noir " + bp.toFixed( 5 ) + ", médiane " + med.toFixed( 5 ) + " -> " + cible );
-}
-
-function rgbRapide( view )
-{
-@@RGB@@
-}
-
-function runIcon( iconId, viewId )
-{
-   let P = ProcessInstance.fromIcon( iconId );
-   if ( P == null )
-      throw new Error( T1_TITLE + " : icône " + iconId + " introuvable (charge Conteneurs-LRGB.xpsm)." );
-   let w = ImageWindow.windowById( viewId );
-   if ( w.isNull )
-      throw new Error( T1_TITLE + " : vue " + viewId + " introuvable pour " + iconId + "." );
-   if ( P.executeOn( w.mainView ) === false )
-      throw new Error( T1_TITLE + " : " + iconId + " a échoué sur " + viewId + "." );
-}
-
-function turbo1()
-{
-   let vueRGB = t1Param( "vueRGB", "RGB" ), vueL = t1Param( "vueL", "L" );
-   console.show();
-   etape( "GradientCorrection sur toutes les images" ); gradientTout();
-   let rgb = ImageWindow.windowById( vueRGB );
-   if ( rgb.isNull )
-      throw new Error( T1_TITLE + " : vue " + vueRGB + " introuvable." );
-   etape( "traitement linéaire et étirement de " + vueRGB ); rgbRapide( rgb.mainView );
-   etape( "R_C_L_rapide sur " + vueL );        runIcon( "R_C_L_rapide", vueL );
-   etape( "terminé : " + vueRGB + " étirée, avec ses étoiles ; " + vueL + " avec ses étoiles, encore linéaire. "
-          + "Ensuite : GHS_1_premier à la main sur " + vueL + ", puis T_Turbo_2 sur " + vueRGB + "." );
-}
-
-turbo1();
-"""
-
-open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'scripts', 'Turbo_1.js'), 'w', encoding='utf-8').write(TURBO1_JS.replace('@@RGB@@', turbo_rgb_js()))
-
-TURBO2_DEBUT_JS = r"""// ----------------------------------------------------------------------------
-// Turbo_2_debut.js — mode Turbo, début de l'étape 2 (fichier GÉNÉRÉ par make_workflows.py : ne pas modifier à la main).
-// ----------------------------------------------------------------------------
-// Première étape du conteneur T_Turbo_2 (glissé sur RGB), après GHS_1_premier
-// fait à la main sur L :
-//   icône R_C_Fin_GHS_rapide (GHS_2_contraste puis GHS_3_fond) sur L,
-//   réglages lus dans l'icône (même résultat qu'en mode rapide).
-// La vue cible du conteneur (RGB) n'est pas touchée ici.
-// Paramètre : vueL (L par défaut).
-//
-// Installation : dans src/scripts/clodoweg.
-// ----------------------------------------------------------------------------
-
-#feature-id    Turbo_2_debut : clodoweg > Mode Turbo, début de l'étape 2
-#feature-info  R_C_Fin_GHS_rapide sur L.
-
-#define T2_TITLE "Turbo 2 (début)"
-
-function t2Param( key, value )
-{
-   return Parameters.has( key ) ? Parameters.getString( key ).trim() : value;
-}
-
-function turbo2Debut()
-{
-   let vueL = t2Param( "vueL", "L" );
-   let P = ProcessInstance.fromIcon( "R_C_Fin_GHS_rapide" );
-   if ( P == null )
-      throw new Error( T2_TITLE + " : icône R_C_Fin_GHS_rapide introuvable (charge Conteneurs-LRGB.xpsm)." );
-   let w = ImageWindow.windowById( vueL );
-   if ( w.isNull )
-      throw new Error( T2_TITLE + " : vue " + vueL + " introuvable." );
-   console.show();
-   console.noteln( "<end><cbr><br>" + T2_TITLE + " : R_C_Fin_GHS_rapide sur " + vueL );
-   if ( P.executeOn( w.mainView ) === false )
-      throw new Error( T2_TITLE + " : R_C_Fin_GHS_rapide a échoué sur " + vueL + "." );
-}
-
-turbo2Debut();
-"""
-
-open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'scripts', 'Turbo_2_debut.js'), 'w', encoding='utf-8').write(TURBO2_DEBUT_JS)
-
-DATA['header'] = M.HEADER
