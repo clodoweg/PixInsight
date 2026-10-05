@@ -24,14 +24,14 @@ PHASE = {
     'Perfect_Palette_Picker': 5, 'NBColourMapper': 5, 'SCNR_SHO': 5, 'H_en_luminance': 5,
     'Masque_L': 6, 'Masque_retirer': 6, 'Courbes': 6, 'LHE': 6, 'LHE_fin': 6, 'Boost_finition_light': 6, 'Finition_saturee': 6, 'Boost_finition': 6, 'HDRMT_50': 6, 'HDRMT_eclat': 6, 'NXT_final': 6, 'HDRMT_40': 6, 'Mode_rapide': 1, 'Boost_final_doux': 7, 'C_Fin_rapide': 6, 'C_Etoiles_fond_rapide': 7, 'SXT_non_lineaire': 4, 'Gradient_auto_rapide': 2, 'Solver_auto': 1, 'C_Preparation_rapide': 1, 'C_RGB_rapide': 3, 'SXT_LRGB': 5, 'C_LRGB_rapide': 5, 'C_L_rapide': 3, 'STF': 3, 'C_RGB_couleur_rapide': 3, 'C_H_rapide': 3, 'C_RGB_fin_rapide': 3, 'HDRMT_30': 6, 'Nettoyage_sans_etoiles': 6, 'ICC_sRGB': 7, 'Export_TIFF': 7, 'NXT_final_doux': 6, 'NXT_final_fort': 6, 'Fond_auto': 7, 'Fond_auto_clair': 7, 'Boost_final': 7, 'Fond_desature': 7,
     'Etoiles_RGB': 7, 'Etoiles_HOO': 7, 'NB_to_RGB_Stars': 7, 'Etoiles_HOO_synth': 7, 'Etoiles_screen': 7, 'CorrectMagentaStars': 7,
-    'Etoiles_reduites': 7, 'Fermer_L_stars': 3, 'Fermer_continuum': 3, 'Fermer_etoiles': 7, 'MT_etoiles': 7, 'Halo_B_Gon': 7, 'Etoiles_plafond': 7, 'Saturation_grosses': 7, 'Etoiles_grosses': 7, 'Lineaire_rapide': 3, 'SCNR_etoiles_vert': 4, 'SCNR_etoiles_violet': 4, 'SXT_RGB_etire': 4, 'Sharp_USM': 6, 'C_Sharp_MMT': 6, 'C_RGB_etire_rapide': 4,
+    'Etoiles_reduites': 7, 'Fermer_L_stars': 3, 'Fermer_continuum': 3, 'Fermer_etoiles': 7, 'MT_etoiles': 7, 'Halo_B_Gon': 7, 'Etoiles_plafond': 7, 'Saturation_grosses': 4, 'Etoiles_grosses': 7, 'Lineaire_rapide': 3, 'SCNR_etoiles_vert': 4, 'SCNR_etoiles_violet': 4, 'SXT_RGB_etire': 4, 'Sharp_USM': 6, 'C_Sharp_MMT': 6, 'C_RGB_etire_rapide': 4,
     'Binning_x2': 1, 'H_dans_RGB_v2': 3, 'CombineHaWithRGB': 3, 'MAS': 4, 'DarkStructureEnhance': 6, 'Agrandir_x2': 7,
 }
 
 NB = ('RSHO', 'SHO', 'HOO')
 LUM = ('LRGB', 'LHA')   # workflows avec luminance : par défaut Statistical Stretch sur le RGB, GHS sur L
 OPT = {'ImageSolver_seul', 'Finition_saturee', 'Boost_finition_light', 'Boost_finition', 'WBPP', 'CC_auto', 'Find_Background', 'LinearFit_ref_H', 'H_dans_L', 'NBRGBCombination', 'HDRMT_30', 'HDRMT_40', 'HDRMT_50', 'HDRMT_eclat', 'Boost_final', 'Fond_desature', 'NXT_final', 'NXT_final_doux', 'NXT_final_fort', 'Fond_auto_clair', 'Nettoyage_sans_etoiles', 'ICC_sRGB', 'Export_TIFF', 'Gradient_auto_rapide', 'Boost_final_doux', 'SXT_non_lineaire', 'C_Fin_rapide', 'C_Etoiles_fond_rapide', 'Mode_rapide', 'C_Preparation_rapide', 'C_RGB_rapide', 'C_LRGB_rapide', 'C_L_rapide', 'STF', 'C_RGB_couleur_rapide', 'C_H_rapide', 'C_RGB_fin_rapide',
-       'MT_etoiles', 'Halo_B_Gon', 'Etoiles_plafond', 'Saturation_grosses', 'Etoiles_grosses', 'CorrectMagentaStars', 'SCNR_SHO', 'Perfect_Palette_Picker', 'NBColourMapper', 'H_en_luminance',
+       'MT_etoiles', 'Halo_B_Gon', 'Etoiles_plafond', 'Saturation_grosses', 'SCNR_etoiles_violet', 'Etoiles_grosses', 'CorrectMagentaStars', 'SCNR_SHO', 'Perfect_Palette_Picker', 'NBColourMapper', 'H_en_luminance',
        'Etoiles_HOO_synth', 'DualBand_H', 'DualBand_O', 'SPFC_S',
        'Binning_x2', 'H_dans_RGB_v2', 'CombineHaWithRGB', 'C_RGB_etire_rapide', 'DarkStructureEnhance', 'Agrandir_x2', 'Lineaire_rapide', 'Sharp_USM'}
 
@@ -85,7 +85,7 @@ WHEN = {
     'Gradient_auto_rapide': "MODE RAPIDE, à la place de la phase 2 : GradientCorrection sur TOUTES les images ouvertes (plus d'ImageSolver : fait par Solver_auto en phase 1) ; à faire AVANT R_Lineaire_rapide (sans GradientCorrection)",
     'Mode_rapide': "repère du mode rapide (galaxies), sans effet : lis sa description pour l'ordre",
     'C_Preparation_rapide': "MODE RAPIDE, à la place d'E00 à E03 : masters seuls ouverts, double-clic puis Apply Global (pas en glissant : ImageSolver échoue sur une image en cours de traitement) : Renommer_auto, LinearPatternSubtraction, Combinaison_RGB, Solver_auto (ImageSolver sur toutes les images) en un seul conteneur",
-    'C_RGB_etire_rapide': "MODE RAPIDE, à la place de MAS, SXT_RGB_etire, SCNR_etoiles_vert et GHS_3_fond sur le RGB (SCNR_etoiles_violet à passer à part si besoin) : glisse sur RGB linéaire avec étoiles ; MAS, SXT Unscreen (RGB_stars créée), SCNR vert sur RGB_stars, GHS fond (SP = HP = 0,12)",
+    'C_RGB_etire_rapide': "MODE RAPIDE, à la place de MAS, SXT_RGB_etire, SCNR_etoiles_vert et GHS_3_fond sur le RGB (options SCNR_etoiles_violet et Saturation_grosses à passer à part si besoin) : glisse sur RGB linéaire avec étoiles ; MAS, SXT Unscreen (RGB_stars créée), SCNR vert sur RGB_stars, GHS fond (SP = HP = 0,12)",
     'Statistical_Stretch': "à la place de MAS sur le RGB avec étoiles (étirement statistique, étoiles plus grosses) ; puis SXT_RGB_etire",
     'Sharp_USM': "à la place de C_Sharp_MMT : accentuation finale par UnsharpMask, avant NXT_final, sur l'image sans étoiles ; masque de luminance attaché puis retiré automatiquement",
     'Fond_auto': "après Fond_desature, sur l'image sans étoiles, avant Etoiles_screen : fond amené à 0,12 et neutre (grille 8 × 8)",
@@ -119,7 +119,8 @@ WHEN = {
     'Boost_final_doux': "comme Boost_final mais moitié moins fort (courbes c et S montées de moitié) : un petit cran de couleur sur l'image finie, sans toucher aux étoiles ; L encore ouverte",
     'Boost_final': "sur l'image FINIE, étoiles comprises : un peu plus de couleur sans toucher aux étoiles (masque tiré de L sans étoiles, courbes chrominance et saturation)",
     'HDRMT_eclat': "cœur laiteux sans détail, mais terne avec HDRMT seul : HDRMT à 40 % puis Boost_finition_light, en un glisser", 'NXT_final': "bruit visible sur l'image finale",
-    'Saturation_grosses': "grosses étoiles presque blanches, petites assez colorées : glisse sur n'importe quelle image (traite RGB_stars) AVANT Etoiles_screen ; seules les grosses étoiles et leur halo sont saturés ; en rapide, avant R_C_Etoiles_fond_rapide",
+    'SCNR_etoiles_violet': "étoiles violettes (R et B nettement au-dessus de G à la sonde, surtout en LHaRGB) : après SCNR_etoiles_vert, glisse sur n'importe quelle image (traite RGB_stars) ; Invert, SCNR vert 1,0, Invert ; pas dans le rapide",
+    'Saturation_grosses': "grosses étoiles presque blanches, petites assez colorées : glisse sur n'importe quelle image (traite RGB_stars) après SCNR_etoiles_vert ; seules les grosses étoiles et leur halo sont saturés ; pas dans le rapide (à la main après R_C_RGB_etire_rapide si besoin)",
     'Etoiles_grosses': "grosses étoiles trop présentes, mais Etoiles_reduites réduirait toutes les étoiles : glisse sur l'image d'étoiles (RGB_stars) AVANT Etoiles_screen ; en rapide, avant R_C_Etoiles_fond_rapide",
     'Etoiles_plafond': "cœurs d'étoiles cramés à 1 (blanc pur) : glisse sur l'image d'étoiles (RGB_stars) AVANT Etoiles_screen ; en rapide, avant R_C_Etoiles_fond_rapide",
     'MT_etoiles': "réduction d'étoiles supplémentaire", 'Halo_B_Gon': "halos autour des étoiles brillantes ; attention, réduit aussi les petites étoiles (pour les grosses seulement : Etoiles_grosses, en narrowband)",

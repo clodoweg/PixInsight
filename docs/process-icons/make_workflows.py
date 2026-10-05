@@ -51,7 +51,7 @@ SCRIPTS = {
     'Fond_desature': ('$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js', '', [('debut', '0.03'), ('fin', '0.15'), ('violetFin', '0.30'), ('flou', '3')], L_DRAG),
     'Fond_auto': ('$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js', '', [('cible', '0.12'), ('tolerance', '0.005'), ('grille', '8')], L_DRAG),
     'Nettoyage_sans_etoiles': ('$PXI_SRCDIR/scripts/clodoweg/Nettoyage_sans_etoiles.js', '', [('etoiles', 'RGB_stars'), ('seuilBas', '0.05'), ('seuilHaut', '0.12'), ('etendue', '25'), ('passes', '3'), ('protege', '0.08'), ('structure', '0.15'), ('compact', '0.05'), ('tresBrillant', '0.05'), ('etendue2', '80'), ('gain', '3'), ('gain2', '8'), ('afficherMasque', 'false')], L_DRAG),
-    'Saturation_grosses': ('$PXI_SRCDIR/scripts/clodoweg/Saturation_grosses.js', '', [('vue', 'RGB_stars'), ('taille', '7'), ('seuil', '0.15'), ('etendue', '12'), ('passes', '1')], L_DRAG),   # option P7 : courbe de saturation de l'utilisateur sur les grosses étoiles seulement (demande de l'utilisateur)
+    'Saturation_grosses': ('$PXI_SRCDIR/scripts/clodoweg/Saturation_grosses.js', '', [('vue', 'RGB_stars'), ('taille', '7'), ('seuil', '0.15'), ('etendue', '12'), ('passes', '1')], L_DRAG),   # option P4 : courbe de saturation de l'utilisateur sur les grosses étoiles seulement (demande de l'utilisateur)
     'Etoiles_grosses': ('$PXI_SRCDIR/scripts/clodoweg/Etoiles_grosses.js', '', [('taille', '7'), ('seuil', '0.15'), ('etendue', '12'), ('force', '0.80'), ('afficherMasque', 'false')], L_DRAG),   # demande de l'utilisateur : réduire seulement les grosses étoiles
     'Export_TIFF': ('$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js', '', [('nom', ''), ('suffixe', ''), ('dossier', ''), ('icc', 'true')], L_DRAG),   # plus aucune vue fermée (demande de l'utilisateur)
     'Binning_x2': ('$PXI_SRCDIR/scripts/clodoweg/Binning_x2.js', '', [('facteur', '2')], L_GLOBAL),   # demande de l'utilisateur : binning logiciel de toutes les images
@@ -1126,7 +1126,7 @@ insert_after(lrgb, 'Combinaison_RGB', [(prep_l, ''), (gc_solver('Solver_auto'), 
 insert_after(lrgb, 'ImageSolver', [(script('Gradient_auto_rapide', ''), '')])
 # SCNR vert à 1,0 sur les étoiles : en P4, juste après SXT_RGB_etire, sur RGB_stars (script Etoiles_auto) ; plus en P7 (demande de l'utilisateur, 5 octobre 2026)
 for _st in (lrgb, lhargb):
-    insert_after(_st, 'SXT_RGB_etire', [(script('SCNR_etoiles_vert', ''), ''), (script('SCNR_etoiles_violet', ''), '')])   # vert puis violet (demande de l'utilisateur) ; violet pas dans le rapide
+    insert_after(_st, 'SXT_RGB_etire', [(script('SCNR_etoiles_vert', ''), ''), (script('SCNR_etoiles_violet', ''), ''), (script('Saturation_grosses', ''), '')])   # vert au chemin principal ; violet et Saturation_grosses en options P4, pas dans le rapide (demande de l'utilisateur)
     # P7 (demande de l'utilisateur) : Fond_desature, Fond_auto (et Fond_auto_clair) sur l'image SANS étoiles, puis Etoiles_screen
     for _b in ('Fond_desature', 'Fond_auto', 'Fond_auto_clair'):
         _it = pick(_st, _b)
@@ -1167,8 +1167,6 @@ insert_after(lhargb, 'H_dans_RGB', [(pm('H_dans_RGB_v2', 'w = 1.0;\n$T[0] + w*(H
 insert_after(lhargb, 'NBRGBCombination', [(script('CombineHaWithRGB', ''), '')])
 
 # options supprimées des workflows galaxies (demande de l'utilisateur, 5 octobre 2026) ; Etoiles_grosses reste en narrowband
-for _st in (lrgb, lhargb):
-    insert_before(_st, 'Etoiles_plafond', [(script('Saturation_grosses', ''), '')])   # option P7, sur RGB_stars avant Etoiles_screen (demande de l'utilisateur)
 SUPPR_GALAXIES = {'Etoiles_grosses', 'Etoiles_plafond'}   # Etoiles_auto_etire, GraXpert, VeraLux_HMS, MKStarReduction, Coeurs_etoiles, RepairedHSV, Etoiles_couleur : retirés du code
 for _st in (lrgb, lhargb):
     _st[:] = [x for x in _st if x[0][0] not in SUPPR_GALAXIES]

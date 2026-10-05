@@ -713,3 +713,8 @@ Correction : mélange calculé dans une image cachée (sg_r, PixelMath exécuté
 
 Demande : « supprime Opt_Etoiles_plafond »
 Fait : retirée de LRGB et LHaRGB (gardée en narrowband, comme Etoiles_grosses). Descriptions et kb mises à jour.
+
+### Saturation_grosses et SCNR_etoiles_violet en options P4 (5 octobre 2026)
+
+Demande : « Déplace Opt_Saturation_grosses dans Options P4 / Déplace E15_SCNR_etoiles_violet dans P4 Options / Ne mets aucun de ces 2 dans le rapide »
+Fait : les deux en options P4, juste après SCNR_etoiles_vert (sur RGB_stars) ; aucune dans R_C_RGB_etire_rapide ni ailleurs en rapide. Numéros du chemin principal décalés de −1 à partir de GHS_3_fond (LRGB E15, LHaRGB E22).
