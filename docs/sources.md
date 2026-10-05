@@ -649,3 +649,12 @@ Fait : SCNR_vert retiré de P7 et de R_C_Etoiles_fond_rapide. Nouvelle icône SC
 Demande : « je trouve que E17_C_Finition monte un peu trop la saturation. Mais le en option et dans le normal une finition qui sature un peu moins (que tu inclus aussi dans le rapide) »
 
 Fait (galaxies, LRGB et LHaRGB) : Courbes de C_Finition et de R_C_Fin_rapide, canal S, milieu 0,5 -> 0,58 au lieu de 0,65 (courbe en S de contraste inchangée). L'ancienne finition (saturation 0,65) devient l'option Opt_Finition_saturee (P6). Narrowband pas encore changé.
+
+### Étoiles brillantes blanches, RepairedHSVSeparation (5 octobre 2026)
+
+Demandes : « comment je pourrais faire pour que les étoiles brillantes soient moins blanche et plus colorée? » (image de NGC 1532 finie) puis « RepairedHSVSeparation expliques comment je l'installe et comment je peux tester »
+
+Sources :
+- https://pixinsight.com.ar/index.php?a=seccion&b=maskedstretch-stars-sores-28&i=en (Alejandro Tombolini : sur un clone de l'image linéaire, Clip Shadows, Repair level, V - no repairs ; sorties Unrepaired V, V, Sv, H ; ChannelCombination ; puis étirement protégé)
+- http://wimvberlo.blogspot.com/2017/01/star-repair-in-pixinsight.html (Script › Utilities › Repaired HSV Separation, juste avant le premier étirement, ChannelCombination en HSV, essayer V réparé et non réparé)
+- https://wolfcreek.space/index.php/2022/07/25/fixing-saturated-stars-in-pixinsight/ (résultats inégaux, couleurs coupées ; Repair level par défaut le meilleur, 0,25 trop peu, 0,75 trop)

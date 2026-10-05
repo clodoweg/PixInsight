@@ -229,3 +229,12 @@ Garde tes paramètres dans des ProcessIcons ou l'History Explorer pour pouvoir r
 
 #### Un seul alignement
 Tous les filtres alignés sur la même référence dans WBPP : les combinaisons PixelMath en dépendent.
+
+## Cœurs d'étoiles blancs ou de mauvaise couleur : RepairedHSVSeparation (à tester)
+
+- Script livré avec PixInsight (Script › Utilities › RepairedHSVSeparation ; présence en 1.9.5 non vérifiée). Rien à installer.
+- Sur un CLONE du RGB linéaire calibré, juste avant le premier étirement (dans nos workflows : après C_RGB_lineaire, avant MAS). Cocher la sortie « V - no repairs ». Sorties : H, Sv, V, Unrepaired V.
+- ChannelCombination, espace HSV : H, Sv, puis V ou Unrepaired V (essayer les deux), Apply Global : nouvelle image, à étirer ensuite (MAS, étirement qui protège les hautes lumières : c'est le cas visé).
+- Repair level : défaut d'abord (0,25 corrige trop peu, 0,75 délave). Résultats inégaux selon les sources (étoiles aux couleurs coupées).
+- Contrôle : sonde 15×15 sur le cœur des étoiles brillantes de RGB_stars, avec et sans réparation.
+- Autres pistes : Etoiles_grosses puis saturation (Etoiles_auto_etire) sur RGB_stars avant Etoiles_screen.
