@@ -802,3 +802,8 @@ Correction : screen écrit en clair, R' = 1 − (1 − R)·(1 − h), h = min(1,
 
 Demande : « Mets ca plutot dans Combine Ha With RGB et met le continuum en Option » avec l'instance de l'utilisateur (CombineHaToRGB.js, md5 140cbb0fc118263dc1d71b8e9e39f0e1, alphaView H, amount 2, beta 0, linear true, rgbLinked true, bg 0,015, rgbView « [object Object] », invertMask true, sigma 0).
 Fait : icône CombineHaWithRGB réglée ainsi (rgbView omis : valeur non valable, et le script relit rgbView avec l'id d'alphaView, bug du script) et lancée par double-clic (L_GLOBAL) ; Continuum_auto en option ; Ha_screen (R_C_Ha_rapide) calculé sur H. Numéros LHaRGB décalés de −1 à partir de C_RGB_bruit (E15). LRGB inchangé.
+
+### LHaRGB : retour aux deux rapides (5 octobre 2026)
+
+Demandes : « tu peux pas inclure R_C_Ha_rapide directement dans R_C_P3_rapide sans avoir besoin d'une seconde icone? » puis (interrompu) « en fait laisse R_C_Ha_rapide et supprime R_C_Ha_rapide » (compris : garder R_C_Ha_rapide, supprimer R_C_P3_rapide).
+Fait : R_C_P3_rapide supprimé (commit annulé) ; retour à R_Lineaire_rapide (Apply Global) puis R_C_Ha_rapide glissé sur RGB (Ha_screen, NXT, fermeture H, R, HaNB). Script Ha_rapide.js commencé puis abandonné (jamais publié). LRGB inchangé.
