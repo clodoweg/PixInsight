@@ -197,8 +197,6 @@ function egShowMask( view, p )
 
 // direct (inutilisé) : le résultat est toujours calculé dans une image cachée puis recopié dans
 // l'image entre beginProcess et endProcess, glissée ou par la fenêtre (Ctrl+Z, affichage).
-// puis recopié dans l'image entre beginProcess et endProcess, pour avoir une étape d'annulation
-// (Ctrl+Z) et l'affichage mis à jour (retour de l'utilisateur : sinon rien ne s'affichait).
 function egApply( view, p, direct )
 {
    if ( view == null || view.isNull )
