@@ -37,6 +37,8 @@ OPT = {'ImageSolver_seul', 'EZ_Soft_Stretch', 'Turbo_debut', 'H_dans_RGB', 'C_P3
 
 
 def role(prefix, base):
+    if prefix in LUM and base == 'Star_Stretch':
+        return 'opt'    # galaxies (demande de l'utilisateur) : option d'étirement des étoiles linéaires
     if prefix in LUM and base in ('NXT_final', 'Fond_desature', 'HDRMT_30'):
         return 'core'   # galaxies : finition en parties, NXT_final et Fond_desature dans le chemin principal (demande de l'utilisateur)
     if prefix in LUM and base == 'Statistical_Stretch':
@@ -86,6 +88,7 @@ WHEN = {
     'Mode_rapide': "repère du mode rapide (galaxies), sans effet : lis sa description pour l'ordre",
     'Continuum_auto': "avant CombineHaWithRGB, pour retirer le continuum de H (étoiles et cœur moins rougis) : double-clic puis Apply Global, fenêtre (Ha = H, Red = R), crée HaNB ; puis CombineHaWithRGB avec H Alpha = HaNB",
     'C_P3_rapide': "MODE RAPIDE, à la place de E10 à E13 : après R_Gradient_auto_rapide, GLISSE sur RGB (L et H ouvertes, Conteneurs-LHaRGB chargé) ; ensuite E14_Continuum_auto, E15_CombineHaWithRGB et E16_C_RGB_bruit",
+    'Star_Stretch': "étoiles étirées à part : SXT sur le RGB LINÉAIRE (Unscreen décoché, Generate star image coché) donne RGB_stars linéaire ; glisse Star_Stretch sur RGB_stars (Stretch Amount 6, SCNR) ; le RGB sans étoiles s'étire par MAS ou EZ_Soft_Stretch ; à la place de SXT_RGB_etire et SCNR_etoiles_vert",
     'EZ_Soft_Stretch': "à la place de MAS sur le RGB (ou des GHS sur L) : étirement automatique doux (HistogramTransformation, point noir et médiane calculés) ; puis SXT_RGB_etire et GHS_3_fond comme après MAS",
     'Turbo_debut': "MODE TURBO, à la place de R_C_Preparation_rapide, R_Gradient_auto_rapide et R_Lineaire_rapide (phases 1 à 3) : masters seuls ouverts, double-clic puis Apply Global (pas en glissant) ; ensuite GHS_1_premier sur L",
     'C_Preparation_rapide': "MODE RAPIDE, à la place d'E00 à E03 : masters seuls ouverts, double-clic puis Apply Global (pas en glissant : ImageSolver échoue sur une image en cours de traitement) : Renommer_auto, LinearPatternSubtraction, Combinaison_RGB, Solver_auto (ImageSolver sur toutes les images) en un seul conteneur",

@@ -2136,6 +2136,30 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <table id="parameters" rows="0"/>
       <parameter id="information"></parameter>
    </instance>
+   <instance class="Script" version="256" id="Opt_Star_Stretch_instance">
+      <description>OPTION — étoiles étirées à part : SXT sur le RGB LINÉAIRE (Unscreen décoché, Generate star image coché) donne RGB_stars linéaire&#10;Glisse Star_Stretch sur RGB_stars (Stretch Amount 6, SCNR)&#10;Le RGB sans étoiles s'étire par MAS ou EZ_Soft_Stretch&#10;À la place de SXT_RGB_etire et SCNR_etoiles_vert.&#10;&#10;LANCEMENT : glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.&#10;&#10;PRÉRÉGLÉ : script Star Stretch (SetiAstro) : Stretch Amount 6, Color Boost 1,3, Remove Green (SCNR vert) coché.&#10;&#10;À RÉGLER : glisse sur l'image d'étoiles LINÉAIRE (RGB_stars issue de SXT sur le RGB linéaire, Unscreen décoché) : la fenêtre s'ouvre avec ces réglages ; OK.&#10;&#10;SI :&#10;- cœurs d'étoiles blancs (R = G = B = 1) -&gt; 5,5&#10;- étoiles trop grosses -&gt; 5 ou 4&#10;- étoiles grisées par le SCNR -&gt; décoche Remove Green&#10;- étoiles criardes -&gt; Color Boost 1,0</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/star_stretch.js</parameter>
+      <parameter id="md5sum">69a1ee6db4e9f5374c2cddb1e5a7f4ae</parameter>
+      <table id="parameters" rows="4">
+         <tr>
+            <td id="id">amount</td>
+            <td id="value">6</td>
+         </tr>
+         <tr>
+            <td id="id">satAmount</td>
+            <td id="value">1.3</td>
+         </tr>
+         <tr>
+            <td id="id">removeGreen</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">showPreview</td>
+            <td id="value">false</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
+   </instance>
    <instance class="NoOperation" version="256" id="P4_rapide_instance">
       <description>MODE RAPIDE, phase 4 — Étirement : GHS_1_premier sur L sans étoiles (chemin principal, à régler), puis GHS_2_contraste et GHS_3_fond (chemin principal) sur L ; R_C_RGB_etire_rapide sur RGB (MAS avec étoiles, SXT Unscreen qui crée RGB_stars, SCNR vert sur RGB_stars, GHS fond). Icône de repère, sans effet.</description>
    </instance>
@@ -5072,8 +5096,9 @@ max($T,f1)</parameter>
    <icon id="Opt_Saturation_grosses" instance="Opt_Saturation_grosses_instance" xpos="604" ypos="324" workspace="Workspace01"/>
    <icon id="Opt_Statistical_Stretch" instance="Opt_Statistical_Stretch_instance" xpos="604" ypos="354" workspace="Workspace01"/>
    <icon id="Opt_EZ_Soft_Stretch" instance="Opt_EZ_Soft_Stretch_instance" xpos="604" ypos="384" workspace="Workspace01"/>
-   <icon id="P4_rapide" instance="P4_rapide_instance" xpos="604" ypos="430" workspace="Workspace01"/>
-   <icon id="R_C_RGB_etire_rapide" instance="R_C_RGB_etire_rapide_instance" xpos="604" ypos="464" workspace="Workspace01"/>
+   <icon id="Opt_Star_Stretch" instance="Opt_Star_Stretch_instance" xpos="604" ypos="414" workspace="Workspace01"/>
+   <icon id="P4_rapide" instance="P4_rapide_instance" xpos="604" ypos="460" workspace="Workspace01"/>
+   <icon id="R_C_RGB_etire_rapide" instance="R_C_RGB_etire_rapide_instance" xpos="604" ypos="494" workspace="Workspace01"/>
    <icon id="P5_Couleur" instance="P5_Couleur_instance" xpos="795" ypos="20" workspace="Workspace01"/>
    <icon id="E16_LRGB_ajout_L" instance="E16_LRGB_ajout_L_instance" xpos="795" ypos="64" workspace="Workspace01"/>
    <icon id="P5_rapide" instance="P5_rapide_instance" xpos="795" ypos="110" workspace="Workspace01"/>

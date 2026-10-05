@@ -624,6 +624,27 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - fond coupé à noir -> Aggressiveness plus bas (2 à 3)
 > - étoiles grossies, cœurs blancs -> c'est le défaut d'un étirement par fonction de transfert : MAS à la place
 
+#### Opt_Star_Stretch — Script
+   script `$PXI_SRCDIR/scripts/star_stretch.js`
+   paramètres : `amount=6`, `satAmount=1.3`, `removeGreen=true`, `showPreview=false`
+
+> OPTION — étoiles étirées à part : SXT sur le RGB LINÉAIRE (Unscreen décoché, Generate star image coché) donne RGB_stars linéaire
+> Glisse Star_Stretch sur RGB_stars (Stretch Amount 6, SCNR)
+> Le RGB sans étoiles s'étire par MAS ou EZ_Soft_Stretch
+> À la place de SXT_RGB_etire et SCNR_etoiles_vert.
+> 
+> LANCEMENT : glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
+> 
+> PRÉRÉGLÉ : script Star Stretch (SetiAstro) : Stretch Amount 6, Color Boost 1,3, Remove Green (SCNR vert) coché.
+> 
+> À RÉGLER : glisse sur l'image d'étoiles LINÉAIRE (RGB_stars issue de SXT sur le RGB linéaire, Unscreen décoché) : la fenêtre s'ouvre avec ces réglages ; OK.
+> 
+> SI :
+> - cœurs d'étoiles blancs (R = G = B = 1) -> 5,5
+> - étoiles trop grosses -> 5 ou 4
+> - étoiles grisées par le SCNR -> décoche Remove Green
+> - étoiles criardes -> Color Boost 1,0
+
 ### P4_rapide
 
 #### R_C_RGB_etire_rapide — ProcessContainer

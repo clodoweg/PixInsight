@@ -861,3 +861,8 @@ Réponse : pour une galaxie brillante, Dynamic range compression 0,6 à 0,8, Agg
 
 Demandes : « j'ai plus le script qui diminue juste les grosses etoiles? » puis « rajoute le dans les options etoiles pour LRGB et HaRGB »
 Fait : Opt_Etoiles_grosses de nouveau dans les options P7 du LRGB et du LHaRGB (taille 7, seuil 0,15, etendue 12, force 0,80 ; version sans anneau sombre) ; textes qui la citaient remis pour les galaxies.
+
+### Option Star_Stretch (5 octobre 2026)
+
+Demande : « rajoute aussi dans etirement une option Star Stretch réglée par defaut sur 6 et SCNR » (dans la suite des demandes LRGB et LHaRGB).
+Fait : Opt_Star_Stretch (P4) en LRGB et LHaRGB : icône Star_Stretch existante (script star_stretch.js de SetiAstro v2.6 : amount 6, satAmount 1,3, removeGreen true) ; texte galaxies : sur RGB_stars LINÉAIRE (SXT sur le RGB linéaire, Unscreen décoché), à la place de SXT_RGB_etire et SCNR_etoiles_vert ; textes narrowband inchangés.

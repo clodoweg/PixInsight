@@ -1164,7 +1164,7 @@ def agrandir_x2():
                    ('absoluteMode', 'ForceWidthAndHeight', 'v'), ('interpolation', 'Lanczos3', 'v'), ('clampingThreshold', '0.30', 'v'), ('smoothness', '1.50', 'v'), ('noGUIMessages', True, 'v')])
 
 for _st in (lrgb, lhargb):
-    insert_after(_st, 'Statistical_Stretch', [(script('EZ_Soft_Stretch', ''), '')])   # option P4 (demande de l'utilisateur, LRGB et LHaRGB)
+    insert_after(_st, 'Statistical_Stretch', [(script('EZ_Soft_Stretch', ''), ''), (script('Star_Stretch', ''), '')])   # options P4 (demande de l'utilisateur, LRGB et LHaRGB) : EZ Soft Stretch, Star Stretch (6, SCNR)
     insert_after(_st, 'Solver_auto', [(script('Binning_x2', ''), '')])
     insert_before(_st, 'Masque_L', [(script('DarkStructureEnhance', ''), '')])
     insert_before(_st, 'ICC_sRGB', [(agrandir_x2(), '')])
