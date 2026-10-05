@@ -382,6 +382,29 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > Double-clic sur le conteneur pour voir ou changer les réglages de chaque étape.
 
+#### E19_C_Sharp_MMT — ProcessContainer
+   1. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
+      paramètres : `mode=attacher`, `s=0.14`, `flou=2`, `nom=masque_L`, `dialogue=false`
+   2. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Sharp_MMT.js`
+      paramètres : `biais=0.04`, `premiere=2`, `derniere=4`, `couches=5`, `dialogue=false`
+   3. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
+      paramètres : `mode=retirer`, `nom=masque_L`, `dialogue=false`
+
+> LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
+> 
+> PRÉRÉGLÉ : conteneur : masque de luminance attaché (Masque_L, s = 0,14), script Sharp_MMT (MultiscaleMedianTransform 5 couches, couches 2 à 4 biais +0,04, couche 1 inchangée), masque retiré.
+> 
+> À RÉGLER : glisse sur l'image SANS étoiles étirée, après C_Finition, avant NXT_final ; regarde à 100 % sur la galaxie ; copie Sharp_MMT.js dans src/scripts/clodoweg.
+> 
+> SI :
+> - pas assez net -> double-clic sur le conteneur, Sharp_MMT : biais 0.06
+> - halos ou aspect dur -> biais 0.02
+> - bruit accentué -> première couche 3
+> - autre rendu -> Sharp_USM (P6 options) à la place
+
 ### P6_options
 
 #### Opt_Boost_finition_light — ProcessContainer
@@ -521,7 +544,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
       paramètres : `mode=retirer`, `nom=masque_L`, `dialogue=false`
 
-> OPTION — accentuation finale par UnsharpMask, à la fin de P6 avant NXT_final, sur l'image sans étoiles
+> OPTION — à la place de C_Sharp_MMT : accentuation finale par UnsharpMask, avant NXT_final, sur l'image sans étoiles
 > Masque de luminance attaché puis retiré automatiquement.
 > 
 > LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
@@ -549,13 +572,13 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 ## P7_Etoiles
 
-#### E19_Etoiles_RGB — NoOperation
+#### E20_Etoiles_RGB — NoOperation
 
 > PRÉRÉGLÉ : rien (icône-note).
 > 
 > À RÉGLER : suis les icônes suivantes : étoiles RGB calibrées pour l'image SHO.
 
-#### E20_Combinaison_RGB — Script
+#### E21_Combinaison_RGB — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Combiner_RGB.js`
    paramètres : `red=R`, `green=G`, `blue=B`, `newId=RGB`, `closeSources=true`, `copyKeywords=true`, `garder=`
 
@@ -569,7 +592,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - garder R, G et B ouvertes -> closeSources = false dans l'icône
 > - une image 'RGB' existe déjà -> ferme-la ou renomme-la
 
-#### E21_ImageSolver — Script
+#### E22_ImageSolver — Script
    script `$PXI_SRCDIR/scripts/clodoweg/ImageSolver_Date.js`
    paramètres : `defaultDate=2020-01-01T00:00:00`, `metadata_focal=2939`, `metadata_xpixsz=3.76`, `solver_catalogMode=2`, `solver_distortionCorrection=true`, `(+ 42 autres réglages ImageSolver)`
 
@@ -584,7 +607,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - échec sans coordonnées dans l'en-tête -> lance ImageSolver depuis le menu Script et utilise Search (nom de l'objet)
 > - master en bin 2 -> metadata_xpixsz = 7.52 et metadata_resolution = 0.0001466 dans solverParams
 
-#### E22_C_Etoiles_RGB — ProcessContainer
+#### E23_C_Etoiles_RGB — ProcessContainer
    1. BlurXTerminator
       ml_version=4 ; correct_only=true ; sharpen_stars=0.25 ; adjust_star_halos=0.00 ; nonstellar_diameter=0.0 ; auto_nonstellar_psf=true ; sharpen_nonstellar=0.50 ; lunar_planetary=false ; overlap=0.20
    2. SpectrophotometricColorCalibration
@@ -602,7 +625,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > Double-clic sur le conteneur pour voir ou changer les réglages de chaque étape.
 
-#### E23_Star_Stretch — Script
+#### E24_Star_Stretch — Script
    script `$PXI_SRCDIR/scripts/star_stretch.js`
    paramètres : `amount=6`, `satAmount=1.3`, `removeGreen=true`, `showPreview=false`
 
@@ -618,7 +641,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - étoiles grisées par le SCNR -> décoche Remove Green
 > - étoiles criardes -> Color Boost 1,0
 
-#### E24_Etoiles_reduites — PixelMath
+#### E25_Etoiles_reduites — PixelMath
    expression = `S=0.20; W=~((~$T)*(~RGB_stars)); f1= ~((~mtf(~S,W)/~mtf(~S,$T))*~$T); max($T,f1)` ; useSingleExpression=true ; symbols = `S, W, f1` ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
 
 > PRÉRÉGLÉ : S = 0,20 (Bill : 0,15) ; recombinaison screen + réduction Blanshan en une formule, sur l'image elle-même.

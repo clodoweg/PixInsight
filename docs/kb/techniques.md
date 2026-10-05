@@ -148,7 +148,7 @@ Variante proposée par l'utilisateur (5 octobre 2026, pas encore en icônes) : R
 
 ## Accentuation finale (« boost de sharp ») : outils
 
-Question de l'utilisateur (5 octobre 2026). Fait : option Opt_Sharp_USM (UnsharpMask sous masque, P6, tous les workflows). Demandé au chemin principal : MMT (sans le mode rapide) ; en attente d'une icône MMT enregistrée par l'utilisateur (identifiants des paramètres de MMT absents du code ouvert de PixInsight).
+Question de l'utilisateur (5 octobre 2026). Fait : option Opt_Sharp_USM (UnsharpMask sous masque, P6, tous les workflows). Chemin principal (tous les workflows, pas le rapide) : C_Sharp_MMT = Masque_L, script Sharp_MMT.js (instance MMT donnée par l'utilisateur : 5 couches, couches 2 à 4 biais +0,04), Masque_retirer, juste avant NXT_final.
 - Sur l'image SANS étoiles, étirée, sous masque de luminance (masque_L), en fin de P6 (après C_Finition, avant NXT_final) ; jamais sur RGB_stars.
 - MultiscaleMedianTransform (MMT) : petites couches (2 à 4) avec un léger biais (+0,03 à +0,05), couche 1 laissée (bruit) ; peu d'anneaux. Brecher l'utilise à la place d'une seconde passe de BXT (critique LRGB, sources 22 et 31).
 - MultiscaleLinearTransform (MLT) : même principe, biais un peu plus forts possibles, plus d'anneaux qu'MMT.

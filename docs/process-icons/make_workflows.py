@@ -55,6 +55,7 @@ SCRIPTS = {
     'Binning_x2': ('$PXI_SRCDIR/scripts/clodoweg/Binning_x2.js', '', [('facteur', '2')], L_GLOBAL),   # demande de l'utilisateur : binning logiciel de toutes les images
     'CombineHaWithRGB': ('$PXI_SRCDIR/scripts/Toolbox/CombineHaToRGB.js', '', [('alphaView', 'H'), ('amount', '2.0'), ('beta', '0.0'), ('bg', '0.015'), ('sigma', '0.0'), ('linear', 'true'), ('rgbLinked', 'true'), ('invertMask', 'true')], L_DRAG),   # PixInsight Toolbox de Jürgen Terpe (test, demande de l'utilisateur)
     'DarkStructureEnhance': ('$PXI_SRCDIR/scripts/misc/DarkStructureEnhance.js', '', [], L_GLOBAL + "Ce script ne lit pas de paramètres d'icône : les réglages se font dans son dialogue. "),   # script livré avec PixInsight (test)
+    'Sharp_MMT': ('$PXI_SRCDIR/scripts/clodoweg/Sharp_MMT.js', '', [('biais', '0.04'), ('premiere', '2'), ('derniere', '4'), ('couches', '5')], L_DRAG),   # instance MMT de l'utilisateur
     'Fond_auto_clair': ('$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js', '', [('cible', '0.14'), ('tolerance', '0.005'), ('grille', '8')], L_DRAG),
     'Solver_auto': ('$PXI_SRCDIR/scripts/clodoweg/GC_Solver_auto.js', '', [('gradient', 'false'), ('solve', 'true'), ('solveTout', 'true'), ('defaultDate', '2020-01-01T00:00:00')], L_GLOBAL),
     'Lineaire_rapide': ('$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js', '', [('etapes', '')], L_GLOBAL),   # P3_rapide : une seule icône (demande de l'utilisateur)
@@ -675,6 +676,10 @@ def usm():
                    ('deringing', True, 'v'), ('deringingDark', '0.1000', 'v'), ('deringingBright', '0.0000', 'v'), ('outputDeringingMaps', False, 'v'),
                    ('rangeLow', '0.0000000', 'v'), ('rangeHigh', '0.0000000', 'v')])
 
+def sharp_mmt():
+    """P6, chemin principal (demande de l'utilisateur) : accentuation finale MMT sous masque de luminance, sur l'image sans étoiles."""
+    return _cont('C_Sharp_MMT', [script('Masque_L', ''), script('Sharp_MMT', ''), script('Masque_retirer', '')])
+
 def sharp_usm():
     """Option P6 (demande de l'utilisateur) : accentuation finale par UnsharpMask, sous masque de luminance, sur l'image sans étoiles."""
     return _cont('Sharp_USM', [script('Masque_L', ''), usm(), script('Masque_retirer', '')])
@@ -690,7 +695,7 @@ def finish_block(extra=None, galaxie=False):
              (note('Masque_retirer', ''), ''),
              (boost_container('Boost_finition_light', k=((0, 0), (0.25, 0.24), (0.75, 0.76), (1, 1)), sat=0.57, amount='0.120'), ''),
              (boost_container(), ''),
-             (sharp_usm(), ''),   # option : accentuation finale (demande de l'utilisateur)
+             (sharp_mmt(), ''), (sharp_usm(), ''),   # accentuation finale : MMT au chemin principal, UnsharpMask en option (demande de l'utilisateur)
              (M.nxt('NXT_final', 0.40, 1), "PARTIE 3 (bruit) — " + D_NXT_F),
              (M.nxt('NXT_final_doux', 0.25, 1), D_NXT_DOUX), (M.nxt('NXT_final_fort', 0.60, 1), D_NXT_FORT)]
         return b
@@ -703,7 +708,7 @@ def finish_block(extra=None, galaxie=False):
          (_cont('HDRMT_30', hdrmt_items('0.3')), ''), (hdrmt_50(), ''), (hdrmt_eclat(), '')]
     if extra:
         b = extra + b
-    return b + [(sharp_usm(), ''), (M.nxt('NXT_final', 0.40, 1), D_NXT_F)]
+    return b + [(sharp_mmt(), ''), (sharp_usm(), ''), (M.nxt('NXT_final', 0.40, 1), D_NXT_F)]
 
 def icc_srgb():
     # ICCProfileTransformation vers sRGB IEC61966-2.1 (paramètres du module ICCProfileTransformation de PixInsight)

@@ -1343,6 +1343,82 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          <parameter id="information"></parameter>
       </instance>
    </instance>
+   <instance class="ProcessContainer" id="E19_C_Sharp_MMT_instance">
+      <description>LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : masque de luminance attaché (Masque_L, s = 0,14), script Sharp_MMT (MultiscaleMedianTransform 5 couches, couches 2 à 4 biais +0,04, couche 1 inchangée), masque retiré.&#10;&#10;À RÉGLER : glisse sur l'image SANS étoiles étirée, après C_Finition, avant NXT_final ; regarde à 100 % sur la galaxie ; copie Sharp_MMT.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- pas assez net -&gt; double-clic sur le conteneur, Sharp_MMT : biais 0.06&#10;- halos ou aspect dur -&gt; biais 0.02&#10;- bruit accentué -&gt; première couche 3&#10;- autre rendu -&gt; Sharp_USM (P6 options) à la place</description>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="5">
+            <tr>
+               <td id="id">mode</td>
+               <td id="value">attacher</td>
+            </tr>
+            <tr>
+               <td id="id">s</td>
+               <td id="value">0.14</td>
+            </tr>
+            <tr>
+               <td id="id">flou</td>
+               <td id="value">2</td>
+            </tr>
+            <tr>
+               <td id="id">nom</td>
+               <td id="value">masque_L</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Sharp_MMT.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="5">
+            <tr>
+               <td id="id">biais</td>
+               <td id="value">0.04</td>
+            </tr>
+            <tr>
+               <td id="id">premiere</td>
+               <td id="value">2</td>
+            </tr>
+            <tr>
+               <td id="id">derniere</td>
+               <td id="value">4</td>
+            </tr>
+            <tr>
+               <td id="id">couches</td>
+               <td id="value">5</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="3">
+            <tr>
+               <td id="id">mode</td>
+               <td id="value">retirer</td>
+            </tr>
+            <tr>
+               <td id="id">nom</td>
+               <td id="value">masque_L</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+   </instance>
    <instance class="NoOperation" version="256" id="P6_options_instance">
       <description>OPTIONS de la phase 6 — Finition : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
    </instance>
@@ -2214,7 +2290,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </instance>
    </instance>
    <instance class="ProcessContainer" id="Opt_Sharp_USM_instance">
-      <description>OPTION — accentuation finale par UnsharpMask, à la fin de P6 avant NXT_final, sur l'image sans étoiles&#10;Masque de luminance attaché puis retiré automatiquement.&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : masque de luminance attaché (Masque_L, s = 0,14), UnsharpMask (écart type 2,0 px, amount 0,30, luminance seule, anti-halo sombre 0,10), masque retiré.&#10;&#10;À RÉGLER : glisse sur l'image SANS étoiles étirée, après C_Finition, avant NXT_final ; regarde à 100 % sur la galaxie.&#10;&#10;SI :&#10;- halos sombres autour des détails -&gt; double-clic sur le conteneur, UnsharpMask : amount 0,20 ou anti-halo 0,15&#10;- pas assez net -&gt; amount 0,40&#10;- fond qui devient granuleux -&gt; seuil s du masque plus haut (Masque_L)</description>
+      <description>OPTION — à la place de C_Sharp_MMT : accentuation finale par UnsharpMask, avant NXT_final, sur l'image sans étoiles&#10;Masque de luminance attaché puis retiré automatiquement.&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : masque de luminance attaché (Masque_L, s = 0,14), UnsharpMask (écart type 2,0 px, amount 0,30, luminance seule, anti-halo sombre 0,10), masque retiré.&#10;&#10;À RÉGLER : glisse sur l'image SANS étoiles étirée, après C_Finition, avant NXT_final ; regarde à 100 % sur la galaxie.&#10;&#10;SI :&#10;- halos sombres autour des détails -&gt; double-clic sur le conteneur, UnsharpMask : amount 0,20 ou anti-halo 0,15&#10;- pas assez net -&gt; amount 0,40&#10;- fond qui devient granuleux -&gt; seuil s du masque plus haut (Masque_L)</description>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
@@ -2296,10 +2372,10 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
    <instance class="NoOperation" version="256" id="P7_Etoiles_instance">
       <description>PHASE 7 — Étoiles : étoiles : étirement, recombinaison, réduction. Colonne de repère, sans effet.</description>
    </instance>
-   <instance class="NoOperation" version="256" id="E19_Etoiles_RGB_instance">
+   <instance class="NoOperation" version="256" id="E20_Etoiles_RGB_instance">
       <description>PRÉRÉGLÉ : rien (icône-note).&#10;&#10;À RÉGLER : suis les icônes suivantes : étoiles RGB calibrées pour l'image SHO.</description>
    </instance>
-   <instance class="Script" version="256" id="E20_Combinaison_RGB_instance">
+   <instance class="Script" version="256" id="E21_Combinaison_RGB_instance">
       <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Combiner_RGB : R, G, B -&gt; image couleur 'RGB', en-tête FITS du rouge copié (coordonnées et date pour ImageSolver), puis R, G et B fermées sans demander d'enregistrer.&#10;&#10;À RÉGLER : une seule fois par ordinateur : copie Combiner_RGB.js dans src/scripts/clodoweg ; nomme tes masters R, G et B, enregistre-les si tu veux garder une version modifiée (après LPS par exemple), puis lance l'icône.&#10;&#10;SI :&#10;- garder R, G et B ouvertes -&gt; closeSources = false dans l'icône&#10;- une image 'RGB' existe déjà -&gt; ferme-la ou renomme-la</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Combiner_RGB.js</parameter>
       <parameter id="md5sum"></parameter>
@@ -2335,7 +2411,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </table>
       <parameter id="information"></parameter>
    </instance>
-   <instance class="Script" version="256" id="E21_ImageSolver_instance">
+   <instance class="Script" version="256" id="E22_ImageSolver_instance">
       <description>LANCEMENT : glisse l'icône sur l'image.&#10;&#10;PRÉRÉGLÉ : script ImageSolver_Date.js en une seule icône (pas de conteneur) : date d'observation 2020-01-01 ajoutée seulement si l'image n'en a pas, puis ImageSolver 6.4.2 lancé avec focale 2 939 mm, pixel 3,76 µm (0,264″/px), catalogue automatique (Gaia DR3 local), correction de distorsion ; coordonnées et vraie date lues dans l'image.&#10;&#10;À RÉGLER : une seule fois par ordinateur : copie la NOUVELLE version d'ImageSolver_Date.js dans src/scripts/clodoweg ; ensuite glisse l'icône sur CHAQUE image à calibrer, juste avant SPFC ou SPCC : image RGB combinée, master L, masters H, O et S.&#10;&#10;SI :&#10;- la date est ajoutée mais ImageSolver ne se lance pas -&gt; glisse l'icône ImageSolver_seul (options) sur la même image&#10;- échec sans coordonnées dans l'en-tête -&gt; lance ImageSolver depuis le menu Script et utilise Search (nom de l'objet)&#10;- master en bin 2 -&gt; metadata_xpixsz = 7.52 et metadata_resolution = 0.0001466 dans solverParams</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/ImageSolver_Date.js</parameter>
       <parameter id="md5sum"></parameter>
@@ -2531,7 +2607,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </table>
       <parameter id="information"></parameter>
    </instance>
-   <instance class="ProcessContainer" id="E22_C_Etoiles_RGB_instance">
+   <instance class="ProcessContainer" id="E23_C_Etoiles_RGB_instance">
       <description>LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;CONTENEUR : BXT_CorrectOnly, SPCC, BXT_RGB, SXT_RGB_lineaire.&#10;&#10;SUR : l'image RGB combinée, linéaire, gradient retiré.&#10;&#10;Double-clic sur le conteneur pour voir ou changer les réglages de chaque étape.</description>
       <instance class="BlurXTerminator" version="256" enabled="true">
          <parameter id="ml_version" value="4"/>
@@ -2621,7 +2697,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          <parameter id="overlap" value="0.20"/>
       </instance>
    </instance>
-   <instance class="Script" version="256" id="E23_Star_Stretch_instance">
+   <instance class="Script" version="256" id="E24_Star_Stretch_instance">
       <description>LANCEMENT : glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.&#10;&#10;PRÉRÉGLÉ : Stretch Amount 6, Color Boost 1,3, Remove Green (SCNR) coché.&#10;&#10;À RÉGLER : rien ; sur l'image d'étoiles linéaire.&#10;&#10;SI :&#10;- cœurs d'étoiles blancs (R = G = B = 1) -&gt; 5,5&#10;- étoiles trop grosses -&gt; 5 ou 4&#10;- étoiles grisées par le SCNR -&gt; décoche Remove Green&#10;- étoiles criardes -&gt; Color Boost 1,0</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/star_stretch.js</parameter>
       <parameter id="md5sum">69a1ee6db4e9f5374c2cddb1e5a7f4ae</parameter>
@@ -2645,7 +2721,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </table>
       <parameter id="information"></parameter>
    </instance>
-   <instance class="PixelMath" version="256" id="E24_Etoiles_reduites_instance">
+   <instance class="PixelMath" version="256" id="E25_Etoiles_reduites_instance">
       <description>PRÉRÉGLÉ : S = 0,20 (Bill : 0,15) ; recombinaison screen + réduction Blanshan en une formule, sur l'image elle-même.&#10;&#10;À RÉGLER : À LA PLACE d'Etoiles_screen : glisse sur l'image sans étoiles finale ; étoiles étirées nommées RGB_stars.&#10;&#10;SI :&#10;- étoiles encore grosses -&gt; S 0,15&#10;- trop petites -&gt; S 0,25, ou Etoiles_screen&#10;- pour recommencer -&gt; Ctrl+Z</description>
       <parameter id="expression">S=0.20;
 W=~((~$T)*(~RGB_stars));
@@ -3166,21 +3242,22 @@ $T*(1 - k*t*t)</parameter>
    <icon id="Opt_SCNR_SHO" instance="Opt_SCNR_SHO_instance" xpos="799" ypos="234" workspace="Workspace01"/>
    <icon id="P6_Finition" instance="P6_Finition_instance" xpos="1003" ypos="20" workspace="Workspace01"/>
    <icon id="E18_C_Finition" instance="E18_C_Finition_instance" xpos="1003" ypos="64" workspace="Workspace01"/>
-   <icon id="P6_options" instance="P6_options_instance" xpos="1003" ypos="110" workspace="Workspace01"/>
-   <icon id="Opt_Boost_finition_light" instance="Opt_Boost_finition_light_instance" xpos="1003" ypos="144" workspace="Workspace01"/>
-   <icon id="Opt_Boost_finition" instance="Opt_Boost_finition_instance" xpos="1003" ypos="174" workspace="Workspace01"/>
-   <icon id="Opt_HDRMT_30" instance="Opt_HDRMT_30_instance" xpos="1003" ypos="204" workspace="Workspace01"/>
-   <icon id="Opt_HDRMT_50" instance="Opt_HDRMT_50_instance" xpos="1003" ypos="234" workspace="Workspace01"/>
-   <icon id="Opt_HDRMT_eclat" instance="Opt_HDRMT_eclat_instance" xpos="1003" ypos="264" workspace="Workspace01"/>
-   <icon id="Opt_Sharp_USM" instance="Opt_Sharp_USM_instance" xpos="1003" ypos="294" workspace="Workspace01"/>
-   <icon id="Opt_NXT_final" instance="Opt_NXT_final_instance" xpos="1003" ypos="324" workspace="Workspace01"/>
+   <icon id="E19_C_Sharp_MMT" instance="E19_C_Sharp_MMT_instance" xpos="1003" ypos="94" workspace="Workspace01"/>
+   <icon id="P6_options" instance="P6_options_instance" xpos="1003" ypos="140" workspace="Workspace01"/>
+   <icon id="Opt_Boost_finition_light" instance="Opt_Boost_finition_light_instance" xpos="1003" ypos="174" workspace="Workspace01"/>
+   <icon id="Opt_Boost_finition" instance="Opt_Boost_finition_instance" xpos="1003" ypos="204" workspace="Workspace01"/>
+   <icon id="Opt_HDRMT_30" instance="Opt_HDRMT_30_instance" xpos="1003" ypos="234" workspace="Workspace01"/>
+   <icon id="Opt_HDRMT_50" instance="Opt_HDRMT_50_instance" xpos="1003" ypos="264" workspace="Workspace01"/>
+   <icon id="Opt_HDRMT_eclat" instance="Opt_HDRMT_eclat_instance" xpos="1003" ypos="294" workspace="Workspace01"/>
+   <icon id="Opt_Sharp_USM" instance="Opt_Sharp_USM_instance" xpos="1003" ypos="324" workspace="Workspace01"/>
+   <icon id="Opt_NXT_final" instance="Opt_NXT_final_instance" xpos="1003" ypos="354" workspace="Workspace01"/>
    <icon id="P7_Etoiles" instance="P7_Etoiles_instance" xpos="1199" ypos="20" workspace="Workspace01"/>
-   <icon id="E19_Etoiles_RGB" instance="E19_Etoiles_RGB_instance" xpos="1199" ypos="64" workspace="Workspace01"/>
-   <icon id="E20_Combinaison_RGB" instance="E20_Combinaison_RGB_instance" xpos="1199" ypos="94" workspace="Workspace01"/>
-   <icon id="E21_ImageSolver" instance="E21_ImageSolver_instance" xpos="1199" ypos="124" workspace="Workspace01"/>
-   <icon id="E22_C_Etoiles_RGB" instance="E22_C_Etoiles_RGB_instance" xpos="1199" ypos="154" workspace="Workspace01"/>
-   <icon id="E23_Star_Stretch" instance="E23_Star_Stretch_instance" xpos="1199" ypos="184" workspace="Workspace01"/>
-   <icon id="E24_Etoiles_reduites" instance="E24_Etoiles_reduites_instance" xpos="1199" ypos="214" workspace="Workspace01"/>
+   <icon id="E20_Etoiles_RGB" instance="E20_Etoiles_RGB_instance" xpos="1199" ypos="64" workspace="Workspace01"/>
+   <icon id="E21_Combinaison_RGB" instance="E21_Combinaison_RGB_instance" xpos="1199" ypos="94" workspace="Workspace01"/>
+   <icon id="E22_ImageSolver" instance="E22_ImageSolver_instance" xpos="1199" ypos="124" workspace="Workspace01"/>
+   <icon id="E23_C_Etoiles_RGB" instance="E23_C_Etoiles_RGB_instance" xpos="1199" ypos="154" workspace="Workspace01"/>
+   <icon id="E24_Star_Stretch" instance="E24_Star_Stretch_instance" xpos="1199" ypos="184" workspace="Workspace01"/>
+   <icon id="E25_Etoiles_reduites" instance="E25_Etoiles_reduites_instance" xpos="1199" ypos="214" workspace="Workspace01"/>
    <icon id="P7_options" instance="P7_options_instance" xpos="1199" ypos="260" workspace="Workspace01"/>
    <icon id="Opt_ImageSolver_seul" instance="Opt_ImageSolver_seul_instance" xpos="1199" ypos="294" workspace="Workspace01"/>
    <icon id="Opt_Find_Background" instance="Opt_Find_Background_instance" xpos="1199" ypos="324" workspace="Workspace01"/>
