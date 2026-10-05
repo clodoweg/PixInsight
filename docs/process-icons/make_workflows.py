@@ -51,6 +51,8 @@ SCRIPTS = {
     'Fond_desature': ('$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js', '', [('debut', '0.03'), ('fin', '0.15'), ('violetFin', '0.30'), ('flou', '3')], L_DRAG),
     'Fond_auto': ('$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js', '', [('cible', '0.12'), ('tolerance', '0.005'), ('grille', '8')], L_DRAG),
     'Nettoyage_sans_etoiles': ('$PXI_SRCDIR/scripts/clodoweg/Nettoyage_sans_etoiles.js', '', [('etoiles', 'RGB_stars'), ('seuilBas', '0.05'), ('seuilHaut', '0.12'), ('etendue', '25'), ('passes', '3'), ('protege', '0.08'), ('structure', '0.15'), ('compact', '0.05'), ('tresBrillant', '0.05'), ('etendue2', '80'), ('gain', '3'), ('gain2', '8'), ('afficherMasque', 'false')], L_DRAG),
+    'Coeurs_etoiles': ('$PXI_SRCDIR/scripts/clodoweg/Etoiles_couleur.js', '', [('vue', ''), ('seuil', '0.50'), ('rayon', '8.0'), ('plafond', '1.00'), ('saturation', '0.00')], L_DRAG),   # option P4 avant MAS, RGB linéaire : cœurs saturés recolorés par le halo (demande de l'utilisateur)
+    'Etoiles_couleur': ('$PXI_SRCDIR/scripts/clodoweg/Etoiles_couleur.js', '', [('vue', 'RGB_stars'), ('seuil', '0.80'), ('rayon', '6.0'), ('plafond', '0.85'), ('saturation', '1.00')], L_DRAG),   # option P7 sur RGB_stars avant Etoiles_screen (demande de l'utilisateur)
     'Etoiles_grosses': ('$PXI_SRCDIR/scripts/clodoweg/Etoiles_grosses.js', '', [('taille', '7'), ('seuil', '0.15'), ('etendue', '6'), ('force', '0.70'), ('afficherMasque', 'false')], L_DRAG),   # demande de l'utilisateur : réduire seulement les grosses étoiles
     'Export_TIFF': ('$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js', '', [('nom', ''), ('suffixe', ''), ('dossier', ''), ('icc', 'true')], L_DRAG),   # plus aucune vue fermée (demande de l'utilisateur)
     'Binning_x2': ('$PXI_SRCDIR/scripts/clodoweg/Binning_x2.js', '', [('facteur', '2')], L_GLOBAL),   # demande de l'utilisateur : binning logiciel de toutes les images
@@ -1128,6 +1130,9 @@ insert_after(lrgb, 'ImageSolver', [(script('Gradient_auto_rapide', ''), '')])
 # SCNR vert à 1,0 sur les étoiles : en P4, juste après SXT_RGB_etire, sur RGB_stars (script Etoiles_auto) ; plus en P7 (demande de l'utilisateur, 5 octobre 2026)
 for _st in (lrgb, lhargb):
     insert_after(_st, 'SXT_RGB_etire', [(script('SCNR_etoiles', ''), '')])
+    # options (demande de l'utilisateur) : Coeurs_etoiles avant MAS (RGB linéaire, pas en rapide), Etoiles_couleur sur RGB_stars avant Etoiles_screen
+    insert_before(_st, 'MAS', [(script('Coeurs_etoiles', ''), '')])
+    insert_before(_st, 'Etoiles_grosses', [(script('Etoiles_couleur', ''), '')])
     # P7 (demande de l'utilisateur) : Fond_desature, Fond_auto (et Fond_auto_clair) sur l'image SANS étoiles, puis Etoiles_screen
     for _b in ('Fond_desature', 'Fond_auto', 'Fond_auto_clair'):
         _it = pick(_st, _b)

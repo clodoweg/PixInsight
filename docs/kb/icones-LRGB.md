@@ -401,6 +401,25 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 ### P4_options
 
+#### Opt_Coeurs_etoiles — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Etoiles_couleur.js`
+   paramètres : `vue=`, `seuil=0.50`, `rayon=8.0`, `plafond=1.00`, `saturation=0.00`
+
+> OPTION — étoiles brillantes à cœur blanc (saturé), juste AVANT MAS : glisse sur le RGB linéaire avec ses étoiles
+> Les cœurs prennent la couleur de leur halo, MAS les protège ensuite (pas en rapide).
+> 
+> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
+> 
+> PRÉRÉGLÉ : script Etoiles_couleur sur l'image où on le glisse : cœurs (au-dessus de 0,5 × luminance max, rampe dès 0,35) recolorés avec le rapport R:G:B moyen de leur halo (flou de 8 px de l'image sans les cœurs), luminance gardée, canal le plus fort plafonné à 1 ; reste de l'image inchangé ; principe de RepairedHSVSeparation, sans fenêtre.
+> 
+> À RÉGLER : glisse sur le RGB LINÉAIRE avec ses étoiles, juste avant MAS (après C_RGB_lineaire) ; compare RGB_stars à la sonde avec et sans ; copie Etoiles_couleur.js dans src/scripts/clodoweg.
+> 
+> SI :
+> - peu d'étoiles changent -> seuil 0.35
+> - couleur pas jusqu'au centre des grosses étoiles -> rayon 12
+> - taches de couleur sur le cœur de la galaxie -> seuil 0.70
+> - rien ne change -> cœurs déjà colorés : Etoiles_couleur en P7
+
 #### Opt_Statistical_Stretch — Script
    script `$PXI_SRCDIR/scripts/statisticalstretch.js`
    paramètres : `targetMedian=0.25`, `curvesBoost=0`, `numIterations=1`, `normalizeImageRange=false`, `linkedStretch=true`, `openDialogbox=true`, `autoConvergence=false`, `blackpointSigma=5`, `noBlackClip=false`, `hdrCompress=false`, `hdrAmount=0.25`, `hdrKnee=0.35`, `lumaOnly=false`, `lumaMode=rec709`, `lumaBlend=0.6`
@@ -929,6 +948,26 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > SI :
 > - petites étoiles réduites ou effacées aussi (son masque ne protège que les cœurs) -> Etoiles_grosses à la place
 > - pas assez -> relance en Low (Med = 4 courbes, High = 9)
+
+#### Opt_Etoiles_couleur — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Etoiles_couleur.js`
+   paramètres : `vue=RGB_stars`, `seuil=0.80`, `rayon=6.0`, `plafond=0.85`, `saturation=1.00`
+
+> OPTION — étoiles brillantes encore blanches : sur RGB_stars AVANT Etoiles_screen (glisse sur n'importe quelle image)
+> Cœurs recolorés par leur halo, un peu assombris, puis saturation
+> En rapide, avant R_C_Etoiles_fond_rapide.
+> 
+> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
+> 
+> PRÉRÉGLÉ : script Etoiles_couleur sur la vue RGB_stars : cœurs (au-dessus de 0,8 × luminance max) recolorés par leur halo (flou de 6 px), assombris à 0,85, puis ColorSaturation 1,0 (0,4 × rouges, 0,7 × cyans) sur toutes les étoiles.
+> 
+> À RÉGLER : glisse sur n'importe quelle image (traite RGB_stars), AVANT Etoiles_screen (et avant Etoiles_grosses si tu l'utilises) ; double-clic pour la fenêtre ; copie Etoiles_couleur.js dans src/scripts/clodoweg.
+> 
+> SI :
+> - encore blanches -> plafond 0.75
+> - étoiles criardes -> saturation 0.5
+> - petites étoiles brillantes pas touchées -> seuil 0.65
+> - pour recommencer -> Ctrl+Z sur RGB_stars
 
 #### Opt_Etoiles_grosses — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Etoiles_grosses.js`

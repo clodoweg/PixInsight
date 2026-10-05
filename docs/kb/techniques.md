@@ -238,3 +238,7 @@ Tous les filtres alignés sur la même référence dans WBPP : les combinaisons 
 - Repair level : défaut d'abord (0,25 corrige trop peu, 0,75 délave). Résultats inégaux selon les sources (étoiles aux couleurs coupées).
 - Contrôle : sonde 15×15 sur le cœur des étoiles brillantes de RGB_stars, avec et sans réparation.
 - Autres pistes : Etoiles_grosses puis saturation (Etoiles_auto_etire) sur RGB_stars avant Etoiles_screen.
+- **Nos icônes (sans fenêtre à remplir, script Etoiles_couleur.js)** : même principe, automatique. Masque des cœurs (rampe de 0,7·s à s, s = seuil × luminance max) ; couleur du halo par convolution normalisée : flou gaussien (sigma = rayon) de (1 − m)·RGB, rapport R:G:B = canal flouté / moyenne des trois ; dans les cœurs, luminance gardée (× plafond) avec ce rapport, canal le plus fort plafonné à 1. Testé sur une étoile simulée (couleur 1 : 0,75 : 0,5, cœur écrêté) : cœur rendu 1 : 0,79 : 0,55.
+  - **Opt_Coeurs_etoiles** (P4, avant MAS, RGB linéaire) : seuil 0,50, rayon 8, plafond 1, pas de saturation. Pas en rapide.
+  - **Opt_Etoiles_couleur** (P7, RGB_stars avant Etoiles_screen) : seuil 0,80, rayon 6, plafond 0,85, ColorSaturation 1,0.
+  - Limite : un cœur saturé plus large que le rayon garde du blanc au centre (rayon plus grand).

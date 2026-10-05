@@ -658,3 +658,9 @@ Sources :
 - https://pixinsight.com.ar/index.php?a=seccion&b=maskedstretch-stars-sores-28&i=en (Alejandro Tombolini : sur un clone de l'image linéaire, Clip Shadows, Repair level, V - no repairs ; sorties Unrepaired V, V, Sv, H ; ChannelCombination ; puis étirement protégé)
 - http://wimvberlo.blogspot.com/2017/01/star-repair-in-pixinsight.html (Script › Utilities › Repaired HSV Separation, juste avant le premier étirement, ChannelCombination en HSV, essayer V réparé et non réparé)
 - https://wolfcreek.space/index.php/2022/07/25/fixing-saturated-stars-in-pixinsight/ (résultats inégaux, couleurs coupées ; Repair level par défaut le meilleur, 0,25 trop peu, 0,75 trop)
+
+### Icônes Coeurs_etoiles et Etoiles_couleur (5 octobre 2026)
+
+Demande : « fais une icone avant MAS qui fait tout tout seul (mais pas dans rapide, c'est juste une option).  fais l'option Etoiles_couleur »
+
+Fait : script Etoiles_couleur.js (principe de RepairedHSVSeparation, sources ci-dessus, refait sans fenêtre ni ChannelCombination : couleur du halo reportée dans les cœurs saturés par convolution normalisée, luminance gardée). Icônes Opt_Coeurs_etoiles (P4, avant MAS, RGB linéaire, pas en rapide) et Opt_Etoiles_couleur (P7, RGB_stars avant Etoiles_screen, cœurs assombris à 0,85 puis saturation 1,0), en LRGB et LHaRGB.

@@ -130,7 +130,7 @@ Recombine en mode _screen_ , puis contrôle les couleurs d'étoiles (étoiles LR
 
 `~((~$T) * (~RGB_stars))`
 
-Glisse Etoiles_screen sur l'image sans étoiles finale : elle devient l'image finale. Grosses étoiles trop présentes : Opt_Etoiles_grosses sur RGB_stars avant (les petites ne bougent pas) ; toutes les étoiles : Etoiles_reduites à la place.
+Glisse Etoiles_screen sur l'image sans étoiles finale : elle devient l'image finale. Étoiles brillantes blanches : Opt_Etoiles_couleur sur RGB_stars avant (ou, en amont, Opt_Coeurs_etoiles sur le RGB linéaire avant MAS). Grosses étoiles trop présentes : Opt_Etoiles_grosses sur RGB_stars avant (les petites ne bougent pas) ; toutes les étoiles : Etoiles_reduites à la place.
 
 ### Couleurs LRGB : le rendu de référence et comment le vérifier
 SPCC calibre la couleur sur le blanc _Average Spiral Galaxy_ : une galaxie spirale est blanche en moyenne.
