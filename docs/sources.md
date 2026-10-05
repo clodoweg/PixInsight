@@ -787,3 +787,8 @@ Réponse sur Saturation_grosses : « bizarre Saturation_grosses car ca marchait 
 
 Demande : « non c'est moche je veux utiliser Opt_Continuum_auto comme avant »
 Fait : PhotometricContinuumSubtraction retiré (C_Continuum, Continuum_PCS, HaNB_PCS, Fermer_H_sub ; dépôt NightPhotons retiré de depots-pixinsight.txt) ; E12 = Continuum_auto (SetiAstro, à la main) ; R_C_Ha_rapide = Ha_screen, NXT, fermeture (après Continuum_auto). Ha_screen reste en E13. LRGB inchangé.
+
+### LHaRGB P3 : ordre et CombineHaWithRGB (5 octobre 2026)
+
+Demande : « Dans P3 Linear mets avant E15_NXT_L et E16_SXT_L_lineaire avant E12_Continuum_auto et remplace E13_Ha_screen par Opt_CombineHaWithRGB. E13_Ha_screen ne doit servir que dans le rapide »
+Fait : P3 = E10 C_RGB_couleur, E11 BXT_L_H, E12 NXT_L, E13 SXT_L_lineaire, E14 Continuum_auto, E15 CombineHaWithRGB, E16 C_RGB_bruit ; Ha_screen retiré du chemin principal et des options, gardé dans R_C_Ha_rapide. LRGB inchangé.

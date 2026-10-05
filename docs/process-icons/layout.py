@@ -37,8 +37,6 @@ OPT = {'ImageSolver_seul', 'Turbo_debut', 'H_dans_RGB', 'C_Ha_rapide', 'Finition
 
 
 def role(prefix, base):
-    if prefix == 'LHA' and base == 'CombineHaWithRGB':
-        return 'opt'    # LHaRGB (demande de l'utilisateur) : Ha_screen au chemin principal
     if prefix in LUM and base in ('NXT_final', 'Fond_desature', 'HDRMT_30'):
         return 'core'   # galaxies : finition en parties, NXT_final et Fond_desature dans le chemin principal (demande de l'utilisateur)
     if prefix in LUM and base == 'Statistical_Stretch':
@@ -138,8 +136,8 @@ WHEN = {
     'Etoiles_reduites': "à la place d'Etoiles_screen, si les étoiles sont trop présentes (recombinaison + réduction Blanshan)",
     # icônes à tester (demande de l'utilisateur, 5 octobre 2026)
     'Binning_x2': "traitement 4 fois plus rapide et moins de bruit (0,528″/px au lieu de 0,264″/px, l'image du CDK17 est suréchantillonnée) : double-clic puis Apply Global juste après Solver_auto, toutes les images divisées par 2 ; pour un grand tirage, Agrandir_x2 avant l'export",
-    'H_dans_RGB_v2': "TEST, à la place de Ha_screen ou H_dans_RGB : HaNB injecté sans son fond (HaNB − med(HaNB)) dans R, et 20 % dans B (Hβ) : régions HII plus roses, fond inchangé",
-    'H_dans_RGB': "à la place de Ha_screen : injection simple R + w·HaNB (PixelMath), sur le RGB linéaire après Continuum_auto",
+    'H_dans_RGB_v2': "TEST, à la place de CombineHaWithRGB ou H_dans_RGB : HaNB injecté sans son fond (HaNB − med(HaNB)) dans R, et 20 % dans B (Hβ) : régions HII plus roses, fond inchangé",
+    'H_dans_RGB': "à la place de CombineHaWithRGB : injection simple R + w·HaNB (PixelMath), sur le RGB linéaire après Continuum_auto",
     'MAS': "TEST, à la place des GHS ou de Statistical Stretch : MultiscaleAdaptiveStretch avec tes réglages (fond 0,15, saturation) ; glisse sur l'image LINÉAIRE",
     'DarkStructureEnhance': "TEST, avant C_Finition : bandes de poussière et structures sombres plus marquées (script livré avec PixInsight)",
     'Agrandir_x2': "après Binning_x2, pour un grand tirage : image agrandie 2 fois (Lanczos 3) juste avant Export_TIFF ; ne recrée pas le détail perdu",
@@ -166,7 +164,7 @@ CONTAINERS = {
              ('C_L_lineaire', "le master L, linéaire, gradient retiré : BXT, NXT, puis SXT (L sans étoiles)", ['BXT_L', 'NXT_L', 'SXT_L_lineaire']),
              _FIN_G],
     'LHA': [('C_RGB_couleur', "l'image RGB combinée, linéaire, gradient retiré", ['BXT_CorrectOnly', 'SPCC', 'BXT_RGB']),
-            ('C_RGB_bruit', "l'image RGB après Ha_screen (ou H_dans_RGB ; et H_dans_L éventuel) : NXT, puis H, R et HaNB fermées", ['NXT_RGB', 'Fermer_continuum']),
+            ('C_RGB_bruit', "l'image RGB après CombineHaWithRGB (ou H_dans_RGB ; et H_dans_L éventuel) : NXT, puis H, R et HaNB fermées", ['NXT_RGB', 'Fermer_continuum']),
             _FIN_G],   # LHaRGB (demande de l'utilisateur) : étoiles gardées jusqu'à LRGB, plus de C_RGB_etoiles_bruit ni de C_L_lineaire (NXT seul)
     'RSHO': [('C_SHO_lineaire', "l'image SHO combinée, linéaire", ['BXT_NB', 'SXT_lineaire']),
              ('C_Extraction_SHO', "l'image SHO sans étoiles", ['Extraire_S', 'Extraire_H', 'Extraire_O']), _FIN,

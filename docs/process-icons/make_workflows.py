@@ -1172,6 +1172,11 @@ insert_before(lhargb, 'H_dans_RGB', [(script('CombineHaWithRGB', ''), '')])
 # (« The image is already being processed », il appelle beginProcess sur la vue cible), il reste en option par sa fenêtre
 insert_before(lhargb, 'CombineHaWithRGB', [(pm('Ha_screen', 'Q = 2.0;\ncombine($T[0], Q*iif(HaNB > med(HaNB), HaNB - med(HaNB), 0), op_screen())', '$T[1]', '$T[2]', symbols='Q'), '')])
 # LHaRGB, P3 rapide (demande de l'utilisateur) : R_Lineaire_rapide (BXT, NXT_L, SXT_L), Continuum_auto à la main, puis R_C_Ha_rapide (CombineHaWithRGB + C_RGB_bruit) glissé sur RGB
+# LHaRGB (demande de l'utilisateur) : NXT_L et SXT_L_lineaire avant Continuum_auto ; CombineHaWithRGB au chemin principal ; Ha_screen seulement dans R_C_Ha_rapide
+for _b in ('NXT_L', 'SXT_L_lineaire'):
+    _it = pick(lhargb, _b)
+    lhargb.remove(_it)
+    insert_before(lhargb, 'Continuum_auto', [_it])
 insert_after(lhargb, 'Lineaire_rapide', [(cont('C_Ha_rapide', [pick(lhargb, b)[0] for b in ('Ha_screen', 'NXT_RGB', 'Fermer_continuum')]), '')])   # LHaRGB (demande de l'utilisateur) : CombineHaWithRGB au chemin principal après Continuum_auto (H = HaNB), H_dans_RGB en option
 
 def turbo_debut(steps, extra=()):
@@ -1185,6 +1190,7 @@ insert_after(lhargb, 'C_Preparation_rapide', [(turbo_debut(lhargb), '')])   # tu
 SUPPR_GALAXIES = {'Etoiles_grosses', 'Etoiles_plafond'}   # Etoiles_auto_etire, GraXpert, VeraLux_HMS, MKStarReduction, Coeurs_etoiles, RepairedHSV, Etoiles_couleur : retirés du code
 for _st in (lrgb, lhargb):
     _st[:] = [x for x in _st if x[0][0] not in SUPPR_GALAXIES]
+lhargb[:] = [x for x in lhargb if x[0][0] != 'Ha_screen']   # Ha_screen : seulement dans R_C_Ha_rapide (demande de l'utilisateur)
 
 for fn, pre, title, steps in [
     ('Workflow-LRGB.xpsm', 'LRGB', 'Workflow LRGB', lrgb),

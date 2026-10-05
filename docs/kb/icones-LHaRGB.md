@@ -313,7 +313,29 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - vers ou pores -> Nonstellar 0,70
 > - FWHM > 8 px -> bin 2 ou réduction ×0,5 avant
 
-#### E12_Continuum_auto — Script
+#### E12_NXT_L — NoiseXTerminator
+   ml_version=0 ; denoise=0.60 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
+
+> PRÉRÉGLÉ : Denoise 0,60, 1 itération.
+> 
+> À RÉGLER : rien ; après BXT.
+> 
+> SI :
+> - détail fin perdu -> 0,50
+> - encore bruité -> 0,70
+
+#### E13_SXT_L_lineaire — StarXTerminator
+   ml_version=0 ; output_stars=false ; unscreen=false ; remove_stars=true ; remove_spikes=true ; remove_aureoles=true ; remove_reflections=true ; overlap=0.20
+
+> PRÉRÉGLÉ : StarXTerminator sur L linéaire, Unscreen décoché, SANS image d'étoiles (les étoiles viennent du RGB).
+> 
+> À RÉGLER : rien ; dernière étape de C_L_lineaire (ou après NXT_L en LHaRGB) ; L sort sans étoiles pour les GHS.
+> 
+> SI :
+> - nœuds HII ou amas des bras retirés -> masque noir sur la zone avant SXT
+> - quadrillage -> Large overlap
+
+#### E14_Continuum_auto — Script
    script `$PXI_SRCDIR/scripts/ContinuumSubtraction.js`
    paramètres : `applyNoiseReduction=false`, `noiseReductionMethod=NoiseXterminator`, `starrySelected=true`, `outputLinearImageOnly=true`, `aiModel=2.0.0`
 
@@ -328,20 +350,23 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - étoiles ou disque encore visibles dans HaNB -> relance avec Starless
 > - cœur rougi dans l'image finale -> baisse w dans H_dans_RGB
 
-#### E13_Ha_screen — PixelMath
-   expression = `Q = 2.0; combine($T[0], Q*iif(HaNB > med(HaNB), HaNB - med(HaNB), 0), op_screen())` ; expression1 = `$T[1]` ; expression2 = `$T[2]` ; useSingleExpression=false ; symbols = `Q` ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
+#### E15_CombineHaWithRGB — Script
+   script `$PXI_SRCDIR/scripts/Toolbox/CombineHaToRGB.js`
+   paramètres : `alphaView=HaNB`, `amount=2.0`, `beta=0.0`, `bg=0.015`, `sigma=0.0`, `linear=true`, `rgbLinked=true`, `invertMask=true`
 
-> PRÉRÉGLÉ : PixelMath sur le RGB, même calcul que CombineHaWithRGB (Amount Q = 2,0, Beta 0) : R' = combine(R, Q·(HaNB − méd(HaNB)) au-dessus de la médiane, screen) ; G et B inchangés ; seule différence : la courbe Background 0,015 du script, qui change le fond de HaNB de moins de 1,5 % de sa médiane, n'est pas faite.
+> LANCEMENT : glisse l'icône sur l'image.
 > 
-> À RÉGLER : glisse sur le RGB linéaire après Continuum_auto (HaNB ouverte) ; ensuite C_RGB_bruit.
+> PRÉRÉGLÉ : script CombineHaWithRGB (PixInsight Toolbox, Jürgen Terpe) : H Alpha = HaNB, Amount 2,0, Beta 0, Background 0,015, Sigma 0, Linear Image coché, canaux liés.
+> 
+> À RÉGLER : après Continuum_auto (HaNB ouverte) : double-clic sur l'icône puis Apply Global : fenêtre du script avec aperçu (choisis RGB et H Alpha = HaNB), puis OK ; ne pas glisser l'icône (le script échoue : « The image is already being processed ») ; ensuite C_RGB_bruit ; en rapide : Ha_screen (même calcul) dans R_C_Ha_rapide.
 > 
 > SI :
-> - régions HII trop rouges -> double-clic, Q = 1,5
-> - trop discrètes -> Q = 2,5
-> - rose plutôt que rouge -> B : $T[2] + 0.2*Q*iif(HaNB > med(HaNB), HaNB - med(HaNB), 0)
-> - fond rouge et bruité -> CombineHaWithRGB (options) avec Background, ou NXT sur HaNB avant
+> - régions HII trop rouges -> Amount 1,5
+> - trop discrètes -> Amount 2,5
+> - rose plutôt que rouge -> Beta 0,1 à 0,2
+> - bruit rouge dans le fond -> Background plus haut, ou Sigma 1
 
-#### E14_C_RGB_bruit — ProcessContainer
+#### E16_C_RGB_bruit — ProcessContainer
    1. NoiseXTerminator
       ml_version=0 ; denoise=0.80 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
    2. Script
@@ -352,31 +377,9 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > CONTENEUR : NXT_RGB, Fermer_continuum.
 > 
-> SUR : l'image RGB après Ha_screen (ou H_dans_RGB ; et H_dans_L éventuel) : NXT, puis H, R et HaNB fermées.
+> SUR : l'image RGB après CombineHaWithRGB (ou H_dans_RGB ; et H_dans_L éventuel) : NXT, puis H, R et HaNB fermées.
 > 
 > Double-clic sur le conteneur pour voir ou changer les réglages de chaque étape.
-
-#### E15_NXT_L — NoiseXTerminator
-   ml_version=0 ; denoise=0.60 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
-
-> PRÉRÉGLÉ : Denoise 0,60, 1 itération.
-> 
-> À RÉGLER : rien ; après BXT.
-> 
-> SI :
-> - détail fin perdu -> 0,50
-> - encore bruité -> 0,70
-
-#### E16_SXT_L_lineaire — StarXTerminator
-   ml_version=0 ; output_stars=false ; unscreen=false ; remove_stars=true ; remove_spikes=true ; remove_aureoles=true ; remove_reflections=true ; overlap=0.20
-
-> PRÉRÉGLÉ : StarXTerminator sur L linéaire, Unscreen décoché, SANS image d'étoiles (les étoiles viennent du RGB).
-> 
-> À RÉGLER : rien ; dernière étape de C_L_lineaire (ou après NXT_L en LHaRGB) ; L sort sans étoiles pour les GHS.
-> 
-> SI :
-> - nœuds HII ou amas des bras retirés -> masque noir sur la zone avant SXT
-> - quadrillage -> Large overlap
 
 ### P3_options
 
@@ -392,33 +395,14 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > À RÉGLER : glisse sur l'image : crée l'aperçu Background ; dans SPCC, Region of Interest › From Preview.
 
-#### Opt_CombineHaWithRGB — Script
-   script `$PXI_SRCDIR/scripts/Toolbox/CombineHaToRGB.js`
-   paramètres : `alphaView=HaNB`, `amount=2.0`, `beta=0.0`, `bg=0.015`, `sigma=0.0`, `linear=true`, `rgbLinked=true`, `invertMask=true`
-
-> OPTION — à la place de Ha_screen, pour l'aperçu et la réduction du bruit de H (Background, Sigma) : double-clic puis Apply Global, fenêtre du script (RGB, H Alpha = HaNB)
-> Ne pas le glisser (erreur « already being processed »).
-> 
-> LANCEMENT : glisse l'icône sur l'image.
-> 
-> PRÉRÉGLÉ : script CombineHaWithRGB (PixInsight Toolbox, Jürgen Terpe) : H Alpha = HaNB, Amount 2,0, Beta 0, Background 0,015, Sigma 0, Linear Image coché, canaux liés.
-> 
-> À RÉGLER : option, à la place de Ha_screen : double-clic puis Apply Global : fenêtre du script avec aperçu (choisis RGB et H Alpha = HaNB) ; ne pas glisser l'icône (le script échoue : « The image is already being processed ») ; ensuite C_RGB_bruit.
-> 
-> SI :
-> - régions HII trop rouges -> Amount 1,5
-> - trop discrètes -> Amount 2,5
-> - rose plutôt que rouge -> Beta 0,1 à 0,2
-> - bruit rouge dans le fond -> Background plus haut, ou Sigma 1
-
 #### Opt_H_dans_RGB — PixelMath
    expression = `w = 1.0; $T[0] + w*HaNB` ; expression1 = `$T[1]` ; expression2 = `$T[2]` ; useSingleExpression=false ; symbols = `w` ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
 
-> OPTION — à la place de Ha_screen : injection simple R + w·HaNB (PixelMath), sur le RGB linéaire après Continuum_auto.
+> OPTION — à la place de CombineHaWithRGB : injection simple R + w·HaNB (PixelMath), sur le RGB linéaire après Continuum_auto.
 > 
 > PRÉRÉGLÉ : w = 1,0 ; R' = R + w·HaNB.
 > 
-> À RÉGLER : option, à la place de Ha_screen : glisse sur le RGB linéaire calibré, après Continuum_auto ; w entre 0,5 et 2 ; ensuite C_RGB_bruit.
+> À RÉGLER : option, à la place de CombineHaWithRGB : glisse sur le RGB linéaire calibré, après Continuum_auto ; w entre 0,5 et 2 ; ensuite C_RGB_bruit.
 > 
 > SI :
 > - régions HII rouge vif -> baisse w
@@ -427,7 +411,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 #### Opt_H_dans_RGB_v2 — PixelMath
    expression = `w = 1.0; $T[0] + w*(HaNB - med(HaNB))` ; expression1 = `$T[1]` ; expression2 = `$T[2] + 0.2*w*(HaNB - med(HaNB))` ; useSingleExpression=false ; symbols = `w` ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
 
-> OPTION — TEST, à la place de Ha_screen ou H_dans_RGB : HaNB injecté sans son fond (HaNB − med(HaNB)) dans R, et 20 % dans B (Hβ) : régions HII plus roses, fond inchangé.
+> OPTION — TEST, à la place de CombineHaWithRGB ou H_dans_RGB : HaNB injecté sans son fond (HaNB − med(HaNB)) dans R, et 20 % dans B (Hβ) : régions HII plus roses, fond inchangé.
 > 
 > PRÉRÉGLÉ : w = 1,0 ; R = R + w·(HaNB − med(HaNB)) ; G inchangé ; B = B + 0,2·w·(HaNB − med(HaNB)) (Hβ).
 > 
