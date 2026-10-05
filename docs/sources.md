@@ -586,4 +586,6 @@ Question de l'utilisateur : « quel est la difference entre utiliser MAS ou GHS 
 
 - P6 : HDRMT_30 par défaut, HDRMT_40 en option ; R_C_LRGB_rapide sans Etoiles_auto_etire (5 octobre 2026). Demande de l'utilisateur : « pour P6 Finition je veux que le HDRMT par defaut soit le 30 (met le 40 en option) dans R_C_LRGB_rapide enleve etoiles auto ».
 
+- SCNR_vert déplacé au chemin principal de P7 (première étape, sur l'image sans étoiles, avant Etoiles_screen) et ajouté en tête de R_C_Etoiles_fond_rapide (5 octobre 2026). Demande de l'utilisateur : « Opt_SCNR_vert doit etre dans P7 Etoiles non dans Options ».
+
 Non vérifié : réglages de Ron Brecher et Dave Cosgrove lus sur leurs pages (pratique d'imageurs, pas de documentation éditeur) ; plages BXT pour galaxies (Sharpen Stars 0,15–0,20, Nonstellar 0,20–0,35) issues d'un résumé de forum ; paramètres de MAS d'après Starlust Astroguide, l'article PixInsight n'ayant pas pu être lu ; version de l'instance GraXpert (256 supposé ; MAS confirmé par l'utilisateur le 5 octobre 2026) ; chemins des scripts VeraLux et MKStarReduction (icônes-notes) ; formule H_dans_RGB_v2 (part de 0,2 pour Hβ, choix de l'utilisateur à tester).

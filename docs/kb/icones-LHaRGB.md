@@ -757,7 +757,18 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 ## P7_Etoiles
 
-#### E26_Etoiles_screen — PixelMath
+#### E26_SCNR_vert — SCNR
+   amount=1.00 ; protectionMethod=AverageNeutral ; colorToRemove=Green ; preserveLightness=true
+
+> PRÉRÉGLÉ : SCNR : Green, Amount 1,0, Average Neutral, Preserve lightness coché.
+> 
+> À RÉGLER : première étape de P7 : glisse sur l'image SANS étoiles finie (après NXT_final), AVANT Etoiles_screen : vert retiré de la galaxie et du fond, étoiles intactes.
+> 
+> SI :
+> - couleurs ternes ou magenta -> Amount 0,5 à 0,8
+> - étoiles vertes aussi -> passe-le aussi sur RGB_stars avant Etoiles_screen
+
+#### E27_Etoiles_screen — PixelMath
    expression = `~((~$T) * (~RGB_stars))` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
 
 > PRÉRÉGLÉ : ~((~$T) * (~RGB_stars)), sur l'image elle-même.
@@ -767,7 +778,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > SI :
 > - autre nom d'étoiles -> corrige-le dans la formule
 
-#### E27_Fond_desature — Script
+#### E28_Fond_desature — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js`
    paramètres : `debut=0.03`, `fin=0.15`, `violetFin=0.30`, `flou=3`
 
@@ -782,19 +793,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - extensions faibles de la galaxie grisées -> fin 0,10
 
 ### P7_options
-
-#### Opt_SCNR_vert — SCNR
-   amount=1.00 ; protectionMethod=AverageNeutral ; colorToRemove=Green ; preserveLightness=true
-
-> OPTION — reste de vert sur l'image finie (étoiles ou fond) : SCNR vert 1,0 après Etoiles_screen, avant Fond_desature
-> Ou sur RGB_stars seule, avant Etoiles_screen, pour les étoiles.
-> 
-> PRÉRÉGLÉ : SCNR : Green, Amount 1,0, Average Neutral, Preserve lightness coché.
-> 
-> À RÉGLER : option : glisse sur l'image finie après Etoiles_screen (avant Fond_desature), ou sur RGB_stars avant Etoiles_screen pour ne toucher que les étoiles.
-> 
-> SI :
-> - couleurs ternes ou magenta -> Amount 0,5 à 0,8
 
 #### Opt_MT_etoiles — MorphologicalTransformation
    operator=Selection ; interlacingDistance=1 ; lowThreshold=0.000000 ; highThreshold=0.000000 ; numberOfIterations=1 ; amount=0.60 ; selectionPoint=0.25 ; structureName= ; structureSize=5 ; table structureWayTable (1 lignes)
@@ -979,11 +977,13 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 ### P7_rapide
 
 #### R_C_Etoiles_fond_rapide — ProcessContainer
-   1. PixelMath
+   1. SCNR
+      amount=1.00 ; protectionMethod=AverageNeutral ; colorToRemove=Green ; preserveLightness=true
+   2. PixelMath
       expression = `~((~$T) * (~RGB_stars))` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
-   2. Script
+   3. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js`
       paramètres : `debut=0.03`, `fin=0.15`, `violetFin=0.30`, `flou=3`
-   3. Script
+   4. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js`
       paramètres : `nom=`, `suffixe=`, `dossier=`, `icc=true`, `fermer=L, RGB_stars`

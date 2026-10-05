@@ -33,7 +33,7 @@ LUM = ('LRGB', 'LHA')   # workflows avec luminance : par défaut Statistical Str
 OPT = {'ImageSolver_seul', 'Boost_finition_light', 'Boost_finition', 'WBPP', 'CC_auto', 'Find_Background', 'LinearFit_ref_H', 'H_dans_L', 'NBRGBCombination', 'HDRMT_30', 'HDRMT_40', 'HDRMT_50', 'HDRMT_eclat', 'Boost_final', 'Fond_desature', 'NXT_final', 'NXT_final_doux', 'NXT_final_fort', 'Fond_auto_clair', 'Nettoyage_sans_etoiles', 'ICC_sRGB', 'Export_TIFF', 'Gradient_auto_rapide', 'Boost_final_doux', 'C_Fin_GHS_rapide', 'SXT_non_lineaire', 'C_Fin_rapide', 'C_Etoiles_fond_rapide', 'Mode_rapide', 'C_Preparation_rapide', 'C_RGB_rapide', 'C_LRGB_rapide', 'Etoiles_auto_etire', 'C_L_rapide', 'STF', 'C_RGB_couleur_rapide', 'C_H_rapide', 'C_RGB_fin_rapide',
        'MT_etoiles', 'Halo_B_Gon', 'Etoiles_plafond', 'Etoiles_grosses', 'CorrectMagentaStars', 'SCNR_SHO', 'Perfect_Palette_Picker', 'NBColourMapper', 'H_en_luminance',
        'Etoiles_HOO_synth', 'DualBand_H', 'DualBand_O', 'SPFC_S',
-       'Binning_x2', 'GraXpert', 'H_dans_RGB_v2', 'CombineHaWithRGB', 'VeraLux_HMS', 'C_RGB_etire_rapide', 'DarkStructureEnhance', 'MKStarReduction', 'Agrandir_x2', 'Lineaire_rapide', 'SCNR_vert'}
+       'Binning_x2', 'GraXpert', 'H_dans_RGB_v2', 'CombineHaWithRGB', 'VeraLux_HMS', 'C_RGB_etire_rapide', 'DarkStructureEnhance', 'MKStarReduction', 'Agrandir_x2', 'Lineaire_rapide'}
 
 
 def role(prefix, base):
@@ -88,7 +88,6 @@ WHEN = {
     'C_Preparation_rapide': "MODE RAPIDE, à la place d'E00 à E03 : masters seuls ouverts, double-clic puis Apply Global (pas en glissant : ImageSolver échoue sur une image en cours de traitement) : Renommer_auto, LinearPatternSubtraction, Combinaison_RGB, Solver_auto (ImageSolver sur toutes les images) en un seul conteneur",
     'C_RGB_etire_rapide': "MODE RAPIDE, à la place de MAS, SXT_RGB_etire et GHS_3_fond sur le RGB : glisse sur RGB linéaire avec étoiles ; MAS, SXT Unscreen (RGB_stars créée), GHS fond (SP = HP = 0,12)",
     'Statistical_Stretch': "à la place de MAS sur le RGB avec étoiles (étirement statistique, étoiles plus grosses) ; puis SXT_RGB_etire",
-    'SCNR_vert': "reste de vert sur l'image finie (étoiles ou fond) : SCNR vert 1,0 après Etoiles_screen, avant Fond_desature ; ou sur RGB_stars seule, avant Etoiles_screen, pour les étoiles",
     'Fond_auto': "après Etoiles_screen, avant Fond_desature : fond de l'image finie amené à 0,12 et neutre (grille 8 × 8)",
     'Lineaire_rapide': "MODE RAPIDE, à la place de la phase 3 du chemin principal : double-clic puis Apply Global ; lance les icônes du chemin principal sur RGB et L (LRGB : C_RGB_lineaire et C_L_lineaire ; LHaRGB : C_RGB_couleur, BXT_L_H sur L et H, NXT_L) ; RGB et L restent linéaires, avec leurs étoiles",
     'C_RGB_rapide': "MODE RAPIDE, à la place de C_RGB_lineaire, Statistical_Stretch et GHS_3_fond (sur RGB) : sur RGB après Gradient_auto_rapide ; BXT Correct Only, SPCC, BXT, NXT, Statistical Stretch sans dialogue, GHS fond ; étoiles gardées (SXT après LRGB)",

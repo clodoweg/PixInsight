@@ -3642,7 +3642,14 @@ max($T, HaNB*a)</parameter>
    <instance class="NoOperation" version="256" id="P7_Etoiles_instance">
       <description>PHASE 7 — Étoiles : étoiles : étirement, recombinaison, réduction. Colonne de repère, sans effet.</description>
    </instance>
-   <instance class="PixelMath" version="256" id="E26_Etoiles_screen_instance">
+   <instance class="SCNR" version="256" id="E26_SCNR_vert_instance">
+      <description>PRÉRÉGLÉ : SCNR : Green, Amount 1,0, Average Neutral, Preserve lightness coché.&#10;&#10;À RÉGLER : première étape de P7 : glisse sur l'image SANS étoiles finie (après NXT_final), AVANT Etoiles_screen : vert retiré de la galaxie et du fond, étoiles intactes.&#10;&#10;SI :&#10;- couleurs ternes ou magenta -&gt; Amount 0,5 à 0,8&#10;- étoiles vertes aussi -&gt; passe-le aussi sur RGB_stars avant Etoiles_screen</description>
+      <parameter id="amount" value="1.00"/>
+      <parameter id="protectionMethod" value="AverageNeutral"/>
+      <parameter id="colorToRemove" value="Green"/>
+      <parameter id="preserveLightness" value="true"/>
+   </instance>
+   <instance class="PixelMath" version="256" id="E27_Etoiles_screen_instance">
       <description>PRÉRÉGLÉ : ~((~$T) * (~RGB_stars)), sur l'image elle-même.&#10;&#10;À RÉGLER : glisse sur l'image sans étoiles finale : elle reçoit les étoiles ; étoiles étirées nommées RGB_stars (nom donné par SXT, s minuscule).&#10;&#10;SI :&#10;- autre nom d'étoiles -&gt; corrige-le dans la formule</description>
       <parameter id="expression">~((~$T) * (~RGB_stars))</parameter>
       <parameter id="expression1"></parameter>
@@ -3672,7 +3679,7 @@ max($T, HaNB*a)</parameter>
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
-   <instance class="Script" version="256" id="E27_Fond_desature_instance">
+   <instance class="Script" version="256" id="E28_Fond_desature_instance">
       <description>LANCEMENT : glisse l'icône sur l'image.&#10;&#10;PRÉRÉGLÉ : script Fond_desature : fond mesuré ; zones faibles (luminance lissée sous fond + 0,15, décroissant jusqu'à + 0,30) : violet neutralisé (G remonté jusqu'à min(R, B), magenta seulement) ; fond (sous + 0,03, rampe jusqu'à + 0,15) : couleur retirée.&#10;&#10;À RÉGLER : glisse sur l'image finie, étoiles comprises, après Etoiles_screen (E20 en LRGB) ; avant Export_TIFF.&#10;&#10;SI :&#10;- violet encore visible dans le halo -&gt; violetFin 0,40&#10;- extensions faibles de la galaxie grisées -&gt; fin 0,10</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js</parameter>
       <parameter id="md5sum"></parameter>
@@ -3698,13 +3705,6 @@ max($T, HaNB*a)</parameter>
    </instance>
    <instance class="NoOperation" version="256" id="P7_options_instance">
       <description>OPTIONS de la phase 7 — Étoiles : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
-   </instance>
-   <instance class="SCNR" version="256" id="Opt_SCNR_vert_instance">
-      <description>OPTION — reste de vert sur l'image finie (étoiles ou fond) : SCNR vert 1,0 après Etoiles_screen, avant Fond_desature&#10;Ou sur RGB_stars seule, avant Etoiles_screen, pour les étoiles.&#10;&#10;PRÉRÉGLÉ : SCNR : Green, Amount 1,0, Average Neutral, Preserve lightness coché.&#10;&#10;À RÉGLER : option : glisse sur l'image finie après Etoiles_screen (avant Fond_desature), ou sur RGB_stars avant Etoiles_screen pour ne toucher que les étoiles.&#10;&#10;SI :&#10;- couleurs ternes ou magenta -&gt; Amount 0,5 à 0,8</description>
-      <parameter id="amount" value="1.00"/>
-      <parameter id="protectionMethod" value="AverageNeutral"/>
-      <parameter id="colorToRemove" value="Green"/>
-      <parameter id="preserveLightness" value="true"/>
    </instance>
    <instance class="MorphologicalTransformation" version="256" id="Opt_MT_etoiles_instance">
       <description>OPTION — réduction d'étoiles supplémentaire.&#10;&#10;PRÉRÉGLÉ : Selection 0,25, Amount 0,60, 1 itération, 5×5 circulaire.&#10;&#10;À RÉGLER : sur l'image d'étoiles seule, avant Etoiles_screen.&#10;&#10;SI :&#10;- trop fort -&gt; Amount 0,50</description>
@@ -4290,9 +4290,15 @@ max($T,f1)</parameter>
       <parameter id="information"></parameter>
    </instance>
    <instance class="NoOperation" version="256" id="P7_rapide_instance">
-      <description>MODE RAPIDE, phase 7 — Étoiles : R_C_Etoiles_fond_rapide sur l'image sans étoiles finie : étoiles remises (Etoiles_screen), Fond_desature, puis Export_TIFF (ferme L et RGB_stars) en un seul conteneur. Icône de repère, sans effet.</description>
+      <description>MODE RAPIDE, phase 7 — Étoiles : R_C_Etoiles_fond_rapide sur l'image sans étoiles finie : SCNR vert, étoiles remises (Etoiles_screen), Fond_desature, puis Export_TIFF (ferme L et RGB_stars) en un seul conteneur. Icône de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="R_C_Etoiles_fond_rapide_instance">
+      <instance class="SCNR" version="256" enabled="true">
+         <parameter id="amount" value="1.00"/>
+         <parameter id="protectionMethod" value="AverageNeutral"/>
+         <parameter id="colorToRemove" value="Green"/>
+         <parameter id="preserveLightness" value="true"/>
+      </instance>
       <instance class="PixelMath" version="256" enabled="true">
          <parameter id="expression">~((~$T) * (~RGB_stars))</parameter>
          <parameter id="expression1"></parameter>
@@ -4450,10 +4456,10 @@ max($T,f1)</parameter>
    <icon id="P6_rapide" instance="P6_rapide_instance" xpos="986" ypos="490" workspace="Workspace01"/>
    <icon id="R_C_Fin_rapide" instance="R_C_Fin_rapide_instance" xpos="986" ypos="524" workspace="Workspace01"/>
    <icon id="P7_Etoiles" instance="P7_Etoiles_instance" xpos="1190" ypos="20" workspace="Workspace01"/>
-   <icon id="E26_Etoiles_screen" instance="E26_Etoiles_screen_instance" xpos="1190" ypos="64" workspace="Workspace01"/>
-   <icon id="E27_Fond_desature" instance="E27_Fond_desature_instance" xpos="1190" ypos="94" workspace="Workspace01"/>
-   <icon id="P7_options" instance="P7_options_instance" xpos="1190" ypos="140" workspace="Workspace01"/>
-   <icon id="Opt_SCNR_vert" instance="Opt_SCNR_vert_instance" xpos="1190" ypos="174" workspace="Workspace01"/>
+   <icon id="E26_SCNR_vert" instance="E26_SCNR_vert_instance" xpos="1190" ypos="64" workspace="Workspace01"/>
+   <icon id="E27_Etoiles_screen" instance="E27_Etoiles_screen_instance" xpos="1190" ypos="94" workspace="Workspace01"/>
+   <icon id="E28_Fond_desature" instance="E28_Fond_desature_instance" xpos="1190" ypos="124" workspace="Workspace01"/>
+   <icon id="P7_options" instance="P7_options_instance" xpos="1190" ypos="170" workspace="Workspace01"/>
    <icon id="Opt_MT_etoiles" instance="Opt_MT_etoiles_instance" xpos="1190" ypos="204" workspace="Workspace01"/>
    <icon id="Opt_Halo_B_Gon" instance="Opt_Halo_B_Gon_instance" xpos="1190" ypos="234" workspace="Workspace01"/>
    <icon id="Opt_Etoiles_grosses" instance="Opt_Etoiles_grosses_instance" xpos="1190" ypos="264" workspace="Workspace01"/>
