@@ -339,18 +339,18 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
    script `$PXI_SRCDIR/scripts/Toolbox/CombineHaToRGB.js`
    paramètres : `alphaView=H`, `amount=2`, `beta=0`, `linear=true`, `rgbLinked=true`, `bg=0.015`, `invertMask=true`, `sigma=0`
 
-> LANCEMENT : double-clic sur l'icône, puis Apply Global. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
+> LANCEMENT : glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
 > 
 > PRÉRÉGLÉ : script CombineHaWithRGB (PixInsight Toolbox, Jürgen Terpe), réglages de l'utilisateur : H Alpha = H, Amount 2, Beta 0, Background 0,015, Sigma 0, Linear Image coché, canaux liés.
 > 
-> À RÉGLER : après E13_SXT_L_lineaire : double-clic sur l'icône puis Apply Global : fenêtre du script avec aperçu (RGB = ton RGB ; H Alpha = H, ou HaNB si tu as fait Opt_Continuum_auto), puis OK ; ne pas glisser l'icône (le script échoue : « The image is already being processed ») ; ensuite C_RGB_bruit.
+> À RÉGLER : après E13_SXT_L_lineaire : glisse sur le RGB linéaire (H ouverte) ; double-clic : fenêtre du script avec aperçu ; ensuite C_RGB_bruit.
 > 
 > SI :
 > - régions HII trop rouges -> Amount 1,5
 > - trop discrètes -> Amount 2,5
 > - rose plutôt que rouge -> Beta 0,1 à 0,2
 > - bruit rouge dans le fond -> Background plus haut, ou Sigma 1
-> - étoiles ou cœur rougis -> Opt_Continuum_auto avant, puis H Alpha = HaNB
+> - étoiles ou cœur rougis -> Opt_Continuum_auto avant, puis alphaView = HaNB
 
 #### E15_C_RGB_bruit — ProcessContainer
    1. NoiseXTerminator
@@ -463,20 +463,36 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 ### P3_rapide
 
-#### R_Lineaire_rapide — Script
-   script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
-   paramètres : `etapes=C_RGB_couleur>RGB ; BXT_L_H>L,H ; NXT_L>L ; SXT_L_lineaire>L`
+#### R_C_P3_rapide — ProcessContainer
+   1. BlurXTerminator
+      ml_version=4 ; correct_only=true ; sharpen_stars=0.25 ; adjust_star_halos=0.00 ; nonstellar_diameter=0.0 ; auto_nonstellar_psf=true ; sharpen_nonstellar=0.50 ; lunar_planetary=false ; overlap=0.20
+   2. SpectrophotometricColorCalibration
+      applyCalibration=true ; narrowbandMode=false ; narrowbandOptimizeStars=false ; whiteReferenceSpectrum=200.5,0.0715066,201.5,0.0689827,202.5,0.0720216,203.5,0.0685511,204.5,0.07123… ; whiteReferenceName=Average Spiral Galaxy ; redFilterTrCurve=594,0,596,0.001,598,0.001,600,0.002,602,0.003,604,0.004,606,0.005,608,0.006,6… ; redFilterName=Antlia V Pro Series R ; greenFilterTrCurve=480,0.001,482,0.004,484,0.009,486,0.018,488,0.053,490,0.151,492,0.357,494,0.6… ; greenFilterName=Antlia V Pro Series G ; blueFilterTrCurve=420,0.002,422,0.006,424,0.021,426,0.088,428,0.237,430,0.418,432,0.611,434,0.7… ; blueFilterName=Antlia V Pro Series B ; redFilterWavelength=656.3 ; redFilterBandwidth=3.0 ; greenFilterWavelength=500.7 ; greenFilterBandwidth=3.0 ; blueFilterWavelength=500.7 ; blueFilterBandwidth=3.0 ; deviceQECurve=402,0.7219,404,0.7367,406,0.75,408,0.7618,410,0.7751,412,0.787,414,0.7944,416… ; deviceQECurveName=Sony IMX411/455/461/533/571 ; broadbandIntegrationStepSize=0.50 ; narrowbandIntegrationSteps=10 ; catalogId=GaiaDR3SP ; limitMagnitude=12.00 ; autoLimitMagnitude=true ; targetSourceCount=8000 ; psfStructureLayers=5 ; saturationThreshold=0.75 ; saturationRelative=true ; saturationShrinkFactor=0.10 ; psfNoiseLayers=1 ; psfHotPixelFilterRadius=1 ; psfNoiseReductionFilterRadius=0 ; psfMinStructureSize=0 ; psfMinSNR=40.00 ; psfAllowClusteredSources=true ; psfType=PSFType_Auto ; psfGrowth=1.25 ; psfMaxStars=24576 ; psfSearchTolerance=4.00 ; psfChannelSearchTolerance=2.00 ; neutralizeBackground=true ; backgroundReferenceViewId= ; backgroundLow=-2.80 ; backgroundHigh=2.00 ; backgroundUseROI=false ; backgroundROIX0=0 ; backgroundROIY0=0 ; backgroundROIX1=0 ; backgroundROIY1=0 ; generateGraphs=false ; generateStarMaps=false ; generateTextFiles=false ; outputDirectory=
+   3. BlurXTerminator
+      ml_version=4 ; correct_only=false ; sharpen_stars=0.25 ; adjust_star_halos=0.00 ; nonstellar_diameter=0.0 ; auto_nonstellar_psf=true ; sharpen_nonstellar=0.50 ; lunar_planetary=false ; overlap=0.20
+   4. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
+      paramètres : `etapes=BXT_L_H>L,H ; NXT_L>L ; SXT_L_lineaire>L`, `dialogue=false`
+   5. Script
+      script `$PXI_SRCDIR/scripts/Toolbox/CombineHaToRGB.js`
+      paramètres : `alphaView=H`, `amount=2`, `beta=0`, `linear=true`, `rgbLinked=true`, `bg=0.015`, `invertMask=true`, `sigma=0`
+   6. NoiseXTerminator
+      ml_version=0 ; denoise=0.80 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
+   7. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
+      paramètres : `views=H, R, HaNB`, `dialogue=false`
 
-> MODE RAPIDE, à la place de la phase 3 du chemin principal : double-clic puis Apply Global ; lance les icônes du chemin principal sur RGB et L (LRGB : C_RGB_lineaire et C_L_lineaire ; LHaRGB : C_RGB_couleur, BXT_L_H sur L et H, NXT_L) ; RGB et L restent linéaires, avec leurs étoiles.
+> MODE RAPIDE, à la place de toute la phase 3 : après R_Gradient_auto_rapide, GLISSE sur RGB (L, H, R ouvertes, Conteneurs-LHaRGB chargé).
 > 
-> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
+> LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
 > 
-> PRÉRÉGLÉ : script Lineaire_auto.js, etapes = C_RGB_couleur>RGB ; BXT_L_H>L,H ; NXT_L>L ; SXT_L_lineaire>L : C_RGB_couleur (BXT Correct Only, SPCC, BXT) sur RGB, BXT (Nonstellar 0,80) sur L et H, NXT 0,60 sur L, SXT sur L (L sans étoiles) ; images linéaires.
+> PRÉRÉGLÉ : conteneur, toute la phase 3 : BXT Correct Only, SPCC, BXT sur RGB ; Lineaire_auto : BXT_L_H sur L et H, NXT_L et SXT_L_lineaire sur L ; CombineHaWithRGB (H Alpha = H, Amount 2) ; NXT 0,80 ; H, R et HaNB fermées.
 > 
-> À RÉGLER : double-clic puis Apply Global, après R_Gradient_auto_rapide ; Conteneurs-LHaRGB chargé ; ensuite E14_CombineHaWithRGB (par sa fenêtre) puis E15_C_RGB_bruit glissé sur RGB, puis GHS_1_premier sur L.
+> À RÉGLER : après R_Gradient_auto_rapide : glisse sur le RGB linéaire (L, H, R ouvertes ; Conteneurs-LHaRGB chargé pour BXT_L_H, NXT_L, SXT_L_lineaire) ; ensuite GHS_1_premier sur L.
 > 
 > SI :
-> - H_dans_L voulu -> il se fait après (NXT_L déjà passé sur L)
+> - régions HII trop rouges ou trop discrètes -> double-clic sur le conteneur, CombineHaWithRGB : amount 1,5 ou 2,5
+> - étoiles ou cœur rougis -> chemin principal avec Opt_Continuum_auto
 > - une étape échoue -> la console dit laquelle
 
 ## P4_Etirement

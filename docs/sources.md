@@ -812,3 +812,8 @@ Fait : R_C_P3_rapide supprimé (commit annulé) ; retour à R_Lineaire_rapide (A
 
 Demande : « supprime R_C_Ha_rapide »
 Fait : R_C_Ha_rapide et Ha_screen supprimés du LHaRGB ; rapide P3 = R_Lineaire_rapide seul, puis E14 CombineHaWithRGB (fenêtre) et E15 C_RGB_bruit. LRGB inchangé.
+
+### LHaRGB : CombineHaWithRGB glissé, P3 en un rapide (5 octobre 2026)
+
+Demande : « le process E14_CombineHaWithRGB peut maintenant se glisser sur une image. Integre donc cette etape et E15_C_RGB_bruit dans le rapide »
+Fait : CombineHaWithRGB lancé en glissant (L_DRAG) ; R_C_P3_rapide (à glisser sur RGB) = BXT Correct Only, SPCC, BXT (RGB), Lineaire_auto (BXT_L_H>L,H ; NXT_L>L ; SXT_L_lineaire>L), CombineHaWithRGB, NXT 0,80, Fermer_vues H, R, HaNB ; R_Lineaire_rapide retirée du LHaRGB. Lineaire_auto ne traite jamais la vue glissée (risque « already being processed »). Non testé dans PixInsight. LRGB inchangé.
