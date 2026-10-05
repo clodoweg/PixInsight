@@ -12,6 +12,10 @@ Avant d'ajouter ou de modifier un contenu technique (réglage, valeur, ordre des
 4. Chaque source utilisée va dans `docs/sources.md` (rubrique, type Officiel / Tutoriel / Forum ; *(résumé)* si non ouverte). Une demande de l'utilisateur y est notée avec sa phrase.
 5. Dans la réponse : ce qui est vérifié, ce qui diverge, ce qui ne l'est pas.
 
+## Descriptions des icônes
+
+À chaque changement d'une icône (réglage, place, ordre, script, nouvelle icône), mets TOUJOURS à jour sa description, et celles des icônes et conteneurs qui la citent : `short_desc.py` (S et V : PRÉRÉGLÉ, À RÉGLER, SI), `layout.py` (`WHEN` pour une option) et les textes D_/T_ de `make_workflows.py`. Textes courts, une idée par ligne, lisibles sans la fiche.
+
 ## Publication
 
 - Branche `main`, commits en français avec les lignes d'attribution de la session, puis `git push origin main`.
