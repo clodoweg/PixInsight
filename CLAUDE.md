@@ -63,6 +63,7 @@ PixInsight 1.9.5 sur **PC Windows** ; CDK17 (2 939 mm) + QHY600 (IMX455) ; filtr
 - `#engine v8` (exigé par ImageSolver) casse l'ancien code : `PixelMath.prototype.RGB` (« signed integer value expected »), LinearPatternSubtraction.jsh (« Boolean value expected »).
 - ImageSolver échoue sur l'image glissée dans un conteneur : conteneurs avec Solver_auto en Apply Global.
 - Scripts inclus : gardes `#ifndef CLODOWEG_TURBO` autour de `#feature-*` et de l'appel principal ; noms de fonctions et de macros uniques.
+- Retours à la ligne des descriptions écrits `&#10;` (fait par `save()`) : un CR (fichier converti en CRLF par git sous Windows) s'affiche mal dans PixInsight, lignes inversées et vides en haut (test de l'utilisateur, 5 octobre 2026 : LF, `&#10;`, `<br>` et U+2028 marchent ; CR et CRLF non). `.gitattributes` force LF pour .xpsm et .js.
 - Jamais de guillemets dans un paramètre de Script. Modules RC Astro et GHS : à réinstaller par Process › Modules › Install Modules s'ils disparaissent.
 
 ## Pistes non commencées

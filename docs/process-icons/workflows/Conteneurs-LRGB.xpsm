@@ -9,17 +9,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <description>PHASE 1 — Préparation : masters intégrés, recadrés et combinés. Colonne de repère, sans effet.</description>
    </instance>
    <instance class="Script" version="256" id="E00_LinearPatternSubtraction_instance">
-      <description>LANCEMENT : glisse l'icône sur l'image.
-
-PRÉRÉGLÉ : script LPS_UnClic (moteur de Vicent Peris, sans dialogue) : lignes, Correct the entire image, Layers to remove 9, Rejection limit 3, Global rejection 5, zone de fond choisie automatiquement (la plus sombre), fenêtres de travail fermées, TOUTES les images ouvertes corrigées (allOpenImages = true).
-
-À RÉGLER : une seule fois par ordinateur (Mac ou PC) : crée le dossier clodoweg dans src/scripts de PixInsight (à côté de PatternCorrection ; Mac : /Applications/PixInsight/src/scripts/clodoweg, PC : en général C:\Program Files\PixInsight\src\scripts\clodoweg ; pas le dossier scripts du premier niveau) et copies-y LPS_UnClic.js ; ensuite ouvre les masters linéaires de la cible (et rien d'autre), puis glisse l'icône sur l'un d'eux : tous sont corrigés, avant le recadrage (la correction se fait dans les images).
-
-SI :
-- corriger des colonnes -&gt; correctColumns = true dans l'icône
-- une seule image -&gt; allOpenImages = false dans l'icône, puis glisse-la sur l'image
-- artefacts -&gt; Ctrl+Z : le script est conçu pour les brutes, avant alignement
-- script introuvable -&gt; vérifie le dossier scripts/clodoweg (à recopier après une réinstallation de PixInsight) ; version avec dialogue : menu Script › Pattern Correction › LinearPatternSubtraction</description>
+      <description>LANCEMENT : glisse l'icône sur l'image.&#10;&#10;PRÉRÉGLÉ : script LPS_UnClic (moteur de Vicent Peris, sans dialogue) : lignes, Correct the entire image, Layers to remove 9, Rejection limit 3, Global rejection 5, zone de fond choisie automatiquement (la plus sombre), fenêtres de travail fermées, TOUTES les images ouvertes corrigées (allOpenImages = true).&#10;&#10;À RÉGLER : une seule fois par ordinateur (Mac ou PC) : crée le dossier clodoweg dans src/scripts de PixInsight (à côté de PatternCorrection ; Mac : /Applications/PixInsight/src/scripts/clodoweg, PC : en général C:\Program Files\PixInsight\src\scripts\clodoweg ; pas le dossier scripts du premier niveau) et copies-y LPS_UnClic.js ; ensuite ouvre les masters linéaires de la cible (et rien d'autre), puis glisse l'icône sur l'un d'eux : tous sont corrigés, avant le recadrage (la correction se fait dans les images).&#10;&#10;SI :&#10;- corriger des colonnes -&gt; correctColumns = true dans l'icône&#10;- une seule image -&gt; allOpenImages = false dans l'icône, puis glisse-la sur l'image&#10;- artefacts -&gt; Ctrl+Z : le script est conçu pour les brutes, avant alignement&#10;- script introuvable -&gt; vérifie le dossier scripts/clodoweg (à recopier après une réinstallation de PixInsight) ; version avec dialogue : menu Script › Pattern Correction › LinearPatternSubtraction</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/LPS_UnClic.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="14">
@@ -83,29 +73,14 @@ SI :
       <parameter id="information"></parameter>
    </instance>
    <instance class="Script" version="256" id="E01_Renommer_auto_instance">
-      <description>LANCEMENT : double-clic sur l'icône, puis Apply Global.
-
-PRÉRÉGLÉ : script Renommer_auto : renomme les masters mono ouverts L, R, G, B, H, O, S d'après le mot-clé FILTER (Lum, Red, Ha, OIII...), sinon d'après le nom du fichier.
-
-À RÉGLER : une seule fois par ordinateur : copie Renommer_auto.js dans src/scripts/clodoweg ; ouvre tes masters, puis lance l'icône.
-
-SI :
-- filtre inconnu ou nom déjà pris -&gt; message dans la console, renomme cette vue à la main</description>
+      <description>LANCEMENT : double-clic sur l'icône, puis Apply Global.&#10;&#10;PRÉRÉGLÉ : script Renommer_auto : renomme les masters mono ouverts L, R, G, B, H, O, S d'après le mot-clé FILTER (Lum, Red, Ha, OIII...), sinon d'après le nom du fichier.&#10;&#10;À RÉGLER : une seule fois par ordinateur : copie Renommer_auto.js dans src/scripts/clodoweg ; ouvre tes masters, puis lance l'icône.&#10;&#10;SI :&#10;- filtre inconnu ou nom déjà pris -&gt; message dans la console, renomme cette vue à la main</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Renommer_auto.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="0"/>
       <parameter id="information"></parameter>
    </instance>
    <instance class="Script" version="256" id="E02_Combinaison_RGB_instance">
-      <description>LANCEMENT : double-clic sur l'icône, puis Apply Global.
-
-PRÉRÉGLÉ : script Combiner_RGB : R, G, B -&gt; image couleur 'RGB', en-tête FITS du rouge copié (coordonnées et date pour ImageSolver), puis R, G et B fermées sans demander d'enregistrer.
-
-À RÉGLER : une seule fois par ordinateur : copie Combiner_RGB.js dans src/scripts/clodoweg ; nomme tes masters R, G et B, enregistre-les si tu veux garder une version modifiée (après LPS par exemple), puis lance l'icône.
-
-SI :
-- garder R, G et B ouvertes -&gt; closeSources = false dans l'icône
-- une image 'RGB' existe déjà -&gt; ferme-la ou renomme-la</description>
+      <description>LANCEMENT : double-clic sur l'icône, puis Apply Global.&#10;&#10;PRÉRÉGLÉ : script Combiner_RGB : R, G, B -&gt; image couleur 'RGB', en-tête FITS du rouge copié (coordonnées et date pour ImageSolver), puis R, G et B fermées sans demander d'enregistrer.&#10;&#10;À RÉGLER : une seule fois par ordinateur : copie Combiner_RGB.js dans src/scripts/clodoweg ; nomme tes masters R, G et B, enregistre-les si tu veux garder une version modifiée (après LPS par exemple), puis lance l'icône.&#10;&#10;SI :&#10;- garder R, G et B ouvertes -&gt; closeSources = false dans l'icône&#10;- une image 'RGB' existe déjà -&gt; ferme-la ou renomme-la</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Combiner_RGB.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="7">
@@ -141,15 +116,7 @@ SI :
       <parameter id="information"></parameter>
    </instance>
    <instance class="Script" version="256" id="E03_Solver_auto_instance">
-      <description>LANCEMENT : double-clic sur l'icône, puis Apply Global.
-
-PRÉRÉGLÉ : script GC_Solver_auto.js (gradient false, solveTout true) : ImageSolver (date par défaut si absente, réglages du matériel) sur TOUTES les images ouvertes, sans GradientCorrection ; images *_stars ignorées ; une erreur n'arrête pas les autres.
-
-À RÉGLER : double-clic puis Apply Global, après Combinaison_RGB ; déjà inclus dans R_C_Preparation_rapide ; ensuite ImageSolver (phase 2) est inutile ; copie GC_Solver_auto.js dans src/scripts/clodoweg.
-
-SI :
-- seulement la RGB -&gt; solveTout false
-- une image en erreur -&gt; lis le bilan en fin de console, refais-la avec ImageSolver</description>
+      <description>LANCEMENT : double-clic sur l'icône, puis Apply Global.&#10;&#10;PRÉRÉGLÉ : script GC_Solver_auto.js (gradient false, solveTout true) : ImageSolver (date par défaut si absente, réglages du matériel) sur TOUTES les images ouvertes, sans GradientCorrection ; images *_stars ignorées ; une erreur n'arrête pas les autres.&#10;&#10;À RÉGLER : double-clic puis Apply Global, après Combinaison_RGB ; déjà inclus dans R_C_Preparation_rapide ; ensuite ImageSolver (phase 2) est inutile ; copie GC_Solver_auto.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- seulement la RGB -&gt; solveTout false&#10;- une image en erreur -&gt; lis le bilan en fin de console, refais-la avec ImageSolver</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/GC_Solver_auto.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="50">
@@ -360,32 +327,14 @@ SI :
       <description>OPTIONS de la phase 1 — Préparation : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
    </instance>
    <instance class="Script" version="256" id="Opt_WBPP_instance">
-      <description>OPTION — seulement si tu repars des brutes (masters pas encore empilés).
-
-LANCEMENT : double-clic sur l'icône, puis Apply Global.
-
-PRÉRÉGLÉ : rien (WBPP garde ses propres réglages).
-
-À RÉGLER : Maximum quality ; CosmeticCorrection = icône CC_auto ; PSF Signal Weight ; Local normalization activée ; Rejection Auto ; Large-scale rejection High ; pas de drizzle (sauf FWHM &lt; 2 px).
-
-SI :
-- un groupe de lights sans dark ou flat (onglet Calibration) -&gt; corrige avant Run
-- plusieurs nuits -&gt; Grouping keywords = SESSION</description>
+      <description>OPTION — seulement si tu repars des brutes (masters pas encore empilés).&#10;&#10;LANCEMENT : double-clic sur l'icône, puis Apply Global.&#10;&#10;PRÉRÉGLÉ : rien (WBPP garde ses propres réglages).&#10;&#10;À RÉGLER : Maximum quality ; CosmeticCorrection = icône CC_auto ; PSF Signal Weight ; Local normalization activée ; Rejection Auto ; Large-scale rejection High ; pas de drizzle (sauf FWHM &lt; 2 px).&#10;&#10;SI :&#10;- un groupe de lights sans dark ou flat (onglet Calibration) -&gt; corrige avant Run&#10;- plusieurs nuits -&gt; Grouping keywords = SESSION</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/BatchPreprocessing/BPP-Main.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="0"/>
       <parameter id="information"></parameter>
    </instance>
    <instance class="CosmeticCorrection" version="256" id="Opt_CC_auto_instance">
-      <description>OPTION — avec WBPP, si tu repars des brutes.
-
-PRÉRÉGLÉ : Auto detect, Hot sigma 2,5, Cold désactivé.
-
-À RÉGLER : rien ; choisis cette icône comme modèle Cosmetic correction dans WBPP ; coche CFA seulement en caméra couleur.
-
-SI :
-- petites étoiles modifiées -&gt; Hot sigma 3,0
-- S, H, O en poses longues -&gt; 2,2</description>
+      <description>OPTION — avec WBPP, si tu repars des brutes.&#10;&#10;PRÉRÉGLÉ : Auto detect, Hot sigma 2,5, Cold désactivé.&#10;&#10;À RÉGLER : rien ; choisis cette icône comme modèle Cosmetic correction dans WBPP ; coche CFA seulement en caméra couleur.&#10;&#10;SI :&#10;- petites étoiles modifiées -&gt; Hot sigma 3,0&#10;- S, H, O en poses longues -&gt; 2,2</description>
       <table id="targetFrames" rows="0"/>
       <parameter id="masterDarkPath"></parameter>
       <parameter id="outputDir"></parameter>
@@ -409,19 +358,7 @@ SI :
       <table id="defects" rows="0"/>
    </instance>
    <instance class="Script" version="256" id="Opt_Binning_x2_instance">
-      <description>OPTION — traitement 4 fois plus rapide et moins de bruit (0,528″/px au lieu de 0,264″/px, l'image du CDK17 est suréchantillonnée) : double-clic puis Apply Global juste après Solver_auto, toutes les images divisées par 2
-Pour un grand tirage, Agrandir_x2 avant l'export.
-
-LANCEMENT : double-clic sur l'icône, puis Apply Global.
-
-PRÉRÉGLÉ : script Binning_x2 : IntegerResample −2, moyenne (binning 2×2 logiciel) sur TOUTES les images ouvertes (sauf *_stars) ; solution astrométrique gardée ; mots-clés XPIXSZ et XBINNING mis à jour.
-
-À RÉGLER : double-clic puis Apply Global, juste APRÈS Solver_auto (phase 1) ; copie Binning_x2.js dans src/scripts/clodoweg.
-
-SI :
-- grand tirage voulu -&gt; Agrandir_x2 (P7 options) avant Export_TIFF, ou ne bine pas
-- binning 3×3 -&gt; facteur 3
-- ImageSolver refait ensuite et en échec -&gt; metadata_xpixsz = 7.52 dans l'icône ImageSolver</description>
+      <description>OPTION — traitement 4 fois plus rapide et moins de bruit (0,528″/px au lieu de 0,264″/px, l'image du CDK17 est suréchantillonnée) : double-clic puis Apply Global juste après Solver_auto, toutes les images divisées par 2&#10;Pour un grand tirage, Agrandir_x2 avant l'export.&#10;&#10;LANCEMENT : double-clic sur l'icône, puis Apply Global.&#10;&#10;PRÉRÉGLÉ : script Binning_x2 : IntegerResample −2, moyenne (binning 2×2 logiciel) sur TOUTES les images ouvertes (sauf *_stars) ; solution astrométrique gardée ; mots-clés XPIXSZ et XBINNING mis à jour.&#10;&#10;À RÉGLER : double-clic puis Apply Global, juste APRÈS Solver_auto (phase 1) ; copie Binning_x2.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- grand tirage voulu -&gt; Agrandir_x2 (P7 options) avant Export_TIFF, ou ne bine pas&#10;- binning 3×3 -&gt; facteur 3&#10;- ImageSolver refait ensuite et en échec -&gt; metadata_xpixsz = 7.52 dans l'icône ImageSolver</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Binning_x2.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="1">
@@ -1083,16 +1020,7 @@ SI :
       <description>PHASE 2 — Gradient : image linéaire : retrait du gradient. Colonne de repère, sans effet.</description>
    </instance>
    <instance class="Script" version="256" id="E04_ImageSolver_instance">
-      <description>LANCEMENT : glisse l'icône sur l'image.
-
-PRÉRÉGLÉ : script ImageSolver_Date.js en une seule icône (pas de conteneur) : date d'observation 2020-01-01 ajoutée seulement si l'image n'en a pas, puis ImageSolver 6.4.2 lancé avec focale 2 939 mm, pixel 3,76 µm (0,264″/px), catalogue automatique (Gaia DR3 local), correction de distorsion ; coordonnées et vraie date lues dans l'image.
-
-À RÉGLER : une seule fois par ordinateur : copie la NOUVELLE version d'ImageSolver_Date.js dans src/scripts/clodoweg ; ensuite glisse l'icône sur CHAQUE image à calibrer, juste avant SPFC ou SPCC : image RGB combinée, master L, masters H, O et S.
-
-SI :
-- la date est ajoutée mais ImageSolver ne se lance pas -&gt; glisse l'icône ImageSolver_seul (options) sur la même image
-- échec sans coordonnées dans l'en-tête -&gt; lance ImageSolver depuis le menu Script et utilise Search (nom de l'objet)
-- master en bin 2 -&gt; metadata_xpixsz = 7.52 et metadata_resolution = 0.0001466 dans solverParams</description>
+      <description>LANCEMENT : glisse l'icône sur l'image.&#10;&#10;PRÉRÉGLÉ : script ImageSolver_Date.js en une seule icône (pas de conteneur) : date d'observation 2020-01-01 ajoutée seulement si l'image n'en a pas, puis ImageSolver 6.4.2 lancé avec focale 2 939 mm, pixel 3,76 µm (0,264″/px), catalogue automatique (Gaia DR3 local), correction de distorsion ; coordonnées et vraie date lues dans l'image.&#10;&#10;À RÉGLER : une seule fois par ordinateur : copie la NOUVELLE version d'ImageSolver_Date.js dans src/scripts/clodoweg ; ensuite glisse l'icône sur CHAQUE image à calibrer, juste avant SPFC ou SPCC : image RGB combinée, master L, masters H, O et S.&#10;&#10;SI :&#10;- la date est ajoutée mais ImageSolver ne se lance pas -&gt; glisse l'icône ImageSolver_seul (options) sur la même image&#10;- échec sans coordonnées dans l'en-tête -&gt; lance ImageSolver depuis le menu Script et utilise Search (nom de l'objet)&#10;- master en bin 2 -&gt; metadata_xpixsz = 7.52 et metadata_resolution = 0.0001466 dans solverParams</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/ImageSolver_Date.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="47">
@@ -1288,9 +1216,7 @@ SI :
       <parameter id="information"></parameter>
    </instance>
    <instance class="SpectrophotometricFluxCalibration" version="1" id="E05_SPFC_RGB_filtres_instance">
-      <description>PRÉRÉGLÉ : QE IMX455, filtres Antlia R, G, B, Gaia DR3/SP.
-
-À RÉGLER : rien ; applique sur l'image RGB combinée linéaire, résolue, avant MGC.</description>
+      <description>PRÉRÉGLÉ : QE IMX455, filtres Antlia R, G, B, Gaia DR3/SP.&#10;&#10;À RÉGLER : rien ; applique sur l'image RGB combinée linéaire, résolue, avant MGC.</description>
       <parameter id="narrowbandMode" value="false"/>
       <parameter id="grayFilterTrCurve">300,0.000,302,0.000,304,0.000,306,0.000,308,0.000,310,0.000,312,0.000,314,0.000,316,0.000,318,0.000,320,0.000,322,0.000,324,0.000,326,0.000,328,0.000,330,0.000,332,0.000,334,0.000,336,0.000,338,0.000,340,0.000,342,0.000,344,0.000,346,0.000,348,0.000,350,0.000,352,0.000,354,0.000,356,0.000,358,0.000,360,0.000,362,0.000,364,0.000,366,0.000,368,0.000,370,0.000,372,0.000,374,0.000,376,0.000,378,0.000,380,0.000,382,0.000,384,0.000,386,0.000,388,0.000,390,0.000,392,0.000,394,0.000,396,0.000,398,0.000,400,0.000,402,0.000,404,0.000,406,0.000,408,0.000,410,0.000,412,0.190,414,0.380,416,0.570,418,0.760,420,0.950,422,0.950,424,0.950,426,0.950,428,0.950,430,0.950,432,0.950,434,0.950,436,0.950,438,0.950,440,0.950,442,0.950,444,0.950,446,0.950,448,0.950,450,0.950,452,0.950,454,0.950,456,0.950,458,0.950,460,0.950,462,0.950,464,0.950,466,0.950,468,0.950,470,0.950,472,0.950,474,0.950,476,0.950,478,0.950,480,0.950,482,0.950,484,0.950,486,0.950,488,0.950,490,0.950,492,0.950,494,0.950,496,0.950,498,0.950,500,0.950,502,0.950,504,0.950,506,0.950,508,0.950,510,0.950,512,0.950,514,0.950,516,0.950,518,0.950,520,0.950,522,0.950,524,0.950,526,0.950,528,0.950,530,0.950,532,0.950,534,0.950,536,0.950,538,0.950,540,0.950,542,0.950,544,0.950,546,0.950,548,0.950,550,0.950,552,0.950,554,0.950,556,0.950,558,0.950,560,0.950,562,0.950,564,0.950,566,0.950,568,0.950,570,0.950,572,0.950,574,0.950,576,0.950,578,0.950,580,0.950,582,0.950,584,0.950,586,0.950,588,0.950,590,0.950,592,0.950,594,0.950,596,0.950,598,0.950,600,0.950,602,0.950,604,0.950,606,0.950,608,0.950,610,0.950,612,0.950,614,0.950,616,0.950,618,0.950,620,0.950,622,0.950,624,0.950,626,0.950,628,0.950,630,0.950,632,0.950,634,0.950,636,0.950,638,0.950,640,0.950,642,0.950,644,0.950,646,0.950,648,0.950,650,0.950,652,0.950,654,0.950,656,0.950,658,0.950,660,0.950,662,0.950,664,0.950,666,0.950,668,0.950,670,0.950,672,0.950,674,0.950,676,0.950,678,0.950,680,0.950,682,0.950,684,0.950,686,0.950,688,0.950,690,0.950,692,0.950,694,0.950,696,0.950,698,0.950,700,0.950,702,0.950,704,0.950,706,0.887,708,0.760,710,0.633,712,0.507,714,0.380,716,0.253,718,0.127,720,0.000,722,0.000,724,0.000,726,0.000,728,0.000,730,0.000,732,0.000,734,0.000,736,0.000,738,0.000,740,0.000,742,0.000,744,0.000,746,0.000,748,0.000,750,0.000,752,0.000,754,0.000,756,0.000,758,0.000,760,0.000,762,0.000,764,0.000,766,0.000,768,0.000,770,0.000,772,0.000,774,0.000,776,0.000,778,0.000,780,0.000,782,0.000,784,0.000,786,0.000,788,0.000,790,0.000,792,0.000,794,0.000,796,0.000,798,0.000,800,0.000</parameter>
       <parameter id="grayFilterName">Antlia V Pro Series L (approx. 420-715 nm)</parameter>
@@ -1336,9 +1262,7 @@ SI :
       <parameter id="generateTextFiles" value="false"/>
    </instance>
    <instance class="SpectrophotometricFluxCalibration" version="1" id="E06_SPFC_L_instance">
-      <description>PRÉRÉGLÉ : QE IMX455, Gray = Antlia L, Gaia DR3/SP.
-
-À RÉGLER : rien ; applique sur le master L linéaire, résolu, avant MGC.</description>
+      <description>PRÉRÉGLÉ : QE IMX455, Gray = Antlia L, Gaia DR3/SP.&#10;&#10;À RÉGLER : rien ; applique sur le master L linéaire, résolu, avant MGC.</description>
       <parameter id="narrowbandMode" value="false"/>
       <parameter id="grayFilterTrCurve">300,0.000,302,0.000,304,0.000,306,0.000,308,0.000,310,0.000,312,0.000,314,0.000,316,0.000,318,0.000,320,0.000,322,0.000,324,0.000,326,0.000,328,0.000,330,0.000,332,0.000,334,0.000,336,0.000,338,0.000,340,0.000,342,0.000,344,0.000,346,0.000,348,0.000,350,0.000,352,0.000,354,0.000,356,0.000,358,0.000,360,0.000,362,0.000,364,0.000,366,0.000,368,0.000,370,0.000,372,0.000,374,0.000,376,0.000,378,0.000,380,0.000,382,0.000,384,0.000,386,0.000,388,0.000,390,0.000,392,0.000,394,0.000,396,0.000,398,0.000,400,0.000,402,0.000,404,0.000,406,0.000,408,0.000,410,0.000,412,0.190,414,0.380,416,0.570,418,0.760,420,0.950,422,0.950,424,0.950,426,0.950,428,0.950,430,0.950,432,0.950,434,0.950,436,0.950,438,0.950,440,0.950,442,0.950,444,0.950,446,0.950,448,0.950,450,0.950,452,0.950,454,0.950,456,0.950,458,0.950,460,0.950,462,0.950,464,0.950,466,0.950,468,0.950,470,0.950,472,0.950,474,0.950,476,0.950,478,0.950,480,0.950,482,0.950,484,0.950,486,0.950,488,0.950,490,0.950,492,0.950,494,0.950,496,0.950,498,0.950,500,0.950,502,0.950,504,0.950,506,0.950,508,0.950,510,0.950,512,0.950,514,0.950,516,0.950,518,0.950,520,0.950,522,0.950,524,0.950,526,0.950,528,0.950,530,0.950,532,0.950,534,0.950,536,0.950,538,0.950,540,0.950,542,0.950,544,0.950,546,0.950,548,0.950,550,0.950,552,0.950,554,0.950,556,0.950,558,0.950,560,0.950,562,0.950,564,0.950,566,0.950,568,0.950,570,0.950,572,0.950,574,0.950,576,0.950,578,0.950,580,0.950,582,0.950,584,0.950,586,0.950,588,0.950,590,0.950,592,0.950,594,0.950,596,0.950,598,0.950,600,0.950,602,0.950,604,0.950,606,0.950,608,0.950,610,0.950,612,0.950,614,0.950,616,0.950,618,0.950,620,0.950,622,0.950,624,0.950,626,0.950,628,0.950,630,0.950,632,0.950,634,0.950,636,0.950,638,0.950,640,0.950,642,0.950,644,0.950,646,0.950,648,0.950,650,0.950,652,0.950,654,0.950,656,0.950,658,0.950,660,0.950,662,0.950,664,0.950,666,0.950,668,0.950,670,0.950,672,0.950,674,0.950,676,0.950,678,0.950,680,0.950,682,0.950,684,0.950,686,0.950,688,0.950,690,0.950,692,0.950,694,0.950,696,0.950,698,0.950,700,0.950,702,0.950,704,0.950,706,0.887,708,0.760,710,0.633,712,0.507,714,0.380,716,0.253,718,0.127,720,0.000,722,0.000,724,0.000,726,0.000,728,0.000,730,0.000,732,0.000,734,0.000,736,0.000,738,0.000,740,0.000,742,0.000,744,0.000,746,0.000,748,0.000,750,0.000,752,0.000,754,0.000,756,0.000,758,0.000,760,0.000,762,0.000,764,0.000,766,0.000,768,0.000,770,0.000,772,0.000,774,0.000,776,0.000,778,0.000,780,0.000,782,0.000,784,0.000,786,0.000,788,0.000,790,0.000,792,0.000,794,0.000,796,0.000,798,0.000,800,0.000</parameter>
       <parameter id="grayFilterName">Antlia V Pro Series L (approx. 420-715 nm)</parameter>
@@ -1384,16 +1308,7 @@ SI :
       <parameter id="generateTextFiles" value="false"/>
    </instance>
    <instance class="MultiscaleGradientCorrection" version="1" id="E07_MGC_MARS_instance">
-      <description>PRÉRÉGLÉ : Gradient scale 1024, Structure separation 3, Smoothness 1,0, MARS Gray = L et R, G, B (la même icône sert pour L et pour l'image RGB), modèle affiché.
-
-À RÉGLER : une seule fois par ordinateur : ouvre l'icône, section MARS Database, clique Default Files (copie la liste des préférences de MGC), puis glisse le triangle sur l'icône pour la remplacer et enregistre tes icônes (Save Process Icons) ; à refaire si tu recharges les icônes de la fiche ; ensuite après SPFC, sur l'image linéaire.
-
-SI :
-- erreur « No MARS database files have been selected » -&gt; Default Files dans la section MARS Database
-- « 0 reference image(s) available » ou « No reference data found » -&gt; cible hors de MARS (sud au-delà de −15° environ) : GradientCorrection ou DBE à la place de SPFC + MGC
-- gradient restant dans les coins -&gt; Gradient scale 512 puis 256
-- modèle qui ondule -&gt; Smoothness 3 à 5
-- image couleur -&gt; filtres MARS R, G, B</description>
+      <description>PRÉRÉGLÉ : Gradient scale 1024, Structure separation 3, Smoothness 1,0, MARS Gray = L et R, G, B (la même icône sert pour L et pour l'image RGB), modèle affiché.&#10;&#10;À RÉGLER : une seule fois par ordinateur : ouvre l'icône, section MARS Database, clique Default Files (copie la liste des préférences de MGC), puis glisse le triangle sur l'icône pour la remplacer et enregistre tes icônes (Save Process Icons) ; à refaire si tu recharges les icônes de la fiche ; ensuite après SPFC, sur l'image linéaire.&#10;&#10;SI :&#10;- erreur « No MARS database files have been selected » -&gt; Default Files dans la section MARS Database&#10;- « 0 reference image(s) available » ou « No reference data found » -&gt; cible hors de MARS (sud au-delà de −15° environ) : GradientCorrection ou DBE à la place de SPFC + MGC&#10;- gradient restant dans les coins -&gt; Gradient scale 512 puis 256&#10;- modèle qui ondule -&gt; Smoothness 3 à 5&#10;- image couleur -&gt; filtres MARS R, G, B</description>
       <parameter id="command"></parameter>
       <parameter id="useMARSDatabase" value="true"/>
       <parameter id="grayMARSFilter">L</parameter>
@@ -1416,14 +1331,7 @@ SI :
       <description>OPTIONS de la phase 2 — Gradient : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
    </instance>
    <instance class="Script" version="256" id="Opt_ImageSolver_seul_instance">
-      <description>OPTION — secours : ImageSolver seul, si l'icône ImageSolver (date + ImageSolver) s'arrête après la date.
-
-PRÉRÉGLÉ : ImageSolver 6.4.2 seul (mêmes réglages que l'icône ImageSolver, sans l'ajout de date).
-
-À RÉGLER : secours : glisse sur l'image si l'icône ImageSolver s'arrête après la date.
-
-SI :
-- icône bloquée après une mise à jour d'ImageSolver -&gt; efface son champ MD5</description>
+      <description>OPTION — secours : ImageSolver seul, si l'icône ImageSolver (date + ImageSolver) s'arrête après la date.&#10;&#10;PRÉRÉGLÉ : ImageSolver 6.4.2 seul (mêmes réglages que l'icône ImageSolver, sans l'ajout de date).&#10;&#10;À RÉGLER : secours : glisse sur l'image si l'icône ImageSolver s'arrête après la date.&#10;&#10;SI :&#10;- icône bloquée après une mise à jour d'ImageSolver -&gt; efface son champ MD5</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/ImageSolver/ImageSolver.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="46">
@@ -1615,15 +1523,7 @@ SI :
       <parameter id="information"></parameter>
    </instance>
    <instance class="GradientCorrection" version="1" id="Opt_GradientCorrection_instance">
-      <description>ALTERNATIVE — GradientCorrection.
-
-PRÉRÉGLÉ : valeurs par défaut, Structure protection activée.
-
-À RÉGLER : rien ; contrôle le modèle de gradient.
-
-SI :
-- gradient dans les coins -&gt; baisse Gradient scale
-- nébuleuse assombrie -&gt; monte Protection amount</description>
+      <description>ALTERNATIVE — GradientCorrection.&#10;&#10;PRÉRÉGLÉ : valeurs par défaut, Structure protection activée.&#10;&#10;À RÉGLER : rien ; contrôle le modèle de gradient.&#10;&#10;SI :&#10;- gradient dans les coins -&gt; baisse Gradient scale&#10;- nébuleuse assombrie -&gt; monte Protection amount</description>
       <parameter id="reference" value="0.50"/>
       <parameter id="lowThreshold" value="0.20"/>
       <parameter id="lowTolerance" value="0.50"/>
@@ -1650,15 +1550,7 @@ SI :
       <parameter id="gridSamplingDelta" value="16"/>
    </instance>
    <instance class="DynamicBackgroundExtraction" version="1" id="Opt_DBE_instance">
-      <description>ALTERNATIVE — DBE.
-
-PRÉRÉGLÉ : 15 points par ligne, rayon 15, Tolerance 0,5, Smoothing 0,25, Subtraction.
-
-À RÉGLER : Generate, retire les points sur l'objet, ajoute-en dans le fond vide.
-
-SI :
-- points rouges -&gt; Tolerance 1,0 à 1,5
-- vignettage -&gt; Division</description>
+      <description>ALTERNATIVE — DBE.&#10;&#10;PRÉRÉGLÉ : 15 points par ligne, rayon 15, Tolerance 0,5, Smoothing 0,25, Subtraction.&#10;&#10;À RÉGLER : Generate, retire les points sur l'objet, ajoute-en dans le fond vide.&#10;&#10;SI :&#10;- points rouges -&gt; Tolerance 1,0 à 1,5&#10;- vignettage -&gt; Division</description>
       <table id="data" rows="0"/>
       <parameter id="derivativeOrder" value="2"/>
       <parameter id="smoothing" value="0.250"/>
@@ -1686,16 +1578,7 @@ SI :
       <parameter id="samplesPerRow" value="15"/>
    </instance>
    <instance class="GraXpert" version="256" id="Opt_GraXpert_instance">
-      <description>OPTION — TEST, à la place de MGC ou GradientCorrection : gradient retiré par l'IA de GraXpert (module GraXpert et logiciel GraXpert 2.2.1 ou plus installés)
-Glisse sur chaque master linéaire.
-
-PRÉRÉGLÉ : module GraXpert : Background Extraction (IA) coché, Correction par défaut (Subtraction), Smoothing 0, fond non affiché, débruitage décoché, image remplacée ; version de l'icône NON VÉRIFIÉE.
-
-À RÉGLER : installe le module GraXpert (dépôt deepskyforge) et le logiciel GraXpert 2.2.1 ou plus ; glisse sur chaque master linéaire, à la place de MGC ou de GradientCorrection.
-
-SI :
-- icône refusée au chargement -&gt; ouvre Process › GraXpert et règle à la main
-- vignetage fort -&gt; Correction Division</description>
+      <description>OPTION — TEST, à la place de MGC ou GradientCorrection : gradient retiré par l'IA de GraXpert (module GraXpert et logiciel GraXpert 2.2.1 ou plus installés)&#10;Glisse sur chaque master linéaire.&#10;&#10;PRÉRÉGLÉ : module GraXpert : Background Extraction (IA) coché, Correction par défaut (Subtraction), Smoothing 0, fond non affiché, débruitage décoché, image remplacée ; version de l'icône NON VÉRIFIÉE.&#10;&#10;À RÉGLER : installe le module GraXpert (dépôt deepskyforge) et le logiciel GraXpert 2.2.1 ou plus ; glisse sur chaque master linéaire, à la place de MGC ou de GradientCorrection.&#10;&#10;SI :&#10;- icône refusée au chargement -&gt; ouvre Process › GraXpert et règle à la main&#10;- vignetage fort -&gt; Correction Division</description>
       <parameter id="backgroundExtraction" value="true"/>
       <parameter id="smoothing" value="0.000"/>
       <parameter id="createBackground" value="false"/>
@@ -1706,16 +1589,7 @@ SI :
       <description>MODE RAPIDE, phase 2 — Gradient : R_GC_Solver_auto_rapide à la place de toute la phase 2 : GradientCorrection sur toutes les images ouvertes (l'astrométrie est déjà faite par R_C_Preparation_rapide). Icône de repère, sans effet.</description>
    </instance>
    <instance class="Script" version="256" id="R_GC_Solver_auto_rapide_instance">
-      <description>MODE RAPIDE, à la place de la phase 2 : GradientCorrection sur TOUTES les images ouvertes (plus d'ImageSolver : fait par Solver_auto en phase 1) ; à faire AVANT C_RGB_rapide et C_L_rapide (sans GradientCorrection).
-
-LANCEMENT : double-clic sur l'icône, puis Apply Global.
-
-PRÉRÉGLÉ : script GC_Solver_auto.js (gradient true, solve false) : GradientCorrection (sans modèle de gradient) sur TOUTES les images ouvertes, sans ImageSolver ; images *_stars ignorées ; une erreur n'arrête pas les autres.
-
-À RÉGLER : double-clic puis Apply Global, masters et RGB ouverts, après R_C_Preparation_rapide ; à faire AVANT C_RGB_rapide et C_L_rapide, qui n'ont plus de GradientCorrection.
-
-SI :
-- ImageSolver pas encore fait -&gt; solve true (sur les images couleur)</description>
+      <description>MODE RAPIDE, à la place de la phase 2 : GradientCorrection sur TOUTES les images ouvertes (plus d'ImageSolver : fait par Solver_auto en phase 1) ; à faire AVANT C_RGB_rapide et C_L_rapide (sans GradientCorrection).&#10;&#10;LANCEMENT : double-clic sur l'icône, puis Apply Global.&#10;&#10;PRÉRÉGLÉ : script GC_Solver_auto.js (gradient true, solve false) : GradientCorrection (sans modèle de gradient) sur TOUTES les images ouvertes, sans ImageSolver ; images *_stars ignorées ; une erreur n'arrête pas les autres.&#10;&#10;À RÉGLER : double-clic puis Apply Global, masters et RGB ouverts, après R_C_Preparation_rapide ; à faire AVANT C_RGB_rapide et C_L_rapide, qui n'ont plus de GradientCorrection.&#10;&#10;SI :&#10;- ImageSolver pas encore fait -&gt; solve true (sur les images couleur)</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/GC_Solver_auto.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="50">
@@ -2057,13 +1931,7 @@ SI :
       <description>OPTIONS de la phase 3 — Linéaire : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
    </instance>
    <instance class="Script" version="256" id="Opt_Find_Background_instance">
-      <description>OPTION — champ rempli de nébuleuse : fond de référence pour SPCC.
-
-LANCEMENT : double-clic sur l'icône, puis Apply Global. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
-
-PRÉRÉGLÉ : rien.
-
-À RÉGLER : glisse sur l'image : crée l'aperçu Background ; dans SPCC, Region of Interest › From Preview.</description>
+      <description>OPTION — champ rempli de nébuleuse : fond de référence pour SPCC.&#10;&#10;LANCEMENT : double-clic sur l'icône, puis Apply Global. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.&#10;&#10;PRÉRÉGLÉ : rien.&#10;&#10;À RÉGLER : glisse sur l'image : crée l'aperçu Background ; dans SPCC, Region of Interest › From Preview.</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/FindBackground.js</parameter>
       <parameter id="md5sum">4af61e322ea5149f93fdcfe6ef0e62bd</parameter>
       <table id="parameters" rows="14">
@@ -2127,15 +1995,7 @@ PRÉRÉGLÉ : rien.
       <parameter id="information"></parameter>
    </instance>
    <instance class="ScreenTransferFunction" version="256" id="Opt_STF_instance">
-      <description>OPTION — n'importe quand : double-clic pour ouvrir la fenêtre ScreenTransferFunction (bouton A = auto-étirement de l'affichage, Reset pour revenir), pixels inchangés.
-
-PRÉRÉGLÉ : process ScreenTransferFunction (STF), réglage neutre ; affichage seulement, les pixels ne changent pas.
-
-À RÉGLER : double-clic sur l'icône : la fenêtre STF s'ouvre ; choisis l'image, puis A (Auto Stretch) ; lien R/G/B : bouton chaîne.
-
-SI :
-- revenir à l'image brute -&gt; Reset de la fenêtre STF (ou F12)
-- dominante de couleur à l'écran -&gt; décoche le lien R/G/B (chaîne), puis A</description>
+      <description>OPTION — n'importe quand : double-clic pour ouvrir la fenêtre ScreenTransferFunction (bouton A = auto-étirement de l'affichage, Reset pour revenir), pixels inchangés.&#10;&#10;PRÉRÉGLÉ : process ScreenTransferFunction (STF), réglage neutre ; affichage seulement, les pixels ne changent pas.&#10;&#10;À RÉGLER : double-clic sur l'icône : la fenêtre STF s'ouvre ; choisis l'image, puis A (Auto Stretch) ; lien R/G/B : bouton chaîne.&#10;&#10;SI :&#10;- revenir à l'image brute -&gt; Reset de la fenêtre STF (ou F12)&#10;- dominante de couleur à l'écran -&gt; décoche le lien R/G/B (chaîne), puis A</description>
       <table id="STF" rows="4">
          <tr>
             <td id="c0" value="0.00000"/>
@@ -2385,14 +2245,7 @@ SI :
       <description>PHASE 4 — Étirement : passage en non linéaire, même fond pour toutes les images. Colonne de repère, sans effet.</description>
    </instance>
    <instance class="GeneralizedHyperbolicStretch" version="256" id="E10_GHS_1_premier_instance">
-      <description>PRÉRÉGLÉ : b = 10, Stretch factor 0.
-
-À RÉGLER : sur L AVEC ses étoiles (SXT après LRGB ; le RGB passe par Statistical Stretch) ; clique le fond ou le signal faible, Send to SP ; Stretch factor jusqu'au pic à 0,25 (fond lu 0,001 -&gt; 6,5 ; 0,002 -&gt; 5,5 ; 0,005 -&gt; 4,5 ; 0,01 -&gt; 3,5).
-
-SI :
-- fond bruité qui ressort -&gt; SP trop bas, remonte-le
-- étoiles qui grossissent -&gt; HP sous leur cœur (0,8 à 0,9)
-- méthode « GHS sur tout » -&gt; aussi sur le RGB</description>
+      <description>PRÉRÉGLÉ : b = 10, Stretch factor 0.&#10;&#10;À RÉGLER : sur L AVEC ses étoiles (SXT après LRGB ; le RGB passe par Statistical Stretch) ; clique le fond ou le signal faible, Send to SP ; Stretch factor jusqu'au pic à 0,25 (fond lu 0,001 -&gt; 6,5 ; 0,002 -&gt; 5,5 ; 0,005 -&gt; 4,5 ; 0,01 -&gt; 3,5).&#10;&#10;SI :&#10;- fond bruité qui ressort -&gt; SP trop bas, remonte-le&#10;- étoiles qui grossissent -&gt; HP sous leur cœur (0,8 à 0,9)&#10;- méthode « GHS sur tout » -&gt; aussi sur le RGB</description>
       <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
       <parameter id="stretchChannel" value="SC_RGB"/>
       <parameter id="inverse" value="false"/>
@@ -2408,13 +2261,7 @@ SI :
       <parameter id="useRGBWorkingSpace" value="false"/>
    </instance>
    <instance class="GeneralizedHyperbolicStretch" version="256" id="E11_GHS_2_contraste_instance">
-      <description>PRÉRÉGLÉ : b = 4, HP 0,9, Stretch factor 1, SP 0,35.
-
-À RÉGLER : sur L ; SP = valeur de ta zone plate, au-dessus du fond (souvent 0,30–0,45 ; jamais 0,25 = le fond) ; Stretch factor 1 à 2.
-
-SI :
-- cœur brillant qui sature -&gt; baisse HP vers sa valeur
-- fond trop sombre -&gt; monte LP vers sa valeur (pas au-dessus de SP)</description>
+      <description>PRÉRÉGLÉ : b = 4, HP 0,9, Stretch factor 1, SP 0,35.&#10;&#10;À RÉGLER : sur L ; SP = valeur de ta zone plate, au-dessus du fond (souvent 0,30–0,45 ; jamais 0,25 = le fond) ; Stretch factor 1 à 2.&#10;&#10;SI :&#10;- cœur brillant qui sature -&gt; baisse HP vers sa valeur&#10;- fond trop sombre -&gt; monte LP vers sa valeur (pas au-dessus de SP)</description>
       <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
       <parameter id="stretchChannel" value="SC_RGB"/>
       <parameter id="inverse" value="false"/>
@@ -2430,9 +2277,7 @@ SI :
       <parameter id="useRGBWorkingSpace" value="false"/>
    </instance>
    <instance class="GeneralizedHyperbolicStretch" version="256" id="E12_GHS_3_fond_instance">
-      <description>PRÉRÉGLÉ : b = 10, SP = HP = 0,20, Stretch factor 1 (fond à 0,23 après GHS_2).
-
-À RÉGLER : sur L après GHS_2 ; puis, après Statistical_Stretch, aussi sur le RGB (SP = HP = 0,22), AVANT LRGB ; SP = HP = fond lu - 0,03 (0,22 après Statistical Stretch à 0,25) ; Stretch factor 0,8 à 1,2 jusqu'au fond vers 0,12–0,14 sur les deux.</description>
+      <description>PRÉRÉGLÉ : b = 10, SP = HP = 0,20, Stretch factor 1 (fond à 0,23 après GHS_2).&#10;&#10;À RÉGLER : sur L après GHS_2 ; puis, après Statistical_Stretch, aussi sur le RGB (SP = HP = 0,22), AVANT LRGB ; SP = HP = fond lu - 0,03 (0,22 après Statistical Stretch à 0,25) ; Stretch factor 0,8 à 1,2 jusqu'au fond vers 0,12–0,14 sur les deux.</description>
       <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
       <parameter id="stretchChannel" value="SC_RGB"/>
       <parameter id="inverse" value="false"/>
@@ -2448,15 +2293,7 @@ SI :
       <parameter id="useRGBWorkingSpace" value="false"/>
    </instance>
    <instance class="Script" version="256" id="E13_Statistical_Stretch_instance">
-      <description>LANCEMENT : glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
-
-PRÉRÉGLÉ : Target Median 0,25, Blackpoint Sigma 5, Linked coché, reste par défaut.
-
-À RÉGLER : sur le RGB AVEC ses étoiles, APRÈS les 3 GHS sur L ; puis repasse GHS_3_fond sur le RGB (SP = HP = 0,22) pour le même fond que L, avant LRGB.
-
-SI :
-- couleurs ternes -&gt; Saturation plus basse dans LRGB, ou Luma Only coché
-- méthode « Statistical Stretch sur tout » -&gt; aussi sur L, même Target Median</description>
+      <description>LANCEMENT : glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.&#10;&#10;PRÉRÉGLÉ : Target Median 0,25, Blackpoint Sigma 5, Linked coché, reste par défaut.&#10;&#10;À RÉGLER : sur le RGB AVEC ses étoiles, APRÈS les 3 GHS sur L ; puis repasse GHS_3_fond sur le RGB (SP = HP = 0,22) pour le même fond que L, avant LRGB.&#10;&#10;SI :&#10;- couleurs ternes -&gt; Saturation plus basse dans LRGB, ou Luma Only coché&#10;- méthode « Statistical Stretch sur tout » -&gt; aussi sur L, même Target Median</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/statisticalstretch.js</parameter>
       <parameter id="md5sum">defab45bb4e2f33db39a7bb016cdefb0</parameter>
       <table id="parameters" rows="15">
@@ -2527,16 +2364,7 @@ SI :
       <description>OPTIONS de la phase 4 — Étirement : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
    </instance>
    <instance class="MultiscaleAdaptiveStretch" version="256" id="Opt_MAS_instance">
-      <description>OPTION — TEST, à la place des GHS ou de Statistical Stretch : MultiscaleAdaptiveStretch avec tes réglages (fond 0,15, saturation)
-Glisse sur l'image LINÉAIRE.
-
-PRÉRÉGLÉ : MultiscaleAdaptiveStretch, tes réglages : Aggressiveness 0,70, Target background 0,150, Dynamic range compression 0,40, Contrast recovery coché (séparation 1024, intensité 1,0), saturation cochée (0,75, boost 0,50, masque de luminosité) ; version de l'icône NON VÉRIFIÉE.
-
-À RÉGLER : glisse sur L ou RGB LINÉAIRE, à la place des GHS ou de Statistical Stretch ; compare.
-
-SI :
-- icône refusée au chargement -&gt; ouvre le process et recopie les réglages
-- L et RGB à fond différent -&gt; même Target background pour les deux</description>
+      <description>OPTION — TEST, à la place des GHS ou de Statistical Stretch : MultiscaleAdaptiveStretch avec tes réglages (fond 0,15, saturation)&#10;Glisse sur l'image LINÉAIRE.&#10;&#10;PRÉRÉGLÉ : MultiscaleAdaptiveStretch, tes réglages : Aggressiveness 0,70, Target background 0,150, Dynamic range compression 0,40, Contrast recovery coché (séparation 1024, intensité 1,0), saturation cochée (0,75, boost 0,50, masque de luminosité) ; version de l'icône NON VÉRIFIÉE.&#10;&#10;À RÉGLER : glisse sur L ou RGB LINÉAIRE, à la place des GHS ou de Statistical Stretch ; compare.&#10;&#10;SI :&#10;- icône refusée au chargement -&gt; ouvre le process et recopie les réglages&#10;- L et RGB à fond différent -&gt; même Target background pour les deux</description>
       <parameter id="aggressiveness" value="0.70"/>
       <parameter id="targetBackground" value="0.150"/>
       <parameter id="dynamicRangeCompression" value="0.40"/>
@@ -2555,11 +2383,7 @@ SI :
       <parameter id="backgroundROIHeight" value="0"/>
    </instance>
    <instance class="NoOperation" version="256" id="Opt_VeraLux_HMS_instance">
-      <description>OPTION — TEST, à la place des GHS ou de Statistical Stretch : VeraLux HyperMetric Stretch, lancé depuis le menu Script.
-
-PRÉRÉGLÉ : rien (icône-note : chemin du script non vérifié).
-
-À RÉGLER : installe VeraLux (dépôt VeraLuxPorting) ; Script › VeraLux › VeraLux Suite, onglet HyperMetric Stretch, sur L ou RGB linéaire.</description>
+      <description>OPTION — TEST, à la place des GHS ou de Statistical Stretch : VeraLux HyperMetric Stretch, lancé depuis le menu Script.&#10;&#10;PRÉRÉGLÉ : rien (icône-note : chemin du script non vérifié).&#10;&#10;À RÉGLER : installe VeraLux (dépôt VeraLuxPorting) ; Script › VeraLux › VeraLux Suite, onglet HyperMetric Stretch, sur L ou RGB linéaire.</description>
    </instance>
    <instance class="NoOperation" version="256" id="P4_rapide_instance">
       <description>MODE RAPIDE, phase 4 — Étirement : GHS_1_premier sur L (chemin principal, à régler), puis R_C_Fin_GHS_rapide (« fin de GHS » : GHS_2_contraste et GHS_3_fond en un glisser) sur L SEULEMENT ; saute Statistical_Stretch (RGB déjà étiré par R_C_RGB_rapide). Icône de repère, sans effet.</description>
@@ -2600,13 +2424,7 @@ PRÉRÉGLÉ : rien (icône-note : chemin du script non vérifié).
       <description>PHASE 5 — Couleur : combinaison finale et palette. Colonne de repère, sans effet.</description>
    </instance>
    <instance class="LRGBCombination" version="256" id="E14_LRGB_ajout_L_instance">
-      <description>PRÉRÉGLÉ : seul L coché, Lightness 0,5, Saturation 0,35, réduction du bruit de chrominance.
-
-À RÉGLER : vue L nommée 'L' ; glisse sur le RGB étiré AVEC ses étoiles (L étirée avec ses étoiles) ; ensuite SXT_LRGB.
-
-SI :
-- couleurs délavées -&gt; étire L moins fort
-- cœurs d'étoiles blancs -&gt; HP plus bas dans GHS_1 et GHS_2 sur L</description>
+      <description>PRÉRÉGLÉ : seul L coché, Lightness 0,5, Saturation 0,35, réduction du bruit de chrominance.&#10;&#10;À RÉGLER : vue L nommée 'L' ; glisse sur le RGB étiré AVEC ses étoiles (L étirée avec ses étoiles) ; ensuite SXT_LRGB.&#10;&#10;SI :&#10;- couleurs délavées -&gt; étire L moins fort&#10;- cœurs d'étoiles blancs -&gt; HP plus bas dans GHS_1 et GHS_2 sur L</description>
       <table id="channels" rows="4">
          <tr>
             <td id="enabled" value="false"/>
@@ -2638,13 +2456,7 @@ SI :
       <parameter id="inheritAstrometricSolution" value="true"/>
    </instance>
    <instance class="StarXTerminator" version="256" id="E15_SXT_LRGB_instance">
-      <description>PRÉRÉGLÉ : StarXTerminator, Unscreen coché (image étirée), Generate star image coché, Remove reflections coché.
-
-À RÉGLER : glisse sur RGB juste après LRGB_ajout_L (L et RGB étirées avec leurs étoiles) ; garde RGB_stars ouverte jusqu'à Etoiles_screen.
-
-SI :
-- taches ou halos restés -&gt; Nettoyage_sans_etoiles (P6 options)
-- quadrillage -&gt; Large overlap</description>
+      <description>PRÉRÉGLÉ : StarXTerminator, Unscreen coché (image étirée), Generate star image coché, Remove reflections coché.&#10;&#10;À RÉGLER : glisse sur RGB juste après LRGB_ajout_L (L et RGB étirées avec leurs étoiles) ; garde RGB_stars ouverte jusqu'à Etoiles_screen.&#10;&#10;SI :&#10;- taches ou halos restés -&gt; Nettoyage_sans_etoiles (P6 options)&#10;- quadrillage -&gt; Large overlap</description>
       <parameter id="ml_version" value="0"/>
       <parameter id="output_stars" value="true"/>
       <parameter id="unscreen" value="true"/>
@@ -2658,18 +2470,7 @@ SI :
       <description>OPTIONS de la phase 5 — Couleur : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
    </instance>
    <instance class="Script" version="256" id="Opt_Etoiles_auto_etire_instance">
-      <description>OPTION — après SXT_LRGB : étoiles ternes ou un peu vertes
-Glisse sur n'importe quelle image (traite RGB_stars) : saturation 1,3 et SCNR, sans étirement (étoiles déjà étirées).
-
-LANCEMENT : glisse l'icône sur l'image.
-
-PRÉRÉGLÉ : script Etoiles_auto, amount 0 (étoiles déjà étirées) : saturation 1,3 (0,4 × rouges, 0,7 × cyans) et SCNR vert seulement.
-
-À RÉGLER : glisse sur n'importe quelle image après SXT_LRGB (traite RGB_stars) ; dans R_C_LRGB_rapide et T_Turbo_2 : rien.
-
-SI :
-- étoiles criardes -&gt; satAmount 1,0
-- étoiles ternes -&gt; scnr false</description>
+      <description>OPTION — après SXT_LRGB : étoiles ternes ou un peu vertes&#10;Glisse sur n'importe quelle image (traite RGB_stars) : saturation 1,3 et SCNR, sans étirement (étoiles déjà étirées).&#10;&#10;LANCEMENT : glisse l'icône sur l'image.&#10;&#10;PRÉRÉGLÉ : script Etoiles_auto, amount 0 (étoiles déjà étirées) : saturation 1,3 (0,4 × rouges, 0,7 × cyans) et SCNR vert seulement.&#10;&#10;À RÉGLER : glisse sur n'importe quelle image après SXT_LRGB (traite RGB_stars) ; dans R_C_LRGB_rapide et T_Turbo_2 : rien.&#10;&#10;SI :&#10;- étoiles criardes -&gt; satAmount 1,0&#10;- étoiles ternes -&gt; scnr false</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="4">
@@ -3534,13 +3335,7 @@ SI :
       </instance>
    </instance>
    <instance class="NoiseXTerminator" version="256" id="E18_NXT_final_instance">
-      <description>PRÉRÉGLÉ : Denoise 0,40, 1 itération.
-
-À RÉGLER : PARTIE 3 de la finition (bruit) : glisse sur l'image sans étoiles après C_Finition (et le Boost éventuel) ; options à la place : NXT_final_doux (0,25), NXT_final_fort (0,60).
-
-SI :
-- aspect plastique -&gt; NXT_final_doux
-- bruit encore visible -&gt; NXT_final_fort</description>
+      <description>PRÉRÉGLÉ : Denoise 0,40, 1 itération.&#10;&#10;À RÉGLER : PARTIE 3 de la finition (bruit) : glisse sur l'image sans étoiles après C_Finition (et le Boost éventuel) ; options à la place : NXT_final_doux (0,25), NXT_final_fort (0,60).&#10;&#10;SI :&#10;- aspect plastique -&gt; NXT_final_doux&#10;- bruit encore visible -&gt; NXT_final_fort</description>
       <parameter id="ml_version" value="0"/>
       <parameter id="denoise" value="0.40"/>
       <parameter id="enable_color_separation" value="false"/>
@@ -3562,24 +3357,7 @@ SI :
       <description>OPTIONS de la phase 6 — Finition : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
    </instance>
    <instance class="Script" version="256" id="Opt_Nettoyage_sans_etoiles_instance">
-      <description>OPTION — avant la partie 1, sur l'image sans étoiles juste après LRGB (RGB_stars ouverte) : taches rondes floues ou halo coloré laissés par SXT autour des étoiles.
-
-LANCEMENT : glisse l'icône sur l'image.
-
-PRÉRÉGLÉ : script Nettoyage_sans_etoiles (calcul sur une copie à 2000 px) : seules les étoiles BRILLANTES de RGB_stars comptent (luminance floutée 20 px au-dessus de 0,05 à 0,12), zone étendue au halo ; fond LOCAL par ouverture morphologique (disque 25 px, 3 passes : taches de moins de 75 px retirées, halo de la galaxie gardé) ; galaxie et structures claires protégées ; excès au-dessus du fond local retiré, bruit fin gardé ; TRÈS grandes étoiles (luminance floutée 50 px au-dessus de 0,05) : zone d'environ 170 px et fond local à grande échelle (environ 300 px).
-
-À RÉGLER : glisse sur l'image sans étoiles juste après LRGB, AVANT HDRMT_40 ; RGB_stars doit être ouverte ; vérifie à 1:1, Ctrl+Z pour annuler.
-
-SI :
-- voir ce qui est touché -&gt; afficherMasque true (vue masque_nettoyage : seulement les grandes étoiles)
-- trop d'étoiles touchées -&gt; seuilBas 0,07, seuilHaut 0,15
-- halo d'une étoile moyenne encore visible -&gt; seuilBas 0,04, seuilHaut 0,09
-- halo d'une très grande étoile pas entièrement couvert -&gt; etendue2 100 et gain2 10 (masque plus large et plein)
-- halo d'une étoile brillante moyenne pas couvert -&gt; etendue 35 et gain 4
-- trou sombre à la place du halo -&gt; etendue2 60 et gain2 5
-- anneau sombre autour d'une petite galaxie dans un halo -&gt; compact 0,03
-- un seul passage : chaque passage en plus assombrit un peu (Ctrl+Z puis réglages)
-- bras ou petite galaxie atténué -&gt; structure 0,10</description>
+      <description>OPTION — avant la partie 1, sur l'image sans étoiles juste après LRGB (RGB_stars ouverte) : taches rondes floues ou halo coloré laissés par SXT autour des étoiles.&#10;&#10;LANCEMENT : glisse l'icône sur l'image.&#10;&#10;PRÉRÉGLÉ : script Nettoyage_sans_etoiles (calcul sur une copie à 2000 px) : seules les étoiles BRILLANTES de RGB_stars comptent (luminance floutée 20 px au-dessus de 0,05 à 0,12), zone étendue au halo ; fond LOCAL par ouverture morphologique (disque 25 px, 3 passes : taches de moins de 75 px retirées, halo de la galaxie gardé) ; galaxie et structures claires protégées ; excès au-dessus du fond local retiré, bruit fin gardé ; TRÈS grandes étoiles (luminance floutée 50 px au-dessus de 0,05) : zone d'environ 170 px et fond local à grande échelle (environ 300 px).&#10;&#10;À RÉGLER : glisse sur l'image sans étoiles juste après LRGB, AVANT HDRMT_40 ; RGB_stars doit être ouverte ; vérifie à 1:1, Ctrl+Z pour annuler.&#10;&#10;SI :&#10;- voir ce qui est touché -&gt; afficherMasque true (vue masque_nettoyage : seulement les grandes étoiles)&#10;- trop d'étoiles touchées -&gt; seuilBas 0,07, seuilHaut 0,15&#10;- halo d'une étoile moyenne encore visible -&gt; seuilBas 0,04, seuilHaut 0,09&#10;- halo d'une très grande étoile pas entièrement couvert -&gt; etendue2 100 et gain2 10 (masque plus large et plein)&#10;- halo d'une étoile brillante moyenne pas couvert -&gt; etendue 35 et gain 4&#10;- trou sombre à la place du halo -&gt; etendue2 60 et gain2 5&#10;- anneau sombre autour d'une petite galaxie dans un halo -&gt; compact 0,03&#10;- un seul passage : chaque passage en plus assombrit un peu (Ctrl+Z puis réglages)&#10;- bras ou petite galaxie atténué -&gt; structure 0,10</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Nettoyage_sans_etoiles.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="13">
@@ -4101,16 +3879,7 @@ SI :
       </instance>
    </instance>
    <instance class="Script" version="256" id="Opt_DarkStructureEnhance_instance">
-      <description>OPTION — TEST, avant C_Finition : bandes de poussière et structures sombres plus marquées (script livré avec PixInsight).
-
-LANCEMENT : double-clic sur l'icône, puis Apply Global.
-
-PRÉRÉGLÉ : rien (réglages dans le dialogue).
-
-À RÉGLER : double-clic, choisis l'image sans étoiles étirée ; défauts : Layers to remove 8, Amount 0,70, Iterations 1.
-
-SI :
-- trop marqué -&gt; Amount 0,40</description>
+      <description>OPTION — TEST, avant C_Finition : bandes de poussière et structures sombres plus marquées (script livré avec PixInsight).&#10;&#10;LANCEMENT : double-clic sur l'icône, puis Apply Global.&#10;&#10;PRÉRÉGLÉ : rien (réglages dans le dialogue).&#10;&#10;À RÉGLER : double-clic, choisis l'image sans étoiles étirée ; défauts : Layers to remove 8, Amount 0,70, Iterations 1.&#10;&#10;SI :&#10;- trop marqué -&gt; Amount 0,40</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/misc/DarkStructureEnhance.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="0"/>
@@ -4481,14 +4250,7 @@ SI :
       </instance>
    </instance>
    <instance class="NoiseXTerminator" version="256" id="Opt_NXT_final_doux_instance">
-      <description>OPTION — partie 3, à la place de NXT_final : données très propres, ou aspect plastique avec 0,40 (Denoise 0,25).
-
-PRÉRÉGLÉ : Denoise 0,25, 1 itération.
-
-À RÉGLER : PARTIE 3 (bruit), à la place de NXT_final : glisse sur l'image sans étoiles finie.
-
-SI :
-- encore trop lissé -&gt; saute la partie 3</description>
+      <description>OPTION — partie 3, à la place de NXT_final : données très propres, ou aspect plastique avec 0,40 (Denoise 0,25).&#10;&#10;PRÉRÉGLÉ : Denoise 0,25, 1 itération.&#10;&#10;À RÉGLER : PARTIE 3 (bruit), à la place de NXT_final : glisse sur l'image sans étoiles finie.&#10;&#10;SI :&#10;- encore trop lissé -&gt; saute la partie 3</description>
       <parameter id="ml_version" value="0"/>
       <parameter id="denoise" value="0.25"/>
       <parameter id="enable_color_separation" value="false"/>
@@ -4507,14 +4269,7 @@ SI :
       <parameter id="overlap" value="0.20"/>
    </instance>
    <instance class="NoiseXTerminator" version="256" id="Opt_NXT_final_fort_instance">
-      <description>OPTION — partie 3, à la place de NXT_final : bruit encore visible dans le fond (Denoise 0,60).
-
-PRÉRÉGLÉ : Denoise 0,60, 1 itération.
-
-À RÉGLER : PARTIE 3 (bruit), à la place de NXT_final : glisse sur l'image sans étoiles finie.
-
-SI :
-- aspect plastique -&gt; NXT_final (0,40)</description>
+      <description>OPTION — partie 3, à la place de NXT_final : bruit encore visible dans le fond (Denoise 0,60).&#10;&#10;PRÉRÉGLÉ : Denoise 0,60, 1 itération.&#10;&#10;À RÉGLER : PARTIE 3 (bruit), à la place de NXT_final : glisse sur l'image sans étoiles finie.&#10;&#10;SI :&#10;- aspect plastique -&gt; NXT_final (0,40)</description>
       <parameter id="ml_version" value="0"/>
       <parameter id="denoise" value="0.60"/>
       <parameter id="enable_color_separation" value="false"/>
@@ -4838,12 +4593,7 @@ SI :
       <description>PHASE 7 — Étoiles : étoiles : étirement, recombinaison, réduction. Colonne de repère, sans effet.</description>
    </instance>
    <instance class="PixelMath" version="256" id="E19_Etoiles_screen_instance">
-      <description>PRÉRÉGLÉ : ~((~$T) * (~RGB_stars)), sur l'image elle-même.
-
-À RÉGLER : glisse sur l'image sans étoiles finale : elle reçoit les étoiles ; étoiles étirées nommées RGB_stars (nom donné par SXT, s minuscule).
-
-SI :
-- autre nom d'étoiles -&gt; corrige-le dans la formule</description>
+      <description>PRÉRÉGLÉ : ~((~$T) * (~RGB_stars)), sur l'image elle-même.&#10;&#10;À RÉGLER : glisse sur l'image sans étoiles finale : elle reçoit les étoiles ; étoiles étirées nommées RGB_stars (nom donné par SXT, s minuscule).&#10;&#10;SI :&#10;- autre nom d'étoiles -&gt; corrige-le dans la formule</description>
       <parameter id="expression">~((~$T) * (~RGB_stars))</parameter>
       <parameter id="expression1"></parameter>
       <parameter id="expression2"></parameter>
@@ -4931,14 +4681,7 @@ SI :
       <description>OPTIONS de la phase 7 — Étoiles : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
    </instance>
    <instance class="MorphologicalTransformation" version="256" id="Opt_MT_etoiles_instance">
-      <description>OPTION — réduction d'étoiles supplémentaire.
-
-PRÉRÉGLÉ : Selection 0,25, Amount 0,60, 1 itération, 5×5 circulaire.
-
-À RÉGLER : sur l'image d'étoiles seule, avant Etoiles_screen.
-
-SI :
-- trop fort -&gt; Amount 0,50</description>
+      <description>OPTION — réduction d'étoiles supplémentaire.&#10;&#10;PRÉRÉGLÉ : Selection 0,25, Amount 0,60, 1 itération, 5×5 circulaire.&#10;&#10;À RÉGLER : sur l'image d'étoiles seule, avant Etoiles_screen.&#10;&#10;SI :&#10;- trop fort -&gt; Amount 0,50</description>
       <parameter id="operator" value="Selection"/>
       <parameter id="interlacingDistance" value="1"/>
       <parameter id="lowThreshold" value="0.000000"/>
@@ -4955,39 +4698,14 @@ SI :
       </table>
    </instance>
    <instance class="Script" version="256" id="Opt_Halo_B_Gon_instance">
-      <description>OPTION — halos autour des étoiles brillantes
-Attention, réduit aussi les petites étoiles (pour les grosses seulement : Etoiles_grosses).
-
-LANCEMENT : double-clic sur l'icône, puis Apply Global. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
-
-PRÉRÉGLÉ : rien (réglages dans le dialogue).
-
-À RÉGLER : Select stars-only image = l'image d'étoiles étirée (RGB_stars ; NBtoRGB_stars en SHO ; HOO_stars en HOO), AVANT Etoiles_screen ; Reduction Amount Low ; Linear Data décoché.
-
-SI :
-- petites étoiles réduites ou effacées aussi (son masque ne protège que les cœurs) -&gt; Etoiles_grosses à la place
-- pas assez -&gt; relance en Low (Med = 4 courbes, High = 9)</description>
+      <description>OPTION — halos autour des étoiles brillantes&#10;Attention, réduit aussi les petites étoiles (pour les grosses seulement : Etoiles_grosses).&#10;&#10;LANCEMENT : double-clic sur l'icône, puis Apply Global. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.&#10;&#10;PRÉRÉGLÉ : rien (réglages dans le dialogue).&#10;&#10;À RÉGLER : Select stars-only image = l'image d'étoiles étirée (RGB_stars ; NBtoRGB_stars en SHO ; HOO_stars en HOO), AVANT Etoiles_screen ; Reduction Amount Low ; Linear Data décoché.&#10;&#10;SI :&#10;- petites étoiles réduites ou effacées aussi (son masque ne protège que les cœurs) -&gt; Etoiles_grosses à la place&#10;- pas assez -&gt; relance en Low (Med = 4 courbes, High = 9)</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/Halo-B-Gon.js</parameter>
       <parameter id="md5sum">b9427e718e2b9760704c8c738e0893b7</parameter>
       <table id="parameters" rows="0"/>
       <parameter id="information"></parameter>
    </instance>
    <instance class="Script" version="256" id="Opt_Etoiles_grosses_instance">
-      <description>OPTION — grosses étoiles trop présentes, mais Etoiles_reduites réduirait toutes les étoiles : glisse sur l'image d'étoiles (RGB_stars) AVANT Etoiles_screen
-En rapide, avant R_C_Etoiles_fond_rapide.
-
-LANCEMENT : glisse l'icône sur l'image.
-
-PRÉRÉGLÉ : script Etoiles_grosses : masque des grosses étoiles (ouverture morphologique, disque de 7 px sur une copie à 2000 px, au-dessus de 0,15, étendu au halo) ; sous le masque, luminance -&gt; mtf(0,70, Y), même facteur sur R, G, B : couleur gardée, petites étoiles intactes.
-
-À RÉGLER : glisse sur RGB_stars juste AVANT Etoiles_screen (Etoiles_screen ensuite, pas Etoiles_reduites) ; en rapide, avant R_C_Etoiles_fond_rapide ; copie Etoiles_grosses.js dans src/scripts/clodoweg.
-
-SI :
-- halo large pas entièrement réduit -&gt; etendue 10 à 12
-- moyennes étoiles touchées aussi -&gt; taille 9 ou 11
-- certaines grosses pas réduites -&gt; taille 5, ou seuil 0,10
-- pas assez réduites -&gt; force 0,80 (0,5 = rien)
-- voir ce qui est réduit -&gt; afficherMasque true (vue masque_grosses)</description>
+      <description>OPTION — grosses étoiles trop présentes, mais Etoiles_reduites réduirait toutes les étoiles : glisse sur l'image d'étoiles (RGB_stars) AVANT Etoiles_screen&#10;En rapide, avant R_C_Etoiles_fond_rapide.&#10;&#10;LANCEMENT : glisse l'icône sur l'image.&#10;&#10;PRÉRÉGLÉ : script Etoiles_grosses : masque des grosses étoiles (ouverture morphologique, disque de 7 px sur une copie à 2000 px, au-dessus de 0,15, étendu au halo) ; sous le masque, luminance -&gt; mtf(0,70, Y), même facteur sur R, G, B : couleur gardée, petites étoiles intactes.&#10;&#10;À RÉGLER : glisse sur RGB_stars juste AVANT Etoiles_screen (Etoiles_screen ensuite, pas Etoiles_reduites) ; en rapide, avant R_C_Etoiles_fond_rapide ; copie Etoiles_grosses.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- halo large pas entièrement réduit -&gt; etendue 10 à 12&#10;- moyennes étoiles touchées aussi -&gt; taille 9 ou 11&#10;- certaines grosses pas réduites -&gt; taille 5, ou seuil 0,10&#10;- pas assez réduites -&gt; force 0,80 (0,5 = rien)&#10;- voir ce qui est réduit -&gt; afficherMasque true (vue masque_grosses)</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Etoiles_grosses.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="5">
@@ -5015,17 +4733,7 @@ SI :
       <parameter id="information"></parameter>
    </instance>
    <instance class="PixelMath" version="256" id="Opt_Etoiles_plafond_instance">
-      <description>OPTION — cœurs d'étoiles cramés à 1 (blanc pur) : glisse sur l'image d'étoiles (RGB_stars) AVANT Etoiles_screen
-En rapide, avant R_C_Etoiles_fond_rapide.
-
-PRÉRÉGLÉ : PixelMath sur l'image d'étoiles : m = max(R, G, B) ; au-dessus de s = 0,70, les 3 canaux × (1 − k·t²), k = 0,06 : cœur à 1 -&gt; 0,94, couleur (rapport R:G:B) gardée, étoiles sous 0,70 inchangées.
-
-À RÉGLER : glisse sur RGB_stars (ou l'image d'étoiles de ton workflow) juste AVANT Etoiles_screen ; en rapide, avant R_C_Etoiles_fond_rapide.
-
-SI :
-- encore trop blanc -&gt; k = 0,10
-- étoiles moyennes touchées -&gt; s = 0,80
-- cœur R = G = B = 1 -&gt; saturé à la prise de vue : reste blanc (à 0,94)</description>
+      <description>OPTION — cœurs d'étoiles cramés à 1 (blanc pur) : glisse sur l'image d'étoiles (RGB_stars) AVANT Etoiles_screen&#10;En rapide, avant R_C_Etoiles_fond_rapide.&#10;&#10;PRÉRÉGLÉ : PixelMath sur l'image d'étoiles : m = max(R, G, B) ; au-dessus de s = 0,70, les 3 canaux × (1 − k·t²), k = 0,06 : cœur à 1 -&gt; 0,94, couleur (rapport R:G:B) gardée, étoiles sous 0,70 inchangées.&#10;&#10;À RÉGLER : glisse sur RGB_stars (ou l'image d'étoiles de ton workflow) juste AVANT Etoiles_screen ; en rapide, avant R_C_Etoiles_fond_rapide.&#10;&#10;SI :&#10;- encore trop blanc -&gt; k = 0,10&#10;- étoiles moyennes touchées -&gt; s = 0,80&#10;- cœur R = G = B = 1 -&gt; saturé à la prise de vue : reste blanc (à 0,94)</description>
       <parameter id="expression">s = 0.70;
 k = 0.06;
 m = max($T[0], $T[1], $T[2]);
@@ -5059,16 +4767,7 @@ $T*(1 - k*t*t)</parameter>
       <table id="outputData" rows="0"/>
    </instance>
    <instance class="PixelMath" version="256" id="Opt_Etoiles_reduites_instance">
-      <description>ALTERNATIVE — Recombinaison + réduction Blanshan.
-
-PRÉRÉGLÉ : S = 0,20 (Bill : 0,15) ; recombinaison screen + réduction Blanshan en une formule, sur l'image elle-même.
-
-À RÉGLER : À LA PLACE d'Etoiles_screen : glisse sur l'image sans étoiles finale ; étoiles étirées nommées RGB_stars.
-
-SI :
-- étoiles encore grosses -&gt; S 0,15
-- trop petites -&gt; S 0,25, ou Etoiles_screen
-- pour recommencer -&gt; Ctrl+Z</description>
+      <description>ALTERNATIVE — Recombinaison + réduction Blanshan.&#10;&#10;PRÉRÉGLÉ : S = 0,20 (Bill : 0,15) ; recombinaison screen + réduction Blanshan en une formule, sur l'image elle-même.&#10;&#10;À RÉGLER : À LA PLACE d'Etoiles_screen : glisse sur l'image sans étoiles finale ; étoiles étirées nommées RGB_stars.&#10;&#10;SI :&#10;- étoiles encore grosses -&gt; S 0,15&#10;- trop petites -&gt; S 0,25, ou Etoiles_screen&#10;- pour recommencer -&gt; Ctrl+Z</description>
       <parameter id="expression">S=0.20;
 W=~((~$T)*(~RGB_stars));
 f1= ~((~mtf(~S,W)/~mtf(~S,$T))*~$T);
@@ -5101,11 +4800,7 @@ max($T,f1)</parameter>
       <table id="outputData" rows="0"/>
    </instance>
    <instance class="NoOperation" version="256" id="Opt_MKStarReduction_instance">
-      <description>OPTION — TEST, à la place d'Etoiles_grosses ou d'Etoiles_reduites : réduction d'étoiles MK Star Reduction, lancée depuis le menu Script.
-
-PRÉRÉGLÉ : rien (icône-note : chemin du script non vérifié).
-
-À RÉGLER : installe MK Star Reduction (dépôt mhkastro) ; Script › Utilities › MK Star Reduction ; image sans étoiles ouverte.</description>
+      <description>OPTION — TEST, à la place d'Etoiles_grosses ou d'Etoiles_reduites : réduction d'étoiles MK Star Reduction, lancée depuis le menu Script.&#10;&#10;PRÉRÉGLÉ : rien (icône-note : chemin du script non vérifié).&#10;&#10;À RÉGLER : installe MK Star Reduction (dépôt mhkastro) ; Script › Utilities › MK Star Reduction ; image sans étoiles ouverte.</description>
    </instance>
    <instance class="ProcessContainer" id="Opt_Boost_final_doux_instance">
       <instance class="Script" version="256" enabled="true">
@@ -5482,16 +5177,7 @@ PRÉRÉGLÉ : rien (icône-note : chemin du script non vérifié).
       </instance>
    </instance>
    <instance class="Script" version="256" id="Opt_Fond_auto_clair_instance">
-      <description>OPTION — partie 5, à la place de Fond_auto dans C_Fond_final : image trop sombre, fond amené à 0,14.
-
-LANCEMENT : glisse l'icône sur l'image.
-
-PRÉRÉGLÉ : script Fond_auto, cible 0,14 : fond de chaque canal mesuré (grille 8 × 8), amené à 0,14 par mtf, sans écrêtage ; fond neutre.
-
-À RÉGLER : PARTIE 5 (fond), à la place de C_Fond_final si l'image est trop sombre : glisse sur l'image finie, étoiles comprises, puis Fond_desature.
-
-SI :
-- fond encore trop sombre -&gt; double-clic, cible 0,15</description>
+      <description>OPTION — partie 5, à la place de Fond_auto dans C_Fond_final : image trop sombre, fond amené à 0,14.&#10;&#10;LANCEMENT : glisse l'icône sur l'image.&#10;&#10;PRÉRÉGLÉ : script Fond_auto, cible 0,14 : fond de chaque canal mesuré (grille 8 × 8), amené à 0,14 par mtf, sans écrêtage ; fond neutre.&#10;&#10;À RÉGLER : PARTIE 5 (fond), à la place de C_Fond_final si l'image est trop sombre : glisse sur l'image finie, étoiles comprises, puis Fond_desature.&#10;&#10;SI :&#10;- fond encore trop sombre -&gt; double-clic, cible 0,15</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="3">
@@ -5511,15 +5197,7 @@ SI :
       <parameter id="information"></parameter>
    </instance>
    <instance class="Resample" version="256" id="Opt_Agrandir_x2_instance">
-      <description>OPTION — après Binning_x2, pour un grand tirage : image agrandie 2 fois (Lanczos 3) juste avant Export_TIFF
-Ne recrée pas le détail perdu.
-
-PRÉRÉGLÉ : Resample : × 2 en largeur et hauteur, Lanczos 3, seuil d'écrêtage 0,30.
-
-À RÉGLER : glisse sur l'image finie, juste avant ICC_sRGB et Export_TIFF ; seulement après Binning_x2, pour un grand tirage.
-
-SI :
-- anneaux noirs autour des étoiles -&gt; interpolation Auto ou Bicubic spline</description>
+      <description>OPTION — après Binning_x2, pour un grand tirage : image agrandie 2 fois (Lanczos 3) juste avant Export_TIFF&#10;Ne recrée pas le détail perdu.&#10;&#10;PRÉRÉGLÉ : Resample : × 2 en largeur et hauteur, Lanczos 3, seuil d'écrêtage 0,30.&#10;&#10;À RÉGLER : glisse sur l'image finie, juste avant ICC_sRGB et Export_TIFF ; seulement après Binning_x2, pour un grand tirage.&#10;&#10;SI :&#10;- anneaux noirs autour des étoiles -&gt; interpolation Auto ou Bicubic spline</description>
       <parameter id="xSize" value="2.000000"/>
       <parameter id="ySize" value="2.000000"/>
       <parameter id="mode" value="RelativeDimensions"/>
@@ -5530,14 +5208,7 @@ SI :
       <parameter id="noGUIMessages" value="true"/>
    </instance>
    <instance class="ICCProfileTransformation" version="256" id="Opt_ICC_sRGB_instance">
-      <description>OPTION — tout à la fin, avant une finition dans Photoshop, Lightroom ou Affinity : image convertie en sRGB IEC61966-2.1 (couleurs identiques dans l'autre logiciel).
-
-PRÉRÉGLÉ : ICCProfileTransformation : vers sRGB IEC61966-2.1, Convert to the specified profile, rendu Perceptual, compensation du point noir.
-
-À RÉGLER : glisse sur l'image finie avant l'export (Export_TIFF le fait aussi sur sa copie : cette icône sert si tu enregistres toi-même).
-
-SI :
-- impression ou Adobe RGB voulu -&gt; change le profil cible dans l'icône</description>
+      <description>OPTION — tout à la fin, avant une finition dans Photoshop, Lightroom ou Affinity : image convertie en sRGB IEC61966-2.1 (couleurs identiques dans l'autre logiciel).&#10;&#10;PRÉRÉGLÉ : ICCProfileTransformation : vers sRGB IEC61966-2.1, Convert to the specified profile, rendu Perceptual, compensation du point noir.&#10;&#10;À RÉGLER : glisse sur l'image finie avant l'export (Export_TIFF le fait aussi sur sa copie : cette icône sert si tu enregistres toi-même).&#10;&#10;SI :&#10;- impression ou Adobe RGB voulu -&gt; change le profil cible dans l'icône</description>
       <parameter id="targetProfile">sRGB IEC61966-2.1</parameter>
       <parameter id="toDefaultProfile" value="false"/>
       <parameter id="renderingIntent" value="Perceptual"/>
@@ -5545,20 +5216,7 @@ SI :
       <parameter id="useFloatingPointTransformation" value="true"/>
    </instance>
    <instance class="Script" version="256" id="Opt_Export_TIFF_instance">
-      <description>OPTION — tout à la fin : copie enregistrée en TIFF 16 bits sRGB, profil ICC intégré, pour Photoshop, Lightroom ou Affinity.
-
-LANCEMENT : glisse l'icône sur l'image.
-
-PRÉRÉGLÉ : script Export_TIFF : copie de l'image en entiers 16 bits, convertie en sRGB IEC61966-2.1 (icc = true), enregistrée en TIFF (.tiff) sous le NOM DE L'OBJET, sans espace (NGC 1532 -&gt; NGC1532), = nom du dossier des masters ouverts (L, R, G, B, H…), dossiers génériques (master, lights, output, WBPP…) sautés ; enregistrée dans ce dossier ; l'image ouverte ne change pas ; ensuite L fermée (paramètre fermer).
-
-À RÉGLER : glisse sur l'image finie (après C_Fond_final), L encore ouverte (fermée après l'export) ; copie Export_TIFF.js dans src/scripts/clodoweg.
-
-SI :
-- aucun master ouvert -&gt; mot-clé OBJECT, sinon nom de la vue, dans ton dossier personnel
-- autre nom -&gt; remplis nom
-- autre dossier -&gt; remplis dossier
-- garder plusieurs versions -&gt; suffixe (ex. _v2)
-- garder le profil actuel -&gt; icc false</description>
+      <description>OPTION — tout à la fin : copie enregistrée en TIFF 16 bits sRGB, profil ICC intégré, pour Photoshop, Lightroom ou Affinity.&#10;&#10;LANCEMENT : glisse l'icône sur l'image.&#10;&#10;PRÉRÉGLÉ : script Export_TIFF : copie de l'image en entiers 16 bits, convertie en sRGB IEC61966-2.1 (icc = true), enregistrée en TIFF (.tiff) sous le NOM DE L'OBJET, sans espace (NGC 1532 -&gt; NGC1532), = nom du dossier des masters ouverts (L, R, G, B, H…), dossiers génériques (master, lights, output, WBPP…) sautés ; enregistrée dans ce dossier ; l'image ouverte ne change pas ; ensuite L fermée (paramètre fermer).&#10;&#10;À RÉGLER : glisse sur l'image finie (après C_Fond_final), L encore ouverte (fermée après l'export) ; copie Export_TIFF.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- aucun master ouvert -&gt; mot-clé OBJECT, sinon nom de la vue, dans ton dossier personnel&#10;- autre nom -&gt; remplis nom&#10;- autre dossier -&gt; remplis dossier&#10;- garder plusieurs versions -&gt; suffixe (ex. _v2)&#10;- garder le profil actuel -&gt; icc false</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="5">

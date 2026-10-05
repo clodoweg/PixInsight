@@ -293,6 +293,9 @@ CONT_LAYOUT = {}   # prefix -> (fichier Conteneurs, titre, insts, icons) : le mo
 
 def save(filename, title, insts, icons):
     xml = M.HEADER + '<!-- ' + escape(title) + ' -->\n' + '\n'.join(insts) + '\n' + '\n'.join(icons) + '\n</xpsm>\n'
+    # retours à la ligne des descriptions en &#10; (test de l'utilisateur, 5 octobre 2026) : un fichier converti en CRLF
+    # (git sous Windows) donne sinon des CR que PixInsight affiche mal (lignes inversées, lignes vides en haut)
+    xml = re.sub(r'<description>(.*?)</description>', lambda m: '<description>%s</description>' % m.group(1).strip().replace('\n', '&#10;'), xml, flags=re.S)
     open(os.path.join(OUT, filename), 'w', encoding='utf-8').write(xml)
 
 def nested(xml):

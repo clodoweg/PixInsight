@@ -46,3 +46,4 @@ Tout est produit par `sh docs/process-icons/build/build.sh` ; ne jamais éditer 
 - Jamais de guillemets dans un paramètre de Script. Pas d'espace dans les noms.
 - Instance native : `<instance class="X" version="256">`, `<parameter id="p" value="v"/>`, enums par identifiant d'élément (ex. `RelativeDimensions`). Paramètre absent : valeur par défaut (supposé, non vérifié).
 - IntegerResample et Resample mettent à jour la solution astrométrique.
+- Retours à la ligne des descriptions écrits `&#10;` (fait par `save()`) : un CR (fichier converti en CRLF par git sous Windows) s'affiche mal dans PixInsight, lignes inversées et vides en haut (test de l'utilisateur, 5 octobre 2026 : LF, `&#10;`, `<br>` et U+2028 marchent ; CR et CRLF non). `.gitattributes` force LF pour .xpsm et .js.
