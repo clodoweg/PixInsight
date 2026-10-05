@@ -122,6 +122,17 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
       script `$PXI_SRCDIR/scripts/clodoweg/GC_Solver_auto.js`
       paramètres : `gradient=false`, `solve=true`, `solveTout=true`, `defaultDate=2020-01-01T00:00:00`, `dialogue=false`, `metadata_focal=2939`, `metadata_xpixsz=3.76`, `solver_catalogMode=2`, `solver_distortionCorrection=true`, `(+ 42 autres réglages ImageSolver)`
 
+> MODE RAPIDE, à la place d'E00 à E03 : masters seuls ouverts, double-clic puis Apply Global (pas en glissant : ImageSolver échoue sur une image en cours de traitement) : Renommer_auto, LinearPatternSubtraction, Combinaison_RGB, Solver_auto (ImageSolver sur toutes les images) en un seul conteneur.
+> 
+> LANCEMENT : masters seuls ouverts, double-clic puis Apply Global (rond bleu) ; pas en glissant (ImageSolver échoue sur une image en cours de traitement).
+> 
+> PRÉRÉGLÉ : conteneur : Renommer_auto (L, R, G, B d'après FILTER), LinearPatternSubtraction sur tous les masters mono ouverts, Combinaison_RGB, Solver_auto (ImageSolver sur toutes les images).
+> 
+> À RÉGLER : masters seuls ouverts ; double-clic puis Apply Global (pas en glissant sur une image : ImageSolver échouerait sur celle-ci) ; remplace E00 à E03.
+> 
+> SI :
+> - une étape en erreur -> lis la console, puis fais les icônes E00 à E03 une par une
+
 ## P2_Gradient
 
 #### E04_ImageSolver — Script
@@ -263,6 +274,14 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
    3. BlurXTerminator
       ml_version=4 ; correct_only=false ; sharpen_stars=0.25 ; adjust_star_halos=0.00 ; nonstellar_diameter=0.0 ; auto_nonstellar_psf=true ; sharpen_nonstellar=0.50 ; lunar_planetary=false ; overlap=0.20
 
+> LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
+> 
+> CONTENEUR : BXT_CorrectOnly, SPCC, BXT_RGB.
+> 
+> SUR : l'image RGB combinée, linéaire, gradient retiré.
+> 
+> Double-clic sur le conteneur pour voir ou changer les réglages de chaque étape.
+
 #### E11_BXT_L_H — BlurXTerminator
    ml_version=4 ; correct_only=false ; sharpen_stars=0.25 ; adjust_star_halos=0.00 ; nonstellar_diameter=0.0 ; auto_nonstellar_psf=true ; sharpen_nonstellar=0.80 ; lunar_planetary=false ; overlap=0.20
 
@@ -306,6 +325,14 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
    2. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
       paramètres : `views=H, R, HaNB`, `dialogue=false`
+
+> LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
+> 
+> CONTENEUR : NXT_RGB, Fermer_continuum.
+> 
+> SUR : l'image RGB après H_dans_RGB (et H_dans_L éventuel) : NXT, puis H, R et HaNB fermées.
+> 
+> Double-clic sur le conteneur pour voir ou changer les réglages de chaque étape.
 
 #### E15_NXT_L — NoiseXTerminator
    ml_version=0 ; denoise=0.60 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
@@ -517,6 +544,17 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
    3. GeneralizedHyperbolicStretch
       stretchType=ST_GeneralisedHyperbolic ; stretchChannel=SC_RGB ; inverse=false ; stretchFactor=1.000 ; localIntensity=10.000 ; symmetryPoint=0.120000 ; highlightProtection=0.120000 ; shadowProtection=0.000000 ; blackPoint=0.000000 ; whitePoint=1.000000 ; colourBlend=1.000 ; clipType=CT_RGBBlend ; useRGBWorkingSpace=false
 
+> MODE RAPIDE, à la place de MAS, SXT_RGB_etire et GHS_3_fond sur le RGB : glisse sur RGB linéaire avec étoiles ; MAS, SXT Unscreen (RGB_stars créée), GHS fond (SP = HP = 0,12).
+> 
+> LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
+> 
+> PRÉRÉGLÉ : conteneur : MAS (tes réglages, fond 0,15), SXT Unscreen (RGB_stars créée), GHS fond (b = 10, SP = HP = 0,12, Stretch factor 1).
+> 
+> À RÉGLER : glisse sur le RGB linéaire avec étoiles (après R_Lineaire_rapide) ; RGB sort étiré sans étoiles, RGB_stars étirée ; ensuite R_C_LRGB_rapide.
+> 
+> SI :
+> - fond pas au même niveau que L -> GHS_3_fond du chemin principal, réglé à la main
+
 ## P5_Couleur
 
 #### E22_LRGB_ajout_L — LRGBCombination
@@ -555,6 +593,18 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
    1. LRGBCombination
       mL=0.500 ; mc=0.500 ; clipHighlights=false ; noiseReduction=true ; layersRemoved=4 ; layersProtected=2 ; inheritAstrometricSolution=true ; table channels (4 lignes)
 
+> MODE RAPIDE, à la place de LRGB_ajout_L : glisse sur le RGB sans étoiles, L sans étoiles étirée ouverte ; LRGB_ajout_L (Saturation 0,5) seule.
+> 
+> LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
+> 
+> PRÉRÉGLÉ : conteneur : LRGB_ajout_L (L sans étoiles, Lightness 0,5, Saturation 0,5).
+> 
+> À RÉGLER : glisse sur le RGB sans étoiles (après R_C_RGB_etire_rapide), L sans étoiles étirée ouverte ; ensuite R_C_Fin_rapide.
+> 
+> SI :
+> - étoiles ternes ou un peu vertes -> Etoiles_auto_etire (P5 options) sur RGB_stars
+> - taches ou halos restés -> Nettoyage_sans_etoiles (P6 options) avant R_C_Fin_rapide
+
 ## P6_Finition
 
 #### E23_HDRMT_30 — ProcessContainer
@@ -567,6 +617,16 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
    4. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
       paramètres : `views=HDR_avant`, `dialogue=false`
+
+> LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
+> 
+> PRÉRÉGLÉ : conteneur : copie de l'image (vue HDR_avant), HDRMT 6 couches To lightness / Preserve hue / Lightness mask, mélange 0,3 × résultat + 0,7 × copie, puis fermeture de la copie.
+> 
+> À RÉGLER : PARTIE 1 de la finition (cœur), par défaut : glisse sur l'image sans étoiles étirée, AVANT C_Finition ; la copie HDR_avant est fermée automatiquement.
+> 
+> SI :
+> - cœur encore trop clair -> HDRMT_40 ou HDRMT_50
+> - aucun effet visible -> saute la partie 1
 
 #### E24_C_Finition — ProcessContainer
    1. Script
@@ -581,6 +641,14 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
    5. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
       paramètres : `mode=retirer`, `nom=masque_L`, `dialogue=false`
+
+> LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
+> 
+> CONTENEUR : Masque_L, Courbes, LHE, LHE_fin, Masque_retirer.
+> 
+> SUR : l'image sans étoiles étirée (masque créé, attaché puis retiré automatiquement).
+> 
+> Double-clic sur le conteneur pour voir ou changer les réglages de chaque étape.
 
 #### E25_NXT_final — NoiseXTerminator
    ml_version=0 ; denoise=0.40 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
@@ -629,6 +697,18 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
       script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
       paramètres : `views=HDR_avant`, `dialogue=false`
 
+> OPTION — partie 1, à la place de HDRMT_30 : cœur encore trop clair (HDRMT appliqué à 40 %).
+> 
+> LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
+> 
+> PRÉRÉGLÉ : conteneur : copie de l'image (vue HDR_avant), HDRMT 6 couches To lightness / Preserve hue / Lightness mask, mélange 0,4 × résultat + 0,6 × copie, copie fermée.
+> 
+> À RÉGLER : option, partie 1, à la place de HDRMT_30 : glisse sur l'image sans étoiles étirée, AVANT C_Finition.
+> 
+> SI :
+> - cœur encore brûlé -> HDRMT_50 à la place
+> - cœur détaillé mais terne -> HDRMT_eclat à la place
+
 #### Opt_HDRMT_50 — ProcessContainer
    1. PixelMath
       expression = `$T` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=true ; showNewImage=true ; newImageId=HDR_avant ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
@@ -639,6 +719,18 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
    4. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
       paramètres : `views=HDR_avant`, `dialogue=false`
+
+> OPTION — cœur de galaxie ou nébuleuse brillante brûlé (HDRMT appliqué à 50 %).
+> 
+> LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
+> 
+> PRÉRÉGLÉ : conteneur : copie de l'image (vue HDR_avant), HDRMT 6 couches To lightness / Preserve hue / Lightness mask, mélange 0,5 × résultat + 0,5 × copie, puis fermeture de la copie.
+> 
+> À RÉGLER : glisse sur l'image sans étoiles étirée ; la copie HDR_avant est fermée automatiquement à la fin (script Fermer_vues).
+> 
+> SI :
+> - effet trop faible -> a = 0,7 dans HDR_melange
+> - trop fort -> a = 0,3
 
 #### Opt_HDRMT_eclat — ProcessContainer
    1. PixelMath
@@ -660,6 +752,19 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
    8. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
       paramètres : `mode=retirer`, `nom=masque_L`, `dialogue=false`
+
+> OPTION — cœur laiteux sans détail, mais terne avec HDRMT seul : HDRMT à 40 % puis Boost_finition_light, en un glisser.
+> 
+> LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
+> 
+> PRÉRÉGLÉ : conteneur : HDRMT à 40 % (copie HDR_avant, HDRMT 6 couches, mélange 0,4 × résultat + 0,6 × copie, copie fermée), puis Boost_finition_light (masque, courbe très légère, saturation 0,57, LHE rayon 80 Amount 0,12, masque retiré).
+> 
+> À RÉGLER : glisse sur l'image sans étoiles étirée, à la place de HDRMT_50 ; HDRMT rend le détail du cœur, le Boost lui rend son éclat.
+> 
+> SI :
+> - cœur encore terne -> un Boost_finition_light de plus
+> - pas assez de détail -> a = 0,5 à 0,7 dans HDR_melange
+> - trop sombre ou gris -> a = 0,3
 
 #### Opt_DarkStructureEnhance — Script
    script `$PXI_SRCDIR/scripts/misc/DarkStructureEnhance.js`
@@ -687,6 +792,17 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
       paramètres : `mode=retirer`, `nom=masque_L`, `dialogue=false`
 
+> OPTION — un tout petit peu plus de couleur et de contraste après LHE_fin (version douce du Boost, rejouable).
+> 
+> LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
+> 
+> PRÉRÉGLÉ : conteneur : courbe très légère (0,25 -> 0,24 ; 0,75 -> 0,76, saturation 0,5 -> 0,57) puis LHE rayon 80, Amount 0,12.
+> 
+> À RÉGLER : sous Masque_L, après LHE_fin ; un glisser = un petit cran.
+> 
+> SI :
+> - pas assez -> un deuxième passage, ou Boost_finition
+
 #### Opt_Boost_finition — ProcessContainer
    1. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
@@ -698,6 +814,18 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
    4. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
       paramètres : `mode=retirer`, `nom=masque_L`, `dialogue=false`
+
+> OPTION — encore un peu plus de couleur et de contraste après LHE_fin (rejouable).
+> 
+> LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
+> 
+> PRÉRÉGLÉ : conteneur : petite courbe (0,25 -> 0,23 ; 0,75 -> 0,77, saturation 0,5 -> 0,60) puis LHE rayon 80, Amount 0,20.
+> 
+> À RÉGLER : sous Masque_L, après LHE_fin ; un glisser = un petit cran, rejoue-le pour pousser encore.
+> 
+> SI :
+> - fond qui se colore ou bruit -> arrête, ou NXT final
+> - halo sombre autour de la galaxie -> une passe de moins
 
 #### Opt_NXT_final_doux — NoiseXTerminator
    ml_version=0 ; denoise=0.25 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
@@ -749,6 +877,18 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
       paramètres : `mode=retirer`, `nom=masque_L`, `dialogue=false`
    10. NoiseXTerminator
       ml_version=0 ; denoise=0.40 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
+
+> MODE RAPIDE, à la place de HDRMT_30, C_Finition et NXT_final : sur l'image sans étoiles après LRGB_ajout_L (ou R_C_LRGB_rapide).
+> 
+> LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
+> 
+> PRÉRÉGLÉ : conteneur : HDRMT à 30 % (copie HDR_avant, HDRMT 6 couches, mélange 0,3 × résultat + 0,7 × copie, copie fermée), masque de luminance attaché, Courbes, LHE (rayon 150), LHE_fin (rayon 40), masque retiré, NXT_final (Denoise 0,40).
+> 
+> À RÉGLER : glisse sur l'image sans étoiles après LRGB_ajout_L (ou R_C_LRGB_rapide) ; ensuite R_C_Etoiles_fond_rapide.
+> 
+> SI :
+> - cœur encore trop clair -> HDRMT_40 ou HDRMT_50 (options) avant
+> - une option de finition (Boost…) -> entre ce conteneur et R_C_Etoiles_fond_rapide
 
 ## P7_Etoiles
 
@@ -913,6 +1053,20 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
       paramètres : `mode=retirer`, `nom=masque_L`, `dialogue=false`
 
+> OPTION — comme Boost_final mais moitié moins fort (courbes c et S montées de moitié) : un petit cran de couleur sur l'image finie, sans toucher aux étoiles
+> L encore ouverte.
+> 
+> LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
+> 
+> PRÉRÉGLÉ : conteneur : masque de luminance tiré de L sans étoiles (script Masque_auto, source = L, s = 0,20, gamma 2 : fort sur le cœur et les bras brillants, faible sur le halo et les bras faibles ; étoiles de RGB_stars retirées du masque) attaché, CurvesTransformation c 0,46094 -> 0,49870 et S 0,46354 -> 0,50261, masque retiré.
+> 
+> À RÉGLER : glisse sur l'image finie avec étoiles ; L (sans étoiles, étirée) doit être ouverte.
+> 
+> SI :
+> - masque encore trop large -> gamma 3 dans Masque_L_source
+> - trop fort -> rapproche les points de la diagonale
+> - étoiles touchées -> vérifie que L est bien la version sans étoiles
+
 #### Opt_Boost_final — ProcessContainer
    1. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
@@ -922,6 +1076,19 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
    3. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
       paramètres : `mode=retirer`, `nom=masque_L`, `dialogue=false`
+
+> OPTION — sur l'image FINIE, étoiles comprises : un peu plus de couleur sans toucher aux étoiles (masque tiré de L sans étoiles, courbes chrominance et saturation).
+> 
+> LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
+> 
+> PRÉRÉGLÉ : conteneur : masque de luminance tiré de L sans étoiles (script Masque_auto, source = L, s = 0,20, gamma 2 : fort sur le cœur et les bras brillants, faible sur le halo et les bras faibles ; étoiles de RGB_stars retirées du masque) attaché, CurvesTransformation c 0,46094 -> 0,53646 et S 0,46354 -> 0,54167, masque retiré.
+> 
+> À RÉGLER : glisse sur l'image finie avec étoiles ; L (sans étoiles, étirée) doit être ouverte.
+> 
+> SI :
+> - masque encore trop large -> gamma 3 dans Masque_L_source
+> - trop fort -> rapproche les points de la diagonale
+> - étoiles touchées -> vérifie que L est bien la version sans étoiles
 
 #### Opt_Agrandir_x2 — Resample
    xSize=2.000000 ; ySize=2.000000 ; mode=RelativeDimensions ; absoluteMode=ForceWidthAndHeight ; interpolation=Lanczos3 ; clampingThreshold=0.30 ; smoothness=1.50 ; noGUIMessages=true
@@ -983,3 +1150,15 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
    5. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js`
       paramètres : `nom=`, `suffixe=`, `dossier=`, `icc=true`, `dialogue=false`
+
+> MODE RAPIDE, à la place de SCNR_vert, Fond_desature, Fond_auto, Etoiles_screen et Export_TIFF : sur l'image sans étoiles finie, RGB_stars et L ouvertes.
+> 
+> LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
+> 
+> PRÉRÉGLÉ : conteneur : SCNR vert 1,0, Fond_desature (teinte et violet du fond retirés), Fond_auto (fond amené à 0,12, neutre), Etoiles_screen (~((~$T) * (~RGB_stars))), Export_TIFF (copie TIFF 16 bits sRGB nommée d'après le dossier des masters).
+> 
+> À RÉGLER : glisse sur l'image sans étoiles finie ; RGB_stars et L ouvertes ; l'image est finie et exportée.
+> 
+> SI :
+> - étoiles trop présentes -> Etoiles_grosses ou Etoiles_reduites (options) avant
+> - image trop sombre -> Fond_auto_clair à la place de Fond_auto, puis Etoiles_screen

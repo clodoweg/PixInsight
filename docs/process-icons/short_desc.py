@@ -240,11 +240,18 @@ V = {
     ('HOO', 'SXT_lineaire'): ("Generate star image coché, Unscreen décoché", "rien ; garde l'image d'étoiles si tu n'as pas de RGB", ["quadrillage -> Large overlap"]),
 }
 
-LAUNCH = {True: "LANCEMENT : glisse l'icône sur l'image.", False: "LANCEMENT : double-clic sur l'icône, puis Apply Global."}
+LAUNCH = {True: "LANCEMENT : glisse l'icône sur l'image.", False: "LANCEMENT : double-clic sur l'icône, puis Apply Global.",
+          'cont': "LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).",
+          'cont_global': "LANCEMENT : masters seuls ouverts, double-clic puis Apply Global (rond bleu) ; pas en glissant (ImageSolver échoue sur une image en cours de traitement)."}
 # scripts avec fenêtre de réglages (demande de l'utilisateur) : glisser = direct, double-clic = fenêtre
 DIALOGUE = {'Etoiles_grosses'}
 LAUNCH_DLG = "LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône)."
 MD5 = " Si l'icône est bloquée après une mise à jour du script, efface son champ MD5."
+
+
+def has(prefix, base):
+    key = ('NB', base) if prefix in NB and ('NB', base) in V else (prefix, base)
+    return key in V or base in S
 
 
 def text(prefix, base, drag=None, md5=False):
@@ -253,7 +260,7 @@ def text(prefix, base, drag=None, md5=False):
     pre, todo, ifs = V.get(key) or S[base]
     parts = []
     if drag is not None:
-        parts.append((LAUNCH_DLG if drag == 'dlg' or base in DIALOGUE else LAUNCH[drag]) + (MD5 if md5 else ''))
+        parts.append((LAUNCH_DLG if drag == 'dlg' or (base in DIALOGUE and drag not in ('cont', 'cont_global')) else LAUNCH[drag]) + (MD5 if md5 else ''))
     parts.append("PRÉRÉGLÉ : %s." % pre)
     parts.append("À RÉGLER : %s." % todo)
     if ifs:

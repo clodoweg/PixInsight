@@ -50,6 +50,8 @@ Règle : chaque script a une fenêtre, mise à jour à chaque changement du scri
 
 ## Contraintes PixInsight
 
+- Un conteneur de process natifs (MAS, SXT, BXT, GHS…) se GLISSE sur l'image : lancé par le rond Apply Global, PixInsight refuse (« Cannot execute instance in the global context », retour de l'utilisateur). Seul R_C_Preparation_rapide (scripts + Solver_auto) se lance en Apply Global. Les conteneurs portent une description (texte de lancement LAUNCH['cont'] ou LAUNCH['cont_global'] dans `short_desc.py`).
+
 - Un script ne peut pas lancer une instance Script ; un ProcessContainer peut enchaîner des scripts. `ProcessInstance.fromIcon(id)` exécute une icône de process natif.
 - `#engine v8` (ImageSolver) casse l'ancien code (`PixelMath.prototype.RGB`, LinearPatternSubtraction.jsh).
 - ImageSolver échoue sur l'image glissée dans un conteneur : conteneurs avec Solver_auto en Apply Global.

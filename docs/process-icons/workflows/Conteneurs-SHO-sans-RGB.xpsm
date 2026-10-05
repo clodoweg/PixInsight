@@ -803,6 +803,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <table id="outputData" rows="0"/>
    </instance>
    <instance class="ProcessContainer" id="E10_C_SHO_lineaire_instance">
+      <description>LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;CONTENEUR : BXT_NB, SXT_lineaire.&#10;&#10;SUR : l'image SHO combinée, linéaire.&#10;&#10;Double-clic sur le conteneur pour voir ou changer les réglages de chaque étape.</description>
       <instance class="BlurXTerminator" version="256" enabled="true">
          <parameter id="ml_version" value="4"/>
          <parameter id="correct_only" value="false"/>
@@ -826,6 +827,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </instance>
    </instance>
    <instance class="ProcessContainer" id="E11_C_Extraction_SHO_instance">
+      <description>LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;CONTENEUR : Extraire_S, Extraire_H, Extraire_O.&#10;&#10;SUR : l'image SHO sans étoiles.&#10;&#10;Double-clic sur le conteneur pour voir ou changer les réglages de chaque étape.</description>
       <instance class="PixelMath" version="256" enabled="true">
          <parameter id="expression">$T[0]</parameter>
          <parameter id="expression1"></parameter>
@@ -915,6 +917,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </instance>
    </instance>
    <instance class="ProcessContainer" id="E12_C_Extraction_etoiles_instance">
+      <description>LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;CONTENEUR : Extraire_S_stars, Extraire_H_stars, Extraire_O_stars.&#10;&#10;SUR : l'image d'étoiles SHO, linéaire.&#10;&#10;Double-clic sur le conteneur pour voir ou changer les réglages de chaque étape.</description>
       <instance class="PixelMath" version="256" enabled="true">
          <parameter id="expression">$T[0]</parameter>
          <parameter id="expression1"></parameter>
@@ -1233,6 +1236,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <description>PHASE 6 — Finition : contraste et saturation sur l'image sans étoiles. Colonne de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="E19_C_Finition_instance">
+      <description>LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;CONTENEUR : Masque_L, Courbes, LHE, LHE_fin, Masque_retirer.&#10;&#10;SUR : l'image sans étoiles étirée (masque créé, attaché puis retiré automatiquement).&#10;&#10;Double-clic sur le conteneur pour voir ou changer les réglages de chaque étape.</description>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
@@ -1433,6 +1437,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <description>OPTIONS de la phase 6 — Finition : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="Opt_Boost_finition_light_instance">
+      <description>OPTION — un tout petit peu plus de couleur et de contraste après LHE_fin (version douce du Boost, rejouable).&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : courbe très légère (0,25 -&gt; 0,24 ; 0,75 -&gt; 0,76, saturation 0,5 -&gt; 0,57) puis LHE rayon 80, Amount 0,12.&#10;&#10;À RÉGLER : sous Masque_L, après LHE_fin ; un glisser = un petit cran.&#10;&#10;SI :&#10;- pas assez -&gt; un deuxième passage, ou Boost_finition</description>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
@@ -1623,6 +1628,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </instance>
    </instance>
    <instance class="ProcessContainer" id="Opt_Boost_finition_instance">
+      <description>OPTION — encore un peu plus de couleur et de contraste après LHE_fin (rejouable).&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : petite courbe (0,25 -&gt; 0,23 ; 0,75 -&gt; 0,77, saturation 0,5 -&gt; 0,60) puis LHE rayon 80, Amount 0,20.&#10;&#10;À RÉGLER : sous Masque_L, après LHE_fin ; un glisser = un petit cran, rejoue-le pour pousser encore.&#10;&#10;SI :&#10;- fond qui se colore ou bruit -&gt; arrête, ou NXT final&#10;- halo sombre autour de la galaxie -&gt; une passe de moins</description>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
@@ -1813,6 +1819,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </instance>
    </instance>
    <instance class="ProcessContainer" id="Opt_HDRMT_30_instance">
+      <description>OPTION — cœur un peu trop clair, mais HDRMT_40 aplatit trop (HDRMT appliqué à 30 %, effet plus léger).&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : copie de l'image (vue HDR_avant), HDRMT 6 couches To lightness / Preserve hue / Lightness mask, mélange 0,3 × résultat + 0,7 × copie, puis fermeture de la copie.&#10;&#10;À RÉGLER : PARTIE 1 de la finition (cœur), par défaut : glisse sur l'image sans étoiles étirée, AVANT C_Finition ; la copie HDR_avant est fermée automatiquement.&#10;&#10;SI :&#10;- cœur encore trop clair -&gt; HDRMT_40 ou HDRMT_50&#10;- aucun effet visible -&gt; saute la partie 1</description>
       <instance class="PixelMath" version="256" enabled="true">
          <parameter id="expression">$T</parameter>
          <parameter id="expression1"></parameter>
@@ -1911,6 +1918,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </instance>
    </instance>
    <instance class="ProcessContainer" id="Opt_HDRMT_50_instance">
+      <description>OPTION — cœur de galaxie ou nébuleuse brillante brûlé (HDRMT appliqué à 50 %).&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : copie de l'image (vue HDR_avant), HDRMT 6 couches To lightness / Preserve hue / Lightness mask, mélange 0,5 × résultat + 0,5 × copie, puis fermeture de la copie.&#10;&#10;À RÉGLER : glisse sur l'image sans étoiles étirée ; la copie HDR_avant est fermée automatiquement à la fin (script Fermer_vues).&#10;&#10;SI :&#10;- effet trop faible -&gt; a = 0,7 dans HDR_melange&#10;- trop fort -&gt; a = 0,3</description>
       <instance class="PixelMath" version="256" enabled="true">
          <parameter id="expression">$T</parameter>
          <parameter id="expression1"></parameter>
@@ -2009,6 +2017,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </instance>
    </instance>
    <instance class="ProcessContainer" id="Opt_HDRMT_eclat_instance">
+      <description>OPTION — cœur laiteux sans détail, mais terne avec HDRMT seul : HDRMT à 40 % puis Boost_finition_light, en un glisser.&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : HDRMT à 40 % (copie HDR_avant, HDRMT 6 couches, mélange 0,4 × résultat + 0,6 × copie, copie fermée), puis Boost_finition_light (masque, courbe très légère, saturation 0,57, LHE rayon 80 Amount 0,12, masque retiré).&#10;&#10;À RÉGLER : glisse sur l'image sans étoiles étirée, à la place de HDRMT_50 ; HDRMT rend le détail du cœur, le Boost lui rend son éclat.&#10;&#10;SI :&#10;- cœur encore terne -&gt; un Boost_finition_light de plus&#10;- pas assez de détail -&gt; a = 0,5 à 0,7 dans HDR_melange&#10;- trop sombre ou gris -&gt; a = 0,3</description>
       <instance class="PixelMath" version="256" enabled="true">
          <parameter id="expression">$T</parameter>
          <parameter id="expression1"></parameter>

@@ -373,6 +373,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <description>MODE RAPIDE, phase 1 — Préparation : MODE RAPIDE (galaxies) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre (étoiles gardées jusqu'à LRGB) : R_C_Preparation_rapide ; R_Gradient_auto_rapide ; R_Lineaire_rapide (RGB et L) ; GHS_1_premier, GHS_2_contraste, GHS_3_fond sur L ; R_C_RGB_etire_rapide sur RGB ; R_C_LRGB_rapide (LRGB sans étoiles) ; finition. Phase 1 : R_C_Preparation_rapide (double-clic puis Apply Global) à la place de LinearPatternSubtraction, Renommer_auto, Combinaison_RGB et Solver_auto. Icône de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="R_C_Preparation_rapide_instance">
+      <description>MODE RAPIDE, à la place d'E00 à E03 : masters seuls ouverts, double-clic puis Apply Global (pas en glissant : ImageSolver échoue sur une image en cours de traitement) : Renommer_auto, LinearPatternSubtraction, Combinaison_RGB, Solver_auto (ImageSolver sur toutes les images) en un seul conteneur.&#10;&#10;LANCEMENT : masters seuls ouverts, double-clic puis Apply Global (rond bleu) ; pas en glissant (ImageSolver échoue sur une image en cours de traitement).&#10;&#10;PRÉRÉGLÉ : conteneur : Renommer_auto (L, R, G, B d'après FILTER), LinearPatternSubtraction sur tous les masters mono ouverts, Combinaison_RGB, Solver_auto (ImageSolver sur toutes les images).&#10;&#10;À RÉGLER : masters seuls ouverts ; double-clic puis Apply Global (pas en glissant sur une image : ImageSolver échouerait sur celle-ci) ; remplace E00 à E03.&#10;&#10;SI :&#10;- une étape en erreur -&gt; lis la console, puis fais les icônes E00 à E03 une par une</description>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Renommer_auto.js</parameter>
          <parameter id="md5sum"></parameter>
@@ -1285,6 +1286,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <description>PHASE 3 — Linéaire : image linéaire : couleur, déconvolution, retrait des étoiles, bruit. Colonne de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="E08_C_RGB_lineaire_instance">
+      <description>LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;CONTENEUR : BXT_CorrectOnly, SPCC, BXT_RGB, NXT_RGB.&#10;&#10;SUR : l'image RGB combinée, linéaire, gradient retiré (étoiles gardées) : BXT Correct Only, SPCC, BXT, NXT.&#10;&#10;Double-clic sur le conteneur pour voir ou changer les réglages de chaque étape.</description>
       <instance class="BlurXTerminator" version="256" enabled="true">
          <parameter id="ml_version" value="4"/>
          <parameter id="correct_only" value="true"/>
@@ -1382,6 +1384,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </instance>
    </instance>
    <instance class="ProcessContainer" id="E09_C_L_lineaire_instance">
+      <description>LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;CONTENEUR : BXT_L, NXT_L, SXT_L_lineaire.&#10;&#10;SUR : le master L, linéaire, gradient retiré : BXT, NXT, puis SXT (L sans étoiles).&#10;&#10;Double-clic sur le conteneur pour voir ou changer les réglages de chaque étape.</description>
       <instance class="BlurXTerminator" version="256" enabled="true">
          <parameter id="ml_version" value="4"/>
          <parameter id="correct_only" value="false"/>
@@ -1697,6 +1700,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <description>MODE RAPIDE, phase 4 — Étirement : GHS_1_premier sur L sans étoiles (chemin principal, à régler), puis GHS_2_contraste et GHS_3_fond (chemin principal) sur L ; R_C_RGB_etire_rapide sur RGB (MAS avec étoiles, SXT Unscreen qui crée RGB_stars, GHS fond). Icône de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="R_C_RGB_etire_rapide_instance">
+      <description>MODE RAPIDE, à la place de MAS, SXT_RGB_etire et GHS_3_fond sur le RGB : glisse sur RGB linéaire avec étoiles ; MAS, SXT Unscreen (RGB_stars créée), GHS fond (SP = HP = 0,12).&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : MAS (tes réglages, fond 0,15), SXT Unscreen (RGB_stars créée), GHS fond (b = 10, SP = HP = 0,12, Stretch factor 1).&#10;&#10;À RÉGLER : glisse sur le RGB linéaire avec étoiles (après R_Lineaire_rapide) ; RGB sort étiré sans étoiles, RGB_stars étirée ; ensuite R_C_LRGB_rapide.&#10;&#10;SI :&#10;- fond pas au même niveau que L -&gt; GHS_3_fond du chemin principal, réglé à la main</description>
       <instance class="MultiscaleAdaptiveStretch" version="256" enabled="true">
          <parameter id="aggressiveness" value="0.70"/>
          <parameter id="targetBackground" value="0.150"/>
@@ -1807,6 +1811,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <description>MODE RAPIDE, phase 5 — Couleur : R_C_LRGB_rapide sur RGB sans étoiles (L sans étoiles ouverte) à la place de LRGB_ajout_L : L ajoutée (Saturation 0,5) ; Etoiles_auto_etire en option si besoin. Icône de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="R_C_LRGB_rapide_instance">
+      <description>MODE RAPIDE, à la place de LRGB_ajout_L : glisse sur le RGB sans étoiles, L sans étoiles étirée ouverte ; LRGB_ajout_L (Saturation 0,5) seule.&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : LRGB_ajout_L (L sans étoiles, Lightness 0,5, Saturation 0,5).&#10;&#10;À RÉGLER : glisse sur le RGB sans étoiles (après R_C_RGB_etire_rapide), L sans étoiles étirée ouverte ; ensuite R_C_Fin_rapide.&#10;&#10;SI :&#10;- étoiles ternes ou un peu vertes -&gt; Etoiles_auto_etire (P5 options) sur RGB_stars&#10;- taches ou halos restés -&gt; Nettoyage_sans_etoiles (P6 options) avant R_C_Fin_rapide</description>
       <instance class="LRGBCombination" version="256" enabled="true">
          <table id="channels" rows="4">
             <tr>
@@ -1843,6 +1848,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <description>PHASE 6 — Finition : contraste et saturation sur l'image sans étoiles. Colonne de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="E16_HDRMT_30_instance">
+      <description>LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : copie de l'image (vue HDR_avant), HDRMT 6 couches To lightness / Preserve hue / Lightness mask, mélange 0,3 × résultat + 0,7 × copie, puis fermeture de la copie.&#10;&#10;À RÉGLER : PARTIE 1 de la finition (cœur), par défaut : glisse sur l'image sans étoiles étirée, AVANT C_Finition ; la copie HDR_avant est fermée automatiquement.&#10;&#10;SI :&#10;- cœur encore trop clair -&gt; HDRMT_40 ou HDRMT_50&#10;- aucun effet visible -&gt; saute la partie 1</description>
       <instance class="PixelMath" version="256" enabled="true">
          <parameter id="expression">$T</parameter>
          <parameter id="expression1"></parameter>
@@ -1941,6 +1947,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </instance>
    </instance>
    <instance class="ProcessContainer" id="E17_C_Finition_instance">
+      <description>LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;CONTENEUR : Masque_L, Courbes, LHE, LHE_fin, Masque_retirer.&#10;&#10;SUR : l'image sans étoiles étirée (masque créé, attaché puis retiré automatiquement).&#10;&#10;Double-clic sur le conteneur pour voir ou changer les réglages de chaque étape.</description>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
@@ -2220,6 +2227,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="information"></parameter>
    </instance>
    <instance class="ProcessContainer" id="Opt_HDRMT_40_instance">
+      <description>OPTION — partie 1, à la place de HDRMT_30 : cœur encore trop clair (HDRMT appliqué à 40 %).&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : copie de l'image (vue HDR_avant), HDRMT 6 couches To lightness / Preserve hue / Lightness mask, mélange 0,4 × résultat + 0,6 × copie, copie fermée.&#10;&#10;À RÉGLER : option, partie 1, à la place de HDRMT_30 : glisse sur l'image sans étoiles étirée, AVANT C_Finition.&#10;&#10;SI :&#10;- cœur encore brûlé -&gt; HDRMT_50 à la place&#10;- cœur détaillé mais terne -&gt; HDRMT_eclat à la place</description>
       <instance class="PixelMath" version="256" enabled="true">
          <parameter id="expression">$T</parameter>
          <parameter id="expression1"></parameter>
@@ -2318,6 +2326,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </instance>
    </instance>
    <instance class="ProcessContainer" id="Opt_HDRMT_50_instance">
+      <description>OPTION — cœur de galaxie ou nébuleuse brillante brûlé (HDRMT appliqué à 50 %).&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : copie de l'image (vue HDR_avant), HDRMT 6 couches To lightness / Preserve hue / Lightness mask, mélange 0,5 × résultat + 0,5 × copie, puis fermeture de la copie.&#10;&#10;À RÉGLER : glisse sur l'image sans étoiles étirée ; la copie HDR_avant est fermée automatiquement à la fin (script Fermer_vues).&#10;&#10;SI :&#10;- effet trop faible -&gt; a = 0,7 dans HDR_melange&#10;- trop fort -&gt; a = 0,3</description>
       <instance class="PixelMath" version="256" enabled="true">
          <parameter id="expression">$T</parameter>
          <parameter id="expression1"></parameter>
@@ -2416,6 +2425,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </instance>
    </instance>
    <instance class="ProcessContainer" id="Opt_HDRMT_eclat_instance">
+      <description>OPTION — cœur laiteux sans détail, mais terne avec HDRMT seul : HDRMT à 40 % puis Boost_finition_light, en un glisser.&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : HDRMT à 40 % (copie HDR_avant, HDRMT 6 couches, mélange 0,4 × résultat + 0,6 × copie, copie fermée), puis Boost_finition_light (masque, courbe très légère, saturation 0,57, LHE rayon 80 Amount 0,12, masque retiré).&#10;&#10;À RÉGLER : glisse sur l'image sans étoiles étirée, à la place de HDRMT_50 ; HDRMT rend le détail du cœur, le Boost lui rend son éclat.&#10;&#10;SI :&#10;- cœur encore terne -&gt; un Boost_finition_light de plus&#10;- pas assez de détail -&gt; a = 0,5 à 0,7 dans HDR_melange&#10;- trop sombre ou gris -&gt; a = 0,3</description>
       <instance class="PixelMath" version="256" enabled="true">
          <parameter id="expression">$T</parameter>
          <parameter id="expression1"></parameter>
@@ -2709,6 +2719,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="information"></parameter>
    </instance>
    <instance class="ProcessContainer" id="Opt_Boost_finition_light_instance">
+      <description>OPTION — un tout petit peu plus de couleur et de contraste après LHE_fin (version douce du Boost, rejouable).&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : courbe très légère (0,25 -&gt; 0,24 ; 0,75 -&gt; 0,76, saturation 0,5 -&gt; 0,57) puis LHE rayon 80, Amount 0,12.&#10;&#10;À RÉGLER : sous Masque_L, après LHE_fin ; un glisser = un petit cran.&#10;&#10;SI :&#10;- pas assez -&gt; un deuxième passage, ou Boost_finition</description>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
@@ -2899,6 +2910,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </instance>
    </instance>
    <instance class="ProcessContainer" id="Opt_Boost_finition_instance">
+      <description>OPTION — encore un peu plus de couleur et de contraste après LHE_fin (rejouable).&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : petite courbe (0,25 -&gt; 0,23 ; 0,75 -&gt; 0,77, saturation 0,5 -&gt; 0,60) puis LHE rayon 80, Amount 0,20.&#10;&#10;À RÉGLER : sous Masque_L, après LHE_fin ; un glisser = un petit cran, rejoue-le pour pousser encore.&#10;&#10;SI :&#10;- fond qui se colore ou bruit -&gt; arrête, ou NXT final&#10;- halo sombre autour de la galaxie -&gt; une passe de moins</description>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
@@ -3130,6 +3142,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <description>MODE RAPIDE, phase 6 — Finition : R_C_Fin_rapide sur l'image sans étoiles après LRGB_ajout_L (ou R_C_LRGB_rapide) : HDRMT à 30 %, masque, Courbes, LHE, LHE_fin, masque retiré, NXT_final 0,40 en un seul conteneur (= HDRMT_30, C_Finition et NXT_final). Icône de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="R_C_Fin_rapide_instance">
+      <description>MODE RAPIDE, à la place de HDRMT_30, C_Finition et NXT_final : sur l'image sans étoiles après LRGB_ajout_L (ou R_C_LRGB_rapide).&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : HDRMT à 30 % (copie HDR_avant, HDRMT 6 couches, mélange 0,3 × résultat + 0,7 × copie, copie fermée), masque de luminance attaché, Courbes, LHE (rayon 150), LHE_fin (rayon 40), masque retiré, NXT_final (Denoise 0,40).&#10;&#10;À RÉGLER : glisse sur l'image sans étoiles après LRGB_ajout_L (ou R_C_LRGB_rapide) ; ensuite R_C_Etoiles_fond_rapide.&#10;&#10;SI :&#10;- cœur encore trop clair -&gt; HDRMT_40 ou HDRMT_50 (options) avant&#10;- une option de finition (Boost…) -&gt; entre ce conteneur et R_C_Etoiles_fond_rapide</description>
       <instance class="PixelMath" version="256" enabled="true">
          <parameter id="expression">$T</parameter>
          <parameter id="expression1"></parameter>
@@ -3670,6 +3683,7 @@ max($T,f1)</parameter>
       <description>OPTION — TEST, à la place d'Etoiles_grosses ou d'Etoiles_reduites : réduction d'étoiles MK Star Reduction, lancée depuis le menu Script.&#10;&#10;PRÉRÉGLÉ : rien (icône-note : chemin du script non vérifié).&#10;&#10;À RÉGLER : installe MK Star Reduction (dépôt mhkastro) ; Script › Utilities › MK Star Reduction ; image sans étoiles ouverte.</description>
    </instance>
    <instance class="ProcessContainer" id="Opt_Boost_final_doux_instance">
+      <description>OPTION — comme Boost_final mais moitié moins fort (courbes c et S montées de moitié) : un petit cran de couleur sur l'image finie, sans toucher aux étoiles&#10;L encore ouverte.&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : masque de luminance tiré de L sans étoiles (script Masque_auto, source = L, s = 0,20, gamma 2 : fort sur le cœur et les bras brillants, faible sur le halo et les bras faibles ; étoiles de RGB_stars retirées du masque) attaché, CurvesTransformation c 0,46094 -&gt; 0,49870 et S 0,46354 -&gt; 0,50261, masque retiré.&#10;&#10;À RÉGLER : glisse sur l'image finie avec étoiles ; L (sans étoiles, étirée) doit être ouverte.&#10;&#10;SI :&#10;- masque encore trop large -&gt; gamma 3 dans Masque_L_source&#10;- trop fort -&gt; rapproche les points de la diagonale&#10;- étoiles touchées -&gt; vérifie que L est bien la version sans étoiles</description>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
@@ -3865,6 +3879,7 @@ max($T,f1)</parameter>
       </instance>
    </instance>
    <instance class="ProcessContainer" id="Opt_Boost_final_instance">
+      <description>OPTION — sur l'image FINIE, étoiles comprises : un peu plus de couleur sans toucher aux étoiles (masque tiré de L sans étoiles, courbes chrominance et saturation).&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : masque de luminance tiré de L sans étoiles (script Masque_auto, source = L, s = 0,20, gamma 2 : fort sur le cœur et les bras brillants, faible sur le halo et les bras faibles ; étoiles de RGB_stars retirées du masque) attaché, CurvesTransformation c 0,46094 -&gt; 0,53646 et S 0,46354 -&gt; 0,54167, masque retiré.&#10;&#10;À RÉGLER : glisse sur l'image finie avec étoiles ; L (sans étoiles, étirée) doit être ouverte.&#10;&#10;SI :&#10;- masque encore trop large -&gt; gamma 3 dans Masque_L_source&#10;- trop fort -&gt; rapproche les points de la diagonale&#10;- étoiles touchées -&gt; vérifie que L est bien la version sans étoiles</description>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
@@ -4106,6 +4121,7 @@ max($T,f1)</parameter>
       <description>MODE RAPIDE, phase 7 — Étoiles : R_C_Etoiles_fond_rapide sur l'image sans étoiles finie : SCNR vert, Fond_desature, Fond_auto (0,12) sur l'image sans étoiles, étoiles remises (Etoiles_screen), puis Export_TIFF en un seul conteneur. Icône de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="R_C_Etoiles_fond_rapide_instance">
+      <description>MODE RAPIDE, à la place de SCNR_vert, Fond_desature, Fond_auto, Etoiles_screen et Export_TIFF : sur l'image sans étoiles finie, RGB_stars et L ouvertes.&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : SCNR vert 1,0, Fond_desature (teinte et violet du fond retirés), Fond_auto (fond amené à 0,12, neutre), Etoiles_screen (~((~$T) * (~RGB_stars))), Export_TIFF (copie TIFF 16 bits sRGB nommée d'après le dossier des masters).&#10;&#10;À RÉGLER : glisse sur l'image sans étoiles finie ; RGB_stars et L ouvertes ; l'image est finie et exportée.&#10;&#10;SI :&#10;- étoiles trop présentes -&gt; Etoiles_grosses ou Etoiles_reduites (options) avant&#10;- image trop sombre -&gt; Fond_auto_clair à la place de Fond_auto, puis Etoiles_screen</description>
       <instance class="SCNR" version="256" enabled="true">
          <parameter id="amount" value="1.00"/>
          <parameter id="protectionMethod" value="AverageNeutral"/>

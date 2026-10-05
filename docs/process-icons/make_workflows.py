@@ -153,12 +153,17 @@ def opt_lines(t):
 def shorten(xml, prefix, base):
     """Remplace la description détaillée par la version courte (préréglé / à régler / si ... ->)."""
     drag = md5 = None
-    if base in SCRIPTS and 'class="Script"' in xml:
+    if xml.lstrip().startswith('<instance class="ProcessContainer"'):
+        # conteneur (retour de l'utilisateur) : rien ne disait de le GLISSER ; le rond Apply Global échoue avec des process natifs
+        drag = 'cont_global' if '/GC_Solver_auto.js' in xml else 'cont'
+        if '<description>' not in xml:
+            xml = re.sub(r'(<instance class="ProcessContainer" id="[^"]*">)', r'\1\n      <description></description>', xml, count=1)
+    elif base in SCRIPTS and 'class="Script"' in xml:
         path, md5, params, launch = SCRIPTS[base]
         drag = launch.startswith(L_DRAG)
         if '/clodoweg/' in path:
             drag = 'dlg'   # script de la fiche avec fenêtre de réglages (demande de l'utilisateur)
-    short = escape(SD.text(prefix, base, drag, bool(md5)))
+    short = escape(SD.text(prefix, base, drag, bool(md5)) if SD.has(prefix, base) else SD.LAUNCH[drag] if drag in ('cont', 'cont_global') else '')
     return re.sub(r'<description>.*?</description>', lambda m: '<description>%s</description>' % short, xml, count=1, flags=re.S)
 
 ASCII = ['Preparation', 'Gradient', 'Lineaire', 'Etirement', 'Couleur', 'Finition', 'Etoiles']
@@ -454,7 +459,10 @@ def write(filename, prefix, title, steps):
         for cn, target, members in used:
             if cn not in done and members[0] == b:
                 done.add(cn)
-                cmain.append((cn, ph, container('__ID__', [byb[m] for m in members])))
+                cx = container('__ID__', [byb[m] for m in members])
+                cd = SD.LAUNCH['cont'] + "\n\nCONTENEUR : " + ", ".join(members) + ".\n\nSUR : " + target + ".\n\nDouble-clic sur le conteneur pour voir ou changer les réglages de chaque étape."
+                cx = cx.replace('<instance class="ProcessContainer" id="__ID___instance">', '<instance class="ProcessContainer" id="__ID___instance">\n      <description>%s</description>' % escape(cd).replace('\n', '&#10;'), 1)
+                cmain.append((cn, ph, cx))
     cfn, ctitle = filename.replace('Workflow-', 'Conteneurs-'), title + ' — chemin principal avec conteneurs, options dans leur phase'
     rap = [o for o in opts if o[0] in RAPIDE]
     tur = [o for o in opts if o[0] in TURBO]
