@@ -343,7 +343,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > PRÉRÉGLÉ : script CombineHaWithRGB (PixInsight Toolbox, Jürgen Terpe), réglages de l'utilisateur : H Alpha = H, Amount 2, Beta 0, Background 0,015, Sigma 0, Linear Image coché, canaux liés.
 > 
-> À RÉGLER : après E13_SXT_L_lineaire : double-clic sur l'icône puis Apply Global : fenêtre du script avec aperçu (RGB = ton RGB ; H Alpha = H, ou HaNB si tu as fait Opt_Continuum_auto), puis OK ; ne pas glisser l'icône (le script échoue : « The image is already being processed ») ; ensuite C_RGB_bruit ; en rapide : Ha_screen (même calcul) dans R_C_Ha_rapide.
+> À RÉGLER : après E13_SXT_L_lineaire : double-clic sur l'icône puis Apply Global : fenêtre du script avec aperçu (RGB = ton RGB ; H Alpha = H, ou HaNB si tu as fait Opt_Continuum_auto), puis OK ; ne pas glisser l'icône (le script échoue : « The image is already being processed ») ; ensuite C_RGB_bruit.
 > 
 > SI :
 > - régions HII trop rouges -> Amount 1,5
@@ -473,33 +473,11 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > PRÉRÉGLÉ : script Lineaire_auto.js, etapes = C_RGB_couleur>RGB ; BXT_L_H>L,H ; NXT_L>L ; SXT_L_lineaire>L : C_RGB_couleur (BXT Correct Only, SPCC, BXT) sur RGB, BXT (Nonstellar 0,80) sur L et H, NXT 0,60 sur L, SXT sur L (L sans étoiles) ; images linéaires.
 > 
-> À RÉGLER : double-clic puis Apply Global, après R_Gradient_auto_rapide ; Conteneurs-LHaRGB chargé ; ensuite R_C_Ha_rapide glissé sur RGB, puis GHS_1_premier sur L.
+> À RÉGLER : double-clic puis Apply Global, après R_Gradient_auto_rapide ; Conteneurs-LHaRGB chargé ; ensuite E14_CombineHaWithRGB (par sa fenêtre) puis E15_C_RGB_bruit glissé sur RGB, puis GHS_1_premier sur L.
 > 
 > SI :
 > - H_dans_L voulu -> il se fait après (NXT_L déjà passé sur L)
 > - une étape échoue -> la console dit laquelle
-
-#### R_C_Ha_rapide — ProcessContainer
-   1. PixelMath
-      expression = `Q = 2.0;    h = min(1, Q*iif(H > med(H), H - med(H), 0));    1 - (1 - $T)*(1 - h)` ; expression1 = `$T` ; expression2 = `$T` ; useSingleExpression=false ; symbols = `Q, h` ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
-   2. NoiseXTerminator
-      ml_version=0 ; denoise=0.80 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
-   3. Script
-      script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
-      paramètres : `views=H, R, HaNB`, `dialogue=false`
-
-> MODE RAPIDE, à la place de CombineHaWithRGB et C_RGB_bruit : après R_Lineaire_rapide, glisse sur RGB linéaire (H ouverte).
-> 
-> LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
-> 
-> PRÉRÉGLÉ : conteneur : Ha_screen (H ajouté au rouge en screen, 2 × (H − méd H), calcul de CombineHaWithRGB), NXT 0,80, puis H, R (et HaNB) fermées (= CombineHaWithRGB et C_RGB_bruit).
-> 
-> À RÉGLER : après R_Lineaire_rapide : glisse sur le RGB linéaire (H ouverte) ; ensuite GHS_1_premier sur L.
-> 
-> SI :
-> - régions HII trop rouges ou trop discrètes -> double-clic sur le conteneur, Ha_screen : Q = 1,5 ou 2,5
-> - H_dans_L voulu -> fais-le AVANT ce conteneur (il ferme H)
-> - étoiles ou cœur rougis -> chemin principal avec Opt_Continuum_auto
 
 ## P4_Etirement
 

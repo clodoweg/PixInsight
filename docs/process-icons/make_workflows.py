@@ -209,7 +209,7 @@ def layout(entries, naming):
     return insts, icons
 
 TURBO = {'Turbo_debut'}   # ancien mode Turbo supprimé ; Turbo_debut ajouté ensuite (demande de l'utilisateur, 5 octobre 2026)
-RAPIDE = {'Lineaire_rapide', 'C_Ha_rapide', 'C_RGB_etire_rapide', 'C_Fin_rapide', 'C_Etoiles_fond_rapide', 'C_Preparation_rapide', 'Gradient_auto_rapide', 'C_RGB_rapide', 'C_L_rapide', 'C_RGB_fin_rapide', 'C_LRGB_rapide'}
+RAPIDE = {'Lineaire_rapide', 'C_RGB_etire_rapide', 'C_Fin_rapide', 'C_Etoiles_fond_rapide', 'C_Preparation_rapide', 'Gradient_auto_rapide', 'C_RGB_rapide', 'C_L_rapide', 'C_RGB_fin_rapide', 'C_LRGB_rapide'}
 RAPIDE_NOTE = {
     'LRGB': {1: "MODE RAPIDE (galaxies) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre (étoiles gardées jusqu'à LRGB) : R_C_Preparation_rapide ; R_Gradient_auto_rapide ; R_Lineaire_rapide (RGB et L) ; GHS_1_premier, GHS_2_contraste, GHS_3_fond sur L ; R_C_RGB_etire_rapide sur RGB ; R_C_LRGB_rapide (LRGB sans étoiles) ; finition. Phase 1 : R_C_Preparation_rapide (double-clic puis Apply Global) à la place de LinearPatternSubtraction, Renommer_auto, Combinaison_RGB et Solver_auto",
              2: "R_Gradient_auto_rapide à la place de toute la phase 2 : GradientCorrection sur toutes les images ouvertes (l'astrométrie est déjà faite par R_C_Preparation_rapide)",
@@ -220,7 +220,7 @@ RAPIDE_NOTE = {
              7: "R_C_Etoiles_fond_rapide sur l'image sans étoiles finie : Fond_desature, Fond_auto (0,12) sur l'image sans étoiles, étoiles remises (Etoiles_screen), NXT_dernier (0,25), puis Export_TIFF en un seul conteneur"},
     'LHA': {1: "MODE RAPIDE (galaxies) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre : R_C_Preparation_rapide ; R_Gradient_auto_rapide ; R_Lineaire_rapide (RGB, L et H), Continuum_auto, H_dans_RGB, C_RGB_bruit (étoiles gardées) ; GHS_1_premier, GHS_2_contraste, GHS_3_fond sur L ; R_C_RGB_etire_rapide sur RGB ; R_C_LRGB_rapide (LRGB sans étoiles) ; finition. Phase 1 : R_C_Preparation_rapide (double-clic puis Apply Global) à la place de LinearPatternSubtraction, Renommer_auto, Combinaison_RGB et Solver_auto",
             2: "R_Gradient_auto_rapide à la place de toute la phase 2 : GradientCorrection sur toutes les images ouvertes (R et H compris, pour le continuum) ; l'astrométrie est déjà faite par R_C_Preparation_rapide",
-            3: "R_Lineaire_rapide (double-clic puis Apply Global) à la place de C_RGB_couleur, BXT_L_H, NXT_L et SXT_L_lineaire ; puis R_C_Ha_rapide glissé sur RGB à la place de CombineHaWithRGB et C_RGB_bruit : H ajouté au rouge en screen (calcul de CombineHaWithRGB), NXT, H, R fermées ; continuum en option (Continuum_auto, à la main, avant)",
+            3: "R_Lineaire_rapide (double-clic puis Apply Global) à la place de C_RGB_couleur, BXT_L_H, NXT_L et SXT_L_lineaire ; puis chemin principal : E14_CombineHaWithRGB (par sa fenêtre) et E15_C_RGB_bruit glissé sur RGB ; continuum en option avant (Continuum_auto)",
             4: "GHS_1_premier sur L sans étoiles (chemin principal, à régler), puis GHS_2_contraste et GHS_3_fond (chemin principal) sur L ; R_C_RGB_etire_rapide sur RGB (MAS avec étoiles, SXT Unscreen qui crée RGB_stars, SCNR vert sur RGB_stars, GHS fond)",
             5: "R_C_LRGB_rapide sur RGB sans étoiles (L sans étoiles ouverte) à la place de LRGB_ajout_L : L ajoutée (Saturation 0,5)",
             6: "R_C_Fin_rapide sur l'image sans étoiles après LRGB_ajout_L (ou R_C_LRGB_rapide) : HDRMT à 30 %, masque, Courbes, LHE, LHE_fin, Sharp_MMT, masque retiré, NXT_final 0,40 en un seul conteneur (= HDRMT_30, C_Finition, C_Sharp_MMT et NXT_final)",
@@ -1168,16 +1168,12 @@ for _st in (lrgb, lhargb):
     insert_before(_st, 'ICC_sRGB', [(agrandir_x2(), '')])
 insert_after(lhargb, 'H_dans_RGB', [(pm('H_dans_RGB_v2', 'w = 1.0;\n$T[0] + w*(HaNB - med(HaNB))', '$T[1]', '$T[2] + 0.2*w*(HaNB - med(HaNB))', symbols='w'), '')])
 insert_before(lhargb, 'H_dans_RGB', [(script('CombineHaWithRGB', ''), '')])
-# LHaRGB (demande de l'utilisateur, 5 octobre 2026) : Continuum_auto au chemin principal (PhotometricContinuumSubtraction essayé puis retiré : résultat jugé moche) ; Ha_screen (PixelMath natif, même calcul que CombineHaWithRGB) au chemin principal : CombineHaWithRGB glissé échoue
-# (« The image is already being processed », il appelle beginProcess sur la vue cible), il reste en option par sa fenêtre
-insert_before(lhargb, 'CombineHaWithRGB', [(pm('Ha_screen', 'Q = 2.0;\nh = min(1, Q*iif(H > med(H), H - med(H), 0));\n1 - (1 - $T)*(1 - h)', '$T', '$T', symbols='Q, h'), '')])
-# LHaRGB, P3 rapide (demande de l'utilisateur) : R_Lineaire_rapide (BXT, NXT_L, SXT_L), Continuum_auto à la main, puis R_C_Ha_rapide (CombineHaWithRGB + C_RGB_bruit) glissé sur RGB
-# LHaRGB (demande de l'utilisateur) : NXT_L et SXT_L_lineaire avant Continuum_auto ; CombineHaWithRGB au chemin principal ; Ha_screen seulement dans R_C_Ha_rapide
+# LHaRGB (demande de l'utilisateur, 5 octobre 2026) : P3 = C_RGB_couleur, BXT_L_H, NXT_L, SXT_L_lineaire, CombineHaWithRGB (sur H, par sa fenêtre :
+# glissé il échoue, « already being processed »), C_RGB_bruit ; Continuum_auto en option ; PhotometricContinuumSubtraction, Ha_screen, R_C_Ha_rapide et R_C_P3_rapide essayés puis retirés
 for _b in ('NXT_L', 'SXT_L_lineaire'):
     _it = pick(lhargb, _b)
     lhargb.remove(_it)
     insert_before(lhargb, 'Continuum_auto', [_it])
-insert_after(lhargb, 'Lineaire_rapide', [(cont('C_Ha_rapide', [pick(lhargb, b)[0] for b in ('Ha_screen', 'NXT_RGB', 'Fermer_continuum')]), '')])   # LHaRGB (demande de l'utilisateur) : CombineHaWithRGB au chemin principal après Continuum_auto (H = HaNB), H_dans_RGB en option
 
 def turbo_debut(steps, extra=()):
     """Turbo (demande de l'utilisateur) : en une fois R_C_Preparation_rapide, R_Gradient_auto_rapide, R_Lineaire_rapide (leurs étapes à la suite, un seul conteneur, Apply Global)"""
@@ -1190,7 +1186,6 @@ insert_after(lhargb, 'C_Preparation_rapide', [(turbo_debut(lhargb), '')])   # tu
 SUPPR_GALAXIES = {'Etoiles_grosses', 'Etoiles_plafond'}   # Etoiles_auto_etire, GraXpert, VeraLux_HMS, MKStarReduction, Coeurs_etoiles, RepairedHSV, Etoiles_couleur : retirés du code
 for _st in (lrgb, lhargb):
     _st[:] = [x for x in _st if x[0][0] not in SUPPR_GALAXIES]
-lhargb[:] = [x for x in lhargb if x[0][0] != 'Ha_screen']   # Ha_screen : seulement dans R_C_Ha_rapide (demande de l'utilisateur)
 
 for fn, pre, title, steps in [
     ('Workflow-LRGB.xpsm', 'LRGB', 'Workflow LRGB', lrgb),

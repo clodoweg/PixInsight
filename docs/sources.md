@@ -807,3 +807,8 @@ Fait : icône CombineHaWithRGB réglée ainsi (rgbView omis : valeur non valable
 
 Demandes : « tu peux pas inclure R_C_Ha_rapide directement dans R_C_P3_rapide sans avoir besoin d'une seconde icone? » puis (interrompu) « en fait laisse R_C_Ha_rapide et supprime R_C_Ha_rapide » (compris : garder R_C_Ha_rapide, supprimer R_C_P3_rapide).
 Fait : R_C_P3_rapide supprimé (commit annulé) ; retour à R_Lineaire_rapide (Apply Global) puis R_C_Ha_rapide glissé sur RGB (Ha_screen, NXT, fermeture H, R, HaNB). Script Ha_rapide.js commencé puis abandonné (jamais publié). LRGB inchangé.
+
+### Suppression de R_C_Ha_rapide (5 octobre 2026)
+
+Demande : « supprime R_C_Ha_rapide »
+Fait : R_C_Ha_rapide et Ha_screen supprimés du LHaRGB ; rapide P3 = R_Lineaire_rapide seul, puis E14 CombineHaWithRGB (fenêtre) et E15 C_RGB_bruit. LRGB inchangé.
