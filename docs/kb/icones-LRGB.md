@@ -1003,22 +1003,23 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 #### Opt_Etoiles_grosses — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Etoiles_grosses.js`
-   paramètres : `taille=7`, `seuil=0.15`, `etendue=6`, `force=0.70`, `afficherMasque=false`
+   paramètres : `taille=7`, `seuil=0.15`, `etendue=12`, `force=0.80`, `afficherMasque=false`
 
 > OPTION — grosses étoiles trop présentes, mais Etoiles_reduites réduirait toutes les étoiles : glisse sur l'image d'étoiles (RGB_stars) AVANT Etoiles_screen
 > En rapide, avant R_C_Etoiles_fond_rapide.
 > 
 > LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
 > 
-> PRÉRÉGLÉ : script Etoiles_grosses : masque des grosses étoiles (ouverture morphologique, disque de 7 px sur une copie à 2000 px, au-dessus de 0,15, étendu au halo) ; sous le masque, luminance -> mtf(0,70, Y), même facteur sur R, G, B : couleur gardée, petites étoiles intactes.
+> PRÉRÉGLÉ : script Etoiles_grosses : masque des grosses étoiles (ouverture morphologique, disque de 7 px sur une copie à 2000 px, au-dessus de 0,15, étendu au halo, flou 12 px) ; sous le masque, luminance -> mtf(0,80, Y) avec un poids qui monte de 0 (Y = 0,10) à 1 (Y = 0,80) : halo faible jamais touché, pas d'anneau sombre ; même facteur sur R, G, B : couleur gardée, petites étoiles intactes.
 > 
 > À RÉGLER : sur RGB_stars juste AVANT Etoiles_screen (Etoiles_screen ensuite, pas Etoiles_reduites) ; en rapide, avant R_C_Etoiles_fond_rapide ; pour régler à l'œil : double-clic puis Apply Global, « Voir le masque », puis Appliquer ; copie Etoiles_grosses.js dans src/scripts/clodoweg.
 > 
 > SI :
-> - halo large pas entièrement réduit -> etendue 10 à 12
+> - anneau sombre autour des grosses étoiles -> etendue 16 à 20, ou force plus basse (0,70)
+> - halo large pas entièrement réduit -> etendue 16
 > - moyennes étoiles touchées aussi -> taille 9 ou 11
 > - certaines grosses pas réduites -> taille 5, ou seuil 0,10
-> - pas assez réduites -> force 0,80 (0,5 = rien)
+> - pas assez réduites -> force 0,85 (au plus ; 0,5 = rien)
 > - voir ce qui est réduit -> fenêtre (double-clic puis Apply Global), « Voir le masque » (vue masque_grosses)
 
 #### Opt_Etoiles_plafond — PixelMath

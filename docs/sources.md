@@ -687,3 +687,9 @@ Réponse (connaissance générale, sans nouvelle source) : la technique Invert /
 
 Demande : « SCNR_etoiles_violet -> sors le du rapide et CorrectMagentaStars c'est ou? »
 Fait : R_C_RGB_etire_rapide = MAS, SXT, SCNR_etoiles_vert, GHS fond. SCNR_etoiles_violet reste au chemin principal (E15 LRGB, E22 LHaRGB). CorrectMagentaStars : icône-note seulement dans les workflows narrowband (P7 options, SHO), pas en LRGB ni LHaRGB.
+
+### Etoiles_grosses : anneau noir autour des étoiles (5 octobre 2026)
+
+Retour : « etoiles grosses crée des rondes noir autour des étoiles » (capture : grosse étoile à aigrettes sur RGB_stars, anneau sombre autour du halo, icône taille 7, seuil 0,15, etendue 6, force 0,70).
+Cause (calcul et simulation de profils) : sous le masque, mtf(force, Y)/Y réduit surtout le halo faible ; au bord du masque, le halo non réduit est plus clair que la partie réduite juste avant : anneau.
+Correction : poids de réduction selon Y (rien sous 0,10, complet à 0,80), etendue 12, force 0,80 (max 0,85).

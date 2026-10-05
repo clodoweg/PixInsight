@@ -17,13 +17,20 @@
 //      px, 7 par défaut, soit environ 33 px sur une image de 9 576 px) : une
 //      étoile plus petite que le disque disparaît, une grosse reste ;
 //   3. masque = 0 sous « seuil » (0,15), 1 à seuil + 0,10, puis étendu au
-//      halo (flou « etendue » 6 px × 3) ;
-//   4. sous le masque, la luminance Y de chaque pixel devient mtf(force, Y)
-//      (force 0,70 : un halo à 0,5 descend à 0,30, à 0,2 à 0,10 ; un cœur à 1
-//      reste à 1), les trois canaux multipliés par le même facteur : couleur
-//      gardée, l'étoile paraît plus petite.
+//      halo (flou « etendue » 12 px × 3) ;
+//   4. sous le masque, la luminance Y de chaque pixel va vers mtf(force, Y),
+//      avec un poids w = (Y − 0,10)/0,70 borné à [0, 1] : les parties faibles
+//      du halo (sous 0,10) ne bougent pas, la réduction est complète au-dessus
+//      de 0,80 ; les trois canaux multipliés par le même facteur : couleur
+//      gardée, l'étoile paraît plus petite (force 0,80 : un halo à 0,5 descend
+//      à 0,33, à 0,2 à 0,18 ; un cœur à 1 reste à 1).
+//      Sans ce poids (version précédente), le halo faible était divisé par 2
+//      jusqu'au bord du masque et restait intact juste après : anneau noir
+//      autour des grosses étoiles (retour de l'utilisateur). Le poids et le
+//      masque plus étendu le suppriment ; force limitée à 0,85 (au-delà la
+//      courbe ne serait plus croissante : anneau à nouveau).
 // Paramètres : taille (plus grand = seules les plus grosses), seuil, etendue,
-// force (0,5 = rien ; plus haut = plus réduit), afficherMasque (garde la vue
+// force (0,5 = rien ; plus haut = plus réduit, 0,85 au plus), afficherMasque (garde la vue
 // masque_grosses : blanc = réduit).
 // Ctrl+Z pour annuler.
 //
@@ -53,8 +60,8 @@ function egParams()
    return {
       taille: parseFloat( get( "taille", "7" ) ),
       seuil: parseFloat( get( "seuil", "0.15" ) ),
-      etendue: parseFloat( get( "etendue", "6" ) ),
-      force: parseFloat( get( "force", "0.70" ) ),
+      etendue: parseFloat( get( "etendue", "12" ) ),
+      force: Math.min( 0.85, parseFloat( get( "force", "0.80" ) ) ),
       afficherMasque: get( "afficherMasque", "false" ).toLowerCase() == "true"
    };
 }
@@ -213,8 +220,8 @@ function egApply( view, p, direct )
    // luminance Y -> mtf(force, Y) sous le masque, même facteur sur R, G, B
    let Y = egLuminance( view );
    let P = new PixelMath;
-   P.expression = "y = " + Y + ";\nf = iif(y > 0.000001, mtf(" + p.force.toFixed( 4 ) + ", y)/y, 1);\n$T*(1 - eg_m + eg_m*f)";
-   P.symbols = "y, f";
+   P.expression = "y = " + Y + ";\nf = iif(y > 0.000001, mtf(" + p.force.toFixed( 4 ) + ", y)/y, 1);\nw = min(1, max(0, (y - 0.10)/0.70));\n$T*(1 - eg_m*w*(1 - f))";
+   P.symbols = "y, f, w";
    P.useSingleExpression = true;
    P.rescale = false;
    P.truncate = true;
@@ -312,8 +319,8 @@ function EGDialog( p, view )
    this.seuilControl = numeric( this, "Seuil :", 0.02, 0.50, 2, p.seuil,
       "Luminosité minimale d'une grosse étoile après l'ouverture. Plus bas = plus d'étoiles prises.",
       function( v ) { self.p.seuil = v; } );
-   this.etendueControl = numeric( this, "Étendue au halo (px) :", 0, 20, 0, p.etendue,
-      "Flou du masque pour couvrir le halo. Plus haut = halo plus large réduit.",
+   this.etendueControl = numeric( this, "Étendue au halo (px) :", 0, 30, 0, p.etendue,
+      "Flou du masque pour couvrir le halo (12 par défaut). Trop bas = anneau sombre autour des grosses étoiles.",
       function( v ) { self.p.etendue = v; } );
    this.maskGroup = new GroupBox( this );
    this.maskGroup.title = "Masque des grosses étoiles";
@@ -325,8 +332,8 @@ function EGDialog( p, view )
    this.maskGroup.sizer.add( this.etendueControl );
 
    // réduction
-   this.forceControl = numeric( this, "Force :", 0.50, 0.95, 2, p.force,
-      "0,50 = aucun effet ; plus haut = étoiles plus réduites (0,70 : un halo à 0,5 descend à 0,30).",
+   this.forceControl = numeric( this, "Force :", 0.50, 0.85, 2, p.force,
+      "0,50 = aucun effet ; plus haut = étoiles plus réduites (0,80 : un halo à 0,5 descend à 0,33 ; 0,85 au plus, sinon anneau sombre). Le halo faible (sous 0,10) n'est jamais touché.",
       function( v ) { self.p.force = v; } );
    this.keepMask = new CheckBox( this );
    this.keepMask.text = "Garder la vue masque_grosses après l'application";
