@@ -208,7 +208,7 @@ def layout(entries, naming):
         rows += 1
     return insts, icons
 
-TURBO = set()   # mode Turbo supprimé (demande de l'utilisateur, 5 octobre 2026)
+TURBO = {'Turbo_debut'}   # ancien mode Turbo supprimé ; Turbo_debut ajouté ensuite (demande de l'utilisateur, 5 octobre 2026)
 RAPIDE = {'Lineaire_rapide', 'C_RGB_etire_rapide', 'C_Fin_rapide', 'C_Etoiles_fond_rapide', 'C_Preparation_rapide', 'Gradient_auto_rapide', 'C_RGB_rapide', 'C_L_rapide', 'C_RGB_fin_rapide', 'C_LRGB_rapide'}
 RAPIDE_NOTE = {
     'LRGB': {1: "MODE RAPIDE (galaxies) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre (étoiles gardées jusqu'à LRGB) : R_C_Preparation_rapide ; R_Gradient_auto_rapide ; R_Lineaire_rapide (RGB et L) ; GHS_1_premier, GHS_2_contraste, GHS_3_fond sur L ; R_C_RGB_etire_rapide sur RGB ; R_C_LRGB_rapide (LRGB sans étoiles) ; finition. Phase 1 : R_C_Preparation_rapide (double-clic puis Apply Global) à la place de LinearPatternSubtraction, Renommer_auto, Combinaison_RGB et Solver_auto",
@@ -285,7 +285,7 @@ def layout_all(main, opts, rapide=None, notes=None, turbo=None):
             y += 16
             tn = 'P%d_turbo' % ph
             insts.append('   <instance class="NoOperation" version="256" id="%s_instance">\n      <description>%s</description>\n   </instance>'
-                         % (tn, escape('MODE TURBO, phase %d — %s : chaque icône T_ enchaîne plusieurs icônes rapides (R_) en un clic ; les icônes R_ doivent rester chargées. Icône de repère, sans effet.' % (ph, L.PHASES[ph - 1]))))
+                         % (tn, escape('MODE TURBO, phase %d — %s : une icône T_ enchaîne en un clic les étapes de plusieurs icônes rapides (R_) ; elle les contient, les icônes R_ ne sont pas nécessaires. Icône de repère, sans effet.' % (ph, L.PHASES[ph - 1]))))
             icons.append('   <icon id="%s" instance="%s_instance" xpos="%d" ypos="%d" workspace="Workspace01"/>' % (tn, tn, x, y))
             y += 34
             for b, p, xml in mine_t:
@@ -1165,6 +1165,13 @@ for _st in (lrgb, lhargb):
     insert_before(_st, 'ICC_sRGB', [(agrandir_x2(), '')])
 insert_after(lhargb, 'H_dans_RGB', [(pm('H_dans_RGB_v2', 'w = 1.0;\n$T[0] + w*(HaNB - med(HaNB))', '$T[1]', '$T[2] + 0.2*w*(HaNB - med(HaNB))', symbols='w'), '')])
 insert_after(lhargb, 'NBRGBCombination', [(script('CombineHaWithRGB', ''), '')])
+
+def turbo_debut(steps):
+    """Turbo (demande de l'utilisateur) : en une fois R_C_Preparation_rapide, R_Gradient_auto_rapide, R_Lineaire_rapide (leurs étapes à la suite, un seul conteneur, Apply Global)."""
+    return cont('Turbo_debut', [pick(steps, b)[0] for b in ('Renommer_auto', 'LinearPatternSubtraction', 'Combinaison_RGB')] + [gc_solver('Solver_auto'),
+                script('Gradient_auto_rapide', ''), pick(steps, 'Lineaire_rapide')[0]])
+for _st in (lrgb, lhargb):
+    insert_after(_st, 'C_Preparation_rapide', [(turbo_debut(_st), '')])   # colonne P1, à côté de R_C_Preparation_rapide
 
 # options supprimées des workflows galaxies (demande de l'utilisateur, 5 octobre 2026) ; Etoiles_grosses reste en narrowband
 SUPPR_GALAXIES = {'Etoiles_grosses', 'Etoiles_plafond'}   # Etoiles_auto_etire, GraXpert, VeraLux_HMS, MKStarReduction, Coeurs_etoiles, RepairedHSV, Etoiles_couleur : retirés du code

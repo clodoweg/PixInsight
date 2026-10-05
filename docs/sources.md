@@ -718,3 +718,8 @@ Fait : retirée de LRGB et LHaRGB (gardée en narrowband, comme Etoiles_grosses)
 
 Demande : « Déplace Opt_Saturation_grosses dans Options P4 / Déplace E15_SCNR_etoiles_violet dans P4 Options / Ne mets aucun de ces 2 dans le rapide »
 Fait : les deux en options P4, juste après SCNR_etoiles_vert (sur RGB_stars) ; aucune dans R_C_RGB_etire_rapide ni ailleurs en rapide. Numéros du chemin principal décalés de −1 à partir de GHS_3_fond (LRGB E15, LHaRGB E22).
+
+### Turbo_debut (5 octobre 2026)
+
+Demande : « fais un turbo process qui fait une une seule fois : R_C_Preparation_rapide puis R_Gradient_auto_rapide puis R_Lineaire_rapide »
+Fait : icône T_Turbo_debut (LRGB et LHaRGB, colonne P1, groupe P1_turbo) : un ProcessContainer avec Renommer_auto, LinearPatternSubtraction, Combinaison_RGB, Solver_auto, Gradient_auto, Lineaire_auto (étapes du workflow) ; double-clic puis Apply Global.

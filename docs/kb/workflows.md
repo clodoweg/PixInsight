@@ -18,6 +18,7 @@ L sans étoiles (SXT linéaire) étirée par GHS ; RGB étiré par MAS AVEC ses 
 Où| Icône| Sur| Ce qu'elle fait  
 ---|---|---|---  
 P1_rapide| R_C_Preparation_rapide| masters seuls ouverts ; double-clic puis **Apply Global**| Renommer_auto, LinearPatternSubtraction, Combinaison_RGB (crée `RGB`), Solver_auto  
+P1_turbo| T_Turbo_debut| masters seuls ouverts ; double-clic puis **Apply Global**| en une fois : étapes de R_C_Preparation_rapide, R_Gradient_auto_rapide et R_Lineaire_rapide (un seul conteneur, les icônes R_ ne sont pas nécessaires) ; ensuite GHS_1_premier sur L  
 P2_rapide| R_Gradient_auto_rapide| double-clic puis Apply Global| GradientCorrection sur toutes les images ouvertes  
 P3_rapide| R_Lineaire_rapide| double-clic puis Apply Global| lance E08_C_RGB_lineaire sur RGB (BXT Correct Only, SPCC, BXT, NXT) puis E09_C_L_lineaire sur L (BXT, NXT, SXT : L sans étoiles)  
 P4| E10 GHS_1_premier, E11 GHS_2_contraste, E15 GHS_3_fond (chemin principal)| L sans étoiles| GHS_1 à la main, puis GHS_2 et GHS_3_fond  

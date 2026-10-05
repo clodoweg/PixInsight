@@ -137,6 +137,40 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > SI :
 > - une étape en erreur -> lis la console, puis fais les icônes E00 à E03 une par une
 
+### P1_turbo
+
+#### T_Turbo_debut — ProcessContainer
+   1. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Renommer_auto.js`
+      paramètres : `dialogue=false`
+   2. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/LPS_UnClic.js`
+      paramètres : `correctColumns=false`, `correctEntireImage=true`, `defectTableFilePath=`, `layersToRemove=9`, `rejectionLimit=3`, `globalRejection=true`, `globalRejectionLimit=5`, `autoBackground=true`, `backgroundReferenceLeft=0`, `backgroundReferenceTop=0`, `backgroundReferenceWidth=512`, `backgroundReferenceHeight=512`, `allOpenImages=true`, `closeWorkingImages=true`, `dialogue=false`
+   3. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Combiner_RGB.js`
+      paramètres : `red=R`, `green=G`, `blue=B`, `newId=RGB`, `closeSources=true`, `copyKeywords=true`, `garder=`, `dialogue=false`
+   4. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/GC_Solver_auto.js`
+      paramètres : `gradient=false`, `solve=true`, `solveTout=true`, `defaultDate=2020-01-01T00:00:00`, `dialogue=false`, `metadata_focal=2939`, `metadata_xpixsz=3.76`, `solver_catalogMode=2`, `solver_distortionCorrection=true`, `(+ 42 autres réglages ImageSolver)`
+   5. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Gradient_auto.js`
+      paramètres : `dialogue=false`
+   6. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
+      paramètres : `etapes=C_RGB_lineaire>RGB ; C_L_lineaire>L`, `dialogue=false`
+
+> MODE TURBO, à la place de R_C_Preparation_rapide, R_Gradient_auto_rapide et R_Lineaire_rapide (phases 1 à 3) : masters seuls ouverts, double-clic puis Apply Global (pas en glissant) ; ensuite GHS_1_premier sur L.
+> 
+> LANCEMENT : masters seuls ouverts, double-clic puis Apply Global (rond bleu) ; pas en glissant (ImageSolver échoue sur une image en cours de traitement).
+> 
+> PRÉRÉGLÉ : conteneur, en une fois : Renommer_auto, LinearPatternSubtraction, Combinaison_RGB, Solver_auto (= R_C_Preparation_rapide), Gradient_auto (GradientCorrection sur toutes les images ouvertes, = R_Gradient_auto_rapide), Lineaire_auto (= R_Lineaire_rapide, mêmes étapes).
+> 
+> À RÉGLER : masters seuls ouverts (L, R, G, B, et H en LHaRGB) ; double-clic puis Apply Global (pas en glissant : ImageSolver échoue sur une image en cours de traitement) ; les icônes du chemin principal citées par R_Lineaire_rapide doivent être chargées ; ensuite GHS_1_premier sur L.
+> 
+> SI :
+> - une étape échoue -> lance les trois icônes R_ une par une pour voir laquelle
+> - gradient mal retiré -> chemin principal de la phase 2 (MGC + MARS) à la place, puis R_Lineaire_rapide
+
 ## P2_Gradient
 
 #### E04_ImageSolver — Script
