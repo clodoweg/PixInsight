@@ -230,7 +230,9 @@ Garde tes paramètres dans des ProcessIcons ou l'History Explorer pour pouvoir r
 #### Un seul alignement
 Tous les filtres alignés sur la même référence dans WBPP : les combinaisons PixelMath en dépendent.
 
-## Cœurs d'étoiles blancs ou de mauvaise couleur : RepairedHSVSeparation (à tester)
+## Cœurs d'étoiles blancs ou de mauvaise couleur : RepairedHSVSeparation
+
+Icônes Opt_Coeurs_etoiles, Opt_Etoiles_couleur, Opt_RepairedHSV et script Etoiles_couleur.js SUPPRIMÉS (demande de l'utilisateur, 5 octobre 2026) ; méthode gardée pour mémoire.
 
 - Script livré avec PixInsight (Script › Utilities › RepairedHSVSeparation ; présence en 1.9.5 non vérifiée). Rien à installer.
 - Sur un CLONE du RGB linéaire calibré, juste avant le premier étirement (dans nos workflows : après C_RGB_lineaire, avant MAS). Cocher la sortie « V - no repairs ». Sorties : H, Sv, V, Unrepaired V.
@@ -245,6 +247,8 @@ Tous les filtres alignés sur la même référence dans WBPP : les combinaisons 
 - **Opt_RepairedHSV** (P4, avant MAS, pas en rapide) : icône Script du script officiel, `$PXI_SRCDIR/scripts/misc/RepairedHSVSeparation.js` (dépôt PJSR, src/scripts/misc ; Bob Andersson, v1.0.3). Toujours avec sa fenêtre, sur l'image ACTIVE, sans paramètres d'icône (réglages gardés dans Settings). Réglages : Clip Shadows 0, Repair level 0,5 (WhiteClips, défaut ; seuil au-dessus duquel les pixels sont « non linéaires » et réparés), Max Repair Radius 16. Case « Repaired RGB » : le script fait lui-même ChannelCombination HSV et crée `<image>_Repaired_RGB` (pas besoin de recombiner à la main).
 
 ## Réduction des grosses étoiles sans anneau sombre (Etoiles_grosses)
+
+Opt_Etoiles_grosses supprimée des workflows galaxies (demande de l'utilisateur, 5 octobre 2026) ; reste en narrowband.
 
 - Anneau noir autour des grosses étoiles (retour de l'utilisateur, 5 octobre 2026) : sous le masque, mtf(force, Y)/Y divise le halo FAIBLE par 2 environ (mtf(0,7, x) ≈ 0,43 x pour x petit), et juste au-delà du bord du masque le halo reste intact : la luminosité remonte en s'éloignant de l'étoile.
 - Correction : poids w = (Y − 0,10)/0,70 borné à [0, 1] (halo sous 0,10 jamais touché, réduction complète au-dessus de 0,80), masque plus étendu (etendue 12), force par défaut 0,80, limitée à 0,85 (au-delà, Y' n'est plus croissante en Y : anneau). Vérifié sur des profils d'étoiles simulés (halo double exponentielle, bord de masque gaussien) : remontée relative 9 % par pixel avant, 0 à 0,8 % après.

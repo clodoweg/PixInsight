@@ -693,3 +693,8 @@ Fait : R_C_RGB_etire_rapide = MAS, SXT, SCNR_etoiles_vert, GHS fond. SCNR_etoile
 Retour : « etoiles grosses crée des rondes noir autour des étoiles » (capture : grosse étoile à aigrettes sur RGB_stars, anneau sombre autour du halo, icône taille 7, seuil 0,15, etendue 6, force 0,70).
 Cause (calcul et simulation de profils) : sous le masque, mtf(force, Y)/Y réduit surtout le halo faible ; au bord du masque, le halo non réduit est plus clair que la partie réduite juste avant : anneau.
 Correction : poids de réduction selon Y (rien sous 0,10, complet à 0,80), etendue 12, force 0,80 (max 0,85).
+
+### Suppression d'options des workflows galaxies (5 octobre 2026)
+
+Demande : « supprime : Opt_GraXpert Opt_Coeurs_etoiles Opt_RepairedHSV Opt_VeraLux_HMS Opt_Etoiles_auto_etire Opt_MKStarReduction Opt_Etoiles_grosses Opt_Etoiles_couleur »
+Fait : les huit options retirées de LRGB et LHaRGB ; code des icônes GraXpert, VeraLux_HMS, MKStarReduction, Coeurs_etoiles, RepairedHSV, Etoiles_couleur, Etoiles_auto_etire supprimé, script Etoiles_couleur.js supprimé. Etoiles_grosses (et son script) gardée dans les workflows narrowband (RGB-SHO, SHO, HOO).

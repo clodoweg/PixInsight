@@ -24,7 +24,7 @@ P4| E10 GHS_1_premier, E11 GHS_2_contraste, E16 GHS_3_fond (chemin principal)| L
 P4_rapide| R_C_RGB_etire_rapide| RGB linéaire avec étoiles| MAS (fond 0,15), SXT Unscreen (crée RGB_stars), SCNR vert sur RGB_stars, GHS fond (violet : SCNR_etoiles_violet à part) (SP = HP = 0,12)  
 P5_rapide| R_C_LRGB_rapide| RGB sans étoiles, L ouverte| LRGB_ajout_L (Saturation 0,5) seul  
 P6_rapide| R_C_Fin_rapide| image sans étoiles| HDRMT 30 %, masque, Courbes, LHE, LHE_fin, Sharp_MMT, masque retiré, NXT 0,40  
-P7_rapide| R_C_Etoiles_fond_rapide| image sans étoiles finie| Fond_desature, Fond_auto (0,12), Etoiles_screen, Export_TIFF (aucune vue fermée). Avant, sur RGB_stars si besoin : Opt_Etoiles_grosses, Opt_Etoiles_plafond  
+P7_rapide| R_C_Etoiles_fond_rapide| image sans étoiles finie| Fond_desature, Fond_auto (0,12), Etoiles_screen, Export_TIFF (aucune vue fermée). Avant, sur RGB_stars si besoin : Opt_Etoiles_plafond  
 
 Chemin principal LRGB : E08 C_RGB_lineaire, E09 C_L_lineaire (finit par SXT_L_lineaire), E10 GHS_1, E11 GHS_2 (L), E12 MAS, E13 SXT_RGB_etire (RGB), E14 SCNR_etoiles_vert (SCNR vert 1,0 sur RGB_stars), E15 SCNR_etoiles_violet (Invert, SCNR vert 1,0, Invert : violet retiré ; pas dans le rapide ; vert seul dans R_C_RGB_etire_rapide), E16 GHS_3_fond (L et RGB), E17 LRGB_ajout_L, E18 HDRMT_30, E19 C_Finition, E20 C_Sharp_MMT (accentuation ; en rapide dans R_C_Fin_rapide), E21 NXT_final, E22 Fond_desature, E23 Fond_auto (tous deux sur l'image sans étoiles), E24 Etoiles_screen. Statistical_Stretch est une option.
 
@@ -48,7 +48,7 @@ Partie| Icône par défaut| Options
 2\. Contraste| E19 (E26) C_Finition : masque, Courbes (saturation 0,58), LHE 150, LHE_fin 40, masque retiré| à la place : Finition_saturee (même chose, saturation 0,65 : l'ancienne C_Finition) ; après : Boost_finition_light ou Boost_finition  
 2b. Accentuation| E20 (E27) C_Sharp_MMT (MMT sous masque)| à la place : Sharp_USM (UnsharpMask) ; en rapide : Sharp_MMT dans R_C_Fin_rapide  
 3\. Bruit| E21 (E28) NXT_final 0,40| NXT_final_doux (0,25) ou NXT_final_fort (0,60)  
-4\. Fond, puis étoiles| E22 (E29) Fond_desature, E23 (E30) Fond_auto (0,12), puis E24 (E31) Etoiles_screen (SCNR des étoiles déjà fait en P4, SCNR_etoiles_vert et SCNR_etoiles_violet)| avant, sur RGB_stars : **Etoiles_grosses** (réduit seulement les grosses étoiles et leur halo), Etoiles_plafond (cœurs cramés) ; Halo_B_Gon et MT_etoiles réduisent aussi les petites étoiles ; à la place : Etoiles_reduites (réduit toutes les étoiles)  
+4\. Fond, puis étoiles| E22 (E29) Fond_desature, E23 (E30) Fond_auto (0,12), puis E24 (E31) Etoiles_screen (SCNR des étoiles déjà fait en P4, SCNR_etoiles_vert et SCNR_etoiles_violet)| avant, sur RGB_stars : Etoiles_plafond (cœurs cramés) ; Halo_B_Gon et MT_etoiles réduisent aussi les petites étoiles ; à la place : Etoiles_reduites (réduit toutes les étoiles)  
 5\. Après les étoiles| Boost_final_doux ou Boost_final (L ouverte), en option| à la place de Fond_auto : Fond_auto_clair (0,14)  
   
 ### Finition hors PixInsight
@@ -67,13 +67,10 @@ Icône| Phase| Rôle
 ---|---|---  
 Binning_x2| P1, après Solver_auto| Toutes les images divisées par 2 (IntegerResample, moyenne), solution astrométrique gardée. 0,528″/px au lieu de 0,264″/px : le CDK17 sur QHY600 est suréchantillonné par un seeing courant de 2 à 3″, on perd peu de détail, le bruit baisse et le traitement va 4 fois plus vite. Image finale 4 800 px au lieu de 9 600.  
 Agrandir_x2| P7, avant Export_TIFF| Après Binning_x2, pour un grand tirage : Resample × 2, Lanczos 3. Rend la taille, pas le détail perdu. Grand tirage très net voulu : ne bine pas.  
-GraXpert| P2| Gradient retiré par l'IA de GraXpert, à la place de MGC ou de GradientCorrection. Module DeepSkyForge et logiciel GraXpert 2.2.1 ou plus. Version de l'icône non vérifiée.  
 H_dans_RGB_v2 (LHaRGB)| P3| À la place de H_dans_RGB : R + w·(HaNB − med(HaNB)) et B + 0,2·w·(HaNB − med(HaNB)) (part de Hβ) ; fond de HaNB retiré avant l'injection, régions HII plus roses.  
 CombineHaWithRGB (LHaRGB)| P3| Script de la PixInsight Toolbox (Jürgen Terpe), à la place de Continuum_auto + H_dans_RGB : glisse sur RGB linéaire, H ouverte (Amount 2, Linear).  
 MAS| P4| Devenu chemin principal (E12 en LRGB) : voir plus haut. Icône vérifiée : elle se charge dans PixInsight (retour de l'utilisateur).  
-VeraLux_HMS| P4| Icône-note : VeraLux HyperMetric Stretch par le menu Script › VeraLux › VeraLux Suite.  
 DarkStructureEnhance| P6, avant C_Finition| Script livré avec PixInsight (Script › Utilities) : bandes de poussière plus marquées. Défauts Layers 8, Amount 0,70 ; trop fort : 0,40.  
-MKStarReduction| P7| Icône-note : MK Star Reduction (Script › Utilities), à comparer avec Etoiles_grosses et Etoiles_reduites.
 
 ## LRGB
 Galaxies, nébuleuses par réflexion, amas. La couleur vient du RGB, le détail de la luminance.
@@ -130,7 +127,7 @@ Recombine en mode _screen_ , puis contrôle les couleurs d'étoiles (étoiles LR
 
 `~((~$T) * (~RGB_stars))`
 
-Glisse Etoiles_screen sur l'image sans étoiles finale : elle devient l'image finale. Étoiles brillantes blanches : Opt_Etoiles_couleur sur RGB_stars avant (ou, en amont, Opt_Coeurs_etoiles sur le RGB linéaire avant MAS). Grosses étoiles trop présentes : Opt_Etoiles_grosses sur RGB_stars avant (les petites ne bougent pas) ; toutes les étoiles : Etoiles_reduites à la place.
+Glisse Etoiles_screen sur l'image sans étoiles finale : elle devient l'image finale. Étoiles trop présentes : Etoiles_reduites à la place (réduit toutes les étoiles) ; cœurs cramés : Opt_Etoiles_plafond sur RGB_stars avant.
 
 ### Couleurs LRGB : le rendu de référence et comment le vérifier
 SPCC calibre la couleur sur le blanc _Average Spiral Galaxy_ : une galaxie spirale est blanche en moyenne.
@@ -177,7 +174,7 @@ Couleur mesurée par SPCC : étoiles du **bleu-blanc au jaune-orange** , visible
 Constat| Réglage  
 ---|---  
 Étoiles toutes blanches| Étirement trop fort sur les étoiles : HP (Highlight protection) sous leur cœur dans GHS_1 et GHS_2 sur L, Target Median plus basse dans Statistical Stretch sur le RGB ; en dernier recours, étoiles étirées à part (SXT en linéaire, Star Stretch)  
-Étoiles criardes| Pas d'Opt_Etoiles_auto_etire (ou satAmount 1,0), ou légère désaturation de l'image d'étoiles  
+Étoiles criardes| Légère désaturation de l'image d'étoiles (RGB_stars) avant Etoiles_screen  
 Étoiles vertes, bleues ou jaunes en bloc| SPCC à revoir (filtres, capteur, gradient avant SPCC) ; SCNR seulement en dernier recours  
 Étoiles délavées après LRGBCombination| L plus étirée que le RGB sur les étoiles (la combinaison se fait avec les étoiles) : HP plus bas dans GHS_1 et GHS_2 sur L, Lightness plus bas dans LRGBCombination ; ou Opt_Etoiles_auto_etire (saturation)  
 Anneau sombre autour des étoiles| Extraction SXT imparfaite ou étirement trop différent entre fond et étoiles : revois SXT, puis Halo-B-Gon ou réduction d'étoiles  

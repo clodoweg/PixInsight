@@ -223,20 +223,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - points rouges -> Tolerance 1,0 à 1,5
 > - vignettage -> Division
 
-#### Opt_GraXpert — GraXpert
-   backgroundExtraction=true ; smoothing=0.000 ; createBackground=false ; denoising=false ; replaceImage=true
-
-> OPTION — TEST, à la place de MGC ou GradientCorrection : gradient retiré par l'IA de GraXpert (module GraXpert et logiciel GraXpert 2.2.1 ou plus installés)
-> Glisse sur chaque master linéaire.
-> 
-> PRÉRÉGLÉ : module GraXpert : Background Extraction (IA) coché, Correction par défaut (Subtraction), Smoothing 0, fond non affiché, débruitage décoché, image remplacée ; version de l'icône NON VÉRIFIÉE.
-> 
-> À RÉGLER : installe le module GraXpert (dépôt deepskyforge) et le logiciel GraXpert 2.2.1 ou plus ; glisse sur chaque master linéaire, à la place de MGC ou de GradientCorrection.
-> 
-> SI :
-> - icône refusée au chargement -> ouvre Process › GraXpert et règle à la main
-> - vignetage fort -> Correction Division
-
 ### P2_rapide
 
 #### R_Gradient_auto_rapide — Script
@@ -415,43 +401,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 ### P4_options
 
-#### Opt_Coeurs_etoiles — Script
-   script `$PXI_SRCDIR/scripts/clodoweg/Etoiles_couleur.js`
-   paramètres : `vue=`, `seuil=0.50`, `rayon=8.0`, `plafond=1.00`, `saturation=0.00`
-
-> OPTION — étoiles brillantes à cœur blanc (saturé), juste AVANT MAS : glisse sur le RGB linéaire avec ses étoiles
-> Les cœurs prennent la couleur de leur halo, MAS les protège ensuite (pas en rapide).
-> 
-> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
-> 
-> PRÉRÉGLÉ : script Etoiles_couleur sur l'image où on le glisse : cœurs (au-dessus de 0,5 × luminance max, rampe dès 0,35) recolorés avec le rapport R:G:B moyen de leur halo (flou de 8 px de l'image sans les cœurs), luminance gardée, canal le plus fort plafonné à 1 ; reste de l'image inchangé ; principe de RepairedHSVSeparation, sans fenêtre.
-> 
-> À RÉGLER : glisse sur le RGB LINÉAIRE avec ses étoiles, juste avant MAS (après C_RGB_lineaire) ; compare RGB_stars à la sonde avec et sans ; copie Etoiles_couleur.js dans src/scripts/clodoweg.
-> 
-> SI :
-> - peu d'étoiles changent -> seuil 0.35
-> - couleur pas jusqu'au centre des grosses étoiles -> rayon 12
-> - taches de couleur sur le cœur de la galaxie -> seuil 0.70
-> - rien ne change -> cœurs déjà colorés : Etoiles_couleur en P7
-
-#### Opt_RepairedHSV — Script
-   script `$PXI_SRCDIR/scripts/misc/RepairedHSVSeparation.js`
-
-> OPTION — à la place de Coeurs_etoiles, pour comparer : le script officiel Repaired HSV Separation (fenêtre), sur le RGB linéaire juste AVANT MAS
-> Il crée une copie réparée, l'original ne change pas (pas en rapide).
-> 
-> LANCEMENT : double-clic sur l'icône, puis Apply Global.
-> 
-> PRÉRÉGLÉ : script Repaired HSV Separation (Bob Andersson, livré avec PixInsight, Script › Utilities) : sépare H, Sv, V, répare H et Sv des pixels proches de la saturation avec les valeurs autour ; réglages dans sa fenêtre : Repair level 0,5 (défaut), Max Repair Radius 16, Clip Shadows 0.
-> 
-> À RÉGLER : clique sur le RGB LINÉAIRE (après C_RGB_lineaire), puis double-clic sur l'icône et Apply Global ; dans la fenêtre coche « Repaired RGB » : crée RGB_Repaired_RGB (plus H, Sv, V à fermer) ; continue MAS et SXT sur RGB_Repaired_RGB (renomme-la RGB, ferme l'ancien) ; compare avec Coeurs_etoiles.
-> 
-> SI :
-> - résultat pas bon -> Repair level 0,4 ou 0,6 (seuil au-dessus duquel les pixels sont réparés ; un test publié trouve 0,5 le meilleur)
-> - cœurs aux couleurs coupées -> Coeurs_etoiles à la place
-> - grosses étoiles pas réparées au centre -> Max Repair Radius 24
-> - script introuvable -> menu Script › Utilities › Repaired HSV Separation
-
 #### Opt_Statistical_Stretch — Script
    script `$PXI_SRCDIR/scripts/statisticalstretch.js`
    paramètres : `targetMedian=0.25`, `curvesBoost=0`, `numIterations=1`, `normalizeImageRange=false`, `linkedStretch=true`, `openDialogbox=true`, `autoConvergence=false`, `blackpointSigma=5`, `noBlackClip=false`, `hdrCompress=false`, `hdrAmount=0.25`, `hdrKnee=0.35`, `lumaOnly=false`, `lumaMode=rec709`, `lumaBlend=0.6`
@@ -467,14 +416,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > SI :
 > - étoiles grossies ou cœurs blancs -> MAS (chemin principal)
-
-#### Opt_VeraLux_HMS — NoOperation
-
-> OPTION — TEST, à la place des GHS ou de Statistical Stretch : VeraLux HyperMetric Stretch, lancé depuis le menu Script.
-> 
-> PRÉRÉGLÉ : rien (icône-note : chemin du script non vérifié).
-> 
-> À RÉGLER : installe VeraLux (dépôt VeraLuxPorting) ; Script › VeraLux › VeraLux Suite, onglet HyperMetric Stretch, sur L ou RGB linéaire.
 
 ### P4_rapide
 
@@ -513,25 +454,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - couleurs délavées -> étire L moins fort
 > - couleurs trop vives -> Saturation plus haute (0,6)
 
-### P5_options
-
-#### Opt_Etoiles_auto_etire — Script
-   script `$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js`
-   paramètres : `vue=RGB_stars`, `amount=0`, `satAmount=1.3`, `scnr=true`
-
-> OPTION — après SXT_RGB_etire : étoiles ternes
-> Glisse sur n'importe quelle image (traite RGB_stars) : saturation 1,3 (et SCNR, déjà fait par SCNR_etoiles_vert), sans étirement (étoiles déjà étirées).
-> 
-> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
-> 
-> PRÉRÉGLÉ : script Etoiles_auto, amount 0 (étoiles déjà étirées) : saturation 1,3 (0,4 × rouges, 0,7 × cyans) et SCNR vert (déjà fait par SCNR_etoiles_vert, sans effet de plus).
-> 
-> À RÉGLER : glisse sur n'importe quelle image après SXT_RGB_etire (traite RGB_stars).
-> 
-> SI :
-> - étoiles criardes -> satAmount 1,0
-> - étoiles ternes -> scnr false
-
 ### P5_rapide
 
 #### R_C_LRGB_rapide — ProcessContainer
@@ -547,7 +469,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > À RÉGLER : glisse sur le RGB sans étoiles (après R_C_RGB_etire_rapide), L sans étoiles étirée ouverte ; ensuite R_C_Fin_rapide.
 > 
 > SI :
-> - étoiles ternes ou un peu vertes -> Etoiles_auto_etire (P5 options) sur RGB_stars
 > - taches ou halos restés -> Nettoyage_sans_etoiles (P6 options) avant R_C_Fin_rapide
 
 ## P6_Finition
@@ -969,7 +890,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
    script `$PXI_SRCDIR/scripts/Halo-B-Gon.js`
 
 > OPTION — halos autour des étoiles brillantes
-> Attention, réduit aussi les petites étoiles (pour les grosses seulement : Etoiles_grosses).
+> Attention, réduit aussi les petites étoiles (pour les grosses seulement : Etoiles_grosses, en narrowband).
 > 
 > LANCEMENT : double-clic sur l'icône, puis Apply Global. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
 > 
@@ -978,49 +899,8 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > À RÉGLER : Select stars-only image = l'image d'étoiles étirée (RGB_stars ; NBtoRGB_stars en SHO ; HOO_stars en HOO), AVANT Etoiles_screen ; Reduction Amount Low ; Linear Data décoché.
 > 
 > SI :
-> - petites étoiles réduites ou effacées aussi (son masque ne protège que les cœurs) -> Etoiles_grosses à la place
+> - petites étoiles réduites ou effacées aussi (son masque ne protège que les cœurs) -> Etoiles_grosses à la place (narrowband)
 > - pas assez -> relance en Low (Med = 4 courbes, High = 9)
-
-#### Opt_Etoiles_couleur — Script
-   script `$PXI_SRCDIR/scripts/clodoweg/Etoiles_couleur.js`
-   paramètres : `vue=RGB_stars`, `seuil=0.80`, `rayon=6.0`, `plafond=0.85`, `saturation=1.00`
-
-> OPTION — étoiles brillantes encore blanches : sur RGB_stars AVANT Etoiles_screen (glisse sur n'importe quelle image)
-> Cœurs recolorés par leur halo, un peu assombris, puis saturation
-> En rapide, avant R_C_Etoiles_fond_rapide.
-> 
-> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
-> 
-> PRÉRÉGLÉ : script Etoiles_couleur sur la vue RGB_stars : cœurs (au-dessus de 0,8 × luminance max) recolorés par leur halo (flou de 6 px), assombris à 0,85, puis ColorSaturation 1,0 (0,4 × rouges, 0,7 × cyans) sur toutes les étoiles.
-> 
-> À RÉGLER : glisse sur n'importe quelle image (traite RGB_stars), AVANT Etoiles_screen (et avant Etoiles_grosses si tu l'utilises) ; double-clic pour la fenêtre ; copie Etoiles_couleur.js dans src/scripts/clodoweg.
-> 
-> SI :
-> - encore blanches -> plafond 0.75
-> - étoiles criardes -> saturation 0.5
-> - petites étoiles brillantes pas touchées -> seuil 0.65
-> - pour recommencer -> Ctrl+Z sur RGB_stars
-
-#### Opt_Etoiles_grosses — Script
-   script `$PXI_SRCDIR/scripts/clodoweg/Etoiles_grosses.js`
-   paramètres : `taille=7`, `seuil=0.15`, `etendue=12`, `force=0.80`, `afficherMasque=false`
-
-> OPTION — grosses étoiles trop présentes, mais Etoiles_reduites réduirait toutes les étoiles : glisse sur l'image d'étoiles (RGB_stars) AVANT Etoiles_screen
-> En rapide, avant R_C_Etoiles_fond_rapide.
-> 
-> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
-> 
-> PRÉRÉGLÉ : script Etoiles_grosses : masque des grosses étoiles (ouverture morphologique, disque de 7 px sur une copie à 2000 px, au-dessus de 0,15, étendu au halo, flou 12 px) ; sous le masque, luminance -> mtf(0,80, Y) avec un poids qui monte de 0 (Y = 0,10) à 1 (Y = 0,80) : halo faible jamais touché, pas d'anneau sombre ; même facteur sur R, G, B : couleur gardée, petites étoiles intactes.
-> 
-> À RÉGLER : sur RGB_stars juste AVANT Etoiles_screen (Etoiles_screen ensuite, pas Etoiles_reduites) ; en rapide, avant R_C_Etoiles_fond_rapide ; pour régler à l'œil : double-clic puis Apply Global, « Voir le masque », puis Appliquer ; copie Etoiles_grosses.js dans src/scripts/clodoweg.
-> 
-> SI :
-> - anneau sombre autour des grosses étoiles -> etendue 16 à 20, ou force plus basse (0,70)
-> - halo large pas entièrement réduit -> etendue 16
-> - moyennes étoiles touchées aussi -> taille 9 ou 11
-> - certaines grosses pas réduites -> taille 5, ou seuil 0,10
-> - pas assez réduites -> force 0,85 (au plus ; 0,5 = rien)
-> - voir ce qui est réduit -> fenêtre (double-clic puis Apply Global), « Voir le masque » (vue masque_grosses)
 
 #### Opt_Etoiles_plafond — PixelMath
    expression = `s = 0.70; k = 0.06; m = max($T[0], $T[1], $T[2]); t = max(0, (m - s)/(1 - s)); $T*(1 - k*t*t)` ; useSingleExpression=true ; symbols = `s, k, m, t` ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
@@ -1065,14 +945,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - étoiles encore grosses -> S 0,15
 > - trop petites -> S 0,25, ou Etoiles_screen
 > - pour recommencer -> Ctrl+Z
-
-#### Opt_MKStarReduction — NoOperation
-
-> OPTION — TEST, à la place d'Etoiles_grosses ou d'Etoiles_reduites : réduction d'étoiles MK Star Reduction, lancée depuis le menu Script.
-> 
-> PRÉRÉGLÉ : rien (icône-note : chemin du script non vérifié).
-> 
-> À RÉGLER : installe MK Star Reduction (dépôt mhkastro) ; Script › Utilities › MK Star Reduction ; image sans étoiles ouverte.
 
 #### Opt_Boost_final_doux — ProcessContainer
    1. Script
@@ -1189,5 +1061,5 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > À RÉGLER : glisse sur l'image sans étoiles finie ; RGB_stars et L ouvertes ; l'image est finie et exportée.
 > 
 > SI :
-> - étoiles trop présentes -> Etoiles_grosses ou Etoiles_reduites (options) avant
+> - étoiles trop présentes -> Etoiles_reduites (à la place d'Etoiles_screen) ou Etoiles_plafond (avant)
 > - image trop sombre -> Fond_auto_clair à la place de Fond_auto, puis Etoiles_screen

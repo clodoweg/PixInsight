@@ -42,8 +42,8 @@ GeneralizedHyperbolicStretchModule (process)| Mike Cranfield & David Payne| Éti
 Statistical Stretch, Star Stretch, Halo-B-Gon, Automatic Continuum Subtraction, NB to RGB Star Combination, Perfect Palette Picker, Find BackgroundScripts| SetiAstro (Franklin Marek)| Étirement, étoiles, halos, continuum H, palettes, aperçu de fond automatique (SPCC). Dépôt de secours : https://raw.githubusercontent.com/setiastro/pixinsight-updates-194/main/| `https://updates.setiastro.com/`  
 GraXpertModule (process)| DeepSkyForge (pont vers GraXpert)| Retrait du gradient par IA dans PixInsight. Nécessite le logiciel GraXpert installé. Garder la barre oblique finale.| `https://pixinsight.deepskyforge.com/update/graxpert-process/`  
 PixInsight Toolbox (CombineHaWithRGB…)Scripts| Jürgen Terpe| Icône de test CombineHaWithRGB (H dans RGB)| `https://www.ideviceapps.de/PixInsight/Utilities/`  
-VeraLux SuiteScript| Lucas Svaz (portage de VeraLux, Riccardo Paterniti)| Icône de test VeraLux_HMS (HyperMetric Stretch)| `https://raw.githubusercontent.com/lucasssvaz/VeraLuxPorting/main/dist/`  
-MK Star ReductionScript| M. H. Kim| Icône de test MKStarReduction| Site de l'auteur : https://mhkastro.github.io/MKStarReduction/ (dépôt non vérifié)  
+VeraLux SuiteScript| Lucas Svaz (portage de VeraLux, Riccardo Paterniti)| (icône de test VeraLux_HMS supprimée)| `https://raw.githubusercontent.com/lucasssvaz/VeraLuxPorting/main/dist/`  
+MK Star ReductionScript| M. H. Kim| (icône de test MKStarReduction supprimée)| Site de l'auteur : https://mhkastro.github.io/MKStarReduction/ (dépôt non vérifié)  
 CorrectMagentaStarsScript| Roberto Sartori & Edoardo Luca Radice| Étoiles magenta en SHO. Déjà livré avec PixInsight : Script › Utilities| Aucun dépôt à ajouter  
 Foraxx dynamiqueFormule PixelMath| Communauté| Palette SHO dynamique| Aucun dépôt (formule à copier)
 

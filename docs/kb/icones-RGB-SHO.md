@@ -696,7 +696,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
    script `$PXI_SRCDIR/scripts/Halo-B-Gon.js`
 
 > OPTION — halos autour des étoiles brillantes
-> Attention, réduit aussi les petites étoiles (pour les grosses seulement : Etoiles_grosses).
+> Attention, réduit aussi les petites étoiles (pour les grosses seulement : Etoiles_grosses, en narrowband).
 > 
 > LANCEMENT : double-clic sur l'icône, puis Apply Global. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
 > 
@@ -705,7 +705,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > À RÉGLER : Select stars-only image = l'image d'étoiles étirée (RGB_stars ; NBtoRGB_stars en SHO ; HOO_stars en HOO), AVANT Etoiles_screen ; Reduction Amount Low ; Linear Data décoché.
 > 
 > SI :
-> - petites étoiles réduites ou effacées aussi (son masque ne protège que les cœurs) -> Etoiles_grosses à la place
+> - petites étoiles réduites ou effacées aussi (son masque ne protège que les cœurs) -> Etoiles_grosses à la place (narrowband)
 > - pas assez -> relance en Low (Med = 4 courbes, High = 9)
 
 #### Opt_Etoiles_grosses — Script

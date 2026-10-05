@@ -280,7 +280,7 @@ Paramètres
 
 - **Replace target image** : Coché
 
-#### GraXpert (module DeepSkyForge)
+#### GraXpert (module DeepSkyForge) — plus d'icône (supprimée à la demande de l'utilisateur)
 GRATUIT
 
 **À régler :**

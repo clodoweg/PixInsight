@@ -1330,14 +1330,6 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="defaultSampleRadius" value="15"/>
       <parameter id="samplesPerRow" value="15"/>
    </instance>
-   <instance class="GraXpert" version="256" id="Opt_GraXpert_instance">
-      <description>OPTION — TEST, à la place de MGC ou GradientCorrection : gradient retiré par l'IA de GraXpert (module GraXpert et logiciel GraXpert 2.2.1 ou plus installés)&#10;Glisse sur chaque master linéaire.&#10;&#10;PRÉRÉGLÉ : module GraXpert : Background Extraction (IA) coché, Correction par défaut (Subtraction), Smoothing 0, fond non affiché, débruitage décoché, image remplacée ; version de l'icône NON VÉRIFIÉE.&#10;&#10;À RÉGLER : installe le module GraXpert (dépôt deepskyforge) et le logiciel GraXpert 2.2.1 ou plus ; glisse sur chaque master linéaire, à la place de MGC ou de GradientCorrection.&#10;&#10;SI :&#10;- icône refusée au chargement -&gt; ouvre Process › GraXpert et règle à la main&#10;- vignetage fort -&gt; Correction Division</description>
-      <parameter id="backgroundExtraction" value="true"/>
-      <parameter id="smoothing" value="0.000"/>
-      <parameter id="createBackground" value="false"/>
-      <parameter id="denoising" value="false"/>
-      <parameter id="replaceImage" value="true"/>
-   </instance>
    <instance class="NoOperation" version="256" id="P2_rapide_instance">
       <description>MODE RAPIDE, phase 2 — Gradient : R_Gradient_auto_rapide à la place de toute la phase 2 : GradientCorrection sur toutes les images ouvertes (R et H compris, pour le continuum) ; l'astrométrie est déjà faite par R_C_Preparation_rapide. Icône de repère, sans effet.</description>
    </instance>
@@ -1929,41 +1921,6 @@ max($T, HaNB*a)</parameter>
    <instance class="NoOperation" version="256" id="P4_options_instance">
       <description>OPTIONS de la phase 4 — Étirement : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
    </instance>
-   <instance class="Script" version="256" id="Opt_Coeurs_etoiles_instance">
-      <description>OPTION — étoiles brillantes à cœur blanc (saturé), juste AVANT MAS : glisse sur le RGB linéaire avec ses étoiles&#10;Les cœurs prennent la couleur de leur halo, MAS les protège ensuite (pas en rapide).&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Etoiles_couleur sur l'image où on le glisse : cœurs (au-dessus de 0,5 × luminance max, rampe dès 0,35) recolorés avec le rapport R:G:B moyen de leur halo (flou de 8 px de l'image sans les cœurs), luminance gardée, canal le plus fort plafonné à 1 ; reste de l'image inchangé ; principe de RepairedHSVSeparation, sans fenêtre.&#10;&#10;À RÉGLER : glisse sur le RGB LINÉAIRE avec ses étoiles, juste avant MAS (après C_RGB_lineaire) ; compare RGB_stars à la sonde avec et sans ; copie Etoiles_couleur.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- peu d'étoiles changent -&gt; seuil 0.35&#10;- couleur pas jusqu'au centre des grosses étoiles -&gt; rayon 12&#10;- taches de couleur sur le cœur de la galaxie -&gt; seuil 0.70&#10;- rien ne change -&gt; cœurs déjà colorés : Etoiles_couleur en P7</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Etoiles_couleur.js</parameter>
-      <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="5">
-         <tr>
-            <td id="id">vue</td>
-            <td id="value"></td>
-         </tr>
-         <tr>
-            <td id="id">seuil</td>
-            <td id="value">0.50</td>
-         </tr>
-         <tr>
-            <td id="id">rayon</td>
-            <td id="value">8.0</td>
-         </tr>
-         <tr>
-            <td id="id">plafond</td>
-            <td id="value">1.00</td>
-         </tr>
-         <tr>
-            <td id="id">saturation</td>
-            <td id="value">0.00</td>
-         </tr>
-      </table>
-      <parameter id="information"></parameter>
-   </instance>
-   <instance class="Script" version="256" id="Opt_RepairedHSV_instance">
-      <description>OPTION — à la place de Coeurs_etoiles, pour comparer : le script officiel Repaired HSV Separation (fenêtre), sur le RGB linéaire juste AVANT MAS&#10;Il crée une copie réparée, l'original ne change pas (pas en rapide).&#10;&#10;LANCEMENT : double-clic sur l'icône, puis Apply Global.&#10;&#10;PRÉRÉGLÉ : script Repaired HSV Separation (Bob Andersson, livré avec PixInsight, Script › Utilities) : sépare H, Sv, V, répare H et Sv des pixels proches de la saturation avec les valeurs autour ; réglages dans sa fenêtre : Repair level 0,5 (défaut), Max Repair Radius 16, Clip Shadows 0.&#10;&#10;À RÉGLER : clique sur le RGB LINÉAIRE (après C_RGB_lineaire), puis double-clic sur l'icône et Apply Global ; dans la fenêtre coche « Repaired RGB » : crée RGB_Repaired_RGB (plus H, Sv, V à fermer) ; continue MAS et SXT sur RGB_Repaired_RGB (renomme-la RGB, ferme l'ancien) ; compare avec Coeurs_etoiles.&#10;&#10;SI :&#10;- résultat pas bon -&gt; Repair level 0,4 ou 0,6 (seuil au-dessus duquel les pixels sont réparés ; un test publié trouve 0,5 le meilleur)&#10;- cœurs aux couleurs coupées -&gt; Coeurs_etoiles à la place&#10;- grosses étoiles pas réparées au centre -&gt; Max Repair Radius 24&#10;- script introuvable -&gt; menu Script › Utilities › Repaired HSV Separation</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/misc/RepairedHSVSeparation.js</parameter>
-      <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="0"/>
-      <parameter id="information"></parameter>
-   </instance>
    <instance class="Script" version="256" id="Opt_Statistical_Stretch_instance">
       <description>OPTION — à la place de MAS sur le RGB avec étoiles (étirement statistique, étoiles plus grosses)&#10;Puis SXT_RGB_etire.&#10;&#10;LANCEMENT : glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.&#10;&#10;PRÉRÉGLÉ : Target Median 0,25, Blackpoint Sigma 5, Linked coché, reste par défaut.&#10;&#10;À RÉGLER : OPTION, à la place de MAS : sur le RGB linéaire AVEC ses étoiles ; puis SXT_RGB_etire et GHS_3_fond sur le RGB (SP = HP = 0,22).&#10;&#10;SI :&#10;- étoiles grossies ou cœurs blancs -&gt; MAS (chemin principal)</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/statisticalstretch.js</parameter>
@@ -2031,9 +1988,6 @@ max($T, HaNB*a)</parameter>
          </tr>
       </table>
       <parameter id="information"></parameter>
-   </instance>
-   <instance class="NoOperation" version="256" id="Opt_VeraLux_HMS_instance">
-      <description>OPTION — TEST, à la place des GHS ou de Statistical Stretch : VeraLux HyperMetric Stretch, lancé depuis le menu Script.&#10;&#10;PRÉRÉGLÉ : rien (icône-note : chemin du script non vérifié).&#10;&#10;À RÉGLER : installe VeraLux (dépôt VeraLuxPorting) ; Script › VeraLux › VeraLux Suite, onglet HyperMetric Stretch, sur L ou RGB linéaire.</description>
    </instance>
    <instance class="NoOperation" version="256" id="P4_rapide_instance">
       <description>MODE RAPIDE, phase 4 — Étirement : GHS_1_premier sur L sans étoiles (chemin principal, à régler), puis GHS_2_contraste et GHS_3_fond (chemin principal) sur L ; R_C_RGB_etire_rapide sur RGB (MAS avec étoiles, SXT Unscreen qui crée RGB_stars, SCNR vert sur RGB_stars, GHS fond). Icône de repère, sans effet.</description>
@@ -2150,38 +2104,11 @@ max($T, HaNB*a)</parameter>
       <parameter id="layersProtected" value="2"/>
       <parameter id="inheritAstrometricSolution" value="true"/>
    </instance>
-   <instance class="NoOperation" version="256" id="P5_options_instance">
-      <description>OPTIONS de la phase 5 — Couleur : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
-   </instance>
-   <instance class="Script" version="256" id="Opt_Etoiles_auto_etire_instance">
-      <description>OPTION — après SXT_RGB_etire : étoiles ternes&#10;Glisse sur n'importe quelle image (traite RGB_stars) : saturation 1,3 (et SCNR, déjà fait par SCNR_etoiles_vert), sans étirement (étoiles déjà étirées).&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Etoiles_auto, amount 0 (étoiles déjà étirées) : saturation 1,3 (0,4 × rouges, 0,7 × cyans) et SCNR vert (déjà fait par SCNR_etoiles_vert, sans effet de plus).&#10;&#10;À RÉGLER : glisse sur n'importe quelle image après SXT_RGB_etire (traite RGB_stars).&#10;&#10;SI :&#10;- étoiles criardes -&gt; satAmount 1,0&#10;- étoiles ternes -&gt; scnr false</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js</parameter>
-      <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="4">
-         <tr>
-            <td id="id">vue</td>
-            <td id="value">RGB_stars</td>
-         </tr>
-         <tr>
-            <td id="id">amount</td>
-            <td id="value">0</td>
-         </tr>
-         <tr>
-            <td id="id">satAmount</td>
-            <td id="value">1.3</td>
-         </tr>
-         <tr>
-            <td id="id">scnr</td>
-            <td id="value">true</td>
-         </tr>
-      </table>
-      <parameter id="information"></parameter>
-   </instance>
    <instance class="NoOperation" version="256" id="P5_rapide_instance">
-      <description>MODE RAPIDE, phase 5 — Couleur : R_C_LRGB_rapide sur RGB sans étoiles (L sans étoiles ouverte) à la place de LRGB_ajout_L : L ajoutée (Saturation 0,5) ; Etoiles_auto_etire en option si besoin. Icône de repère, sans effet.</description>
+      <description>MODE RAPIDE, phase 5 — Couleur : R_C_LRGB_rapide sur RGB sans étoiles (L sans étoiles ouverte) à la place de LRGB_ajout_L : L ajoutée (Saturation 0,5). Icône de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="R_C_LRGB_rapide_instance">
-      <description>MODE RAPIDE, à la place de LRGB_ajout_L : glisse sur le RGB sans étoiles, L sans étoiles étirée ouverte ; LRGB_ajout_L (Saturation 0,5) seule.&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : LRGB_ajout_L (L sans étoiles, Lightness 0,5, Saturation 0,5).&#10;&#10;À RÉGLER : glisse sur le RGB sans étoiles (après R_C_RGB_etire_rapide), L sans étoiles étirée ouverte ; ensuite R_C_Fin_rapide.&#10;&#10;SI :&#10;- étoiles ternes ou un peu vertes -&gt; Etoiles_auto_etire (P5 options) sur RGB_stars&#10;- taches ou halos restés -&gt; Nettoyage_sans_etoiles (P6 options) avant R_C_Fin_rapide</description>
+      <description>MODE RAPIDE, à la place de LRGB_ajout_L : glisse sur le RGB sans étoiles, L sans étoiles étirée ouverte ; LRGB_ajout_L (Saturation 0,5) seule.&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : LRGB_ajout_L (L sans étoiles, Lightness 0,5, Saturation 0,5).&#10;&#10;À RÉGLER : glisse sur le RGB sans étoiles (après R_C_RGB_etire_rapide), L sans étoiles étirée ouverte ; ensuite R_C_Fin_rapide.&#10;&#10;SI :&#10;- taches ou halos restés -&gt; Nettoyage_sans_etoiles (P6 options) avant R_C_Fin_rapide</description>
       <instance class="LRGBCombination" version="256" enabled="true">
          <table id="channels" rows="4">
             <tr>
@@ -4283,66 +4210,10 @@ max($T, HaNB*a)</parameter>
       </table>
    </instance>
    <instance class="Script" version="256" id="Opt_Halo_B_Gon_instance">
-      <description>OPTION — halos autour des étoiles brillantes&#10;Attention, réduit aussi les petites étoiles (pour les grosses seulement : Etoiles_grosses).&#10;&#10;LANCEMENT : double-clic sur l'icône, puis Apply Global. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.&#10;&#10;PRÉRÉGLÉ : rien (réglages dans le dialogue).&#10;&#10;À RÉGLER : Select stars-only image = l'image d'étoiles étirée (RGB_stars ; NBtoRGB_stars en SHO ; HOO_stars en HOO), AVANT Etoiles_screen ; Reduction Amount Low ; Linear Data décoché.&#10;&#10;SI :&#10;- petites étoiles réduites ou effacées aussi (son masque ne protège que les cœurs) -&gt; Etoiles_grosses à la place&#10;- pas assez -&gt; relance en Low (Med = 4 courbes, High = 9)</description>
+      <description>OPTION — halos autour des étoiles brillantes&#10;Attention, réduit aussi les petites étoiles (pour les grosses seulement : Etoiles_grosses, en narrowband).&#10;&#10;LANCEMENT : double-clic sur l'icône, puis Apply Global. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.&#10;&#10;PRÉRÉGLÉ : rien (réglages dans le dialogue).&#10;&#10;À RÉGLER : Select stars-only image = l'image d'étoiles étirée (RGB_stars ; NBtoRGB_stars en SHO ; HOO_stars en HOO), AVANT Etoiles_screen ; Reduction Amount Low ; Linear Data décoché.&#10;&#10;SI :&#10;- petites étoiles réduites ou effacées aussi (son masque ne protège que les cœurs) -&gt; Etoiles_grosses à la place (narrowband)&#10;- pas assez -&gt; relance en Low (Med = 4 courbes, High = 9)</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/Halo-B-Gon.js</parameter>
       <parameter id="md5sum">b9427e718e2b9760704c8c738e0893b7</parameter>
       <table id="parameters" rows="0"/>
-      <parameter id="information"></parameter>
-   </instance>
-   <instance class="Script" version="256" id="Opt_Etoiles_couleur_instance">
-      <description>OPTION — étoiles brillantes encore blanches : sur RGB_stars AVANT Etoiles_screen (glisse sur n'importe quelle image)&#10;Cœurs recolorés par leur halo, un peu assombris, puis saturation&#10;En rapide, avant R_C_Etoiles_fond_rapide.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Etoiles_couleur sur la vue RGB_stars : cœurs (au-dessus de 0,8 × luminance max) recolorés par leur halo (flou de 6 px), assombris à 0,85, puis ColorSaturation 1,0 (0,4 × rouges, 0,7 × cyans) sur toutes les étoiles.&#10;&#10;À RÉGLER : glisse sur n'importe quelle image (traite RGB_stars), AVANT Etoiles_screen (et avant Etoiles_grosses si tu l'utilises) ; double-clic pour la fenêtre ; copie Etoiles_couleur.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- encore blanches -&gt; plafond 0.75&#10;- étoiles criardes -&gt; saturation 0.5&#10;- petites étoiles brillantes pas touchées -&gt; seuil 0.65&#10;- pour recommencer -&gt; Ctrl+Z sur RGB_stars</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Etoiles_couleur.js</parameter>
-      <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="5">
-         <tr>
-            <td id="id">vue</td>
-            <td id="value">RGB_stars</td>
-         </tr>
-         <tr>
-            <td id="id">seuil</td>
-            <td id="value">0.80</td>
-         </tr>
-         <tr>
-            <td id="id">rayon</td>
-            <td id="value">6.0</td>
-         </tr>
-         <tr>
-            <td id="id">plafond</td>
-            <td id="value">0.85</td>
-         </tr>
-         <tr>
-            <td id="id">saturation</td>
-            <td id="value">1.00</td>
-         </tr>
-      </table>
-      <parameter id="information"></parameter>
-   </instance>
-   <instance class="Script" version="256" id="Opt_Etoiles_grosses_instance">
-      <description>OPTION — grosses étoiles trop présentes, mais Etoiles_reduites réduirait toutes les étoiles : glisse sur l'image d'étoiles (RGB_stars) AVANT Etoiles_screen&#10;En rapide, avant R_C_Etoiles_fond_rapide.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Etoiles_grosses : masque des grosses étoiles (ouverture morphologique, disque de 7 px sur une copie à 2000 px, au-dessus de 0,15, étendu au halo, flou 12 px) ; sous le masque, luminance -&gt; mtf(0,80, Y) avec un poids qui monte de 0 (Y = 0,10) à 1 (Y = 0,80) : halo faible jamais touché, pas d'anneau sombre ; même facteur sur R, G, B : couleur gardée, petites étoiles intactes.&#10;&#10;À RÉGLER : sur RGB_stars juste AVANT Etoiles_screen (Etoiles_screen ensuite, pas Etoiles_reduites) ; en rapide, avant R_C_Etoiles_fond_rapide ; pour régler à l'œil : double-clic puis Apply Global, « Voir le masque », puis Appliquer ; copie Etoiles_grosses.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- anneau sombre autour des grosses étoiles -&gt; etendue 16 à 20, ou force plus basse (0,70)&#10;- halo large pas entièrement réduit -&gt; etendue 16&#10;- moyennes étoiles touchées aussi -&gt; taille 9 ou 11&#10;- certaines grosses pas réduites -&gt; taille 5, ou seuil 0,10&#10;- pas assez réduites -&gt; force 0,85 (au plus ; 0,5 = rien)&#10;- voir ce qui est réduit -&gt; fenêtre (double-clic puis Apply Global), « Voir le masque » (vue masque_grosses)</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Etoiles_grosses.js</parameter>
-      <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="5">
-         <tr>
-            <td id="id">taille</td>
-            <td id="value">7</td>
-         </tr>
-         <tr>
-            <td id="id">seuil</td>
-            <td id="value">0.15</td>
-         </tr>
-         <tr>
-            <td id="id">etendue</td>
-            <td id="value">12</td>
-         </tr>
-         <tr>
-            <td id="id">force</td>
-            <td id="value">0.80</td>
-         </tr>
-         <tr>
-            <td id="id">afficherMasque</td>
-            <td id="value">false</td>
-         </tr>
-      </table>
       <parameter id="information"></parameter>
    </instance>
    <instance class="PixelMath" version="256" id="Opt_Etoiles_plafond_instance">
@@ -4431,9 +4302,6 @@ max($T,f1)</parameter>
       <parameter id="newImageColorSpace" value="SameAsTarget"/>
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
-   </instance>
-   <instance class="NoOperation" version="256" id="Opt_MKStarReduction_instance">
-      <description>OPTION — TEST, à la place d'Etoiles_grosses ou d'Etoiles_reduites : réduction d'étoiles MK Star Reduction, lancée depuis le menu Script.&#10;&#10;PRÉRÉGLÉ : rien (icône-note : chemin du script non vérifié).&#10;&#10;À RÉGLER : installe MK Star Reduction (dépôt mhkastro) ; Script › Utilities › MK Star Reduction ; image sans étoiles ouverte.</description>
    </instance>
    <instance class="ProcessContainer" id="Opt_Boost_final_doux_instance">
       <description>OPTION — comme Boost_final mais moitié moins fort (courbes c et S montées de moitié) : un petit cran de couleur sur l'image finie, sans toucher aux étoiles&#10;L encore ouverte.&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : masque de luminance tiré de L sans étoiles (script Masque_auto, source = L, s = 0,20, gamma 2 : fort sur le cœur et les bras brillants, faible sur le halo et les bras faibles ; étoiles de RGB_stars retirées du masque) attaché, CurvesTransformation c 0,46094 -&gt; 0,49870 et S 0,46354 -&gt; 0,50261, masque retiré.&#10;&#10;À RÉGLER : glisse sur l'image finie avec étoiles ; L (sans étoiles, étirée) doit être ouverte.&#10;&#10;SI :&#10;- masque encore trop large -&gt; gamma 3 dans Masque_L_source&#10;- trop fort -&gt; rapproche les points de la diagonale&#10;- étoiles touchées -&gt; vérifie que L est bien la version sans étoiles</description>
@@ -4874,7 +4742,7 @@ max($T,f1)</parameter>
       <description>MODE RAPIDE, phase 7 — Étoiles : R_C_Etoiles_fond_rapide sur l'image sans étoiles finie : Fond_desature, Fond_auto (0,12) sur l'image sans étoiles, étoiles remises (Etoiles_screen), puis Export_TIFF en un seul conteneur. Icône de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="R_C_Etoiles_fond_rapide_instance">
-      <description>MODE RAPIDE, à la place de Fond_desature, Fond_auto, Etoiles_screen et Export_TIFF : sur l'image sans étoiles finie, RGB_stars et L ouvertes.&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : Fond_desature (teinte et violet du fond retirés), Fond_auto (fond amené à 0,12, neutre), Etoiles_screen (~((~$T) * (~RGB_stars))), Export_TIFF (copie TIFF 16 bits sRGB nommée d'après le dossier des masters).&#10;&#10;À RÉGLER : glisse sur l'image sans étoiles finie ; RGB_stars et L ouvertes ; l'image est finie et exportée.&#10;&#10;SI :&#10;- étoiles trop présentes -&gt; Etoiles_grosses ou Etoiles_reduites (options) avant&#10;- image trop sombre -&gt; Fond_auto_clair à la place de Fond_auto, puis Etoiles_screen</description>
+      <description>MODE RAPIDE, à la place de Fond_desature, Fond_auto, Etoiles_screen et Export_TIFF : sur l'image sans étoiles finie, RGB_stars et L ouvertes.&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : Fond_desature (teinte et violet du fond retirés), Fond_auto (fond amené à 0,12, neutre), Etoiles_screen (~((~$T) * (~RGB_stars))), Export_TIFF (copie TIFF 16 bits sRGB nommée d'après le dossier des masters).&#10;&#10;À RÉGLER : glisse sur l'image sans étoiles finie ; RGB_stars et L ouvertes ; l'image est finie et exportée.&#10;&#10;SI :&#10;- étoiles trop présentes -&gt; Etoiles_reduites (à la place d'Etoiles_screen) ou Etoiles_plafond (avant)&#10;- image trop sombre -&gt; Fond_auto_clair à la place de Fond_auto, puis Etoiles_screen</description>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js</parameter>
          <parameter id="md5sum"></parameter>
@@ -5004,9 +4872,8 @@ max($T,f1)</parameter>
    <icon id="Opt_ImageSolver_seul" instance="Opt_ImageSolver_seul_instance" xpos="243" ypos="294" workspace="Workspace01"/>
    <icon id="Opt_GradientCorrection" instance="Opt_GradientCorrection_instance" xpos="243" ypos="324" workspace="Workspace01"/>
    <icon id="Opt_DBE" instance="Opt_DBE_instance" xpos="243" ypos="354" workspace="Workspace01"/>
-   <icon id="Opt_GraXpert" instance="Opt_GraXpert_instance" xpos="243" ypos="384" workspace="Workspace01"/>
-   <icon id="P2_rapide" instance="P2_rapide_instance" xpos="243" ypos="430" workspace="Workspace01"/>
-   <icon id="R_Gradient_auto_rapide" instance="R_Gradient_auto_rapide_instance" xpos="243" ypos="464" workspace="Workspace01"/>
+   <icon id="P2_rapide" instance="P2_rapide_instance" xpos="243" ypos="400" workspace="Workspace01"/>
+   <icon id="R_Gradient_auto_rapide" instance="R_Gradient_auto_rapide_instance" xpos="243" ypos="434" workspace="Workspace01"/>
    <icon id="P3_Lineaire" instance="P3_Lineaire_instance" xpos="430" ypos="20" workspace="Workspace01"/>
    <icon id="E10_C_RGB_couleur" instance="E10_C_RGB_couleur_instance" xpos="430" ypos="64" workspace="Workspace01"/>
    <icon id="E11_BXT_L_H" instance="E11_BXT_L_H_instance" xpos="430" ypos="94" workspace="Workspace01"/>
@@ -5033,55 +4900,47 @@ max($T,f1)</parameter>
    <icon id="E22_SCNR_etoiles_violet" instance="E22_SCNR_etoiles_violet_instance" xpos="608" ypos="214" workspace="Workspace01"/>
    <icon id="E23_GHS_3_fond" instance="E23_GHS_3_fond_instance" xpos="608" ypos="244" workspace="Workspace01"/>
    <icon id="P4_options" instance="P4_options_instance" xpos="608" ypos="290" workspace="Workspace01"/>
-   <icon id="Opt_Coeurs_etoiles" instance="Opt_Coeurs_etoiles_instance" xpos="608" ypos="324" workspace="Workspace01"/>
-   <icon id="Opt_RepairedHSV" instance="Opt_RepairedHSV_instance" xpos="608" ypos="354" workspace="Workspace01"/>
-   <icon id="Opt_Statistical_Stretch" instance="Opt_Statistical_Stretch_instance" xpos="608" ypos="384" workspace="Workspace01"/>
-   <icon id="Opt_VeraLux_HMS" instance="Opt_VeraLux_HMS_instance" xpos="608" ypos="414" workspace="Workspace01"/>
-   <icon id="P4_rapide" instance="P4_rapide_instance" xpos="608" ypos="460" workspace="Workspace01"/>
-   <icon id="R_C_RGB_etire_rapide" instance="R_C_RGB_etire_rapide_instance" xpos="608" ypos="494" workspace="Workspace01"/>
+   <icon id="Opt_Statistical_Stretch" instance="Opt_Statistical_Stretch_instance" xpos="608" ypos="324" workspace="Workspace01"/>
+   <icon id="P4_rapide" instance="P4_rapide_instance" xpos="608" ypos="370" workspace="Workspace01"/>
+   <icon id="R_C_RGB_etire_rapide" instance="R_C_RGB_etire_rapide_instance" xpos="608" ypos="404" workspace="Workspace01"/>
    <icon id="P5_Couleur" instance="P5_Couleur_instance" xpos="799" ypos="20" workspace="Workspace01"/>
    <icon id="E24_LRGB_ajout_L" instance="E24_LRGB_ajout_L_instance" xpos="799" ypos="64" workspace="Workspace01"/>
-   <icon id="P5_options" instance="P5_options_instance" xpos="799" ypos="110" workspace="Workspace01"/>
-   <icon id="Opt_Etoiles_auto_etire" instance="Opt_Etoiles_auto_etire_instance" xpos="799" ypos="144" workspace="Workspace01"/>
-   <icon id="P5_rapide" instance="P5_rapide_instance" xpos="799" ypos="190" workspace="Workspace01"/>
-   <icon id="R_C_LRGB_rapide" instance="R_C_LRGB_rapide_instance" xpos="799" ypos="224" workspace="Workspace01"/>
-   <icon id="P6_Finition" instance="P6_Finition_instance" xpos="986" ypos="20" workspace="Workspace01"/>
-   <icon id="E25_HDRMT_30" instance="E25_HDRMT_30_instance" xpos="986" ypos="64" workspace="Workspace01"/>
-   <icon id="E26_C_Finition" instance="E26_C_Finition_instance" xpos="986" ypos="94" workspace="Workspace01"/>
-   <icon id="E27_C_Sharp_MMT" instance="E27_C_Sharp_MMT_instance" xpos="986" ypos="124" workspace="Workspace01"/>
-   <icon id="E28_NXT_final" instance="E28_NXT_final_instance" xpos="986" ypos="154" workspace="Workspace01"/>
-   <icon id="P6_options" instance="P6_options_instance" xpos="986" ypos="200" workspace="Workspace01"/>
-   <icon id="Opt_Nettoyage_sans_etoiles" instance="Opt_Nettoyage_sans_etoiles_instance" xpos="986" ypos="234" workspace="Workspace01"/>
-   <icon id="Opt_HDRMT_40" instance="Opt_HDRMT_40_instance" xpos="986" ypos="264" workspace="Workspace01"/>
-   <icon id="Opt_HDRMT_50" instance="Opt_HDRMT_50_instance" xpos="986" ypos="294" workspace="Workspace01"/>
-   <icon id="Opt_HDRMT_eclat" instance="Opt_HDRMT_eclat_instance" xpos="986" ypos="324" workspace="Workspace01"/>
-   <icon id="Opt_DarkStructureEnhance" instance="Opt_DarkStructureEnhance_instance" xpos="986" ypos="354" workspace="Workspace01"/>
-   <icon id="Opt_Finition_saturee" instance="Opt_Finition_saturee_instance" xpos="986" ypos="384" workspace="Workspace01"/>
-   <icon id="Opt_Boost_finition_light" instance="Opt_Boost_finition_light_instance" xpos="986" ypos="414" workspace="Workspace01"/>
-   <icon id="Opt_Boost_finition" instance="Opt_Boost_finition_instance" xpos="986" ypos="444" workspace="Workspace01"/>
-   <icon id="Opt_Sharp_USM" instance="Opt_Sharp_USM_instance" xpos="986" ypos="474" workspace="Workspace01"/>
-   <icon id="Opt_NXT_final_doux" instance="Opt_NXT_final_doux_instance" xpos="986" ypos="504" workspace="Workspace01"/>
-   <icon id="Opt_NXT_final_fort" instance="Opt_NXT_final_fort_instance" xpos="986" ypos="534" workspace="Workspace01"/>
-   <icon id="P6_rapide" instance="P6_rapide_instance" xpos="986" ypos="580" workspace="Workspace01"/>
-   <icon id="R_C_Fin_rapide" instance="R_C_Fin_rapide_instance" xpos="986" ypos="614" workspace="Workspace01"/>
-   <icon id="P7_Etoiles" instance="P7_Etoiles_instance" xpos="1190" ypos="20" workspace="Workspace01"/>
-   <icon id="E29_Fond_desature" instance="E29_Fond_desature_instance" xpos="1190" ypos="64" workspace="Workspace01"/>
-   <icon id="E30_Fond_auto" instance="E30_Fond_auto_instance" xpos="1190" ypos="94" workspace="Workspace01"/>
-   <icon id="E31_Etoiles_screen" instance="E31_Etoiles_screen_instance" xpos="1190" ypos="124" workspace="Workspace01"/>
-   <icon id="P7_options" instance="P7_options_instance" xpos="1190" ypos="170" workspace="Workspace01"/>
-   <icon id="Opt_MT_etoiles" instance="Opt_MT_etoiles_instance" xpos="1190" ypos="204" workspace="Workspace01"/>
-   <icon id="Opt_Halo_B_Gon" instance="Opt_Halo_B_Gon_instance" xpos="1190" ypos="234" workspace="Workspace01"/>
-   <icon id="Opt_Etoiles_couleur" instance="Opt_Etoiles_couleur_instance" xpos="1190" ypos="264" workspace="Workspace01"/>
-   <icon id="Opt_Etoiles_grosses" instance="Opt_Etoiles_grosses_instance" xpos="1190" ypos="294" workspace="Workspace01"/>
-   <icon id="Opt_Etoiles_plafond" instance="Opt_Etoiles_plafond_instance" xpos="1190" ypos="324" workspace="Workspace01"/>
-   <icon id="Opt_Fond_auto_clair" instance="Opt_Fond_auto_clair_instance" xpos="1190" ypos="354" workspace="Workspace01"/>
-   <icon id="Opt_Etoiles_reduites" instance="Opt_Etoiles_reduites_instance" xpos="1190" ypos="384" workspace="Workspace01"/>
-   <icon id="Opt_MKStarReduction" instance="Opt_MKStarReduction_instance" xpos="1190" ypos="414" workspace="Workspace01"/>
-   <icon id="Opt_Boost_final_doux" instance="Opt_Boost_final_doux_instance" xpos="1190" ypos="444" workspace="Workspace01"/>
-   <icon id="Opt_Boost_final" instance="Opt_Boost_final_instance" xpos="1190" ypos="474" workspace="Workspace01"/>
-   <icon id="Opt_Agrandir_x2" instance="Opt_Agrandir_x2_instance" xpos="1190" ypos="504" workspace="Workspace01"/>
-   <icon id="Opt_ICC_sRGB" instance="Opt_ICC_sRGB_instance" xpos="1190" ypos="534" workspace="Workspace01"/>
-   <icon id="Opt_Export_TIFF" instance="Opt_Export_TIFF_instance" xpos="1190" ypos="564" workspace="Workspace01"/>
-   <icon id="P7_rapide" instance="P7_rapide_instance" xpos="1190" ypos="610" workspace="Workspace01"/>
-   <icon id="R_C_Etoiles_fond_rapide" instance="R_C_Etoiles_fond_rapide_instance" xpos="1190" ypos="644" workspace="Workspace01"/>
+   <icon id="P5_rapide" instance="P5_rapide_instance" xpos="799" ypos="110" workspace="Workspace01"/>
+   <icon id="R_C_LRGB_rapide" instance="R_C_LRGB_rapide_instance" xpos="799" ypos="144" workspace="Workspace01"/>
+   <icon id="P6_Finition" instance="P6_Finition_instance" xpos="959" ypos="20" workspace="Workspace01"/>
+   <icon id="E25_HDRMT_30" instance="E25_HDRMT_30_instance" xpos="959" ypos="64" workspace="Workspace01"/>
+   <icon id="E26_C_Finition" instance="E26_C_Finition_instance" xpos="959" ypos="94" workspace="Workspace01"/>
+   <icon id="E27_C_Sharp_MMT" instance="E27_C_Sharp_MMT_instance" xpos="959" ypos="124" workspace="Workspace01"/>
+   <icon id="E28_NXT_final" instance="E28_NXT_final_instance" xpos="959" ypos="154" workspace="Workspace01"/>
+   <icon id="P6_options" instance="P6_options_instance" xpos="959" ypos="200" workspace="Workspace01"/>
+   <icon id="Opt_Nettoyage_sans_etoiles" instance="Opt_Nettoyage_sans_etoiles_instance" xpos="959" ypos="234" workspace="Workspace01"/>
+   <icon id="Opt_HDRMT_40" instance="Opt_HDRMT_40_instance" xpos="959" ypos="264" workspace="Workspace01"/>
+   <icon id="Opt_HDRMT_50" instance="Opt_HDRMT_50_instance" xpos="959" ypos="294" workspace="Workspace01"/>
+   <icon id="Opt_HDRMT_eclat" instance="Opt_HDRMT_eclat_instance" xpos="959" ypos="324" workspace="Workspace01"/>
+   <icon id="Opt_DarkStructureEnhance" instance="Opt_DarkStructureEnhance_instance" xpos="959" ypos="354" workspace="Workspace01"/>
+   <icon id="Opt_Finition_saturee" instance="Opt_Finition_saturee_instance" xpos="959" ypos="384" workspace="Workspace01"/>
+   <icon id="Opt_Boost_finition_light" instance="Opt_Boost_finition_light_instance" xpos="959" ypos="414" workspace="Workspace01"/>
+   <icon id="Opt_Boost_finition" instance="Opt_Boost_finition_instance" xpos="959" ypos="444" workspace="Workspace01"/>
+   <icon id="Opt_Sharp_USM" instance="Opt_Sharp_USM_instance" xpos="959" ypos="474" workspace="Workspace01"/>
+   <icon id="Opt_NXT_final_doux" instance="Opt_NXT_final_doux_instance" xpos="959" ypos="504" workspace="Workspace01"/>
+   <icon id="Opt_NXT_final_fort" instance="Opt_NXT_final_fort_instance" xpos="959" ypos="534" workspace="Workspace01"/>
+   <icon id="P6_rapide" instance="P6_rapide_instance" xpos="959" ypos="580" workspace="Workspace01"/>
+   <icon id="R_C_Fin_rapide" instance="R_C_Fin_rapide_instance" xpos="959" ypos="614" workspace="Workspace01"/>
+   <icon id="P7_Etoiles" instance="P7_Etoiles_instance" xpos="1163" ypos="20" workspace="Workspace01"/>
+   <icon id="E29_Fond_desature" instance="E29_Fond_desature_instance" xpos="1163" ypos="64" workspace="Workspace01"/>
+   <icon id="E30_Fond_auto" instance="E30_Fond_auto_instance" xpos="1163" ypos="94" workspace="Workspace01"/>
+   <icon id="E31_Etoiles_screen" instance="E31_Etoiles_screen_instance" xpos="1163" ypos="124" workspace="Workspace01"/>
+   <icon id="P7_options" instance="P7_options_instance" xpos="1163" ypos="170" workspace="Workspace01"/>
+   <icon id="Opt_MT_etoiles" instance="Opt_MT_etoiles_instance" xpos="1163" ypos="204" workspace="Workspace01"/>
+   <icon id="Opt_Halo_B_Gon" instance="Opt_Halo_B_Gon_instance" xpos="1163" ypos="234" workspace="Workspace01"/>
+   <icon id="Opt_Etoiles_plafond" instance="Opt_Etoiles_plafond_instance" xpos="1163" ypos="264" workspace="Workspace01"/>
+   <icon id="Opt_Fond_auto_clair" instance="Opt_Fond_auto_clair_instance" xpos="1163" ypos="294" workspace="Workspace01"/>
+   <icon id="Opt_Etoiles_reduites" instance="Opt_Etoiles_reduites_instance" xpos="1163" ypos="324" workspace="Workspace01"/>
+   <icon id="Opt_Boost_final_doux" instance="Opt_Boost_final_doux_instance" xpos="1163" ypos="354" workspace="Workspace01"/>
+   <icon id="Opt_Boost_final" instance="Opt_Boost_final_instance" xpos="1163" ypos="384" workspace="Workspace01"/>
+   <icon id="Opt_Agrandir_x2" instance="Opt_Agrandir_x2_instance" xpos="1163" ypos="414" workspace="Workspace01"/>
+   <icon id="Opt_ICC_sRGB" instance="Opt_ICC_sRGB_instance" xpos="1163" ypos="444" workspace="Workspace01"/>
+   <icon id="Opt_Export_TIFF" instance="Opt_Export_TIFF_instance" xpos="1163" ypos="474" workspace="Workspace01"/>
+   <icon id="P7_rapide" instance="P7_rapide_instance" xpos="1163" ypos="520" workspace="Workspace01"/>
+   <icon id="R_C_Etoiles_fond_rapide" instance="R_C_Etoiles_fond_rapide_instance" xpos="1163" ypos="554" workspace="Workspace01"/>
 </xpsm>
