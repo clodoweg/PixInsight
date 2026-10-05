@@ -208,14 +208,14 @@ RAPIDE_NOTE = {
              2: "R_Gradient_auto_rapide à la place de toute la phase 2 : GradientCorrection sur toutes les images ouvertes (l'astrométrie est déjà faite par R_C_Preparation_rapide)",
              3: "R_Lineaire_rapide (double-clic puis Apply Global) à la place de C_RGB_lineaire et C_L_lineaire : lance C_RGB_lineaire sur RGB puis C_L_lineaire sur L ; les deux restent linéaires, avec leurs étoiles",
              4: "GHS_1_premier sur L sans étoiles (chemin principal, à régler), puis R_C_Fin_GHS_rapide (GHS_2_contraste et GHS_3_fond) sur L ; R_C_RGB_etire_rapide sur RGB (MAS avec étoiles, SXT Unscreen qui crée RGB_stars, GHS fond)",
-             5: "R_C_LRGB_rapide sur RGB sans étoiles (L sans étoiles ouverte) à la place de LRGB_ajout_L : L ajoutée (Saturation 0,5), puis Etoiles_auto_etire (saturation et SCNR de RGB_stars)",
+             5: "R_C_LRGB_rapide sur RGB sans étoiles (L sans étoiles ouverte) à la place de LRGB_ajout_L : L ajoutée (Saturation 0,5) ; Etoiles_auto_etire en option si besoin",
              6: "R_C_Fin_rapide sur l'image sans étoiles après LRGB_ajout_L (ou R_C_LRGB_rapide) : HDRMT à 30 %, masque, Courbes, LHE, LHE_fin, masque retiré, NXT_final 0,40 en un seul conteneur (= HDRMT_30, C_Finition et NXT_final)",
              7: "R_C_Etoiles_fond_rapide sur l'image sans étoiles finie : étoiles remises (Etoiles_screen), Fond_desature, puis Export_TIFF (ferme L et RGB_stars) en un seul conteneur"},
     'LHA': {1: "MODE RAPIDE (galaxies) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre : R_C_Preparation_rapide ; R_Gradient_auto_rapide ; R_Lineaire_rapide (RGB, L et H), Continuum_auto, H_dans_RGB, C_RGB_bruit (étoiles gardées) ; GHS_1_premier puis R_C_Fin_GHS_rapide sur L ; R_C_RGB_etire_rapide sur RGB ; R_C_LRGB_rapide (LRGB sans étoiles) ; finition. Phase 1 : R_C_Preparation_rapide (double-clic puis Apply Global) à la place de LinearPatternSubtraction, Renommer_auto, Combinaison_RGB et Solver_auto",
             2: "R_Gradient_auto_rapide à la place de toute la phase 2 : GradientCorrection sur toutes les images ouvertes (R et H compris, pour le continuum) ; l'astrométrie est déjà faite par R_C_Preparation_rapide",
             3: "R_Lineaire_rapide (double-clic puis Apply Global) à la place de C_RGB_couleur, BXT_L_H et NXT_L : lance C_RGB_couleur sur RGB, BXT_L_H sur L et sur H, NXT_L sur L ; puis chemin principal : Continuum_auto, H_dans_RGB (H_dans_L éventuel), C_RGB_bruit",
             4: "GHS_1_premier sur L sans étoiles (chemin principal, à régler), puis R_C_Fin_GHS_rapide (GHS_2_contraste et GHS_3_fond) sur L ; R_C_RGB_etire_rapide sur RGB (MAS avec étoiles, SXT Unscreen qui crée RGB_stars, GHS fond)",
-            5: "R_C_LRGB_rapide sur RGB sans étoiles (L sans étoiles ouverte) à la place de LRGB_ajout_L : L ajoutée (Saturation 0,5), puis Etoiles_auto_etire (saturation et SCNR de RGB_stars)",
+            5: "R_C_LRGB_rapide sur RGB sans étoiles (L sans étoiles ouverte) à la place de LRGB_ajout_L : L ajoutée (Saturation 0,5) ; Etoiles_auto_etire en option si besoin",
             6: "R_C_Fin_rapide sur l'image sans étoiles après LRGB_ajout_L (ou R_C_LRGB_rapide) : HDRMT à 30 %, masque, Courbes, LHE, LHE_fin, masque retiré, NXT_final 0,40 en un seul conteneur (= HDRMT_30, C_Finition et NXT_final)",
             7: "R_C_Etoiles_fond_rapide sur l'image sans étoiles finie : étoiles remises (Etoiles_screen), Fond_desature, puis Export_TIFF (ferme L et RGB_stars) en un seul conteneur"}}
 
@@ -641,6 +641,9 @@ D_MASK = ("MASQUE DE LUMINANCE créé ET attaché en un clic (script Masque_auto
           "s = 0,14 par défaut : fond final de la fiche 0,12-0,14 ; règle s = fond mesuré à la sonde 15x15 + 0,01 (vers 0,26 si le fond est encore à 0,20-0,25). Contrôle à la sonde sur masque_L : fond 0 à 0,05. "
           "Retrait : icône Masque_retirer (détache et ferme masque_L), déjà en fin de C_Finition et des Boost. HDRMT n'en a pas besoin (option Lightness mask).")
 
+D_HDRMT30 = ("PARTIE 1 (cœur) — conteneur HDRMT à 30 % (par défaut, demande de l'utilisateur) : copie de l'image (HDR_avant), HDRMultiscaleTransform 6 couches (To lightness, Preserve hue, Lightness mask), "
+             "mélange 0,3 × résultat + 0,7 × copie, copie fermée. Sur l'image sans étoiles, AVANT le contraste. "
+             "Options de la partie 1, à la place : HDRMT_40 (cœur encore trop clair), HDRMT_50 (cœur brûlé), HDRMT_eclat (cœur détaillé mais terne) ; cœur déjà parfait : saute-la.")
 D_HDRMT40 = ("PARTIE 1 (cœur) — conteneur HDRMT à 40 % : copie de l'image (HDR_avant), HDRMultiscaleTransform 6 couches (To lightness, Preserve hue, Lightness mask), "
              "mélange 0,4 × résultat + 0,6 × copie, copie fermée. Sur l'image sans étoiles, AVANT le contraste : détail du cœur sans l'aplatir. "
              "Options de la partie 1, à la place : HDRMT_30 (effet plus léger), HDRMT_50 (cœur brûlé), HDRMT_eclat (cœur détaillé mais terne : HDRMT 40 % puis Boost light) ; cœur déjà parfait : saute-la.")
@@ -653,7 +656,7 @@ def finish_block(extra=None, galaxie=False):
     if galaxie:
         # finition en parties (demande de l'utilisateur) : 1 cœur (HDRMT 40 %), 2 contraste (C_Finition), 3 bruit (NXT_final), chacune avec ses options
         b = [(script('Nettoyage_sans_etoiles', ''), ''),   # option, avant la partie 1 : restes de halos d'étoiles (demande de l'utilisateur)
-             (_cont('HDRMT_40', hdrmt_items('0.4')), D_HDRMT40), (_cont('HDRMT_30', hdrmt_items('0.3')), ''), (hdrmt_50(), ''), (hdrmt_eclat(), ''),
+             (_cont('HDRMT_30', hdrmt_items('0.3')), D_HDRMT30), (_cont('HDRMT_40', hdrmt_items('0.4')), ''), (hdrmt_50(), ''), (hdrmt_eclat(), ''),   # HDRMT_30 par défaut (demande de l'utilisateur)
              (note('Masque_L', D_MASK), ''),
              (curves('Courbes'), D_CURVES), (M.instance('LocalHistogramEqualization', 'LHE', {'radius': 150, 'histogramBins': 'Bit12', 'slopeLimit': '2.0', 'amount': '0.300', 'circularKernel': True}), D_LHE),
              (M.instance('LocalHistogramEqualization', 'LHE_fin', {'radius': 40, 'histogramBins': 'Bit10', 'slopeLimit': '2.0', 'amount': '0.250', 'circularKernel': True}), D_LHE_FIN),
@@ -1148,7 +1151,7 @@ def lineaire_rapide(etapes):
 
 def lrgb_rapide(steps):
     """P5_rapide LRGB (demande de l'utilisateur) : LRGB_ajout_L avec étoiles, SXT Unscreen, saturation et SCNR des étoiles."""
-    return cont('C_LRGB_rapide', [pick(steps, b)[0] for b in ('LRGB_ajout_L', 'Etoiles_auto_etire')])
+    return cont('C_LRGB_rapide', [pick(steps, 'LRGB_ajout_L')[0]])   # Etoiles_auto_etire retiré (demande de l'utilisateur)
 
 def rgb_etire_rapide(steps):
     """P4_rapide galaxies (demande de l'utilisateur) : MAS avec étoiles, SXT Unscreen (RGB_stars), GHS fond (SP = HP = 0,12, fond MAS 0,15)."""

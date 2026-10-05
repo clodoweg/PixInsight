@@ -22,11 +22,11 @@ P2_rapide| R_Gradient_auto_rapide| double-clic puis Apply Global| GradientCorrec
 P3_rapide| R_Lineaire_rapide| double-clic puis Apply Global| lance E08_C_RGB_lineaire sur RGB (BXT Correct Only, SPCC, BXT, NXT) puis E09_C_L_lineaire sur L (BXT, NXT, SXT : L sans étoiles)  
 P4| E10 GHS_1_premier, puis R_C_Fin_GHS_rapide| L sans étoiles| GHS_1 à la main, puis GHS_2 et GHS_3_fond  
 P4_rapide| R_C_RGB_etire_rapide| RGB linéaire avec étoiles| MAS (fond 0,15), SXT Unscreen (crée RGB_stars), GHS fond (SP = HP = 0,12)  
-P5_rapide| R_C_LRGB_rapide| RGB sans étoiles, L ouverte| LRGB_ajout_L (Saturation 0,5), Etoiles_auto_etire  
+P5_rapide| R_C_LRGB_rapide| RGB sans étoiles, L ouverte| LRGB_ajout_L (Saturation 0,5) seul  
 P6_rapide| R_C_Fin_rapide| image sans étoiles| HDRMT 30 %, masque, Courbes, LHE, LHE_fin, masque retiré, NXT 0,40  
 P7_rapide| R_C_Etoiles_fond_rapide| image sans étoiles finie| Etoiles_screen, Fond_desature, Export_TIFF (ferme L et RGB_stars). Avant, sur RGB_stars si besoin : Opt_Etoiles_grosses, Opt_Etoiles_plafond  
 
-Chemin principal LRGB : E08 C_RGB_lineaire, E09 C_L_lineaire (finit par SXT_L_lineaire), E10 GHS_1, E11 GHS_2 (L), E12 MAS, E13 SXT_RGB_etire (RGB), E14 GHS_3_fond (L et RGB), E15 LRGB_ajout_L, E16 HDRMT_40, E17 C_Finition, E18 NXT_final, E19 Etoiles_screen, E20 Fond_desature. Statistical_Stretch et Fond_auto sont devenus des options.
+Chemin principal LRGB : E08 C_RGB_lineaire, E09 C_L_lineaire (finit par SXT_L_lineaire), E10 GHS_1, E11 GHS_2 (L), E12 MAS, E13 SXT_RGB_etire (RGB), E14 GHS_3_fond (L et RGB), E15 LRGB_ajout_L, E16 HDRMT_30, E17 C_Finition, E18 NXT_final, E19 Etoiles_screen, E20 Fond_desature. Statistical_Stretch et Fond_auto sont devenus des options.
 
 ### LHaRGB : l'ordre
 Comme le LRGB. Phase 3 : C_RGB_couleur, BXT_L_H, Continuum_auto, H_dans_RGB, C_RGB_bruit, NXT_L, SXT_L_lineaire (R_Lineaire_rapide fait C_RGB_couleur, BXT_L_H sur L et H, NXT_L et SXT_L_lineaire ; Continuum_auto, H_dans_RGB et C_RGB_bruit restent à la main). Puis GHS sur L, MAS + SXT_RGB_etire + GHS_3_fond sur RGB, LRGB (Saturation 0,5), finition, Etoiles_screen, Fond_desature.
@@ -44,7 +44,7 @@ Après E15 LRGB_ajout_L (E22 en LHaRGB). Regarde l'image après chaque partie ; 
 Partie| Icône par défaut| Options  
 ---|---|---  
 0\. Nettoyage| (option) Opt_Nettoyage_sans_etoiles : restes de halos des étoiles brillantes après SXT, RGB_stars ouverte| réglages et cas dans la description de l'icône  
-1\. Cœur| E16 (E22) HDRMT_40| HDRMT_30 (plus léger), HDRMT_50 (cœur brûlé), HDRMT_eclat (cœur terne) ; rien si le cœur est bien  
+1\. Cœur| E16 (E23) HDRMT_30| HDRMT_40 (cœur encore trop clair), HDRMT_50 (cœur brûlé), HDRMT_eclat (cœur terne) ; rien si le cœur est bien  
 2\. Contraste| E17 (E23) C_Finition : masque, Courbes, LHE 150, LHE_fin 40, masque retiré| après : Boost_finition_light ou Boost_finition  
 3\. Bruit| E18 (E24) NXT_final 0,40| NXT_final_doux (0,25) ou NXT_final_fort (0,60)  
 4\. Étoiles| E19 (E25) Etoiles_screen| avant, sur RGB_stars : **Etoiles_grosses** (réduit seulement les grosses étoiles et leur halo), Etoiles_plafond (cœurs cramés) ; Halo_B_Gon et MT_etoiles réduisent aussi les petites étoiles ; à la place : Etoiles_reduites (réduit toutes les étoiles)  

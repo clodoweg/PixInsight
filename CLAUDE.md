@@ -51,9 +51,9 @@ Process galaxies (demande de l'utilisateur, 5 octobre 2026) : L sans étoiles, R
 - **P3 LRGB** : C_RGB_lineaire (BXT Correct Only, SPCC, BXT, NXT), C_L_lineaire (BXT, NXT, SXT_L_lineaire sans image d'étoiles). **P3 LHaRGB** : C_RGB_couleur, BXT_L_H, Continuum_auto (HaNB), H_dans_RGB, C_RGB_bruit (NXT, ferme H, R, HaNB), NXT_L, SXT_L_lineaire.
 - **P4** : GHS_1 (à la main), GHS_2 sur L sans étoiles ; MAS (réglages de l'utilisateur, fond 0,15) puis SXT_RGB_etire (Unscreen, crée RGB_stars) sur RGB ; GHS_3_fond sur L et sur le RGB sans étoiles. Options : Statistical_Stretch (à la place de MAS), VeraLux_HMS.
 - **P5** : LRGB_ajout_L sur les deux images sans étoiles, Saturation 0,5 ; option Etoiles_auto_etire.
-- **P6** : HDRMT_40, C_Finition, NXT_final (+ options).
+- **P6** : HDRMT_30 (par défaut ; HDRMT_40 en option), C_Finition, NXT_final (+ options).
 - **P7** : Etoiles_screen, Fond_desature (seul, à la place de l'ancien C_Fond_final) ; options SCNR_vert, Fond_auto, Fond_auto_clair, Etoiles_grosses, Etoiles_plafond, Etoiles_reduites, Boost_final, Agrandir_x2, ICC_sRGB, Export_TIFF (ferme L et RGB_stars).
-- **Rapide** : R_C_Preparation_rapide, R_Gradient_auto_rapide, R_Lineaire_rapide (script Lineaire_auto), GHS_1 puis R_C_Fin_GHS_rapide sur L, R_C_RGB_etire_rapide (MAS, SXT, GHS fond), R_C_LRGB_rapide (LRGB, Etoiles_auto_etire), R_C_Fin_rapide, R_C_Etoiles_fond_rapide (Etoiles_screen, Fond_desature, Export_TIFF).
+- **Rapide** : R_C_Preparation_rapide, R_Gradient_auto_rapide, R_Lineaire_rapide (script Lineaire_auto), GHS_1 puis R_C_Fin_GHS_rapide sur L, R_C_RGB_etire_rapide (MAS, SXT, GHS fond), R_C_LRGB_rapide (LRGB seul), R_C_Fin_rapide, R_C_Etoiles_fond_rapide (Etoiles_screen, Fond_desature, Export_TIFF).
 
 ## Contraintes PixInsight apprises
 

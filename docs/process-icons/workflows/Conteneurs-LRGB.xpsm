@@ -1795,7 +1795,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <description>OPTIONS de la phase 5 — Couleur : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
    </instance>
    <instance class="Script" version="256" id="Opt_Etoiles_auto_etire_instance">
-      <description>OPTION — après SXT_RGB_etire : étoiles ternes ou un peu vertes&#10;Glisse sur n'importe quelle image (traite RGB_stars) : saturation 1,3 et SCNR, sans étirement (étoiles déjà étirées).&#10;&#10;LANCEMENT : glisse l'icône sur l'image.&#10;&#10;PRÉRÉGLÉ : script Etoiles_auto, amount 0 (étoiles déjà étirées) : saturation 1,3 (0,4 × rouges, 0,7 × cyans) et SCNR vert seulement.&#10;&#10;À RÉGLER : glisse sur n'importe quelle image après SXT_RGB_etire (traite RGB_stars) ; dans R_C_LRGB_rapide : rien.&#10;&#10;SI :&#10;- étoiles criardes -&gt; satAmount 1,0&#10;- étoiles ternes -&gt; scnr false</description>
+      <description>OPTION — après SXT_RGB_etire : étoiles ternes ou un peu vertes&#10;Glisse sur n'importe quelle image (traite RGB_stars) : saturation 1,3 et SCNR, sans étirement (étoiles déjà étirées).&#10;&#10;LANCEMENT : glisse l'icône sur l'image.&#10;&#10;PRÉRÉGLÉ : script Etoiles_auto, amount 0 (étoiles déjà étirées) : saturation 1,3 (0,4 × rouges, 0,7 × cyans) et SCNR vert seulement.&#10;&#10;À RÉGLER : glisse sur n'importe quelle image après SXT_RGB_etire (traite RGB_stars).&#10;&#10;SI :&#10;- étoiles criardes -&gt; satAmount 1,0&#10;- étoiles ternes -&gt; scnr false</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="4">
@@ -1819,7 +1819,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="information"></parameter>
    </instance>
    <instance class="NoOperation" version="256" id="P5_rapide_instance">
-      <description>MODE RAPIDE, phase 5 — Couleur : R_C_LRGB_rapide sur RGB sans étoiles (L sans étoiles ouverte) à la place de LRGB_ajout_L : L ajoutée (Saturation 0,5), puis Etoiles_auto_etire (saturation et SCNR de RGB_stars). Icône de repère, sans effet.</description>
+      <description>MODE RAPIDE, phase 5 — Couleur : R_C_LRGB_rapide sur RGB sans étoiles (L sans étoiles ouverte) à la place de LRGB_ajout_L : L ajoutée (Saturation 0,5) ; Etoiles_auto_etire en option si besoin. Icône de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="R_C_LRGB_rapide_instance">
       <instance class="LRGBCombination" version="256" enabled="true">
@@ -1853,34 +1853,11 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          <parameter id="layersProtected" value="2"/>
          <parameter id="inheritAstrometricSolution" value="true"/>
       </instance>
-      <instance class="Script" version="256" enabled="true">
-         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js</parameter>
-         <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="4">
-            <tr>
-               <td id="id">vue</td>
-               <td id="value">RGB_stars</td>
-            </tr>
-            <tr>
-               <td id="id">amount</td>
-               <td id="value">0</td>
-            </tr>
-            <tr>
-               <td id="id">satAmount</td>
-               <td id="value">1.3</td>
-            </tr>
-            <tr>
-               <td id="id">scnr</td>
-               <td id="value">true</td>
-            </tr>
-         </table>
-         <parameter id="information"></parameter>
-      </instance>
    </instance>
    <instance class="NoOperation" version="256" id="P6_Finition_instance">
       <description>PHASE 6 — Finition : contraste et saturation sur l'image sans étoiles. Colonne de repère, sans effet.</description>
    </instance>
-   <instance class="ProcessContainer" id="E16_HDRMT_40_instance">
+   <instance class="ProcessContainer" id="E16_HDRMT_30_instance">
       <instance class="PixelMath" version="256" enabled="true">
          <parameter id="expression">$T</parameter>
          <parameter id="expression1"></parameter>
@@ -1933,7 +1910,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          <parameter id="intensity" value="1.00"/>
       </instance>
       <instance class="PixelMath" version="256" enabled="true">
-         <parameter id="expression">a = 0.4;
+         <parameter id="expression">a = 0.3;
    a*$T + (1 - a)*HDR_avant</parameter>
          <parameter id="expression1"></parameter>
          <parameter id="expression2"></parameter>
@@ -2245,7 +2222,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </table>
       <parameter id="information"></parameter>
    </instance>
-   <instance class="ProcessContainer" id="Opt_HDRMT_30_instance">
+   <instance class="ProcessContainer" id="Opt_HDRMT_40_instance">
       <instance class="PixelMath" version="256" enabled="true">
          <parameter id="expression">$T</parameter>
          <parameter id="expression1"></parameter>
@@ -2298,7 +2275,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          <parameter id="intensity" value="1.00"/>
       </instance>
       <instance class="PixelMath" version="256" enabled="true">
-         <parameter id="expression">a = 0.3;
+         <parameter id="expression">a = 0.4;
    a*$T + (1 - a)*HDR_avant</parameter>
          <parameter id="expression1"></parameter>
          <parameter id="expression2"></parameter>
@@ -4202,12 +4179,12 @@ max($T,f1)</parameter>
    <icon id="P5_rapide" instance="P5_rapide_instance" xpos="795" ypos="190" workspace="Workspace01"/>
    <icon id="R_C_LRGB_rapide" instance="R_C_LRGB_rapide_instance" xpos="795" ypos="224" workspace="Workspace01"/>
    <icon id="P6_Finition" instance="P6_Finition_instance" xpos="982" ypos="20" workspace="Workspace01"/>
-   <icon id="E16_HDRMT_40" instance="E16_HDRMT_40_instance" xpos="982" ypos="64" workspace="Workspace01"/>
+   <icon id="E16_HDRMT_30" instance="E16_HDRMT_30_instance" xpos="982" ypos="64" workspace="Workspace01"/>
    <icon id="E17_C_Finition" instance="E17_C_Finition_instance" xpos="982" ypos="94" workspace="Workspace01"/>
    <icon id="E18_NXT_final" instance="E18_NXT_final_instance" xpos="982" ypos="124" workspace="Workspace01"/>
    <icon id="P6_options" instance="P6_options_instance" xpos="982" ypos="170" workspace="Workspace01"/>
    <icon id="Opt_Nettoyage_sans_etoiles" instance="Opt_Nettoyage_sans_etoiles_instance" xpos="982" ypos="204" workspace="Workspace01"/>
-   <icon id="Opt_HDRMT_30" instance="Opt_HDRMT_30_instance" xpos="982" ypos="234" workspace="Workspace01"/>
+   <icon id="Opt_HDRMT_40" instance="Opt_HDRMT_40_instance" xpos="982" ypos="234" workspace="Workspace01"/>
    <icon id="Opt_HDRMT_50" instance="Opt_HDRMT_50_instance" xpos="982" ypos="264" workspace="Workspace01"/>
    <icon id="Opt_HDRMT_eclat" instance="Opt_HDRMT_eclat_instance" xpos="982" ypos="294" workspace="Workspace01"/>
    <icon id="Opt_DarkStructureEnhance" instance="Opt_DarkStructureEnhance_instance" xpos="982" ypos="324" workspace="Workspace01"/>
