@@ -159,8 +159,6 @@ def shorten(xml, prefix, base):
     if xml.lstrip().startswith('<instance class="ProcessContainer"'):
         # conteneur (retour de l'utilisateur) : rien ne disait de le GLISSER ; le rond Apply Global échoue avec des process natifs
         drag = 'cont_global' if '/GC_Solver_auto.js' in xml else 'cont'
-        if base == 'C_P3_rapide':
-            drag = 'cont_scripts'   # scripts seulement (Lineaire_auto, Fermer_vues) : Apply Global
         if '<description>' not in xml:
             xml = re.sub(r'(<instance class="ProcessContainer" id="[^"]*">)', r'\1\n      <description></description>', xml, count=1)
     elif base in SCRIPTS and 'class="Script"' in xml:
@@ -168,7 +166,7 @@ def shorten(xml, prefix, base):
         drag = launch.startswith(L_DRAG)
         if '/clodoweg/' in path:
             drag = 'dlg'   # script de la fiche avec fenêtre de réglages (demande de l'utilisateur)
-    short = escape(SD.text(prefix, base, drag, bool(md5)) if SD.has(prefix, base) else SD.LAUNCH[drag] if drag in ('cont', 'cont_global', 'cont_scripts') else '')
+    short = escape(SD.text(prefix, base, drag, bool(md5)) if SD.has(prefix, base) else SD.LAUNCH[drag] if drag in ('cont', 'cont_global') else '')
     return re.sub(r'<description>.*?</description>', lambda m: '<description>%s</description>' % short, xml, count=1, flags=re.S)
 
 ASCII = ['Preparation', 'Gradient', 'Lineaire', 'Etirement', 'Couleur', 'Finition', 'Etoiles']
@@ -211,7 +209,7 @@ def layout(entries, naming):
     return insts, icons
 
 TURBO = {'Turbo_debut'}   # ancien mode Turbo supprimé ; Turbo_debut ajouté ensuite (demande de l'utilisateur, 5 octobre 2026)
-RAPIDE = {'Lineaire_rapide', 'C_Ha_rapide', 'C_P3_rapide', 'C_RGB_etire_rapide', 'C_Fin_rapide', 'C_Etoiles_fond_rapide', 'C_Preparation_rapide', 'Gradient_auto_rapide', 'C_RGB_rapide', 'C_L_rapide', 'C_RGB_fin_rapide', 'C_LRGB_rapide'}
+RAPIDE = {'Lineaire_rapide', 'C_Ha_rapide', 'C_RGB_etire_rapide', 'C_Fin_rapide', 'C_Etoiles_fond_rapide', 'C_Preparation_rapide', 'Gradient_auto_rapide', 'C_RGB_rapide', 'C_L_rapide', 'C_RGB_fin_rapide', 'C_LRGB_rapide'}
 RAPIDE_NOTE = {
     'LRGB': {1: "MODE RAPIDE (galaxies) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre (étoiles gardées jusqu'à LRGB) : R_C_Preparation_rapide ; R_Gradient_auto_rapide ; R_Lineaire_rapide (RGB et L) ; GHS_1_premier, GHS_2_contraste, GHS_3_fond sur L ; R_C_RGB_etire_rapide sur RGB ; R_C_LRGB_rapide (LRGB sans étoiles) ; finition. Phase 1 : R_C_Preparation_rapide (double-clic puis Apply Global) à la place de LinearPatternSubtraction, Renommer_auto, Combinaison_RGB et Solver_auto",
              2: "R_Gradient_auto_rapide à la place de toute la phase 2 : GradientCorrection sur toutes les images ouvertes (l'astrométrie est déjà faite par R_C_Preparation_rapide)",
@@ -222,7 +220,7 @@ RAPIDE_NOTE = {
              7: "R_C_Etoiles_fond_rapide sur l'image sans étoiles finie : Fond_desature, Fond_auto (0,12) sur l'image sans étoiles, étoiles remises (Etoiles_screen), NXT_dernier (0,25), puis Export_TIFF en un seul conteneur"},
     'LHA': {1: "MODE RAPIDE (galaxies) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre : R_C_Preparation_rapide ; R_Gradient_auto_rapide ; R_Lineaire_rapide (RGB, L et H), Continuum_auto, H_dans_RGB, C_RGB_bruit (étoiles gardées) ; GHS_1_premier, GHS_2_contraste, GHS_3_fond sur L ; R_C_RGB_etire_rapide sur RGB ; R_C_LRGB_rapide (LRGB sans étoiles) ; finition. Phase 1 : R_C_Preparation_rapide (double-clic puis Apply Global) à la place de LinearPatternSubtraction, Renommer_auto, Combinaison_RGB et Solver_auto",
             2: "R_Gradient_auto_rapide à la place de toute la phase 2 : GradientCorrection sur toutes les images ouvertes (R et H compris, pour le continuum) ; l'astrométrie est déjà faite par R_C_Preparation_rapide",
-            3: "R_C_P3_rapide (double-clic puis Apply Global) à la place de toute la phase 3 : C_RGB_couleur sur RGB, BXT_L_H sur L et H, NXT_L et SXT_L_lineaire sur L, puis R_C_Ha_rapide sur RGB (H ajouté au rouge en screen, NXT), puis H, R fermées ; R_C_Ha_rapide doit rester chargée ; continuum en option (chemin principal)",
+            3: "R_Lineaire_rapide (double-clic puis Apply Global) à la place de C_RGB_couleur, BXT_L_H, NXT_L et SXT_L_lineaire ; puis R_C_Ha_rapide glissé sur RGB à la place de CombineHaWithRGB et C_RGB_bruit : H ajouté au rouge en screen (calcul de CombineHaWithRGB), NXT, H, R fermées ; continuum en option (Continuum_auto, à la main, avant)",
             4: "GHS_1_premier sur L sans étoiles (chemin principal, à régler), puis GHS_2_contraste et GHS_3_fond (chemin principal) sur L ; R_C_RGB_etire_rapide sur RGB (MAS avec étoiles, SXT Unscreen qui crée RGB_stars, SCNR vert sur RGB_stars, GHS fond)",
             5: "R_C_LRGB_rapide sur RGB sans étoiles (L sans étoiles ouverte) à la place de LRGB_ajout_L : L ajoutée (Saturation 0,5)",
             6: "R_C_Fin_rapide sur l'image sans étoiles après LRGB_ajout_L (ou R_C_LRGB_rapide) : HDRMT à 30 %, masque, Courbes, LHE, LHE_fin, Sharp_MMT, masque retiré, NXT_final 0,40 en un seul conteneur (= HDRMT_30, C_Finition, C_Sharp_MMT et NXT_final)",
@@ -1179,7 +1177,7 @@ for _b in ('NXT_L', 'SXT_L_lineaire'):
     _it = pick(lhargb, _b)
     lhargb.remove(_it)
     insert_before(lhargb, 'Continuum_auto', [_it])
-insert_after(lhargb, 'Lineaire_rapide', [(cont('C_Ha_rapide', [pick(lhargb, b)[0] for b in ('Ha_screen', 'NXT_RGB')]), '')])   # LHaRGB (demande de l'utilisateur) : CombineHaWithRGB au chemin principal après Continuum_auto (H = HaNB), H_dans_RGB en option
+insert_after(lhargb, 'Lineaire_rapide', [(cont('C_Ha_rapide', [pick(lhargb, b)[0] for b in ('Ha_screen', 'NXT_RGB', 'Fermer_continuum')]), '')])   # LHaRGB (demande de l'utilisateur) : CombineHaWithRGB au chemin principal après Continuum_auto (H = HaNB), H_dans_RGB en option
 
 def turbo_debut(steps, extra=()):
     """Turbo (demande de l'utilisateur) : en une fois R_C_Preparation_rapide, R_Gradient_auto_rapide, R_Lineaire_rapide (leurs étapes à la suite, un seul conteneur, Apply Global)"""
@@ -1193,10 +1191,6 @@ SUPPR_GALAXIES = {'Etoiles_grosses', 'Etoiles_plafond'}   # Etoiles_auto_etire, 
 for _st in (lrgb, lhargb):
     _st[:] = [x for x in _st if x[0][0] not in SUPPR_GALAXIES]
 lhargb[:] = [x for x in lhargb if x[0][0] != 'Ha_screen']   # Ha_screen : seulement dans R_C_Ha_rapide (demande de l'utilisateur)
-# LHaRGB, P3 en un seul rapide (demande de l'utilisateur) : R_C_P3_rapide (Apply Global) = Lineaire_auto (C_RGB_couleur, BXT_L_H, NXT_L, SXT_L_lineaire,
-# puis l'icône R_C_Ha_rapide sur RGB : Ha_screen + NXT) et Fermer_vues (H, R, HaNB) ; R_Lineaire_rapide retirée (le turbo garde ses étapes)
-_i = next(k for k, (it, d) in enumerate(lhargb) if it[0] == 'Lineaire_rapide')
-lhargb[_i] = (cont('C_P3_rapide', [lineaire_rapide('C_RGB_couleur>RGB ; BXT_L_H>L,H ; NXT_L>L ; SXT_L_lineaire>L ; R_C_Ha_rapide>RGB'), fermer('Fermer_P3', 'H, R, HaNB')]), '')
 
 for fn, pre, title, steps in [
     ('Workflow-LRGB.xpsm', 'LRGB', 'Workflow LRGB', lrgb),

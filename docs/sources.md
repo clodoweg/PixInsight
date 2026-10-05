@@ -802,8 +802,3 @@ Correction : screen écrit en clair, R' = 1 − (1 − R)·(1 − h), h = min(1,
 
 Demande : « Mets ca plutot dans Combine Ha With RGB et met le continuum en Option » avec l'instance de l'utilisateur (CombineHaToRGB.js, md5 140cbb0fc118263dc1d71b8e9e39f0e1, alphaView H, amount 2, beta 0, linear true, rgbLinked true, bg 0,015, rgbView « [object Object] », invertMask true, sigma 0).
 Fait : icône CombineHaWithRGB réglée ainsi (rgbView omis : valeur non valable, et le script relit rgbView avec l'id d'alphaView, bug du script) et lancée par double-clic (L_GLOBAL) ; Continuum_auto en option ; Ha_screen (R_C_Ha_rapide) calculé sur H. Numéros LHaRGB décalés de −1 à partir de C_RGB_bruit (E15). LRGB inchangé.
-
-### LHaRGB : P3 en un seul rapide (5 octobre 2026)
-
-Demande : « dans ce cas on peut tout mettre dans un seul rapide? »
-Fait : R_C_P3_rapide (Apply Global) = Lineaire_auto (etapes C_RGB_couleur>RGB ; BXT_L_H>L,H ; NXT_L>L ; SXT_L_lineaire>L ; R_C_Ha_rapide>RGB) + Fermer_vues (H, R, HaNB) ; R_C_Ha_rapide réduite à Ha_screen + NXT (lancée par son nom, à garder chargée) ; R_Lineaire_rapide retirée du LHaRGB (le turbo garde ses étapes). Script Lineaire_auto non modifié (partagé avec le LRGB). LRGB inchangé.
