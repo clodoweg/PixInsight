@@ -664,3 +664,10 @@ Sources :
 Demande : « fais une icone avant MAS qui fait tout tout seul (mais pas dans rapide, c'est juste une option).  fais l'option Etoiles_couleur »
 
 Fait : script Etoiles_couleur.js (principe de RepairedHSVSeparation, sources ci-dessus, refait sans fenêtre ni ChannelCombination : couleur du halo reportée dans les cœurs saturés par convolution normalisée, luminance gardée). Icônes Opt_Coeurs_etoiles (P4, avant MAS, RGB linéaire, pas en rapide) et Opt_Etoiles_couleur (P7, RGB_stars avant Etoiles_screen, cœurs assombris à 0,85 puis saturation 1,0), en LRGB et LHaRGB.
+
+### Icône RepairedHSV (5 octobre 2026)
+
+Demande : « et tu peux faire une icone pour le hsv repaired? »
+
+Source : code du script, https://gitlab.com/pixinsight/PJSR (src/scripts/misc/RepairedHSVSeparation.js, v1.0.3, Bob Andersson) : feature-id Utilities > Repaired HSV Separation ; travaille sur ImageWindow.activeWindow ; toujours avec sa fenêtre, pas de lecture de Parameters (réglages dans Settings) ; défauts BlackClips 0, WhiteClips 0,5 (« Repair level »), StarRadius 16 ; option « Repaired RGB » : ChannelCombination HSV interne, image `<id>_Repaired_RGB`.
+Fait : icône Opt_RepairedHSV (Script, $PXI_SRCDIR/scripts/misc/RepairedHSVSeparation.js), P4, avant MAS, à côté de Coeurs_etoiles, LRGB et LHaRGB, pas en rapide.

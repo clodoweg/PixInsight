@@ -543,6 +543,24 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - taches de couleur sur le cœur de la galaxie -> seuil 0.70
 > - rien ne change -> cœurs déjà colorés : Etoiles_couleur en P7
 
+#### Opt_RepairedHSV — Script
+   script `$PXI_SRCDIR/scripts/misc/RepairedHSVSeparation.js`
+
+> OPTION — à la place de Coeurs_etoiles, pour comparer : le script officiel Repaired HSV Separation (fenêtre), sur le RGB linéaire juste AVANT MAS
+> Il crée une copie réparée, l'original ne change pas (pas en rapide).
+> 
+> LANCEMENT : double-clic sur l'icône, puis Apply Global.
+> 
+> PRÉRÉGLÉ : script Repaired HSV Separation (Bob Andersson, livré avec PixInsight, Script › Utilities) : sépare H, Sv, V, répare H et Sv des pixels proches de la saturation avec les valeurs autour ; réglages dans sa fenêtre : Repair level 0,5 (défaut), Max Repair Radius 16, Clip Shadows 0.
+> 
+> À RÉGLER : clique sur le RGB LINÉAIRE (après C_RGB_lineaire), puis double-clic sur l'icône et Apply Global ; dans la fenêtre coche « Repaired RGB » : crée RGB_Repaired_RGB (plus H, Sv, V à fermer) ; continue MAS et SXT sur RGB_Repaired_RGB (renomme-la RGB, ferme l'ancien) ; compare avec Coeurs_etoiles.
+> 
+> SI :
+> - résultat pas bon -> Repair level 0,4 ou 0,6 (seuil au-dessus duquel les pixels sont réparés ; un test publié trouve 0,5 le meilleur)
+> - cœurs aux couleurs coupées -> Coeurs_etoiles à la place
+> - grosses étoiles pas réparées au centre -> Max Repair Radius 24
+> - script introuvable -> menu Script › Utilities › Repaired HSV Separation
+
 #### Opt_Statistical_Stretch — Script
    script `$PXI_SRCDIR/scripts/statisticalstretch.js`
    paramètres : `targetMedian=0.25`, `curvesBoost=0`, `numIterations=1`, `normalizeImageRange=false`, `linkedStretch=true`, `openDialogbox=true`, `autoConvergence=false`, `blackpointSigma=5`, `noBlackClip=false`, `hdrCompress=false`, `hdrAmount=0.25`, `hdrKnee=0.35`, `lumaOnly=false`, `lumaMode=rec709`, `lumaBlend=0.6`

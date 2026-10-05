@@ -79,6 +79,8 @@ SCRIPTS = {
     'Star_Stretch': ('$PXI_SRCDIR/scripts/star_stretch.js', '69a1ee6db4e9f5374c2cddb1e5a7f4ae',
              [('amount', '6'), ('satAmount', '1.3'), ('removeGreen', 'true'), ('showPreview', 'false')],
              L_DRAG + "Glisse-la sur l'image d'étoiles linéaire : le dialogue s'ouvre avec Stretch Amount 6 (choix de la fiche ; défaut du script 5) et Color Boost 1,3. "),
+    'RepairedHSV': ('$PXI_SRCDIR/scripts/misc/RepairedHSVSeparation.js', '', [],   # script livré avec PixInsight (dépôt PJSR, src/scripts/misc), demande de l'utilisateur
+             L_GLOBAL + "Le script travaille sur l'image ACTIVE (clique d'abord sur le RGB linéaire) et ne lit pas de paramètres d'icône : réglages dans son dialogue (gardés d'une fois sur l'autre). "),
     'Halo_B_Gon': ('$PXI_SRCDIR/scripts/Halo-B-Gon.js', 'b9427e718e2b9760704c8c738e0893b7', [],
              L_GLOBAL + "Ce script ne lit pas de paramètres d'icône : les réglages se font dans son dialogue. "),
     'NB_to_RGB_Stars': ('$PXI_SRCDIR/scripts/NBtoRGBStars.js', '0fae2f23d6f23037fb118fd1ef749592', [],
@@ -1131,7 +1133,7 @@ insert_after(lrgb, 'ImageSolver', [(script('Gradient_auto_rapide', ''), '')])
 for _st in (lrgb, lhargb):
     insert_after(_st, 'SXT_RGB_etire', [(script('SCNR_etoiles', ''), '')])
     # options (demande de l'utilisateur) : Coeurs_etoiles avant MAS (RGB linéaire, pas en rapide), Etoiles_couleur sur RGB_stars avant Etoiles_screen
-    insert_before(_st, 'MAS', [(script('Coeurs_etoiles', ''), '')])
+    insert_before(_st, 'MAS', [(script('Coeurs_etoiles', ''), ''), (script('RepairedHSV', ''), '')])   # RepairedHSV : le script officiel, avec sa fenêtre (demande de l'utilisateur)
     insert_before(_st, 'Etoiles_grosses', [(script('Etoiles_couleur', ''), '')])
     # P7 (demande de l'utilisateur) : Fond_desature, Fond_auto (et Fond_auto_clair) sur l'image SANS étoiles, puis Etoiles_screen
     for _b in ('Fond_desature', 'Fond_auto', 'Fond_auto_clair'):
