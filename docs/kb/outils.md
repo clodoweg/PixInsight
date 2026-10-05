@@ -1017,7 +1017,7 @@ Paramètres
 **À régler :**
 
 - **RGB/K** : courbe en S : 0,25 → 0,19 et 0,75 → 0,81
-- **S (saturation)** : milieu 0,5 → 0,65
+- **S (saturation)** : milieu 0,5 → 0,58 en galaxies (LRGB, LHaRGB ; 0,65 trop saturé, gardé en option Finition_saturee), 0,65 en narrowband
 - **Masque** : Masque_L
 
   * Trop saturé → S à 0,60 ; ternes → 0,72. Pas assez → option Boost_finition.
@@ -1034,7 +1034,7 @@ Canaux
 
 - **RGB/K** : Courbe en S 0,25 → 0,19, 0,75 → 0,81.
 
-- **S** : Saturation selon la saturation : sature les pixels ternes sans toucher aux autres ; milieu 0,5 → 0,65.
+- **S** : Saturation selon la saturation : sature les pixels ternes sans toucher aux autres ; milieu 0,5 → 0,58 en galaxies (0,65 : option Finition_saturee), 0,65 en narrowband.
 
 - **H** : Teinte : en SHO, déplace le vert vers l'or ou règle le cyan.
 

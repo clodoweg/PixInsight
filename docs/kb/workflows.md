@@ -45,7 +45,7 @@ Partie| Icône par défaut| Options
 ---|---|---  
 0\. Nettoyage| (option) Opt_Nettoyage_sans_etoiles : restes de halos des étoiles brillantes après SXT, RGB_stars ouverte| réglages et cas dans la description de l'icône  
 1\. Cœur| E17 (E24) HDRMT_30| HDRMT_40 (cœur encore trop clair), HDRMT_50 (cœur brûlé), HDRMT_eclat (cœur terne) ; rien si le cœur est bien  
-2\. Contraste| E18 (E25) C_Finition : masque, Courbes, LHE 150, LHE_fin 40, masque retiré| après : Boost_finition_light ou Boost_finition  
+2\. Contraste| E18 (E25) C_Finition : masque, Courbes (saturation 0,58), LHE 150, LHE_fin 40, masque retiré| à la place : Finition_saturee (même chose, saturation 0,65 : l'ancienne C_Finition) ; après : Boost_finition_light ou Boost_finition  
 2b. Accentuation| E19 (E26) C_Sharp_MMT (MMT sous masque)| à la place : Sharp_USM (UnsharpMask) ; en rapide : Sharp_MMT dans R_C_Fin_rapide  
 3\. Bruit| E20 (E27) NXT_final 0,40| NXT_final_doux (0,25) ou NXT_final_fort (0,60)  
 4\. Fond, puis étoiles| E21 (E28) Fond_desature, E22 (E29) Fond_auto (0,12), puis E23 (E30) Etoiles_screen (SCNR des étoiles déjà fait en P4, SCNR_etoiles)| avant, sur RGB_stars : **Etoiles_grosses** (réduit seulement les grosses étoiles et leur halo), Etoiles_plafond (cœurs cramés) ; Halo_B_Gon et MT_etoiles réduisent aussi les petites étoiles ; à la place : Etoiles_reduites (réduit toutes les étoiles)  

@@ -685,15 +685,29 @@ def sharp_usm():
     """Option P6 (demande de l'utilisateur) : accentuation finale par UnsharpMask, sous masque de luminance, sur l'image sans étoiles."""
     return _cont('Sharp_USM', [script('Masque_L', ''), usm(), script('Masque_retirer', '')])
 
+D_CURVES_G = D_CURVES.replace("milieu monté de 0,5 à 0,65", "milieu monté de 0,5 à 0,58").replace(
+    "saturation modérée (0,72 jugé trop saturé sur NGC 1532). Trop saturé -> milieu S à 0,60 ; couleurs ternes -> 0,72",
+    "saturation légère (0,72 puis 0,65 jugés trop saturés par l'utilisateur ; 0,65 reste en option Finition_saturee). Trop saturé -> milieu S à 0,54 ; couleurs ternes -> Finition_saturee (0,65)")
+assert D_CURVES_G != D_CURVES
+
+def finition_saturee():
+    """Option P6 (demande de l'utilisateur) : l'ancienne C_Finition, saturation 0,65 (la principale passe à 0,58)."""
+    return _cont('Finition_saturee', [script('Masque_L', ''), curves('Courbes_saturees', sat=0.65),
+        M.instance('LocalHistogramEqualization', 'LHE', {'radius': 150, 'histogramBins': 'Bit12', 'slopeLimit': '2.0', 'amount': '0.300', 'circularKernel': True}),
+        M.instance('LocalHistogramEqualization', 'LHE_fin', {'radius': 40, 'histogramBins': 'Bit10', 'slopeLimit': '2.0', 'amount': '0.250', 'circularKernel': True}),
+        script('Masque_retirer', '')])
+
 def finish_block(extra=None, galaxie=False):
     if galaxie:
         # finition en parties (demande de l'utilisateur) : 1 cœur (HDRMT 40 %), 2 contraste (C_Finition), 3 bruit (NXT_final), chacune avec ses options
         b = [(script('Nettoyage_sans_etoiles', ''), ''),   # option, avant la partie 1 : restes de halos d'étoiles (demande de l'utilisateur)
              (_cont('HDRMT_30', hdrmt_items('0.3')), D_HDRMT30), (_cont('HDRMT_40', hdrmt_items('0.4')), ''), (hdrmt_50(), ''), (hdrmt_eclat(), ''),   # HDRMT_30 par défaut (demande de l'utilisateur)
              (note('Masque_L', D_MASK), ''),
-             (curves('Courbes'), D_CURVES), (M.instance('LocalHistogramEqualization', 'LHE', {'radius': 150, 'histogramBins': 'Bit12', 'slopeLimit': '2.0', 'amount': '0.300', 'circularKernel': True}), D_LHE),
+             (curves('Courbes', sat=0.58), D_CURVES_G),   # saturation 0,58 au lieu de 0,65 (demande de l'utilisateur : C_Finition trop saturée)
+             (M.instance('LocalHistogramEqualization', 'LHE', {'radius': 150, 'histogramBins': 'Bit12', 'slopeLimit': '2.0', 'amount': '0.300', 'circularKernel': True}), D_LHE),
              (M.instance('LocalHistogramEqualization', 'LHE_fin', {'radius': 40, 'histogramBins': 'Bit10', 'slopeLimit': '2.0', 'amount': '0.250', 'circularKernel': True}), D_LHE_FIN),
              (note('Masque_retirer', ''), ''),
+             (finition_saturee(), ''),   # option : l'ancienne C_Finition (saturation 0,65), la nouvelle sature moins (demande de l'utilisateur)
              (boost_container('Boost_finition_light', k=((0, 0), (0.25, 0.24), (0.75, 0.76), (1, 1)), sat=0.57, amount='0.120'), ''),
              (boost_container(), ''),
              (sharp_mmt(), ''), (sharp_usm(), ''),   # accentuation finale : MMT au chemin principal, UnsharpMask en option (demande de l'utilisateur)

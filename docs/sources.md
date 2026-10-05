@@ -643,3 +643,9 @@ Question : « le R_C_Etoiles_fond_rapide fait bien les bons process sur les bonn
 Demande : « du coup enlève E20_SCNR_vert du P7 et du rapide et rajoute le dans P4 et dans le rapide R_C_RGB_etire_rapide sur le RGB stars »
 
 Fait : SCNR_vert retiré de P7 et de R_C_Etoiles_fond_rapide. Nouvelle icône SCNR_etoiles (P4, juste après SXT_RGB_etire ; LRGB E14, LHaRGB E21) : script Etoiles_auto réglé vue RGB_stars, amount 0, satAmount 0, scnr true (SCNR vert 1,0, Average Neutral, Preserve lightness), qui traite toujours la vue RGB_stars, quelle que soit l'image où on glisse l'icône (un SCNR natif dans un conteneur ne traite que l'image cible). Ajoutée aussi dans R_C_RGB_etire_rapide (MAS, SXT, SCNR_etoiles, GHS fond). Numéros suivants décalés de 1 jusqu'à NXT_final.
+
+### C_Finition moins saturée (5 octobre 2026)
+
+Demande : « je trouve que E17_C_Finition monte un peu trop la saturation. Mais le en option et dans le normal une finition qui sature un peu moins (que tu inclus aussi dans le rapide) »
+
+Fait (galaxies, LRGB et LHaRGB) : Courbes de C_Finition et de R_C_Fin_rapide, canal S, milieu 0,5 -> 0,58 au lieu de 0,65 (courbe en S de contraste inchangée). L'ancienne finition (saturation 0,65) devient l'option Opt_Finition_saturee (P6). Narrowband pas encore changé.
