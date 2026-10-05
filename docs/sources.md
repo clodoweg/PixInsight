@@ -630,3 +630,9 @@ Non vérifié : réglages de Ron Brecher et Dave Cosgrove lus sur leurs pages (p
 Demande : « pareil , quand j'applique je pas les modifs sur l'image ni ctrl-z »
 
 Correction : `cwApplyOnCopy` (clodoweg_ui.jsh) reprend le schéma validé sur Etoiles_grosses : le résultat final est calculé par un PixelMath exécuté sur l'image cible (nouvelle image cachée), puis recopié entre beginProcess et endProcess. MMT tourne sur une copie sans masque ; le masque attaché (Masque_L) sert au mélange `m*copie + (1-m)*$T` (`cwMaskBlend`). Vaut pour tous les scripts qui utilisent cwApplyOnCopy.
+
+### Sharp_MMT dans le mode rapide (5 octobre 2026)
+
+Demande : « rajoute le dans le rapide »
+
+Fait : script Sharp_MMT ajouté dans R_C_Fin_rapide (LRGB et LHaRGB), après LHE_fin, sous le masque de luminance déjà attaché, avant Masque_retirer et NXT_final (même ordre que le chemin principal).

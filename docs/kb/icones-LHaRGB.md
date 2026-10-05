@@ -920,22 +920,26 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
    8. LocalHistogramEqualization
       radius=40 ; histogramBins=Bit10 ; slopeLimit=2.0 ; amount=0.250 ; circularKernel=true
    9. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Sharp_MMT.js`
+      paramètres : `biais=0.04`, `premiere=2`, `derniere=4`, `couches=5`, `dialogue=false`
+   10. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
       paramètres : `mode=retirer`, `nom=masque_L`, `dialogue=false`
-   10. NoiseXTerminator
+   11. NoiseXTerminator
       ml_version=0 ; denoise=0.40 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
 
-> MODE RAPIDE, à la place de HDRMT_30, C_Finition et NXT_final : sur l'image sans étoiles après LRGB_ajout_L (ou R_C_LRGB_rapide).
+> MODE RAPIDE, à la place de HDRMT_30, C_Finition, C_Sharp_MMT et NXT_final : sur l'image sans étoiles après LRGB_ajout_L (ou R_C_LRGB_rapide).
 > 
 > LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
 > 
-> PRÉRÉGLÉ : conteneur : HDRMT à 30 % (copie HDR_avant, HDRMT 6 couches, mélange 0,3 × résultat + 0,7 × copie, copie fermée), masque de luminance attaché, Courbes, LHE (rayon 150), LHE_fin (rayon 40), masque retiré, NXT_final (Denoise 0,40).
+> PRÉRÉGLÉ : conteneur : HDRMT à 30 % (copie HDR_avant, HDRMT 6 couches, mélange 0,3 × résultat + 0,7 × copie, copie fermée), masque de luminance attaché, Courbes, LHE (rayon 150), LHE_fin (rayon 40), Sharp_MMT (MMT couches 2 à 4 biais +0,04), masque retiré, NXT_final (Denoise 0,40).
 > 
 > À RÉGLER : glisse sur l'image sans étoiles après LRGB_ajout_L (ou R_C_LRGB_rapide) ; ensuite R_C_Etoiles_fond_rapide.
 > 
 > SI :
 > - cœur encore trop clair -> HDRMT_40 ou HDRMT_50 (options) avant
 > - une option de finition (Boost…) -> entre ce conteneur et R_C_Etoiles_fond_rapide
+> - trop ou pas assez net -> double-clic sur le conteneur, Sharp_MMT : biais 0.02 ou 0.06 ; copie Sharp_MMT.js dans src/scripts/clodoweg
 
 ## P7_Etoiles
 

@@ -3524,10 +3524,10 @@ max($T, HaNB*a)</parameter>
       <parameter id="overlap" value="0.20"/>
    </instance>
    <instance class="NoOperation" version="256" id="P6_rapide_instance">
-      <description>MODE RAPIDE, phase 6 — Finition : R_C_Fin_rapide sur l'image sans étoiles après LRGB_ajout_L (ou R_C_LRGB_rapide) : HDRMT à 30 %, masque, Courbes, LHE, LHE_fin, masque retiré, NXT_final 0,40 en un seul conteneur (= HDRMT_30, C_Finition et NXT_final). Icône de repère, sans effet.</description>
+      <description>MODE RAPIDE, phase 6 — Finition : R_C_Fin_rapide sur l'image sans étoiles après LRGB_ajout_L (ou R_C_LRGB_rapide) : HDRMT à 30 %, masque, Courbes, LHE, LHE_fin, Sharp_MMT, masque retiré, NXT_final 0,40 en un seul conteneur (= HDRMT_30, C_Finition, C_Sharp_MMT et NXT_final). Icône de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="R_C_Fin_rapide_instance">
-      <description>MODE RAPIDE, à la place de HDRMT_30, C_Finition et NXT_final : sur l'image sans étoiles après LRGB_ajout_L (ou R_C_LRGB_rapide).&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : HDRMT à 30 % (copie HDR_avant, HDRMT 6 couches, mélange 0,3 × résultat + 0,7 × copie, copie fermée), masque de luminance attaché, Courbes, LHE (rayon 150), LHE_fin (rayon 40), masque retiré, NXT_final (Denoise 0,40).&#10;&#10;À RÉGLER : glisse sur l'image sans étoiles après LRGB_ajout_L (ou R_C_LRGB_rapide) ; ensuite R_C_Etoiles_fond_rapide.&#10;&#10;SI :&#10;- cœur encore trop clair -&gt; HDRMT_40 ou HDRMT_50 (options) avant&#10;- une option de finition (Boost…) -&gt; entre ce conteneur et R_C_Etoiles_fond_rapide</description>
+      <description>MODE RAPIDE, à la place de HDRMT_30, C_Finition, C_Sharp_MMT et NXT_final : sur l'image sans étoiles après LRGB_ajout_L (ou R_C_LRGB_rapide).&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : HDRMT à 30 % (copie HDR_avant, HDRMT 6 couches, mélange 0,3 × résultat + 0,7 × copie, copie fermée), masque de luminance attaché, Courbes, LHE (rayon 150), LHE_fin (rayon 40), Sharp_MMT (MMT couches 2 à 4 biais +0,04), masque retiré, NXT_final (Denoise 0,40).&#10;&#10;À RÉGLER : glisse sur l'image sans étoiles après LRGB_ajout_L (ou R_C_LRGB_rapide) ; ensuite R_C_Etoiles_fond_rapide.&#10;&#10;SI :&#10;- cœur encore trop clair -&gt; HDRMT_40 ou HDRMT_50 (options) avant&#10;- une option de finition (Boost…) -&gt; entre ce conteneur et R_C_Etoiles_fond_rapide&#10;- trop ou pas assez net -&gt; double-clic sur le conteneur, Sharp_MMT : biais 0.02 ou 0.06 ; copie Sharp_MMT.js dans src/scripts/clodoweg</description>
       <instance class="PixelMath" version="256" enabled="true">
          <parameter id="expression">$T</parameter>
          <parameter id="expression1"></parameter>
@@ -3799,6 +3799,33 @@ max($T, HaNB*a)</parameter>
          <parameter id="slopeLimit" value="2.0"/>
          <parameter id="amount" value="0.250"/>
          <parameter id="circularKernel" value="true"/>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Sharp_MMT.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="5">
+            <tr>
+               <td id="id">biais</td>
+               <td id="value">0.04</td>
+            </tr>
+            <tr>
+               <td id="id">premiere</td>
+               <td id="value">2</td>
+            </tr>
+            <tr>
+               <td id="id">derniere</td>
+               <td id="value">4</td>
+            </tr>
+            <tr>
+               <td id="id">couches</td>
+               <td id="value">5</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
       </instance>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
