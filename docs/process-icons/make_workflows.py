@@ -1169,6 +1169,8 @@ def insert_before(steps, base, items):
 prep_l, prep_h = prep_rapide(lrgb)[1], prep_rapide(lhargb)[1]
 insert_after(lrgb, 'Combinaison_RGB', [(prep_l, ''), (gc_solver('Solver_auto'), '')])
 insert_after(lrgb, 'ImageSolver', [(script('Gradient_auto_rapide', ''), '')])
+# SCNR vert à 1,0 dans C_RGB_lineaire, juste après SPCC (demande de l'utilisateur)
+insert_after(lrgb, 'SPCC', [(M.instance('SCNR', 'SCNR_vert', {'amount': '1.00', 'protectionMethod': 'AverageNeutral', 'colorToRemove': 'Green', 'preserveLightness': True}), '')])
 
 def fin_rapide(steps):
     """P6_rapide et P7_rapide (demande de l'utilisateur) : un conteneur par phase avec les étapes de la finition."""

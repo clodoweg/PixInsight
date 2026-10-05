@@ -17,7 +17,7 @@ Où| Icône| Sur| Ce qu'elle fait
 ---|---|---|---  
 P1_rapide| R_C_Preparation_rapide| masters seuls ouverts ; double-clic puis **Apply Global**|  Renommer_auto, LinearPatternSubtraction, Combinaison_RGB (crée `RGB`), Solver_auto (ImageSolver sur toutes les images)  
 P2_rapide| R_Gradient_auto_rapide| double-clic puis Apply Global| GradientCorrection sur toutes les images ouvertes  
-P3_rapide| R_Lineaire_rapide| double-clic puis Apply Global| script Lineaire_auto.js : lance E08_C_RGB_lineaire sur RGB (BXT Correct Only, SPCC, BXT, NXT) puis E09_C_L_lineaire sur L (BXT, NXT) ; les deux restent linéaires, avec leurs étoiles  
+P3_rapide| R_Lineaire_rapide| double-clic puis Apply Global| script Lineaire_auto.js : lance E08_C_RGB_lineaire sur RGB (BXT Correct Only, SPCC, SCNR vert 1,0, BXT, NXT) puis E09_C_L_lineaire sur L (BXT, NXT) ; les deux restent linéaires, avec leurs étoiles  
 E10, puis P4_rapide| GHS_1_premier, puis R_C_Fin_GHS_rapide| L| GHS_1 à la main (méthode GHS), puis GHS_2 et GHS_3_fond en un glisser ; fond vers 0,11–0,13. Puis Statistical_Stretch et GHS_3_fond sur RGB (chemin principal)  
 P5_rapide| R_C_LRGB_rapide| RGB, L ouverte| LRGB_ajout_L, SXT Unscreen (crée `RGB_stars`), Etoiles_auto_etire (saturation et SCNR des étoiles)  
 P6_rapide| R_C_Fin_rapide| image sans étoiles| HDRMT 30 %, masque, Courbes, LHE, LHE_fin, masque retiré, NXT 0,40. Une option de finition (Boost…) se place après  

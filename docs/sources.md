@@ -565,4 +565,6 @@ Demande de l'utilisateur : « ajoute Binning_x2 et Agrandir_x2, la nouvelle form
 
 - P3_rapide LRGB et LHaRGB : une seule icône R_Lineaire_rapide (script Lineaire_auto.js, ProcessInstance.fromIcon puis executeOn sur chaque vue) à la place de R_C_RGB_rapide / R_C_RGB_fin_rapide et R_C_L_rapide (5 octobre 2026). Demande de l'utilisateur : « pour le P3 rapide je veux juste une seule icone qui fasse E08_C_RGB_lineaire sur RGB et E09_C_L_lineaire sur L ». Non testé dans PixInsight.
 
+- SCNR vert, Amount 1,0, Average Neutral, dans C_RGB_lineaire juste après SPCC (LRGB, 5 octobre 2026). Demande de l'utilisateur : « je veux rajouter un SNCR vert à 1.0 dans E08_C_RGB_lineaire et dans Lineaire_auto.js ». Paramètres de l'instance repris du modèle SCNR de theAstroShed.
+
 Non vérifié : réglages de Ron Brecher et Dave Cosgrove lus sur leurs pages (pratique d'imageurs, pas de documentation éditeur) ; plages BXT pour galaxies (Sharpen Stars 0,15–0,20, Nonstellar 0,20–0,35) issues d'un résumé de forum ; paramètres de MAS d'après Starlust Astroguide, l'article PixInsight n'ayant pas pu être lu ; versions des instances MAS et GraXpert (256 supposé) ; chemins des scripts VeraLux et MKStarReduction (icônes-notes) ; formule H_dans_RGB_v2 (part de 0,2 pour Hβ, choix de l'utilisateur à tester).

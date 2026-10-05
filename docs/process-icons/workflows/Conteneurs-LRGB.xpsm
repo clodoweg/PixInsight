@@ -1334,6 +1334,12 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          <parameter id="generateTextFiles" value="false"/>
          <parameter id="outputDirectory"></parameter>
       </instance>
+      <instance class="SCNR" version="256" enabled="true">
+         <parameter id="amount" value="1.00"/>
+         <parameter id="protectionMethod" value="AverageNeutral"/>
+         <parameter id="colorToRemove" value="Green"/>
+         <parameter id="preserveLightness" value="true"/>
+      </instance>
       <instance class="BlurXTerminator" version="256" enabled="true">
          <parameter id="ml_version" value="4"/>
          <parameter id="correct_only" value="false"/>
@@ -1500,7 +1506,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <description>MODE RAPIDE, phase 3 — Linéaire : R_Lineaire_rapide (double-clic puis Apply Global) à la place de C_RGB_lineaire et C_L_lineaire : lance C_RGB_lineaire sur RGB puis C_L_lineaire sur L ; les deux restent linéaires, avec leurs étoiles. Icône de repère, sans effet.</description>
    </instance>
    <instance class="Script" version="256" id="R_Lineaire_rapide_instance">
-      <description>MODE RAPIDE, à la place de la phase 3 du chemin principal : double-clic puis Apply Global ; lance les icônes du chemin principal sur RGB et L (LRGB : C_RGB_lineaire et C_L_lineaire ; LHaRGB : C_RGB_couleur, BXT_L_H sur L et H, NXT_L) ; RGB et L restent linéaires, avec leurs étoiles.&#10;&#10;LANCEMENT : double-clic sur l'icône, puis Apply Global.&#10;&#10;PRÉRÉGLÉ : script Lineaire_auto.js, etapes = C_RGB_lineaire&gt;RGB ; C_L_lineaire&gt;L : C_RGB_lineaire (BXT Correct Only, SPCC, BXT, NXT 0,80) sur RGB, puis C_L_lineaire (BXT, NXT 0,60) sur L ; étoiles gardées, images linéaires.&#10;&#10;À RÉGLER : double-clic puis Apply Global, après R_Gradient_auto_rapide ; Conteneurs-LRGB chargé ; copie Lineaire_auto.js dans src/scripts/clodoweg ; ensuite GHS_1_premier et R_C_Fin_GHS_rapide sur L, Statistical_Stretch et GHS_3_fond sur RGB.&#10;&#10;SI :&#10;- vue absente ou autre nom -&gt; change etapes dans l'icône&#10;- une étape échoue -&gt; la console dit laquelle ; reprends avec E08_C_RGB_lineaire ou E09_C_L_lineaire</description>
+      <description>MODE RAPIDE, à la place de la phase 3 du chemin principal : double-clic puis Apply Global ; lance les icônes du chemin principal sur RGB et L (LRGB : C_RGB_lineaire et C_L_lineaire ; LHaRGB : C_RGB_couleur, BXT_L_H sur L et H, NXT_L) ; RGB et L restent linéaires, avec leurs étoiles.&#10;&#10;LANCEMENT : double-clic sur l'icône, puis Apply Global.&#10;&#10;PRÉRÉGLÉ : script Lineaire_auto.js, etapes = C_RGB_lineaire&gt;RGB ; C_L_lineaire&gt;L : C_RGB_lineaire (BXT Correct Only, SPCC, SCNR vert 1,0, BXT, NXT 0,80) sur RGB, puis C_L_lineaire (BXT, NXT 0,60) sur L ; étoiles gardées, images linéaires.&#10;&#10;À RÉGLER : double-clic puis Apply Global, après R_Gradient_auto_rapide ; Conteneurs-LRGB chargé ; copie Lineaire_auto.js dans src/scripts/clodoweg ; ensuite GHS_1_premier et R_C_Fin_GHS_rapide sur L, Statistical_Stretch et GHS_3_fond sur RGB.&#10;&#10;SI :&#10;- vue absente ou autre nom -&gt; change etapes dans l'icône&#10;- une étape échoue -&gt; la console dit laquelle ; reprends avec E08_C_RGB_lineaire ou E09_C_L_lineaire</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="1">

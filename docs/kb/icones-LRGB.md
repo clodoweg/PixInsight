@@ -245,9 +245,11 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
       ml_version=4 ; correct_only=true ; sharpen_stars=0.25 ; adjust_star_halos=0.00 ; nonstellar_diameter=0.0 ; auto_nonstellar_psf=true ; sharpen_nonstellar=0.50 ; lunar_planetary=false ; overlap=0.20
    2. SpectrophotometricColorCalibration
       applyCalibration=true ; narrowbandMode=false ; narrowbandOptimizeStars=false ; whiteReferenceSpectrum=200.5,0.0715066,201.5,0.0689827,202.5,0.0720216,203.5,0.0685511,204.5,0.07123… ; whiteReferenceName=Average Spiral Galaxy ; redFilterTrCurve=594,0,596,0.001,598,0.001,600,0.002,602,0.003,604,0.004,606,0.005,608,0.006,6… ; redFilterName=Antlia V Pro Series R ; greenFilterTrCurve=480,0.001,482,0.004,484,0.009,486,0.018,488,0.053,490,0.151,492,0.357,494,0.6… ; greenFilterName=Antlia V Pro Series G ; blueFilterTrCurve=420,0.002,422,0.006,424,0.021,426,0.088,428,0.237,430,0.418,432,0.611,434,0.7… ; blueFilterName=Antlia V Pro Series B ; redFilterWavelength=656.3 ; redFilterBandwidth=3.0 ; greenFilterWavelength=500.7 ; greenFilterBandwidth=3.0 ; blueFilterWavelength=500.7 ; blueFilterBandwidth=3.0 ; deviceQECurve=402,0.7219,404,0.7367,406,0.75,408,0.7618,410,0.7751,412,0.787,414,0.7944,416… ; deviceQECurveName=Sony IMX411/455/461/533/571 ; broadbandIntegrationStepSize=0.50 ; narrowbandIntegrationSteps=10 ; catalogId=GaiaDR3SP ; limitMagnitude=12.00 ; autoLimitMagnitude=true ; targetSourceCount=8000 ; psfStructureLayers=5 ; saturationThreshold=0.75 ; saturationRelative=true ; saturationShrinkFactor=0.10 ; psfNoiseLayers=1 ; psfHotPixelFilterRadius=1 ; psfNoiseReductionFilterRadius=0 ; psfMinStructureSize=0 ; psfMinSNR=40.00 ; psfAllowClusteredSources=true ; psfType=PSFType_Auto ; psfGrowth=1.25 ; psfMaxStars=24576 ; psfSearchTolerance=4.00 ; psfChannelSearchTolerance=2.00 ; neutralizeBackground=true ; backgroundReferenceViewId= ; backgroundLow=-2.80 ; backgroundHigh=2.00 ; backgroundUseROI=false ; backgroundROIX0=0 ; backgroundROIY0=0 ; backgroundROIX1=0 ; backgroundROIY1=0 ; generateGraphs=false ; generateStarMaps=false ; generateTextFiles=false ; outputDirectory=
-   3. BlurXTerminator
+   3. SCNR
+      amount=1.00 ; protectionMethod=AverageNeutral ; colorToRemove=Green ; preserveLightness=true
+   4. BlurXTerminator
       ml_version=4 ; correct_only=false ; sharpen_stars=0.25 ; adjust_star_halos=0.00 ; nonstellar_diameter=0.0 ; auto_nonstellar_psf=true ; sharpen_nonstellar=0.50 ; lunar_planetary=false ; overlap=0.20
-   4. NoiseXTerminator
+   5. NoiseXTerminator
       ml_version=0 ; denoise=0.80 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
 
 #### E09_C_L_lineaire — ProcessContainer
@@ -293,7 +295,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > LANCEMENT : double-clic sur l'icône, puis Apply Global.
 > 
-> PRÉRÉGLÉ : script Lineaire_auto.js, etapes = C_RGB_lineaire>RGB ; C_L_lineaire>L : C_RGB_lineaire (BXT Correct Only, SPCC, BXT, NXT 0,80) sur RGB, puis C_L_lineaire (BXT, NXT 0,60) sur L ; étoiles gardées, images linéaires.
+> PRÉRÉGLÉ : script Lineaire_auto.js, etapes = C_RGB_lineaire>RGB ; C_L_lineaire>L : C_RGB_lineaire (BXT Correct Only, SPCC, SCNR vert 1,0, BXT, NXT 0,80) sur RGB, puis C_L_lineaire (BXT, NXT 0,60) sur L ; étoiles gardées, images linéaires.
 > 
 > À RÉGLER : double-clic puis Apply Global, après R_Gradient_auto_rapide ; Conteneurs-LRGB chargé ; copie Lineaire_auto.js dans src/scripts/clodoweg ; ensuite GHS_1_premier et R_C_Fin_GHS_rapide sur L, Statistical_Stretch et GHS_3_fond sur RGB.
 > 
