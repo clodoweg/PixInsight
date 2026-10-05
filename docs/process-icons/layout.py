@@ -24,7 +24,7 @@ PHASE = {
     'Perfect_Palette_Picker': 5, 'NBColourMapper': 5, 'SCNR_SHO': 5, 'H_en_luminance': 5,
     'Masque_L': 6, 'Masque_retirer': 6, 'Courbes': 6, 'LHE': 6, 'LHE_fin': 6, 'Boost_finition_light': 6, 'Finition_saturee': 6, 'Boost_finition': 6, 'HDRMT_50': 6, 'HDRMT_eclat': 6, 'NXT_final': 6, 'HDRMT_40': 6, 'Mode_rapide': 1, 'Turbo_debut': 1, 'Boost_final_doux': 7, 'C_Fin_rapide': 6, 'C_Etoiles_fond_rapide': 7, 'SXT_non_lineaire': 4, 'Gradient_auto_rapide': 2, 'Solver_auto': 1, 'C_Preparation_rapide': 1, 'C_RGB_rapide': 3, 'SXT_LRGB': 5, 'C_LRGB_rapide': 5, 'C_L_rapide': 3, 'STF': 3, 'C_RGB_couleur_rapide': 3, 'C_H_rapide': 3, 'C_RGB_fin_rapide': 3, 'HDRMT_30': 6, 'Nettoyage_sans_etoiles': 6, 'ICC_sRGB': 7, 'Export_TIFF': 7, 'NXT_final_doux': 6, 'NXT_final_fort': 6, 'Fond_auto': 7, 'Fond_auto_clair': 7, 'Boost_final': 7, 'Fond_desature': 7,
     'Etoiles_RGB': 7, 'Etoiles_HOO': 7, 'NB_to_RGB_Stars': 7, 'Etoiles_HOO_synth': 7, 'Etoiles_screen': 7, 'CorrectMagentaStars': 7,
-    'Etoiles_reduites': 7, 'Fermer_L_stars': 3, 'Fermer_continuum': 3, 'Fermer_etoiles': 7, 'MT_etoiles': 7, 'Halo_B_Gon': 7, 'Etoiles_plafond': 7, 'Saturation_grosses': 4, 'C_Ha_rapide': 3, 'NXT_dernier': 7, 'Etoiles_grosses': 7, 'Lineaire_rapide': 3, 'SCNR_etoiles_vert': 4, 'SCNR_etoiles_violet': 4, 'SXT_RGB_etire': 4, 'Sharp_USM': 6, 'C_Sharp_MMT': 6, 'C_RGB_etire_rapide': 4,
+    'Etoiles_reduites': 7, 'Fermer_L_stars': 3, 'Fermer_continuum': 3, 'Fermer_etoiles': 7, 'MT_etoiles': 7, 'Halo_B_Gon': 7, 'Etoiles_plafond': 7, 'Saturation_grosses': 4, 'C_Ha_rapide': 3, 'Continuum_PCS': 3, 'HaNB_PCS': 3, 'Fermer_H_sub': 3, 'Ha_screen': 3, 'NXT_dernier': 7, 'Etoiles_grosses': 7, 'Lineaire_rapide': 3, 'SCNR_etoiles_vert': 4, 'SCNR_etoiles_violet': 4, 'SXT_RGB_etire': 4, 'Sharp_USM': 6, 'C_Sharp_MMT': 6, 'C_RGB_etire_rapide': 4,
     'Binning_x2': 1, 'H_dans_RGB_v2': 3, 'CombineHaWithRGB': 3, 'MAS': 4, 'DarkStructureEnhance': 6, 'Agrandir_x2': 7,
 }
 
@@ -37,6 +37,8 @@ OPT = {'ImageSolver_seul', 'Turbo_debut', 'H_dans_RGB', 'C_Ha_rapide', 'Finition
 
 
 def role(prefix, base):
+    if prefix == 'LHA' and base in ('Continuum_auto', 'CombineHaWithRGB'):
+        return 'opt'    # LHaRGB (demande de l'utilisateur) : continuum PCS et Ha_screen au chemin principal
     if prefix in LUM and base in ('NXT_final', 'Fond_desature', 'HDRMT_30'):
         return 'core'   # galaxies : finition en parties, NXT_final et Fond_desature dans le chemin principal (demande de l'utilisateur)
     if prefix in LUM and base == 'Statistical_Stretch':
@@ -84,7 +86,9 @@ WHEN = {
     'SXT_non_lineaire': "double-clic : ouvre StarXTerminator réglé pour une image ÉTIRÉE (Unscreen coché, Generate star image coché) ; à glisser sur une image non linéaire qui a encore des étoiles",
     'Gradient_auto_rapide': "MODE RAPIDE, à la place de la phase 2 : GradientCorrection sur TOUTES les images ouvertes (plus d'ImageSolver : fait par Solver_auto en phase 1) ; à faire AVANT R_Lineaire_rapide (sans GradientCorrection)",
     'Mode_rapide': "repère du mode rapide (galaxies), sans effet : lis sa description pour l'ordre",
-    'C_Ha_rapide': "MODE RAPIDE, à la place de CombineHaWithRGB et C_RGB_bruit : après Continuum_auto (fait à la main, HaNB ouverte), glisse sur RGB linéaire",
+    'C_Ha_rapide': "MODE RAPIDE, à la place de C_Continuum, Ha_screen et C_RGB_bruit : après R_Lineaire_rapide, glisse sur RGB linéaire (H et R ouvertes)",
+    'Continuum_auto': "à la place de C_Continuum : continuum par le script SetiAstro (fenêtre à remplir : Ha = H, Red = R), crée HaNB",
+    'CombineHaWithRGB': "à la place de Ha_screen, pour l'aperçu et la réduction du bruit de H (Background, Sigma) : double-clic puis Apply Global, fenêtre du script (RGB, H Alpha = HaNB) ; ne pas le glisser (erreur « already being processed »)",
     'Turbo_debut': "MODE TURBO, à la place de R_C_Preparation_rapide, R_Gradient_auto_rapide et R_Lineaire_rapide (phases 1 à 3) : masters seuls ouverts, double-clic puis Apply Global (pas en glissant) ; ensuite GHS_1_premier sur L",
     'C_Preparation_rapide': "MODE RAPIDE, à la place d'E00 à E03 : masters seuls ouverts, double-clic puis Apply Global (pas en glissant : ImageSolver échoue sur une image en cours de traitement) : Renommer_auto, LinearPatternSubtraction, Combinaison_RGB, Solver_auto (ImageSolver sur toutes les images) en un seul conteneur",
     'C_RGB_etire_rapide': "MODE RAPIDE, à la place de MAS, SXT_RGB_etire, SCNR_etoiles_vert et GHS_3_fond sur le RGB (options SCNR_etoiles_violet et Saturation_grosses à passer à part si besoin) : glisse sur RGB linéaire avec étoiles ; MAS, SXT Unscreen (RGB_stars créée), SCNR vert sur RGB_stars, GHS fond (SP = HP = 0,12)",
@@ -135,8 +139,8 @@ WHEN = {
     'Etoiles_reduites': "à la place d'Etoiles_screen, si les étoiles sont trop présentes (recombinaison + réduction Blanshan)",
     # icônes à tester (demande de l'utilisateur, 5 octobre 2026)
     'Binning_x2': "traitement 4 fois plus rapide et moins de bruit (0,528″/px au lieu de 0,264″/px, l'image du CDK17 est suréchantillonnée) : double-clic puis Apply Global juste après Solver_auto, toutes les images divisées par 2 ; pour un grand tirage, Agrandir_x2 avant l'export",
-    'H_dans_RGB_v2': "TEST, à la place de CombineHaWithRGB ou H_dans_RGB : HaNB injecté sans son fond (HaNB − med(HaNB)) dans R, et 20 % dans B (Hβ) : régions HII plus roses, fond inchangé",
-    'H_dans_RGB': "à la place de CombineHaWithRGB : injection simple R + w·HaNB (PixelMath), sur le RGB linéaire après Continuum_auto",
+    'H_dans_RGB_v2': "TEST, à la place de Ha_screen ou H_dans_RGB : HaNB injecté sans son fond (HaNB − med(HaNB)) dans R, et 20 % dans B (Hβ) : régions HII plus roses, fond inchangé",
+    'H_dans_RGB': "à la place de Ha_screen : injection simple R + w·HaNB (PixelMath), sur le RGB linéaire après Continuum_auto",
     'MAS': "TEST, à la place des GHS ou de Statistical Stretch : MultiscaleAdaptiveStretch avec tes réglages (fond 0,15, saturation) ; glisse sur l'image LINÉAIRE",
     'DarkStructureEnhance': "TEST, avant C_Finition : bandes de poussière et structures sombres plus marquées (script livré avec PixInsight)",
     'Agrandir_x2': "après Binning_x2, pour un grand tirage : image agrandie 2 fois (Lanczos 3) juste avant Export_TIFF ; ne recrée pas le détail perdu",
@@ -163,7 +167,8 @@ CONTAINERS = {
              ('C_L_lineaire', "le master L, linéaire, gradient retiré : BXT, NXT, puis SXT (L sans étoiles)", ['BXT_L', 'NXT_L', 'SXT_L_lineaire']),
              _FIN_G],
     'LHA': [('C_RGB_couleur', "l'image RGB combinée, linéaire, gradient retiré", ['BXT_CorrectOnly', 'SPCC', 'BXT_RGB']),
-            ('C_RGB_bruit', "l'image RGB après CombineHaWithRGB (ou H_dans_RGB ; et H_dans_L éventuel) : NXT, puis H, R et HaNB fermées", ['NXT_RGB', 'Fermer_continuum']),
+            ('C_Continuum', "n'importe quelle image (H et R ouvertes, linéaires, alignées) : PhotometricContinuumSubtraction sans fenêtre (H_sub), recopié en HaNB, H_sub fermée", ['Continuum_PCS', 'HaNB_PCS', 'Fermer_H_sub']),
+            ('C_RGB_bruit', "l'image RGB après Ha_screen (ou H_dans_RGB ; et H_dans_L éventuel) : NXT, puis H, R et HaNB fermées", ['NXT_RGB', 'Fermer_continuum']),
             _FIN_G],   # LHaRGB (demande de l'utilisateur) : étoiles gardées jusqu'à LRGB, plus de C_RGB_etoiles_bruit ni de C_L_lineaire (NXT seul)
     'RSHO': [('C_SHO_lineaire', "l'image SHO combinée, linéaire", ['BXT_NB', 'SXT_lineaire']),
              ('C_Extraction_SHO', "l'image SHO sans étoiles", ['Extraire_S', 'Extraire_H', 'Extraire_O']), _FIN,

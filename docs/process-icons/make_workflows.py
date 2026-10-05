@@ -55,6 +55,7 @@ SCRIPTS = {
     'Etoiles_grosses': ('$PXI_SRCDIR/scripts/clodoweg/Etoiles_grosses.js', '', [('taille', '7'), ('seuil', '0.15'), ('etendue', '12'), ('force', '0.80'), ('afficherMasque', 'false')], L_DRAG),   # demande de l'utilisateur : réduire seulement les grosses étoiles
     'Export_TIFF': ('$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js', '', [('nom', ''), ('suffixe', ''), ('dossier', ''), ('icc', 'true')], L_DRAG),   # plus aucune vue fermée (demande de l'utilisateur)
     'Binning_x2': ('$PXI_SRCDIR/scripts/clodoweg/Binning_x2.js', '', [('facteur', '2')], L_GLOBAL),   # demande de l'utilisateur : binning logiciel de toutes les images
+    'Continuum_PCS': ('$PXI_SRCDIR/scripts/NightPhotons/PhotometricContinuumSubtraction.js', '', [('NarrowbandStarViewID', 'H'), ('BroadbandChannels', 'R'), ('StarlessEnabled', 'false'), ('StarRemovalMethod', '1'), ('MaximumStars', '400'), ('MaximumPeak', '0.8'), ('GeneratePlot', 'false'), ('KeepComposite', 'false')], L_DRAG),   # NightPhotons (Charles Hagen) : glissé = sans fenêtre, crée H_sub (demande de l'utilisateur)
     'CombineHaWithRGB': ('$PXI_SRCDIR/scripts/Toolbox/CombineHaToRGB.js', '', [('alphaView', 'HaNB'), ('amount', '2.0'), ('beta', '0.0'), ('bg', '0.015'), ('sigma', '0.0'), ('linear', 'true'), ('rgbLinked', 'true'), ('invertMask', 'true')], L_DRAG),   # PixInsight Toolbox de Jürgen Terpe (test, demande de l'utilisateur)
     'DarkStructureEnhance': ('$PXI_SRCDIR/scripts/misc/DarkStructureEnhance.js', '', [], L_GLOBAL + "Ce script ne lit pas de paramètres d'icône : les réglages se font dans son dialogue. "),   # script livré avec PixInsight (test)
     'Sharp_MMT': ('$PXI_SRCDIR/scripts/clodoweg/Sharp_MMT.js', '', [('biais', '0.04'), ('premiere', '2'), ('derniere', '4'), ('couches', '5')], L_DRAG),   # instance MMT de l'utilisateur
@@ -220,7 +221,7 @@ RAPIDE_NOTE = {
              7: "R_C_Etoiles_fond_rapide sur l'image sans étoiles finie : Fond_desature, Fond_auto (0,12) sur l'image sans étoiles, étoiles remises (Etoiles_screen), NXT_dernier (0,25), puis Export_TIFF en un seul conteneur"},
     'LHA': {1: "MODE RAPIDE (galaxies) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre : R_C_Preparation_rapide ; R_Gradient_auto_rapide ; R_Lineaire_rapide (RGB, L et H), Continuum_auto, H_dans_RGB, C_RGB_bruit (étoiles gardées) ; GHS_1_premier, GHS_2_contraste, GHS_3_fond sur L ; R_C_RGB_etire_rapide sur RGB ; R_C_LRGB_rapide (LRGB sans étoiles) ; finition. Phase 1 : R_C_Preparation_rapide (double-clic puis Apply Global) à la place de LinearPatternSubtraction, Renommer_auto, Combinaison_RGB et Solver_auto",
             2: "R_Gradient_auto_rapide à la place de toute la phase 2 : GradientCorrection sur toutes les images ouvertes (R et H compris, pour le continuum) ; l'astrométrie est déjà faite par R_C_Preparation_rapide",
-            3: "R_Lineaire_rapide (double-clic puis Apply Global) à la place de C_RGB_couleur, BXT_L_H, NXT_L et SXT_L_lineaire ; puis Continuum_auto À LA MAIN (chemin principal, le script demande sa fenêtre) ; puis R_C_Ha_rapide glissé sur RGB à la place de CombineHaWithRGB et C_RGB_bruit : HaNB injecté, NXT, H, R et HaNB fermées",
+            3: "R_Lineaire_rapide (double-clic puis Apply Global) à la place de C_RGB_couleur, BXT_L_H, NXT_L et SXT_L_lineaire ; puis R_C_Ha_rapide glissé sur RGB à la place de C_Continuum, Ha_screen et C_RGB_bruit : continuum (PhotometricContinuumSubtraction, sans fenêtre), HaNB injecté en screen, NXT, H, R et HaNB fermées",
             4: "GHS_1_premier sur L sans étoiles (chemin principal, à régler), puis GHS_2_contraste et GHS_3_fond (chemin principal) sur L ; R_C_RGB_etire_rapide sur RGB (MAS avec étoiles, SXT Unscreen qui crée RGB_stars, SCNR vert sur RGB_stars, GHS fond)",
             5: "R_C_LRGB_rapide sur RGB sans étoiles (L sans étoiles ouverte) à la place de LRGB_ajout_L : L ajoutée (Saturation 0,5)",
             6: "R_C_Fin_rapide sur l'image sans étoiles après LRGB_ajout_L (ou R_C_LRGB_rapide) : HDRMT à 30 %, masque, Courbes, LHE, LHE_fin, Sharp_MMT, masque retiré, NXT_final 0,40 en un seul conteneur (= HDRMT_30, C_Finition, C_Sharp_MMT et NXT_final)",
@@ -1168,8 +1169,14 @@ for _st in (lrgb, lhargb):
     insert_before(_st, 'ICC_sRGB', [(agrandir_x2(), '')])
 insert_after(lhargb, 'H_dans_RGB', [(pm('H_dans_RGB_v2', 'w = 1.0;\n$T[0] + w*(HaNB - med(HaNB))', '$T[1]', '$T[2] + 0.2*w*(HaNB - med(HaNB))', symbols='w'), '')])
 insert_before(lhargb, 'H_dans_RGB', [(script('CombineHaWithRGB', ''), '')])
+# LHaRGB (demande de l'utilisateur, 5 octobre 2026) : continuum sans fenêtre par PhotometricContinuumSubtraction (H_sub recopié en HaNB),
+# Continuum_auto en option ; Ha_screen (PixelMath natif, même calcul que CombineHaWithRGB) au chemin principal : CombineHaWithRGB glissé échoue
+# (« The image is already being processed », il appelle beginProcess sur la vue cible), il reste en option par sa fenêtre
+insert_before(lhargb, 'Continuum_auto', [(script('Continuum_PCS', ''), ''), (pm('HaNB_PCS', 'H_sub', new_image=True, new_id='HaNB', space='Gray'), ''),
+                                         (fermer('Fermer_H_sub', 'H_sub'), '')])
+insert_before(lhargb, 'CombineHaWithRGB', [(pm('Ha_screen', 'Q = 2.0;\ncombine($T[0], Q*iif(HaNB > med(HaNB), HaNB - med(HaNB), 0), op_screen())', '$T[1]', '$T[2]', symbols='Q'), '')])
 # LHaRGB, P3 rapide (demande de l'utilisateur) : R_Lineaire_rapide (BXT, NXT_L, SXT_L), Continuum_auto à la main, puis R_C_Ha_rapide (CombineHaWithRGB + C_RGB_bruit) glissé sur RGB
-insert_after(lhargb, 'Lineaire_rapide', [(cont('C_Ha_rapide', [pick(lhargb, b)[0] for b in ('CombineHaWithRGB', 'NXT_RGB', 'Fermer_continuum')]), '')])   # LHaRGB (demande de l'utilisateur) : CombineHaWithRGB au chemin principal après Continuum_auto (H = HaNB), H_dans_RGB en option
+insert_after(lhargb, 'Lineaire_rapide', [(cont('C_Ha_rapide', [pick(lhargb, b)[0] for b in ('Continuum_PCS', 'HaNB_PCS', 'Fermer_H_sub', 'Ha_screen', 'NXT_RGB', 'Fermer_continuum')]), '')])   # LHaRGB (demande de l'utilisateur) : CombineHaWithRGB au chemin principal après Continuum_auto (H = HaNB), H_dans_RGB en option
 
 def turbo_debut(steps, extra=()):
     """Turbo (demande de l'utilisateur) : en une fois R_C_Preparation_rapide, R_Gradient_auto_rapide, R_Lineaire_rapide (leurs étapes à la suite, un seul conteneur, Apply Global)"""

@@ -771,3 +771,9 @@ Fait : Continuum_rapide.js et R_Continuum_rapide supprimés ; R_Lineaire_rapide 
 
 Demande : « je veux deux rapides pour cette étapes: Le premier qui fera les BXT E10_C_RGB_couleur E11_BXT_L_H sur L et sur H E15_NXT_L E16_SXT_L_lineaire (ensuite je ferais a la main le E12_Continuum_auto que l'on peut pas scripter) Le second qui finalisera Opt_CombineHaWithRGB E14_C_RGB_bruit »
 Fait : R_Lineaire_rapide remise en LHaRGB (Lineaire_auto, etapes C_RGB_couleur>RGB ; BXT_L_H>L,H ; NXT_L>L ; SXT_L_lineaire>L) ; nouveau conteneur R_C_Ha_rapide (CombineHaWithRGB, NXT 0,80, Fermer_vues H, R, HaNB), à glisser sur RGB après Continuum_auto. LRGB inchangé.
+
+### LHaRGB : continuum sans fenêtre (PCS) et Ha_screen (5 octobre 2026)
+
+Demandes : « on peut rien faire pour le E12_Continuum_auto pour le lancer en script sans la fenetre? » ; « Oui mais un truc avant: R_C_Ha_rapide marche quand je le glisse sur RGB mais j'ai l'erreur … CombineHaToRGB.js:518: Invalid view update request: The image is already being processed: RGB finalView.beginProcess(); » ; « tu es sur que c'est équivalent? »
+Sources : code de PhotometricContinuumSubtraction.js v1.4.2 (main : isViewTarget -> ToolParameters.load() puis continuumSubtract() sans dialogue ; sortie H_sub ; dépôt https://raw.githubusercontent.com/charleshagen/pixinsight/main/updates/, plateforme 1.9.4:1.9.10) ; code de CombineHaToRGB.js (Toolbox 20260824 : main, process, combineHa, getHalpha, dropNoise).
+Fait : C_Continuum (Continuum_PCS, HaNB = H_sub, Fermer H_sub) en E12, Continuum_auto en option ; Ha_screen (PixelMath natif, même calcul) en E13, CombineHaWithRGB en option (fenêtre seulement) ; R_C_Ha_rapide = continuum PCS, Ha_screen, NXT, fermeture ; dépôt NightPhotons ajouté à depots-pixinsight.txt. Équivalence : courbe Background 0,015 calculée, écart < 1,5 % de la médiane, non reproduite. LRGB inchangé. Non vérifié : PCS dans un conteneur glissé (attendu : il ne touche pas la vue cible).

@@ -313,38 +313,36 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - vers ou pores -> Nonstellar 0,70
 > - FWHM > 8 px -> bin 2 ou réduction ×0,5 avant
 
-#### E12_Continuum_auto — Script
-   script `$PXI_SRCDIR/scripts/ContinuumSubtraction.js`
-   paramètres : `applyNoiseReduction=false`, `noiseReductionMethod=NoiseXterminator`, `starrySelected=true`, `outputLinearImageOnly=true`, `aiModel=2.0.0`
+#### E12_C_Continuum — ProcessContainer
+   1. Script
+      script `$PXI_SRCDIR/scripts/NightPhotons/PhotometricContinuumSubtraction.js`
+      paramètres : `NarrowbandStarViewID=H`, `BroadbandChannels=R`, `StarlessEnabled=false`, `StarRemovalMethod=1`, `MaximumStars=400`, `MaximumPeak=0.8`, `GeneratePlot=false`, `KeepComposite=false`
+   2. PixelMath
+      expression = `H_sub` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=true ; showNewImage=true ; newImageId=HaNB ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=Gray ; newImageSampleFormat=SameAsTarget
+   3. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
+      paramètres : `views=H_sub`, `dialogue=false`
 
-> LANCEMENT : double-clic sur l'icône, puis Apply Global. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
+> LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
 > 
-> PRÉRÉGLÉ : script SetiAstro ContinuumSubtraction.js : Starry, sortie linéaire seule, pas de réduction de bruit ; coefficient calculé automatiquement ; crée HaNB (gris, linéaire).
+> CONTENEUR : Continuum_PCS, HaNB_PCS, Fermer_H_sub.
 > 
-> À RÉGLER : double-clic puis Apply Global ; dans le dialogue : Ha = H, Red (or RGB) = R (ou le RGB calibré), le reste vide ; Execute.
+> SUR : n'importe quelle image (H et R ouvertes, linéaires, alignées) : PhotometricContinuumSubtraction sans fenêtre (H_sub), recopié en HaNB, H_sub fermée.
+> 
+> Double-clic sur le conteneur pour voir ou changer les réglages de chaque étape.
+
+#### E13_Ha_screen — PixelMath
+   expression = `Q = 2.0; combine($T[0], Q*iif(HaNB > med(HaNB), HaNB - med(HaNB), 0), op_screen())` ; expression1 = `$T[1]` ; expression2 = `$T[2]` ; useSingleExpression=false ; symbols = `Q` ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
+
+> PRÉRÉGLÉ : PixelMath sur le RGB, même calcul que CombineHaWithRGB (Amount Q = 2,0, Beta 0) : R' = combine(R, Q·(HaNB − méd(HaNB)) au-dessus de la médiane, screen) ; G et B inchangés ; seule différence : la courbe Background 0,015 du script, qui change le fond de HaNB de moins de 1,5 % de sa médiane, n'est pas faite.
+> 
+> À RÉGLER : glisse sur le RGB linéaire après C_Continuum (HaNB ouverte) ; ensuite C_RGB_bruit.
 > 
 > SI :
-> - vue créée HaNB1 -> renomme-la HaNB (ou ferme l'ancienne HaNB avant)
-> - étoiles ou disque encore visibles dans HaNB -> relance avec Starless
-> - cœur rougi dans l'image finale -> baisse w dans H_dans_RGB
-
-#### E13_CombineHaWithRGB — Script
-   script `$PXI_SRCDIR/scripts/Toolbox/CombineHaToRGB.js`
-   paramètres : `alphaView=HaNB`, `amount=2.0`, `beta=0.0`, `bg=0.015`, `sigma=0.0`, `linear=true`, `rgbLinked=true`, `invertMask=true`
-
-> LANCEMENT : glisse l'icône sur l'image.
-> 
-> PRÉRÉGLÉ : script CombineHaWithRGB (PixInsight Toolbox, Jürgen Terpe) : H Alpha = HaNB (sortie de Continuum_auto, comme le demande la doc du script), Amount 2,0 (R : screen avec 2 × (HaNB − médiane), au-dessus de la médiane), Beta 0 (rien dans le bleu), Background 0,015, Sigma 0, Linear Image coché, canaux liés.
-> 
-> À RÉGLER : glisse sur le RGB LINÉAIRE après Continuum_auto (HaNB ouverte) ; ensuite C_RGB_bruit ; dépôt https://www.ideviceapps.de/PixInsight/Utilities/ ; sans glisser (double-clic) : fenêtre du script avec aperçu.
-> 
-> SI :
-> - régions HII trop rouges -> Amount 1,5
-> - trop discrètes -> Amount 2,5
-> - rose plutôt que rouge -> Beta 0,1 à 0,2
-> - bruit rouge dans le fond -> Background plus haut, ou Sigma 1
-> - script introuvable -> Script › Toolbox › CombineHaWithRGB (dépôt de la Toolbox installé ?)
-> - autre méthode -> H_dans_RGB (options P3) à la place
+> - régions HII trop rouges -> double-clic, Q = 1,5
+> - trop discrètes -> Q = 2,5
+> - rose plutôt que rouge -> B : $T[2] + 0.2*Q*iif(HaNB > med(HaNB), HaNB - med(HaNB), 0)
+> - fond rouge et bruité -> CombineHaWithRGB (options) avec Background, ou NXT sur HaNB avant
 
 #### E14_C_RGB_bruit — ProcessContainer
    1. NoiseXTerminator
@@ -357,7 +355,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > CONTENEUR : NXT_RGB, Fermer_continuum.
 > 
-> SUR : l'image RGB après CombineHaWithRGB (ou H_dans_RGB ; et H_dans_L éventuel) : NXT, puis H, R et HaNB fermées.
+> SUR : l'image RGB après Ha_screen (ou H_dans_RGB ; et H_dans_L éventuel) : NXT, puis H, R et HaNB fermées.
 > 
 > Double-clic sur le conteneur pour voir ou changer les réglages de chaque étape.
 
@@ -397,14 +395,50 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > À RÉGLER : glisse sur l'image : crée l'aperçu Background ; dans SPCC, Region of Interest › From Preview.
 
+#### Opt_Continuum_auto — Script
+   script `$PXI_SRCDIR/scripts/ContinuumSubtraction.js`
+   paramètres : `applyNoiseReduction=false`, `noiseReductionMethod=NoiseXterminator`, `starrySelected=true`, `outputLinearImageOnly=true`, `aiModel=2.0.0`
+
+> OPTION — à la place de C_Continuum : continuum par le script SetiAstro (fenêtre à remplir : Ha = H, Red = R), crée HaNB.
+> 
+> LANCEMENT : double-clic sur l'icône, puis Apply Global. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
+> 
+> PRÉRÉGLÉ : script SetiAstro ContinuumSubtraction.js : Starry, sortie linéaire seule, pas de réduction de bruit ; coefficient calculé automatiquement ; crée HaNB (gris, linéaire).
+> 
+> À RÉGLER : double-clic puis Apply Global ; dans le dialogue : Ha = H, Red (or RGB) = R (ou le RGB calibré), le reste vide ; Execute.
+> 
+> SI :
+> - vue créée HaNB1 -> renomme-la HaNB (ou ferme l'ancienne HaNB avant)
+> - étoiles ou disque encore visibles dans HaNB -> relance avec Starless
+> - cœur rougi dans l'image finale -> baisse w dans H_dans_RGB
+
+#### Opt_CombineHaWithRGB — Script
+   script `$PXI_SRCDIR/scripts/Toolbox/CombineHaToRGB.js`
+   paramètres : `alphaView=HaNB`, `amount=2.0`, `beta=0.0`, `bg=0.015`, `sigma=0.0`, `linear=true`, `rgbLinked=true`, `invertMask=true`
+
+> OPTION — à la place de Ha_screen, pour l'aperçu et la réduction du bruit de H (Background, Sigma) : double-clic puis Apply Global, fenêtre du script (RGB, H Alpha = HaNB)
+> Ne pas le glisser (erreur « already being processed »).
+> 
+> LANCEMENT : glisse l'icône sur l'image.
+> 
+> PRÉRÉGLÉ : script CombineHaWithRGB (PixInsight Toolbox, Jürgen Terpe) : H Alpha = HaNB, Amount 2,0, Beta 0, Background 0,015, Sigma 0, Linear Image coché, canaux liés.
+> 
+> À RÉGLER : option, à la place de Ha_screen : double-clic puis Apply Global : fenêtre du script avec aperçu (choisis RGB et H Alpha = HaNB) ; ne pas glisser l'icône (le script échoue : « The image is already being processed ») ; ensuite C_RGB_bruit.
+> 
+> SI :
+> - régions HII trop rouges -> Amount 1,5
+> - trop discrètes -> Amount 2,5
+> - rose plutôt que rouge -> Beta 0,1 à 0,2
+> - bruit rouge dans le fond -> Background plus haut, ou Sigma 1
+
 #### Opt_H_dans_RGB — PixelMath
    expression = `w = 1.0; $T[0] + w*HaNB` ; expression1 = `$T[1]` ; expression2 = `$T[2]` ; useSingleExpression=false ; symbols = `w` ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
 
-> OPTION — à la place de CombineHaWithRGB : injection simple R + w·HaNB (PixelMath), sur le RGB linéaire après Continuum_auto.
+> OPTION — à la place de Ha_screen : injection simple R + w·HaNB (PixelMath), sur le RGB linéaire après Continuum_auto.
 > 
 > PRÉRÉGLÉ : w = 1,0 ; R' = R + w·HaNB.
 > 
-> À RÉGLER : option, à la place de CombineHaWithRGB : glisse sur le RGB linéaire calibré, après Continuum_auto ; w entre 0,5 et 2 ; ensuite C_RGB_bruit.
+> À RÉGLER : option, à la place de Ha_screen : glisse sur le RGB linéaire calibré, après C_Continuum ; w entre 0,5 et 2 ; ensuite C_RGB_bruit.
 > 
 > SI :
 > - régions HII rouge vif -> baisse w
@@ -413,7 +447,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 #### Opt_H_dans_RGB_v2 — PixelMath
    expression = `w = 1.0; $T[0] + w*(HaNB - med(HaNB))` ; expression1 = `$T[1]` ; expression2 = `$T[2] + 0.2*w*(HaNB - med(HaNB))` ; useSingleExpression=false ; symbols = `w` ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
 
-> OPTION — TEST, à la place de CombineHaWithRGB ou H_dans_RGB : HaNB injecté sans son fond (HaNB − med(HaNB)) dans R, et 20 % dans B (Hβ) : régions HII plus roses, fond inchangé.
+> OPTION — TEST, à la place de Ha_screen ou H_dans_RGB : HaNB injecté sans son fond (HaNB − med(HaNB)) dans R, et 20 % dans B (Hβ) : régions HII plus roses, fond inchangé.
 > 
 > PRÉRÉGLÉ : w = 1,0 ; R = R + w·(HaNB − med(HaNB)) ; G inchangé ; B = B + 0,2·w·(HaNB − med(HaNB)) (Hβ).
 > 
@@ -471,7 +505,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > PRÉRÉGLÉ : script Lineaire_auto.js, etapes = C_RGB_couleur>RGB ; BXT_L_H>L,H ; NXT_L>L ; SXT_L_lineaire>L : C_RGB_couleur (BXT Correct Only, SPCC, BXT) sur RGB, BXT (Nonstellar 0,80) sur L et H, NXT 0,60 sur L, SXT sur L (L sans étoiles) ; images linéaires.
 > 
-> À RÉGLER : double-clic puis Apply Global, après R_Gradient_auto_rapide ; Conteneurs-LHaRGB chargé ; ensuite Continuum_auto à la main (chemin principal), puis R_C_Ha_rapide glissé sur RGB, puis GHS_1_premier sur L.
+> À RÉGLER : double-clic puis Apply Global, après R_Gradient_auto_rapide ; Conteneurs-LHaRGB chargé ; ensuite R_C_Ha_rapide glissé sur RGB, puis GHS_1_premier sur L.
 > 
 > SI :
 > - H_dans_L voulu -> il se fait après (NXT_L déjà passé sur L)
@@ -479,26 +513,33 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 #### R_C_Ha_rapide — ProcessContainer
    1. Script
-      script `$PXI_SRCDIR/scripts/Toolbox/CombineHaToRGB.js`
-      paramètres : `alphaView=HaNB`, `amount=2.0`, `beta=0.0`, `bg=0.015`, `sigma=0.0`, `linear=true`, `rgbLinked=true`, `invertMask=true`
-   2. NoiseXTerminator
-      ml_version=0 ; denoise=0.80 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
+      script `$PXI_SRCDIR/scripts/NightPhotons/PhotometricContinuumSubtraction.js`
+      paramètres : `NarrowbandStarViewID=H`, `BroadbandChannels=R`, `StarlessEnabled=false`, `StarRemovalMethod=1`, `MaximumStars=400`, `MaximumPeak=0.8`, `GeneratePlot=false`, `KeepComposite=false`
+   2. PixelMath
+      expression = `H_sub` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=true ; showNewImage=true ; newImageId=HaNB ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=Gray ; newImageSampleFormat=SameAsTarget
    3. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
+      paramètres : `views=H_sub`, `dialogue=false`
+   4. PixelMath
+      expression = `Q = 2.0;    combine($T[0], Q*iif(HaNB > med(HaNB), HaNB - med(HaNB), 0), op_screen())` ; expression1 = `$T[1]` ; expression2 = `$T[2]` ; useSingleExpression=false ; symbols = `Q` ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
+   5. NoiseXTerminator
+      ml_version=0 ; denoise=0.80 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
+   6. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
       paramètres : `views=H, R, HaNB`, `dialogue=false`
 
-> MODE RAPIDE, à la place de CombineHaWithRGB et C_RGB_bruit : après Continuum_auto (fait à la main, HaNB ouverte), glisse sur RGB linéaire.
+> MODE RAPIDE, à la place de C_Continuum, Ha_screen et C_RGB_bruit : après R_Lineaire_rapide, glisse sur RGB linéaire (H et R ouvertes).
 > 
 > LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
 > 
-> PRÉRÉGLÉ : conteneur : CombineHaWithRGB (H Alpha = HaNB, Amount 2,0, Beta 0), NXT 0,80, puis H, R et HaNB fermées (= CombineHaWithRGB et C_RGB_bruit).
+> PRÉRÉGLÉ : conteneur : PhotometricContinuumSubtraction (H, R, sans fenêtre) -> HaNB, Ha_screen (R en screen avec 2 × HaNB), NXT 0,80, puis H, R et HaNB fermées (= C_Continuum, Ha_screen, C_RGB_bruit).
 > 
-> À RÉGLER : après R_Lineaire_rapide puis Continuum_auto à la main (HaNB créée) : glisse sur le RGB linéaire ; ensuite GHS_1_premier sur L.
+> À RÉGLER : après R_Lineaire_rapide (H, R, RGB linéaires ouvertes) : glisse sur le RGB ; ensuite GHS_1_premier sur L ; dépôt NightPhotons installé.
 > 
 > SI :
-> - régions HII trop rouges ou trop discrètes -> double-clic sur le conteneur, CombineHaWithRGB : Amount 1,5 ou 2,5
-> - H_dans_L voulu -> fais-le AVANT ce conteneur (il ferme HaNB)
-> - vue créée HaNB1 par Continuum_auto -> renomme-la HaNB avant
+> - régions HII trop rouges ou trop discrètes -> double-clic sur le conteneur, Ha_screen : Q = 1,5 ou 2,5
+> - H_dans_L voulu -> chemin principal (C_Continuum, H_dans_L, Ha_screen, C_RGB_bruit) à la place
+> - « No stars detected » -> Continuum_PCS : MaximumPeak 0,9
 
 ## P4_Etirement
 
