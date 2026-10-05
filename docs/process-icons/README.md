@@ -1,10 +1,10 @@
 # Icônes de process PixInsight
 
-Icônes prêtes à charger, avec les réglages de la fiche `docs/pixinsight-workflow.html`. Ce sont des **valeurs de départ** à ajuster sur tes images.
+Icônes prêtes à charger, réglages expliqués dans `docs/kb/`. Ce sont des **valeurs de départ** à ajuster sur tes images.
 
 ## Charger
 
-1. Prends le fichier voulu dans `workflows/` (`Conteneurs-LRGB.xpsm`, `Conteneurs-LHaRGB.xpsm`, `Conteneurs-RGB-SHO.xpsm`, `Conteneurs-SHO-sans-RGB.xpsm`, `Conteneurs-HOO.xpsm`), ou le fichier de ta photo fabriqué par le préparateur de la page (« Préparer ma photo »).
+1. Prends le fichier voulu dans `workflows/` (`Conteneurs-LRGB.xpsm`, `Conteneurs-LHaRGB.xpsm`, `Conteneurs-RGB-SHO.xpsm`, `Conteneurs-SHO-sans-RGB.xpsm`, `Conteneurs-HOO.xpsm`).
 2. PixInsight : clic droit sur l'espace de travail › *Process Icons* › *Load Process Icons*.
 3. Copie une fois tous les scripts de `scripts/` dans `src/scripts/clodoweg/` de PixInsight.
 
@@ -40,7 +40,7 @@ Icônes non testées par l'auteur dans PixInsight 1.9.5 : si l'une ne se charge 
 
 ## Régénérer
 
-`sh docs/process-icons/build/build.sh` : icônes, `preparer-data.json` et page. Générateurs : `make_workflows.py` (étapes par workflow, conteneurs rapides et Turbo), `layout.py` (phases, rôles, conteneurs), `short_desc.py` (descriptions), `make_icons.py` (instances). Le dossier `build/` contient les modèles d'instances (`templates.json`, `all.x`, `FromLukeAndBill.xpsm`, issus des icônes de theAstroShed, licence Apache 2.0 dans `LICENSE-theAstroShed-icons`), le préparateur (`prep_build.py`), la conversion page ↔ artifact (`page.py`) et un audit des réglages (`audit_icons.py`).
+`sh docs/process-icons/build/build.sh` : icônes et `docs/kb/icones-*.md`. Générateurs : `make_workflows.py` (étapes par workflow, conteneurs rapides et Turbo), `layout.py` (phases, rôles, conteneurs), `short_desc.py` (descriptions), `make_icons.py` (instances). Le dossier `build/` contient les modèles d'instances (`templates.json`, `all.x`, `FromLukeAndBill.xpsm`, issus des icônes de theAstroShed, licence Apache 2.0 dans `LICENSE-theAstroShed-icons`), la référence des icônes (`kb_icons.py`) et un audit des réglages (`audit_icons.py`).
 
 ## Sources
 

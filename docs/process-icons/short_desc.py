@@ -1,7 +1,7 @@
 # Descriptions courtes des icônes : ce qui est préréglé, ce qu'il reste à régler, et quoi changer selon le symptôme.
-# Le détail (méthode, explications, sources) est dans docs/pixinsight-workflow.html (fiches « Paramètres des outils »).
+# Le détail (méthode, explications, sources) est dans docs/kb/outils.md.
 NB = ('RSHO', 'SHO', 'HOO')
-PAGE = ' Détails : page docs/pixinsight-workflow.html.'
+PAGE = ''
 
 # nom de base -> (préréglé, à régler, [si ... -> ...])
 S = {
@@ -252,5 +252,6 @@ def text(prefix, base, drag=None, md5=False):
     parts.append("À RÉGLER : %s." % todo)
     if ifs:
         parts.append("SI :\n" + "\n".join("- " + x for x in ifs))
-    parts.append(PAGE.strip())
+    if PAGE:
+        parts.append(PAGE.strip())
     return "\n\n".join(parts)

@@ -1,6 +1,4 @@
-"""Génère, pour chaque workflow de la fiche PixInsight, un fichier .xpsm du chemin principal
-(une colonne par phase, icône-titre en haut) et un fichier d'options et d'alternatives,
-ainsi que les données du préparateur de la page (preparer-data.json).
+"""Génère les fichiers workflows/Conteneurs-X.xpsm (une colonne par phase : chemin principal, options, rapide, Turbo).
 Réutilise les modèles et fonctions de make_icons.py (instances réelles PixInsight 1.9.3)."""
 import os, re, sys, tempfile
 from xml.sax.saxutils import escape
@@ -465,7 +463,7 @@ def write(filename, prefix, title, steps):
     return len(main), len(opts), len(cmain)
 
 # ---------------------------------------------------------------- textes communs
-SRC = ' Détails et sources : docs/pixinsight-workflow.html et docs/sources.md (github.com/clodoweg/PixInsight).'
+SRC = ' Détails et sources : docs/kb et docs/sources.md (github.com/clodoweg/PixInsight).'
 T_WBPP = ("ÉTAPE MANUELLE — WBPP 3.1 (Script › Batch Processing › WeightedBatchPreprocessing). Icône-note : WBPP dépend de tes fichiers et de ton dossier de sortie. "
           "Fichiers : mêmes gain/offset/température/driver/format ; darks de même durée et température (jamais pré-calibrés avec les bias) ; flats par filtre et par session, flat-darks de même durée ; "
           "plusieurs nuits : dossiers SESSION_<date> et Grouping keywords = SESSION. Add Directory, puis vérifie dans l'onglet Calibration que chaque groupe de lights a son dark et son flat. "
@@ -1446,4 +1444,3 @@ turbo2Debut();
 open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'scripts', 'Turbo_2_debut.js'), 'w', encoding='utf-8').write(TURBO2_DEBUT_JS)
 
 DATA['header'] = M.HEADER
-json.dump(DATA, open(os.path.join(OUT, '..', 'preparer-data.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))

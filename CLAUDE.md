@@ -1,6 +1,6 @@
 # Instructions pour Claude
 
-Ce dépôt contient une fiche de référence PixInsight (`docs/pixinsight-workflow.html`), ses icônes de process et la liste de ses sources (`docs/sources.md`). Réponds en français, en textes courts et simples.
+Ce dépôt contient les icônes de process PixInsight de l'utilisateur, leur générateur, ma base de connaissances (`docs/kb/`) et la liste des sources (`docs/sources.md`). Réponds en français, en textes courts et simples.
 
 ## Base de connaissances (à lire en premier)
 
@@ -12,23 +12,19 @@ Avant d'ajouter ou de modifier un contenu technique (réglage, valeur, ordre des
 
 1. Cherche des sources et lis-les : documentation officielle d'abord, puis tutoriels reconnus, puis forums.
 2. Recoupe avec deux sources quand c'est possible ; si elles divergent, dis-le et donne la position de l'éditeur.
-3. Une valeur non vérifiée est signalée comme telle dans la fiche et ajoutée à « Non vérifié » dans `docs/sources.md`.
+3. Une valeur non vérifiée est signalée comme telle dans `docs/kb/` et ajoutée à « Non vérifié » dans `docs/sources.md`.
 4. Chaque source utilisée va dans `docs/sources.md` (rubrique, type Officiel / Tutoriel / Forum ; *(résumé)* si non ouverte). Une demande de l'utilisateur y est notée avec sa phrase.
 5. Dans la réponse : ce qui est vérifié, ce qui diverge, ce qui ne l'est pas.
 
 ## Descriptions des icônes
 
-À chaque changement d'une icône (réglage, place, ordre, script, nouvelle icône), mets TOUJOURS à jour sa description, et celles des icônes et conteneurs qui la citent : `short_desc.py` (S et V : PRÉRÉGLÉ, À RÉGLER, SI), `layout.py` (`WHEN` pour une option) et les textes D_/T_ de `make_workflows.py`. Textes courts, une idée par ligne, lisibles sans la fiche.
+À chaque changement d'une icône (réglage, place, ordre, script, nouvelle icône), mets TOUJOURS à jour sa description, et celles des icônes et conteneurs qui la citent : `short_desc.py` (S et V : PRÉRÉGLÉ, À RÉGLER, SI), `layout.py` (`WHEN` pour une option) et les textes D_/T_ de `make_workflows.py`. Textes courts, une idée par ligne, lisibles sans autre document.
 
 ## Publication
 
 - Branche `main`, commits en français avec les lignes d'attribution de la session, puis `git push origin main`.
-- Artifact claude.ai identique au dépôt : https://claude.ai/artifact/1U1vcUpg8C4iwbDxUiKYPv (capacité `downloads` déjà déclarée, ne pas la repasser).
-- Séquence complète :
-  1. `sh docs/process-icons/build/build.sh` (régénère icônes, `preparer-data.json`, page ; valide les XML) ;
-  2. `python3 docs/process-icons/build/page.py unwrap docs/pixinsight-workflow.html <scratchpad>/workflow-pixinsight.html` ;
-  3. commit + push ;
-  4. publier ce fichier avec `url` = l'URL de l'artifact (dans une nouvelle session : action `read` d'abord).
+- Séquence : `sh docs/process-icons/build/build.sh` (régénère les xpsm, `scripts/Turbo_*.js` et `docs/kb/icones-*.md` ; valide les XML), mise à jour de `docs/kb/` et `docs/sources.md`, commit, push.
+- Plus de page HTML ni d'artifact (supprimés le 5 octobre 2026, à la demande de l'utilisateur ; l'ancienne fiche reste dans l'historique git).
 
 ## Utilisateur
 
@@ -41,10 +37,10 @@ PixInsight 1.9.5 sur **PC Windows** ; CDK17 (2 939 mm) + QHY600 (IMX455) ; filtr
 
 ## Fichiers
 
-- `docs/pixinsight-workflow.html` : la fiche (workflows, mode rapide et Turbo, préparateur « Préparer ma photo », techniques, standards de couleur, fiches outils avec encadré « À régler »). Les données du préparateur sont réécrites par `build.sh`.
+- `docs/kb/` : base de connaissances (voir plus haut).
 - `docs/process-icons/` : `make_workflows.py` (listes d'étapes par workflow, conteneurs rapides et Turbo ; écrit `scripts/Turbo_1.js` et `scripts/Turbo_2_debut.js`, fichiers GÉNÉRÉS), `layout.py` (phase, rôle core / opt / alternative, `CONTAINERS`, textes `WHEN`), `short_desc.py` (descriptions LANCEMENT / PRÉRÉGLÉ / À RÉGLER / SI ; variantes par workflow dans `V`), `make_icons.py` (instances). Sortie : `workflows/Conteneurs-X.xpsm` seulement.
 - `docs/depots-pixinsight.txt` : les dépôts PixInsight à ajouter, une URL par ligne (demande de l'utilisateur).
-- `docs/process-icons/scripts/` : scripts de la fiche, installés par l'utilisateur dans `src/scripts/clodoweg/` (icônes en `$PXI_SRCDIR/scripts/clodoweg/…`) : Renommer_auto, LPS_UnClic, Combiner_RGB (paramètre `garder`), GC_Solver_auto (icônes Solver_auto et GC_Solver_auto_rapide), ImageSolver_Date, Masque_auto, Etoiles_auto, Fond_auto, Fond_desature, Nettoyage_sans_etoiles, Etoiles_grosses, Export_TIFF (paramètre `fermer`), Binning_x2, Fermer_vues, Turbo_1, Turbo_2_debut. Etoiles_LRGB.js n'est plus utilisé.
+- `docs/process-icons/scripts/` : scripts de l'utilisateur, installés par l'utilisateur dans `src/scripts/clodoweg/` (icônes en `$PXI_SRCDIR/scripts/clodoweg/…`) : Renommer_auto, LPS_UnClic, Combiner_RGB (paramètre `garder`), GC_Solver_auto (icônes Solver_auto et GC_Solver_auto_rapide), ImageSolver_Date, Masque_auto, Etoiles_auto, Fond_auto, Fond_desature, Nettoyage_sans_etoiles, Etoiles_grosses, Export_TIFF (paramètre `fermer`), Binning_x2, Fermer_vues, Turbo_1, Turbo_2_debut. Etoiles_LRGB.js n'est plus utilisé.
 - Disposition : colonnes P1 Préparation … P7 Étoiles ; dans chaque colonne les groupes `P#_Nom` (chemin principal, `E##_`), `P#_options` (`Opt_`), `P#_rapide` (`R_`) et, en LRGB, `P#_turbo` (`T_`).
 
 ## Workflows actuels (LRGB et LHaRGB)

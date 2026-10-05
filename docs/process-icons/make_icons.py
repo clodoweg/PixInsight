@@ -9,7 +9,7 @@ os.makedirs(OUT, exist_ok=True)
 
 HEADER = '''<?xml version="1.0" encoding="UTF-8"?>
 <!--
-Fiche PixInsight — icônes de process générées pour docs/pixinsight-workflow.html
+Fiche PixInsight — icônes de process de clodoweg (docs/kb)
 Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes images.
 -->
 <xpsm version="1.0" xmlns="http://www.pixinsight.com/xpsm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.pixinsight.com/xpsm http://pixinsight.com/xpsm/xpsm-1.0.xsd">

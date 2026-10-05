@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Fiche PixInsight — icônes de process générées pour docs/pixinsight-workflow.html
+Fiche PixInsight — icônes de process de clodoweg (docs/kb)
 Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes images.
 -->
 <xpsm version="1.0" xmlns="http://www.pixinsight.com/xpsm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.pixinsight.com/xpsm http://pixinsight.com/xpsm/xpsm-1.0.xsd">
@@ -19,9 +19,7 @@ SI :
 - corriger des colonnes -&gt; correctColumns = true dans l'icône
 - une seule image -&gt; allOpenImages = false dans l'icône, puis glisse-la sur l'image
 - artefacts -&gt; Ctrl+Z : le script est conçu pour les brutes, avant alignement
-- script introuvable -&gt; vérifie le dossier scripts/clodoweg (à recopier après une réinstallation de PixInsight) ; version avec dialogue : menu Script › Pattern Correction › LinearPatternSubtraction
-
-Détails : page docs/pixinsight-workflow.html.</description>
+- script introuvable -&gt; vérifie le dossier scripts/clodoweg (à recopier après une réinstallation de PixInsight) ; version avec dialogue : menu Script › Pattern Correction › LinearPatternSubtraction</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/LPS_UnClic.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="14">
@@ -92,9 +90,7 @@ PRÉRÉGLÉ : script Renommer_auto : renomme les masters mono ouverts L, R, G, B
 À RÉGLER : une seule fois par ordinateur : copie Renommer_auto.js dans src/scripts/clodoweg ; ouvre tes masters, puis lance l'icône.
 
 SI :
-- filtre inconnu ou nom déjà pris -&gt; message dans la console, renomme cette vue à la main
-
-Détails : page docs/pixinsight-workflow.html.</description>
+- filtre inconnu ou nom déjà pris -&gt; message dans la console, renomme cette vue à la main</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Renommer_auto.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="0"/>
@@ -103,9 +99,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <instance class="NoOperation" version="256" id="E02_Masters_H_O_instance">
       <description>PRÉRÉGLÉ : rien (icône-note).
 
-À RÉGLER : renomme tes masters H et O ; même recadrage.
-
-Détails : page docs/pixinsight-workflow.html.</description>
+À RÉGLER : renomme tes masters H et O ; même recadrage.</description>
    </instance>
    <instance class="NoOperation" version="256" id="P1_options_instance">
       <description>OPTIONS de la phase 1 — Préparation : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
@@ -121,9 +115,7 @@ PRÉRÉGLÉ : rien (WBPP garde ses propres réglages).
 
 SI :
 - un groupe de lights sans dark ou flat (onglet Calibration) -&gt; corrige avant Run
-- plusieurs nuits -&gt; Grouping keywords = SESSION
-
-Détails : page docs/pixinsight-workflow.html.</description>
+- plusieurs nuits -&gt; Grouping keywords = SESSION</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/BatchPreprocessing/BPP-Main.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="0"/>
@@ -138,9 +130,7 @@ PRÉRÉGLÉ : Auto detect, Hot sigma 2,5, Cold désactivé.
 
 SI :
 - petites étoiles modifiées -&gt; Hot sigma 3,0
-- S, H, O en poses longues -&gt; 2,2
-
-Détails : page docs/pixinsight-workflow.html.</description>
+- S, H, O en poses longues -&gt; 2,2</description>
       <table id="targetFrames" rows="0"/>
       <parameter id="masterDarkPath"></parameter>
       <parameter id="outputDir"></parameter>
@@ -168,9 +158,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
 
 PRÉRÉGLÉ : H = canal rouge de l'image couleur.
 
-À RÉGLER : glisse sur l'image dual-band (caméra couleur seulement).
-
-Détails : page docs/pixinsight-workflow.html.</description>
+À RÉGLER : glisse sur l'image dual-band (caméra couleur seulement).</description>
       <parameter id="expression">$T[0]</parameter>
       <parameter id="expression1"></parameter>
       <parameter id="expression2"></parameter>
@@ -204,9 +192,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
 
 PRÉRÉGLÉ : O = moyenne de G et B.
 
-À RÉGLER : glisse sur l'image dual-band (caméra couleur seulement).
-
-Détails : page docs/pixinsight-workflow.html.</description>
+À RÉGLER : glisse sur l'image dual-band (caméra couleur seulement).</description>
       <parameter id="expression">($T[1] + $T[2]) / 2</parameter>
       <parameter id="expression1"></parameter>
       <parameter id="expression2"></parameter>
@@ -248,9 +234,7 @@ PRÉRÉGLÉ : script ImageSolver_Date.js en une seule icône (pas de conteneur) 
 SI :
 - la date est ajoutée mais ImageSolver ne se lance pas -&gt; glisse l'icône ImageSolver_seul (options) sur la même image
 - échec sans coordonnées dans l'en-tête -&gt; lance ImageSolver depuis le menu Script et utilise Search (nom de l'objet)
-- master en bin 2 -&gt; metadata_xpixsz = 7.52 et metadata_resolution = 0.0001466 dans solverParams
-
-Détails : page docs/pixinsight-workflow.html.</description>
+- master en bin 2 -&gt; metadata_xpixsz = 7.52 et metadata_resolution = 0.0001466 dans solverParams</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/ImageSolver_Date.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="47">
@@ -448,9 +432,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <instance class="SpectrophotometricFluxCalibration" version="1" id="E04_SPFC_H_instance">
       <description>PRÉRÉGLÉ : QE IMX455, Narrowband 656,3 nm, 3 nm.
 
-À RÉGLER : rien ; applique sur le master H, puis MGC_MARS_H.
-
-Détails : page docs/pixinsight-workflow.html.</description>
+À RÉGLER : rien ; applique sur le master H, puis MGC_MARS_H.</description>
       <parameter id="narrowbandMode" value="true"/>
       <parameter id="grayFilterTrCurve">300,0.000,302,0.000,304,0.000,306,0.000,308,0.000,310,0.000,312,0.000,314,0.000,316,0.000,318,0.000,320,0.000,322,0.000,324,0.000,326,0.000,328,0.000,330,0.000,332,0.000,334,0.000,336,0.000,338,0.000,340,0.000,342,0.000,344,0.000,346,0.000,348,0.000,350,0.000,352,0.000,354,0.000,356,0.000,358,0.000,360,0.000,362,0.000,364,0.000,366,0.000,368,0.000,370,0.000,372,0.000,374,0.000,376,0.000,378,0.000,380,0.000,382,0.000,384,0.000,386,0.000,388,0.000,390,0.000,392,0.000,394,0.000,396,0.000,398,0.000,400,0.000,402,0.000,404,0.000,406,0.000,408,0.000,410,0.000,412,0.190,414,0.380,416,0.570,418,0.760,420,0.950,422,0.950,424,0.950,426,0.950,428,0.950,430,0.950,432,0.950,434,0.950,436,0.950,438,0.950,440,0.950,442,0.950,444,0.950,446,0.950,448,0.950,450,0.950,452,0.950,454,0.950,456,0.950,458,0.950,460,0.950,462,0.950,464,0.950,466,0.950,468,0.950,470,0.950,472,0.950,474,0.950,476,0.950,478,0.950,480,0.950,482,0.950,484,0.950,486,0.950,488,0.950,490,0.950,492,0.950,494,0.950,496,0.950,498,0.950,500,0.950,502,0.950,504,0.950,506,0.950,508,0.950,510,0.950,512,0.950,514,0.950,516,0.950,518,0.950,520,0.950,522,0.950,524,0.950,526,0.950,528,0.950,530,0.950,532,0.950,534,0.950,536,0.950,538,0.950,540,0.950,542,0.950,544,0.950,546,0.950,548,0.950,550,0.950,552,0.950,554,0.950,556,0.950,558,0.950,560,0.950,562,0.950,564,0.950,566,0.950,568,0.950,570,0.950,572,0.950,574,0.950,576,0.950,578,0.950,580,0.950,582,0.950,584,0.950,586,0.950,588,0.950,590,0.950,592,0.950,594,0.950,596,0.950,598,0.950,600,0.950,602,0.950,604,0.950,606,0.950,608,0.950,610,0.950,612,0.950,614,0.950,616,0.950,618,0.950,620,0.950,622,0.950,624,0.950,626,0.950,628,0.950,630,0.950,632,0.950,634,0.950,636,0.950,638,0.950,640,0.950,642,0.950,644,0.950,646,0.950,648,0.950,650,0.950,652,0.950,654,0.950,656,0.950,658,0.950,660,0.950,662,0.950,664,0.950,666,0.950,668,0.950,670,0.950,672,0.950,674,0.950,676,0.950,678,0.950,680,0.950,682,0.950,684,0.950,686,0.950,688,0.950,690,0.950,692,0.950,694,0.950,696,0.950,698,0.950,700,0.950,702,0.950,704,0.950,706,0.887,708,0.760,710,0.633,712,0.507,714,0.380,716,0.253,718,0.127,720,0.000,722,0.000,724,0.000,726,0.000,728,0.000,730,0.000,732,0.000,734,0.000,736,0.000,738,0.000,740,0.000,742,0.000,744,0.000,746,0.000,748,0.000,750,0.000,752,0.000,754,0.000,756,0.000,758,0.000,760,0.000,762,0.000,764,0.000,766,0.000,768,0.000,770,0.000,772,0.000,774,0.000,776,0.000,778,0.000,780,0.000,782,0.000,784,0.000,786,0.000,788,0.000,790,0.000,792,0.000,794,0.000,796,0.000,798,0.000,800,0.000</parameter>
       <parameter id="grayFilterName">Antlia V Pro Series L (approx. 420-715 nm)</parameter>
@@ -498,9 +480,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <instance class="SpectrophotometricFluxCalibration" version="1" id="E05_SPFC_O_instance">
       <description>PRÉRÉGLÉ : QE IMX455, Narrowband 500,7 nm, 3 nm.
 
-À RÉGLER : rien ; applique sur le master O, puis MGC_MARS_O.
-
-Détails : page docs/pixinsight-workflow.html.</description>
+À RÉGLER : rien ; applique sur le master O, puis MGC_MARS_O.</description>
       <parameter id="narrowbandMode" value="true"/>
       <parameter id="grayFilterTrCurve">300,0.000,302,0.000,304,0.000,306,0.000,308,0.000,310,0.000,312,0.000,314,0.000,316,0.000,318,0.000,320,0.000,322,0.000,324,0.000,326,0.000,328,0.000,330,0.000,332,0.000,334,0.000,336,0.000,338,0.000,340,0.000,342,0.000,344,0.000,346,0.000,348,0.000,350,0.000,352,0.000,354,0.000,356,0.000,358,0.000,360,0.000,362,0.000,364,0.000,366,0.000,368,0.000,370,0.000,372,0.000,374,0.000,376,0.000,378,0.000,380,0.000,382,0.000,384,0.000,386,0.000,388,0.000,390,0.000,392,0.000,394,0.000,396,0.000,398,0.000,400,0.000,402,0.000,404,0.000,406,0.000,408,0.000,410,0.000,412,0.190,414,0.380,416,0.570,418,0.760,420,0.950,422,0.950,424,0.950,426,0.950,428,0.950,430,0.950,432,0.950,434,0.950,436,0.950,438,0.950,440,0.950,442,0.950,444,0.950,446,0.950,448,0.950,450,0.950,452,0.950,454,0.950,456,0.950,458,0.950,460,0.950,462,0.950,464,0.950,466,0.950,468,0.950,470,0.950,472,0.950,474,0.950,476,0.950,478,0.950,480,0.950,482,0.950,484,0.950,486,0.950,488,0.950,490,0.950,492,0.950,494,0.950,496,0.950,498,0.950,500,0.950,502,0.950,504,0.950,506,0.950,508,0.950,510,0.950,512,0.950,514,0.950,516,0.950,518,0.950,520,0.950,522,0.950,524,0.950,526,0.950,528,0.950,530,0.950,532,0.950,534,0.950,536,0.950,538,0.950,540,0.950,542,0.950,544,0.950,546,0.950,548,0.950,550,0.950,552,0.950,554,0.950,556,0.950,558,0.950,560,0.950,562,0.950,564,0.950,566,0.950,568,0.950,570,0.950,572,0.950,574,0.950,576,0.950,578,0.950,580,0.950,582,0.950,584,0.950,586,0.950,588,0.950,590,0.950,592,0.950,594,0.950,596,0.950,598,0.950,600,0.950,602,0.950,604,0.950,606,0.950,608,0.950,610,0.950,612,0.950,614,0.950,616,0.950,618,0.950,620,0.950,622,0.950,624,0.950,626,0.950,628,0.950,630,0.950,632,0.950,634,0.950,636,0.950,638,0.950,640,0.950,642,0.950,644,0.950,646,0.950,648,0.950,650,0.950,652,0.950,654,0.950,656,0.950,658,0.950,660,0.950,662,0.950,664,0.950,666,0.950,668,0.950,670,0.950,672,0.950,674,0.950,676,0.950,678,0.950,680,0.950,682,0.950,684,0.950,686,0.950,688,0.950,690,0.950,692,0.950,694,0.950,696,0.950,698,0.950,700,0.950,702,0.950,704,0.950,706,0.887,708,0.760,710,0.633,712,0.507,714,0.380,716,0.253,718,0.127,720,0.000,722,0.000,724,0.000,726,0.000,728,0.000,730,0.000,732,0.000,734,0.000,736,0.000,738,0.000,740,0.000,742,0.000,744,0.000,746,0.000,748,0.000,750,0.000,752,0.000,754,0.000,756,0.000,758,0.000,760,0.000,762,0.000,764,0.000,766,0.000,768,0.000,770,0.000,772,0.000,774,0.000,776,0.000,778,0.000,780,0.000,782,0.000,784,0.000,786,0.000,788,0.000,790,0.000,792,0.000,794,0.000,796,0.000,798,0.000,800,0.000</parameter>
       <parameter id="grayFilterName">Antlia V Pro Series L (approx. 420-715 nm)</parameter>
@@ -552,9 +532,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
 
 SI :
 - cible au sud au-delà de −15° environ (et narrowband au-delà de +75°) -&gt; pas de référence MARS : GradientCorrection ou DBE
-- gradient restant -&gt; Gradient scale 512 puis 256
-
-Détails : page docs/pixinsight-workflow.html.</description>
+- gradient restant -&gt; Gradient scale 512 puis 256</description>
       <parameter id="command"></parameter>
       <parameter id="useMARSDatabase" value="true"/>
       <parameter id="grayMARSFilter">Ha</parameter>
@@ -580,9 +558,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
 
 SI :
 - cible au sud au-delà de −15° environ (et narrowband au-delà de +75°) -&gt; pas de référence MARS : GradientCorrection ou DBE
-- gradient restant -&gt; Gradient scale 512 puis 256
-
-Détails : page docs/pixinsight-workflow.html.</description>
+- gradient restant -&gt; Gradient scale 512 puis 256</description>
       <parameter id="command"></parameter>
       <parameter id="useMARSDatabase" value="true"/>
       <parameter id="grayMARSFilter">OIII</parameter>
@@ -608,9 +584,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
 
 SI :
 - gradient dans les coins -&gt; baisse Gradient scale
-- nébuleuse assombrie -&gt; monte Protection amount
-
-Détails : page docs/pixinsight-workflow.html.</description>
+- nébuleuse assombrie -&gt; monte Protection amount</description>
       <parameter id="reference" value="0.50"/>
       <parameter id="lowThreshold" value="0.20"/>
       <parameter id="lowTolerance" value="0.50"/>
@@ -647,9 +621,7 @@ PRÉRÉGLÉ : ImageSolver 6.4.2 seul (mêmes réglages que l'icône ImageSolver,
 À RÉGLER : secours : glisse sur l'image si l'icône ImageSolver s'arrête après la date.
 
 SI :
-- icône bloquée après une mise à jour d'ImageSolver -&gt; efface son champ MD5
-
-Détails : page docs/pixinsight-workflow.html.</description>
+- icône bloquée après une mise à jour d'ImageSolver -&gt; efface son champ MD5</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/ImageSolver/ImageSolver.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="46">
@@ -852,9 +824,7 @@ SI :
 - « 0 reference image(s) available » ou « No reference data found » -&gt; cible hors de MARS (sud au-delà de −15° environ) : GradientCorrection ou DBE à la place de SPFC + MGC
 - gradient restant dans les coins -&gt; Gradient scale 512 puis 256
 - modèle qui ondule -&gt; Smoothness 3 à 5
-- image couleur -&gt; filtres MARS R, G, B
-
-Détails : page docs/pixinsight-workflow.html.</description>
+- image couleur -&gt; filtres MARS R, G, B</description>
       <parameter id="command"></parameter>
       <parameter id="useMARSDatabase" value="true"/>
       <parameter id="grayMARSFilter">L</parameter>
@@ -882,9 +852,7 @@ PRÉRÉGLÉ : 15 points par ligne, rayon 15, Tolerance 0,5, Smoothing 0,25, Subt
 
 SI :
 - points rouges -&gt; Tolerance 1,0 à 1,5
-- vignettage -&gt; Division
-
-Détails : page docs/pixinsight-workflow.html.</description>
+- vignettage -&gt; Division</description>
       <table id="data" rows="0"/>
       <parameter id="derivativeOrder" value="2"/>
       <parameter id="smoothing" value="0.250"/>
@@ -916,9 +884,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
 
 PRÉRÉGLÉ : référence = vue H.
 
-À RÉGLER : applique sur O puis sur S.
-
-Détails : page docs/pixinsight-workflow.html.</description>
+À RÉGLER : applique sur O puis sur S.</description>
       <parameter id="referenceViewId">H</parameter>
       <parameter id="rejectLow" value="0.000000"/>
       <parameter id="rejectHigh" value="0.920000"/>
@@ -929,9 +895,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <instance class="PixelMath" version="256" id="E09_Combinaison_HOO_instance">
       <description>PRÉRÉGLÉ : R = H, G = O, B = O, image 'HOO'.
 
-À RÉGLER : nomme tes masters H et O.
-
-Détails : page docs/pixinsight-workflow.html.</description>
+À RÉGLER : nomme tes masters H et O.</description>
       <parameter id="expression">H</parameter>
       <parameter id="expression1">O</parameter>
       <parameter id="expression2">O</parameter>
@@ -1050,9 +1014,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
 
 SI :
 - encore bruité -&gt; 0,70
-- aspect plastique -&gt; 0,50
-
-Détails : page docs/pixinsight-workflow.html.</description>
+- aspect plastique -&gt; 0,50</description>
       <parameter id="ml_version" value="0"/>
       <parameter id="denoise" value="0.60"/>
       <parameter id="enable_color_separation" value="false"/>
@@ -1077,9 +1039,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
 
 SI :
 - très bruité -&gt; 2 itérations
-- aspect plastique -&gt; 0,60
-
-Détails : page docs/pixinsight-workflow.html.</description>
+- aspect plastique -&gt; 0,60</description>
       <parameter id="ml_version" value="0"/>
       <parameter id="denoise" value="0.75"/>
       <parameter id="enable_color_separation" value="false"/>
@@ -1106,9 +1066,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
 À RÉGLER : étire H d'abord (pic à 0,25 ; Stretch factor 3,5 à 6,5 selon le fond lu), puis O et S jusqu'au MÊME fond (Stretch factor plus élevé).
 
 SI :
-- bruit de O ou S qui ressort -&gt; SP trop bas, remonte-le
-
-Détails : page docs/pixinsight-workflow.html.</description>
+- bruit de O ou S qui ressort -&gt; SP trop bas, remonte-le</description>
       <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
       <parameter id="stretchChannel" value="SC_RGB"/>
       <parameter id="inverse" value="false"/>
@@ -1131,9 +1089,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
 SI :
 - cœur brillant qui sature -&gt; baisse HP vers sa valeur
 - fond trop sombre -&gt; monte LP vers sa valeur (pas au-dessus de SP)
-- fond bruité qui ressort -&gt; SP trop bas
-
-Détails : page docs/pixinsight-workflow.html.</description>
+- fond bruité qui ressort -&gt; SP trop bas</description>
       <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
       <parameter id="stretchChannel" value="SC_RGB"/>
       <parameter id="inverse" value="false"/>
@@ -1151,9 +1107,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <instance class="GeneralizedHyperbolicStretch" version="256" id="E16_GHS_3_fond_instance">
       <description>PRÉRÉGLÉ : b = 10, SP = HP = 0,20, Stretch factor 1 (fond à 0,23 après GHS_2).
 
-À RÉGLER : SP = HP = fond lu - 0,03 (0,22 après Statistical Stretch à 0,25) ; Stretch factor 0,8 à 1,2 jusqu'au fond vers 0,12–0,14.
-
-Détails : page docs/pixinsight-workflow.html.</description>
+À RÉGLER : SP = HP = fond lu - 0,03 (0,22 après Statistical Stretch à 0,25) ; Stretch factor 0,8 à 1,2 jusqu'au fond vers 0,12–0,14.</description>
       <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
       <parameter id="stretchChannel" value="SC_RGB"/>
       <parameter id="inverse" value="false"/>
@@ -1178,9 +1132,7 @@ LANCEMENT : glisse l'icône sur l'image. Si l'icône est bloquée après une mis
 
 PRÉRÉGLÉ : Target Median 0,25, Blackpoint Sigma 5.
 
-À RÉGLER : rien ; même Target Median pour tous les masters ; avec 0,25, passe ensuite GHS_3_fond.
-
-Détails : page docs/pixinsight-workflow.html.</description>
+À RÉGLER : rien ; même Target Median pour tous les masters ; avec 0,25, passe ensuite GHS_3_fond.</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/statisticalstretch.js</parameter>
       <parameter id="md5sum">defab45bb4e2f33db39a7bb016cdefb0</parameter>
       <table id="parameters" rows="15">
@@ -1253,9 +1205,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <instance class="PixelMath" version="256" id="E17_HOO_simple_instance">
       <description>PRÉRÉGLÉ : R = H, G = O, B = O.
 
-À RÉGLER : vues H et O étirées.
-
-Détails : page docs/pixinsight-workflow.html.</description>
+À RÉGLER : vues H et O étirées.</description>
       <parameter id="expression">H</parameter>
       <parameter id="expression1">O</parameter>
       <parameter id="expression2">O</parameter>
@@ -1290,9 +1240,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
 À RÉGLER : Lightness = H ; Shadowpoint ; O3 boost peu à peu.
 
 SI :
-- tout rouge -&gt; O3 boost
-
-Détails : page docs/pixinsight-workflow.html.</description>
+- tout rouge -&gt; O3 boost</description>
       <parameter id="palette" value="Palette_HOO"/>
       <parameter id="lightness" value="Lightness_Off"/>
       <parameter id="blendMode" value="Blend_Mode1"/>
@@ -1312,9 +1260,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
 
 PRÉRÉGLÉ : formule Foraxx HOO, image 'HOO_Foraxx'.
 
-À RÉGLER : vues H et O étirées, sans étoiles.
-
-Détails : page docs/pixinsight-workflow.html.</description>
+À RÉGLER : vues H et O étirées, sans étoiles.</description>
       <parameter id="expression">H</parameter>
       <parameter id="expression1">((O*H)^~(O*H))*H + ~((O*H)^~(O*H))*O</parameter>
       <parameter id="expression2">O</parameter>
@@ -1348,9 +1294,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
 
 PRÉRÉGLÉ : G = 0,6·H + 0,4·O.
 
-À RÉGLER : vues H et O étirées ; ajuste les coefficients.
-
-Détails : page docs/pixinsight-workflow.html.</description>
+À RÉGLER : vues H et O étirées ; ajuste les coefficients.</description>
       <parameter id="expression">H</parameter>
       <parameter id="expression1">0.6*H + 0.4*O</parameter>
       <parameter id="expression2">O</parameter>
@@ -1386,9 +1330,7 @@ LANCEMENT : double-clic sur l'icône, puis Apply Global. Si l'icône est bloqué
 
 PRÉRÉGLÉ : rien (le script ne lit pas l'icône).
 
-À RÉGLER : choisis H, O, S ; Linear Input Data selon tes images ; compare les 16 vignettes.
-
-Détails : page docs/pixinsight-workflow.html.</description>
+À RÉGLER : choisis H, O, S ; Linear Input Data selon tes images ; compare les 16 vignettes.</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/PerfectPalettePicker.js</parameter>
       <parameter id="md5sum">0ffff6a0fb869acfc4f9ee3ad81b6338</parameter>
       <table id="parameters" rows="0"/>
@@ -1399,18 +1341,14 @@ Détails : page docs/pixinsight-workflow.html.</description>
 
 PRÉRÉGLÉ : rien (icône-note).
 
-À RÉGLER : H rouge-orangé, O cyan-bleu, S rouge profond ou or.
-
-Détails : page docs/pixinsight-workflow.html.</description>
+À RÉGLER : H rouge-orangé, O cyan-bleu, S rouge profond ou or.</description>
    </instance>
    <instance class="LRGBCombination" version="256" id="Opt_H_en_luminance_instance">
       <description>OPTION — détail plus net en HOO (H en luminance).
 
 PRÉRÉGLÉ : seul L coché, Lightness 0,5, Saturation 0,40.
 
-À RÉGLER : copie de H étiré nommée 'L' ; glisse sur l'image HOO.
-
-Détails : page docs/pixinsight-workflow.html.</description>
+À RÉGLER : copie de H étiré nommée 'L' ; glisse sur l'image HOO.</description>
       <table id="channels" rows="4">
          <tr>
             <td id="enabled" value="false"/>
@@ -2470,9 +2408,7 @@ PRÉRÉGLÉ : Denoise 0,40, 1 itération.
 À RÉGLER : seulement si du bruit reste sur l'image finale.
 
 SI :
-- aspect plastique -&gt; 0,30
-
-Détails : page docs/pixinsight-workflow.html.</description>
+- aspect plastique -&gt; 0,30</description>
       <parameter id="ml_version" value="0"/>
       <parameter id="denoise" value="0.40"/>
       <parameter id="enable_color_separation" value="false"/>
@@ -2496,9 +2432,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <instance class="NoOperation" version="256" id="E20_Etoiles_HOO_instance">
       <description>PRÉRÉGLÉ : rien (icône-note).
 
-À RÉGLER : avec RGB : étoiles RGB ; sans RGB : étoiles de SXT, NB to RGB ou étoiles synthétiques.
-
-Détails : page docs/pixinsight-workflow.html.</description>
+À RÉGLER : avec RGB : étoiles RGB ; sans RGB : étoiles de SXT, NB to RGB ou étoiles synthétiques.</description>
    </instance>
    <instance class="Script" version="256" id="E21_Star_Stretch_instance">
       <description>LANCEMENT : glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
@@ -2511,9 +2445,7 @@ SI :
 - cœurs d'étoiles blancs (R = G = B = 1) -&gt; 5,5
 - étoiles trop grosses -&gt; 5 ou 4
 - étoiles grisées par le SCNR -&gt; décoche Remove Green
-- étoiles criardes -&gt; Color Boost 1,0
-
-Détails : page docs/pixinsight-workflow.html.</description>
+- étoiles criardes -&gt; Color Boost 1,0</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/star_stretch.js</parameter>
       <parameter id="md5sum">69a1ee6db4e9f5374c2cddb1e5a7f4ae</parameter>
       <table id="parameters" rows="4">
@@ -2543,9 +2475,7 @@ Détails : page docs/pixinsight-workflow.html.</description>
 
 SI :
 - étoiles RGB -&gt; RGB_stars ; NB to RGB -&gt; NBtoRGB_stars
-- pour recommencer -&gt; Ctrl+Z
-
-Détails : page docs/pixinsight-workflow.html.</description>
+- pour recommencer -&gt; Ctrl+Z</description>
       <parameter id="expression">S=0.20;
 W=~((~$T)*(~HOO_stars));
 f1= ~((~mtf(~S,W)/~mtf(~S,$T))*~$T);
@@ -2588,9 +2518,7 @@ PRÉRÉGLÉ : Selection 0,25, Amount 0,60, 1 itération, 5×5 circulaire.
 À RÉGLER : sur l'image d'étoiles seule, avant Etoiles_screen.
 
 SI :
-- trop fort -&gt; Amount 0,50
-
-Détails : page docs/pixinsight-workflow.html.</description>
+- trop fort -&gt; Amount 0,50</description>
       <parameter id="operator" value="Selection"/>
       <parameter id="interlacingDistance" value="1"/>
       <parameter id="lowThreshold" value="0.000000"/>
@@ -2618,9 +2546,7 @@ PRÉRÉGLÉ : rien (réglages dans le dialogue).
 
 SI :
 - petites étoiles réduites ou effacées aussi (son masque ne protège que les cœurs) -&gt; Etoiles_grosses à la place
-- pas assez -&gt; relance en Low (Med = 4 courbes, High = 9)
-
-Détails : page docs/pixinsight-workflow.html.</description>
+- pas assez -&gt; relance en Low (Med = 4 courbes, High = 9)</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/Halo-B-Gon.js</parameter>
       <parameter id="md5sum">b9427e718e2b9760704c8c738e0893b7</parameter>
       <table id="parameters" rows="0"/>
@@ -2641,9 +2567,7 @@ SI :
 - moyennes étoiles touchées aussi -&gt; taille 9 ou 11
 - certaines grosses pas réduites -&gt; taille 5, ou seuil 0,10
 - pas assez réduites -&gt; force 0,80 (0,5 = rien)
-- voir ce qui est réduit -&gt; afficherMasque true (vue masque_grosses)
-
-Détails : page docs/pixinsight-workflow.html.</description>
+- voir ce qui est réduit -&gt; afficherMasque true (vue masque_grosses)</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Etoiles_grosses.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="5">
@@ -2681,9 +2605,7 @@ PRÉRÉGLÉ : PixelMath sur l'image d'étoiles : m = max(R, G, B) ; au-dessus de
 SI :
 - encore trop blanc -&gt; k = 0,10
 - étoiles moyennes touchées -&gt; s = 0,80
-- cœur R = G = B = 1 -&gt; saturé à la prise de vue : reste blanc (à 0,94)
-
-Détails : page docs/pixinsight-workflow.html.</description>
+- cœur R = G = B = 1 -&gt; saturé à la prise de vue : reste blanc (à 0,94)</description>
       <parameter id="expression">s = 0.70;
 k = 0.06;
 m = max($T[0], $T[1], $T[2]);
@@ -2726,9 +2648,7 @@ PRÉRÉGLÉ : ~((~$T) * (~HOO_stars)), sur l'image elle-même.
 SI :
 - étoiles RGB -&gt; RGB_stars
 - NB to RGB -&gt; NBtoRGB_stars
-- synthétiques -&gt; Stars_HOO
-
-Détails : page docs/pixinsight-workflow.html.</description>
+- synthétiques -&gt; Stars_HOO</description>
       <parameter id="expression">~((~$T) * (~HOO_stars))</parameter>
       <parameter id="expression1"></parameter>
       <parameter id="expression2"></parameter>
@@ -2768,9 +2688,7 @@ PRÉRÉGLÉ : script Fond_desature : fond mesuré ; zones faibles (luminance lis
 
 SI :
 - violet encore visible dans le halo -&gt; violetFin 0,40
-- extensions faibles de la galaxie grisées -&gt; fin 0,10
-
-Détails : page docs/pixinsight-workflow.html.</description>
+- extensions faibles de la galaxie grisées -&gt; fin 0,10</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="4">
@@ -2801,9 +2719,7 @@ PRÉRÉGLÉ : ICCProfileTransformation : vers sRGB IEC61966-2.1, Convert to the 
 À RÉGLER : glisse sur l'image finie avant l'export (Export_TIFF le fait aussi sur sa copie : cette icône sert si tu enregistres toi-même).
 
 SI :
-- impression ou Adobe RGB voulu -&gt; change le profil cible dans l'icône
-
-Détails : page docs/pixinsight-workflow.html.</description>
+- impression ou Adobe RGB voulu -&gt; change le profil cible dans l'icône</description>
       <parameter id="targetProfile">sRGB IEC61966-2.1</parameter>
       <parameter id="toDefaultProfile" value="false"/>
       <parameter id="renderingIntent" value="Perceptual"/>
@@ -2824,9 +2740,7 @@ SI :
 - autre nom -&gt; remplis nom
 - autre dossier -&gt; remplis dossier
 - garder plusieurs versions -&gt; suffixe (ex. _v2)
-- garder le profil actuel -&gt; icc false
-
-Détails : page docs/pixinsight-workflow.html.</description>
+- garder le profil actuel -&gt; icc false</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="5">

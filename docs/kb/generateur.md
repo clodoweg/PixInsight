@@ -1,6 +1,6 @@
 # Modifier les icônes de process : le générateur
 
-Tout est produit par `sh docs/process-icons/build/build.sh` ; ne jamais éditer à la main les `.xpsm`, `icones-*.md`, `scripts/Turbo_1.js`, `scripts/Turbo_2_debut.js`, `preparer-data.json`.
+Tout est produit par `sh docs/process-icons/build/build.sh` ; ne jamais éditer à la main les `.xpsm`, `icones-*.md`, `scripts/Turbo_1.js`, `scripts/Turbo_2_debut.js`.
 
 ## Fichiers
 
