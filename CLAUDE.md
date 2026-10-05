@@ -45,16 +45,15 @@ PixInsight 1.9.5 sur **PC Windows** ; CDK17 (2 939 mm) + QHY600 (IMX455) ; filtr
 
 ## Workflows actuels (LRGB et LHaRGB)
 
-Étoiles gardées jusqu'à LRGB, SXT ensuite (demande de l'utilisateur) :
-- **P1** : E00 LinearPatternSubtraction, E01 Renommer_auto, E02 Combinaison_RGB (LRGB : R, G, B fermées ; LHaRGB : G, B fermées, R gardée), E03 Solver_auto (ImageSolver sur toutes les images ; Apply Global).
-- **P2** : ImageSolver, SPFC, MGC + MARS (options GradientCorrection, DBE).
-- **P3 LRGB** : C_RGB_lineaire (BXT Correct Only, SPCC, BXT, NXT), C_L_lineaire (BXT, NXT). **P3 LHaRGB** : C_RGB_couleur, BXT_L_H, **E12 Continuum_auto** (script SetiAstro, crée **HaNB** ; Continuum_H supprimé), H_dans_RGB (R + w·HaNB), option H_dans_L, C_RGB_bruit (NXT_RGB puis ferme H, R, HaNB), NXT_L.
-- **P4** : GHS_1 (à la main), GHS_2, GHS_3_fond sur L ; Statistical Stretch puis GHS_3_fond sur RGB ; tout avec étoiles.
-- **P5** : LRGB_ajout_L (avec étoiles), **SXT_LRGB** (Unscreen coché) ; option Etoiles_auto_etire.
-- **P6** (finition en parties) : HDRMT_40, C_Finition (Masque_L, Courbes, LHE, LHE_fin, Masque_retirer), NXT_final ; options Nettoyage_sans_etoiles, HDRMT_30/50/eclat, Boost_finition(_light), NXT doux/fort.
-- **P7** : Etoiles_screen, C_Fond_final (Fond_auto 0,12, Fond_desature, ferme RGB_stars) ; options MT_etoiles, Halo_B_Gon, Etoiles_grosses (réduit seulement les grosses étoiles, script), Etoiles_plafond (cœurs sous 1), Etoiles_reduites, Boost_final(_doux), Fond_auto_clair, ICC_sRGB, Export_TIFF (puis ferme L).
-- **Rapide** : R_C_Preparation_rapide (P1, Apply Global), R_Gradient_auto_rapide (GradientCorrection sur toutes les images), R_Lineaire_rapide (script Lineaire_auto : LRGB C_RGB_lineaire sur RGB et C_L_lineaire sur L ; LHaRGB C_RGB_couleur, BXT_L_H sur L et H, NXT_L), GHS_1 à la main puis R_C_Fin_GHS_rapide, R_C_LRGB_rapide (LRGB_ajout_L, SXT, Etoiles_auto_etire), R_C_Fin_rapide, R_C_Etoiles_fond_rapide (avec Export_TIFF). Pas de GradientCorrection dans les conteneurs rapides.
-- **Icônes à tester** (options, demande du 5 octobre 2026) : Binning_x2 (P1, après Solver_auto), GraXpert (P2), H_dans_RGB_v2 et CombineHaWithRGB (P3 LHaRGB), MAS et VeraLux_HMS (P4), DarkStructureEnhance (P6), MKStarReduction (P7), Agrandir_x2 (P7, avant ICC_sRGB et Export_TIFF). Versions de MAS et GraXpert non vérifiées ; VeraLux_HMS et MKStarReduction sont des icônes-notes.
+Process galaxies (demande de l'utilisateur, 5 octobre 2026) : L sans étoiles, RGB étiré avec étoiles par MAS, étoiles du RGB remises à la fin.
+- **P1** : E00 LinearPatternSubtraction, E01 Renommer_auto, E02 Combinaison_RGB (LHaRGB : R gardée), E03 Solver_auto ; option Binning_x2.
+- **P2** : ImageSolver, SPFC, MGC + MARS (options GradientCorrection, DBE, GraXpert).
+- **P3 LRGB** : C_RGB_lineaire (BXT Correct Only, SPCC, SCNR vert 1,0, BXT, NXT), C_L_lineaire (BXT, NXT, SXT_L_lineaire sans image d'étoiles). **P3 LHaRGB** : C_RGB_couleur, BXT_L_H, Continuum_auto (HaNB), H_dans_RGB, C_RGB_bruit (NXT, ferme H, R, HaNB), NXT_L, SXT_L_lineaire.
+- **P4** : GHS_1 (à la main), GHS_2 sur L sans étoiles ; MAS (réglages de l'utilisateur, fond 0,15) puis SXT_RGB_etire (Unscreen, crée RGB_stars) sur RGB ; GHS_3_fond sur L et sur le RGB sans étoiles. Options : Statistical_Stretch (à la place de MAS), VeraLux_HMS.
+- **P5** : LRGB_ajout_L sur les deux images sans étoiles, Saturation 0,5 ; option Etoiles_auto_etire.
+- **P6** : HDRMT_40, C_Finition, NXT_final (+ options).
+- **P7** : Etoiles_screen, Fond_desature (seul, à la place de l'ancien C_Fond_final) ; options Fond_auto, Fond_auto_clair, Etoiles_grosses, Etoiles_plafond, Etoiles_reduites, Boost_final, Agrandir_x2, ICC_sRGB, Export_TIFF (ferme L et RGB_stars).
+- **Rapide** : R_C_Preparation_rapide, R_Gradient_auto_rapide, R_Lineaire_rapide (script Lineaire_auto), GHS_1 puis R_C_Fin_GHS_rapide sur L, R_C_RGB_etire_rapide (MAS, SXT, GHS fond), R_C_LRGB_rapide (LRGB, Etoiles_auto_etire), R_C_Fin_rapide, R_C_Etoiles_fond_rapide (Etoiles_screen, Fond_desature, Export_TIFF).
 
 ## Contraintes PixInsight apprises
 

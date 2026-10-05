@@ -54,7 +54,7 @@ SCRIPTS = {
     'Fond_auto': ('$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js', '', [('cible', '0.12'), ('tolerance', '0.005'), ('grille', '8')], L_DRAG),
     'Nettoyage_sans_etoiles': ('$PXI_SRCDIR/scripts/clodoweg/Nettoyage_sans_etoiles.js', '', [('etoiles', 'RGB_stars'), ('seuilBas', '0.05'), ('seuilHaut', '0.12'), ('etendue', '25'), ('passes', '3'), ('protege', '0.08'), ('structure', '0.15'), ('compact', '0.05'), ('tresBrillant', '0.05'), ('etendue2', '80'), ('gain', '3'), ('gain2', '8'), ('afficherMasque', 'false')], L_DRAG),
     'Etoiles_grosses': ('$PXI_SRCDIR/scripts/clodoweg/Etoiles_grosses.js', '', [('taille', '7'), ('seuil', '0.15'), ('etendue', '6'), ('force', '0.70'), ('afficherMasque', 'false')], L_DRAG),   # demande de l'utilisateur : réduire seulement les grosses étoiles
-    'Export_TIFF': ('$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js', '', [('nom', ''), ('suffixe', ''), ('dossier', ''), ('icc', 'true'), ('fermer', 'L')], L_DRAG),   # fermer : L fermée après l'export (demande de l'utilisateur)
+    'Export_TIFF': ('$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js', '', [('nom', ''), ('suffixe', ''), ('dossier', ''), ('icc', 'true'), ('fermer', 'L, RGB_stars')], L_DRAG),   # fermer : L fermée après l'export (demande de l'utilisateur)
     'Binning_x2': ('$PXI_SRCDIR/scripts/clodoweg/Binning_x2.js', '', [('facteur', '2')], L_GLOBAL),   # demande de l'utilisateur : binning logiciel de toutes les images
     'CombineHaWithRGB': ('$PXI_SRCDIR/scripts/Toolbox/CombineHaToRGB.js', '', [('alphaView', 'H'), ('amount', '2.0'), ('beta', '0.0'), ('bg', '0.015'), ('sigma', '0.0'), ('linear', 'true'), ('rgbLinked', 'true'), ('invertMask', 'true')], L_DRAG),   # PixInsight Toolbox de Jürgen Terpe (test, demande de l'utilisateur)
     'DarkStructureEnhance': ('$PXI_SRCDIR/scripts/misc/DarkStructureEnhance.js', '', [], L_GLOBAL + "Ce script ne lit pas de paramètres d'icône : les réglages se font dans son dialogue. "),   # script livré avec PixInsight (test)
@@ -202,22 +202,22 @@ def layout(entries, naming):
     return insts, icons
 
 TURBO = set()   # mode Turbo supprimé (demande de l'utilisateur, 5 octobre 2026)
-RAPIDE = {'Lineaire_rapide', 'C_Fin_GHS_rapide', 'C_Fin_rapide', 'C_Etoiles_fond_rapide', 'C_Preparation_rapide', 'Gradient_auto_rapide', 'C_RGB_rapide', 'C_L_rapide', 'C_RGB_fin_rapide', 'C_LRGB_rapide'}
+RAPIDE = {'Lineaire_rapide', 'C_RGB_etire_rapide', 'C_Fin_GHS_rapide', 'C_Fin_rapide', 'C_Etoiles_fond_rapide', 'C_Preparation_rapide', 'Gradient_auto_rapide', 'C_RGB_rapide', 'C_L_rapide', 'C_RGB_fin_rapide', 'C_LRGB_rapide'}
 RAPIDE_NOTE = {
-    'LRGB': {1: "MODE RAPIDE (galaxies) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre (étoiles gardées jusqu'à LRGB) : R_C_Preparation_rapide ; R_Gradient_auto_rapide ; R_Lineaire_rapide (RGB et L) ; GHS_1_premier puis R_C_Fin_GHS_rapide sur L ; Statistical_Stretch puis GHS_3_fond sur RGB ; R_C_LRGB_rapide (LRGB, puis SXT) ; finition. Phase 1 : R_C_Preparation_rapide (double-clic puis Apply Global) à la place de LinearPatternSubtraction, Renommer_auto, Combinaison_RGB et Solver_auto",
+    'LRGB': {1: "MODE RAPIDE (galaxies) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre (étoiles gardées jusqu'à LRGB) : R_C_Preparation_rapide ; R_Gradient_auto_rapide ; R_Lineaire_rapide (RGB et L) ; GHS_1_premier puis R_C_Fin_GHS_rapide sur L ; R_C_RGB_etire_rapide sur RGB ; R_C_LRGB_rapide (LRGB sans étoiles) ; finition. Phase 1 : R_C_Preparation_rapide (double-clic puis Apply Global) à la place de LinearPatternSubtraction, Renommer_auto, Combinaison_RGB et Solver_auto",
              2: "R_Gradient_auto_rapide à la place de toute la phase 2 : GradientCorrection sur toutes les images ouvertes (l'astrométrie est déjà faite par R_C_Preparation_rapide)",
              3: "R_Lineaire_rapide (double-clic puis Apply Global) à la place de C_RGB_lineaire et C_L_lineaire : lance C_RGB_lineaire sur RGB puis C_L_lineaire sur L ; les deux restent linéaires, avec leurs étoiles",
-             4: "GHS_1_premier sur L (chemin principal, à régler), puis R_C_Fin_GHS_rapide (« fin de GHS » : GHS_2_contraste et GHS_3_fond en un glisser) sur L ; puis Statistical_Stretch et GHS_3_fond sur RGB (chemin principal)",
-             5: "R_C_LRGB_rapide sur RGB (L ouverte) à la place de LRGB_ajout_L et SXT_LRGB : L ajoutée, étoiles comprises, puis SXT Unscreen (RGB_stars créée), puis Etoiles_auto_etire (saturation et SCNR des étoiles)",
-             6: "R_C_Fin_rapide sur l'image sans étoiles après SXT_LRGB (ou R_C_LRGB_rapide) : HDRMT à 30 %, masque, Courbes, LHE, LHE_fin, masque retiré, NXT_final 0,40 en un seul conteneur (= HDRMT_30, C_Finition et NXT_final)",
-             7: "R_C_Etoiles_fond_rapide sur l'image sans étoiles finie : étoiles remises (Etoiles_screen), Fond_auto (0,12), Fond_desature en un seul conteneur (= Etoiles_screen et C_Fond_final) ; Export_TIFF (options) pour finir hors PixInsight"},
-    'LHA': {1: "MODE RAPIDE (galaxies) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre : R_C_Preparation_rapide ; R_Gradient_auto_rapide ; R_Lineaire_rapide (RGB, L et H), Continuum_auto, H_dans_RGB, C_RGB_bruit (étoiles gardées) ; GHS_1_premier puis R_C_Fin_GHS_rapide sur L ; Statistical_Stretch puis GHS_3_fond sur RGB ; R_C_LRGB_rapide (LRGB, puis SXT) ; finition. Phase 1 : R_C_Preparation_rapide (double-clic puis Apply Global) à la place de LinearPatternSubtraction, Renommer_auto, Combinaison_RGB et Solver_auto",
+             4: "GHS_1_premier sur L sans étoiles (chemin principal, à régler), puis R_C_Fin_GHS_rapide (GHS_2_contraste et GHS_3_fond) sur L ; R_C_RGB_etire_rapide sur RGB (MAS avec étoiles, SXT Unscreen qui crée RGB_stars, GHS fond)",
+             5: "R_C_LRGB_rapide sur RGB sans étoiles (L sans étoiles ouverte) à la place de LRGB_ajout_L : L ajoutée (Saturation 0,5), puis Etoiles_auto_etire (saturation et SCNR de RGB_stars)",
+             6: "R_C_Fin_rapide sur l'image sans étoiles après LRGB_ajout_L (ou R_C_LRGB_rapide) : HDRMT à 30 %, masque, Courbes, LHE, LHE_fin, masque retiré, NXT_final 0,40 en un seul conteneur (= HDRMT_30, C_Finition et NXT_final)",
+             7: "R_C_Etoiles_fond_rapide sur l'image sans étoiles finie : étoiles remises (Etoiles_screen), Fond_desature, puis Export_TIFF (ferme L et RGB_stars) en un seul conteneur"},
+    'LHA': {1: "MODE RAPIDE (galaxies) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre : R_C_Preparation_rapide ; R_Gradient_auto_rapide ; R_Lineaire_rapide (RGB, L et H), Continuum_auto, H_dans_RGB, C_RGB_bruit (étoiles gardées) ; GHS_1_premier puis R_C_Fin_GHS_rapide sur L ; R_C_RGB_etire_rapide sur RGB ; R_C_LRGB_rapide (LRGB sans étoiles) ; finition. Phase 1 : R_C_Preparation_rapide (double-clic puis Apply Global) à la place de LinearPatternSubtraction, Renommer_auto, Combinaison_RGB et Solver_auto",
             2: "R_Gradient_auto_rapide à la place de toute la phase 2 : GradientCorrection sur toutes les images ouvertes (R et H compris, pour le continuum) ; l'astrométrie est déjà faite par R_C_Preparation_rapide",
             3: "R_Lineaire_rapide (double-clic puis Apply Global) à la place de C_RGB_couleur, BXT_L_H et NXT_L : lance C_RGB_couleur sur RGB, BXT_L_H sur L et sur H, NXT_L sur L ; puis chemin principal : Continuum_auto, H_dans_RGB (H_dans_L éventuel), C_RGB_bruit",
-            4: "GHS_1_premier sur L (chemin principal, à régler), puis R_C_Fin_GHS_rapide (« fin de GHS » : GHS_2_contraste et GHS_3_fond en un glisser) sur L ; puis Statistical_Stretch et GHS_3_fond sur RGB (chemin principal)",
-            5: "R_C_LRGB_rapide sur RGB (L ouverte) à la place de LRGB_ajout_L et SXT_LRGB : L ajoutée, étoiles comprises, puis SXT Unscreen (RGB_stars créée), puis Etoiles_auto_etire",
-            6: "R_C_Fin_rapide sur l'image sans étoiles après SXT_LRGB (ou R_C_LRGB_rapide) : HDRMT à 30 %, masque, Courbes, LHE, LHE_fin, masque retiré, NXT_final 0,40 en un seul conteneur (= HDRMT_30, C_Finition et NXT_final)",
-            7: "R_C_Etoiles_fond_rapide sur l'image sans étoiles finie : étoiles remises (Etoiles_screen), Fond_auto (0,12), Fond_desature en un seul conteneur (= Etoiles_screen et C_Fond_final) ; Export_TIFF (options) pour finir hors PixInsight"}}
+            4: "GHS_1_premier sur L sans étoiles (chemin principal, à régler), puis R_C_Fin_GHS_rapide (GHS_2_contraste et GHS_3_fond) sur L ; R_C_RGB_etire_rapide sur RGB (MAS avec étoiles, SXT Unscreen qui crée RGB_stars, GHS fond)",
+            5: "R_C_LRGB_rapide sur RGB sans étoiles (L sans étoiles ouverte) à la place de LRGB_ajout_L : L ajoutée (Saturation 0,5), puis Etoiles_auto_etire (saturation et SCNR de RGB_stars)",
+            6: "R_C_Fin_rapide sur l'image sans étoiles après LRGB_ajout_L (ou R_C_LRGB_rapide) : HDRMT à 30 %, masque, Courbes, LHE, LHE_fin, masque retiré, NXT_final 0,40 en un seul conteneur (= HDRMT_30, C_Finition et NXT_final)",
+            7: "R_C_Etoiles_fond_rapide sur l'image sans étoiles finie : étoiles remises (Etoiles_screen), Fond_desature, puis Export_TIFF (ferme L et RGB_stars) en un seul conteneur"}}
 
 def layout_all(main, opts, rapide=None, notes=None, turbo=None):
     """Une colonne par phase : icône-titre, étapes du chemin principal (E01…), puis icône « options » et options (Opt_…)."""
@@ -699,9 +699,8 @@ def stars_end(stars='RGB_stars', cms=False, screen_extra='', cms_extra='', alt='
     if cms:
         b.append((note('CorrectMagentaStars', T_CMS + cms_extra), ''))
     if galaxie:
-        # partie 5 (fond) : Boost_final (option, avant), C_Fond_final = Fond_auto + Fond_desature (chemin principal), Fond_auto_clair (option)
+        # partie 5 (fond) : Boost_final (option, avant), Fond_auto (option), Fond_desature seul au chemin principal (demande de l'utilisateur), Fond_auto_clair (option)
         return b + [(boost_final(True), ''), (boost_final(), ''), (note('Fond_auto', D_FOND), ''), (script('Fond_desature', ''), ''),
-                    (fermer('Fermer_etoiles', stars), ''),   # dans C_Fond_final (demande de l'utilisateur) : étoiles déjà remises
                     (script('Fond_auto_clair', ''), '')] + EXPORT
     b.append((script('Fond_desature', ''), ''))   # option, tout à la fin : couleur retirée du fond du ciel
     return b + EXPORT
@@ -727,6 +726,30 @@ L_STAT_ET = (" LRGB, méthode par défaut : sur le RGB AVEC ses étoiles (il ne 
              "Si tu as choisi Statistical Stretch sur tout : même Target Median pour L. Ensuite GHS_3_fond sur les deux avant LRGB. "
              "Couleurs ternes : Saturation plus basse dans LRGBCombination, ou Luma Only coché.")
 L_FOND = " LRGB : applique-la au RGB ET à L avec les mêmes réglages, avant LRGBCombination, pour qu'elles arrivent au même fond (0,12-0,14)."
+# Process galaxies (demande de l'utilisateur, 5 octobre 2026) : L sans étoiles (SXT linéaire) étirée par GHS ; RGB étiré par MAS AVEC ses étoiles,
+# puis SXT (Unscreen) -> RGB_stars ; LRGB sur les deux images sans étoiles ; RGB_stars remises à la fin.
+L_GHS_SANS = (" Galaxies : GHS_1 et GHS_2 sur L SANS étoiles (SXT_L_lineaire fait en phase 3) : étire librement, pas de HP à gérer pour les étoiles. "
+              "Le RGB passe par MAS avec ses étoiles, puis SXT_RGB_etire.")
+D_MAS = ("MultiscaleAdaptiveStretch sur le RGB LINÉAIRE, AVEC ses étoiles (demande de l'utilisateur) : étire en gardant la forme et la couleur des étoiles. "
+         "Réglages de l'utilisateur : Aggressiveness 0,70, Target background 0,150, Dynamic range compression 0,40, Contrast recovery (1024, 1,0), saturation 0,75 (boost 0,50, masque de luminosité). "
+         "Ensuite SXT_RGB_etire (Unscreen), puis GHS_3_fond sur le RGB sans étoiles (SP = HP = 0,12) pour le même fond que L.")
+D_SXT_RGB_ETIRE = ("StarXTerminator sur le RGB ÉTIRÉ par MAS, Unscreen COCHÉ (image étirée, RC Astro), Generate star image coché : RGB sans étoiles + RGB_stars (étoiles étirées, couleur gardée). "
+                   "Garde RGB_stars ouverte jusqu'à Etoiles_screen (fin de phase 7). CONTRÔLE à 100 % : pas de morceaux de galaxie (nœuds HII, amas) dans RGB_stars, pas de halos restés.")
+D_SXT_L_LIN = ("StarXTerminator sur L LINÉAIRE (dernière étape de C_L_lineaire), Unscreen décoché, sans image d'étoiles : L sans étoiles pour les GHS (les étoiles viendront du RGB). "
+               "CONTRÔLE : nœuds HII et amas compacts des bras gardés dans L (sinon masque noir sur la zone, ou baisse le retrait).")
+def mas():
+    # MultiscaleAdaptiveStretch : réglages donnés par l'utilisateur (version de l'instance non vérifiée)
+    p = [('aggressiveness', '0.70'), ('targetBackground', '0.150'), ('dynamicRangeCompression', '0.40'), ('contrastRecovery', True), ('scaleSeparation', '1024'),
+         ('contrastRecoveryIntensity', '1.000'), ('previewLargeScale', False), ('saturationEnabled', True), ('saturationAmount', '0.75'), ('saturationBoost', '0.50'),
+         ('saturationLightnessMask', True), ('backgroundROIEnabled', False), ('backgroundROIX0', '0'), ('backgroundROIY0', '0'), ('backgroundROIWidth', '0'), ('backgroundROIHeight', '0')]
+    return M.build('MultiscaleAdaptiveStretch', 256, 'MAS', [(k, v, 'v') for k, v in p])
+
+def lum_block():
+    """Galaxies (demande de l'utilisateur) : GHS_1, GHS_2 sur L sans étoiles ; MAS puis SXT_RGB_etire sur RGB ; GHS_3_fond sur les deux ; Statistical_Stretch en option."""
+    return [(ghs('GHS_1_premier', 10), D_GHS1 + L_GHS_SANS), (ghs('GHS_2_contraste', 4, hp=0.9, sf=1.0, sp=0.35), D_GHS2),
+            (mas(), D_MAS), (M.sxt('SXT_RGB_etire', True), D_SXT_RGB_ETIRE),
+            (ghs('GHS_3_fond', 10, hp=0.20, sf=1.0, sp=0.20), D_GHS3 + " Galaxies : sur L (SP = HP = 0,20 après GHS_2) et sur le RGB sans étoiles après MAS (SP = HP = 0,12), avant LRGB, même fond 0,12-0,14 sur les deux."),
+            (note('Statistical_Stretch', T_STAT + " Galaxies : OPTION, à la place de MAS sur le RGB avec étoiles (étoiles plus grosses)."), '')]
 def rgb_comb(close=True):
     n, x = note('Combinaison_RGB', '')
     if not close:
@@ -776,7 +799,7 @@ SCREEN_LRGB = (" LRGB — CONTRÔLE après recombinaison, à 100 % : étoiles de
                "pas d'anneau sombre ni de halo coloré autour des étoiles ; étoiles ni grossies ni trop présentes (sinon réduction d'étoiles ou étirement plus doux) ; "
                "fond toujours R = G = B (fond éclairci : fond de l'image d'étoiles pas à 0).")
 
-SCREEN_LRGB_ET = (" LRGB — CONTRÔLE après recombinaison, à 100 % : étoiles de la même couleur que sur RGB_stars (sortie de SXT_LRGB, étoiles déjà combinées avec L) ; "
+SCREEN_LRGB_ET = (" LRGB — CONTRÔLE après recombinaison, à 100 % : étoiles de la même couleur que sur RGB_stars (sortie de SXT_RGB_etire, étoiles du RGB étiré par MAS) ; "
                   "pas d'anneau sombre ni de halo coloré autour des étoiles ; étoiles ni grossies ni trop présentes (sinon Etoiles_reduites) ; "
                   "fond toujours R = G = B (fond éclairci : fond de l'image d'étoiles pas à 0).")
 D_SXT_LRGB = ("StarXTerminator sur l'image LRGB ÉTIRÉE, juste après LRGB_ajout_L (demande de l'utilisateur : étirements et LRGB faits AVEC les étoiles, SXT seulement ensuite). "
@@ -790,16 +813,13 @@ lrgb = pre_block() + [rgb_comb_item(), (solver_container(), ''), (solver_seul(),
     spcc(),
     (M.bxt('BXT_RGB', False, 0.25, 0.0, 0.50), "BlurXTerminator complet sur RGB, APRÈS SPCC : Sharpen Stars 0,25 (0 à 0,5), Adjust Star Halos 0, PSF automatique, Sharpen Nonstellar 0,50 (le détail viendra de L). Avant toute réduction de bruit." + BXT_C),
     (M.bxt('BXT_L', False, 0.25, 0.0, 0.80), "BlurXTerminator complet sur L (linéaire, gradient retiré) : Sharpen Stars 0,25, Halos 0, Sharpen Nonstellar 0,80 (0,70 à 0,90), plus fort que sur RGB car la luminance porte le détail. Si vers ou pores à 100 % : baisse Nonstellar." + BXT_C),
-    # LRGB (demande de l'utilisateur) : pas de SXT en linéaire ; L et RGB étirées AVEC leurs étoiles, LRGB, puis SXT_LRGB (Unscreen)
+    # LRGB (demande de l'utilisateur, 5 octobre 2026) : SXT linéaire sur L, GHS sur L sans étoiles ; MAS sur RGB avec étoiles puis SXT Unscreen ; LRGB sans étoiles
     (M.nxt('NXT_RGB', 0.80, 1), "NoiseXTerminator sur RGB (linéaire, AVEC ses étoiles : SXT vient après LRGB) : Denoise 0,80 (0,70 à 0,90), Detail 0,15. Toujours après BXT. Fonctionne en linéaire ou après étirement (RC Astro)." + NXT_C),
-    (M.nxt('NXT_L', 0.60, 1), "NoiseXTerminator sur L (linéaire, AVEC ses étoiles) : Denoise 0,60 (0,50 à 0,70) pour garder le détail fin." + NXT_C),
-] + lum_ghs_block(etoiles=True) + [
-    (M.instance('LRGBCombination', 'LRGB_ajout_L', {'mL': '0.500', 'mc': '0.350', 'noiseReduction': True}, post=M.lrgb_post),
-     "LRGBCombination sur les images étirées AVEC leurs étoiles (demande de l'utilisateur : SXT seulement après) : seul L activé (renomme ta luminance 'L'), glisse le triangle sur le RGB. Lightness 0,5 ; Saturation 0,35 (plus bas = plus saturé ; ternes -> 0,30) ; "
-     "Chrominance noise reduction cochée. Couleurs délavées : L trop claire par rapport au RGB, étire-la moins. Étoiles aux cœurs blancs ou délavés : L plus étirée que le RGB sur les étoiles, baisse HP dans GHS_1 et GHS_2 sur L. "
-     "CONTRÔLE après combinaison (sonde 15x15) : cœur de galaxie R >= G, nettement au-dessus de B ; bras B au-dessus de R ; régions HII R > B > G ; aucune étoile verte ; toute une gamme d'étoiles bleues et jaune-orange ; fond R = G = B. "
-     "Couleurs criardes ou bruit coloré : remonte la valeur de Saturation (plus haut = moins saturé), NXT sur le RGB. Régions HII peu visibles : normal en LRGB pur, passe en LHaRGB. Ensuite : SXT_LRGB."),
-    (M.sxt('SXT_LRGB', True), D_SXT_LRGB),
+    (M.nxt('NXT_L', 0.60, 1), "NoiseXTerminator sur L (linéaire) : Denoise 0,60 (0,50 à 0,70) pour garder le détail fin." + NXT_C),
+    (M.instance('StarXTerminator', 'SXT_L_lineaire', {'output_stars': False, 'unscreen': False, 'remove_reflections': True}), D_SXT_L_LIN),
+] + lum_block() + [
+    (M.instance('LRGBCombination', 'LRGB_ajout_L', {'mL': '0.500', 'mc': '0.500', 'noiseReduction': True}, post=M.lrgb_post),
+     "LRGBCombination sur les images étirées SANS étoiles (demande de l'utilisateur : L sans étoiles par SXT_L_lineaire, RGB sans étoiles par SXT_RGB_etire) : seul L activé (renomme ta luminance 'L'), glisse le triangle sur le RGB. Lightness 0,5 ; Saturation 0,5 (réglage de l'utilisateur ; plus bas = plus saturé) ; Chrominance noise reduction cochée. Couleurs délavées : L trop claire par rapport au RGB, étire-la moins. CONTRÔLE après combinaison (sonde 15x15) : cœur de galaxie R >= G, nettement au-dessus de B ; bras B au-dessus de R ; régions HII R > B > G ; fond R = G = B. Couleurs criardes ou bruit coloré : remonte Saturation (plus haut = moins saturé), NXT sur le RGB. Régions HII peu visibles : normal en LRGB pur, passe en LHaRGB. Les étoiles (RGB_stars) reviennent en phase 7."),
     (script('Etoiles_auto_etire', ''), ''),   # option : saturation et SCNR sur RGB_stars (déjà étirée)
 ] + finish_block(galaxie=True) + stars_end('RGB_stars', screen_extra=SCREEN_LRGB_ET, galaxie=True)
 
@@ -830,17 +850,14 @@ lhargb = pre_block() + [rgb_comb_item(False), (solver_container(), ''), (solver_
      "Régions HII nettes mais couleurs délavées après LRGBCombination : a trop fort, baisse-le ou fais un mélange léger."),
     (note('NBRGBCombination', "ALTERNATIVE — NBRGBCombination (Script › Utilities) : image RGB et sa bande passante (~100 nm pour un filtre R mono), image H dans le canal R avec la bande passante de ton filtre (3, 5, 7 nm), "
           "Scale 1,2 par défaut (3 à 5 pour un H faible). Compare avec les aperçus RGB et NBRGB."), ''),
-    # LHaRGB (demande de l'utilisateur, comme le LRGB) : pas de SXT en linéaire ; L et RGB étirées AVEC leurs étoiles, LRGB, puis SXT_LRGB (Unscreen)
+    # LHaRGB (comme le LRGB, demande de l'utilisateur) : SXT linéaire sur L ; MAS sur RGB avec étoiles puis SXT Unscreen ; LRGB sans étoiles
     (M.nxt('NXT_RGB', 0.80, 1), "NoiseXTerminator sur RGB (linéaire, après H_dans_RGB, AVEC ses étoiles : SXT vient après LRGB) : Denoise 0,80, Detail 0,15." + NXT_C),
     (fermer('Fermer_continuum', 'H, R, HaNB'), ''),   # dans C_RGB_bruit (demande de l'utilisateur : fermer au fur et à mesure) ; H_dans_L éventuel fait avant
-    (M.nxt('NXT_L', 0.60, 1), "NoiseXTerminator sur L (linéaire, après BXT_L_H et H_dans_L éventuel, AVEC ses étoiles) : Denoise 0,60." + NXT_C),
-] + lum_ghs_block(etoiles=True) + [
-    (M.instance('LRGBCombination', 'LRGB_ajout_L', {'mL': '0.500', 'mc': '0.350', 'noiseReduction': True}, post=M.lrgb_post),
-     "LRGBCombination sur les images étirées AVEC leurs étoiles (demande de l'utilisateur : SXT seulement après) : seul L activé (vue 'L'), Lightness 0,5, Saturation 0,35, Chrominance noise reduction cochée. "
-     "CONTRÔLE (sonde 15x15) : cœur de galaxie jaune (R >= G >> B), bras bleus, régions HII roses et bien visibles grâce au H (R > B > G), aucune étoile verte, fond R = G = B ; couleurs délavées : L trop claire, étire-la moins. "
-     "Cœurs d'étoiles blancs : baisse HP dans GHS_1 et GHS_2 sur L. "
-     "Compare avec la copie LRGB sans H : seules les régions HII doivent changer ; si le cœur ou les étoiles ont rougi, continuum mal soustrait (Continuum_auto en Starless) ou w trop fort. Ensuite : SXT_LRGB."),
-    (M.sxt('SXT_LRGB', True), D_SXT_LRGB + " LHaRGB : les étoiles gardées contiennent l'injection de H ; compare-les à la copie d'avant injection (pas plus rouges, sans halo ni anneau)."),
+    (M.nxt('NXT_L', 0.60, 1), "NoiseXTerminator sur L (linéaire, après BXT_L_H et H_dans_L éventuel) : Denoise 0,60." + NXT_C),
+    (M.instance('StarXTerminator', 'SXT_L_lineaire', {'output_stars': False, 'unscreen': False, 'remove_reflections': True}), D_SXT_L_LIN),
+] + lum_block() + [
+    (M.instance('LRGBCombination', 'LRGB_ajout_L', {'mL': '0.500', 'mc': '0.500', 'noiseReduction': True}, post=M.lrgb_post),
+     "LRGBCombination sur les images étirées SANS étoiles (demande de l'utilisateur : L sans étoiles par SXT_L_lineaire, RGB sans étoiles par SXT_RGB_etire) : seul L activé (renomme ta luminance 'L'), glisse le triangle sur le RGB. Lightness 0,5 ; Saturation 0,5 (réglage de l'utilisateur ; plus bas = plus saturé) ; Chrominance noise reduction cochée. Couleurs délavées : L trop claire par rapport au RGB, étire-la moins. CONTRÔLE (sonde 15x15) : cœur de galaxie jaune (R >= G >> B), bras bleus, régions HII roses et bien visibles grâce au H (R > B > G), fond R = G = B. Compare avec la copie LRGB sans H : seules les régions HII doivent changer ; cœur rougi : continuum mal soustrait (Continuum_auto en Starless) ou w trop fort. Les étoiles (RGB_stars) reviennent en phase 7."),
     (script('Etoiles_auto_etire', ''), ''),   # option : saturation et SCNR sur RGB_stars (déjà étirée)
 ] + finish_block(galaxie=True) + stars_end('RGB_stars', screen_extra=SCREEN_LRGB_ET, galaxie=True)
 
@@ -1131,7 +1148,11 @@ def lineaire_rapide(etapes):
 
 def lrgb_rapide(steps):
     """P5_rapide LRGB (demande de l'utilisateur) : LRGB_ajout_L avec étoiles, SXT Unscreen, saturation et SCNR des étoiles."""
-    return cont('C_LRGB_rapide', [pick(steps, b)[0] for b in ('LRGB_ajout_L', 'SXT_LRGB', 'Etoiles_auto_etire')])
+    return cont('C_LRGB_rapide', [pick(steps, b)[0] for b in ('LRGB_ajout_L', 'Etoiles_auto_etire')])
+
+def rgb_etire_rapide(steps):
+    """P4_rapide galaxies (demande de l'utilisateur) : MAS avec étoiles, SXT Unscreen (RGB_stars), GHS fond (SP = HP = 0,12, fond MAS 0,15)."""
+    return cont('C_RGB_etire_rapide', [pick(steps, 'MAS')[0], pick(steps, 'SXT_RGB_etire')[0], ghs('GHS_fond', 10, hp=0.12, sf=1.0, sp=0.12)])
 
 def prep_rapide(steps):
     """E00 : renommage, LinearPatternSubtraction (masters mono ouverts), combinaison RGB, en un conteneur."""
@@ -1175,12 +1196,12 @@ insert_after(lrgb, 'SPCC', [(M.instance('SCNR', 'SCNR_vert', {'amount': '1.00', 
 def fin_rapide(steps):
     """P6_rapide et P7_rapide (demande de l'utilisateur) : un conteneur par phase avec les étapes de la finition."""
     c6 = cont('C_Fin_rapide', list(hdrmt_items('0.3')) + [pick(steps, b)[0] for b in ('Masque_L', 'Courbes', 'LHE', 'LHE_fin', 'Masque_retirer', 'NXT_final')])
-    c7 = cont('C_Etoiles_fond_rapide', [pick(steps, b)[0] for b in ('Etoiles_screen', 'Fond_auto', 'Fond_desature', 'Fermer_etoiles', 'Export_TIFF')])   # Export_TIFF en dernier (demande de l'utilisateur)
+    c7 = cont('C_Etoiles_fond_rapide', [pick(steps, b)[0] for b in ('Etoiles_screen', 'Fond_desature', 'Export_TIFF')])   # Export_TIFF en dernier (demande de l'utilisateur)
     return c6, c7
 
 for _st in (lrgb, lhargb):
     # P4_rapide « Fin de GHS » (demande de l'utilisateur) : GHS_2_contraste puis GHS_3_fond en un conteneur, sur L après GHS_1_premier
-    insert_after(_st, 'Statistical_Stretch', [(cont('C_Fin_GHS_rapide', [pick(_st, b)[0] for b in ('GHS_2_contraste', 'GHS_3_fond')]), '')])
+    insert_after(_st, 'Statistical_Stretch', [(cont('C_Fin_GHS_rapide', [pick(_st, b)[0] for b in ('GHS_2_contraste', 'GHS_3_fond')]), ''), (rgb_etire_rapide(_st), '')])
     _c6, _c7 = fin_rapide(_st)
     insert_after(_st, 'Etoiles_auto_etire', [(lrgb_rapide(_st), '')])
     insert_after(_st, 'NXT_final_fort', [(_c6, '')])
@@ -1189,20 +1210,13 @@ insert_before(lrgb, 'GHS_1_premier', [(lineaire_rapide('C_RGB_lineaire>RGB ; C_L
 insert_after(lhargb, 'Combinaison_RGB', [(prep_h, ''), (gc_solver('Solver_auto'), '')])
 insert_after(lhargb, 'ImageSolver', [(script('Gradient_auto_rapide', ''), '')])
 # LHaRGB : C_RGB_couleur_rapide et C_H_rapide sans GradientCorrection = C_RGB_couleur et BXT_L_H du chemin principal : supprimés
-insert_before(lhargb, 'GHS_1_premier', [(lineaire_rapide('C_RGB_couleur>RGB ; BXT_L_H>L,H ; NXT_L>L'), ''), (stf_icon(), '')])
+insert_before(lhargb, 'GHS_1_premier', [(lineaire_rapide('C_RGB_couleur>RGB ; BXT_L_H>L,H ; NXT_L>L ; SXT_L_lineaire>L'), ''), (stf_icon(), '')])
 
 # Icônes à tester (demande de l'utilisateur, 5 octobre 2026) : binning, agrandissement, MAS, GraXpert, H_dans_RGB_v2, scripts tiers
 def agrandir_x2():
     # Resample (module Geometry, version 0x100) : x 2 en largeur et hauteur, Lanczos 3 (identifiants relevés dans la PCL)
     return M.build('Resample', 256, 'Agrandir_x2', [('xSize', '2.000000', 'v'), ('ySize', '2.000000', 'v'), ('mode', 'RelativeDimensions', 'v'),
                    ('absoluteMode', 'ForceWidthAndHeight', 'v'), ('interpolation', 'Lanczos3', 'v'), ('clampingThreshold', '0.30', 'v'), ('smoothness', '1.50', 'v'), ('noGUIMessages', True, 'v')])
-
-def mas():
-    # MultiscaleAdaptiveStretch : réglages donnés par l'utilisateur (version de l'instance non vérifiée)
-    p = [('aggressiveness', '0.70'), ('targetBackground', '0.150'), ('dynamicRangeCompression', '0.40'), ('contrastRecovery', True), ('scaleSeparation', '1024'),
-         ('contrastRecoveryIntensity', '1.000'), ('previewLargeScale', False), ('saturationEnabled', True), ('saturationAmount', '0.75'), ('saturationBoost', '0.50'),
-         ('saturationLightnessMask', True), ('backgroundROIEnabled', False), ('backgroundROIX0', '0'), ('backgroundROIY0', '0'), ('backgroundROIWidth', '0'), ('backgroundROIHeight', '0')]
-    return M.build('MultiscaleAdaptiveStretch', 256, 'MAS', [(k, v, 'v') for k, v in p])
 
 def graxpert():
     # module GraXpert (Joël Vallier) : identifiants relevés dans le module ; Correction laissée par défaut (Subtraction) ; version non vérifiée
@@ -1215,7 +1229,7 @@ T_MKSR = ("TEST — MK Star Reduction (script de M. H. Kim). Icône-note : chemi
 for _st in (lrgb, lhargb):
     insert_after(_st, 'Solver_auto', [(script('Binning_x2', ''), '')])
     insert_after(_st, 'DBE', [(graxpert(), '')])
-    insert_after(_st, 'Statistical_Stretch', [(mas(), ''), (note('VeraLux_HMS', T_VERALUX), '')])
+    insert_after(_st, 'Statistical_Stretch', [(note('VeraLux_HMS', T_VERALUX), '')])
     insert_before(_st, 'Masque_L', [(script('DarkStructureEnhance', ''), '')])
     insert_after(_st, 'Etoiles_reduites', [(note('MKStarReduction', T_MKSR), '')])
     insert_before(_st, 'ICC_sRGB', [(agrandir_x2(), '')])
