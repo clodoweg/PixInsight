@@ -595,7 +595,7 @@ GRATUIT
 - **Tout le reste** : défaut (Normalize, Luma Only, HDR décochés ; Curves Boost 0)
 
   * Ensuite, avec 0,25 : passe GHS_3_fond (étape Fond de GHS) pour ramener le fond vers 0,12–0,14. Avec 0,10 : rien à faire.
-  * LRGB : même Target Median pour RGB et L, puis GHS_3_fond sur les deux, avant LRGBCombination.
+  * Galaxies : option seulement, à la place de MAS sur le RGB (L est étirée par les GHS) ; puis GHS_3_fond, avant LRGBCombination.
   * Fond trop clair → monte Blackpoint Sigma.
   * Images à combiner → même Target Median pour toutes.
 
@@ -631,7 +631,7 @@ Paramètres
 
 Méthode
 
-1. Prépare L et RGB étirés (avec leurs étoiles dans les workflows LRGB et LHaRGB), avec des niveaux de fond et une médiane proches : même méthode pour les deux, y compris GHS_3_fond (fond 0,12–0,14) passé sur L et sur RGB avant la combinaison.
+1. Prépare L et RGB étirés SANS étoiles (galaxies : L par SXT_L_lineaire puis GHS, RGB par MAS puis SXT_RGB_etire), avec des niveaux de fond et une médiane proches : même méthode pour les deux, y compris GHS_3_fond (fond 0,12–0,14) passé sur L et sur RGB avant la combinaison.
 2. Dans le process : décoche R, G et B, coche L et choisis ta luminance.
 3. Glisse le triangle sur l'image RGB.
 
@@ -873,7 +873,7 @@ GRATUIT
 Méthode
 
 1. Sur l'image d'étoiles **linéaire** (narrowband) ; glisse l'icône sur l'image. Modifie l'image elle-même : garde une copie.
-2. Galaxies : inutile, les étoiles sont étirées avec l'image (SXT après LRGB).
+2. Galaxies : inutile, les étoiles viennent du RGB étiré par MAS (RGB_stars, sortie de SXT_RGB_etire).
 
 Paramètres
 

@@ -733,3 +733,8 @@ Fait : NXT_dernier (NoiseXTerminator Denoise 0,25, 1 itération, réglage léger
 
 Demande : « j'ai fini pour le LRGB. Ca marche bien. Supprime idees-acceleration.md et critique-lrgb-lhargb.html. Dans claude.md : L étirée à la main par les 3 GHS, jamais par Statistical Stretch (RGB seulement) ; -> MET a jour pour dire que c'est MAS pour RGB ; supprime idees-acceleration.md »
 Fait : docs/idees-acceleration.md et docs/critique-lrgb-lhargb.html supprimés (les mentions plus haut dans ce fichier restent comme historique) ; CLAUDE.md : RGB étiré par MAS (Statistical Stretch en option), lien vers idees-acceleration.md retiré, LRGB noté comme validé.
+
+### Relecture complète des fichiers md (5 octobre 2026)
+
+Demande : « fait une relecture complete de tes fichiers md par rapport a tout ce que l'on a dit ici pour etre sur que le principâl a bien été mémorisé »
+Fait : passages périmés corrigés (ancien process « L et RGB étirés avec leurs étoiles, SXT après LRGB, Statistical Stretch sur le RGB, Saturation 0,35 ») dans workflows.md, techniques.md, outils.md ; variante MAS notée comme adoptée ; generateur.md (lancement Apply Global, SUPPR_GALAXIES) ; CLAUDE.md réorganisé (lancement des conteneurs, règle image cachée + beginProcess, contenu de R_C_Fin_rapide, mise en page des descriptions, options supprimées, état et suite).

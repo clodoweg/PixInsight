@@ -7,10 +7,10 @@ Issu de l'ancienne fiche HTML `docs/pixinsight-workflow.html` (octobre 2026) ; s
 ## Mode rapide (LRGB et LHaRGB)
 Pour traiter beaucoup de galaxies vite : des conteneurs préréglés, à glisser dans l'ordre. Gradient par GradientCorrection seulement (MGC + MARS reste au mode normal).
 
-**Où sont les icônes** : [Conteneurs-LRGB.xpsm](https://github.com/clodoweg/PixInsight/blob/main/docs/process-icons/workflows/Conteneurs-LRGB.xpsm) et [Conteneurs-LHaRGB.xpsm](https://github.com/clodoweg/PixInsight/blob/main/docs/process-icons/workflows/Conteneurs-LHaRGB.xpsm). Chaque colonne a trois groupes : **P#_Nom** (chemin principal, E00…), **P#_options** (Opt_…) et **P#_rapide** (R_…) ; sans icône R_, prends le chemin principal. L et RGB sont étirées **avec leurs étoiles** , LRGB, puis SXT (Unscreen coché). L s'étire à la main par les 3 GHS.
+**Où sont les icônes** : [Conteneurs-LRGB.xpsm](https://github.com/clodoweg/PixInsight/blob/main/docs/process-icons/workflows/Conteneurs-LRGB.xpsm) et [Conteneurs-LHaRGB.xpsm](https://github.com/clodoweg/PixInsight/blob/main/docs/process-icons/workflows/Conteneurs-LHaRGB.xpsm). Chaque colonne a trois groupes : **P#_Nom** (chemin principal, E00…), **P#_options** (Opt_…) et **P#_rapide** (R_…) ; sans icône R_, prends le chemin principal. L est étirée SANS étoiles, à la main par les 3 GHS ; le RGB est étiré AVEC ses étoiles par MAS, puis SXT Unscreen (RGB_stars) ; LRGB sur les deux images sans étoiles ; RGB_stars remises à la fin. Le turbo T_Turbo_debut fait P1 à P3 en un clic.
 
 ### Une seule fois par ordinateur
-Copie tous les scripts du dossier [scripts](https://github.com/clodoweg/PixInsight/tree/main/docs/process-icons/scripts) dans `src/scripts/clodoweg` de PixInsight (GC_Solver_auto.js et ImageSolver_Date.js à côté du dossier ImageSolver).
+Copie tous les scripts du dossier [scripts](https://github.com/clodoweg/PixInsight/tree/main/docs/process-icons/scripts) dans `src/scripts/clodoweg` de PixInsight (dossier à côté du dossier ImageSolver), y compris `clodoweg_ui.jsh` (fenêtres communes).
 
 ### LRGB : l'ordre (process galaxies du 5 octobre 2026)
 L sans étoiles (SXT linéaire) étirée par GHS ; RGB étiré par MAS AVEC ses étoiles, puis SXT Unscreen (RGB_stars) ; LRGB sur les deux images sans étoiles (Saturation 0,5) ; RGB_stars remises à la fin.
@@ -30,7 +30,7 @@ P7_rapide| R_C_Etoiles_fond_rapide| image sans étoiles finie| Fond_desature, Fo
 Chemin principal LRGB : E08 C_RGB_lineaire, E09 C_L_lineaire (finit par SXT_L_lineaire), E10 GHS_1, E11 GHS_2 (L), E12 MAS, E13 SXT_RGB_etire (RGB), E14 SCNR_etoiles_vert (SCNR vert 1,0 sur RGB_stars ; options P4 : SCNR_etoiles_violet (Invert, SCNR vert, Invert) et Saturation_grosses, pas dans le rapide), E15 GHS_3_fond (L et RGB), E16 LRGB_ajout_L, E17 HDRMT_30, E18 C_Finition, E19 C_Sharp_MMT (accentuation ; en rapide dans R_C_Fin_rapide), E20 NXT_final, E21 Fond_desature, E22 Fond_auto (tous deux sur l'image sans étoiles), E23 Etoiles_screen, E24 NXT_dernier (Denoise 0,25 sur l'image finie avec étoiles). Statistical_Stretch est une option.
 
 ### LHaRGB : l'ordre
-Comme le LRGB. Phase 3 : C_RGB_couleur, BXT_L_H, Continuum_auto, H_dans_RGB, C_RGB_bruit, NXT_L, SXT_L_lineaire (R_Lineaire_rapide fait C_RGB_couleur, BXT_L_H sur L et H, NXT_L et SXT_L_lineaire ; Continuum_auto, H_dans_RGB et C_RGB_bruit restent à la main). Puis GHS sur L, MAS + SXT_RGB_etire + GHS_3_fond sur RGB, LRGB (Saturation 0,5), finition, SCNR_vert, Fond_desature, Fond_auto, Etoiles_screen.
+Comme le LRGB. Phase 3 : C_RGB_couleur, BXT_L_H, Continuum_auto, H_dans_RGB, C_RGB_bruit, NXT_L, SXT_L_lineaire (R_Lineaire_rapide fait C_RGB_couleur, BXT_L_H sur L et H, NXT_L et SXT_L_lineaire ; Continuum_auto, H_dans_RGB et C_RGB_bruit restent à la main). Puis GHS sur L, MAS + SXT_RGB_etire + SCNR_etoiles_vert + GHS_3_fond sur RGB, LRGB (Saturation 0,5), finition (HDRMT_30, C_Finition, C_Sharp_MMT, NXT_final), Fond_desature, Fond_auto, Etoiles_screen, NXT_dernier.
 
 ### Images fermées au fur et à mesure
 Icône| Ferme  
@@ -98,25 +98,25 @@ RGB : BXT complet (étoiles et non-stellaire), après SPCC. L : BXT complet, en 
 
 6. #### Réduction du bruit
 
-NXT sur RGB (0,80) et sur L (0,60), après BXT, **avec leurs étoiles** (SXT vient après LRGB).
+NXT sur RGB (0,80, avec ses étoiles) et sur L (0,60), après BXT ; puis SXT_L_lineaire sur L linéaire (L sans étoiles, pas d'image d'étoiles gardée).
 
 7. #### Étirement, avec les étoiles
 
-Étire séparément le RGB et L, **en gardant leurs étoiles**.
+Étire séparément le RGB et L.
 
-     * **RGB** (il ne donne que la couleur) : Statistical Stretch, Target Median 0,25, Linked coché.
-     * **L** (elle porte le détail) : GHS_1 puis GHS_2, méthode GHS (`techniques.md`) ; étoiles qui grossissent : HP (Highlight protection) sous leur cœur.
+     * **RGB** (il donne la couleur et les étoiles) : MAS AVEC ses étoiles (réglages de l'utilisateur, fond 0,15), puis SXT_RGB_etire (Unscreen coché : RGB sans étoiles + RGB_stars étirée), puis SCNR_etoiles_vert sur RGB_stars. Option : Statistical Stretch à la place de MAS.
+     * **L** (elle porte le détail), SANS étoiles : GHS_1 (à la main) puis GHS_2, méthode GHS (`techniques.md`).
      * **Les deux** : GHS_3_fond, jusqu'au même fond (0,12–0,14), avant LRGBCombination.
 
 Couleurs ternes : Saturation plus basse dans LRGBCombination.
 
 8. #### Combinaison L + RGB
 
-Sur les deux images étirées **avec leurs étoiles** : LRGBCombination, Saturation 0,35, _Chrominance noise reduction_ activée. Contrôle : couleurs LRGB. Cœurs d'étoiles blancs : baisse HP dans GHS_1 et GHS_2 sur L.
+Sur les deux images étirées **sans étoiles** : LRGBCombination (LRGB_ajout_L), Lightness 0,5, Saturation 0,5 (réglage de l'utilisateur), _Chrominance noise reduction_ activée. Contrôle : couleurs LRGB.
 
-9. #### Séparation des étoiles, sur l'image étirée
+9. #### Les étoiles : déjà séparées en phase 4
 
-SXT sur l'image LRGB étirée, **_Unscreen_ coché** : image sans étoiles et `RGB_stars`, déjà étirée. SCNR vert 1,0 sur RGB_stars juste après (SCNR_etoiles_vert, P4 ; violet retiré en option : SCNR_etoiles_violet). Option : Opt_Etoiles_auto_etire (saturation). Restes de halos : Opt_Nettoyage_sans_etoiles.
+`RGB_stars` vient de SXT_RGB_etire sur le RGB étiré par MAS ; SCNR vert 1,0 dessus juste après (SCNR_etoiles_vert ; options P4 : SCNR_etoiles_violet, Saturation_grosses). Restes de halos dans l'image sans étoiles : Opt_Nettoyage_sans_etoiles.
 
 10. #### Finition du fond
 
@@ -159,7 +159,7 @@ Constat| Cause probable, réglage
 Dominante verte générale| SPCC mal configuré (filtres, capteur) : refais-le. En dernier recours, SCNR vert, Average Neutral (rarement utile après SPCC)  
 Tout bleu ou tout jaune| Mauvais filtres ou capteur dans SPCC, ou gradient resté avant SPCC  
 Graphes dispersés| Flat à revoir, gradient multiplicatif, ou gradient retiré après SPCC au lieu d'avant  
-Couleurs délavées après LRGBCombination| L trop claire par rapport au RGB : accorde fonds et médianes (méthode) ; Saturation 0,35 à 0,40 (plus bas = plus saturé)  
+Couleurs délavées après LRGBCombination| L trop claire par rapport au RGB : accorde fonds et médianes (méthode) ; Saturation plus bas que 0,5 (plus bas = plus saturé)  
 Couleurs criardes, bruit coloré| Saturation trop poussée : réduis-la (dans LRGBCombination, remonte la valeur Saturation : plus haut = moins saturé) ; NXT sur le RGB ; réduction de chrominance de LRGBCombination  
 Fond coloré| Neutralisation du fond de SPCC  
 Régions HII peu visibles| Normal en LRGB pur ; pour les faire ressortir : LHaRGB  
@@ -169,17 +169,17 @@ Régions HII peu visibles| Normal en LRGB pur ; pour les faire ressortir : LHaRG
 ### Étoiles LRGB : le standard et comment le vérifier
 Couleur mesurée par SPCC : étoiles du **bleu-blanc au jaune-orange** , visibles mais pas criardes, variées, **jamais vertes** ; cœur des brillantes souvent blanc (la couleur se lit sur le halo). Vaut aussi pour le LHaRGB.
 ### Vérifier avec la sonde (15×15, sur le halo)
-1. **Avant recombinaison** , sur l'image d'étoiles seule (RGB_stars, sortie de SXT après LRGB) : graphes SPCC corrects ; étoiles chaudes R ≥ G ≥ B, bleues B ≥ G ≥ R ; aucune avec G au-dessus de R et de B ; une dizaine d'étoiles ne donnent pas toutes la même lecture.
+1. **Avant recombinaison** , sur l'image d'étoiles seule (RGB_stars, sortie de SXT_RGB_etire après MAS) : graphes SPCC corrects ; étoiles chaudes R ≥ G ≥ B, bleues B ≥ G ≥ R ; aucune avec G au-dessus de R et de B ; une dizaine d'étoiles ne donnent pas toutes la même lecture.
 2. **Après recombinaison** , à 100 % : même couleur que sur l'image d'étoiles seule ; ni anneau sombre, ni halo coloré ; étoiles ni grossies ni trop présentes ; fond inchangé.
 ### Quoi ajuster
 Constat| Réglage  
 ---|---  
-Étoiles toutes blanches| Étirement trop fort sur les étoiles : HP (Highlight protection) sous leur cœur dans GHS_1 et GHS_2 sur L, Target Median plus basse dans Statistical Stretch sur le RGB ; en dernier recours, étoiles étirées à part (SXT en linéaire, Star Stretch)  
+Étoiles toutes blanches| Étirement trop fort du RGB (MAS) : réglages de MAS plus doux ; grosses étoiles presque blanches : Opt_Saturation_grosses ; en dernier recours, étoiles étirées à part (SXT en linéaire, Star Stretch)  
 Étoiles criardes| Légère désaturation de l'image d'étoiles (RGB_stars) avant Etoiles_screen  
 Étoiles vertes, bleues ou jaunes en bloc| SPCC à revoir (filtres, capteur, gradient avant SPCC) ; SCNR seulement en dernier recours  
-Étoiles délavées après LRGBCombination| L plus étirée que le RGB sur les étoiles (la combinaison se fait avec les étoiles) : HP plus bas dans GHS_1 et GHS_2 sur L, Lightness plus bas dans LRGBCombination ; ou Opt_Etoiles_auto_etire (saturation)  
+Étoiles ternes| Elles viennent du RGB seul (RGB_stars) : Opt_Saturation_grosses pour les grosses ; SCNR_etoiles_violet seulement si violet mesuré  
 Anneau sombre autour des étoiles| Extraction SXT imparfaite ou étirement trop différent entre fond et étoiles : revois SXT, puis Halo-B-Gon ou réduction d'étoiles  
-Étoiles trop grosses ou trop présentes| Réduction d'étoiles après recombinaison, ou HP sous le cœur des étoiles dans les GHS sur L  
+Étoiles trop grosses ou trop présentes| Etoiles_reduites à la place d'Etoiles_screen  
 Fond éclairci ou teinté après ajout des étoiles| Fond de l'image d'étoiles pas à 0 : revois SXT (Unscreen coché sur l'image étirée)
 
 ## LHaRGB
@@ -210,7 +210,7 @@ L'`max(L, HaNB * a)`
 
 5. #### Suite du workflow LRGB
 
-Comme en LRGB : NXT, étirement et LRGB avec les étoiles, SXT sur l'image étirée, finition, étoiles.
+Comme en LRGB : NXT, SXT_L_lineaire (L sans étoiles), GHS sur L, MAS + SXT_RGB_etire sur RGB, LRGB sans étoiles, finition, étoiles (RGB_stars) remises à la fin.
 
 ### Couleurs LHaRGB : le rendu de référence et comment le vérifier
 Comme en LRGB, sauf les **régions HII, roses** et plus visibles. Piège : trop de H rougit toute l'image.

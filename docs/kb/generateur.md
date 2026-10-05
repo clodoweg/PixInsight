@@ -50,7 +50,7 @@ Règle : chaque script a une fenêtre, mise à jour à chaque changement du scri
 
 ## Contraintes PixInsight
 
-- Un conteneur de process natifs (MAS, SXT, BXT, GHS…) se GLISSE sur l'image : lancé par le rond Apply Global, PixInsight refuse (« Cannot execute instance in the global context », retour de l'utilisateur). Seul R_C_Preparation_rapide (scripts + Solver_auto) se lance en Apply Global. Les conteneurs portent une description (texte de lancement LAUNCH['cont'] ou LAUNCH['cont_global'] dans `short_desc.py`).
+- Un conteneur de process natifs (MAS, SXT, BXT, GHS…) se GLISSE sur l'image : lancé par le rond Apply Global, PixInsight refuse (« Cannot execute instance in the global context », retour de l'utilisateur). Se lancent en Apply Global seulement les icônes faites de scripts : R_C_Preparation_rapide et T_Turbo_debut (avec Solver_auto), R_Gradient_auto_rapide, R_Lineaire_rapide. Les conteneurs portent une description (texte de lancement LAUNCH['cont'] ou LAUNCH['cont_global'] dans `short_desc.py`).
 
 - Un script ne peut pas lancer une instance Script ; un ProcessContainer peut enchaîner des scripts. `ProcessInstance.fromIcon(id)` exécute une icône de process natif.
 - `#engine v8` (ImageSolver) casse l'ancien code (`PixelMath.prototype.RGB`, LinearPatternSubtraction.jsh).
@@ -60,4 +60,5 @@ Règle : chaque script a une fenêtre, mise à jour à chaque changement du scri
 - IntegerResample et Resample mettent à jour la solution astrométrique.
 - Retours à la ligne des descriptions écrits `&#10;` (fait par `save()`) : un CR (fichier converti en CRLF par git sous Windows) s'affiche mal dans PixInsight, lignes inversées et vides en haut (test de l'utilisateur, 5 octobre 2026 : LF, `&#10;`, `<br>` et U+2028 marchent ; CR et CRLF non). `.gitattributes` force LF pour .xpsm et .js.
 - PixelMath écrit DIRECTEMENT dans l'image cible (createNewImage = false) avec des références à des images cachées : « *** Error: Unknown error » sur RGB_stars glissée (Saturation_grosses, retour de l'utilisateur, 5 octobre 2026). Toujours calculer le résultat dans une nouvelle image cachée (PixelMath exécuté sur la vue, createNewImage) puis `view.beginProcess(); view.image.assign(...); view.endProcess();`, aussi quand l'icône est glissée. Fait dans Saturation_grosses et Etoiles_grosses.
+- Options retirées des galaxies : `SUPPR_GALAXIES` (fin de make_workflows.py) filtre lrgb et lhargb après toutes les insertions (Etoiles_grosses, Etoiles_plafond, gardées en narrowband) ; les autres options supprimées n'ont plus de code.
 - Mode Turbo : `TURBO` (make_workflows.py) = icônes T_ rangées dans le groupe P#_turbo de leur colonne. `turbo_debut(steps)` : conteneur des étapes de C_Preparation_rapide, Gradient_auto_rapide et Lineaire_rapide (mêmes items, pas de conteneur imbriqué), inséré après C_Preparation_rapide (colonne P1), Apply Global (contient Solver_auto).

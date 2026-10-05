@@ -92,7 +92,7 @@ Plus propre qu'un point noir en Linear, qui détruit des données.
      * Stretch factor **0,8 à 1,2** jusqu'à un fond vers 0,12–0,14.
 5. #### Les étoiles
 
-     * **Galaxies (LRGB, LHaRGB)** : GHS sur L avec ses étoiles, HP sous leur cœur ; SXT après LRGB.
+     * **Galaxies (LRGB, LHaRGB)** : GHS sur L SANS étoiles (SXT_L_lineaire en linéaire) ; RGB étiré par MAS avec ses étoiles, puis SXT_RGB_etire (RGB_stars, remises à la fin).
      * **Narrowband** : GHS sur l'image sans étoiles ; les étoiles s'étirent à part avec Star Stretch.
 6. #### LRGB : accorder L et RGB
 
@@ -134,21 +134,21 @@ Question de l'utilisateur (5 octobre 2026). Sources : `sources.md`, rubriques «
 | Outil | Principe | Étoiles (étirées avec) | Contrôle | Pour qui dans le process |
 |---|---|---|---|---|
 | GHS (GeneralizedHyperbolicStretch) | courbe hyperbolique réglée à la main : SP (où va le contraste), b, LP, HP | HP protège les cœurs ; sans HP, les étoiles grossissent | total, à la main, plusieurs passes | L (choix fixe de l'utilisateur : GHS_1 à la main, GHS_2, GHS_3_fond) |
-| MAS (MultiscaleAdaptiveStretch, PixInsight, déc. 2025) | étirement natif multi-échelle vers une cible de fond ; « dynamic range compression » pour garder le profil gaussien des étoiles ; restauration du contraste ; saturation en option | conçu pour étirer fort sans déformer les étoiles (avis d'utilisateurs, docs Starlust) | une passe, quelques curseurs, reproductible | candidat pour RGB (à la place de Statistical Stretch) et à tester sur L à la place de GHS_1 |
-| Statistical Stretch (SetiAstro) | point noir = médiane − sigma × 1,4826 × MAD, puis fonction de transfert vers une médiane cible (0,25) | pas de protection des hautes lumières : étoiles plus grosses, cœurs blancs | automatique | RGB aujourd'hui (il ne donne que la couleur) |
+| MAS (MultiscaleAdaptiveStretch, PixInsight, déc. 2025) | étirement natif multi-échelle vers une cible de fond ; « dynamic range compression » pour garder le profil gaussien des étoiles ; restauration du contraste ; saturation en option | conçu pour étirer fort sans déformer les étoiles (avis d'utilisateurs, docs Starlust) | une passe, quelques curseurs, reproductible | RGB, chemin principal (E12 en LRGB) depuis le 5 octobre 2026 |
+| Statistical Stretch (SetiAstro) | point noir = médiane − sigma × 1,4826 × MAD, puis fonction de transfert vers une médiane cible (0,25) | pas de protection des hautes lumières : étoiles plus grosses, cœurs blancs | automatique | option, à la place de MAS sur le RGB |
 | EZ Soft Stretch (darkarchon) | HistogramTransformation avec point noir et médiane calculés automatiquement | même famille que Statistical Stretch | automatique, curseurs | aucun apport ; suite abandonnée (archive GitHub) |
 
 Avec ou sans étoiles :
 - Avec étoiles : les étoiles sont les pixels les plus clairs ; une fonction de transfert (Statistical Stretch, EZ, HistogramTransformation) les fait grossir et blanchit leur cœur (couleur perdue). GHS avec HP ou MAS limitent cet effet.
-- Sans étoiles (SXT en linéaire) : n'importe quel étirement va pour la galaxie ; les étoiles sont étirées à part (Star Stretch). RC Astro conseille de retirer les étoiles avant un étirement GHS ou arcsinh. L'utilisateur a choisi d'étirer AVEC les étoiles (LRGB et SXT ensuite) pour des étoiles cohérentes entre L et RGB.
+- Sans étoiles (SXT en linéaire) : n'importe quel étirement va pour la galaxie ; les étoiles sont étirées à part (Star Stretch). RC Astro conseille de retirer les étoiles avant un étirement GHS ou arcsinh. Choix actuel de l'utilisateur (5 octobre 2026) : L sans étoiles étirée par GHS, RGB étiré AVEC étoiles par MAS, étoiles du RGB remises à la fin (variante ci-dessous).
 
-Conseil donné (à valider sur des cibles réelles) : garder GHS sur L ; tester Opt_MAS sur le RGB à la place de Statistical Stretch, même cible de fond que L (0,10 à 0,12), saturation de MAS coupée sur les galaxies à cœur brillant ; puis tester MAS sur L à la place de GHS_1 seulement. Ne pas utiliser EZ Soft Stretch.
+Conseil donné d'abord (dépassé, gardé pour mémoire) : garder GHS sur L ; tester Opt_MAS sur le RGB à la place de Statistical Stretch, même cible de fond que L (0,10 à 0,12), saturation de MAS coupée sur les galaxies à cœur brillant ; puis tester MAS sur L à la place de GHS_1 seulement. Ne pas utiliser EZ Soft Stretch.
 
-Variante proposée par l'utilisateur (5 octobre 2026, pas encore en icônes) : RGB étiré par MAS AVEC étoiles, puis SXT Unscreen (RGB_stars) ; L : SXT en linéaire, GHS sur L sans étoiles ; LRGB sur les deux images sans étoiles ; RGB_stars remises à la fin (Etoiles_screen). Avantages : L étirée librement (pas de HP à gérer), étoiles d'une seule source, couleur gardée par MAS, plus de souci de cohérence L/RGB dans les étoiles. Risques : étoiles moins fines et plus bruitées que celles de L (moins de signal dans le RGB), étoiles faibles de L absentes ; SXT peut prendre des nœuds HII ou des amas compacts de la galaxie pour des étoiles (retirés de L, rendus par RGB_stars, moins nets) ; luminosité des étoiles à doser (Etoiles_grosses, Etoiles_reduites).
+Variante proposée par l'utilisateur (5 octobre 2026), ADOPTÉE : c'est le process actuel des workflows LRGB et LHaRGB (validé en LRGB par l'utilisateur) : RGB étiré par MAS AVEC étoiles, puis SXT Unscreen (RGB_stars) ; L : SXT en linéaire, GHS sur L sans étoiles ; LRGB sur les deux images sans étoiles ; RGB_stars remises à la fin (Etoiles_screen). Avantages : L étirée librement (pas de HP à gérer), étoiles d'une seule source, couleur gardée par MAS, plus de souci de cohérence L/RGB dans les étoiles. Risques : étoiles moins fines et plus bruitées que celles de L (moins de signal dans le RGB), étoiles faibles de L absentes ; SXT peut prendre des nœuds HII ou des amas compacts de la galaxie pour des étoiles (retirés de L, rendus par RGB_stars, moins nets) ; luminosité des étoiles à doser (Etoiles_grosses, Etoiles_reduites).
 
 ## Accentuation finale (« boost de sharp ») : outils
 
-Question de l'utilisateur (5 octobre 2026). Fait : option Opt_Sharp_USM (UnsharpMask sous masque, P6, tous les workflows). Chemin principal (tous les workflows, pas le rapide) : C_Sharp_MMT = Masque_L, script Sharp_MMT.js (instance MMT donnée par l'utilisateur : 5 couches, couches 2 à 4 biais +0,04), Masque_retirer, juste avant NXT_final.
+Question de l'utilisateur (5 octobre 2026). Fait : option Opt_Sharp_USM (UnsharpMask sous masque, P6, tous les workflows). Chemin principal (tous les workflows ; en galaxies aussi en rapide, Sharp_MMT dans R_C_Fin_rapide sous le masque) : C_Sharp_MMT = Masque_L, script Sharp_MMT.js (instance MMT donnée par l'utilisateur : 5 couches, couches 2 à 4 biais +0,04), Masque_retirer, juste avant NXT_final.
 - Sur l'image SANS étoiles, étirée, sous masque de luminance (masque_L), en fin de P6 (après C_Finition, avant NXT_final) ; jamais sur RGB_stars.
 - MultiscaleMedianTransform (MMT) : petites couches (2 à 4) avec un léger biais (+0,03 à +0,05), couche 1 laissée (bruit) ; peu d'anneaux. Brecher l'utilise à la place d'une seconde passe de BXT (critique LRGB, sources 22 et 31).
 - MultiscaleLinearTransform (MLT) : même principe, biais un peu plus forts possibles, plus d'anneaux qu'MMT.
@@ -239,7 +239,7 @@ Icônes Opt_Coeurs_etoiles, Opt_Etoiles_couleur, Opt_RepairedHSV et script Etoil
 - ChannelCombination, espace HSV : H, Sv, puis V ou Unrepaired V (essayer les deux), Apply Global : nouvelle image, à étirer ensuite (MAS, étirement qui protège les hautes lumières : c'est le cas visé).
 - Repair level : défaut d'abord (0,25 corrige trop peu, 0,75 délave). Résultats inégaux selon les sources (étoiles aux couleurs coupées).
 - Contrôle : sonde 15×15 sur le cœur des étoiles brillantes de RGB_stars, avec et sans réparation.
-- Autres pistes : Etoiles_grosses puis saturation (Etoiles_auto_etire) sur RGB_stars avant Etoiles_screen.
+- Autre piste aujourd'hui : Opt_Saturation_grosses (P4) sur RGB_stars (Etoiles_grosses et Etoiles_auto_etire supprimées des galaxies).
 - **Nos icônes (sans fenêtre à remplir, script Etoiles_couleur.js)** : même principe, automatique. Masque des cœurs (rampe de 0,7·s à s, s = seuil × luminance max) ; couleur du halo par convolution normalisée : flou gaussien (sigma = rayon) de (1 − m)·RGB, rapport R:G:B = canal flouté / moyenne des trois ; dans les cœurs, luminance gardée (× plafond) avec ce rapport, canal le plus fort plafonné à 1. Testé sur une étoile simulée (couleur 1 : 0,75 : 0,5, cœur écrêté) : cœur rendu 1 : 0,79 : 0,55.
   - **Opt_Coeurs_etoiles** (P4, avant MAS, RGB linéaire) : seuil 0,50, rayon 8, plafond 1, pas de saturation. Pas en rapide.
   - **Opt_Etoiles_couleur** (P7, RGB_stars avant Etoiles_screen) : seuil 0,80, rayon 6, plafond 0,85, ColorSaturation 1,0.

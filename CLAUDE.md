@@ -18,7 +18,7 @@ Avant d'ajouter ou de modifier un contenu technique (réglage, valeur, ordre des
 
 ## Descriptions des icônes
 
-À chaque changement d'une icône (réglage, place, ordre, script, nouvelle icône), mets TOUJOURS à jour sa description, et celles des icônes et conteneurs qui la citent : `short_desc.py` (S et V : PRÉRÉGLÉ, À RÉGLER, SI), `layout.py` (`WHEN` pour une option) et les textes D_/T_ de `make_workflows.py`. Textes courts, une idée par ligne, lisibles sans autre document.
+À chaque changement d'une icône (réglage, place, ordre, script, nouvelle icône), mets TOUJOURS à jour sa description, et celles des icônes et conteneurs qui la citent : `short_desc.py` (S et V : PRÉRÉGLÉ, À RÉGLER, SI), `layout.py` (`WHEN` pour une option) et les textes D_/T_ de `make_workflows.py`. Textes courts, une idée par ligne, lisibles sans autre document. Mise en page (demande de l'utilisateur) : pas de lignes vides en haut, une ligne vide avant chaque rubrique en majuscules (LANCEMENT, PRÉRÉGLÉ, À RÉGLER, SI, OPTION…) ; faite par le générateur.
 
 ## Scripts : toujours une fenêtre de réglages
 
@@ -55,10 +55,10 @@ Process galaxies (demande de l'utilisateur, 5 octobre 2026) : L sans étoiles, R
 - **P3 LRGB** : C_RGB_lineaire (BXT Correct Only, SPCC, BXT, NXT), C_L_lineaire (BXT, NXT, SXT_L_lineaire sans image d'étoiles). **P3 LHaRGB** : C_RGB_couleur, BXT_L_H, Continuum_auto (HaNB), H_dans_RGB, C_RGB_bruit (NXT, ferme H, R, HaNB), NXT_L, SXT_L_lineaire.
 - **P4** : GHS_1 (à la main), GHS_2 sur L sans étoiles ; MAS (réglages de l'utilisateur, fond 0,15) puis SXT_RGB_etire (Unscreen, crée RGB_stars) sur RGB, SCNR_etoiles_vert (script Etoiles_auto sur RGB_stars seulement : SCNR vert 1,0) ; options P4 (pas dans le rapide) : SCNR_etoiles_violet (Invert / SCNR vert 1,0 / Invert), Saturation_grosses ; GHS_3_fond sur L et sur le RGB sans étoiles. Option : Statistical_Stretch (à la place de MAS).
 - **P5** : LRGB_ajout_L sur les deux images sans étoiles, Saturation 0,5.
-- **P6** : HDRMT_30 (par défaut ; HDRMT_40 en option), C_Finition (Courbes saturation 0,58 ; option Finition_saturee = ancienne version à 0,65, aussi saturation 0,58 dans R_C_Fin_rapide), C_Sharp_MMT (Masque_L, script Sharp_MMT : MMT couches 2 à 4 biais +0,04, Masque_retirer ; en rapide : Sharp_MMT dans R_C_Fin_rapide, sous le masque), NXT_final ; option Sharp_USM (UnsharpMask sous masque, à la place) (+ autres options).
+- **P6** : HDRMT_30 (par défaut ; HDRMT_40 en option), C_Finition (Courbes saturation 0,58, aussi dans R_C_Fin_rapide ; option Finition_saturee = ancienne version à 0,65), C_Sharp_MMT (Masque_L, script Sharp_MMT : MMT couches 2 à 4 biais +0,04, Masque_retirer ; en rapide : Sharp_MMT dans R_C_Fin_rapide, sous le masque), NXT_final ; option Sharp_USM (UnsharpMask sous masque, à la place) (+ autres options).
 - **P7** : sur l'image sans étoiles Fond_desature, Fond_auto (0,12), puis Etoiles_screen, puis NXT_dernier (Denoise 0,25 sur l'image finie avec étoiles) ; options Fond_auto_clair (à la place de Fond_auto), Etoiles_reduites, Boost_final, Agrandir_x2, ICC_sRGB, Export_TIFF (ne ferme aucune vue).
 - **Turbo** : T_Turbo_debut (colonne P1) = R_C_Preparation_rapide + R_Gradient_auto_rapide + R_Lineaire_rapide en un seul conteneur, Apply Global.
-- **Rapide** : R_C_Preparation_rapide, R_Gradient_auto_rapide, R_Lineaire_rapide (script Lineaire_auto), GHS_1, GHS_2, GHS_3_fond sur L (chemin principal), R_C_RGB_etire_rapide (MAS, SXT, SCNR_etoiles_vert, GHS fond ; SCNR_etoiles_violet pas dans le rapide), R_C_LRGB_rapide (LRGB seul), R_C_Fin_rapide, R_C_Etoiles_fond_rapide (Fond_desature, Fond_auto, Etoiles_screen, NXT_dernier, Export_TIFF).
+- **Rapide** : R_C_Preparation_rapide, R_Gradient_auto_rapide, R_Lineaire_rapide (script Lineaire_auto), GHS_1, GHS_2, GHS_3_fond sur L (chemin principal), R_C_RGB_etire_rapide (MAS, SXT, SCNR_etoiles_vert, GHS fond ; SCNR_etoiles_violet pas dans le rapide), R_C_LRGB_rapide (LRGB seul), R_C_Fin_rapide (HDRMT 30 %, masque, Courbes, LHE, LHE_fin, Sharp_MMT, masque retiré, NXT_final), R_C_Etoiles_fond_rapide (Fond_desature, Fond_auto, Etoiles_screen, NXT_dernier, Export_TIFF).
 
 ## Contraintes PixInsight apprises
 
@@ -66,10 +66,14 @@ Process galaxies (demande de l'utilisateur, 5 octobre 2026) : L sans étoiles, R
 - `#engine v8` (exigé par ImageSolver) casse l'ancien code : `PixelMath.prototype.RGB` (« signed integer value expected »), LinearPatternSubtraction.jsh (« Boolean value expected »).
 - ImageSolver échoue sur l'image glissée dans un conteneur : conteneurs avec Solver_auto en Apply Global.
 - Retours à la ligne des descriptions écrits `&#10;` (fait par `save()`) : un CR (fichier converti en CRLF par git sous Windows) s'affiche mal dans PixInsight, lignes inversées et vides en haut (test de l'utilisateur, 5 octobre 2026 : LF, `&#10;`, `<br>` et U+2028 marchent ; CR et CRLF non). `.gitattributes` force LF pour .xpsm et .js.
+- Conteneur de process natifs (MAS, SXT, GHS…) : à GLISSER sur l'image (Apply Global refusé : « Cannot execute instance in the global context ») ; Apply Global seulement pour les icônes faites de scripts (R_C_Preparation_rapide, T_Turbo_debut, R_Gradient_auto_rapide, R_Lineaire_rapide). Chaque conteneur porte son mode de lancement dans sa description.
+- Script qui modifie une image : résultat calculé dans une image cachée (PixelMath exécuté sur la vue, createNewImage), puis `beginProcess` / `image.assign` / `endProcess` (affichage et Ctrl+Z) ; un `executeOn` lancé depuis une fenêtre, ou un PixelMath écrit directement dans la vue avec des références, ne marche pas (détails dans `docs/kb/generateur.md`).
 - Jamais de guillemets dans un paramètre de Script. Modules RC Astro et GHS : à réinstaller par Process › Modules › Install Modules s'ils disparaissent.
 
-## Pistes non commencées
-
-Points ouverts : section « Non vérifié » de `docs/sources.md`. Workflow LRGB terminé et validé par l'utilisateur (5 octobre 2026) ; prochains chantiers : LHaRGB, puis SHO et RGB + SHO.
+## Options supprimées (galaxies)
 
 - Options supprimées des workflows galaxies (demande de l'utilisateur, 5 octobre 2026) : GraXpert, Coeurs_etoiles, RepairedHSV, VeraLux_HMS, Etoiles_auto_etire, MKStarReduction, Etoiles_grosses, Etoiles_couleur (script Etoiles_couleur.js supprimé), puis Etoiles_plafond. Ne pas les remettre sans demande.
+
+## État et suite
+
+Workflow LRGB terminé et validé par l'utilisateur (5 octobre 2026). Prochains chantiers : LHaRGB (même process ; à vérifier sur des cibles), puis SHO et RGB + SHO (n'ont pas encore reçu les changements des galaxies : MAS, SCNR des étoiles, finition à 0,58, Sharp_MMT au rapide, NXT_dernier…). Points ouverts : section « Non vérifié » de `docs/sources.md`.
