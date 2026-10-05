@@ -1195,7 +1195,7 @@ insert_after(lrgb, 'Combinaison_RGB', [(prep_l, ''), (gc_solver('Solver_auto'), 
 insert_after(lrgb, 'ImageSolver', [(script('Gradient_auto_rapide', ''), '')])
 # SCNR vert à 1,0 : plus dans C_RGB_lineaire, option en P7 (demande de l'utilisateur, 5 octobre 2026)
 for _st in (lrgb, lhargb):
-    insert_after(_st, 'Etoiles_screen', [(M.instance('SCNR', 'SCNR_vert', {'amount': '1.00', 'protectionMethod': 'AverageNeutral', 'colorToRemove': 'Green', 'preserveLightness': True}), '')])
+    insert_before(_st, 'MT_etoiles', [(M.instance('SCNR', 'SCNR_vert', {'amount': '1.00', 'protectionMethod': 'AverageNeutral', 'colorToRemove': 'Green', 'preserveLightness': True}), '')])
 
 def fin_rapide(steps):
     """P6_rapide et P7_rapide (demande de l'utilisateur) : un conteneur par phase avec les étapes de la finition."""

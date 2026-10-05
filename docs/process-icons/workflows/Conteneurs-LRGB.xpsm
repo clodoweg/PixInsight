@@ -3455,6 +3455,13 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
    <instance class="NoOperation" version="256" id="P7_options_instance">
       <description>OPTIONS de la phase 7 — Étoiles : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
    </instance>
+   <instance class="SCNR" version="256" id="Opt_SCNR_vert_instance">
+      <description>OPTION — reste de vert sur l'image finie (étoiles ou fond) : SCNR vert 1,0 après Etoiles_screen, avant Fond_desature&#10;Ou sur RGB_stars seule, avant Etoiles_screen, pour les étoiles.&#10;&#10;PRÉRÉGLÉ : SCNR : Green, Amount 1,0, Average Neutral, Preserve lightness coché.&#10;&#10;À RÉGLER : option : glisse sur l'image finie après Etoiles_screen (avant Fond_desature), ou sur RGB_stars avant Etoiles_screen pour ne toucher que les étoiles.&#10;&#10;SI :&#10;- couleurs ternes ou magenta -&gt; Amount 0,5 à 0,8</description>
+      <parameter id="amount" value="1.00"/>
+      <parameter id="protectionMethod" value="AverageNeutral"/>
+      <parameter id="colorToRemove" value="Green"/>
+      <parameter id="preserveLightness" value="true"/>
+   </instance>
    <instance class="MorphologicalTransformation" version="256" id="Opt_MT_etoiles_instance">
       <description>OPTION — réduction d'étoiles supplémentaire.&#10;&#10;PRÉRÉGLÉ : Selection 0,25, Amount 0,60, 1 itération, 5×5 circulaire.&#10;&#10;À RÉGLER : sur l'image d'étoiles seule, avant Etoiles_screen.&#10;&#10;SI :&#10;- trop fort -&gt; Amount 0,50</description>
       <parameter id="operator" value="Selection"/>
@@ -3540,13 +3547,6 @@ $T*(1 - k*t*t)</parameter>
       <parameter id="newImageColorSpace" value="SameAsTarget"/>
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
-   </instance>
-   <instance class="SCNR" version="256" id="Opt_SCNR_vert_instance">
-      <description>OPTION — reste de vert sur l'image finie (étoiles ou fond) : SCNR vert 1,0 après Etoiles_screen, avant Fond_desature&#10;Ou sur RGB_stars seule, avant Etoiles_screen, pour les étoiles.&#10;&#10;PRÉRÉGLÉ : SCNR : Green, Amount 1,0, Average Neutral, Preserve lightness coché.&#10;&#10;À RÉGLER : option : glisse sur l'image finie après Etoiles_screen (avant Fond_desature), ou sur RGB_stars avant Etoiles_screen pour ne toucher que les étoiles.&#10;&#10;SI :&#10;- couleurs ternes ou magenta -&gt; Amount 0,5 à 0,8</description>
-      <parameter id="amount" value="1.00"/>
-      <parameter id="protectionMethod" value="AverageNeutral"/>
-      <parameter id="colorToRemove" value="Green"/>
-      <parameter id="preserveLightness" value="true"/>
    </instance>
    <instance class="PixelMath" version="256" id="Opt_Etoiles_reduites_instance">
       <description>ALTERNATIVE — Recombinaison + réduction Blanshan.&#10;&#10;PRÉRÉGLÉ : S = 0,20 (Bill : 0,15) ; recombinaison screen + réduction Blanshan en une formule, sur l'image elle-même.&#10;&#10;À RÉGLER : À LA PLACE d'Etoiles_screen : glisse sur l'image sans étoiles finale ; étoiles étirées nommées RGB_stars.&#10;&#10;SI :&#10;- étoiles encore grosses -&gt; S 0,15&#10;- trop petites -&gt; S 0,25, ou Etoiles_screen&#10;- pour recommencer -&gt; Ctrl+Z</description>
@@ -4198,11 +4198,11 @@ max($T,f1)</parameter>
    <icon id="E19_Etoiles_screen" instance="E19_Etoiles_screen_instance" xpos="1186" ypos="64" workspace="Workspace01"/>
    <icon id="E20_Fond_desature" instance="E20_Fond_desature_instance" xpos="1186" ypos="94" workspace="Workspace01"/>
    <icon id="P7_options" instance="P7_options_instance" xpos="1186" ypos="140" workspace="Workspace01"/>
-   <icon id="Opt_MT_etoiles" instance="Opt_MT_etoiles_instance" xpos="1186" ypos="174" workspace="Workspace01"/>
-   <icon id="Opt_Halo_B_Gon" instance="Opt_Halo_B_Gon_instance" xpos="1186" ypos="204" workspace="Workspace01"/>
-   <icon id="Opt_Etoiles_grosses" instance="Opt_Etoiles_grosses_instance" xpos="1186" ypos="234" workspace="Workspace01"/>
-   <icon id="Opt_Etoiles_plafond" instance="Opt_Etoiles_plafond_instance" xpos="1186" ypos="264" workspace="Workspace01"/>
-   <icon id="Opt_SCNR_vert" instance="Opt_SCNR_vert_instance" xpos="1186" ypos="294" workspace="Workspace01"/>
+   <icon id="Opt_SCNR_vert" instance="Opt_SCNR_vert_instance" xpos="1186" ypos="174" workspace="Workspace01"/>
+   <icon id="Opt_MT_etoiles" instance="Opt_MT_etoiles_instance" xpos="1186" ypos="204" workspace="Workspace01"/>
+   <icon id="Opt_Halo_B_Gon" instance="Opt_Halo_B_Gon_instance" xpos="1186" ypos="234" workspace="Workspace01"/>
+   <icon id="Opt_Etoiles_grosses" instance="Opt_Etoiles_grosses_instance" xpos="1186" ypos="264" workspace="Workspace01"/>
+   <icon id="Opt_Etoiles_plafond" instance="Opt_Etoiles_plafond_instance" xpos="1186" ypos="294" workspace="Workspace01"/>
    <icon id="Opt_Etoiles_reduites" instance="Opt_Etoiles_reduites_instance" xpos="1186" ypos="324" workspace="Workspace01"/>
    <icon id="Opt_MKStarReduction" instance="Opt_MKStarReduction_instance" xpos="1186" ypos="354" workspace="Workspace01"/>
    <icon id="Opt_Boost_final_doux" instance="Opt_Boost_final_doux_instance" xpos="1186" ypos="384" workspace="Workspace01"/>
