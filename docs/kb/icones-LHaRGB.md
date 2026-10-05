@@ -154,18 +154,21 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
    6. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
       paramètres : `etapes=C_RGB_couleur>RGB ; BXT_L_H>L,H ; NXT_L>L ; SXT_L_lineaire>L`, `dialogue=false`
+   7. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Continuum_rapide.js`
+      paramètres : `h=H`, `r=R`, `rgb=RGB`, `k=0`, `w=1.00`, `bleu=0.00`, `nxt=0.80`, `fermer=true`, `dialogue=false`
 
 > MODE TURBO, à la place de R_C_Preparation_rapide, R_Gradient_auto_rapide et R_Lineaire_rapide (phases 1 à 3) : masters seuls ouverts, double-clic puis Apply Global (pas en glissant) ; ensuite GHS_1_premier sur L.
 > 
 > LANCEMENT : masters seuls ouverts, double-clic puis Apply Global (rond bleu) ; pas en glissant (ImageSolver échoue sur une image en cours de traitement).
 > 
-> PRÉRÉGLÉ : conteneur, en une fois : Renommer_auto, LinearPatternSubtraction, Combinaison_RGB, Solver_auto (= R_C_Preparation_rapide), Gradient_auto (GradientCorrection sur toutes les images ouvertes, = R_Gradient_auto_rapide), Lineaire_auto (= R_Lineaire_rapide, mêmes étapes).
+> PRÉRÉGLÉ : conteneur, en une fois : Renommer_auto, LinearPatternSubtraction, Combinaison_RGB, Solver_auto (= R_C_Preparation_rapide), Gradient_auto (= R_Gradient_auto_rapide), Lineaire_auto (= R_Lineaire_rapide), Continuum_rapide (= R_Continuum_rapide : continuum, HaNB injecté dans le RGB, NXT, H, R et HaNB fermées).
 > 
-> À RÉGLER : masters seuls ouverts (L, R, G, B, et H en LHaRGB) ; double-clic puis Apply Global (pas en glissant : ImageSolver échoue sur une image en cours de traitement) ; les icônes du chemin principal citées par R_Lineaire_rapide doivent être chargées ; ensuite GHS_1_premier sur L.
+> À RÉGLER : masters seuls ouverts (L, R, G, B, H) ; double-clic puis Apply Global (pas en glissant : ImageSolver échoue sur une image en cours de traitement) ; les icônes du chemin principal citées par R_Lineaire_rapide doivent être chargées ; ensuite GHS_1_premier sur L.
 > 
 > SI :
-> - une étape échoue -> lance les trois icônes R_ une par une pour voir laquelle
-> - gradient mal retiré -> chemin principal de la phase 2 (MGC + MARS) à la place, puis R_Lineaire_rapide
+> - une étape échoue -> lance les icônes R_ une par une pour voir laquelle
+> - continuum mal retiré (cœur rougi) -> R_Continuum_rapide seul avec k donné, sur des masters relancés
 
 ## P2_Gradient
 
@@ -468,11 +471,30 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > PRÉRÉGLÉ : script Lineaire_auto.js, etapes = C_RGB_couleur>RGB ; BXT_L_H>L,H ; NXT_L>L : C_RGB_couleur (BXT Correct Only, SPCC, BXT) sur RGB, BXT (Nonstellar 0,80) sur L et H, NXT 0,60 sur L ; étoiles gardées, images linéaires.
 > 
-> À RÉGLER : double-clic puis Apply Global, après R_Gradient_auto_rapide ; Conteneurs-LHaRGB chargé ; ensuite Continuum_auto, H_dans_RGB, C_RGB_bruit (chemin principal), puis GHS_1_premier sur L.
+> À RÉGLER : double-clic puis Apply Global, après R_Gradient_auto_rapide ; Conteneurs-LHaRGB chargé ; ensuite R_Continuum_rapide (ou Continuum_auto, H_dans_RGB, C_RGB_bruit du chemin principal), puis GHS_1_premier sur L.
 > 
 > SI :
 > - H_dans_L voulu -> il se fait après (NXT_L déjà passé sur L)
 > - une étape échoue -> la console dit laquelle
+
+#### R_Continuum_rapide — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Continuum_rapide.js`
+   paramètres : `h=H`, `r=R`, `rgb=RGB`, `k=0`, `w=1.00`, `bleu=0.00`, `nxt=0.80`, `fermer=true`
+
+> MODE RAPIDE, à la place de Continuum_auto, H_dans_RGB et C_RGB_bruit : après R_Lineaire_rapide, glisse sur n'importe quelle image (ou double-clic pour la fenêtre) ; H, R et RGB linéaires ouvertes.
+> 
+> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
+> 
+> PRÉRÉGLÉ : script Continuum_rapide : k du continuum calculé (régression robuste par l'origine de H − méd H sur R − méd R, pixels au-dessus de 15 σ, HII rejetées, méthode de PhotometricContinuumSubtraction simplifiée) ; HaNB = H − k·(R − méd R) ; RGB : R + 1,0 × HaNB (bleu + 0) ; NXT 0,80 sur le RGB ; H, R et HaNB fermées.
+> 
+> À RÉGLER : après R_Lineaire_rapide (H après BXT, R et RGB linéaires ouvertes) : glisse l'icône sur n'importe quelle image (exécution directe, vues H, R, RGB par leur nom) ou double-clic pour la fenêtre ; la console donne k ; copie Continuum_rapide.js dans src/scripts/clodoweg ; ensuite GHS_1_premier sur L.
+> 
+> SI :
+> - cœur ou étoiles rougis -> k trop faible : double-clic, k = valeur de la console × 1,2
+> - régions HII rouge vif -> w 0,5
+> - régions HII plus roses -> part du bleu 0,2
+> - H_dans_L voulu -> décoche « Fermer » (HaNB gardée), puis H_dans_L
+> - « trop peu de pixels » -> donne k à la main (0,1 à 0,5)
 
 ## P4_Etirement
 

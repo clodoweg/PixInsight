@@ -252,3 +252,10 @@ Opt_Etoiles_grosses supprimée des workflows galaxies (demande de l'utilisateur,
 
 - Anneau noir autour des grosses étoiles (retour de l'utilisateur, 5 octobre 2026) : sous le masque, mtf(force, Y)/Y divise le halo FAIBLE par 2 environ (mtf(0,7, x) ≈ 0,43 x pour x petit), et juste au-delà du bord du masque le halo reste intact : la luminosité remonte en s'éloignant de l'étoile.
 - Correction : poids w = (Y − 0,10)/0,70 borné à [0, 1] (halo sous 0,10 jamais touché, réduction complète au-dessus de 0,80), masque plus étendu (etendue 12), force par défaut 0,80, limitée à 0,85 (au-delà, Y' n'est plus croissante en Y : anneau). Vérifié sur des profils d'étoiles simulés (halo double exponentielle, bord de masque gaussien) : remontée relative 9 % par pixel avant, 0 à 0,8 % après.
+
+## Continuum de H calculé automatiquement (Continuum_rapide, LHaRGB)
+
+Demande de l'utilisateur (5 octobre 2026) : faire le continuum en mode rapide, sans la fenêtre de ContinuumSubtraction (SetiAstro).
+- Méthode de référence : PhotometricContinuumSubtraction (Charles Hagen, NightPhotons, code v1.4.2 lu) : flux des étoiles mesurés par DynamicPSF dans les deux images, régression PAR L'ORIGINE robuste (IRLS, poids de Tukey c = 4,685) du flux étroit sur le flux large, k = Σ w·x·y / Σ w·x² ; soustraction NB − k·(BB − méd(BB)).
+- Notre version (script Continuum_rapide.js) : pas de DynamicPSF ; pixels des copies réduites 4 fois (moyenne) au-dessus de 15 σ du fond de R et sous 0,8 (étoiles et galaxie, continuum), x = R − méd R, y = H − méd H ; départ k = médiane des y/x, puis IRLS Tukey ; les régions HII (excès de H) sont rejetées comme aberrantes. Simulation (étoiles + régions HII, k vrai 0,22) : k trouvé 0,2199 ; moindres carrés simples 0,235 (biaisés par HII). Non vérifié sur de vraies images.
+- Autre script vu : PI_ContinuumSubtraction (A. Reinartz) : Q théorique = (Wn·Tn)/(Wc·Tc), réglé à l'œil en pratique.

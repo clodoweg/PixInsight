@@ -750,3 +750,12 @@ Fait : règle ajoutée dans CLAUDE.md et generateur.md (modifications limitées 
 
 Demande : « En fait plutot, si je te demande qqchose et que tu veux aussi modifié LRGB, demainde moi d'abord alors la liste des impacts et je dis s'il faut aussi le faire ou pas pour LRGB »
 Fait : règle « LRGB gelé » remplacée par « demander avant de toucher » (liste des impacts LRGB, décision de l'utilisateur) dans CLAUDE.md et generateur.md.
+
+### Continuum_rapide (LHaRGB) (5 octobre 2026)
+
+Question puis demande : « Le process R_Lineaire_rapide ne gere pas le continuum c'est ca? » puis « oui » (faire un script de continuum sans fenêtre, en rapide et dans le turbo).
+Sources :
+- PhotometricContinuumSubtraction, Charles Hagen (NightPhotons) — code du script v1.4.2 lu dans le paquet du dépôt https://raw.githubusercontent.com/charleshagen/pixinsight/main/updates/ (optimizeWeights : régression par l'origine, IRLS Tukey c = 4,685 ; soustraction NB − k·(BB − méd(BB))) — Tutoriel/outil ; page : https://www.nightphotons.com/software/photometric-continuum-subtraction/
+- PI_ContinuumSubtraction, A. Reinartz — https://github.com/areinartz/PI_ContinuumSubtraction (README : Q = (Wn·Tn)/(Wc·Tc), réglage empirique) — Outil.
+- Automatic Continuum Subtraction (SetiAstro) — https://astrowhat.com/resources/automatic-continuum-subtraction.225/ *(résumé)*.
+Fait : script Continuum_rapide.js (k par régression robuste sur pixels brillants, HaNB, injection R + w·HaNB, NXT 0,80, fermeture H, R, HaNB) ; icône R_Continuum_rapide (P3 rapide, LHaRGB) et ajout à la fin de T_Turbo_debut du LHaRGB. LRGB inchangé (git diff vide). Non vérifié : k sur de vraies images (testé en simulation seulement).
