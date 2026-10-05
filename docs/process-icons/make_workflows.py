@@ -51,12 +51,11 @@ SCRIPTS = {
     'Fond_desature': ('$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js', '', [('debut', '0.03'), ('fin', '0.15'), ('violetFin', '0.30'), ('flou', '3')], L_DRAG),
     'Fond_auto': ('$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js', '', [('cible', '0.12'), ('tolerance', '0.005'), ('grille', '8')], L_DRAG),
     'Nettoyage_sans_etoiles': ('$PXI_SRCDIR/scripts/clodoweg/Nettoyage_sans_etoiles.js', '', [('etoiles', 'RGB_stars'), ('seuilBas', '0.05'), ('seuilHaut', '0.12'), ('etendue', '25'), ('passes', '3'), ('protege', '0.08'), ('structure', '0.15'), ('compact', '0.05'), ('tresBrillant', '0.05'), ('etendue2', '80'), ('gain', '3'), ('gain2', '8'), ('afficherMasque', 'false')], L_DRAG),
-    'Continuum_rapide': ('$PXI_SRCDIR/scripts/clodoweg/Continuum_rapide.js', '', [('h', 'H'), ('r', 'R'), ('rgb', 'RGB'), ('k', '0'), ('w', '1.00'), ('bleu', '0.00'), ('nxt', '0.80'), ('fermer', 'true')], L_DRAG),   # LHaRGB rapide : continuum, injection, NXT, fermeture (demande de l'utilisateur)
     'Saturation_grosses': ('$PXI_SRCDIR/scripts/clodoweg/Saturation_grosses.js', '', [('vue', 'RGB_stars'), ('taille', '7'), ('seuil', '0.15'), ('etendue', '12'), ('passes', '1')], L_DRAG),   # option P4 : courbe de saturation de l'utilisateur sur les grosses étoiles seulement (demande de l'utilisateur)
     'Etoiles_grosses': ('$PXI_SRCDIR/scripts/clodoweg/Etoiles_grosses.js', '', [('taille', '7'), ('seuil', '0.15'), ('etendue', '12'), ('force', '0.80'), ('afficherMasque', 'false')], L_DRAG),   # demande de l'utilisateur : réduire seulement les grosses étoiles
     'Export_TIFF': ('$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js', '', [('nom', ''), ('suffixe', ''), ('dossier', ''), ('icc', 'true')], L_DRAG),   # plus aucune vue fermée (demande de l'utilisateur)
     'Binning_x2': ('$PXI_SRCDIR/scripts/clodoweg/Binning_x2.js', '', [('facteur', '2')], L_GLOBAL),   # demande de l'utilisateur : binning logiciel de toutes les images
-    'CombineHaWithRGB': ('$PXI_SRCDIR/scripts/Toolbox/CombineHaToRGB.js', '', [('alphaView', 'H'), ('amount', '2.0'), ('beta', '0.0'), ('bg', '0.015'), ('sigma', '0.0'), ('linear', 'true'), ('rgbLinked', 'true'), ('invertMask', 'true')], L_DRAG),   # PixInsight Toolbox de Jürgen Terpe (test, demande de l'utilisateur)
+    'CombineHaWithRGB': ('$PXI_SRCDIR/scripts/Toolbox/CombineHaToRGB.js', '', [('alphaView', 'HaNB'), ('amount', '2.0'), ('beta', '0.0'), ('bg', '0.015'), ('sigma', '0.0'), ('linear', 'true'), ('rgbLinked', 'true'), ('invertMask', 'true')], L_DRAG),   # PixInsight Toolbox de Jürgen Terpe (test, demande de l'utilisateur)
     'DarkStructureEnhance': ('$PXI_SRCDIR/scripts/misc/DarkStructureEnhance.js', '', [], L_GLOBAL + "Ce script ne lit pas de paramètres d'icône : les réglages se font dans son dialogue. "),   # script livré avec PixInsight (test)
     'Sharp_MMT': ('$PXI_SRCDIR/scripts/clodoweg/Sharp_MMT.js', '', [('biais', '0.04'), ('premiere', '2'), ('derniere', '4'), ('couches', '5')], L_DRAG),   # instance MMT de l'utilisateur
     'Fond_auto_clair': ('$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js', '', [('cible', '0.14'), ('tolerance', '0.005'), ('grille', '8')], L_DRAG),
@@ -210,7 +209,7 @@ def layout(entries, naming):
     return insts, icons
 
 TURBO = {'Turbo_debut'}   # ancien mode Turbo supprimé ; Turbo_debut ajouté ensuite (demande de l'utilisateur, 5 octobre 2026)
-RAPIDE = {'Lineaire_rapide', 'Continuum_rapide', 'C_RGB_etire_rapide', 'C_Fin_rapide', 'C_Etoiles_fond_rapide', 'C_Preparation_rapide', 'Gradient_auto_rapide', 'C_RGB_rapide', 'C_L_rapide', 'C_RGB_fin_rapide', 'C_LRGB_rapide'}
+RAPIDE = {'Lineaire_rapide', 'C_RGB_etire_rapide', 'C_Fin_rapide', 'C_Etoiles_fond_rapide', 'C_Preparation_rapide', 'Gradient_auto_rapide', 'C_RGB_rapide', 'C_L_rapide', 'C_RGB_fin_rapide', 'C_LRGB_rapide'}
 RAPIDE_NOTE = {
     'LRGB': {1: "MODE RAPIDE (galaxies) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre (étoiles gardées jusqu'à LRGB) : R_C_Preparation_rapide ; R_Gradient_auto_rapide ; R_Lineaire_rapide (RGB et L) ; GHS_1_premier, GHS_2_contraste, GHS_3_fond sur L ; R_C_RGB_etire_rapide sur RGB ; R_C_LRGB_rapide (LRGB sans étoiles) ; finition. Phase 1 : R_C_Preparation_rapide (double-clic puis Apply Global) à la place de LinearPatternSubtraction, Renommer_auto, Combinaison_RGB et Solver_auto",
              2: "R_Gradient_auto_rapide à la place de toute la phase 2 : GradientCorrection sur toutes les images ouvertes (l'astrométrie est déjà faite par R_C_Preparation_rapide)",
@@ -221,7 +220,7 @@ RAPIDE_NOTE = {
              7: "R_C_Etoiles_fond_rapide sur l'image sans étoiles finie : Fond_desature, Fond_auto (0,12) sur l'image sans étoiles, étoiles remises (Etoiles_screen), NXT_dernier (0,25), puis Export_TIFF en un seul conteneur"},
     'LHA': {1: "MODE RAPIDE (galaxies) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre : R_C_Preparation_rapide ; R_Gradient_auto_rapide ; R_Lineaire_rapide (RGB, L et H), Continuum_auto, H_dans_RGB, C_RGB_bruit (étoiles gardées) ; GHS_1_premier, GHS_2_contraste, GHS_3_fond sur L ; R_C_RGB_etire_rapide sur RGB ; R_C_LRGB_rapide (LRGB sans étoiles) ; finition. Phase 1 : R_C_Preparation_rapide (double-clic puis Apply Global) à la place de LinearPatternSubtraction, Renommer_auto, Combinaison_RGB et Solver_auto",
             2: "R_Gradient_auto_rapide à la place de toute la phase 2 : GradientCorrection sur toutes les images ouvertes (R et H compris, pour le continuum) ; l'astrométrie est déjà faite par R_C_Preparation_rapide",
-            3: "R_Lineaire_rapide (double-clic puis Apply Global) à la place de C_RGB_couleur, BXT_L_H, NXT_L et SXT_L_lineaire ; puis R_Continuum_rapide (glissée sur n'importe quelle image) à la place de Continuum_auto, H_dans_RGB et C_RGB_bruit : continuum retiré de H (k calculé), HaNB injecté dans le RGB, NXT, H, R et HaNB fermées ; T_Turbo_debut fait tout cela en une fois",
+            3: "pas d'icône rapide en LHaRGB : chemin principal (C_RGB_couleur, BXT_L_H, Continuum_auto, CombineHaWithRGB, C_RGB_bruit, NXT_L, SXT_L_lineaire) ; T_Turbo_debut fait encore P1 à P3 par Lineaire_auto (à revoir)",
             4: "GHS_1_premier sur L sans étoiles (chemin principal, à régler), puis GHS_2_contraste et GHS_3_fond (chemin principal) sur L ; R_C_RGB_etire_rapide sur RGB (MAS avec étoiles, SXT Unscreen qui crée RGB_stars, SCNR vert sur RGB_stars, GHS fond)",
             5: "R_C_LRGB_rapide sur RGB sans étoiles (L sans étoiles ouverte) à la place de LRGB_ajout_L : L ajoutée (Saturation 0,5)",
             6: "R_C_Fin_rapide sur l'image sans étoiles après LRGB_ajout_L (ou R_C_LRGB_rapide) : HDRMT à 30 %, masque, Courbes, LHE, LHE_fin, Sharp_MMT, masque retiré, NXT_final 0,40 en un seul conteneur (= HDRMT_30, C_Finition, C_Sharp_MMT et NXT_final)",
@@ -1168,21 +1167,21 @@ for _st in (lrgb, lhargb):
     insert_before(_st, 'Masque_L', [(script('DarkStructureEnhance', ''), '')])
     insert_before(_st, 'ICC_sRGB', [(agrandir_x2(), '')])
 insert_after(lhargb, 'H_dans_RGB', [(pm('H_dans_RGB_v2', 'w = 1.0;\n$T[0] + w*(HaNB - med(HaNB))', '$T[1]', '$T[2] + 0.2*w*(HaNB - med(HaNB))', symbols='w'), '')])
-insert_after(lhargb, 'NBRGBCombination', [(script('CombineHaWithRGB', ''), '')])
+insert_before(lhargb, 'H_dans_RGB', [(script('CombineHaWithRGB', ''), '')])   # LHaRGB (demande de l'utilisateur) : CombineHaWithRGB au chemin principal après Continuum_auto (H = HaNB), H_dans_RGB en option
 
 def turbo_debut(steps, extra=()):
-    """Turbo (demande de l'utilisateur) : en une fois R_C_Preparation_rapide, R_Gradient_auto_rapide, R_Lineaire_rapide (leurs étapes à la suite, un seul conteneur, Apply Global) ; LHaRGB : plus R_Continuum_rapide."""
+    """Turbo (demande de l'utilisateur) : en une fois R_C_Preparation_rapide, R_Gradient_auto_rapide, R_Lineaire_rapide (leurs étapes à la suite, un seul conteneur, Apply Global)"""
     return cont('Turbo_debut', [pick(steps, b)[0] for b in ('Renommer_auto', 'LinearPatternSubtraction', 'Combinaison_RGB')] + [gc_solver('Solver_auto'),
                 script('Gradient_auto_rapide', ''), pick(steps, 'Lineaire_rapide')[0]] + list(extra))
-# LHaRGB (demande de l'utilisateur) : R_Continuum_rapide (continuum, injection, NXT, fermeture) après R_Lineaire_rapide, aussi en fin de turbo ; LRGB inchangé
-insert_after(lhargb, 'Lineaire_rapide', [(script('Continuum_rapide', ''), '')])
 insert_after(lrgb, 'C_Preparation_rapide', [(turbo_debut(lrgb), '')])   # colonne P1, à côté de R_C_Preparation_rapide
-insert_after(lhargb, 'C_Preparation_rapide', [(turbo_debut(lhargb, [script('Continuum_rapide', '')]), '')])
+insert_after(lhargb, 'C_Preparation_rapide', [(turbo_debut(lhargb), '')])   # turbo LHaRGB laissé tel quel (Lineaire_auto), à revoir (demande de l'utilisateur)
 
 # options supprimées des workflows galaxies (demande de l'utilisateur, 5 octobre 2026) ; Etoiles_grosses reste en narrowband
 SUPPR_GALAXIES = {'Etoiles_grosses', 'Etoiles_plafond'}   # Etoiles_auto_etire, GraXpert, VeraLux_HMS, MKStarReduction, Coeurs_etoiles, RepairedHSV, Etoiles_couleur : retirés du code
 for _st in (lrgb, lhargb):
     _st[:] = [x for x in _st if x[0][0] not in SUPPR_GALAXIES]
+# LHaRGB (demande de l'utilisateur) : plus de R_Lineaire_rapide ni de R_Continuum_rapide (le turbo garde ses étapes)
+lhargb[:] = [x for x in lhargb if x[0][0] != 'Lineaire_rapide']
 
 for fn, pre, title, steps in [
     ('Workflow-LRGB.xpsm', 'LRGB', 'Workflow LRGB', lrgb),

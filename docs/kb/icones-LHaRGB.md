@@ -154,21 +154,18 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
    6. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
       paramètres : `etapes=C_RGB_couleur>RGB ; BXT_L_H>L,H ; NXT_L>L ; SXT_L_lineaire>L`, `dialogue=false`
-   7. Script
-      script `$PXI_SRCDIR/scripts/clodoweg/Continuum_rapide.js`
-      paramètres : `h=H`, `r=R`, `rgb=RGB`, `k=0`, `w=1.00`, `bleu=0.00`, `nxt=0.80`, `fermer=true`, `dialogue=false`
 
 > MODE TURBO, à la place de R_C_Preparation_rapide, R_Gradient_auto_rapide et R_Lineaire_rapide (phases 1 à 3) : masters seuls ouverts, double-clic puis Apply Global (pas en glissant) ; ensuite GHS_1_premier sur L.
 > 
 > LANCEMENT : masters seuls ouverts, double-clic puis Apply Global (rond bleu) ; pas en glissant (ImageSolver échoue sur une image en cours de traitement).
 > 
-> PRÉRÉGLÉ : conteneur, en une fois : Renommer_auto, LinearPatternSubtraction, Combinaison_RGB, Solver_auto (= R_C_Preparation_rapide), Gradient_auto (= R_Gradient_auto_rapide), Lineaire_auto (= R_Lineaire_rapide), Continuum_rapide (= R_Continuum_rapide : continuum, HaNB injecté dans le RGB, NXT, H, R et HaNB fermées).
+> PRÉRÉGLÉ : conteneur, en une fois : Renommer_auto, LinearPatternSubtraction, Combinaison_RGB, Solver_auto (= R_C_Preparation_rapide), Gradient_auto (= R_Gradient_auto_rapide), Lineaire_auto (C_RGB_couleur sur RGB, BXT_L_H sur L et H, NXT_L et SXT_L_lineaire sur L) ; le continuum reste à faire (chemin principal) ; turbo à revoir avec l'utilisateur.
 > 
 > À RÉGLER : masters seuls ouverts (L, R, G, B, H) ; double-clic puis Apply Global (pas en glissant : ImageSolver échoue sur une image en cours de traitement) ; les icônes du chemin principal citées par R_Lineaire_rapide doivent être chargées ; ensuite GHS_1_premier sur L.
 > 
 > SI :
 > - une étape échoue -> lance les icônes R_ une par une pour voir laquelle
-> - continuum mal retiré (cœur rougi) -> R_Continuum_rapide seul avec k donné, sur des masters relancés
+> - ensuite -> Continuum_auto, CombineHaWithRGB, C_RGB_bruit (chemin principal)
 
 ## P2_Gradient
 
@@ -331,16 +328,23 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - étoiles ou disque encore visibles dans HaNB -> relance avec Starless
 > - cœur rougi dans l'image finale -> baisse w dans H_dans_RGB
 
-#### E13_H_dans_RGB — PixelMath
-   expression = `w = 1.0; $T[0] + w*HaNB` ; expression1 = `$T[1]` ; expression2 = `$T[2]` ; useSingleExpression=false ; symbols = `w` ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
+#### E13_CombineHaWithRGB — Script
+   script `$PXI_SRCDIR/scripts/Toolbox/CombineHaToRGB.js`
+   paramètres : `alphaView=HaNB`, `amount=2.0`, `beta=0.0`, `bg=0.015`, `sigma=0.0`, `linear=true`, `rgbLinked=true`, `invertMask=true`
 
-> PRÉRÉGLÉ : w = 1,0 ; R' = R + w·HaNB.
+> LANCEMENT : glisse l'icône sur l'image.
 > 
-> À RÉGLER : glisse sur le RGB linéaire calibré ; w entre 0,5 et 2.
+> PRÉRÉGLÉ : script CombineHaWithRGB (PixInsight Toolbox, Jürgen Terpe) : H Alpha = HaNB (sortie de Continuum_auto, comme le demande la doc du script), Amount 2,0 (R : screen avec 2 × (HaNB − médiane), au-dessus de la médiane), Beta 0 (rien dans le bleu), Background 0,015, Sigma 0, Linear Image coché, canaux liés.
+> 
+> À RÉGLER : glisse sur le RGB LINÉAIRE après Continuum_auto (HaNB ouverte) ; ensuite C_RGB_bruit ; dépôt https://www.ideviceapps.de/PixInsight/Utilities/ ; sans glisser (double-clic) : fenêtre du script avec aperçu.
 > 
 > SI :
-> - régions HII rouge vif -> baisse w
-> - invisibles -> monte w
+> - régions HII trop rouges -> Amount 1,5
+> - trop discrètes -> Amount 2,5
+> - rose plutôt que rouge -> Beta 0,1 à 0,2
+> - bruit rouge dans le fond -> Background plus haut, ou Sigma 1
+> - script introuvable -> Script › Toolbox › CombineHaWithRGB (dépôt de la Toolbox installé ?)
+> - autre méthode -> H_dans_RGB (options P3) à la place
 
 #### E14_C_RGB_bruit — ProcessContainer
    1. NoiseXTerminator
@@ -353,7 +357,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > CONTENEUR : NXT_RGB, Fermer_continuum.
 > 
-> SUR : l'image RGB après H_dans_RGB (et H_dans_L éventuel) : NXT, puis H, R et HaNB fermées.
+> SUR : l'image RGB après CombineHaWithRGB (ou H_dans_RGB ; et H_dans_L éventuel) : NXT, puis H, R et HaNB fermées.
 > 
 > Double-clic sur le conteneur pour voir ou changer les réglages de chaque étape.
 
@@ -393,10 +397,23 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > À RÉGLER : glisse sur l'image : crée l'aperçu Background ; dans SPCC, Region of Interest › From Preview.
 
+#### Opt_H_dans_RGB — PixelMath
+   expression = `w = 1.0; $T[0] + w*HaNB` ; expression1 = `$T[1]` ; expression2 = `$T[2]` ; useSingleExpression=false ; symbols = `w` ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
+
+> OPTION — à la place de CombineHaWithRGB : injection simple R + w·HaNB (PixelMath), sur le RGB linéaire après Continuum_auto.
+> 
+> PRÉRÉGLÉ : w = 1,0 ; R' = R + w·HaNB.
+> 
+> À RÉGLER : option, à la place de CombineHaWithRGB : glisse sur le RGB linéaire calibré, après Continuum_auto ; w entre 0,5 et 2 ; ensuite C_RGB_bruit.
+> 
+> SI :
+> - régions HII rouge vif -> baisse w
+> - invisibles -> monte w
+
 #### Opt_H_dans_RGB_v2 — PixelMath
    expression = `w = 1.0; $T[0] + w*(HaNB - med(HaNB))` ; expression1 = `$T[1]` ; expression2 = `$T[2] + 0.2*w*(HaNB - med(HaNB))` ; useSingleExpression=false ; symbols = `w` ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
 
-> OPTION — TEST, à la place de H_dans_RGB : HaNB injecté sans son fond (HaNB − med(HaNB)) dans R, et 20 % dans B (Hβ) : régions HII plus roses, fond inchangé.
+> OPTION — TEST, à la place de CombineHaWithRGB ou H_dans_RGB : HaNB injecté sans son fond (HaNB − med(HaNB)) dans R, et 20 % dans B (Hβ) : régions HII plus roses, fond inchangé.
 > 
 > PRÉRÉGLÉ : w = 1,0 ; R = R + w·(HaNB − med(HaNB)) ; G inchangé ; B = B + 0,2·w·(HaNB − med(HaNB)) (Hβ).
 > 
@@ -429,23 +446,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > SI :
 > - H trop discret -> Scale 3 à 5
 
-#### Opt_CombineHaWithRGB — Script
-   script `$PXI_SRCDIR/scripts/Toolbox/CombineHaToRGB.js`
-   paramètres : `alphaView=H`, `amount=2.0`, `beta=0.0`, `bg=0.015`, `sigma=0.0`, `linear=true`, `rgbLinked=true`, `invertMask=true`
-
-> OPTION — TEST, à la place de Continuum_auto + H_dans_RGB : script CombineHaWithRGB (Toolbox)
-> Glisse sur RGB linéaire, H ouverte.
-> 
-> LANCEMENT : glisse l'icône sur l'image.
-> 
-> PRÉRÉGLÉ : script CombineHaWithRGB (Toolbox) : H = vue H, Amount 2,0, Beta 0, Background 0,015, Sigma 0, Linear Image coché, canaux liés.
-> 
-> À RÉGLER : installe la PixInsight Toolbox de Jürgen Terpe (dépôt https://www.ideviceapps.de/PixInsight/Utilities/) ; glisse sur RGB LINÉAIRE, H ouverte, à la place de Continuum_auto + H_dans_RGB ; sans glisser (double-clic) : dialogue avec aperçu.
-> 
-> SI :
-> - HII trop rouge -> amount 1,0
-> - fond rouge -> bg plus haut
-
 #### Opt_STF — ScreenTransferFunction
    interaction=SeparateChannels ; table STF (4 lignes)
 
@@ -460,41 +460,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - dominante de couleur à l'écran -> décoche le lien R/G/B (chaîne), puis A
 
 ### P3_rapide
-
-#### R_Lineaire_rapide — Script
-   script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
-   paramètres : `etapes=C_RGB_couleur>RGB ; BXT_L_H>L,H ; NXT_L>L ; SXT_L_lineaire>L`
-
-> MODE RAPIDE, à la place de la phase 3 du chemin principal : double-clic puis Apply Global ; lance les icônes du chemin principal sur RGB et L (LRGB : C_RGB_lineaire et C_L_lineaire ; LHaRGB : C_RGB_couleur, BXT_L_H sur L et H, NXT_L) ; RGB et L restent linéaires, avec leurs étoiles.
-> 
-> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
-> 
-> PRÉRÉGLÉ : script Lineaire_auto.js, etapes = C_RGB_couleur>RGB ; BXT_L_H>L,H ; NXT_L>L : C_RGB_couleur (BXT Correct Only, SPCC, BXT) sur RGB, BXT (Nonstellar 0,80) sur L et H, NXT 0,60 sur L ; étoiles gardées, images linéaires.
-> 
-> À RÉGLER : double-clic puis Apply Global, après R_Gradient_auto_rapide ; Conteneurs-LHaRGB chargé ; ensuite R_Continuum_rapide (ou Continuum_auto, H_dans_RGB, C_RGB_bruit du chemin principal), puis GHS_1_premier sur L.
-> 
-> SI :
-> - H_dans_L voulu -> il se fait après (NXT_L déjà passé sur L)
-> - une étape échoue -> la console dit laquelle
-
-#### R_Continuum_rapide — Script
-   script `$PXI_SRCDIR/scripts/clodoweg/Continuum_rapide.js`
-   paramètres : `h=H`, `r=R`, `rgb=RGB`, `k=0`, `w=1.00`, `bleu=0.00`, `nxt=0.80`, `fermer=true`
-
-> MODE RAPIDE, à la place de Continuum_auto, H_dans_RGB et C_RGB_bruit : après R_Lineaire_rapide, glisse sur n'importe quelle image (ou double-clic pour la fenêtre) ; H, R et RGB linéaires ouvertes.
-> 
-> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
-> 
-> PRÉRÉGLÉ : script Continuum_rapide : k du continuum calculé (régression robuste par l'origine de H − méd H sur R − méd R, pixels au-dessus de 15 σ, HII rejetées, méthode de PhotometricContinuumSubtraction simplifiée) ; HaNB = H − k·(R − méd R) ; RGB : R + 1,0 × HaNB (bleu + 0) ; NXT 0,80 sur le RGB ; H, R et HaNB fermées.
-> 
-> À RÉGLER : après R_Lineaire_rapide (H après BXT, R et RGB linéaires ouvertes) : glisse l'icône sur n'importe quelle image (exécution directe, vues H, R, RGB par leur nom) ou double-clic pour la fenêtre ; la console donne k ; copie Continuum_rapide.js dans src/scripts/clodoweg ; ensuite GHS_1_premier sur L.
-> 
-> SI :
-> - cœur ou étoiles rougis -> k trop faible : double-clic, k = valeur de la console × 1,2
-> - régions HII rouge vif -> w 0,5
-> - régions HII plus roses -> part du bleu 0,2
-> - H_dans_L voulu -> décoche « Fermer » (HaNB gardée), puis H_dans_L
-> - « trop peu de pixels » -> donne k à la main (0,1 à 0,5)
 
 ## P4_Etirement
 

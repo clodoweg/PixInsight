@@ -759,3 +759,10 @@ Sources :
 - PI_ContinuumSubtraction, A. Reinartz — https://github.com/areinartz/PI_ContinuumSubtraction (README : Q = (Wn·Tn)/(Wc·Tc), réglage empirique) — Outil.
 - Automatic Continuum Subtraction (SetiAstro) — https://astrowhat.com/resources/automatic-continuum-subtraction.225/ *(résumé)*.
 Fait : script Continuum_rapide.js (k par régression robuste sur pixels brillants, HaNB, injection R + w·HaNB, NXT 0,80, fermeture H, R, HaNB) ; icône R_Continuum_rapide (P3 rapide, LHaRGB) et ajout à la fin de T_Turbo_debut du LHaRGB. LRGB inchangé (git diff vide). Non vérifié : k sur de vraies images (testé en simulation seulement).
+
+### LHaRGB P3 : CombineHaWithRGB au chemin principal, suppression des rapides (5 octobre 2026)
+
+Demande : « je n'aime pas ton continuum rapide. Supprime le . Ce que je veux faire (vérifie qu'en LHaRGB on a les memes reglages de BXT, NXT que LRGB:) E10_C_RGB_couleur, E11_BXT_L_H sur L et sur H, E12_Continuum_auto, Opt_CombineHaWithRGB, E14_C_RGB_bruit, E15_NXT_L, E16_SXT_L_lineaire. Met ceux la dans P3 Lineaire ,et met E13_H_dans_RGB dans Options. Supprime le rapide R_Continuum_rapide et R_Lineaire_rapide. Pour le turbo on verra apres ne le touche pas pour le moment. »
+Source : PixInsight Toolbox (Jürgen Terpe), https://www.ideviceapps.de/PixInsight/Utilities/ — paquet 20260824 : CombineHaToRGB.js et doc/scripts/CombineHaWithRGB/CombineHaWithRGB.html lus (« The image should be extracted using the ContinuumSubtraction script » ; Amount 1,5 à 2,5 ; Beta ; Background ; Sigma) — Officiel (auteur).
+Vérifié : BXT Correct Only, BXT RGB (Sharpen Stars 0,25, Nonstellar 0,50), BXT L et L_H (0,25 / 0,80), NXT RGB 0,80, NXT L 0,60 : identiques en LRGB et LHaRGB.
+Fait : Continuum_rapide.js et R_Continuum_rapide supprimés ; R_Lineaire_rapide retirée du LHaRGB ; CombineHaWithRGB au chemin principal (E13, alphaView = HaNB), H_dans_RGB en option ; T_Turbo_debut LHaRGB : seule l'étape Continuum_rapide retirée (script supprimé), le reste inchangé. LRGB inchangé (git diff vide).

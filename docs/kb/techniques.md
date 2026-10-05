@@ -255,7 +255,13 @@ Opt_Etoiles_grosses supprimée des workflows galaxies (demande de l'utilisateur,
 
 ## Continuum de H calculé automatiquement (Continuum_rapide, LHaRGB)
 
+SCRIPT ET ICÔNE SUPPRIMÉS (l'utilisateur n'a pas aimé, 5 octobre 2026) : LHaRGB fait Continuum_auto (SetiAstro) puis CombineHaWithRGB. Méthode gardée pour mémoire.
+
 Demande de l'utilisateur (5 octobre 2026) : faire le continuum en mode rapide, sans la fenêtre de ContinuumSubtraction (SetiAstro).
 - Méthode de référence : PhotometricContinuumSubtraction (Charles Hagen, NightPhotons, code v1.4.2 lu) : flux des étoiles mesurés par DynamicPSF dans les deux images, régression PAR L'ORIGINE robuste (IRLS, poids de Tukey c = 4,685) du flux étroit sur le flux large, k = Σ w·x·y / Σ w·x² ; soustraction NB − k·(BB − méd(BB)).
 - Notre version (script Continuum_rapide.js) : pas de DynamicPSF ; pixels des copies réduites 4 fois (moyenne) au-dessus de 15 σ du fond de R et sous 0,8 (étoiles et galaxie, continuum), x = R − méd R, y = H − méd H ; départ k = médiane des y/x, puis IRLS Tukey ; les régions HII (excès de H) sont rejetées comme aberrantes. Simulation (étoiles + régions HII, k vrai 0,22) : k trouvé 0,2199 ; moindres carrés simples 0,235 (biaisés par HII). Non vérifié sur de vraies images.
 - Autre script vu : PI_ContinuumSubtraction (A. Reinartz) : Q théorique = (Wn·Tn)/(Wc·Tc), réglé à l'œil en pratique.
+
+## CombineHaWithRGB (Toolbox, Jürgen Terpe) : ce qu'il fait
+
+Code de CombineHaToRGB.js (paquet du 24 août 2026) et sa documentation lus : H Alpha à donner = sortie de ContinuumSubtraction (HaNB). Rouge : `combine(R, Q·(Ha − MED), op_screen())` sur les pixels au-dessus de la médiane de Ha (Q = Amount, 2,0 ; 1,5 à 2,5 conseillé) ; bleu : + Beta × Q·(Ha − MED) (Hβ, 0 par défaut) ; Background : abaisse les ombres de Ha (bruit rouge) ; Sigma : flou gaussien de Ha. Pour images linéaires ; masque d'étoiles possible, sinon images sans étoiles conseillées.

@@ -707,7 +707,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <description>MODE TURBO, phase 1 — Préparation : une icône T_ enchaîne en un clic les étapes de plusieurs icônes rapides (R_) ; elle les contient, les icônes R_ ne sont pas nécessaires. Icône de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="T_Turbo_debut_instance">
-      <description>MODE TURBO, à la place de R_C_Preparation_rapide, R_Gradient_auto_rapide et R_Lineaire_rapide (phases 1 à 3) : masters seuls ouverts, double-clic puis Apply Global (pas en glissant) ; ensuite GHS_1_premier sur L.&#10;&#10;LANCEMENT : masters seuls ouverts, double-clic puis Apply Global (rond bleu) ; pas en glissant (ImageSolver échoue sur une image en cours de traitement).&#10;&#10;PRÉRÉGLÉ : conteneur, en une fois : Renommer_auto, LinearPatternSubtraction, Combinaison_RGB, Solver_auto (= R_C_Preparation_rapide), Gradient_auto (= R_Gradient_auto_rapide), Lineaire_auto (= R_Lineaire_rapide), Continuum_rapide (= R_Continuum_rapide : continuum, HaNB injecté dans le RGB, NXT, H, R et HaNB fermées).&#10;&#10;À RÉGLER : masters seuls ouverts (L, R, G, B, H) ; double-clic puis Apply Global (pas en glissant : ImageSolver échoue sur une image en cours de traitement) ; les icônes du chemin principal citées par R_Lineaire_rapide doivent être chargées ; ensuite GHS_1_premier sur L.&#10;&#10;SI :&#10;- une étape échoue -&gt; lance les icônes R_ une par une pour voir laquelle&#10;- continuum mal retiré (cœur rougi) -&gt; R_Continuum_rapide seul avec k donné, sur des masters relancés</description>
+      <description>MODE TURBO, à la place de R_C_Preparation_rapide, R_Gradient_auto_rapide et R_Lineaire_rapide (phases 1 à 3) : masters seuls ouverts, double-clic puis Apply Global (pas en glissant) ; ensuite GHS_1_premier sur L.&#10;&#10;LANCEMENT : masters seuls ouverts, double-clic puis Apply Global (rond bleu) ; pas en glissant (ImageSolver échoue sur une image en cours de traitement).&#10;&#10;PRÉRÉGLÉ : conteneur, en une fois : Renommer_auto, LinearPatternSubtraction, Combinaison_RGB, Solver_auto (= R_C_Preparation_rapide), Gradient_auto (= R_Gradient_auto_rapide), Lineaire_auto (C_RGB_couleur sur RGB, BXT_L_H sur L et H, NXT_L et SXT_L_lineaire sur L) ; le continuum reste à faire (chemin principal) ; turbo à revoir avec l'utilisateur.&#10;&#10;À RÉGLER : masters seuls ouverts (L, R, G, B, H) ; double-clic puis Apply Global (pas en glissant : ImageSolver échoue sur une image en cours de traitement) ; les icônes du chemin principal citées par R_Lineaire_rapide doivent être chargées ; ensuite GHS_1_premier sur L.&#10;&#10;SI :&#10;- une étape échoue -&gt; lance les icônes R_ une par une pour voir laquelle&#10;- ensuite -&gt; Continuum_auto, CombineHaWithRGB, C_RGB_bruit (chemin principal)</description>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Renommer_auto.js</parameter>
          <parameter id="md5sum"></parameter>
@@ -1054,49 +1054,6 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
             <tr>
                <td id="id">etapes</td>
                <td id="value">C_RGB_couleur&gt;RGB ; BXT_L_H&gt;L,H ; NXT_L&gt;L ; SXT_L_lineaire&gt;L</td>
-            </tr>
-            <tr>
-               <td id="id">dialogue</td>
-               <td id="value">false</td>
-            </tr>
-         </table>
-         <parameter id="information"></parameter>
-      </instance>
-      <instance class="Script" version="256" enabled="true">
-         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Continuum_rapide.js</parameter>
-         <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="9">
-            <tr>
-               <td id="id">h</td>
-               <td id="value">H</td>
-            </tr>
-            <tr>
-               <td id="id">r</td>
-               <td id="value">R</td>
-            </tr>
-            <tr>
-               <td id="id">rgb</td>
-               <td id="value">RGB</td>
-            </tr>
-            <tr>
-               <td id="id">k</td>
-               <td id="value">0</td>
-            </tr>
-            <tr>
-               <td id="id">w</td>
-               <td id="value">1.00</td>
-            </tr>
-            <tr>
-               <td id="id">bleu</td>
-               <td id="value">0.00</td>
-            </tr>
-            <tr>
-               <td id="id">nxt</td>
-               <td id="value">0.80</td>
-            </tr>
-            <tr>
-               <td id="id">fermer</td>
-               <td id="value">true</td>
             </tr>
             <tr>
                <td id="id">dialogue</td>
@@ -1866,39 +1823,48 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </table>
       <parameter id="information"></parameter>
    </instance>
-   <instance class="PixelMath" version="256" id="E13_H_dans_RGB_instance">
-      <description>PRÉRÉGLÉ : w = 1,0 ; R' = R + w·HaNB.&#10;&#10;À RÉGLER : glisse sur le RGB linéaire calibré ; w entre 0,5 et 2.&#10;&#10;SI :&#10;- régions HII rouge vif -&gt; baisse w&#10;- invisibles -&gt; monte w</description>
-      <parameter id="expression">w = 1.0;
-$T[0] + w*HaNB</parameter>
-      <parameter id="expression1">$T[1]</parameter>
-      <parameter id="expression2">$T[2]</parameter>
-      <parameter id="expression3"></parameter>
-      <parameter id="useSingleExpression" value="false"/>
-      <parameter id="symbols">w</parameter>
-      <parameter id="clearImageCacheAndExit" value="false"/>
-      <parameter id="cacheGeneratedImages" value="false"/>
-      <parameter id="generateOutput" value="true"/>
-      <parameter id="singleThreaded" value="false"/>
-      <parameter id="optimization" value="true"/>
-      <parameter id="use64BitWorkingImage" value="false"/>
-      <parameter id="rescale" value="false"/>
-      <parameter id="rescaleLower" value="0"/>
-      <parameter id="rescaleUpper" value="1"/>
-      <parameter id="truncate" value="true"/>
-      <parameter id="truncateLower" value="0"/>
-      <parameter id="truncateUpper" value="1"/>
-      <parameter id="createNewImage" value="false"/>
-      <parameter id="showNewImage" value="true"/>
-      <parameter id="newImageId"></parameter>
-      <parameter id="newImageWidth" value="0"/>
-      <parameter id="newImageHeight" value="0"/>
-      <parameter id="newImageAlpha" value="false"/>
-      <parameter id="newImageColorSpace" value="SameAsTarget"/>
-      <parameter id="newImageSampleFormat" value="SameAsTarget"/>
-      <table id="outputData" rows="0"/>
+   <instance class="Script" version="256" id="E13_CombineHaWithRGB_instance">
+      <description>LANCEMENT : glisse l'icône sur l'image.&#10;&#10;PRÉRÉGLÉ : script CombineHaWithRGB (PixInsight Toolbox, Jürgen Terpe) : H Alpha = HaNB (sortie de Continuum_auto, comme le demande la doc du script), Amount 2,0 (R : screen avec 2 × (HaNB − médiane), au-dessus de la médiane), Beta 0 (rien dans le bleu), Background 0,015, Sigma 0, Linear Image coché, canaux liés.&#10;&#10;À RÉGLER : glisse sur le RGB LINÉAIRE après Continuum_auto (HaNB ouverte) ; ensuite C_RGB_bruit ; dépôt https://www.ideviceapps.de/PixInsight/Utilities/ ; sans glisser (double-clic) : fenêtre du script avec aperçu.&#10;&#10;SI :&#10;- régions HII trop rouges -&gt; Amount 1,5&#10;- trop discrètes -&gt; Amount 2,5&#10;- rose plutôt que rouge -&gt; Beta 0,1 à 0,2&#10;- bruit rouge dans le fond -&gt; Background plus haut, ou Sigma 1&#10;- script introuvable -&gt; Script › Toolbox › CombineHaWithRGB (dépôt de la Toolbox installé ?)&#10;- autre méthode -&gt; H_dans_RGB (options P3) à la place</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/Toolbox/CombineHaToRGB.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="8">
+         <tr>
+            <td id="id">alphaView</td>
+            <td id="value">HaNB</td>
+         </tr>
+         <tr>
+            <td id="id">amount</td>
+            <td id="value">2.0</td>
+         </tr>
+         <tr>
+            <td id="id">beta</td>
+            <td id="value">0.0</td>
+         </tr>
+         <tr>
+            <td id="id">bg</td>
+            <td id="value">0.015</td>
+         </tr>
+         <tr>
+            <td id="id">sigma</td>
+            <td id="value">0.0</td>
+         </tr>
+         <tr>
+            <td id="id">linear</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">rgbLinked</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">invertMask</td>
+            <td id="value">true</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
    </instance>
    <instance class="ProcessContainer" id="E14_C_RGB_bruit_instance">
-      <description>LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;CONTENEUR : NXT_RGB, Fermer_continuum.&#10;&#10;SUR : l'image RGB après H_dans_RGB (et H_dans_L éventuel) : NXT, puis H, R et HaNB fermées.&#10;&#10;Double-clic sur le conteneur pour voir ou changer les réglages de chaque étape.</description>
+      <description>LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;CONTENEUR : NXT_RGB, Fermer_continuum.&#10;&#10;SUR : l'image RGB après CombineHaWithRGB (ou H_dans_RGB ; et H_dans_L éventuel) : NXT, puis H, R et HaNB fermées.&#10;&#10;Double-clic sur le conteneur pour voir ou changer les réglages de chaque étape.</description>
       <instance class="NoiseXTerminator" version="256" enabled="true">
          <parameter id="ml_version" value="0"/>
          <parameter id="denoise" value="0.80"/>
@@ -2030,8 +1996,39 @@ $T[0] + w*HaNB</parameter>
       </table>
       <parameter id="information"></parameter>
    </instance>
+   <instance class="PixelMath" version="256" id="Opt_H_dans_RGB_instance">
+      <description>OPTION — à la place de CombineHaWithRGB : injection simple R + w·HaNB (PixelMath), sur le RGB linéaire après Continuum_auto.&#10;&#10;PRÉRÉGLÉ : w = 1,0 ; R' = R + w·HaNB.&#10;&#10;À RÉGLER : option, à la place de CombineHaWithRGB : glisse sur le RGB linéaire calibré, après Continuum_auto ; w entre 0,5 et 2 ; ensuite C_RGB_bruit.&#10;&#10;SI :&#10;- régions HII rouge vif -&gt; baisse w&#10;- invisibles -&gt; monte w</description>
+      <parameter id="expression">w = 1.0;
+$T[0] + w*HaNB</parameter>
+      <parameter id="expression1">$T[1]</parameter>
+      <parameter id="expression2">$T[2]</parameter>
+      <parameter id="expression3"></parameter>
+      <parameter id="useSingleExpression" value="false"/>
+      <parameter id="symbols">w</parameter>
+      <parameter id="clearImageCacheAndExit" value="false"/>
+      <parameter id="cacheGeneratedImages" value="false"/>
+      <parameter id="generateOutput" value="true"/>
+      <parameter id="singleThreaded" value="false"/>
+      <parameter id="optimization" value="true"/>
+      <parameter id="use64BitWorkingImage" value="false"/>
+      <parameter id="rescale" value="false"/>
+      <parameter id="rescaleLower" value="0"/>
+      <parameter id="rescaleUpper" value="1"/>
+      <parameter id="truncate" value="true"/>
+      <parameter id="truncateLower" value="0"/>
+      <parameter id="truncateUpper" value="1"/>
+      <parameter id="createNewImage" value="false"/>
+      <parameter id="showNewImage" value="true"/>
+      <parameter id="newImageId"></parameter>
+      <parameter id="newImageWidth" value="0"/>
+      <parameter id="newImageHeight" value="0"/>
+      <parameter id="newImageAlpha" value="false"/>
+      <parameter id="newImageColorSpace" value="SameAsTarget"/>
+      <parameter id="newImageSampleFormat" value="SameAsTarget"/>
+      <table id="outputData" rows="0"/>
+   </instance>
    <instance class="PixelMath" version="256" id="Opt_H_dans_RGB_v2_instance">
-      <description>OPTION — TEST, à la place de H_dans_RGB : HaNB injecté sans son fond (HaNB − med(HaNB)) dans R, et 20 % dans B (Hβ) : régions HII plus roses, fond inchangé.&#10;&#10;PRÉRÉGLÉ : w = 1,0 ; R = R + w·(HaNB − med(HaNB)) ; G inchangé ; B = B + 0,2·w·(HaNB − med(HaNB)) (Hβ).&#10;&#10;À RÉGLER : glisse sur RGB linéaire, après Continuum_auto (HaNB ouverte), à la place de H_dans_RGB ; compare les deux.&#10;&#10;SI :&#10;- HII trop rose ou violet -&gt; 0,1 au lieu de 0,2 dans B&#10;- taches HII rouge vif -&gt; baisse w</description>
+      <description>OPTION — TEST, à la place de CombineHaWithRGB ou H_dans_RGB : HaNB injecté sans son fond (HaNB − med(HaNB)) dans R, et 20 % dans B (Hβ) : régions HII plus roses, fond inchangé.&#10;&#10;PRÉRÉGLÉ : w = 1,0 ; R = R + w·(HaNB − med(HaNB)) ; G inchangé ; B = B + 0,2·w·(HaNB − med(HaNB)) (Hβ).&#10;&#10;À RÉGLER : glisse sur RGB linéaire, après Continuum_auto (HaNB ouverte), à la place de H_dans_RGB ; compare les deux.&#10;&#10;SI :&#10;- HII trop rose ou violet -&gt; 0,1 au lieu de 0,2 dans B&#10;- taches HII rouge vif -&gt; baisse w</description>
       <parameter id="expression">w = 1.0;
 $T[0] + w*(HaNB - med(HaNB))</parameter>
       <parameter id="expression1">$T[1]</parameter>
@@ -2095,46 +2092,6 @@ max($T, HaNB*a)</parameter>
    <instance class="NoOperation" version="256" id="Opt_NBRGBCombination_instance">
       <description>OPTION — alternative à la soustraction du continuum.&#10;&#10;PRÉRÉGLÉ : rien (icône-note).&#10;&#10;À RÉGLER : RGB bande 100 nm, H bande 3 nm, Scale 1,2.&#10;&#10;SI :&#10;- H trop discret -&gt; Scale 3 à 5</description>
    </instance>
-   <instance class="Script" version="256" id="Opt_CombineHaWithRGB_instance">
-      <description>OPTION — TEST, à la place de Continuum_auto + H_dans_RGB : script CombineHaWithRGB (Toolbox)&#10;Glisse sur RGB linéaire, H ouverte.&#10;&#10;LANCEMENT : glisse l'icône sur l'image.&#10;&#10;PRÉRÉGLÉ : script CombineHaWithRGB (Toolbox) : H = vue H, Amount 2,0, Beta 0, Background 0,015, Sigma 0, Linear Image coché, canaux liés.&#10;&#10;À RÉGLER : installe la PixInsight Toolbox de Jürgen Terpe (dépôt https://www.ideviceapps.de/PixInsight/Utilities/) ; glisse sur RGB LINÉAIRE, H ouverte, à la place de Continuum_auto + H_dans_RGB ; sans glisser (double-clic) : dialogue avec aperçu.&#10;&#10;SI :&#10;- HII trop rouge -&gt; amount 1,0&#10;- fond rouge -&gt; bg plus haut</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/Toolbox/CombineHaToRGB.js</parameter>
-      <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="8">
-         <tr>
-            <td id="id">alphaView</td>
-            <td id="value">H</td>
-         </tr>
-         <tr>
-            <td id="id">amount</td>
-            <td id="value">2.0</td>
-         </tr>
-         <tr>
-            <td id="id">beta</td>
-            <td id="value">0.0</td>
-         </tr>
-         <tr>
-            <td id="id">bg</td>
-            <td id="value">0.015</td>
-         </tr>
-         <tr>
-            <td id="id">sigma</td>
-            <td id="value">0.0</td>
-         </tr>
-         <tr>
-            <td id="id">linear</td>
-            <td id="value">true</td>
-         </tr>
-         <tr>
-            <td id="id">rgbLinked</td>
-            <td id="value">true</td>
-         </tr>
-         <tr>
-            <td id="id">invertMask</td>
-            <td id="value">true</td>
-         </tr>
-      </table>
-      <parameter id="information"></parameter>
-   </instance>
    <instance class="ScreenTransferFunction" version="256" id="Opt_STF_instance">
       <description>OPTION — n'importe quand : double-clic pour ouvrir la fenêtre ScreenTransferFunction (bouton A = auto-étirement de l'affichage, Reset pour revenir), pixels inchangés.&#10;&#10;PRÉRÉGLÉ : process ScreenTransferFunction (STF), réglage neutre ; affichage seulement, les pixels ne changent pas.&#10;&#10;À RÉGLER : double-clic sur l'icône : la fenêtre STF s'ouvre ; choisis l'image, puis A (Auto Stretch) ; lien R/G/B : bouton chaîne.&#10;&#10;SI :&#10;- revenir à l'image brute -&gt; Reset de la fenêtre STF (ou F12)&#10;- dominante de couleur à l'écran -&gt; décoche le lien R/G/B (chaîne), puis A</description>
       <table id="STF" rows="4">
@@ -2170,59 +2127,7 @@ max($T, HaNB*a)</parameter>
       <parameter id="interaction" value="SeparateChannels"/>
    </instance>
    <instance class="NoOperation" version="256" id="P3_rapide_instance">
-      <description>MODE RAPIDE, phase 3 — Linéaire : R_Lineaire_rapide (double-clic puis Apply Global) à la place de C_RGB_couleur, BXT_L_H, NXT_L et SXT_L_lineaire ; puis R_Continuum_rapide (glissée sur n'importe quelle image) à la place de Continuum_auto, H_dans_RGB et C_RGB_bruit : continuum retiré de H (k calculé), HaNB injecté dans le RGB, NXT, H, R et HaNB fermées ; T_Turbo_debut fait tout cela en une fois. Icône de repère, sans effet.</description>
-   </instance>
-   <instance class="Script" version="256" id="R_Lineaire_rapide_instance">
-      <description>MODE RAPIDE, à la place de la phase 3 du chemin principal : double-clic puis Apply Global ; lance les icônes du chemin principal sur RGB et L (LRGB : C_RGB_lineaire et C_L_lineaire ; LHaRGB : C_RGB_couleur, BXT_L_H sur L et H, NXT_L) ; RGB et L restent linéaires, avec leurs étoiles.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Lineaire_auto.js, etapes = C_RGB_couleur&gt;RGB ; BXT_L_H&gt;L,H ; NXT_L&gt;L : C_RGB_couleur (BXT Correct Only, SPCC, BXT) sur RGB, BXT (Nonstellar 0,80) sur L et H, NXT 0,60 sur L ; étoiles gardées, images linéaires.&#10;&#10;À RÉGLER : double-clic puis Apply Global, après R_Gradient_auto_rapide ; Conteneurs-LHaRGB chargé ; ensuite R_Continuum_rapide (ou Continuum_auto, H_dans_RGB, C_RGB_bruit du chemin principal), puis GHS_1_premier sur L.&#10;&#10;SI :&#10;- H_dans_L voulu -&gt; il se fait après (NXT_L déjà passé sur L)&#10;- une étape échoue -&gt; la console dit laquelle</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js</parameter>
-      <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="1">
-         <tr>
-            <td id="id">etapes</td>
-            <td id="value">C_RGB_couleur&gt;RGB ; BXT_L_H&gt;L,H ; NXT_L&gt;L ; SXT_L_lineaire&gt;L</td>
-         </tr>
-      </table>
-      <parameter id="information"></parameter>
-   </instance>
-   <instance class="Script" version="256" id="R_Continuum_rapide_instance">
-      <description>MODE RAPIDE, à la place de Continuum_auto, H_dans_RGB et C_RGB_bruit : après R_Lineaire_rapide, glisse sur n'importe quelle image (ou double-clic pour la fenêtre) ; H, R et RGB linéaires ouvertes.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Continuum_rapide : k du continuum calculé (régression robuste par l'origine de H − méd H sur R − méd R, pixels au-dessus de 15 σ, HII rejetées, méthode de PhotometricContinuumSubtraction simplifiée) ; HaNB = H − k·(R − méd R) ; RGB : R + 1,0 × HaNB (bleu + 0) ; NXT 0,80 sur le RGB ; H, R et HaNB fermées.&#10;&#10;À RÉGLER : après R_Lineaire_rapide (H après BXT, R et RGB linéaires ouvertes) : glisse l'icône sur n'importe quelle image (exécution directe, vues H, R, RGB par leur nom) ou double-clic pour la fenêtre ; la console donne k ; copie Continuum_rapide.js dans src/scripts/clodoweg ; ensuite GHS_1_premier sur L.&#10;&#10;SI :&#10;- cœur ou étoiles rougis -&gt; k trop faible : double-clic, k = valeur de la console × 1,2&#10;- régions HII rouge vif -&gt; w 0,5&#10;- régions HII plus roses -&gt; part du bleu 0,2&#10;- H_dans_L voulu -&gt; décoche « Fermer » (HaNB gardée), puis H_dans_L&#10;- « trop peu de pixels » -&gt; donne k à la main (0,1 à 0,5)</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Continuum_rapide.js</parameter>
-      <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="8">
-         <tr>
-            <td id="id">h</td>
-            <td id="value">H</td>
-         </tr>
-         <tr>
-            <td id="id">r</td>
-            <td id="value">R</td>
-         </tr>
-         <tr>
-            <td id="id">rgb</td>
-            <td id="value">RGB</td>
-         </tr>
-         <tr>
-            <td id="id">k</td>
-            <td id="value">0</td>
-         </tr>
-         <tr>
-            <td id="id">w</td>
-            <td id="value">1.00</td>
-         </tr>
-         <tr>
-            <td id="id">bleu</td>
-            <td id="value">0.00</td>
-         </tr>
-         <tr>
-            <td id="id">nxt</td>
-            <td id="value">0.80</td>
-         </tr>
-         <tr>
-            <td id="id">fermer</td>
-            <td id="value">true</td>
-         </tr>
-      </table>
-      <parameter id="information"></parameter>
+      <description>MODE RAPIDE, phase 3 — Linéaire : pas d'icône rapide en LHaRGB : chemin principal (C_RGB_couleur, BXT_L_H, Continuum_auto, CombineHaWithRGB, C_RGB_bruit, NXT_L, SXT_L_lineaire) ; T_Turbo_debut fait encore P1 à P3 par Lineaire_auto (à revoir). Icône de repère, sans effet.</description>
    </instance>
    <instance class="NoOperation" version="256" id="P4_Etirement_instance">
       <description>PHASE 4 — Étirement : passage en non linéaire, même fond pour toutes les images. Colonne de repère, sans effet.</description>
@@ -5354,20 +5259,18 @@ max($T,f1)</parameter>
    <icon id="E10_C_RGB_couleur" instance="E10_C_RGB_couleur_instance" xpos="430" ypos="64" workspace="Workspace01"/>
    <icon id="E11_BXT_L_H" instance="E11_BXT_L_H_instance" xpos="430" ypos="94" workspace="Workspace01"/>
    <icon id="E12_Continuum_auto" instance="E12_Continuum_auto_instance" xpos="430" ypos="124" workspace="Workspace01"/>
-   <icon id="E13_H_dans_RGB" instance="E13_H_dans_RGB_instance" xpos="430" ypos="154" workspace="Workspace01"/>
+   <icon id="E13_CombineHaWithRGB" instance="E13_CombineHaWithRGB_instance" xpos="430" ypos="154" workspace="Workspace01"/>
    <icon id="E14_C_RGB_bruit" instance="E14_C_RGB_bruit_instance" xpos="430" ypos="184" workspace="Workspace01"/>
    <icon id="E15_NXT_L" instance="E15_NXT_L_instance" xpos="430" ypos="214" workspace="Workspace01"/>
    <icon id="E16_SXT_L_lineaire" instance="E16_SXT_L_lineaire_instance" xpos="430" ypos="244" workspace="Workspace01"/>
    <icon id="P3_options" instance="P3_options_instance" xpos="430" ypos="290" workspace="Workspace01"/>
    <icon id="Opt_Find_Background" instance="Opt_Find_Background_instance" xpos="430" ypos="324" workspace="Workspace01"/>
-   <icon id="Opt_H_dans_RGB_v2" instance="Opt_H_dans_RGB_v2_instance" xpos="430" ypos="354" workspace="Workspace01"/>
-   <icon id="Opt_H_dans_L" instance="Opt_H_dans_L_instance" xpos="430" ypos="384" workspace="Workspace01"/>
-   <icon id="Opt_NBRGBCombination" instance="Opt_NBRGBCombination_instance" xpos="430" ypos="414" workspace="Workspace01"/>
-   <icon id="Opt_CombineHaWithRGB" instance="Opt_CombineHaWithRGB_instance" xpos="430" ypos="444" workspace="Workspace01"/>
+   <icon id="Opt_H_dans_RGB" instance="Opt_H_dans_RGB_instance" xpos="430" ypos="354" workspace="Workspace01"/>
+   <icon id="Opt_H_dans_RGB_v2" instance="Opt_H_dans_RGB_v2_instance" xpos="430" ypos="384" workspace="Workspace01"/>
+   <icon id="Opt_H_dans_L" instance="Opt_H_dans_L_instance" xpos="430" ypos="414" workspace="Workspace01"/>
+   <icon id="Opt_NBRGBCombination" instance="Opt_NBRGBCombination_instance" xpos="430" ypos="444" workspace="Workspace01"/>
    <icon id="Opt_STF" instance="Opt_STF_instance" xpos="430" ypos="474" workspace="Workspace01"/>
    <icon id="P3_rapide" instance="P3_rapide_instance" xpos="430" ypos="520" workspace="Workspace01"/>
-   <icon id="R_Lineaire_rapide" instance="R_Lineaire_rapide_instance" xpos="430" ypos="554" workspace="Workspace01"/>
-   <icon id="R_Continuum_rapide" instance="R_Continuum_rapide_instance" xpos="430" ypos="584" workspace="Workspace01"/>
    <icon id="P4_Etirement" instance="P4_Etirement_instance" xpos="608" ypos="20" workspace="Workspace01"/>
    <icon id="E17_GHS_1_premier" instance="E17_GHS_1_premier_instance" xpos="608" ypos="64" workspace="Workspace01"/>
    <icon id="E18_GHS_2_contraste" instance="E18_GHS_2_contraste_instance" xpos="608" ypos="94" workspace="Workspace01"/>
