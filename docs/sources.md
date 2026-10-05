@@ -777,3 +777,8 @@ Fait : R_Lineaire_rapide remise en LHaRGB (Lineaire_auto, etapes C_RGB_couleur>R
 Demandes : « on peut rien faire pour le E12_Continuum_auto pour le lancer en script sans la fenetre? » ; « Oui mais un truc avant: R_C_Ha_rapide marche quand je le glisse sur RGB mais j'ai l'erreur … CombineHaToRGB.js:518: Invalid view update request: The image is already being processed: RGB finalView.beginProcess(); » ; « tu es sur que c'est équivalent? »
 Sources : code de PhotometricContinuumSubtraction.js v1.4.2 (main : isViewTarget -> ToolParameters.load() puis continuumSubtract() sans dialogue ; sortie H_sub ; dépôt https://raw.githubusercontent.com/charleshagen/pixinsight/main/updates/, plateforme 1.9.4:1.9.10) ; code de CombineHaToRGB.js (Toolbox 20260824 : main, process, combineHa, getHalpha, dropNoise).
 Fait : C_Continuum (Continuum_PCS, HaNB = H_sub, Fermer H_sub) en E12, Continuum_auto en option ; Ha_screen (PixelMath natif, même calcul) en E13, CombineHaWithRGB en option (fenêtre seulement) ; R_C_Ha_rapide = continuum PCS, Ha_screen, NXT, fermeture ; dépôt NightPhotons ajouté à depots-pixinsight.txt. Équivalence : courbe Background 0,015 calculée, écart < 1,5 % de la médiane, non reproduite. LRGB inchangé. Non vérifié : PCS dans un conteneur glissé (attendu : il ne touche pas la vue cible).
+
+### Saturation_grosses : pas de changement (5 octobre 2026)
+
+Question de l'utilisateur sur R_C_Ha_rapide : « dans R_C_Ha_rapide tu utilise H alors qu'il faudrait utiliser HaNB_tmp non ? » (réponse : H est l'entrée du continuum ; HaNB_tmp… sont des images internes de CombineHaToRGB).
+Réponse sur Saturation_grosses : « bizarre Saturation_grosses car ca marchait sur LRGB. Touche pas pour l'instant je te dirais plus tard si j'ai un pb dessus » : rien changé.
