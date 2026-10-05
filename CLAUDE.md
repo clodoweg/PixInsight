@@ -28,7 +28,7 @@ Avant d'ajouter ou de modifier un contenu technique (réglage, valeur, ordre des
 
 ## Utilisateur
 
-PixInsight 1.9.5 sur **PC Windows** ; CDK17 (2 939 mm) + QHY600 (IMX455) ; filtres Antlia V Pro LRGB et Antlia 3 nm (Ha, OIII, SII) ; RC Astro (BXT, NXT, SXT) ; module GHS. Une centaine de galaxies, **masters déjà empilés**. Il n'utilise que **`Conteneurs-LRGB` et `Conteneurs-LHaRGB`** (le narrowband existe mais sert peu). Préférences fixes :
+PixInsight 1.9.5 sur **PC Windows** ; CDK17 (2 939 mm) + QHY600 (IMX455) ; filtres Antlia V Pro LRGB et Antlia 3 nm (Ha, OIII, SII) ; RC Astro (BXT, NXT, SXT) ; module GHS. Une centaine de galaxies, **masters déjà empilés** ; aussi **beaucoup de SHO et de RGB + SHO** (nébuleuses). Travail fait d'abord sur les galaxies (`Conteneurs-LRGB`, `Conteneurs-LHaRGB`) ; prochaine étape annoncée : beaucoup de demandes sur `Conteneurs-SHO-sans-RGB` et `Conteneurs-RGB-SHO` (HOO existe aussi). Préférences fixes :
 - jamais d'espace dans les noms de fichiers ou de vues ; export nommé d'après le dossier des masters (`NGC1532.tiff`) ;
 - L étirée à la main par les 3 GHS, jamais par Statistical Stretch (RGB seulement) ;
 - pas de DynamicCrop ; sorties de contrôle désactivées (GradientCorrection sans modèle, SPCC sans graphes) ;

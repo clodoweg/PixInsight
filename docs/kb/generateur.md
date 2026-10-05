@@ -11,7 +11,7 @@ Tout est produit par `sh docs/process-icons/build/build.sh` ; ne jamais éditer 
 | `docs/process-icons/short_desc.py` | Descriptions courtes : `S[base] = (PRÉRÉGLÉ, À RÉGLER, [SI ...])`, variantes par workflow dans `V[(prefix, base)]` (prefix `LRGB`, `LHA`, `NB`…). |
 | `docs/process-icons/make_icons.py` | Construction des instances : `instance(cls, name, values, texts, post)` à partir d'un modèle réel (`build/templates.json`), `build(cls, version, name, params)` pour une classe sans modèle, `pixelmath(...)`. |
 | `docs/process-icons/scripts/*.js` | Scripts de l'utilisateur (installés dans `src/scripts/clodoweg/`). |
-| `docs/process-icons/build/kb_icons.py` | Écrit `docs/kb/icones-LRGB.md` et `icones-LHaRGB.md` depuis les xpsm. |
+| `docs/process-icons/build/kb_icons.py` | Écrit `docs/kb/icones-<workflow>.md` (LRGB, LHaRGB, RGB-SHO, SHO-sans-RGB, HOO) depuis les xpsm. |
 | `docs/process-icons/workflows/Conteneurs-LRGB.xpsm`, `Conteneurs-LHaRGB.xpsm` | Les fichiers que l'utilisateur charge dans PixInsight. |
 
 ## Briques de `make_workflows.py`

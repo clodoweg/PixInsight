@@ -1,6 +1,6 @@
 # Narrowband : RGB + SHO, SHO sans RGB, HOO (peu utilisés)
 
-Workflows narrowband, palettes, Foraxx, standards de couleur et d'étoiles narrowband. L'utilisateur s'en sert peu.
+Workflows narrowband, palettes, Foraxx, standards de couleur et d'étoiles narrowband. L'utilisateur a beaucoup de cibles SHO et RGB + SHO : prochain chantier (octobre 2026). Ces workflows n'ont pas encore reçu les changements faits sur les galaxies (étoiles gardées jusqu'à la combinaison, images fermées au fur et à mesure, mode rapide, descriptions revues) : à revoir avec l'utilisateur.
 
 Issu de l'ancienne fiche HTML `docs/pixinsight-workflow.html` (octobre 2026) ; sources dans `docs/sources.md`.
 

@@ -56,7 +56,7 @@ def params(inst, indent='   '):
 
 def main(src_dir, out_dir):
     os.makedirs(out_dir, exist_ok=True)
-    for wf in ('LRGB', 'LHaRGB'):
+    for wf in ('LRGB', 'LHaRGB', 'RGB-SHO', 'SHO-sans-RGB', 'HOO'):
         path = os.path.join(src_dir, 'Conteneurs-%s.xpsm' % wf)
         root = ET.parse(path).getroot()
         insts = {i.get('id'): i for i in root.findall(NS + 'instance')}
