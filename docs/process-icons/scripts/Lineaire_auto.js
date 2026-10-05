@@ -5,7 +5,7 @@
 // Paramètre « etapes » : couples icône>vue séparés par « ; » ; la vue peut
 // être une liste séparée par des virgules. Le nom d'icône est donné SANS son
 // numéro : C_RGB_lineaire trouve E08_C_RGB_lineaire (ou E07_…, etc.).
-//   LRGB    : C_RGB_lineaire>RGB ; C_L_lineaire>L (C_RGB_lineaire comprend le SCNR vert)
+//   LRGB    : C_RGB_lineaire>RGB ; C_L_lineaire>L
 //   LHaRGB  : C_RGB_couleur>RGB ; BXT_L_H>L,H ; NXT_L>L
 // Les icônes doivent être chargées (fichier Conteneurs-X.xpsm) et ne contenir
 // que des process natifs (un script ne peut pas lancer une icône Script).

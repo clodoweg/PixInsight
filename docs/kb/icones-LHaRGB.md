@@ -850,6 +850,19 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - étoiles moyennes touchées -> s = 0,80
 > - cœur R = G = B = 1 -> saturé à la prise de vue : reste blanc (à 0,94)
 
+#### Opt_SCNR_vert — SCNR
+   amount=1.00 ; protectionMethod=AverageNeutral ; colorToRemove=Green ; preserveLightness=true
+
+> OPTION — reste de vert sur l'image finie (étoiles ou fond) : SCNR vert 1,0 après Etoiles_screen, avant Fond_desature
+> Ou sur RGB_stars seule, avant Etoiles_screen, pour les étoiles.
+> 
+> PRÉRÉGLÉ : SCNR : Green, Amount 1,0, Average Neutral, Preserve lightness coché.
+> 
+> À RÉGLER : option : glisse sur l'image finie après Etoiles_screen (avant Fond_desature), ou sur RGB_stars avant Etoiles_screen pour ne toucher que les étoiles.
+> 
+> SI :
+> - couleurs ternes ou magenta -> Amount 0,5 à 0,8
+
 #### Opt_Etoiles_reduites — PixelMath
    expression = `S=0.20; W=~((~$T)*(~RGB_stars)); f1= ~((~mtf(~S,W)/~mtf(~S,$T))*~$T); max($T,f1)` ; useSingleExpression=true ; symbols = `S, W, f1` ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
 

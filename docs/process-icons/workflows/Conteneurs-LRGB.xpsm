@@ -1334,12 +1334,6 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          <parameter id="generateTextFiles" value="false"/>
          <parameter id="outputDirectory"></parameter>
       </instance>
-      <instance class="SCNR" version="256" enabled="true">
-         <parameter id="amount" value="1.00"/>
-         <parameter id="protectionMethod" value="AverageNeutral"/>
-         <parameter id="colorToRemove" value="Green"/>
-         <parameter id="preserveLightness" value="true"/>
-      </instance>
       <instance class="BlurXTerminator" version="256" enabled="true">
          <parameter id="ml_version" value="4"/>
          <parameter id="correct_only" value="false"/>
@@ -1516,7 +1510,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <description>MODE RAPIDE, phase 3 — Linéaire : R_Lineaire_rapide (double-clic puis Apply Global) à la place de C_RGB_lineaire et C_L_lineaire : lance C_RGB_lineaire sur RGB puis C_L_lineaire sur L ; les deux restent linéaires, avec leurs étoiles. Icône de repère, sans effet.</description>
    </instance>
    <instance class="Script" version="256" id="R_Lineaire_rapide_instance">
-      <description>MODE RAPIDE, à la place de la phase 3 du chemin principal : double-clic puis Apply Global ; lance les icônes du chemin principal sur RGB et L (LRGB : C_RGB_lineaire et C_L_lineaire ; LHaRGB : C_RGB_couleur, BXT_L_H sur L et H, NXT_L) ; RGB et L restent linéaires, avec leurs étoiles.&#10;&#10;LANCEMENT : double-clic sur l'icône, puis Apply Global.&#10;&#10;PRÉRÉGLÉ : script Lineaire_auto.js, etapes = C_RGB_lineaire&gt;RGB ; C_L_lineaire&gt;L : C_RGB_lineaire (BXT Correct Only, SPCC, SCNR vert 1,0, BXT, NXT 0,80) sur RGB, puis C_L_lineaire (BXT, NXT 0,60) sur L ; étoiles gardées, images linéaires.&#10;&#10;À RÉGLER : double-clic puis Apply Global, après R_Gradient_auto_rapide ; Conteneurs-LRGB chargé ; copie Lineaire_auto.js dans src/scripts/clodoweg ; ensuite GHS_1_premier et R_C_Fin_GHS_rapide sur L, Statistical_Stretch et GHS_3_fond sur RGB.&#10;&#10;SI :&#10;- vue absente ou autre nom -&gt; change etapes dans l'icône&#10;- une étape échoue -&gt; la console dit laquelle ; reprends avec E08_C_RGB_lineaire ou E09_C_L_lineaire</description>
+      <description>MODE RAPIDE, à la place de la phase 3 du chemin principal : double-clic puis Apply Global ; lance les icônes du chemin principal sur RGB et L (LRGB : C_RGB_lineaire et C_L_lineaire ; LHaRGB : C_RGB_couleur, BXT_L_H sur L et H, NXT_L) ; RGB et L restent linéaires, avec leurs étoiles.&#10;&#10;LANCEMENT : double-clic sur l'icône, puis Apply Global.&#10;&#10;PRÉRÉGLÉ : script Lineaire_auto.js, etapes = C_RGB_lineaire&gt;RGB ; C_L_lineaire&gt;L : C_RGB_lineaire (BXT Correct Only, SPCC, BXT, NXT 0,80) sur RGB, puis C_L_lineaire (BXT, NXT 0,60) sur L ; étoiles gardées, images linéaires.&#10;&#10;À RÉGLER : double-clic puis Apply Global, après R_Gradient_auto_rapide ; Conteneurs-LRGB chargé ; copie Lineaire_auto.js dans src/scripts/clodoweg ; ensuite GHS_1_premier et R_C_Fin_GHS_rapide sur L, Statistical_Stretch et GHS_3_fond sur RGB.&#10;&#10;SI :&#10;- vue absente ou autre nom -&gt; change etapes dans l'icône&#10;- une étape échoue -&gt; la console dit laquelle ; reprends avec E08_C_RGB_lineaire ou E09_C_L_lineaire</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="1">
@@ -3570,6 +3564,13 @@ $T*(1 - k*t*t)</parameter>
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
+   <instance class="SCNR" version="256" id="Opt_SCNR_vert_instance">
+      <description>OPTION — reste de vert sur l'image finie (étoiles ou fond) : SCNR vert 1,0 après Etoiles_screen, avant Fond_desature&#10;Ou sur RGB_stars seule, avant Etoiles_screen, pour les étoiles.&#10;&#10;PRÉRÉGLÉ : SCNR : Green, Amount 1,0, Average Neutral, Preserve lightness coché.&#10;&#10;À RÉGLER : option : glisse sur l'image finie après Etoiles_screen (avant Fond_desature), ou sur RGB_stars avant Etoiles_screen pour ne toucher que les étoiles.&#10;&#10;SI :&#10;- couleurs ternes ou magenta -&gt; Amount 0,5 à 0,8</description>
+      <parameter id="amount" value="1.00"/>
+      <parameter id="protectionMethod" value="AverageNeutral"/>
+      <parameter id="colorToRemove" value="Green"/>
+      <parameter id="preserveLightness" value="true"/>
+   </instance>
    <instance class="PixelMath" version="256" id="Opt_Etoiles_reduites_instance">
       <description>ALTERNATIVE — Recombinaison + réduction Blanshan.&#10;&#10;PRÉRÉGLÉ : S = 0,20 (Bill : 0,15) ; recombinaison screen + réduction Blanshan en une formule, sur l'image elle-même.&#10;&#10;À RÉGLER : À LA PLACE d'Etoiles_screen : glisse sur l'image sans étoiles finale ; étoiles étirées nommées RGB_stars.&#10;&#10;SI :&#10;- étoiles encore grosses -&gt; S 0,15&#10;- trop petites -&gt; S 0,25, ou Etoiles_screen&#10;- pour recommencer -&gt; Ctrl+Z</description>
       <parameter id="expression">S=0.20;
@@ -4224,15 +4225,16 @@ max($T,f1)</parameter>
    <icon id="Opt_Halo_B_Gon" instance="Opt_Halo_B_Gon_instance" xpos="1186" ypos="204" workspace="Workspace01"/>
    <icon id="Opt_Etoiles_grosses" instance="Opt_Etoiles_grosses_instance" xpos="1186" ypos="234" workspace="Workspace01"/>
    <icon id="Opt_Etoiles_plafond" instance="Opt_Etoiles_plafond_instance" xpos="1186" ypos="264" workspace="Workspace01"/>
-   <icon id="Opt_Etoiles_reduites" instance="Opt_Etoiles_reduites_instance" xpos="1186" ypos="294" workspace="Workspace01"/>
-   <icon id="Opt_MKStarReduction" instance="Opt_MKStarReduction_instance" xpos="1186" ypos="324" workspace="Workspace01"/>
-   <icon id="Opt_Boost_final_doux" instance="Opt_Boost_final_doux_instance" xpos="1186" ypos="354" workspace="Workspace01"/>
-   <icon id="Opt_Boost_final" instance="Opt_Boost_final_instance" xpos="1186" ypos="384" workspace="Workspace01"/>
-   <icon id="Opt_Fond_auto" instance="Opt_Fond_auto_instance" xpos="1186" ypos="414" workspace="Workspace01"/>
-   <icon id="Opt_Fond_auto_clair" instance="Opt_Fond_auto_clair_instance" xpos="1186" ypos="444" workspace="Workspace01"/>
-   <icon id="Opt_Agrandir_x2" instance="Opt_Agrandir_x2_instance" xpos="1186" ypos="474" workspace="Workspace01"/>
-   <icon id="Opt_ICC_sRGB" instance="Opt_ICC_sRGB_instance" xpos="1186" ypos="504" workspace="Workspace01"/>
-   <icon id="Opt_Export_TIFF" instance="Opt_Export_TIFF_instance" xpos="1186" ypos="534" workspace="Workspace01"/>
-   <icon id="P7_rapide" instance="P7_rapide_instance" xpos="1186" ypos="580" workspace="Workspace01"/>
-   <icon id="R_C_Etoiles_fond_rapide" instance="R_C_Etoiles_fond_rapide_instance" xpos="1186" ypos="614" workspace="Workspace01"/>
+   <icon id="Opt_SCNR_vert" instance="Opt_SCNR_vert_instance" xpos="1186" ypos="294" workspace="Workspace01"/>
+   <icon id="Opt_Etoiles_reduites" instance="Opt_Etoiles_reduites_instance" xpos="1186" ypos="324" workspace="Workspace01"/>
+   <icon id="Opt_MKStarReduction" instance="Opt_MKStarReduction_instance" xpos="1186" ypos="354" workspace="Workspace01"/>
+   <icon id="Opt_Boost_final_doux" instance="Opt_Boost_final_doux_instance" xpos="1186" ypos="384" workspace="Workspace01"/>
+   <icon id="Opt_Boost_final" instance="Opt_Boost_final_instance" xpos="1186" ypos="414" workspace="Workspace01"/>
+   <icon id="Opt_Fond_auto" instance="Opt_Fond_auto_instance" xpos="1186" ypos="444" workspace="Workspace01"/>
+   <icon id="Opt_Fond_auto_clair" instance="Opt_Fond_auto_clair_instance" xpos="1186" ypos="474" workspace="Workspace01"/>
+   <icon id="Opt_Agrandir_x2" instance="Opt_Agrandir_x2_instance" xpos="1186" ypos="504" workspace="Workspace01"/>
+   <icon id="Opt_ICC_sRGB" instance="Opt_ICC_sRGB_instance" xpos="1186" ypos="534" workspace="Workspace01"/>
+   <icon id="Opt_Export_TIFF" instance="Opt_Export_TIFF_instance" xpos="1186" ypos="564" workspace="Workspace01"/>
+   <icon id="P7_rapide" instance="P7_rapide_instance" xpos="1186" ypos="610" workspace="Workspace01"/>
+   <icon id="R_C_Etoiles_fond_rapide" instance="R_C_Etoiles_fond_rapide_instance" xpos="1186" ypos="644" workspace="Workspace01"/>
 </xpsm>
