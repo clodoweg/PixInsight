@@ -2129,6 +2129,13 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </table>
       <parameter id="information"></parameter>
    </instance>
+   <instance class="Script" version="256" id="Opt_EZ_Soft_Stretch_instance">
+      <description>OPTION — à la place de MAS sur le RGB (ou des GHS sur L) : étirement automatique doux (HistogramTransformation, point noir et médiane calculés)&#10;Puis SXT_RGB_etire et GHS_3_fond comme après MAS.&#10;&#10;LANCEMENT : double-clic sur l'icône, puis Apply Global.&#10;&#10;PRÉRÉGLÉ : script EZ Soft Stretch (EZ Processing Suite, Elveteek / darkarchon) : HistogramTransformation avec point noir trouvé dans l'histogramme et fonction de transfert vers une médiane cible ; réglages dans sa fenêtre.&#10;&#10;À RÉGLER : clique sur le RGB linéaire avec étoiles (après C_RGB_lineaire / E10 à E16 en LHaRGB), double-clic puis Apply Global ; dans la fenêtre : Target Median 0,15, Expand Low 0,05, Aggressiveness 5, Zero in White Point décoché ; onglet Stretch Preview pour contrôler, puis OK ; ensuite SXT_RGB_etire, SCNR_etoiles_vert, GHS_3_fond comme après MAS ; dépôt https://elveteek.ch/pixinsight-updates/ez-processing-suite/.&#10;&#10;SI :&#10;- fond trop sombre ou galaxie faible -&gt; Target Median 0,20 (défaut) ou Expand Low 0,08&#10;- fond délavé, gris -&gt; Target Median 0,12&#10;- fond coupé à noir -&gt; Aggressiveness plus bas (2 à 3)&#10;- étoiles grossies, cœurs blancs -&gt; c'est le défaut d'un étirement par fonction de transfert : MAS à la place</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/EZProcessingSuite/EZ_SoftStretch.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="0"/>
+      <parameter id="information"></parameter>
+   </instance>
    <instance class="NoOperation" version="256" id="P4_rapide_instance">
       <description>MODE RAPIDE, phase 4 — Étirement : GHS_1_premier sur L sans étoiles (chemin principal, à régler), puis GHS_2_contraste et GHS_3_fond (chemin principal) sur L ; R_C_RGB_etire_rapide sur RGB (MAS avec étoiles, SXT Unscreen qui crée RGB_stars, SCNR vert sur RGB_stars, GHS fond). Icône de repère, sans effet.</description>
    </instance>
@@ -5036,8 +5043,9 @@ max($T,f1)</parameter>
    <icon id="Opt_SCNR_etoiles_violet" instance="Opt_SCNR_etoiles_violet_instance" xpos="604" ypos="294" workspace="Workspace01"/>
    <icon id="Opt_Saturation_grosses" instance="Opt_Saturation_grosses_instance" xpos="604" ypos="324" workspace="Workspace01"/>
    <icon id="Opt_Statistical_Stretch" instance="Opt_Statistical_Stretch_instance" xpos="604" ypos="354" workspace="Workspace01"/>
-   <icon id="P4_rapide" instance="P4_rapide_instance" xpos="604" ypos="400" workspace="Workspace01"/>
-   <icon id="R_C_RGB_etire_rapide" instance="R_C_RGB_etire_rapide_instance" xpos="604" ypos="434" workspace="Workspace01"/>
+   <icon id="Opt_EZ_Soft_Stretch" instance="Opt_EZ_Soft_Stretch_instance" xpos="604" ypos="384" workspace="Workspace01"/>
+   <icon id="P4_rapide" instance="P4_rapide_instance" xpos="604" ypos="430" workspace="Workspace01"/>
+   <icon id="R_C_RGB_etire_rapide" instance="R_C_RGB_etire_rapide_instance" xpos="604" ypos="464" workspace="Workspace01"/>
    <icon id="P5_Couleur" instance="P5_Couleur_instance" xpos="795" ypos="20" workspace="Workspace01"/>
    <icon id="E16_LRGB_ajout_L" instance="E16_LRGB_ajout_L_instance" xpos="795" ypos="64" workspace="Workspace01"/>
    <icon id="P5_rapide" instance="P5_rapide_instance" xpos="795" ypos="110" workspace="Workspace01"/>

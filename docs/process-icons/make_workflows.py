@@ -55,6 +55,7 @@ SCRIPTS = {
     'Etoiles_grosses': ('$PXI_SRCDIR/scripts/clodoweg/Etoiles_grosses.js', '', [('taille', '7'), ('seuil', '0.15'), ('etendue', '12'), ('force', '0.80'), ('afficherMasque', 'false')], L_DRAG),   # demande de l'utilisateur : réduire seulement les grosses étoiles
     'Export_TIFF': ('$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js', '', [('nom', ''), ('suffixe', ''), ('dossier', ''), ('icc', 'true')], L_DRAG),   # plus aucune vue fermée (demande de l'utilisateur)
     'Binning_x2': ('$PXI_SRCDIR/scripts/clodoweg/Binning_x2.js', '', [('facteur', '2')], L_GLOBAL),   # demande de l'utilisateur : binning logiciel de toutes les images
+    'EZ_Soft_Stretch': ('$PXI_SRCDIR/scripts/EZProcessingSuite/EZ_SoftStretch.js', '', [], L_GLOBAL + "Ce script ne lit pas de paramètres d'icône : réglages dans sa fenêtre (gardés d'une fois sur l'autre). "),   # EZ Processing Suite (Elveteek), option d'étirement (demande de l'utilisateur)
     'CombineHaWithRGB': ('$PXI_SRCDIR/scripts/Toolbox/CombineHaToRGB.js', '140cbb0fc118263dc1d71b8e9e39f0e1', [('alphaView', 'HaNB'), ('amount', '2'), ('beta', '0.2'), ('linear', 'true'), ('rgbLinked', 'true'), ('bg', '0.05'), ('invertMask', 'true'), ('sigma', '0')], L_DRAG),   # PixInsight Toolbox de Jürgen Terpe (test, demande de l'utilisateur)
     'DarkStructureEnhance': ('$PXI_SRCDIR/scripts/misc/DarkStructureEnhance.js', '', [], L_GLOBAL + "Ce script ne lit pas de paramètres d'icône : les réglages se font dans son dialogue. "),   # script livré avec PixInsight (test)
     'Sharp_MMT': ('$PXI_SRCDIR/scripts/clodoweg/Sharp_MMT.js', '', [('biais', '0.04'), ('premiere', '2'), ('derniere', '4'), ('couches', '5')], L_DRAG),   # instance MMT de l'utilisateur
@@ -1163,6 +1164,7 @@ def agrandir_x2():
                    ('absoluteMode', 'ForceWidthAndHeight', 'v'), ('interpolation', 'Lanczos3', 'v'), ('clampingThreshold', '0.30', 'v'), ('smoothness', '1.50', 'v'), ('noGUIMessages', True, 'v')])
 
 for _st in (lrgb, lhargb):
+    insert_after(_st, 'Statistical_Stretch', [(script('EZ_Soft_Stretch', ''), '')])   # option P4 (demande de l'utilisateur, LRGB et LHaRGB)
     insert_after(_st, 'Solver_auto', [(script('Binning_x2', ''), '')])
     insert_before(_st, 'Masque_L', [(script('DarkStructureEnhance', ''), '')])
     insert_before(_st, 'ICC_sRGB', [(agrandir_x2(), '')])

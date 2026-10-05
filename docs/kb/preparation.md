@@ -44,6 +44,7 @@ GraXpertModule (process)| DeepSkyForge (pont vers GraXpert)| Retrait du gradient
 PixInsight Toolbox (CombineHaWithRGB…)Scripts| Jürgen Terpe| Icône de test CombineHaWithRGB (H dans RGB)| `https://www.ideviceapps.de/PixInsight/Utilities/`  
 VeraLux SuiteScript| Lucas Svaz (portage de VeraLux, Riccardo Paterniti)| (icône de test VeraLux_HMS supprimée)| `https://raw.githubusercontent.com/lucasssvaz/VeraLuxPorting/main/dist/`  
 MK Star ReductionScript| M. H. Kim| (icône de test MKStarReduction supprimée)| Site de l'auteur : https://mhkastro.github.io/MKStarReduction/ (dépôt non vérifié)  
+EZ Processing Suite (EZ Soft Stretch…)Scripts| Elveteek (darkarchon)| Option d'étirement Opt_EZ_Soft_Stretch (P4) ; v0.5 de janvier 2026, pour 1.8.8 à 1.9.9| `https://elveteek.ch/pixinsight-updates/ez-processing-suite/`  
 CorrectMagentaStarsScript| Roberto Sartori & Edoardo Luca Radice| Étoiles magenta en SHO. Déjà livré avec PixInsight : Script › Utilities| Aucun dépôt à ajouter  
 Foraxx dynamiqueFormule PixelMath| Communauté| Palette SHO dynamique| Aucun dépôt (formule à copier)
 

@@ -842,3 +842,11 @@ Réponse d'après la documentation et le code du script (déjà lus) : Amount 1,
 
 Demande : « remet Opt_Continuum_auto avant E14_CombineHaWithRGB ; dans E14_CombineHaWithRGB met : Amount 2, beta 0.2, background: 0.05 »
 Fait : Continuum_auto au chemin principal (E14) avant CombineHaWithRGB (E15) ; CombineHaWithRGB : Amount 2, Beta 0,2, Background 0,05, et H Alpha = HaNB (sortie de Continuum_auto, comme le demande la doc du script ; Amount 2 conseillé par l'auteur avec un H sans continuum). C_RGB_bruit devient E16 ; numéros suivants +1 (NXT_dernier E31). LRGB inchangé.
+
+### Option EZ Soft Stretch (5 octobre 2026)
+
+Demande : « rajoute une option d'etirement dans LRGB et HaRGH de EZ Soft Strech (et explique moi quels parametres mettre) » (LRGB demandé explicitement).
+Sources :
+- Code — EZ Processing Suite v0.5 (2026-01-04), dépôt https://elveteek.ch/pixinsight-updates/ez-processing-suite/ (paquet lu : src/scripts/EZProcessingSuite/EZ_SoftStretch.js ; feature-id EZ Processing Suite > EZ Soft Stretch ; réglages Expand Low 0 à 0,2 défaut 0,05, Target Median jusqu'à 0,4 défaut 0,2, Aggressiveness 1 à 100 défaut 10 (bouton Reset : 5), Zero in White Point ; HistogramTransformation [point noir, mtf vers médiane − Expand Low, point blanc, −Expand Low] ; réglages dans Settings, pas de paramètres d'icône ; fenêtre avec aperçu ; plateforme 1.8.8 à 1.9.9).
+- Forum — https://www.cloudynights.com/forums/topic/816182-pixinsight-189-update-lost-ez-processing-suite/ *(résumé)* (adresse de dépôt elveteek.ch).
+Fait : Opt_EZ_Soft_Stretch (P4) en LRGB et LHaRGB, après Statistical_Stretch ; dépôt ajouté à depots-pixinsight.txt. Réglages conseillés (non vérifiés sur les images de l'utilisateur) : Target Median 0,15 (proche du fond MAS 0,15), Expand Low 0,05, Aggressiveness 5.

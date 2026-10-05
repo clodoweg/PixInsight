@@ -9,3 +9,4 @@ https://www.cosmicphotons.com/pi-scripts/screenstars/
 https://pixinsight.deepskyforge.com/update/graxpert-process/
 https://www.ideviceapps.de/PixInsight/Utilities/
 https://raw.githubusercontent.com/lucasssvaz/VeraLuxPorting/main/dist/
+https://elveteek.ch/pixinsight-updates/ez-processing-suite/

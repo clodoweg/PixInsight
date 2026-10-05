@@ -476,6 +476,24 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > SI :
 > - étoiles grossies ou cœurs blancs -> MAS (chemin principal)
 
+#### Opt_EZ_Soft_Stretch — Script
+   script `$PXI_SRCDIR/scripts/EZProcessingSuite/EZ_SoftStretch.js`
+
+> OPTION — à la place de MAS sur le RGB (ou des GHS sur L) : étirement automatique doux (HistogramTransformation, point noir et médiane calculés)
+> Puis SXT_RGB_etire et GHS_3_fond comme après MAS.
+> 
+> LANCEMENT : double-clic sur l'icône, puis Apply Global.
+> 
+> PRÉRÉGLÉ : script EZ Soft Stretch (EZ Processing Suite, Elveteek / darkarchon) : HistogramTransformation avec point noir trouvé dans l'histogramme et fonction de transfert vers une médiane cible ; réglages dans sa fenêtre.
+> 
+> À RÉGLER : clique sur le RGB linéaire avec étoiles (après C_RGB_lineaire / E10 à E16 en LHaRGB), double-clic puis Apply Global ; dans la fenêtre : Target Median 0,15, Expand Low 0,05, Aggressiveness 5, Zero in White Point décoché ; onglet Stretch Preview pour contrôler, puis OK ; ensuite SXT_RGB_etire, SCNR_etoiles_vert, GHS_3_fond comme après MAS ; dépôt https://elveteek.ch/pixinsight-updates/ez-processing-suite/.
+> 
+> SI :
+> - fond trop sombre ou galaxie faible -> Target Median 0,20 (défaut) ou Expand Low 0,08
+> - fond délavé, gris -> Target Median 0,12
+> - fond coupé à noir -> Aggressiveness plus bas (2 à 3)
+> - étoiles grossies, cœurs blancs -> c'est le défaut d'un étirement par fonction de transfert : MAS à la place
+
 ### P4_rapide
 
 #### R_C_RGB_etire_rapide — ProcessContainer
