@@ -745,3 +745,8 @@ Fait : passages périmés corrigés (ancien process « L et RGB étirés avec le
 
 Demande : « je suis maintenant sur lme HaRGB. A partir de maintenant, sauf si je te le demande explicitement, ne change pour le process icon LRGB qui fonctionne bien »
 Fait : règle ajoutée dans CLAUDE.md et generateur.md (modifications limitées à lhargb ou aux variantes LHA ; contrôle git diff vide sur Conteneurs-LRGB.xpsm et icones-LRGB.md après chaque build).
+
+### LRGB : demander avant (5 octobre 2026)
+
+Demande : « En fait plutot, si je te demande qqchose et que tu veux aussi modifié LRGB, demainde moi d'abord alors la liste des impacts et je dis s'il faut aussi le faire ou pas pour LRGB »
+Fait : règle « LRGB gelé » remplacée par « demander avant de toucher » (liste des impacts LRGB, décision de l'utilisateur) dans CLAUDE.md et generateur.md.

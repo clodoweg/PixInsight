@@ -27,9 +27,9 @@ Tout est produit par `sh docs/process-icons/build/build.sh` ; ne jamais éditer 
 - `lum_block()` (GHS, MAS, SXT_RGB_etire, GHS_3_fond), `mas()`, `finish_block(galaxie=True)`, `sharp_mmt()`, `sharp_usm()`, `finition_saturee()`, `stars_end(...)`, `gradient_block(...)`, `pre_block()` : blocs communs.
 - Mode rapide : `prep_rapide`, `lineaire_rapide(etapes)`, `rgb_etire_rapide`, `lrgb_rapide`, `fin_rapide` (R_C_Fin_rapide et R_C_Etoiles_fond_rapide) ; turbo : `turbo_debut`.
 
-## LRGB gelé
+## LRGB : demander avant de toucher
 
-Depuis le 5 octobre 2026, `Conteneurs-LRGB.xpsm` ne doit plus changer sans demande explicite de l'utilisateur (voir CLAUDE.md). Changement LHaRGB : seulement `lhargb`, `V[('LHA', base)]` dans `short_desc.py`, ou une copie de script ; contrôle `git diff --stat` vide sur `Conteneurs-LRGB.xpsm` et `icones-LRGB.md` après `build.sh`.
+Depuis le 5 octobre 2026 : si un changement toucherait aussi `Conteneurs-LRGB.xpsm`, donner d'abord à l'utilisateur la liste des impacts sur le LRGB ; il décide (voir CLAUDE.md). Changement LHaRGB seul : `lhargb`, `V[('LHA', base)]` dans `short_desc.py`, ou une copie de script ; contrôle `git diff --stat` vide sur `Conteneurs-LRGB.xpsm` et `icones-LRGB.md` après `build.sh`, sauf changement LRGB accepté.
 
 ## Ajouter ou modifier une icône (check-list)
 

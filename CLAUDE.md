@@ -2,11 +2,11 @@
 
 Ce dépôt contient les icônes de process PixInsight de l'utilisateur, leur générateur, ma base de connaissances (`docs/kb/`) et la liste des sources (`docs/sources.md`). Réponds en français, en textes courts et simples.
 
-## LRGB GELÉ (demande de l'utilisateur, 5 octobre 2026)
+## LRGB : demander avant de toucher (demande de l'utilisateur, 5 octobre 2026)
 
-Le workflow LRGB fonctionne bien : NE RIEN CHANGER dans `Conteneurs-LRGB.xpsm` (icônes, réglages, descriptions, ordre) sauf demande EXPLICITE de l'utilisateur. Le travail en cours porte sur le LHaRGB.
-- Beaucoup de code est commun (boucles `for _st in (lrgb, lhargb)`, `lum_block`, `finish_block`, `stars_end`, `fin_rapide`, textes S de `short_desc.py`, `WHEN` de `layout.py`, scripts partagés) : pour le LHaRGB, modifier seulement `lhargb`, ou des variantes `V[('LHA', base)]`, ou une copie du script.
-- Après chaque `build.sh` : `git diff --stat docs/process-icons/workflows/Conteneurs-LRGB.xpsm docs/kb/icones-LRGB.md` doit être vide ; sinon, corriger avant de commiter.
+Le workflow LRGB fonctionne bien ; le travail en cours porte sur le LHaRGB. Si une demande (même faite pour le LHaRGB) changerait aussi `Conteneurs-LRGB.xpsm` (icônes, réglages, descriptions, ordre, script partagé), DEMANDER D'ABORD : donner la liste des impacts sur le LRGB, et l'utilisateur dit s'il faut aussi le faire pour le LRGB ou non. Sans réponse, ne rien changer au LRGB.
+- Code commun (boucles `for _st in (lrgb, lhargb)`, `lum_block`, `finish_block`, `stars_end`, `fin_rapide`, textes S de `short_desc.py`, `WHEN` de `layout.py`, scripts partagés) : pour le LHaRGB seul, modifier seulement `lhargb`, des variantes `V[('LHA', base)]`, ou une copie du script.
+- Après chaque `build.sh` : `git diff --stat docs/process-icons/workflows/Conteneurs-LRGB.xpsm docs/kb/icones-LRGB.md` doit être vide, sauf changement LRGB accepté par l'utilisateur.
 
 ## Base de connaissances (à lire en premier)
 
