@@ -529,6 +529,30 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - pas assez de détail -> a = 0,5 à 0,7 dans HDR_melange
 > - trop sombre ou gris -> a = 0,3
 
+#### Opt_Sharp_USM — ProcessContainer
+   1. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
+      paramètres : `mode=attacher`, `s=0.14`, `flou=2`, `nom=masque_L`, `dialogue=false`
+   2. UnsharpMask
+      sigma=2.00 ; amount=0.30 ; useLuminance=true ; linear=false ; deringing=true ; deringingDark=0.1000 ; deringingBright=0.0000 ; outputDeringingMaps=false ; rangeLow=0.0000000 ; rangeHigh=0.0000000
+   3. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
+      paramètres : `mode=retirer`, `nom=masque_L`, `dialogue=false`
+
+> OPTION — accentuation finale par UnsharpMask, à la fin de P6 avant NXT_final, sur l'image sans étoiles
+> Masque de luminance attaché puis retiré automatiquement.
+> 
+> LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
+> 
+> PRÉRÉGLÉ : conteneur : masque de luminance attaché (Masque_L, s = 0,14), UnsharpMask (écart type 2,0 px, amount 0,30, luminance seule, anti-halo sombre 0,10), masque retiré.
+> 
+> À RÉGLER : glisse sur l'image SANS étoiles étirée, après C_Finition, avant NXT_final ; regarde à 100 % sur la galaxie.
+> 
+> SI :
+> - halos sombres autour des détails -> double-clic sur le conteneur, UnsharpMask : amount 0,20 ou anti-halo 0,15
+> - pas assez net -> amount 0,40
+> - fond qui devient granuleux -> seuil s du masque plus haut (Masque_L)
+
 #### Opt_NXT_final — NoiseXTerminator
    ml_version=0 ; denoise=0.40 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
 

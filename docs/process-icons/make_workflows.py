@@ -669,6 +669,16 @@ D_NXT_FORT = "PARTIE 3, option à la place de NXT_final : NoiseXTerminator Denoi
 D_FOND = ("PARTIE 5 (fond) — conteneur sur l'image FINIE, étoiles comprises : Fond_auto (fond de chaque canal mesuré sur une grille 8 × 8, amené à 0,12, neutre, sans écrêtage), "
           "puis Fond_desature (couleur et violet retirés du fond et du halo faible). Options de la partie 5 : Boost_final AVANT ce conteneur (cœur et bras brillants), Fond_auto_clair (cible 0,14, à la place) si l'image est trop sombre.")
 
+def usm():
+    # UnsharpMask (module Convolution, version 0x100) : identifiants et bornes relevés dans la PCL (UnsharpMaskParameters.cpp)
+    return M.build('UnsharpMask', 256, 'UnsharpMask', [('sigma', '2.00', 'v'), ('amount', '0.30', 'v'), ('useLuminance', True, 'v'), ('linear', False, 'v'),
+                   ('deringing', True, 'v'), ('deringingDark', '0.1000', 'v'), ('deringingBright', '0.0000', 'v'), ('outputDeringingMaps', False, 'v'),
+                   ('rangeLow', '0.0000000', 'v'), ('rangeHigh', '0.0000000', 'v')])
+
+def sharp_usm():
+    """Option P6 (demande de l'utilisateur) : accentuation finale par UnsharpMask, sous masque de luminance, sur l'image sans étoiles."""
+    return _cont('Sharp_USM', [script('Masque_L', ''), usm(), script('Masque_retirer', '')])
+
 def finish_block(extra=None, galaxie=False):
     if galaxie:
         # finition en parties (demande de l'utilisateur) : 1 cœur (HDRMT 40 %), 2 contraste (C_Finition), 3 bruit (NXT_final), chacune avec ses options
@@ -680,6 +690,7 @@ def finish_block(extra=None, galaxie=False):
              (note('Masque_retirer', ''), ''),
              (boost_container('Boost_finition_light', k=((0, 0), (0.25, 0.24), (0.75, 0.76), (1, 1)), sat=0.57, amount='0.120'), ''),
              (boost_container(), ''),
+             (sharp_usm(), ''),   # option : accentuation finale (demande de l'utilisateur)
              (M.nxt('NXT_final', 0.40, 1), "PARTIE 3 (bruit) — " + D_NXT_F),
              (M.nxt('NXT_final_doux', 0.25, 1), D_NXT_DOUX), (M.nxt('NXT_final_fort', 0.60, 1), D_NXT_FORT)]
         return b
@@ -692,7 +703,7 @@ def finish_block(extra=None, galaxie=False):
          (_cont('HDRMT_30', hdrmt_items('0.3')), ''), (hdrmt_50(), ''), (hdrmt_eclat(), '')]
     if extra:
         b = extra + b
-    return b + [(M.nxt('NXT_final', 0.40, 1), D_NXT_F)]
+    return b + [(sharp_usm(), ''), (M.nxt('NXT_final', 0.40, 1), D_NXT_F)]
 
 def icc_srgb():
     # ICCProfileTransformation vers sRGB IEC61966-2.1 (paramètres du module ICCProfileTransformation de PixInsight)

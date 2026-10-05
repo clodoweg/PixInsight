@@ -3100,6 +3100,67 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          <parameter id="information"></parameter>
       </instance>
    </instance>
+   <instance class="ProcessContainer" id="Opt_Sharp_USM_instance">
+      <description>OPTION — accentuation finale par UnsharpMask, à la fin de P6 avant NXT_final, sur l'image sans étoiles&#10;Masque de luminance attaché puis retiré automatiquement.&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : masque de luminance attaché (Masque_L, s = 0,14), UnsharpMask (écart type 2,0 px, amount 0,30, luminance seule, anti-halo sombre 0,10), masque retiré.&#10;&#10;À RÉGLER : glisse sur l'image SANS étoiles étirée, après C_Finition, avant NXT_final ; regarde à 100 % sur la galaxie.&#10;&#10;SI :&#10;- halos sombres autour des détails -&gt; double-clic sur le conteneur, UnsharpMask : amount 0,20 ou anti-halo 0,15&#10;- pas assez net -&gt; amount 0,40&#10;- fond qui devient granuleux -&gt; seuil s du masque plus haut (Masque_L)</description>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="5">
+            <tr>
+               <td id="id">mode</td>
+               <td id="value">attacher</td>
+            </tr>
+            <tr>
+               <td id="id">s</td>
+               <td id="value">0.14</td>
+            </tr>
+            <tr>
+               <td id="id">flou</td>
+               <td id="value">2</td>
+            </tr>
+            <tr>
+               <td id="id">nom</td>
+               <td id="value">masque_L</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+      <instance class="UnsharpMask" version="256" enabled="true">
+         <parameter id="sigma" value="2.00"/>
+         <parameter id="amount" value="0.30"/>
+         <parameter id="useLuminance" value="true"/>
+         <parameter id="linear" value="false"/>
+         <parameter id="deringing" value="true"/>
+         <parameter id="deringingDark" value="0.1000"/>
+         <parameter id="deringingBright" value="0.0000"/>
+         <parameter id="outputDeringingMaps" value="false"/>
+         <parameter id="rangeLow" value="0.0000000"/>
+         <parameter id="rangeHigh" value="0.0000000"/>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="3">
+            <tr>
+               <td id="id">mode</td>
+               <td id="value">retirer</td>
+            </tr>
+            <tr>
+               <td id="id">nom</td>
+               <td id="value">masque_L</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+   </instance>
    <instance class="NoiseXTerminator" version="256" id="Opt_NXT_final_doux_instance">
       <description>OPTION — partie 3, à la place de NXT_final : données très propres, ou aspect plastique avec 0,40 (Denoise 0,25).&#10;&#10;PRÉRÉGLÉ : Denoise 0,25, 1 itération.&#10;&#10;À RÉGLER : PARTIE 3 (bruit), à la place de NXT_final : glisse sur l'image sans étoiles finie.&#10;&#10;SI :&#10;- encore trop lissé -&gt; saute la partie 3</description>
       <parameter id="ml_version" value="0"/>
@@ -4295,10 +4356,11 @@ max($T,f1)</parameter>
    <icon id="Opt_DarkStructureEnhance" instance="Opt_DarkStructureEnhance_instance" xpos="982" ypos="324" workspace="Workspace01"/>
    <icon id="Opt_Boost_finition_light" instance="Opt_Boost_finition_light_instance" xpos="982" ypos="354" workspace="Workspace01"/>
    <icon id="Opt_Boost_finition" instance="Opt_Boost_finition_instance" xpos="982" ypos="384" workspace="Workspace01"/>
-   <icon id="Opt_NXT_final_doux" instance="Opt_NXT_final_doux_instance" xpos="982" ypos="414" workspace="Workspace01"/>
-   <icon id="Opt_NXT_final_fort" instance="Opt_NXT_final_fort_instance" xpos="982" ypos="444" workspace="Workspace01"/>
-   <icon id="P6_rapide" instance="P6_rapide_instance" xpos="982" ypos="490" workspace="Workspace01"/>
-   <icon id="R_C_Fin_rapide" instance="R_C_Fin_rapide_instance" xpos="982" ypos="524" workspace="Workspace01"/>
+   <icon id="Opt_Sharp_USM" instance="Opt_Sharp_USM_instance" xpos="982" ypos="414" workspace="Workspace01"/>
+   <icon id="Opt_NXT_final_doux" instance="Opt_NXT_final_doux_instance" xpos="982" ypos="444" workspace="Workspace01"/>
+   <icon id="Opt_NXT_final_fort" instance="Opt_NXT_final_fort_instance" xpos="982" ypos="474" workspace="Workspace01"/>
+   <icon id="P6_rapide" instance="P6_rapide_instance" xpos="982" ypos="520" workspace="Workspace01"/>
+   <icon id="R_C_Fin_rapide" instance="R_C_Fin_rapide_instance" xpos="982" ypos="554" workspace="Workspace01"/>
    <icon id="P7_Etoiles" instance="P7_Etoiles_instance" xpos="1186" ypos="20" workspace="Workspace01"/>
    <icon id="E19_SCNR_vert" instance="E19_SCNR_vert_instance" xpos="1186" ypos="64" workspace="Workspace01"/>
    <icon id="E20_Fond_desature" instance="E20_Fond_desature_instance" xpos="1186" ypos="94" workspace="Workspace01"/>
