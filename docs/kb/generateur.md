@@ -37,6 +37,14 @@ Tout est produit par `sh docs/process-icons/build/build.sh` ; ne jamais éditer 
 6. Mettre à jour les fichiers de `docs/kb/` concernés (workflows, outils), `docs/sources.md`, CLAUDE.md si l'état change.
 7. Commit + push sur main.
 
+## Scripts avec fenêtre de réglages (demande de l'utilisateur, 5 octobre 2026)
+
+Convention, à reprendre pour chaque script (premier fait : Etoiles_grosses.js, en attente de validation par l'utilisateur) :
+- `Parameters.isViewTarget` (icône glissée sur l'image, ou dans un conteneur) : exécution directe avec les paramètres de l'icône, sans fenêtre ;
+- sinon (double-clic puis Apply Global, ou menu Script) : fenêtre `Dialog` pré-remplie avec les paramètres de l'icône (ou les défauts) ; ViewList pour l'image, NumericControl (`setReal`, `setRange`, `setPrecision`, `slider.setRange(0, 1000)`), CheckBox ; bouton triangle (`:/process-interface/new-instance.png`, `Parameters.set` puis `this.dialog.newInstance()`) ; bouton d'aperçu quand c'est utile ; Appliquer / Annuler ;
+- includes : `pjsr/Sizer.jsh`, `pjsr/TextAlign.jsh`, `pjsr/NumericControl.jsh` ;
+- description de l'icône : base ajoutée à `DIALOGUE` dans `short_desc.py` (texte de lancement LAUNCH_DLG).
+
 ## Contraintes PixInsight
 
 - Un script ne peut pas lancer une instance Script ; un ProcessContainer peut enchaîner des scripts. `ProcessInstance.fromIcon(id)` exécute une icône de process natif.

@@ -2,6 +2,14 @@
 // Etoiles_grosses.js — réduit SEULEMENT les grosses étoiles de l'image
 // d'étoiles (RGB_stars), avant Etoiles_screen ; les petites ne bougent pas.
 // ----------------------------------------------------------------------------
+// Deux façons de le lancer :
+//   - GLISSER l'icône sur l'image d'étoiles : exécution directe avec les
+//     réglages de l'icône (sans fenêtre ; marche aussi dans un conteneur) ;
+//   - DOUBLE-CLIC sur l'icône puis Apply Global (ou menu Script › clodoweg) : fenêtre de
+//     réglages pré-remplie avec les réglages de l'icône, bouton « Voir le
+//     masque » pour régler à l'œil, bouton triangle pour enregistrer les
+//     réglages dans une nouvelle icône.
+//
 // Calcul du masque sur une copie réduite à 2000 px de large (mêmes réglages
 // quelle que soit la taille de l'image), puis ramené à la taille réelle :
 //   1. luminance de l'image d'étoiles, légère floutée (1 px) ;
@@ -17,7 +25,6 @@
 // Paramètres : taille (plus grand = seules les plus grosses), seuil, etendue,
 // force (0,5 = rien ; plus haut = plus réduit), afficherMasque (garde la vue
 // masque_grosses : blanc = réduit).
-// Glisse l'icône sur l'image d'étoiles (RGB_stars), puis Etoiles_screen.
 // Ctrl+Z pour annuler.
 //
 // Installation (Mac et PC) : dans src/scripts/clodoweg de PixInsight.
@@ -27,13 +34,41 @@
 #feature-info  Réduit seulement les grosses étoiles de l'image d'étoiles, \
    couleur gardée, avant la réintégration.
 
+#include <pjsr/Sizer.jsh>
+#include <pjsr/TextAlign.jsh>
+#include <pjsr/NumericControl.jsh>
+
 #define EG_TITLE "Etoiles grosses"
 #define EG_WORK 2000
+#define EG_MASK_VIEW "masque_grosses"
 
-function egParam( key, value )
+// ---------------------------------------------------------------- réglages
+
+function egParams()
 {
-   return Parameters.has( key ) ? Parameters.getString( key ).trim() : value;
+   function get( key, value )
+   {
+      return Parameters.has( key ) ? Parameters.getString( key ).trim() : value;
+   }
+   return {
+      taille: parseFloat( get( "taille", "7" ) ),
+      seuil: parseFloat( get( "seuil", "0.15" ) ),
+      etendue: parseFloat( get( "etendue", "6" ) ),
+      force: parseFloat( get( "force", "0.70" ) ),
+      afficherMasque: get( "afficherMasque", "false" ).toLowerCase() == "true"
+   };
 }
+
+function egExport( p )
+{
+   Parameters.set( "taille", p.taille.toFixed( 0 ) );
+   Parameters.set( "seuil", p.seuil.toFixed( 2 ) );
+   Parameters.set( "etendue", p.etendue.toFixed( 0 ) );
+   Parameters.set( "force", p.force.toFixed( 2 ) );
+   Parameters.set( "afficherMasque", p.afficherMasque ? "true" : "false" );
+}
+
+// ---------------------------------------------------------------- calcul
 
 function egClose( id )
 {
@@ -120,41 +155,52 @@ function egMorpho( w, op, s )
    M.executeOn( w.mainView );
 }
 
-function main()
+function egLuminance( view )
 {
-   let view = Parameters.isViewTarget ? Parameters.targetView : ImageWindow.activeWindow.mainView;
-   if ( view.isNull )
-      throw new Error( EG_TITLE + " : aucune image." );
-   let taille = parseFloat( egParam( "taille", "7" ) );
-   let seuil = parseFloat( egParam( "seuil", "0.15" ) );
-   let etendue = parseFloat( egParam( "etendue", "6" ) );
-   let force = parseFloat( egParam( "force", "0.70" ) );
-   let afficher = egParam( "afficherMasque", "false" ).toLowerCase() == "true";
+   return view.image.isColor ? "(0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2])" : "$T";
+}
 
-   let color = view.image.isColor;
-   let Y = color ? "(0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2])" : "$T";
+// Masque des grosses étoiles (vue cachée eg_m, à la taille de l'image).
+function egMask( view, p )
+{
    let W = view.image.width, H = view.image.height;
    let w2 = Math.min( W, EG_WORK ), h2 = Math.round( H*w2/W );
-
-   // 1-3. masque des grosses étoiles, à 2000 px
-   let m = egNew( view, "eg_m", Y );
+   let m = egNew( view, "eg_m", egLuminance( view ) );
    egResize( m, w2, h2 );
    egBlur( m, 1 );
-   egMorpho( m, MorphologicalTransformation.prototype.Erosion, taille );
-   egMorpho( m, MorphologicalTransformation.prototype.Dilation, taille );
-   egPm( m, "min(1, max(0, ($T - " + seuil + ")/0.10))" );
-   egBlur( m, etendue );
+   egMorpho( m, MorphologicalTransformation.prototype.Erosion, p.taille );
+   egMorpho( m, MorphologicalTransformation.prototype.Dilation, p.taille );
+   egPm( m, "min(1, max(0, ($T - " + p.seuil + ")/0.10))" );
+   egBlur( m, p.etendue );
    egPm( m, "min(1, 3*$T)" );
    egResize( m, W, H );
-   if ( afficher )
-   {
-      let mv = egNew( m.mainView, "masque_grosses", "$T" );
-      mv.show();
-   }
+   return m;
+}
 
-   // 4. luminance Y -> mtf(force, Y) sous le masque, même facteur sur R, G, B
+// Vue masque_grosses visible (blanc = réduit).
+function egShowMask( view, p )
+{
+   let m = egMask( view, p );
+   let mv = egNew( m.mainView, EG_MASK_VIEW, "$T" );
+   egClose( "eg_m" );
+   mv.show();
+   mv.zoomToFit();
+   console.noteln( EG_TITLE + " : masque affiché (" + EG_MASK_VIEW + ", blanc = réduit)." );
+}
+
+function egApply( view, p )
+{
+   if ( view == null || view.isNull )
+      throw new Error( EG_TITLE + " : aucune image." );
+   let m = egMask( view, p );
+   if ( p.afficherMasque )
+      egNew( m.mainView, EG_MASK_VIEW, "$T" ).show();
+   else
+      egClose( EG_MASK_VIEW );
+   // luminance Y -> mtf(force, Y) sous le masque, même facteur sur R, G, B
+   let Y = egLuminance( view );
    let P = new PixelMath;
-   P.expression = "y = " + Y + ";\nf = iif(y > 0.000001, mtf(" + force.toFixed( 4 ) + ", y)/y, 1);\n$T*(1 - eg_m + eg_m*f)";
+   P.expression = "y = " + Y + ";\nf = iif(y > 0.000001, mtf(" + p.force.toFixed( 4 ) + ", y)/y, 1);\n$T*(1 - eg_m + eg_m*f)";
    P.symbols = "y, f";
    P.useSingleExpression = true;
    P.createNewImage = false;
@@ -164,8 +210,178 @@ function main()
    egClose( "eg_m" );
    if ( !ok )
       throw new Error( EG_TITLE + " : la réduction a échoué (voir la console) ; l'image n'a pas été modifiée." );
-   console.noteln( EG_TITLE + " : grosses étoiles de " + view.id + " réduites (taille " + taille + " px à " + w2 + " px, seuil " + seuil +
-                   ", force " + force + ")" + (afficher ? " ; masque gardé : masque_grosses." : ".") );
+   console.noteln( EG_TITLE + " : grosses étoiles de " + view.id + " réduites (taille " + p.taille + ", seuil " + p.seuil +
+                   ", étendue " + p.etendue + ", force " + p.force + ")" + (p.afficherMasque ? " ; masque gardé : " + EG_MASK_VIEW + "." : ".") );
+}
+
+// ---------------------------------------------------------------- fenêtre
+
+function EGDialog( p, view )
+{
+   this.__base__ = Dialog;
+   this.__base__();
+   let self = this;
+   this.p = p;
+   this.view = view;
+   this.windowTitle = EG_TITLE;
+   let labelWidth = this.font.width( "Étendue au halo (px) :" ) + 8;
+
+   this.help = new Label( this );
+   this.help.wordWrapping = true;
+   this.help.useRichText = true;
+   this.help.minWidth = 460;
+   this.help.text = "<b>Réduire seulement les grosses étoiles</b> de l'image d'étoiles (RGB_stars), " +
+                    "avant Etoiles_screen. Les petites étoiles ne bougent pas, la couleur est gardée. " +
+                    "Règle le masque avec « Voir le masque » (blanc = réduit), puis Appliquer.";
+
+   // image
+   this.imageLabel = new Label( this );
+   this.imageLabel.text = "Image d'étoiles :";
+   this.imageLabel.minWidth = labelWidth;
+   this.imageLabel.textAlignment = TextAlign_Right | TextAlign_VertCenter;
+   this.imageList = new ViewList( this );
+   this.imageList.getMainViews();
+   if ( view != null && !view.isNull )
+      this.imageList.currentView = view;
+   this.imageList.toolTip = "Image d'étoiles étirée (RGB_stars), avant Etoiles_screen.";
+   this.imageList.onViewSelected = function( v ) { self.view = v; };
+   this.imageSizer = new HorizontalSizer;
+   this.imageSizer.spacing = 4;
+   this.imageSizer.add( this.imageLabel );
+   this.imageSizer.add( this.imageList, 100 );
+
+   function numeric( parent, text, lo, hi, prec, value, tip, onChange )
+   {
+      let c = new NumericControl( parent );
+      c.label.text = text;
+      c.label.minWidth = labelWidth;
+      c.setReal( prec > 0 );
+      c.setRange( lo, hi );
+      c.setPrecision( prec );
+      c.slider.setRange( 0, 1000 );
+      c.slider.minWidth = 220;
+      c.setValue( value );
+      c.toolTip = tip;
+      c.onValueUpdated = onChange;
+      return c;
+   }
+
+   // masque
+   this.tailleControl = numeric( this, "Taille (px) :", 3, 21, 0, p.taille,
+      "Diamètre du disque, en pixels sur la copie à 2000 px. Plus grand = seules les plus grosses étoiles sont réduites (7 ≈ 33 px sur une image de 9 576 px).",
+      function( v ) { self.p.taille = v; } );
+   this.seuilControl = numeric( this, "Seuil :", 0.02, 0.50, 2, p.seuil,
+      "Luminosité minimale d'une grosse étoile après l'ouverture. Plus bas = plus d'étoiles prises.",
+      function( v ) { self.p.seuil = v; } );
+   this.etendueControl = numeric( this, "Étendue au halo (px) :", 0, 20, 0, p.etendue,
+      "Flou du masque pour couvrir le halo. Plus haut = halo plus large réduit.",
+      function( v ) { self.p.etendue = v; } );
+   this.maskGroup = new GroupBox( this );
+   this.maskGroup.title = "Masque des grosses étoiles";
+   this.maskGroup.sizer = new VerticalSizer;
+   this.maskGroup.sizer.margin = 6;
+   this.maskGroup.sizer.spacing = 4;
+   this.maskGroup.sizer.add( this.tailleControl );
+   this.maskGroup.sizer.add( this.seuilControl );
+   this.maskGroup.sizer.add( this.etendueControl );
+
+   // réduction
+   this.forceControl = numeric( this, "Force :", 0.50, 0.95, 2, p.force,
+      "0,50 = aucun effet ; plus haut = étoiles plus réduites (0,70 : un halo à 0,5 descend à 0,30).",
+      function( v ) { self.p.force = v; } );
+   this.keepMask = new CheckBox( this );
+   this.keepMask.text = "Garder la vue masque_grosses après l'application";
+   this.keepMask.checked = p.afficherMasque;
+   this.keepMask.onCheck = function( checked ) { self.p.afficherMasque = checked; };
+   this.reduceGroup = new GroupBox( this );
+   this.reduceGroup.title = "Réduction";
+   this.reduceGroup.sizer = new VerticalSizer;
+   this.reduceGroup.sizer.margin = 6;
+   this.reduceGroup.sizer.spacing = 4;
+   this.reduceGroup.sizer.add( this.forceControl );
+   this.reduceGroup.sizer.add( this.keepMask );
+
+   // boutons
+   this.newInstanceButton = new ToolButton( this );
+   this.newInstanceButton.icon = this.scaledResource( ":/process-interface/new-instance.png" );
+   this.newInstanceButton.setScaledFixedSize( 24, 24 );
+   this.newInstanceButton.toolTip = "Nouvelle icône avec ces réglages (glisse le triangle sur le bureau).";
+   this.newInstanceButton.onMousePress = function()
+   {
+      this.hasFocus = true;
+      this.pushed = false;
+      egExport( self.p );
+      this.dialog.newInstance();
+   };
+   this.previewButton = new PushButton( this );
+   this.previewButton.text = "Voir le masque";
+   this.previewButton.toolTip = "Calcule le masque avec ces réglages et l'affiche (vue masque_grosses, blanc = réduit). L'image n'est pas modifiée.";
+   this.previewButton.onClick = function()
+   {
+      if ( self.view == null || self.view.isNull )
+      {
+         (new MessageBox( "Choisis d'abord l'image d'étoiles.", EG_TITLE )).execute();
+         return;
+      }
+      try { egShowMask( self.view, self.p ); }
+      catch ( e ) { (new MessageBox( e.message, EG_TITLE )).execute(); }
+   };
+   this.okButton = new PushButton( this );
+   this.okButton.text = "Appliquer";
+   this.okButton.onClick = function()
+   {
+      if ( self.view == null || self.view.isNull )
+      {
+         (new MessageBox( "Choisis d'abord l'image d'étoiles.", EG_TITLE )).execute();
+         return;
+      }
+      this.dialog.ok();
+   };
+   this.cancelButton = new PushButton( this );
+   this.cancelButton.text = "Annuler";
+   this.cancelButton.onClick = function() { this.dialog.cancel(); };
+   this.buttons = new HorizontalSizer;
+   this.buttons.spacing = 6;
+   this.buttons.add( this.newInstanceButton );
+   this.buttons.addStretch();
+   this.buttons.add( this.previewButton );
+   this.buttons.add( this.okButton );
+   this.buttons.add( this.cancelButton );
+
+   this.sizer = new VerticalSizer;
+   this.sizer.margin = 8;
+   this.sizer.spacing = 8;
+   this.sizer.add( this.help );
+   this.sizer.add( this.imageSizer );
+   this.sizer.add( this.maskGroup );
+   this.sizer.add( this.reduceGroup );
+   this.sizer.add( this.buttons );
+   this.adjustToContents();
+}
+EGDialog.prototype = new Dialog;
+
+// ---------------------------------------------------------------- lancement
+
+function egDefaultView()
+{
+   let w = ImageWindow.windowById( "RGB_stars" );
+   if ( w.isNull )
+      w = ImageWindow.activeWindow;
+   return w.isNull ? null : w.mainView;
+}
+
+function main()
+{
+   let p = egParams();
+   if ( Parameters.isViewTarget )
+   {
+      // icône glissée sur l'image : exécution directe (aussi dans un conteneur)
+      egApply( Parameters.targetView, p );
+      return;
+   }
+   let dialog = new EGDialog( p, egDefaultView() );
+   if ( dialog.execute() )
+      egApply( dialog.view, p );
 }
 
 main();
