@@ -26,7 +26,8 @@ Icônes non testées par l'auteur dans PixInsight 1.9.5 : si l'une ne se charge 
 | `Renommer_auto.js` | renomme les masters L, R, G, B, H, O, S d'après FILTER |
 | `LPS_UnClic.js` | LinearPatternSubtraction sans dialogue sur tous les masters mono ouverts |
 | `Combiner_RGB.js` | R, G, B → `RGB`, en-tête du rouge copié ; ferme les masters (`garder` : R en LHaRGB) |
-| `GC_Solver_auto.js` | GradientCorrection et/ou ImageSolver sur toutes les images (icônes Solver_auto et GC_Solver_auto_rapide) |
+| `GC_Solver_auto.js` | ImageSolver sur toutes les images (icône Solver_auto) |
+| `Gradient_auto.js` | GradientCorrection seule sur toutes les images (icône R_Gradient_auto_rapide) |
 | `ImageSolver_Date.js` | date ajoutée si absente, puis ImageSolver avec les réglages du matériel |
 | `Masque_auto.js` | Masque_L (crée et attache masque_L), Masque_retirer |
 | `Etoiles_auto.js` | saturation et SCNR des étoiles (et étirement si amount > 0) |

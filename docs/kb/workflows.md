@@ -16,7 +16,7 @@ Copie tous les scripts du dossier [scripts](https://github.com/clodoweg/PixInsig
 Où| Icône| Sur| Ce qu'elle fait  
 ---|---|---|---  
 P1_rapide| R_C_Preparation_rapide| masters seuls ouverts ; double-clic puis **Apply Global**|  Renommer_auto, LinearPatternSubtraction, Combinaison_RGB (crée `RGB`), Solver_auto (ImageSolver sur toutes les images)  
-P2_rapide| R_GC_Solver_auto_rapide| double-clic puis Apply Global| GradientCorrection sur toutes les images ouvertes  
+P2_rapide| R_Gradient_auto_rapide| double-clic puis Apply Global| GradientCorrection sur toutes les images ouvertes  
 P3_rapide| R_C_RGB_rapide| RGB| BXT Correct Only, SPCC, BXT, NXT, Statistical Stretch 0,25, GHS fond (SP = HP = 0,22) ; étoiles gardées  
 P3_rapide| R_C_L_rapide| L| BXT, NXT ; L reste linéaire, avec ses étoiles  
 E10, puis P4_rapide| GHS_1_premier, puis R_C_Fin_GHS_rapide| L| GHS_1 à la main (méthode GHS), puis GHS_2 et GHS_3_fond en un glisser ; fond vers 0,11–0,13. Saute E13 Statistical_Stretch  
@@ -25,7 +25,7 @@ P6_rapide| R_C_Fin_rapide| image sans étoiles| HDRMT 30 %, masque, Courbes, LHE
 P7_rapide| R_C_Etoiles_fond_rapide| image sans étoiles finie| Etoiles_screen, Fond_auto (0,12), Fond_desature, Export_TIFF. Avant, sur RGB_stars si besoin : Opt_Etoiles_grosses (grosses étoiles seulement), Opt_Etoiles_plafond (cœurs cramés)  
   
 ### LHaRGB : l'ordre
-R_C_Preparation_rapide, R_GC_Solver_auto_rapide ; chemin principal pour C_RGB_couleur (RGB), BXT_L_H (H), E12 Continuum_auto (crée HaNB) et H_dans_RGB (Opt_H_dans_L ensuite si besoin) ; puis R_C_RGB_fin_rapide sur RGB (NXT, Statistical Stretch, GHS fond) et R_C_L_rapide sur L ; puis comme en LRGB : GHS_1 et R_C_Fin_GHS_rapide sur L, R_C_LRGB_rapide, R_C_Fin_rapide, R_C_Etoiles_fond_rapide.
+R_C_Preparation_rapide, R_Gradient_auto_rapide ; chemin principal pour C_RGB_couleur (RGB), BXT_L_H (H), E12 Continuum_auto (crée HaNB) et H_dans_RGB (Opt_H_dans_L ensuite si besoin) ; puis R_C_RGB_fin_rapide sur RGB (NXT, Statistical Stretch, GHS fond) et R_C_L_rapide sur L ; puis comme en LRGB : GHS_1 et R_C_Fin_GHS_rapide sur L, R_C_LRGB_rapide, R_C_Fin_rapide, R_C_Etoiles_fond_rapide.
 
 ### Mode Turbo (LRGB)
 1. `T_Turbo_1` (P1_turbo) : masters seuls ouverts, double-clic puis Apply Global. Préparation, Solver_auto, GradientCorrection sur toutes les images, traitement de RGB (comme R_C_RGB_rapide), R_C_L_rapide sur L.

@@ -241,20 +241,16 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 ### P2_rapide
 
-#### R_GC_Solver_auto_rapide — Script
-   script `$PXI_SRCDIR/scripts/clodoweg/GC_Solver_auto.js`
-   paramètres : `gradient=true`, `solve=false`, `solveTout=false`, `defaultDate=2020-01-01T00:00:00`, `metadata_focal=2939`, `metadata_xpixsz=3.76`, `solver_catalogMode=2`, `solver_distortionCorrection=true`, `(+ 42 autres réglages ImageSolver)`
+#### R_Gradient_auto_rapide — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Gradient_auto.js`
 
 > MODE RAPIDE, à la place de la phase 2 : GradientCorrection sur TOUTES les images ouvertes (plus d'ImageSolver : fait par Solver_auto en phase 1) ; à faire AVANT C_RGB_rapide et C_L_rapide (sans GradientCorrection).
 > 
 > LANCEMENT : double-clic sur l'icône, puis Apply Global.
 > 
-> PRÉRÉGLÉ : script GC_Solver_auto.js (gradient true, solve false) : GradientCorrection (sans modèle de gradient) sur TOUTES les images ouvertes, sans ImageSolver ; images *_stars ignorées ; une erreur n'arrête pas les autres.
+> PRÉRÉGLÉ : script Gradient_auto.js : GradientCorrection (sans modèle de gradient) sur TOUTES les images ouvertes, rien d'autre (pas d'ImageSolver) ; images *_stars ignorées ; une erreur n'arrête pas les autres.
 > 
-> À RÉGLER : double-clic puis Apply Global, masters et RGB ouverts, après R_C_Preparation_rapide ; à faire AVANT C_RGB_rapide et C_L_rapide, qui n'ont plus de GradientCorrection.
-> 
-> SI :
-> - ImageSolver pas encore fait -> solve true (sur les images couleur)
+> À RÉGLER : double-clic puis Apply Global, masters et RGB ouverts, après R_C_Preparation_rapide (astrométrie déjà faite par Solver_auto) ; AVANT R_C_RGB_rapide et R_C_L_rapide, qui n'ont pas de GradientCorrection ; copie Gradient_auto.js dans src/scripts/clodoweg.
 
 ## P3_Lineaire
 
