@@ -797,3 +797,8 @@ Fait : P3 = E10 C_RGB_couleur, E11 BXT_L_H, E12 NXT_L, E13 SXT_L_lineaire, E14 C
 
 Retour : « R_C_Ha_rapide sur RGB -> … *** Error: combine() argument #1: Must be an image reference or a functional subexpression evaluating to an image ».
 Correction : screen écrit en clair, R' = 1 − (1 − R)·(1 − h), h = min(1, 2·(HaNB − méd(HaNB)) au-dessus de la médiane). LRGB inchangé.
+
+### LHaRGB : CombineHaWithRGB sur H, continuum en option (5 octobre 2026)
+
+Demande : « Mets ca plutot dans Combine Ha With RGB et met le continuum en Option » avec l'instance de l'utilisateur (CombineHaToRGB.js, md5 140cbb0fc118263dc1d71b8e9e39f0e1, alphaView H, amount 2, beta 0, linear true, rgbLinked true, bg 0,015, rgbView « [object Object] », invertMask true, sigma 0).
+Fait : icône CombineHaWithRGB réglée ainsi (rgbView omis : valeur non valable, et le script relit rgbView avec l'id d'alphaView, bug du script) et lancée par double-clic (L_GLOBAL) ; Continuum_auto en option ; Ha_screen (R_C_Ha_rapide) calculé sur H. Numéros LHaRGB décalés de −1 à partir de C_RGB_bruit (E15). LRGB inchangé.

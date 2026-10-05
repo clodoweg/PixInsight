@@ -37,6 +37,8 @@ OPT = {'ImageSolver_seul', 'Turbo_debut', 'H_dans_RGB', 'C_Ha_rapide', 'Finition
 
 
 def role(prefix, base):
+    if prefix == 'LHA' and base == 'Continuum_auto':
+        return 'opt'    # LHaRGB (demande de l'utilisateur) : CombineHaWithRGB sur H directement, continuum en option
     if prefix in LUM and base in ('NXT_final', 'Fond_desature', 'HDRMT_30'):
         return 'core'   # galaxies : finition en parties, NXT_final et Fond_desature dans le chemin principal (demande de l'utilisateur)
     if prefix in LUM and base == 'Statistical_Stretch':
@@ -84,7 +86,8 @@ WHEN = {
     'SXT_non_lineaire': "double-clic : ouvre StarXTerminator réglé pour une image ÉTIRÉE (Unscreen coché, Generate star image coché) ; à glisser sur une image non linéaire qui a encore des étoiles",
     'Gradient_auto_rapide': "MODE RAPIDE, à la place de la phase 2 : GradientCorrection sur TOUTES les images ouvertes (plus d'ImageSolver : fait par Solver_auto en phase 1) ; à faire AVANT R_Lineaire_rapide (sans GradientCorrection)",
     'Mode_rapide': "repère du mode rapide (galaxies), sans effet : lis sa description pour l'ordre",
-    'C_Ha_rapide': "MODE RAPIDE, à la place de Ha_screen et C_RGB_bruit : après Continuum_auto (fait à la main, HaNB ouverte), glisse sur RGB linéaire",
+    'C_Ha_rapide': "MODE RAPIDE, à la place de CombineHaWithRGB et C_RGB_bruit : après R_Lineaire_rapide, glisse sur RGB linéaire (H ouverte)",
+    'Continuum_auto': "avant CombineHaWithRGB, pour retirer le continuum de H (étoiles et cœur moins rougis) : double-clic puis Apply Global, fenêtre (Ha = H, Red = R), crée HaNB ; puis CombineHaWithRGB avec H Alpha = HaNB",
     'CombineHaWithRGB': "à la place de Ha_screen, pour l'aperçu et la réduction du bruit de H (Background, Sigma) : double-clic puis Apply Global, fenêtre du script (RGB, H Alpha = HaNB) ; ne pas le glisser (erreur « already being processed »)",
     'Turbo_debut': "MODE TURBO, à la place de R_C_Preparation_rapide, R_Gradient_auto_rapide et R_Lineaire_rapide (phases 1 à 3) : masters seuls ouverts, double-clic puis Apply Global (pas en glissant) ; ensuite GHS_1_premier sur L",
     'C_Preparation_rapide': "MODE RAPIDE, à la place d'E00 à E03 : masters seuls ouverts, double-clic puis Apply Global (pas en glissant : ImageSolver échoue sur une image en cours de traitement) : Renommer_auto, LinearPatternSubtraction, Combinaison_RGB, Solver_auto (ImageSolver sur toutes les images) en un seul conteneur",
