@@ -220,7 +220,7 @@ RAPIDE_NOTE = {
              7: "R_C_Etoiles_fond_rapide sur l'image sans étoiles finie : Fond_desature, Fond_auto (0,12) sur l'image sans étoiles, étoiles remises (Etoiles_screen), NXT_dernier (0,25), puis Export_TIFF en un seul conteneur"},
     'LHA': {1: "MODE RAPIDE (galaxies) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre : R_C_Preparation_rapide ; R_Gradient_auto_rapide ; R_Lineaire_rapide (RGB, L et H), Continuum_auto, H_dans_RGB, C_RGB_bruit (étoiles gardées) ; GHS_1_premier, GHS_2_contraste, GHS_3_fond sur L ; R_C_RGB_etire_rapide sur RGB ; R_C_LRGB_rapide (LRGB sans étoiles) ; finition. Phase 1 : R_C_Preparation_rapide (double-clic puis Apply Global) à la place de LinearPatternSubtraction, Renommer_auto, Combinaison_RGB et Solver_auto",
             2: "R_Gradient_auto_rapide à la place de toute la phase 2 : GradientCorrection sur toutes les images ouvertes (R et H compris, pour le continuum) ; l'astrométrie est déjà faite par R_C_Preparation_rapide",
-            3: "R_C_P3_rapide glissé sur RGB à la place de toute la phase 3 : BXT Correct Only, SPCC, BXT sur RGB ; BXT_L_H sur L et H, NXT_L et SXT_L_lineaire sur L ; CombineHaWithRGB (H) ; NXT ; H, R et HaNB fermées ; continuum en option (chemin principal)",
+            3: "R_C_P3_rapide glissé sur RGB à la place de E10 à E13 : BXT Correct Only, SPCC, BXT sur RGB ; BXT_L_H sur L et H, NXT_L et SXT_L_lineaire sur L ; puis chemin principal : E14_CombineHaWithRGB et E15_C_RGB_bruit glissés sur RGB (continuum en option avant) ; T_Turbo_debut fait P1 à P3 jusqu'à E13",
             4: "GHS_1_premier sur L sans étoiles (chemin principal, à régler), puis GHS_2_contraste et GHS_3_fond (chemin principal) sur L ; R_C_RGB_etire_rapide sur RGB (MAS avec étoiles, SXT Unscreen qui crée RGB_stars, SCNR vert sur RGB_stars, GHS fond)",
             5: "R_C_LRGB_rapide sur RGB sans étoiles (L sans étoiles ouverte) à la place de LRGB_ajout_L : L ajoutée (Saturation 0,5)",
             6: "R_C_Fin_rapide sur l'image sans étoiles après LRGB_ajout_L (ou R_C_LRGB_rapide) : HDRMT à 30 %, masque, Courbes, LHE, LHE_fin, Sharp_MMT, masque retiré, NXT_final 0,40 en un seul conteneur (= HDRMT_30, C_Finition, C_Sharp_MMT et NXT_final)",
@@ -1189,15 +1189,9 @@ for _st in (lrgb, lhargb):
 # LHaRGB, phase 3 en un seul rapide glissé sur RGB (demande de l'utilisateur ; CombineHaWithRGB se glisse maintenant) : BXT Correct Only, SPCC, BXT sur RGB
 # (la vue glissée), Lineaire_auto sur L et H seulement (BXT_L_H, NXT_L, SXT_L_lineaire : jamais la vue glissée), CombineHaWithRGB, NXT, H, R, HaNB fermées.
 # R_Lineaire_rapide retirée du LHaRGB (le turbo garde ses étapes)
-def _amount1(item):
-    """CombineHaWithRGB du rapide : Amount 1 (demande de l'utilisateur ; 2 au chemin principal)."""
-    n, x = item
-    a = '<td id="id">amount</td>\n            <td id="value">2</td>'
-    assert a in x
-    return n, x.replace(a, a.replace('>2<', '>1<'))
 _i = next(k for k, (it, d) in enumerate(lhargb) if it[0] == 'Lineaire_rapide')
 lhargb[_i] = (cont('C_P3_rapide', [pick(lhargb, b)[0] for b in ('BXT_CorrectOnly', 'SPCC', 'BXT_RGB')] + [lineaire_rapide('BXT_L_H>L,H ; NXT_L>L ; SXT_L_lineaire>L')]
-                   + [_amount1(pick(lhargb, 'CombineHaWithRGB')[0])] + [pick(lhargb, b)[0] for b in ('NXT_RGB', 'Fermer_continuum')]), '')
+                   ), '')   # CombineHaWithRGB, NXT et fermeture retirés du rapide (demande de l'utilisateur) : à faire au chemin principal (E14, E15)
 
 for fn, pre, title, steps in [
     ('Workflow-LRGB.xpsm', 'LRGB', 'Workflow LRGB', lrgb),

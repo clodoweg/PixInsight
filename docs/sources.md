@@ -827,3 +827,8 @@ Fait : CombineHaWithRGB de R_C_P3_rapide : amount 1 ; E14 au chemin principal ga
 
 Question : « il vaut mieux faire le H dans RGB en lineair ou non lineair? »
 Réponse : en linéaire, après SPCC et avant l'étirement (ce que font les icônes). Appuis déjà lus : documentation de CombineHaWithRGB (« primarily intended to be used with linear images ») ; soustraction du continuum H − k·(R − méd R) valable seulement sur des données linéaires (flux proportionnels ; PhotometricContinuumSubtraction, ContinuumSubtraction). Non linéaire (mélange après étirement) : plus de contrôle à l'œil, mais rapports de flux perdus, étoiles et fond plus difficiles à garder neutres ; pas retenu. Pas de nouvelle source.
+
+### R_C_P3_rapide réduit, turbo LHaRGB (5 octobre 2026)
+
+Demande : « supprime les étapes 5 6 7 de R_C_P3_rapide puis met a jour turbo pour qu'il prenne les étapes rapides de 1,2,3 »
+Fait : R_C_P3_rapide = BXT Correct Only, SPCC, BXT, Lineaire_auto (L, H) (CombineHaWithRGB, NXT, fermeture retirés). T_Turbo_debut LHaRGB : contenait déjà préparation + gradient + Lineaire_auto (C_RGB_couleur>RGB ; BXT_L_H>L,H ; NXT_L>L ; SXT_L_lineaire>L), équivalent des rapides P1, P2, P3 en Apply Global (BXT et SPCC ne peuvent pas tourner directement en Apply Global) ; description mise à jour. LRGB inchangé.
