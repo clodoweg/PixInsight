@@ -144,6 +144,8 @@ Avec ou sans étoiles :
 
 Conseil donné (à valider sur des cibles réelles) : garder GHS sur L ; tester Opt_MAS sur le RGB à la place de Statistical Stretch, même cible de fond que L (0,10 à 0,12), saturation de MAS coupée sur les galaxies à cœur brillant ; puis tester MAS sur L à la place de GHS_1 seulement. Ne pas utiliser EZ Soft Stretch.
 
+Variante proposée par l'utilisateur (5 octobre 2026, pas encore en icônes) : RGB étiré par MAS AVEC étoiles, puis SXT Unscreen (RGB_stars) ; L : SXT en linéaire, GHS sur L sans étoiles ; LRGB sur les deux images sans étoiles ; RGB_stars remises à la fin (Etoiles_screen). Avantages : L étirée librement (pas de HP à gérer), étoiles d'une seule source, couleur gardée par MAS, plus de souci de cohérence L/RGB dans les étoiles. Risques : étoiles moins fines et plus bruitées que celles de L (moins de signal dans le RGB), étoiles faibles de L absentes ; SXT peut prendre des nœuds HII ou des amas compacts de la galaxie pour des étoiles (retirés de L, rendus par RGB_stars, moins nets) ; luminosité des étoiles à doser (Etoiles_grosses, Etoiles_reduites).
+
 ## Réduction d'étoiles Bill Blanshan
 Trois formules PixelMath (version 2) qui réduisent les étoiles sans toucher au fond. Elles s'appliquent à la fin, sur l'image étirée avec étoiles, à tous les workflows.
 
