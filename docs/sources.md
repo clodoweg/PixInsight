@@ -822,3 +822,8 @@ Fait : CombineHaWithRGB lancé en glissant (L_DRAG) ; R_C_P3_rapide (à glisser 
 
 Demande : « dans E14_CombineHaWithRGB met a 1 l'effet dans le rapide »
 Fait : CombineHaWithRGB de R_C_P3_rapide : amount 1 ; E14 au chemin principal garde amount 2. LRGB inchangé.
+
+### Question : H dans RGB en linéaire ou non linéaire ? (5 octobre 2026)
+
+Question : « il vaut mieux faire le H dans RGB en lineair ou non lineair? »
+Réponse : en linéaire, après SPCC et avant l'étirement (ce que font les icônes). Appuis déjà lus : documentation de CombineHaWithRGB (« primarily intended to be used with linear images ») ; soustraction du continuum H − k·(R − méd R) valable seulement sur des données linéaires (flux proportionnels ; PhotometricContinuumSubtraction, ContinuumSubtraction). Non linéaire (mélange après étirement) : plus de contrôle à l'œil, mais rapports de flux perdus, étoiles et fond plus difficiles à garder neutres ; pas retenu. Pas de nouvelle source.
