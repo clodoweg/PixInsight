@@ -49,7 +49,7 @@ Partie| Icône par défaut| Options
 2\. Contraste| E18 (E25) C_Finition : masque, Courbes (saturation 0,58), LHE 150, LHE_fin 40, masque retiré| à la place : Finition_saturee (même chose, saturation 0,65 : l'ancienne C_Finition) ; après : Boost_finition_light ou Boost_finition  
 2b. Accentuation| E19 (E26) C_Sharp_MMT (MMT sous masque)| à la place : Sharp_USM (UnsharpMask) ; en rapide : Sharp_MMT dans R_C_Fin_rapide  
 3\. Bruit| E20 (E27) NXT_final 0,40| NXT_final_doux (0,25) ou NXT_final_fort (0,60)  
-4\. Fond, puis étoiles| E21 (E28) Fond_desature, E22 (E29) Fond_auto (0,12), puis E23 (E30) Etoiles_screen (SCNR des étoiles déjà fait en P4, SCNR_etoiles_vert), puis E24 (E31) NXT_dernier (Denoise 0,25, toute dernière réduction de bruit)| (Saturation_grosses : option P4, sur RGB_stars) ; Halo_B_Gon et MT_etoiles réduisent aussi les petites étoiles ; à la place : Etoiles_reduites (réduit toutes les étoiles)  
+4\. Fond, puis étoiles| E21 (E28) Fond_desature, E22 (E29) Fond_auto (0,12), puis E23 (E30) Etoiles_screen (SCNR des étoiles déjà fait en P4, SCNR_etoiles_vert), puis E24 (E31) NXT_dernier (Denoise 0,25, toute dernière réduction de bruit)| avant, sur RGB_stars : Etoiles_grosses (réduit seulement les grosses étoiles et leur halo) ; (Saturation_grosses : option P4, sur RGB_stars) ; Halo_B_Gon et MT_etoiles réduisent aussi les petites étoiles ; à la place : Etoiles_reduites (réduit toutes les étoiles)  
 5\. Après les étoiles| Boost_final_doux ou Boost_final (L ouverte), en option| à la place de Fond_auto : Fond_auto_clair (0,14)  
   
 ### Finition hors PixInsight
@@ -128,7 +128,7 @@ Recombine en mode _screen_ , puis contrôle les couleurs d'étoiles (étoiles LR
 
 `~((~$T) * (~RGB_stars))`
 
-Glisse Etoiles_screen sur l'image sans étoiles finale : elle devient l'image finale. Grosses étoiles presque blanches : Opt_Saturation_grosses (P4) sur RGB_stars. Étoiles trop présentes : Etoiles_reduites à la place (réduit toutes les étoiles) .
+Glisse Etoiles_screen sur l'image sans étoiles finale : elle devient l'image finale. Grosses étoiles presque blanches : Opt_Saturation_grosses (P4) sur RGB_stars. Grosses étoiles trop présentes : Opt_Etoiles_grosses sur RGB_stars avant (les petites ne bougent pas). Toutes les étoiles trop présentes : Etoiles_reduites à la place (réduit toutes les étoiles) .
 
 ### Couleurs LRGB : le rendu de référence et comment le vérifier
 SPCC calibre la couleur sur le blanc _Average Spiral Galaxy_ : une galaxie spirale est blanche en moyenne.

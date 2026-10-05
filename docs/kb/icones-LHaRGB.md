@@ -1109,7 +1109,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
    script `$PXI_SRCDIR/scripts/Halo-B-Gon.js`
 
 > OPTION — halos autour des étoiles brillantes
-> Attention, réduit aussi les petites étoiles (pour les grosses seulement : Etoiles_grosses, en narrowband).
+> Attention, réduit aussi les petites étoiles (pour les grosses seulement : Etoiles_grosses).
 > 
 > LANCEMENT : double-clic sur l'icône, puis Apply Global. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
 > 
@@ -1118,8 +1118,29 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > À RÉGLER : Select stars-only image = l'image d'étoiles étirée (RGB_stars ; NBtoRGB_stars en SHO ; HOO_stars en HOO), AVANT Etoiles_screen ; Reduction Amount Low ; Linear Data décoché.
 > 
 > SI :
-> - petites étoiles réduites ou effacées aussi (son masque ne protège que les cœurs) -> Etoiles_grosses à la place (narrowband)
+> - petites étoiles réduites ou effacées aussi (son masque ne protège que les cœurs) -> Etoiles_grosses à la place
 > - pas assez -> relance en Low (Med = 4 courbes, High = 9)
+
+#### Opt_Etoiles_grosses — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Etoiles_grosses.js`
+   paramètres : `taille=7`, `seuil=0.15`, `etendue=12`, `force=0.80`, `afficherMasque=false`
+
+> OPTION — grosses étoiles trop présentes, mais Etoiles_reduites réduirait toutes les étoiles : glisse sur l'image d'étoiles (RGB_stars) AVANT Etoiles_screen
+> En rapide, avant R_C_Etoiles_fond_rapide.
+> 
+> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
+> 
+> PRÉRÉGLÉ : script Etoiles_grosses : masque des grosses étoiles (ouverture morphologique, disque de 7 px sur une copie à 2000 px, au-dessus de 0,15, étendu au halo, flou 12 px) ; sous le masque, luminance -> mtf(0,80, Y) avec un poids qui monte de 0 (Y = 0,10) à 1 (Y = 0,80) : halo faible jamais touché, pas d'anneau sombre ; même facteur sur R, G, B : couleur gardée, petites étoiles intactes.
+> 
+> À RÉGLER : sur RGB_stars juste AVANT Etoiles_screen (Etoiles_screen ensuite, pas Etoiles_reduites) ; en rapide, avant R_C_Etoiles_fond_rapide ; pour régler à l'œil : double-clic puis Apply Global, « Voir le masque », puis Appliquer ; copie Etoiles_grosses.js dans src/scripts/clodoweg.
+> 
+> SI :
+> - anneau sombre autour des grosses étoiles -> etendue 16 à 20, ou force plus basse (0,70)
+> - halo large pas entièrement réduit -> etendue 16
+> - moyennes étoiles touchées aussi -> taille 9 ou 11
+> - certaines grosses pas réduites -> taille 5, ou seuil 0,10
+> - pas assez réduites -> force 0,85 (au plus ; 0,5 = rien)
+> - voir ce qui est réduit -> fenêtre (double-clic puis Apply Global), « Voir le masque » (vue masque_grosses)
 
 #### Opt_Fond_auto_clair — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js`

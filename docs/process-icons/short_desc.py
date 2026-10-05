@@ -194,7 +194,7 @@ S = {
     'Fermer_vues': ("script Fermer_vues : ferme les vues listées dans le paramètre views", "copie Fermer_vues.js dans src/scripts/clodoweg", []),
     'MT_etoiles': ("Selection 0,25, Amount 0,60, 1 itération, 5×5 circulaire", "sur l'image d'étoiles seule, avant Etoiles_screen", ["trop fort -> Amount 0,50"]),
     'Halo_B_Gon': ("rien (réglages dans le dialogue)", "Select stars-only image = l'image d'étoiles étirée (RGB_stars ; NBtoRGB_stars en SHO ; HOO_stars en HOO), AVANT Etoiles_screen ; Reduction Amount Low ; Linear Data décoché",
-                   ["petites étoiles réduites ou effacées aussi (son masque ne protège que les cœurs) -> Etoiles_grosses à la place (narrowband)", "pas assez -> relance en Low (Med = 4 courbes, High = 9)"]),
+                   ["petites étoiles réduites ou effacées aussi (son masque ne protège que les cœurs) -> Etoiles_grosses à la place", "pas assez -> relance en Low (Med = 4 courbes, High = 9)"]),
     # 04 : matériel
     'SPCC_QHY600_Antlia': ("Average Spiral Galaxy, QE IMX455, Antlia V Pro R, G, B, neutralisation du fond, Gaia DR3/SP", "rien ; sur le RGB linéaire",
                            ["champ rempli de nébuleuse -> aperçu Background en Region of Interest"]),

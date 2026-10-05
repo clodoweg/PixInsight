@@ -856,3 +856,8 @@ Fait : Opt_EZ_Soft_Stretch (P4) en LRGB et LHaRGB, après Statistical_Stretch ; 
 Question (capture : MAS Target background 0,150, Aggressiveness 0,70, Dynamic range compression 0,40, Contrast Recovery 1024 / 1,0, saturation 0,75 / 0,50, sur le RGB de NGC 253) : « sur cette source MAS fait un truc trop brillant »
 Sources : Officiel/Tutoriel — https://astroguide.starlust.de/html/MAS-MultiscaleAdaptiveStretch.html *(résumé)* : Aggressiveness règle le point de coupure des ombres (plus haut = fond et tons moyens plus clairs, plus de bruit) ; Dynamic range compression règle le contraste des zones brillantes (plus haut = zones brillantes moins étirées, étoiles plus douces). Forum — https://www.cloudynights.com/forums/topic/988990-pixinsight-new-multiscaleadaptivestretch-mas/ *(résumé)*.
 Réponse : pour une galaxie brillante, Dynamic range compression 0,6 à 0,8, Aggressiveness 0,5, Target background 0,12, Contrast Recovery Intensity à baisser (0,5) si le corps reste trop clair (non vérifié). Pas de changement d'icône.
+
+### Etoiles_grosses remise en option (5 octobre 2026)
+
+Demandes : « j'ai plus le script qui diminue juste les grosses etoiles? » puis « rajoute le dans les options etoiles pour LRGB et HaRGB »
+Fait : Opt_Etoiles_grosses de nouveau dans les options P7 du LRGB et du LHaRGB (taille 7, seuil 0,15, etendue 12, force 0,80 ; version sans anneau sombre) ; textes qui la citaient remis pour les galaxies.

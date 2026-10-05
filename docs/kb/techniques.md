@@ -248,7 +248,7 @@ Icônes Opt_Coeurs_etoiles, Opt_Etoiles_couleur, Opt_RepairedHSV et script Etoil
 
 ## Réduction des grosses étoiles sans anneau sombre (Etoiles_grosses)
 
-Opt_Etoiles_grosses supprimée des workflows galaxies (demande de l'utilisateur, 5 octobre 2026) ; reste en narrowband.
+Opt_Etoiles_grosses supprimée des galaxies puis remise en option P7 (LRGB et LHaRGB, demande de l'utilisateur, 5 octobre 2026).
 
 - Anneau noir autour des grosses étoiles (retour de l'utilisateur, 5 octobre 2026) : sous le masque, mtf(force, Y)/Y divise le halo FAIBLE par 2 environ (mtf(0,7, x) ≈ 0,43 x pour x petit), et juste au-delà du bord du masque le halo reste intact : la luminosité remonte en s'éloignant de l'étoile.
 - Correction : poids w = (Y − 0,10)/0,70 borné à [0, 1] (halo sous 0,10 jamais touché, réduction complète au-dessus de 0,80), masque plus étendu (etendue 12), force par défaut 0,80, limitée à 0,85 (au-delà, Y' n'est plus croissante en Y : anneau). Vérifié sur des profils d'étoiles simulés (halo double exponentielle, bord de masque gaussien) : remontée relative 9 % par pixel avant, 0 à 0,8 % après.
