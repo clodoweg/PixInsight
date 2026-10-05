@@ -359,6 +359,8 @@ Points toujours sans source directe (contrôle du 30 septembre 2026) :
 - Libellé affiché dans le menu MARS de MGC : valeurs du paramètre `Ha` et `OIII` confirmées par du code, texte de l'interface non vu.
 - NBColourMapper et NBRGBCombination : chemin d'installation non vérifiable (paquet derrière une protection anti-robots ; script livré avec PixInsight), d'où des icônes-notes.
 
+- Pas encore confirmés dans PixInsight par l'utilisateur (5 octobre 2026) : Sharp_MMT depuis sa fenêtre et cwApplyOnCopy nouvelle version (résultat recalculé sur la vue) ; Saturation_grosses après la correction de l'« Unknown error » ; Etoiles_grosses sans anneau (vérifié seulement en simulation) ; T_Turbo_debut ; SCNR_etoiles_violet (Invert en script). Réglages choisis sans source chiffrée : Courbes de C_Finition saturation 0,58 (au jugé de l'utilisateur : 0,65 trop saturé), NXT_dernier Denoise 0,25.
+
 Points clos au dernier contrôle (30 septembre 2026) :
 
 - Part du Ha à ajouter au bleu en LHaRGB : rapport intrinsèque Hα/Hβ = 2,86 (cas B, 10⁴ K, 10² cm⁻³, Osterbrock 1989), relu dans [Momcheva et al. 2013, arXiv 1207.5479](https://arxiv.org/abs/1207.5479) ; Hβ ≈ 0,35 × Hα, plafond physique indiqué sur la page ; les « 80 % / 20 % » des tutoriels en sont une approximation (tutoriel d'origine, arciereceleste.it, désormais en 404).

@@ -23,7 +23,7 @@ Outil| Rôle| Quand
 ---|---|---  
 BlurXTerminator| Déconvolution, correction des étoiles (aberrations, tilt)| Linéaire, après le retrait du gradient  
 NoiseXTerminator| Réduction du bruit| Linéaire, après BXT ; petite passe finale si besoin  
-StarXTerminator| Séparation du fond et des étoiles| Galaxies : après LRGB, sur l'image étirée (_Unscreen_ coché) ; narrowband : en linéaire (_Unscreen_ décoché)  
+StarXTerminator| Séparation du fond et des étoiles| Galaxies : L en linéaire (_Unscreen_ décoché, sans image d'étoiles) ; RGB après MAS, sur l'image étirée (_Unscreen_ coché, crée RGB_stars) ; narrowband : en linéaire (_Unscreen_ décoché)  
   
 Dépôt unique pour les trois outils : `https://www.rc-astro.com/PixInsight` . Ajoute-le, _Check for Updates_ , _Apply_ , puis **quitte complètement PixInsight** pour que l'installation se fasse. Licence : clé à molette au premier lancement.
 

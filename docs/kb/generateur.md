@@ -24,8 +24,8 @@ Tout est produit par `sh docs/process-icons/build/build.sh` ; ne jamais éditer 
 - `ghs(nom, b, hp, lp, sf, sp)`, `curves(...)`, `M.bxt`, `M.nxt`, `M.sxt`, `M.spfc`, `M.mgc`.
 - `cont(nom, [items])` ou `_cont` : ProcessContainer ; `fermer(icone, 'vue1, vue2')` : script Fermer_vues réglé.
 - `pick(steps, base)`, `insert_after(steps, base, items)`, `insert_before(...)` : placer une icône dans une liste.
-- `lum_ghs_block`, `finish_block(galaxie=True)`, `stars_end(...)`, `gradient_block(...)`, `pre_block()` : blocs communs.
-- Mode rapide : `prep_rapide`, `rgb_rapide`, `l_rapide`, `lrgb_rapide`, `fin_rapide`.
+- `lum_block()` (GHS, MAS, SXT_RGB_etire, GHS_3_fond), `mas()`, `finish_block(galaxie=True)`, `sharp_mmt()`, `sharp_usm()`, `finition_saturee()`, `stars_end(...)`, `gradient_block(...)`, `pre_block()` : blocs communs.
+- Mode rapide : `prep_rapide`, `lineaire_rapide(etapes)`, `rgb_etire_rapide`, `lrgb_rapide`, `fin_rapide` (R_C_Fin_rapide et R_C_Etoiles_fond_rapide) ; turbo : `turbo_debut`.
 
 ## Ajouter ou modifier une icône (check-list)
 

@@ -486,7 +486,7 @@ Paramètres
 #### NoiseXTerminator
 **À régler :**
 
-- **Denoise** : L et H 0,60 ; O et S 0,75 ; RGB 0,80 ; passe finale 0,40
+- **Denoise** : L et H 0,60 ; O et S 0,75 ; RGB 0,80 ; passe finale 0,40 (NXT_final, image sans étoiles) ; galaxies : toute dernière passe 0,25 sur l'image finie avec étoiles (NXT_dernier)
 - **Iterations** : 1
 - **Séparations** : décochées
 
@@ -512,7 +512,7 @@ Paramètres
 **À régler :**
 
 - **Generate star image** : coché
-- **Unscreen stars** : coché sur image étirée (galaxies, après LRGB) ; décoché en linéaire (narrowband)
+- **Unscreen stars** : coché sur image étirée (galaxies : RGB après MAS, SXT_RGB_etire) ; décoché en linéaire (L des galaxies, SXT_L_lineaire ; narrowband)
 - **Large overlap** : décoché
 - **AI** : AI11, version complète
 
@@ -523,7 +523,7 @@ Paramètres
 
 Méthode
 
-1. Galaxies : sur l'image LRGB étirée (SXT_LRGB, Unscreen coché) ; RGB_stars sort déjà étirée.
+1. Galaxies : L en linéaire (SXT_L_lineaire, sans image d'étoiles) ; RGB étiré par MAS avec ses étoiles, puis SXT_RGB_etire (Unscreen coché) : RGB_stars sort déjà étirée, remise à la fin (Etoiles_screen).
 2. Narrowband : le plus tôt possible en linéaire, après BXT (RC Astro) ; étire ensuite fond et étoiles séparément.
 3. Recombinaison en mode screen à la fin.
 
@@ -622,7 +622,7 @@ Paramètres
 
 - **Canaux** : seul L coché
 - **Lightness** : 0,5
-- **Saturation** : 0,35 (plus bas = plus saturé)
+- **Saturation** : 0,5 dans les galaxies (réglage de l'utilisateur ; plus bas = plus saturé)
 - **Chrominance noise reduction** : coché
 
   * Couleurs délavées → L trop claire : étire-la moins.
@@ -641,7 +641,7 @@ Paramètres
 
 - **Lightness** : 0,5 (défaut)
 
-- **Saturation** : 0,35 dans l'icône (0,30 si couleurs ternes, 0,40 si trop saturé ; plus bas = plus saturé)
+- **Saturation** : 0,5 dans les icônes LRGB_ajout_L (réglage de l'utilisateur ; plus bas = plus saturé, ex. 0,40 si couleurs ternes)
 
 - **Chrominance noise reduction** : Coché (valeurs par défaut)
 
