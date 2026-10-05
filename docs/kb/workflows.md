@@ -1,0 +1,247 @@
+# Workflows LRGB et LHaRGB (les seuls utilisés)
+
+Ordre des étapes, ce que fait chaque étape et pourquoi, mode rapide et Turbo, images fermées, finition en parties, standards de couleur et d'étoiles. Les réglages exacts des icônes sont dans `icones-LRGB.md` et `icones-LHaRGB.md`.
+
+Issu de l'ancienne fiche HTML `docs/pixinsight-workflow.html` (octobre 2026) ; sources dans `docs/sources.md`.
+
+## Mode rapide (LRGB et LHaRGB)
+Pour traiter beaucoup de galaxies vite : des conteneurs préréglés, à glisser dans l'ordre. Gradient par GradientCorrection seulement (MGC + MARS reste au mode normal).
+
+**Où sont les icônes** : [Conteneurs-LRGB.xpsm](https://github.com/clodoweg/PixInsight/blob/main/docs/process-icons/workflows/Conteneurs-LRGB.xpsm) et [Conteneurs-LHaRGB.xpsm](https://github.com/clodoweg/PixInsight/blob/main/docs/process-icons/workflows/Conteneurs-LHaRGB.xpsm). Chaque colonne a trois groupes : **P#_Nom** (chemin principal, E00…), **P#_options** (Opt_…) et **P#_rapide** (R_…) ; sans icône R_, prends le chemin principal. L et RGB sont étirées **avec leurs étoiles** , LRGB, puis SXT (Unscreen coché). L s'étire à la main par les 3 GHS.
+
+### Une seule fois par ordinateur
+Copie tous les scripts du dossier [scripts](https://github.com/clodoweg/PixInsight/tree/main/docs/process-icons/scripts) dans `src/scripts/clodoweg` de PixInsight (GC_Solver_auto.js et ImageSolver_Date.js à côté du dossier ImageSolver).
+
+### LRGB : l'ordre
+Où| Icône| Sur| Ce qu'elle fait  
+---|---|---|---  
+P1_rapide| R_C_Preparation_rapide| masters seuls ouverts ; double-clic puis **Apply Global**|  Renommer_auto, LinearPatternSubtraction, Combinaison_RGB (crée `RGB`), Solver_auto (ImageSolver sur toutes les images)  
+P2_rapide| R_GC_Solver_auto_rapide| double-clic puis Apply Global| GradientCorrection sur toutes les images ouvertes  
+P3_rapide| R_C_RGB_rapide| RGB| BXT Correct Only, SPCC, BXT, NXT, Statistical Stretch 0,25, GHS fond (SP = HP = 0,22) ; étoiles gardées  
+P3_rapide| R_C_L_rapide| L| BXT, NXT ; L reste linéaire, avec ses étoiles  
+E10, puis P4_rapide| GHS_1_premier, puis R_C_Fin_GHS_rapide| L| GHS_1 à la main (méthode GHS), puis GHS_2 et GHS_3_fond en un glisser ; fond vers 0,11–0,13. Saute E13 Statistical_Stretch  
+P5_rapide| R_C_LRGB_rapide| RGB, L ouverte| LRGB_ajout_L, SXT Unscreen (crée `RGB_stars`), Etoiles_auto_etire (saturation et SCNR des étoiles)  
+P6_rapide| R_C_Fin_rapide| image sans étoiles| HDRMT 30 %, masque, Courbes, LHE, LHE_fin, masque retiré, NXT 0,40. Une option de finition (Boost…) se place après  
+P7_rapide| R_C_Etoiles_fond_rapide| image sans étoiles finie| Etoiles_screen, Fond_auto (0,12), Fond_desature, Export_TIFF. Avant, sur RGB_stars si besoin : Opt_Etoiles_grosses (grosses étoiles seulement), Opt_Etoiles_plafond (cœurs cramés)  
+  
+### LHaRGB : l'ordre
+R_C_Preparation_rapide, R_GC_Solver_auto_rapide ; chemin principal pour C_RGB_couleur (RGB), BXT_L_H (H), E12 Continuum_auto (crée HaNB) et H_dans_RGB (Opt_H_dans_L ensuite si besoin) ; puis R_C_RGB_fin_rapide sur RGB (NXT, Statistical Stretch, GHS fond) et R_C_L_rapide sur L ; puis comme en LRGB : GHS_1 et R_C_Fin_GHS_rapide sur L, R_C_LRGB_rapide, R_C_Fin_rapide, R_C_Etoiles_fond_rapide.
+
+### Mode Turbo (LRGB)
+1. `T_Turbo_1` (P1_turbo) : masters seuls ouverts, double-clic puis Apply Global. Préparation, Solver_auto, GradientCorrection sur toutes les images, traitement de RGB (comme R_C_RGB_rapide), R_C_L_rapide sur L.
+2. **GHS_1_premier à la main sur L.**
+3. `T_Turbo_2` (P5_turbo), glissé sur RGB : R_C_Fin_GHS_rapide sur L, puis R_C_LRGB_rapide, R_C_Fin_rapide et R_C_Etoiles_fond_rapide. L'image est finie et exportée. Pour une option de finition, fais plutôt les icônes rapides séparément.
+
+Une étape en erreur arrête le conteneur : lis la console, puis reprends avec les icônes R_ à partir de celle-là.
+
+### Images fermées au fur et à mesure
+Icône| Ferme  
+---|---  
+Combinaison_RGB| LRGB : R, G, B ; LHaRGB : G, B (R sert à Continuum_auto)  
+LHaRGB : C_RGB_bruit ou R_C_RGB_fin_rapide| H, R, HaNB (fais Opt_H_dans_L avant)  
+C_Fond_final, R_C_Etoiles_fond_rapide, T_Turbo_2| RGB_stars (Boost_final se fait avant)  
+Export_TIFF| L, après l'export (paramètre `fermer` vide pour la garder)  
+  
+### Finition du workflow normal en 5 parties
+Après E14 LRGB_ajout_L et E15 SXT_LRGB (E20 et E21 en LHaRGB). Regarde l'image après chaque partie ; les options sont rangées dans P6_options et P7_options. Numéros LRGB (LHaRGB entre parenthèses).
+
+Partie| Icône par défaut| Options  
+---|---|---  
+0\. Nettoyage| (option) Opt_Nettoyage_sans_etoiles : restes de halos des étoiles brillantes après SXT, RGB_stars ouverte| réglages et cas dans la description de l'icône  
+1\. Cœur| E16 (E22) HDRMT_40| HDRMT_30 (plus léger), HDRMT_50 (cœur brûlé), HDRMT_eclat (cœur terne) ; rien si le cœur est bien  
+2\. Contraste| E17 (E23) C_Finition : masque, Courbes, LHE 150, LHE_fin 40, masque retiré| après : Boost_finition_light ou Boost_finition  
+3\. Bruit| E18 (E24) NXT_final 0,40| NXT_final_doux (0,25) ou NXT_final_fort (0,60)  
+4\. Étoiles| E19 (E25) Etoiles_screen| avant, sur RGB_stars : **Etoiles_grosses** (réduit seulement les grosses étoiles et leur halo), Etoiles_plafond (cœurs cramés) ; Halo_B_Gon et MT_etoiles réduisent aussi les petites étoiles ; à la place : Etoiles_reduites (réduit toutes les étoiles)  
+5\. Fond| E20 (E26) C_Fond_final : Fond_auto (0,12), Fond_desature| avant : Boost_final_doux ou Boost_final (L ouverte) ; à la place : Fond_auto_clair (0,14) puis Fond_desature  
+  
+### Finition hors PixInsight
+`Opt_Export_TIFF` (fin de P7) enregistre une copie en TIFF 16 bits sRGB, profil ICC intégré, sous le nom du dossier des masters (/Astro/NGC1532/master/… donne /Astro/NGC1532/NGC1532.tiff, sans espace). `Opt_ICC_sRGB` ne sert que si tu enregistres toi-même. Ensuite, des retouches légères seulement, pas de nouvel étirement.
+
+  * **Photoshop** pour la finition : convertis le calque en objet dynamique, puis filtre Camera Raw léger : saturation des bleus et cyans −10 à −15, vibrance +5 à +10, clarté +5 au plus, texture 0 ; correcteur sur un calque vide (« Échantillonner tous les calques ») ; halo coloré : calque Teinte/Saturation masqué sur le halo. Enregistre en PSD, exporte en JPEG sRGB.
+  * **Affinity** , même marche : calques de réglage HSL (bleus vers cyans −10 à −15) et Vibrance (+5 à +10), filtre en direct Clarté 5 à 10 %, pinceau correcteur sur un calque vide ; export JPEG sRGB.
+  * **Lightroom** pour ranger et exporter en série.
+
+Pour une série : action Photoshop, préréglage Camera Raw ou macro Affinity.
+
+### Icônes à tester (LRGB et LHaRGB)
+Rangées dans les options (`Opt_`). Compare toujours avec le chemin principal sur la même cible.
+
+Icône| Phase| Rôle  
+---|---|---  
+Binning_x2| P1, après Solver_auto| Toutes les images divisées par 2 (IntegerResample, moyenne), solution astrométrique gardée. 0,528″/px au lieu de 0,264″/px : le CDK17 sur QHY600 est suréchantillonné par un seeing courant de 2 à 3″, on perd peu de détail, le bruit baisse et le traitement va 4 fois plus vite. Image finale 4 800 px au lieu de 9 600.  
+Agrandir_x2| P7, avant Export_TIFF| Après Binning_x2, pour un grand tirage : Resample × 2, Lanczos 3. Rend la taille, pas le détail perdu. Grand tirage très net voulu : ne bine pas.  
+GraXpert| P2| Gradient retiré par l'IA de GraXpert, à la place de MGC ou de GradientCorrection. Module DeepSkyForge et logiciel GraXpert 2.2.1 ou plus. Version de l'icône non vérifiée.  
+H_dans_RGB_v2 (LHaRGB)| P3| À la place de H_dans_RGB : R + w·(HaNB − med(HaNB)) et B + 0,2·w·(HaNB − med(HaNB)) (part de Hβ) ; fond de HaNB retiré avant l'injection, régions HII plus roses.  
+CombineHaWithRGB (LHaRGB)| P3| Script de la PixInsight Toolbox (Jürgen Terpe), à la place de Continuum_auto + H_dans_RGB : glisse sur RGB linéaire, H ouverte (Amount 2, Linear).  
+MAS| P4| MultiscaleAdaptiveStretch avec tes réglages (fond 0,15, compression 0,40, saturation 0,75), à la place des GHS ou de Statistical Stretch, sur image linéaire. Version de l'icône non vérifiée.  
+VeraLux_HMS| P4| Icône-note : VeraLux HyperMetric Stretch par le menu Script › VeraLux › VeraLux Suite.  
+DarkStructureEnhance| P6, avant C_Finition| Script livré avec PixInsight (Script › Utilities) : bandes de poussière plus marquées. Défauts Layers 8, Amount 0,70 ; trop fort : 0,40.  
+MKStarReduction| P7| Icône-note : MK Star Reduction (Script › Utilities), à comparer avec Etoiles_grosses et Etoiles_reduites.
+
+## LRGB
+Galaxies, nébuleuses par réflexion, amas. La couleur vient du RGB, le détail de la luminance.
+
+1. #### Combinaison RGB
+
+Combine R, G et B. Relance ImageSolver si la solution astrométrique n'a pas été conservée.
+
+2. #### Suppression du gradient
+
+Sur le RGB combiné et sur L (voir la phase linéaire commune). Avec MGC : SPFC d'abord, puis MGC.
+
+3. #### Correction optique avant la couleur
+
+BXT en mode _Correct Only_ sur le RGB combiné, **avant SPCC** : RC Astro l'indique pour obtenir le meilleur équilibre des couleurs.
+
+4. #### Calibration des couleurs
+
+Choisis ton profil de filtres et de capteur. Le type de galaxie _Average Spiral_ sert de référence de blanc. Contrôle ensuite les graphes et les couleurs (couleurs LRGB).
+
+5. #### Déconvolution
+
+RGB : BXT complet (étoiles et non-stellaire), après SPCC. L : BXT complet, en poussant un peu plus fort le non-stellaire que sur le RGB.
+
+6. #### Réduction du bruit
+
+NXT sur RGB (0,80) et sur L (0,60), après BXT, **avec leurs étoiles** (SXT vient après LRGB).
+
+7. #### Étirement, avec les étoiles
+
+Étire séparément le RGB et L, **en gardant leurs étoiles**.
+
+     * **RGB** (il ne donne que la couleur) : Statistical Stretch, Target Median 0,25, Linked coché.
+     * **L** (elle porte le détail) : GHS_1 puis GHS_2, méthode GHS (`techniques.md`) ; étoiles qui grossissent : HP (Highlight protection) sous leur cœur.
+     * **Les deux** : GHS_3_fond, jusqu'au même fond (0,12–0,14), avant LRGBCombination.
+
+Couleurs ternes : Saturation plus basse dans LRGBCombination.
+
+8. #### Combinaison L + RGB
+
+Sur les deux images étirées **avec leurs étoiles** : LRGBCombination, Saturation 0,35, _Chrominance noise reduction_ activée. Contrôle : couleurs LRGB. Cœurs d'étoiles blancs : baisse HP dans GHS_1 et GHS_2 sur L.
+
+9. #### Séparation des étoiles, sur l'image étirée
+
+SXT sur l'image LRGB étirée, **_Unscreen_ coché** : image sans étoiles et `RGB_stars`, déjà étirée. Option : Opt_Etoiles_auto_etire (saturation, SCNR). Restes de halos : Opt_Nettoyage_sans_etoiles.
+
+10. #### Finition du fond
+
+Courbes pour la saturation et le contraste, contraste local sous masque, NXT final léger si besoin.
+
+11. #### Réintégration des étoiles
+
+Recombine en mode _screen_ , puis contrôle les couleurs d'étoiles (étoiles LRGB). Pour réduire ensuite les étoiles, utilise les formules de Bill Blanshan.
+
+`~((~$T) * (~RGB_stars))`
+
+Glisse Etoiles_screen sur l'image sans étoiles finale : elle devient l'image finale. Grosses étoiles trop présentes : Opt_Etoiles_grosses sur RGB_stars avant (les petites ne bougent pas) ; toutes les étoiles : Etoiles_reduites à la place.
+
+### Couleurs LRGB : le rendu de référence et comment le vérifier
+SPCC calibre la couleur sur le blanc _Average Spiral Galaxy_ : une galaxie spirale est blanche en moyenne.
+
+Zone| Couleur attendue  
+---|---  
+Galaxie spirale, vue dans son ensemble| **Blanche en moyenne** (définition du blanc de SPCC)  
+Bulbe, cœur de galaxie| **Jaune à jaune orangé** (vieilles étoiles)  
+Bras spiraux| **Bleu** (jeunes étoiles chaudes)  
+Régions HII dans les bras| **Rose**  
+Bandes de poussière| **Brun sombre**  
+Nébuleuse par réflexion| **Bleu** (la poussière diffuse mieux le bleu)  
+Nébuleuse en émission| **Rouge** (raies de Balmer de l'hydrogène, surtout Hα)  
+Étoiles| Du **bleu-blanc** au **jaune-orange** , **jamais vertes**  
+Fond de ciel| **Gris neutre foncé** (0,12–0,14, R = G = B)  
+  
+Une légère dominante bleue (moins de 10 %) est normale avec SPCC.
+### Vérifier que tu es dedans
+1. **Graphes de SPCC** (_Generate graphs_ , décoché dans les icônes : coche-le pour ce contrôle) : les étoiles suivent les droites de près, la croix du blanc de référence est dans le nuage de points. Une forte dispersion signale souvent un mauvais flat (gradient multiplicatif).
+2. **Étoiles, à la sonde 15×15** : aucune étoile avec G au-dessus de R et de B à la fois (il n'existe pas d'étoile verte) ; on trouve des étoiles bleues (B ≥ G ≥ R) et jaune-orange (R ≥ G ≥ B). Toutes blanches : sur-étirement ou combinaison L/RGB mal accordée.
+3. **Galaxie** : cœur R ≥ G, nettement au-dessus de B ; bras B au-dessus de R ; régions HII R au-dessus de B au-dessus de G.
+4. **Fond** : R ≈ G ≈ B.
+
+Schéma (valeurs illustratives, pas des cibles chiffrées) : ce que la sonde doit lire sur une galaxie calibrée. Une étoile où G dépasse à la fois R et B est physiquement impossible : c'est une erreur de calibration ou un excès de vert.
+### Quoi ajuster
+Constat| Cause probable, réglage  
+---|---  
+Dominante verte générale| SPCC mal configuré (filtres, capteur) : refais-le. En dernier recours, SCNR vert, Average Neutral (rarement utile après SPCC)  
+Tout bleu ou tout jaune| Mauvais filtres ou capteur dans SPCC, ou gradient resté avant SPCC  
+Graphes dispersés| Flat à revoir, gradient multiplicatif, ou gradient retiré après SPCC au lieu d'avant  
+Couleurs délavées après LRGBCombination| L trop claire par rapport au RGB : accorde fonds et médianes (méthode) ; Saturation 0,35 à 0,40 (plus bas = plus saturé)  
+Couleurs criardes, bruit coloré| Saturation trop poussée : réduis-la (dans LRGBCombination, remonte la valeur Saturation : plus haut = moins saturé) ; NXT sur le RGB ; réduction de chrominance de LRGBCombination  
+Fond coloré| Neutralisation du fond de SPCC  
+Régions HII peu visibles| Normal en LRGB pur ; pour les faire ressortir : LHaRGB  
+  
+**Quand passer à autre chose :** galaxie riche en régions HII : LHaRGB ; nébuleuse en émission ou ciel pollué : narrowband (SHO, HOO) ou RGB + SHO ; nébuleuse par réflexion, amas, galaxie sans régions HII marquées : le LRGB est dans son élément.
+
+### Étoiles LRGB : le standard et comment le vérifier
+Couleur mesurée par SPCC : étoiles du **bleu-blanc au jaune-orange** , visibles mais pas criardes, variées, **jamais vertes** ; cœur des brillantes souvent blanc (la couleur se lit sur le halo). Vaut aussi pour le LHaRGB.
+### Vérifier avec la sonde (15×15, sur le halo)
+1. **Avant recombinaison** , sur l'image d'étoiles seule (RGB_stars, sortie de SXT après LRGB) : graphes SPCC corrects ; étoiles chaudes R ≥ G ≥ B, bleues B ≥ G ≥ R ; aucune avec G au-dessus de R et de B ; une dizaine d'étoiles ne donnent pas toutes la même lecture.
+2. **Après recombinaison** , à 100 % : même couleur que sur l'image d'étoiles seule ; ni anneau sombre, ni halo coloré ; étoiles ni grossies ni trop présentes ; fond inchangé.
+### Quoi ajuster
+Constat| Réglage  
+---|---  
+Étoiles toutes blanches| Étirement trop fort sur les étoiles : HP (Highlight protection) sous leur cœur dans GHS_1 et GHS_2 sur L, Target Median plus basse dans Statistical Stretch sur le RGB ; en dernier recours, étoiles étirées à part (SXT en linéaire, Star Stretch)  
+Étoiles criardes| Pas d'Opt_Etoiles_auto_etire (ou satAmount 1,0), ou légère désaturation de l'image d'étoiles  
+Étoiles vertes, bleues ou jaunes en bloc| SPCC à revoir (filtres, capteur, gradient avant SPCC) ; SCNR seulement en dernier recours  
+Étoiles délavées après LRGBCombination| L plus étirée que le RGB sur les étoiles (la combinaison se fait avec les étoiles) : HP plus bas dans GHS_1 et GHS_2 sur L, Lightness plus bas dans LRGBCombination ; ou Opt_Etoiles_auto_etire (saturation)  
+Anneau sombre autour des étoiles| Extraction SXT imparfaite ou étirement trop différent entre fond et étoiles : revois SXT, puis Halo-B-Gon ou réduction d'étoiles  
+Étoiles trop grosses ou trop présentes| Réduction d'étoiles après recombinaison, ou HP sous le cœur des étoiles dans les GHS sur L  
+Fond éclairci ou teinté après ajout des étoiles| Fond de l'image d'étoiles pas à 0 : revois SXT (Unscreen coché sur l'image étirée)
+
+## LHaRGB
+Galaxies avec régions HII, ou nébuleuses en émission. Le H s'ajoute au rouge et, en option, à la luminance.
+
+### Le continuum, en une image
+Schéma (hauteurs non à l'échelle). La raie Hα est fine ; le continuum couvre tout le spectre. Le filtre H de 3 nm capte la raie plus une fine tranche de continuum ; le filtre R en capte surtout le continuum. D'où `HaNB = H − k·(R − med(R))` : il reste l'émission pure, à injecter sans rougir les étoiles.
+
+1. #### RGB, L et H jusqu'à la déconvolution
+
+RGB comme en LRGB (gradient, BXT _Correct Only_ , SPCC, BXT) ; gradient et BXT sur L et H aussi, **avant** la soustraction du continuum.
+
+2. #### Soustraction du continuum sur H
+
+Icône E12 **Continuum_auto** (Automatic Continuum Subtraction) : double-clic puis Apply Global ; Ha = H, Red (or RGB) = R, Execute. Le coefficient se calcule tout seul ; le script crée `HaNB` (renomme HaNB1 en HaNB si besoin). Contrôle : étoiles et disque presque disparus de HaNB.
+
+3. #### Injection dans R
+
+Sur le RGB calibré, **w** de 0,5 à 2. Garde une copie du RGB avant injection pour comparer (couleurs LHaRGB).
+
+R'`R + w * HaNB`
+
+4. #### Injection dans L (facultatif)
+
+Rend les régions HII plus nettes. Un mélange léger fonctionne aussi.
+
+L'`max(L, HaNB * a)`
+
+5. #### Suite du workflow LRGB
+
+Comme en LRGB : NXT, étirement et LRGB avec les étoiles, SXT sur l'image étirée, finition, étoiles.
+
+### Couleurs LHaRGB : le rendu de référence et comment le vérifier
+Comme en LRGB, sauf les **régions HII, roses** et plus visibles. Piège : trop de H rougit toute l'image.
+
+**Rose et pas rouge vif** : l'hydrogène émet aussi Hβ (bleu-vert). Pour l'imiter, ajoute au bleu au plus 0,35 × ce qu'on ajoute au rouge (B' = B + 0,35 × w × HaNB ; Hα/Hβ = 2,86), souvent 0,2.
+### Vérifier que tu es dedans
+1. **Compare avec ton LRGB sans H** (garde une copie avant injection) : hors des régions HII, les couleurs doivent être **identiques** (cœur, bras, étoiles, fond). Seules les régions HII changent.
+2. **Sonde 15×15** : région HII, R nettement au-dessus de G et B, avec B ≥ G (rose ; si B ≪ G, le rose vire à l'orange-rouge) ; cœur, mêmes valeurs qu'en LRGB (R ≥ G ≫ B) ; étoiles, R pas franchement plus haut qu'en LRGB ; fond, R ≈ G ≈ B (fond rouge : bruit de H injecté).
+
+### Quoi ajuster
+Constat| Cause, réglage  
+---|---  
+Cœur ou halo rougi, étoiles à halo rouge| **Continuum mal soustrait** : relance Continuum_auto en mode Starless, ou baisse w ; étoiles et disque doivent disparaître de HaNB  
+Taches HII rouge vif, trop saturées| **w trop fort** dans R' = R + w·HaNB : baisse w (0,5 à 2)  
+Régions HII invisibles| w trop faible ou HaNB trop sombre : monte w, ou injecte aussi dans L  
+Fond rouge ou granuleux| Bruit de HaNB injecté : NXT sur HaNB avant injection ; vérifie que le fond de HaNB reste près de 0  
+Régions HII nettes mais couleurs délavées| Injection dans L trop forte (`max(L, HaNB·a)`) : baisse a, ou mélange léger  
+### Étoiles en LHaRGB
+Comme en LRGB, **et pas plus rouges qu'avant l'injection** : les étoiles reçoivent le H injecté, donc tout résidu d'étoile dans HaNB.
+
+Défaut| Cause| Réglage  
+---|---|---  
+Étoiles rougies, halo rouge| Continuum mal soustrait : un reste de H stellaire est injecté| Relance Continuum_auto en mode Starless, ou baisse w ; les étoiles doivent disparaître de HaNB  
+Anneaux clairs ou sombres autour des étoiles| PSF différentes entre H et R| Prends les étoiles avant injection (ci-dessous)  
+Étoiles grossies| H trop fort| Baisse w  
+  
+**Étoiles d'avant injection** (hors icônes) : SXT sur une copie du RGB non injecté, garde ces étoiles-là pour Etoiles_screen.
+
+**Quand choisir autre chose :** galaxie sans régions HII marquées (elliptique, lenticulaire) : LRGB ; nébuleuse en émission sans galaxie : la version HaRGB simple ci-dessus, ou le narrowband (HOO, SHO) ; avec aussi de l'O (nébuleuses planétaires) : RGB + SHO.

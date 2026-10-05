@@ -15,5 +15,6 @@ rm -f "$SRC"
 for f in workflows/*.xpsm; do
   python3 -c "import sys,xml.dom.minidom; xml.dom.minidom.parse(sys.argv[1])" "$f" || { echo "XML invalide : $f"; exit 1; }
 done
+python3 $B/kb_icons.py workflows ../kb
 python3 -c "import html.parser; html.parser.HTMLParser().feed(open('../pixinsight-workflow.html').read())"
-echo "OK : icônes, preparer-data.json et page régénérés."
+echo "OK : icônes, preparer-data.json, page et docs/kb/icones-*.md régénérés."

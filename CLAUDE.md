@@ -2,6 +2,10 @@
 
 Ce dépôt contient une fiche de référence PixInsight (`docs/pixinsight-workflow.html`), ses icônes de process et la liste de ses sources (`docs/sources.md`). Réponds en français, en textes courts et simples.
 
+## Base de connaissances (à lire en premier)
+
+`docs/kb/` est ma référence (l'utilisateur ne la lit pas) : avant de répondre à une question ou de modifier une icône, lis `docs/kb/README.md` puis le fichier concerné (`icones-LRGB.md` / `icones-LHaRGB.md` générés, `workflows.md`, `outils.md`, `techniques.md`, `preparation.md`, `narrowband.md`, `generateur.md`). Après chaque changement, mets à jour le fichier thématique concerné ; `icones-*.md` se régénèrent par `build.sh`.
+
 ## Valider avec des sources avant d'insérer
 
 Avant d'ajouter ou de modifier un contenu technique (réglage, valeur, ordre des étapes, formule, URL) :
