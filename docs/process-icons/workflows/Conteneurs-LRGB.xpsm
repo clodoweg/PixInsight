@@ -1635,7 +1635,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="information"></parameter>
    </instance>
    <instance class="Script" version="256" id="E15_SCNR_etoiles_violet_instance">
-      <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Etoiles_auto réglé violet seul : Invert, SCNR vert (Amount 1,0, Average Neutral, Preserve lightness), Invert sur RGB_stars : le magenta (violet) des étoiles retiré.&#10;&#10;À RÉGLER : juste après SCNR_etoiles_vert : glisse sur n'importe quelle image (traite toujours la vue RGB_stars) ; le RGB sans étoiles n'est pas touché.&#10;&#10;SI :&#10;- étoiles bleues devenues trop vertes ou ternes -&gt; double-clic : décoche « Violet retiré », ou CorrectMagentaStars (moins fort)&#10;- autre nom d'étoiles -&gt; vue = ce nom dans l'icône</description>
+      <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Etoiles_auto réglé violet seul : Invert, SCNR vert (Amount 1,0, Average Neutral, Preserve lightness), Invert sur RGB_stars : le magenta (violet) des étoiles retiré.&#10;&#10;À RÉGLER : juste après SCNR_etoiles_vert : glisse sur n'importe quelle image (traite toujours la vue RGB_stars) ; le RGB sans étoiles n'est pas touché ; pas dans le rapide : après R_C_RGB_etire_rapide si besoin ; à vérifier à la sonde : utile si R et B nettement au-dessus de G sur les étoiles bleues.&#10;&#10;SI :&#10;- étoiles bleues devenues trop vertes ou ternes -&gt; double-clic : décoche « Violet retiré », ou CorrectMagentaStars (moins fort)&#10;- autre nom d'étoiles -&gt; vue = ce nom dans l'icône</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="5">
@@ -1788,10 +1788,10 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <description>OPTION — TEST, à la place des GHS ou de Statistical Stretch : VeraLux HyperMetric Stretch, lancé depuis le menu Script.&#10;&#10;PRÉRÉGLÉ : rien (icône-note : chemin du script non vérifié).&#10;&#10;À RÉGLER : installe VeraLux (dépôt VeraLuxPorting) ; Script › VeraLux › VeraLux Suite, onglet HyperMetric Stretch, sur L ou RGB linéaire.</description>
    </instance>
    <instance class="NoOperation" version="256" id="P4_rapide_instance">
-      <description>MODE RAPIDE, phase 4 — Étirement : GHS_1_premier sur L sans étoiles (chemin principal, à régler), puis GHS_2_contraste et GHS_3_fond (chemin principal) sur L ; R_C_RGB_etire_rapide sur RGB (MAS avec étoiles, SXT Unscreen qui crée RGB_stars, SCNR vert puis violet sur RGB_stars, GHS fond). Icône de repère, sans effet.</description>
+      <description>MODE RAPIDE, phase 4 — Étirement : GHS_1_premier sur L sans étoiles (chemin principal, à régler), puis GHS_2_contraste et GHS_3_fond (chemin principal) sur L ; R_C_RGB_etire_rapide sur RGB (MAS avec étoiles, SXT Unscreen qui crée RGB_stars, SCNR vert sur RGB_stars, GHS fond). Icône de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="R_C_RGB_etire_rapide_instance">
-      <description>MODE RAPIDE, à la place de MAS, SXT_RGB_etire, SCNR_etoiles_vert, SCNR_etoiles_violet et GHS_3_fond sur le RGB : glisse sur RGB linéaire avec étoiles ; MAS, SXT Unscreen (RGB_stars créée), SCNR vert puis violet sur RGB_stars, GHS fond (SP = HP = 0,12).&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : MAS (tes réglages, fond 0,15), SXT Unscreen (RGB_stars créée), SCNR vert 1,0 puis violet (Invert, SCNR vert, Invert) sur RGB_stars (script Etoiles_auto), GHS fond (b = 10, SP = HP = 0,12, Stretch factor 1).&#10;&#10;À RÉGLER : glisse sur le RGB linéaire avec étoiles (après R_Lineaire_rapide) ; RGB sort étiré sans étoiles, RGB_stars étirée ; ensuite R_C_LRGB_rapide.&#10;&#10;SI :&#10;- fond pas au même niveau que L -&gt; GHS_3_fond du chemin principal, réglé à la main</description>
+      <description>MODE RAPIDE, à la place de MAS, SXT_RGB_etire, SCNR_etoiles_vert et GHS_3_fond sur le RGB (SCNR_etoiles_violet à passer à part si besoin) : glisse sur RGB linéaire avec étoiles ; MAS, SXT Unscreen (RGB_stars créée), SCNR vert sur RGB_stars, GHS fond (SP = HP = 0,12).&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : MAS (tes réglages, fond 0,15), SXT Unscreen (RGB_stars créée), SCNR vert 1,0 sur RGB_stars (script Etoiles_auto), GHS fond (b = 10, SP = HP = 0,12, Stretch factor 1).&#10;&#10;À RÉGLER : glisse sur le RGB linéaire avec étoiles (après R_Lineaire_rapide) ; RGB sort étiré sans étoiles, RGB_stars étirée ; ensuite R_C_LRGB_rapide.&#10;&#10;SI :&#10;- fond pas au même niveau que L -&gt; GHS_3_fond du chemin principal, réglé à la main</description>
       <instance class="MultiscaleAdaptiveStretch" version="256" enabled="true">
          <parameter id="aggressiveness" value="0.70"/>
          <parameter id="targetBackground" value="0.150"/>
@@ -1843,37 +1843,6 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
             <tr>
                <td id="id">violet</td>
                <td id="value">false</td>
-            </tr>
-            <tr>
-               <td id="id">dialogue</td>
-               <td id="value">false</td>
-            </tr>
-         </table>
-         <parameter id="information"></parameter>
-      </instance>
-      <instance class="Script" version="256" enabled="true">
-         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js</parameter>
-         <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="6">
-            <tr>
-               <td id="id">vue</td>
-               <td id="value">RGB_stars</td>
-            </tr>
-            <tr>
-               <td id="id">amount</td>
-               <td id="value">0</td>
-            </tr>
-            <tr>
-               <td id="id">satAmount</td>
-               <td id="value">0</td>
-            </tr>
-            <tr>
-               <td id="id">scnr</td>
-               <td id="value">false</td>
-            </tr>
-            <tr>
-               <td id="id">violet</td>
-               <td id="value">true</td>
             </tr>
             <tr>
                <td id="id">dialogue</td>

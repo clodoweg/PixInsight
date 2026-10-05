@@ -218,14 +218,14 @@ RAPIDE_NOTE = {
     'LRGB': {1: "MODE RAPIDE (galaxies) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre (étoiles gardées jusqu'à LRGB) : R_C_Preparation_rapide ; R_Gradient_auto_rapide ; R_Lineaire_rapide (RGB et L) ; GHS_1_premier, GHS_2_contraste, GHS_3_fond sur L ; R_C_RGB_etire_rapide sur RGB ; R_C_LRGB_rapide (LRGB sans étoiles) ; finition. Phase 1 : R_C_Preparation_rapide (double-clic puis Apply Global) à la place de LinearPatternSubtraction, Renommer_auto, Combinaison_RGB et Solver_auto",
              2: "R_Gradient_auto_rapide à la place de toute la phase 2 : GradientCorrection sur toutes les images ouvertes (l'astrométrie est déjà faite par R_C_Preparation_rapide)",
              3: "R_Lineaire_rapide (double-clic puis Apply Global) à la place de C_RGB_lineaire et C_L_lineaire : lance C_RGB_lineaire sur RGB puis C_L_lineaire sur L ; les deux restent linéaires, avec leurs étoiles",
-             4: "GHS_1_premier sur L sans étoiles (chemin principal, à régler), puis GHS_2_contraste et GHS_3_fond (chemin principal) sur L ; R_C_RGB_etire_rapide sur RGB (MAS avec étoiles, SXT Unscreen qui crée RGB_stars, SCNR vert puis violet sur RGB_stars, GHS fond)",
+             4: "GHS_1_premier sur L sans étoiles (chemin principal, à régler), puis GHS_2_contraste et GHS_3_fond (chemin principal) sur L ; R_C_RGB_etire_rapide sur RGB (MAS avec étoiles, SXT Unscreen qui crée RGB_stars, SCNR vert sur RGB_stars, GHS fond)",
              5: "R_C_LRGB_rapide sur RGB sans étoiles (L sans étoiles ouverte) à la place de LRGB_ajout_L : L ajoutée (Saturation 0,5) ; Etoiles_auto_etire en option si besoin",
              6: "R_C_Fin_rapide sur l'image sans étoiles après LRGB_ajout_L (ou R_C_LRGB_rapide) : HDRMT à 30 %, masque, Courbes, LHE, LHE_fin, Sharp_MMT, masque retiré, NXT_final 0,40 en un seul conteneur (= HDRMT_30, C_Finition, C_Sharp_MMT et NXT_final)",
              7: "R_C_Etoiles_fond_rapide sur l'image sans étoiles finie : Fond_desature, Fond_auto (0,12) sur l'image sans étoiles, étoiles remises (Etoiles_screen), puis Export_TIFF en un seul conteneur"},
     'LHA': {1: "MODE RAPIDE (galaxies) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre : R_C_Preparation_rapide ; R_Gradient_auto_rapide ; R_Lineaire_rapide (RGB, L et H), Continuum_auto, H_dans_RGB, C_RGB_bruit (étoiles gardées) ; GHS_1_premier, GHS_2_contraste, GHS_3_fond sur L ; R_C_RGB_etire_rapide sur RGB ; R_C_LRGB_rapide (LRGB sans étoiles) ; finition. Phase 1 : R_C_Preparation_rapide (double-clic puis Apply Global) à la place de LinearPatternSubtraction, Renommer_auto, Combinaison_RGB et Solver_auto",
             2: "R_Gradient_auto_rapide à la place de toute la phase 2 : GradientCorrection sur toutes les images ouvertes (R et H compris, pour le continuum) ; l'astrométrie est déjà faite par R_C_Preparation_rapide",
             3: "R_Lineaire_rapide (double-clic puis Apply Global) à la place de C_RGB_couleur, BXT_L_H et NXT_L : lance C_RGB_couleur sur RGB, BXT_L_H sur L et sur H, NXT_L sur L ; puis chemin principal : Continuum_auto, H_dans_RGB (H_dans_L éventuel), C_RGB_bruit",
-            4: "GHS_1_premier sur L sans étoiles (chemin principal, à régler), puis GHS_2_contraste et GHS_3_fond (chemin principal) sur L ; R_C_RGB_etire_rapide sur RGB (MAS avec étoiles, SXT Unscreen qui crée RGB_stars, SCNR vert puis violet sur RGB_stars, GHS fond)",
+            4: "GHS_1_premier sur L sans étoiles (chemin principal, à régler), puis GHS_2_contraste et GHS_3_fond (chemin principal) sur L ; R_C_RGB_etire_rapide sur RGB (MAS avec étoiles, SXT Unscreen qui crée RGB_stars, SCNR vert sur RGB_stars, GHS fond)",
             5: "R_C_LRGB_rapide sur RGB sans étoiles (L sans étoiles ouverte) à la place de LRGB_ajout_L : L ajoutée (Saturation 0,5) ; Etoiles_auto_etire en option si besoin",
             6: "R_C_Fin_rapide sur l'image sans étoiles après LRGB_ajout_L (ou R_C_LRGB_rapide) : HDRMT à 30 %, masque, Courbes, LHE, LHE_fin, Sharp_MMT, masque retiré, NXT_final 0,40 en un seul conteneur (= HDRMT_30, C_Finition, C_Sharp_MMT et NXT_final)",
             7: "R_C_Etoiles_fond_rapide sur l'image sans étoiles finie : Fond_desature, Fond_auto (0,12) sur l'image sans étoiles, étoiles remises (Etoiles_screen), puis Export_TIFF en un seul conteneur"}}
@@ -1110,7 +1110,7 @@ def lrgb_rapide(steps):
 
 def rgb_etire_rapide(steps):
     """P4_rapide galaxies (demande de l'utilisateur) : MAS avec étoiles, SXT Unscreen (RGB_stars), SCNR vert sur RGB_stars, GHS fond (SP = HP = 0,12, fond MAS 0,15)."""
-    return cont('C_RGB_etire_rapide', [pick(steps, 'MAS')[0], pick(steps, 'SXT_RGB_etire')[0], pick(steps, 'SCNR_etoiles_vert')[0], pick(steps, 'SCNR_etoiles_violet')[0], ghs('GHS_fond', 10, hp=0.12, sf=1.0, sp=0.12)])
+    return cont('C_RGB_etire_rapide', [pick(steps, 'MAS')[0], pick(steps, 'SXT_RGB_etire')[0], pick(steps, 'SCNR_etoiles_vert')[0], ghs('GHS_fond', 10, hp=0.12, sf=1.0, sp=0.12)])
 
 def prep_rapide(steps):
     """E00 : renommage, LinearPatternSubtraction (masters mono ouverts), combinaison RGB, en un conteneur."""
@@ -1132,7 +1132,7 @@ insert_after(lrgb, 'Combinaison_RGB', [(prep_l, ''), (gc_solver('Solver_auto'), 
 insert_after(lrgb, 'ImageSolver', [(script('Gradient_auto_rapide', ''), '')])
 # SCNR vert à 1,0 sur les étoiles : en P4, juste après SXT_RGB_etire, sur RGB_stars (script Etoiles_auto) ; plus en P7 (demande de l'utilisateur, 5 octobre 2026)
 for _st in (lrgb, lhargb):
-    insert_after(_st, 'SXT_RGB_etire', [(script('SCNR_etoiles_vert', ''), ''), (script('SCNR_etoiles_violet', ''), '')])   # vert puis violet (demande de l'utilisateur)
+    insert_after(_st, 'SXT_RGB_etire', [(script('SCNR_etoiles_vert', ''), ''), (script('SCNR_etoiles_violet', ''), '')])   # vert puis violet (demande de l'utilisateur) ; violet pas dans le rapide
     # options (demande de l'utilisateur) : Coeurs_etoiles avant MAS (RGB linéaire, pas en rapide), Etoiles_couleur sur RGB_stars avant Etoiles_screen
     insert_before(_st, 'MAS', [(script('Coeurs_etoiles', ''), ''), (script('RepairedHSV', ''), '')])   # RepairedHSV : le script officiel, avec sa fenêtre (demande de l'utilisateur)
     insert_before(_st, 'Etoiles_grosses', [(script('Etoiles_couleur', ''), '')])

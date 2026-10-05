@@ -85,7 +85,7 @@ WHEN = {
     'Gradient_auto_rapide': "MODE RAPIDE, à la place de la phase 2 : GradientCorrection sur TOUTES les images ouvertes (plus d'ImageSolver : fait par Solver_auto en phase 1) ; à faire AVANT R_Lineaire_rapide (sans GradientCorrection)",
     'Mode_rapide': "repère du mode rapide (galaxies), sans effet : lis sa description pour l'ordre",
     'C_Preparation_rapide': "MODE RAPIDE, à la place d'E00 à E03 : masters seuls ouverts, double-clic puis Apply Global (pas en glissant : ImageSolver échoue sur une image en cours de traitement) : Renommer_auto, LinearPatternSubtraction, Combinaison_RGB, Solver_auto (ImageSolver sur toutes les images) en un seul conteneur",
-    'C_RGB_etire_rapide': "MODE RAPIDE, à la place de MAS, SXT_RGB_etire, SCNR_etoiles_vert, SCNR_etoiles_violet et GHS_3_fond sur le RGB : glisse sur RGB linéaire avec étoiles ; MAS, SXT Unscreen (RGB_stars créée), SCNR vert puis violet sur RGB_stars, GHS fond (SP = HP = 0,12)",
+    'C_RGB_etire_rapide': "MODE RAPIDE, à la place de MAS, SXT_RGB_etire, SCNR_etoiles_vert et GHS_3_fond sur le RGB (SCNR_etoiles_violet à passer à part si besoin) : glisse sur RGB linéaire avec étoiles ; MAS, SXT Unscreen (RGB_stars créée), SCNR vert sur RGB_stars, GHS fond (SP = HP = 0,12)",
     'Statistical_Stretch': "à la place de MAS sur le RGB avec étoiles (étirement statistique, étoiles plus grosses) ; puis SXT_RGB_etire",
     'Sharp_USM': "à la place de C_Sharp_MMT : accentuation finale par UnsharpMask, avant NXT_final, sur l'image sans étoiles ; masque de luminance attaché puis retiré automatiquement",
     'Fond_auto': "après Fond_desature, sur l'image sans étoiles, avant Etoiles_screen : fond amené à 0,12 et neutre (grille 8 × 8)",

@@ -682,3 +682,8 @@ Fait : Etoiles_auto.js, nouveau paramètre violet (Invert, SCNR vert 1,0 Average
 
 Question : « c'est une recommandations de faire ca sur les étoiles? »
 Réponse (connaissance générale, sans nouvelle source) : la technique Invert / SCNR vert / Invert est classique pour les étoiles magenta des images narrowband (SHO), c'est aussi ce que fait le script CorrectMagentaStars ; en RGB calibré par SPCC elle n'est pas une étape standard, et à 1,0 elle verdit et désature un peu les étoiles bleues (G remonté jusqu'à (R + B)/2). Utile en LHaRGB si le H ajouté rosit les étoiles. Pas de changement fait.
+
+### SCNR_etoiles_violet sorti du rapide ; où est CorrectMagentaStars (5 octobre 2026)
+
+Demande : « SCNR_etoiles_violet -> sors le du rapide et CorrectMagentaStars c'est ou? »
+Fait : R_C_RGB_etire_rapide = MAS, SXT, SCNR_etoiles_vert, GHS fond. SCNR_etoiles_violet reste au chemin principal (E15 LRGB, E22 LHaRGB). CorrectMagentaStars : icône-note seulement dans les workflows narrowband (P7 options, SHO), pas en LRGB ni LHaRGB.
