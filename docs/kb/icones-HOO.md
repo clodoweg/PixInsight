@@ -712,7 +712,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > PRÉRÉGLÉ : script Fond_desature : fond mesuré ; zones faibles (luminance lissée sous fond + 0,15, décroissant jusqu'à + 0,30) : violet neutralisé (G remonté jusqu'à min(R, B), magenta seulement) ; fond (sous + 0,03, rampe jusqu'à + 0,15) : couleur retirée.
 > 
-> À RÉGLER : glisse sur l'image SANS étoiles, après SCNR_vert, avant Fond_auto et Etoiles_screen.
+> À RÉGLER : glisse sur l'image SANS étoiles finie (après NXT_final), avant Fond_auto et Etoiles_screen.
 > 
 > SI :
 > - violet encore visible dans le halo -> violetFin 0,40
