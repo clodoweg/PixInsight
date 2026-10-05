@@ -461,6 +461,45 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 ### P3_rapide
 
+#### R_Lineaire_rapide — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
+   paramètres : `etapes=C_RGB_couleur>RGB ; BXT_L_H>L,H ; NXT_L>L ; SXT_L_lineaire>L`
+
+> MODE RAPIDE, à la place de la phase 3 du chemin principal : double-clic puis Apply Global ; lance les icônes du chemin principal sur RGB et L (LRGB : C_RGB_lineaire et C_L_lineaire ; LHaRGB : C_RGB_couleur, BXT_L_H sur L et H, NXT_L) ; RGB et L restent linéaires, avec leurs étoiles.
+> 
+> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
+> 
+> PRÉRÉGLÉ : script Lineaire_auto.js, etapes = C_RGB_couleur>RGB ; BXT_L_H>L,H ; NXT_L>L ; SXT_L_lineaire>L : C_RGB_couleur (BXT Correct Only, SPCC, BXT) sur RGB, BXT (Nonstellar 0,80) sur L et H, NXT 0,60 sur L, SXT sur L (L sans étoiles) ; images linéaires.
+> 
+> À RÉGLER : double-clic puis Apply Global, après R_Gradient_auto_rapide ; Conteneurs-LHaRGB chargé ; ensuite Continuum_auto à la main (chemin principal), puis R_C_Ha_rapide glissé sur RGB, puis GHS_1_premier sur L.
+> 
+> SI :
+> - H_dans_L voulu -> il se fait après (NXT_L déjà passé sur L)
+> - une étape échoue -> la console dit laquelle
+
+#### R_C_Ha_rapide — ProcessContainer
+   1. Script
+      script `$PXI_SRCDIR/scripts/Toolbox/CombineHaToRGB.js`
+      paramètres : `alphaView=HaNB`, `amount=2.0`, `beta=0.0`, `bg=0.015`, `sigma=0.0`, `linear=true`, `rgbLinked=true`, `invertMask=true`
+   2. NoiseXTerminator
+      ml_version=0 ; denoise=0.80 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
+   3. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
+      paramètres : `views=H, R, HaNB`, `dialogue=false`
+
+> MODE RAPIDE, à la place de CombineHaWithRGB et C_RGB_bruit : après Continuum_auto (fait à la main, HaNB ouverte), glisse sur RGB linéaire.
+> 
+> LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
+> 
+> PRÉRÉGLÉ : conteneur : CombineHaWithRGB (H Alpha = HaNB, Amount 2,0, Beta 0), NXT 0,80, puis H, R et HaNB fermées (= CombineHaWithRGB et C_RGB_bruit).
+> 
+> À RÉGLER : après R_Lineaire_rapide puis Continuum_auto à la main (HaNB créée) : glisse sur le RGB linéaire ; ensuite GHS_1_premier sur L.
+> 
+> SI :
+> - régions HII trop rouges ou trop discrètes -> double-clic sur le conteneur, CombineHaWithRGB : Amount 1,5 ou 2,5
+> - H_dans_L voulu -> fais-le AVANT ce conteneur (il ferme HaNB)
+> - vue créée HaNB1 par Continuum_auto -> renomme-la HaNB avant
+
 ## P4_Etirement
 
 #### E17_GHS_1_premier — GeneralizedHyperbolicStretch

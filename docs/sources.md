@@ -766,3 +766,8 @@ Demande : « je n'aime pas ton continuum rapide. Supprime le . Ce que je veux fa
 Source : PixInsight Toolbox (Jürgen Terpe), https://www.ideviceapps.de/PixInsight/Utilities/ — paquet 20260824 : CombineHaToRGB.js et doc/scripts/CombineHaWithRGB/CombineHaWithRGB.html lus (« The image should be extracted using the ContinuumSubtraction script » ; Amount 1,5 à 2,5 ; Beta ; Background ; Sigma) — Officiel (auteur).
 Vérifié : BXT Correct Only, BXT RGB (Sharpen Stars 0,25, Nonstellar 0,50), BXT L et L_H (0,25 / 0,80), NXT RGB 0,80, NXT L 0,60 : identiques en LRGB et LHaRGB.
 Fait : Continuum_rapide.js et R_Continuum_rapide supprimés ; R_Lineaire_rapide retirée du LHaRGB ; CombineHaWithRGB au chemin principal (E13, alphaView = HaNB), H_dans_RGB en option ; T_Turbo_debut LHaRGB : seule l'étape Continuum_rapide retirée (script supprimé), le reste inchangé. LRGB inchangé (git diff vide).
+
+### LHaRGB : deux rapides en P3 (5 octobre 2026)
+
+Demande : « je veux deux rapides pour cette étapes: Le premier qui fera les BXT E10_C_RGB_couleur E11_BXT_L_H sur L et sur H E15_NXT_L E16_SXT_L_lineaire (ensuite je ferais a la main le E12_Continuum_auto que l'on peut pas scripter) Le second qui finalisera Opt_CombineHaWithRGB E14_C_RGB_bruit »
+Fait : R_Lineaire_rapide remise en LHaRGB (Lineaire_auto, etapes C_RGB_couleur>RGB ; BXT_L_H>L,H ; NXT_L>L ; SXT_L_lineaire>L) ; nouveau conteneur R_C_Ha_rapide (CombineHaWithRGB, NXT 0,80, Fermer_vues H, R, HaNB), à glisser sur RGB après Continuum_auto. LRGB inchangé.
