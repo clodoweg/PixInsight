@@ -27,6 +27,7 @@ Icônes non testées par l'auteur dans PixInsight 1.9.5 : si l'une ne se charge 
 | `LPS_UnClic.js` | LinearPatternSubtraction sans dialogue sur tous les masters mono ouverts |
 | `Combiner_RGB.js` | R, G, B → `RGB`, en-tête du rouge copié ; ferme les masters (`garder` : R en LHaRGB) |
 | `GC_Solver_auto.js` | ImageSolver sur toutes les images (icône Solver_auto) |
+| `clodoweg_ui.jsh` | fenêtres de réglages communes à tous les scripts (à copier avec eux) |
 | `Lineaire_auto.js` | lance des icônes du chemin principal sur des vues (icône R_Lineaire_rapide) |
 | `Gradient_auto.js` | GradientCorrection seule sur toutes les images (icône R_Gradient_auto_rapide) |
 | `ImageSolver_Date.js` | date ajoutée si absente, puis ImageSolver avec les réglages du matériel |

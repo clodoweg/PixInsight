@@ -33,12 +33,9 @@
 
 #include <pjsr/UndoFlag.jsh>
 
-#define TITLE "Export TIFF"
+#include "clodoweg_ui.jsh"
 
-function param( key, value )
-{
-   return Parameters.has( key ) ? Parameters.getString( key ).trim() : value;
-}
+#define TITLE "Export TIFF"
 
 var GENERIQUES = [ "master", "masters", "light", "lights", "output", "wbpp", "calibrated", "registered",
                    "integration", "integrated", "stacked", "fits", "xisf", "traitement", "pixinsight" ];
@@ -77,17 +74,25 @@ function keyword( view, name )
    return "";
 }
 
-function main()
+function etParams()
 {
-   let view = Parameters.isViewTarget ? Parameters.targetView : ImageWindow.activeWindow.mainView;
-   if ( view.isNull )
-      throw new Error( TITLE + " : aucune image." );
-   let suffixe = param( "suffixe", "" );
-   let dossier = param( "dossier", "" );
-   let nom = param( "nom", "" );
-   let icc = param( "icc", "true" ).toLowerCase() == "true";
-   let fermer = param( "fermer", "" );
+   return { nom: cwParam( "nom", "" ), suffixe: cwParam( "suffixe", "" ), dossier: cwParam( "dossier", "" ),
+            icc: cwBool( "icc", true ), fermer: cwParam( "fermer", "" ) };
+}
 
+function etExport( p )
+{
+   Parameters.set( "nom", p.nom );
+   Parameters.set( "suffixe", p.suffixe );
+   Parameters.set( "dossier", p.dossier );
+   Parameters.set( "icc", p.icc ? "true" : "false" );
+   Parameters.set( "fermer", p.fermer );
+}
+
+// Chemin du fichier : nom et dossier vides = d'après le dossier des masters ouverts.
+function etPath( view, p )
+{
+   let nom = p.nom, dossier = p.dossier;
    let dir = objectDir();
    if ( nom.length == 0 )
       nom = dir.length > 0 ? lastName( dir ) : keyword( view, "OBJECT" );
@@ -98,7 +103,65 @@ function main()
       dossier = dir.length > 0 ? dir : File.homeDirectory;
    if ( !dossier.endsWith( "/" ) )
       dossier += "/";
-   let path = dossier + nom + suffixe.replace( /\s+/g, "" ) + ".tiff";
+   return dossier + nom + p.suffixe.replace( /\s+/g, "" ) + ".tiff";
+}
+
+function etDialog( p, view )
+{
+   let d = new CWDialog( TITLE, "<b>Export TIFF</b> : copie de l'image en TIFF 16 bits, convertie en sRGB avec profil ICC, " +
+                         "pour Photoshop, Lightroom ou Affinity. L'image ouverte ne change pas.", "Fermer ensuite :" );
+   let sel = { view: view };
+   let pathLabel = null;
+   function refresh()
+   {
+      if ( pathLabel )
+         pathLabel.text = "Fichier : <b>" + ((sel.view == null || sel.view.isNull) ? "?" : etPath( sel.view, p )) + "</b>";
+   }
+   d.viewList( "Image :", view, "Image finie à exporter.", function( v ) { sel.view = v; refresh(); } );
+   d.edit( "Nom :", p.nom, "Vide = nom du dossier des masters (NGC1532) ; jamais d'espace.", function( t ) { p.nom = t.trim(); refresh(); } );
+   d.edit( "Suffixe :", p.suffixe, "Ajouté au nom (ex. _v2).", function( t ) { p.suffixe = t.trim(); refresh(); } );
+   let dirEdit = d.edit( "Dossier :", p.dossier, "Vide = dossier de l'objet (au-dessus du dossier master).", function( t ) { p.dossier = t.trim(); refresh(); } );
+   d.button( "Choisir le dossier…", "Choisir le dossier d'enregistrement.", function()
+   {
+      let g = new GetDirectoryDialog;
+      g.caption = "Dossier d'enregistrement";
+      if ( g.execute() )
+      {
+         p.dossier = g.directory;
+         dirEdit.text = p.dossier;
+         refresh();
+      }
+   } );
+   d.check( "Convertir en sRGB IEC61966-2.1 (profil ICC intégré)", p.icc, "", function( c ) { p.icc = c; } );
+   d.edit( "Fermer ensuite :", p.fermer, "Vues fermées après l'export, séparées par des virgules (L, RGB_stars).", function( t ) { p.fermer = t; } );
+   pathLabel = d.info( "" );
+   refresh();
+   d.onExport = function() { etExport( p ); };
+   d.validate = function() { return (sel.view == null || sel.view.isNull) ? "Choisis l'image." : ""; };
+   d.finish( "Exporter" );
+   return d.execute() ? sel.view : null;
+}
+
+function main()
+{
+   let p = etParams();
+   if ( cwWantsDialog() )
+   {
+      let view = etDialog( p, cwDefaultView() );
+      if ( view != null )
+         cwRun( TITLE, function() { etRun( view, p ); } );
+      return;
+   }
+   let view = Parameters.isViewTarget ? Parameters.targetView : ImageWindow.activeWindow.mainView;
+   if ( view.isNull )
+      throw new Error( TITLE + " : aucune image." );
+   etRun( view, p );
+}
+
+function etRun( view, p )
+{
+   let icc = p.icc, fermer = p.fermer;
+   let path = etPath( view, p );
 
    // 1. copie 16 bits
    let img = view.image;

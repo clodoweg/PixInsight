@@ -9,7 +9,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <description>PHASE 1 — Préparation : masters intégrés, recadrés et combinés. Colonne de repère, sans effet.</description>
    </instance>
    <instance class="Script" version="256" id="E00_LinearPatternSubtraction_instance">
-      <description>LANCEMENT : glisse l'icône sur l'image.&#10;&#10;PRÉRÉGLÉ : script LPS_UnClic (moteur de Vicent Peris, sans dialogue) : lignes, Correct the entire image, Layers to remove 9, Rejection limit 3, Global rejection 5, zone de fond choisie automatiquement (la plus sombre), fenêtres de travail fermées, TOUTES les images ouvertes corrigées (allOpenImages = true).&#10;&#10;À RÉGLER : une seule fois par ordinateur (Mac ou PC) : crée le dossier clodoweg dans src/scripts de PixInsight (à côté de PatternCorrection ; Mac : /Applications/PixInsight/src/scripts/clodoweg, PC : en général C:\Program Files\PixInsight\src\scripts\clodoweg ; pas le dossier scripts du premier niveau) et copies-y LPS_UnClic.js ; ensuite ouvre les masters linéaires de la cible (et rien d'autre), puis glisse l'icône sur l'un d'eux : tous sont corrigés, avant le recadrage (la correction se fait dans les images).&#10;&#10;SI :&#10;- corriger des colonnes -&gt; correctColumns = true dans l'icône&#10;- une seule image -&gt; allOpenImages = false dans l'icône, puis glisse-la sur l'image&#10;- artefacts -&gt; Ctrl+Z : le script est conçu pour les brutes, avant alignement&#10;- script introuvable -&gt; vérifie le dossier scripts/clodoweg (à recopier après une réinstallation de PixInsight) ; version avec dialogue : menu Script › Pattern Correction › LinearPatternSubtraction</description>
+      <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script LPS_UnClic (moteur de Vicent Peris, sans dialogue) : lignes, Correct the entire image, Layers to remove 9, Rejection limit 3, Global rejection 5, zone de fond choisie automatiquement (la plus sombre), fenêtres de travail fermées, TOUTES les images ouvertes corrigées (allOpenImages = true).&#10;&#10;À RÉGLER : une seule fois par ordinateur (Mac ou PC) : crée le dossier clodoweg dans src/scripts de PixInsight (à côté de PatternCorrection ; Mac : /Applications/PixInsight/src/scripts/clodoweg, PC : en général C:\Program Files\PixInsight\src\scripts\clodoweg ; pas le dossier scripts du premier niveau) et copies-y LPS_UnClic.js ; ensuite ouvre les masters linéaires de la cible (et rien d'autre), puis glisse l'icône sur l'un d'eux : tous sont corrigés, avant le recadrage (la correction se fait dans les images).&#10;&#10;SI :&#10;- corriger des colonnes -&gt; correctColumns = true dans l'icône&#10;- une seule image -&gt; allOpenImages = false dans l'icône, puis glisse-la sur l'image&#10;- artefacts -&gt; Ctrl+Z : le script est conçu pour les brutes, avant alignement&#10;- script introuvable -&gt; vérifie le dossier scripts/clodoweg (à recopier après une réinstallation de PixInsight) ; version avec dialogue : menu Script › Pattern Correction › LinearPatternSubtraction</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/LPS_UnClic.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="14">
@@ -73,14 +73,14 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="information"></parameter>
    </instance>
    <instance class="Script" version="256" id="E01_Renommer_auto_instance">
-      <description>LANCEMENT : double-clic sur l'icône, puis Apply Global.&#10;&#10;PRÉRÉGLÉ : script Renommer_auto : renomme les masters mono ouverts L, R, G, B, H, O, S d'après le mot-clé FILTER (Lum, Red, Ha, OIII...), sinon d'après le nom du fichier.&#10;&#10;À RÉGLER : une seule fois par ordinateur : copie Renommer_auto.js dans src/scripts/clodoweg ; ouvre tes masters, puis lance l'icône.&#10;&#10;SI :&#10;- filtre inconnu ou nom déjà pris -&gt; message dans la console, renomme cette vue à la main</description>
+      <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Renommer_auto : renomme les masters mono ouverts L, R, G, B, H, O, S d'après le mot-clé FILTER (Lum, Red, Ha, OIII...), sinon d'après le nom du fichier.&#10;&#10;À RÉGLER : une seule fois par ordinateur : copie Renommer_auto.js dans src/scripts/clodoweg ; ouvre tes masters, puis lance l'icône.&#10;&#10;SI :&#10;- filtre inconnu ou nom déjà pris -&gt; message dans la console, renomme cette vue à la main</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Renommer_auto.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="0"/>
       <parameter id="information"></parameter>
    </instance>
    <instance class="Script" version="256" id="E02_Combinaison_RGB_instance">
-      <description>LANCEMENT : double-clic sur l'icône, puis Apply Global.&#10;&#10;PRÉRÉGLÉ : script Combiner_RGB : R, G, B -&gt; image couleur 'RGB', en-tête FITS du rouge copié ; G et B fermées, R gardée OUVERTE (garder = R : elle sert à Continuum_auto, puis C_RGB_bruit la ferme).&#10;&#10;À RÉGLER : nomme tes masters R, G et B (ou Renommer_auto), puis lance l'icône.</description>
+      <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Combiner_RGB : R, G, B -&gt; image couleur 'RGB', en-tête FITS du rouge copié ; G et B fermées, R gardée OUVERTE (garder = R : elle sert à Continuum_auto, puis C_RGB_bruit la ferme).&#10;&#10;À RÉGLER : nomme tes masters R, G et B (ou Renommer_auto), puis lance l'icône.</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Combiner_RGB.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="7">
@@ -116,7 +116,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="information"></parameter>
    </instance>
    <instance class="Script" version="256" id="E03_Solver_auto_instance">
-      <description>LANCEMENT : double-clic sur l'icône, puis Apply Global.&#10;&#10;PRÉRÉGLÉ : script GC_Solver_auto.js (gradient false, solveTout true) : ImageSolver (date par défaut si absente, réglages du matériel) sur TOUTES les images ouvertes, sans GradientCorrection ; images *_stars ignorées ; une erreur n'arrête pas les autres.&#10;&#10;À RÉGLER : double-clic puis Apply Global, après Combinaison_RGB ; déjà inclus dans R_C_Preparation_rapide ; ensuite ImageSolver (phase 2) est inutile ; copie GC_Solver_auto.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- seulement la RGB -&gt; solveTout false&#10;- une image en erreur -&gt; lis le bilan en fin de console, refais-la avec ImageSolver</description>
+      <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script GC_Solver_auto.js (gradient false, solveTout true) : ImageSolver (date par défaut si absente, réglages du matériel) sur TOUTES les images ouvertes, sans GradientCorrection ; images *_stars ignorées ; une erreur n'arrête pas les autres.&#10;&#10;À RÉGLER : double-clic puis Apply Global, après Combinaison_RGB ; déjà inclus dans R_C_Preparation_rapide ; ensuite ImageSolver (phase 2) est inutile ; copie GC_Solver_auto.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- seulement la RGB -&gt; solveTout false&#10;- une image en erreur -&gt; lis le bilan en fin de console, refais-la avec ImageSolver</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/GC_Solver_auto.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="50">
@@ -358,7 +358,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <table id="defects" rows="0"/>
    </instance>
    <instance class="Script" version="256" id="Opt_Binning_x2_instance">
-      <description>OPTION — traitement 4 fois plus rapide et moins de bruit (0,528″/px au lieu de 0,264″/px, l'image du CDK17 est suréchantillonnée) : double-clic puis Apply Global juste après Solver_auto, toutes les images divisées par 2&#10;Pour un grand tirage, Agrandir_x2 avant l'export.&#10;&#10;LANCEMENT : double-clic sur l'icône, puis Apply Global.&#10;&#10;PRÉRÉGLÉ : script Binning_x2 : IntegerResample −2, moyenne (binning 2×2 logiciel) sur TOUTES les images ouvertes (sauf *_stars) ; solution astrométrique gardée ; mots-clés XPIXSZ et XBINNING mis à jour.&#10;&#10;À RÉGLER : double-clic puis Apply Global, juste APRÈS Solver_auto (phase 1) ; copie Binning_x2.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- grand tirage voulu -&gt; Agrandir_x2 (P7 options) avant Export_TIFF, ou ne bine pas&#10;- binning 3×3 -&gt; facteur 3&#10;- ImageSolver refait ensuite et en échec -&gt; metadata_xpixsz = 7.52 dans l'icône ImageSolver</description>
+      <description>OPTION — traitement 4 fois plus rapide et moins de bruit (0,528″/px au lieu de 0,264″/px, l'image du CDK17 est suréchantillonnée) : double-clic puis Apply Global juste après Solver_auto, toutes les images divisées par 2&#10;Pour un grand tirage, Agrandir_x2 avant l'export.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Binning_x2 : IntegerResample −2, moyenne (binning 2×2 logiciel) sur TOUTES les images ouvertes (sauf *_stars) ; solution astrométrique gardée ; mots-clés XPIXSZ et XBINNING mis à jour.&#10;&#10;À RÉGLER : double-clic puis Apply Global, juste APRÈS Solver_auto (phase 1) ; copie Binning_x2.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- grand tirage voulu -&gt; Agrandir_x2 (P7 options) avant Export_TIFF, ou ne bine pas&#10;- binning 3×3 -&gt; facteur 3&#10;- ImageSolver refait ensuite et en échec -&gt; metadata_xpixsz = 7.52 dans l'icône ImageSolver</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Binning_x2.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="1">
@@ -376,13 +376,18 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Renommer_auto.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="0"/>
+         <table id="parameters" rows="1">
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
          <parameter id="information"></parameter>
       </instance>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/LPS_UnClic.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="14">
+         <table id="parameters" rows="15">
             <tr>
                <td id="id">correctColumns</td>
                <td id="value">false</td>
@@ -439,13 +444,17 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
                <td id="id">closeWorkingImages</td>
                <td id="value">true</td>
             </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
          </table>
          <parameter id="information"></parameter>
       </instance>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Combiner_RGB.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="7">
+         <table id="parameters" rows="8">
             <tr>
                <td id="id">red</td>
                <td id="value">R</td>
@@ -474,13 +483,17 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
                <td id="id">garder</td>
                <td id="value">R</td>
             </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
          </table>
          <parameter id="information"></parameter>
       </instance>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/GC_Solver_auto.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="50">
+         <table id="parameters" rows="51">
             <tr>
                <td id="id">gradient</td>
                <td id="value">false</td>
@@ -679,6 +692,10 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
             </tr>
             <tr>
                <td id="id">solver_tryExhaustiveInitialAlignment</td>
+               <td id="value">false</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
                <td id="value">false</td>
             </tr>
          </table>
@@ -1324,7 +1341,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <description>MODE RAPIDE, phase 2 — Gradient : R_Gradient_auto_rapide à la place de toute la phase 2 : GradientCorrection sur toutes les images ouvertes (R et H compris, pour le continuum) ; l'astrométrie est déjà faite par R_C_Preparation_rapide. Icône de repère, sans effet.</description>
    </instance>
    <instance class="Script" version="256" id="R_Gradient_auto_rapide_instance">
-      <description>MODE RAPIDE, à la place de la phase 2 : GradientCorrection sur TOUTES les images ouvertes (plus d'ImageSolver : fait par Solver_auto en phase 1) ; à faire AVANT R_Lineaire_rapide (sans GradientCorrection).&#10;&#10;LANCEMENT : double-clic sur l'icône, puis Apply Global.&#10;&#10;PRÉRÉGLÉ : script Gradient_auto.js : GradientCorrection (sans modèle de gradient) sur TOUTES les images ouvertes, rien d'autre (pas d'ImageSolver) ; images *_stars ignorées ; une erreur n'arrête pas les autres.&#10;&#10;À RÉGLER : double-clic puis Apply Global, masters et RGB ouverts, après R_C_Preparation_rapide (astrométrie déjà faite par Solver_auto) ; AVANT R_Lineaire_rapide (le chemin principal de la phase 3 n'a pas de GradientCorrection) ; copie Gradient_auto.js dans src/scripts/clodoweg.</description>
+      <description>MODE RAPIDE, à la place de la phase 2 : GradientCorrection sur TOUTES les images ouvertes (plus d'ImageSolver : fait par Solver_auto en phase 1) ; à faire AVANT R_Lineaire_rapide (sans GradientCorrection).&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Gradient_auto.js : GradientCorrection (sans modèle de gradient) sur TOUTES les images ouvertes, rien d'autre (pas d'ImageSolver) ; images *_stars ignorées ; une erreur n'arrête pas les autres.&#10;&#10;À RÉGLER : double-clic puis Apply Global, masters et RGB ouverts, après R_C_Preparation_rapide (astrométrie déjà faite par Solver_auto) ; AVANT R_Lineaire_rapide (le chemin principal de la phase 3 n'a pas de GradientCorrection) ; copie Gradient_auto.js dans src/scripts/clodoweg.</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Gradient_auto.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="0"/>
@@ -1505,10 +1522,14 @@ $T[0] + w*HaNB</parameter>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="1">
+         <table id="parameters" rows="2">
             <tr>
                <td id="id">views</td>
                <td id="value">H, R, HaNB</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
             </tr>
          </table>
          <parameter id="information"></parameter>
@@ -1754,7 +1775,7 @@ max($T, HaNB*a)</parameter>
       <description>MODE RAPIDE, phase 3 — Linéaire : R_Lineaire_rapide (double-clic puis Apply Global) à la place de C_RGB_couleur, BXT_L_H et NXT_L : lance C_RGB_couleur sur RGB, BXT_L_H sur L et sur H, NXT_L sur L ; puis chemin principal : Continuum_auto, H_dans_RGB (H_dans_L éventuel), C_RGB_bruit. Icône de repère, sans effet.</description>
    </instance>
    <instance class="Script" version="256" id="R_Lineaire_rapide_instance">
-      <description>MODE RAPIDE, à la place de la phase 3 du chemin principal : double-clic puis Apply Global ; lance les icônes du chemin principal sur RGB et L (LRGB : C_RGB_lineaire et C_L_lineaire ; LHaRGB : C_RGB_couleur, BXT_L_H sur L et H, NXT_L) ; RGB et L restent linéaires, avec leurs étoiles.&#10;&#10;LANCEMENT : double-clic sur l'icône, puis Apply Global.&#10;&#10;PRÉRÉGLÉ : script Lineaire_auto.js, etapes = C_RGB_couleur&gt;RGB ; BXT_L_H&gt;L,H ; NXT_L&gt;L : C_RGB_couleur (BXT Correct Only, SPCC, BXT) sur RGB, BXT (Nonstellar 0,80) sur L et H, NXT 0,60 sur L ; étoiles gardées, images linéaires.&#10;&#10;À RÉGLER : double-clic puis Apply Global, après R_Gradient_auto_rapide ; Conteneurs-LHaRGB chargé ; ensuite Continuum_auto, H_dans_RGB, C_RGB_bruit (chemin principal), puis GHS_1_premier sur L.&#10;&#10;SI :&#10;- H_dans_L voulu -&gt; il se fait après (NXT_L déjà passé sur L)&#10;- une étape échoue -&gt; la console dit laquelle</description>
+      <description>MODE RAPIDE, à la place de la phase 3 du chemin principal : double-clic puis Apply Global ; lance les icônes du chemin principal sur RGB et L (LRGB : C_RGB_lineaire et C_L_lineaire ; LHaRGB : C_RGB_couleur, BXT_L_H sur L et H, NXT_L) ; RGB et L restent linéaires, avec leurs étoiles.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Lineaire_auto.js, etapes = C_RGB_couleur&gt;RGB ; BXT_L_H&gt;L,H ; NXT_L&gt;L : C_RGB_couleur (BXT Correct Only, SPCC, BXT) sur RGB, BXT (Nonstellar 0,80) sur L et H, NXT 0,60 sur L ; étoiles gardées, images linéaires.&#10;&#10;À RÉGLER : double-clic puis Apply Global, après R_Gradient_auto_rapide ; Conteneurs-LHaRGB chargé ; ensuite Continuum_auto, H_dans_RGB, C_RGB_bruit (chemin principal), puis GHS_1_premier sur L.&#10;&#10;SI :&#10;- H_dans_L voulu -&gt; il se fait après (NXT_L déjà passé sur L)&#10;- une étape échoue -&gt; la console dit laquelle</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="1">
@@ -2007,7 +2028,7 @@ max($T, HaNB*a)</parameter>
       <description>OPTIONS de la phase 5 — Couleur : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
    </instance>
    <instance class="Script" version="256" id="Opt_Etoiles_auto_etire_instance">
-      <description>OPTION — après SXT_RGB_etire : étoiles ternes ou un peu vertes&#10;Glisse sur n'importe quelle image (traite RGB_stars) : saturation 1,3 et SCNR, sans étirement (étoiles déjà étirées).&#10;&#10;LANCEMENT : glisse l'icône sur l'image.&#10;&#10;PRÉRÉGLÉ : script Etoiles_auto, amount 0 (étoiles déjà étirées) : saturation 1,3 (0,4 × rouges, 0,7 × cyans) et SCNR vert seulement.&#10;&#10;À RÉGLER : glisse sur n'importe quelle image après SXT_RGB_etire (traite RGB_stars).&#10;&#10;SI :&#10;- étoiles criardes -&gt; satAmount 1,0&#10;- étoiles ternes -&gt; scnr false</description>
+      <description>OPTION — après SXT_RGB_etire : étoiles ternes ou un peu vertes&#10;Glisse sur n'importe quelle image (traite RGB_stars) : saturation 1,3 et SCNR, sans étirement (étoiles déjà étirées).&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Etoiles_auto, amount 0 (étoiles déjà étirées) : saturation 1,3 (0,4 × rouges, 0,7 × cyans) et SCNR vert seulement.&#10;&#10;À RÉGLER : glisse sur n'importe quelle image après SXT_RGB_etire (traite RGB_stars).&#10;&#10;SI :&#10;- étoiles criardes -&gt; satAmount 1,0&#10;- étoiles ternes -&gt; scnr false</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="4">
@@ -2154,10 +2175,14 @@ max($T, HaNB*a)</parameter>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="1">
+         <table id="parameters" rows="2">
             <tr>
                <td id="id">views</td>
                <td id="value">HDR_avant</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
             </tr>
          </table>
          <parameter id="information"></parameter>
@@ -2167,7 +2192,7 @@ max($T, HaNB*a)</parameter>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="4">
+         <table id="parameters" rows="5">
             <tr>
                <td id="id">mode</td>
                <td id="value">attacher</td>
@@ -2183,6 +2208,10 @@ max($T, HaNB*a)</parameter>
             <tr>
                <td id="id">nom</td>
                <td id="value">masque_L</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
             </tr>
          </table>
          <parameter id="information"></parameter>
@@ -2339,7 +2368,7 @@ max($T, HaNB*a)</parameter>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="2">
+         <table id="parameters" rows="3">
             <tr>
                <td id="id">mode</td>
                <td id="value">retirer</td>
@@ -2347,6 +2376,10 @@ max($T, HaNB*a)</parameter>
             <tr>
                <td id="id">nom</td>
                <td id="value">masque_L</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
             </tr>
          </table>
          <parameter id="information"></parameter>
@@ -2375,7 +2408,7 @@ max($T, HaNB*a)</parameter>
       <description>OPTIONS de la phase 6 — Finition : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
    </instance>
    <instance class="Script" version="256" id="Opt_Nettoyage_sans_etoiles_instance">
-      <description>OPTION — avant la partie 1, sur l'image sans étoiles juste après LRGB (RGB_stars ouverte) : taches rondes floues ou halo coloré laissés par SXT autour des étoiles.&#10;&#10;LANCEMENT : glisse l'icône sur l'image.&#10;&#10;PRÉRÉGLÉ : script Nettoyage_sans_etoiles (calcul sur une copie à 2000 px) : seules les étoiles BRILLANTES de RGB_stars comptent (luminance floutée 20 px au-dessus de 0,05 à 0,12), zone étendue au halo ; fond LOCAL par ouverture morphologique (disque 25 px, 3 passes : taches de moins de 75 px retirées, halo de la galaxie gardé) ; galaxie et structures claires protégées ; excès au-dessus du fond local retiré, bruit fin gardé ; TRÈS grandes étoiles (luminance floutée 50 px au-dessus de 0,05) : zone d'environ 170 px et fond local à grande échelle (environ 300 px).&#10;&#10;À RÉGLER : glisse sur l'image sans étoiles juste après LRGB, AVANT HDRMT_40 ; RGB_stars doit être ouverte ; vérifie à 1:1, Ctrl+Z pour annuler.&#10;&#10;SI :&#10;- voir ce qui est touché -&gt; afficherMasque true (vue masque_nettoyage : seulement les grandes étoiles)&#10;- trop d'étoiles touchées -&gt; seuilBas 0,07, seuilHaut 0,15&#10;- halo d'une étoile moyenne encore visible -&gt; seuilBas 0,04, seuilHaut 0,09&#10;- halo d'une très grande étoile pas entièrement couvert -&gt; etendue2 100 et gain2 10 (masque plus large et plein)&#10;- halo d'une étoile brillante moyenne pas couvert -&gt; etendue 35 et gain 4&#10;- trou sombre à la place du halo -&gt; etendue2 60 et gain2 5&#10;- anneau sombre autour d'une petite galaxie dans un halo -&gt; compact 0,03&#10;- un seul passage : chaque passage en plus assombrit un peu (Ctrl+Z puis réglages)&#10;- bras ou petite galaxie atténué -&gt; structure 0,10</description>
+      <description>OPTION — avant la partie 1, sur l'image sans étoiles juste après LRGB (RGB_stars ouverte) : taches rondes floues ou halo coloré laissés par SXT autour des étoiles.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Nettoyage_sans_etoiles (calcul sur une copie à 2000 px) : seules les étoiles BRILLANTES de RGB_stars comptent (luminance floutée 20 px au-dessus de 0,05 à 0,12), zone étendue au halo ; fond LOCAL par ouverture morphologique (disque 25 px, 3 passes : taches de moins de 75 px retirées, halo de la galaxie gardé) ; galaxie et structures claires protégées ; excès au-dessus du fond local retiré, bruit fin gardé ; TRÈS grandes étoiles (luminance floutée 50 px au-dessus de 0,05) : zone d'environ 170 px et fond local à grande échelle (environ 300 px).&#10;&#10;À RÉGLER : glisse sur l'image sans étoiles juste après LRGB, AVANT HDRMT_40 ; RGB_stars doit être ouverte ; vérifie à 1:1, Ctrl+Z pour annuler.&#10;&#10;SI :&#10;- voir ce qui est touché -&gt; afficherMasque true (vue masque_nettoyage : seulement les grandes étoiles)&#10;- trop d'étoiles touchées -&gt; seuilBas 0,07, seuilHaut 0,15&#10;- halo d'une étoile moyenne encore visible -&gt; seuilBas 0,04, seuilHaut 0,09&#10;- halo d'une très grande étoile pas entièrement couvert -&gt; etendue2 100 et gain2 10 (masque plus large et plein)&#10;- halo d'une étoile brillante moyenne pas couvert -&gt; etendue 35 et gain 4&#10;- trou sombre à la place du halo -&gt; etendue2 60 et gain2 5&#10;- anneau sombre autour d'une petite galaxie dans un halo -&gt; compact 0,03&#10;- un seul passage : chaque passage en plus assombrit un peu (Ctrl+Z puis réglages)&#10;- bras ou petite galaxie atténué -&gt; structure 0,10</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Nettoyage_sans_etoiles.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="13">
@@ -2519,10 +2552,14 @@ max($T, HaNB*a)</parameter>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="1">
+         <table id="parameters" rows="2">
             <tr>
                <td id="id">views</td>
                <td id="value">HDR_avant</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
             </tr>
          </table>
          <parameter id="information"></parameter>
@@ -2613,10 +2650,14 @@ max($T, HaNB*a)</parameter>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="1">
+         <table id="parameters" rows="2">
             <tr>
                <td id="id">views</td>
                <td id="value">HDR_avant</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
             </tr>
          </table>
          <parameter id="information"></parameter>
@@ -2707,10 +2748,14 @@ max($T, HaNB*a)</parameter>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="1">
+         <table id="parameters" rows="2">
             <tr>
                <td id="id">views</td>
                <td id="value">HDR_avant</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
             </tr>
          </table>
          <parameter id="information"></parameter>
@@ -2718,7 +2763,7 @@ max($T, HaNB*a)</parameter>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="4">
+         <table id="parameters" rows="5">
             <tr>
                <td id="id">mode</td>
                <td id="value">attacher</td>
@@ -2734,6 +2779,10 @@ max($T, HaNB*a)</parameter>
             <tr>
                <td id="id">nom</td>
                <td id="value">masque_L</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
             </tr>
          </table>
          <parameter id="information"></parameter>
@@ -2883,7 +2932,7 @@ max($T, HaNB*a)</parameter>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="2">
+         <table id="parameters" rows="3">
             <tr>
                <td id="id">mode</td>
                <td id="value">retirer</td>
@@ -2891,6 +2940,10 @@ max($T, HaNB*a)</parameter>
             <tr>
                <td id="id">nom</td>
                <td id="value">masque_L</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
             </tr>
          </table>
          <parameter id="information"></parameter>
@@ -2907,7 +2960,7 @@ max($T, HaNB*a)</parameter>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="4">
+         <table id="parameters" rows="5">
             <tr>
                <td id="id">mode</td>
                <td id="value">attacher</td>
@@ -2923,6 +2976,10 @@ max($T, HaNB*a)</parameter>
             <tr>
                <td id="id">nom</td>
                <td id="value">masque_L</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
             </tr>
          </table>
          <parameter id="information"></parameter>
@@ -3072,7 +3129,7 @@ max($T, HaNB*a)</parameter>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="2">
+         <table id="parameters" rows="3">
             <tr>
                <td id="id">mode</td>
                <td id="value">retirer</td>
@@ -3080,6 +3137,10 @@ max($T, HaNB*a)</parameter>
             <tr>
                <td id="id">nom</td>
                <td id="value">masque_L</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
             </tr>
          </table>
          <parameter id="information"></parameter>
@@ -3089,7 +3150,7 @@ max($T, HaNB*a)</parameter>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="4">
+         <table id="parameters" rows="5">
             <tr>
                <td id="id">mode</td>
                <td id="value">attacher</td>
@@ -3105,6 +3166,10 @@ max($T, HaNB*a)</parameter>
             <tr>
                <td id="id">nom</td>
                <td id="value">masque_L</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
             </tr>
          </table>
          <parameter id="information"></parameter>
@@ -3254,7 +3319,7 @@ max($T, HaNB*a)</parameter>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="2">
+         <table id="parameters" rows="3">
             <tr>
                <td id="id">mode</td>
                <td id="value">retirer</td>
@@ -3262,6 +3327,10 @@ max($T, HaNB*a)</parameter>
             <tr>
                <td id="id">nom</td>
                <td id="value">masque_L</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
             </tr>
          </table>
          <parameter id="information"></parameter>
@@ -3393,10 +3462,14 @@ max($T, HaNB*a)</parameter>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="1">
+         <table id="parameters" rows="2">
             <tr>
                <td id="id">views</td>
                <td id="value">HDR_avant</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
             </tr>
          </table>
          <parameter id="information"></parameter>
@@ -3404,7 +3477,7 @@ max($T, HaNB*a)</parameter>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="4">
+         <table id="parameters" rows="5">
             <tr>
                <td id="id">mode</td>
                <td id="value">attacher</td>
@@ -3420,6 +3493,10 @@ max($T, HaNB*a)</parameter>
             <tr>
                <td id="id">nom</td>
                <td id="value">masque_L</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
             </tr>
          </table>
          <parameter id="information"></parameter>
@@ -3576,7 +3653,7 @@ max($T, HaNB*a)</parameter>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="2">
+         <table id="parameters" rows="3">
             <tr>
                <td id="id">mode</td>
                <td id="value">retirer</td>
@@ -3584,6 +3661,10 @@ max($T, HaNB*a)</parameter>
             <tr>
                <td id="id">nom</td>
                <td id="value">masque_L</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
             </tr>
          </table>
          <parameter id="information"></parameter>
@@ -3648,7 +3729,7 @@ max($T, HaNB*a)</parameter>
       <table id="outputData" rows="0"/>
    </instance>
    <instance class="Script" version="256" id="E28_Fond_desature_instance">
-      <description>LANCEMENT : glisse l'icône sur l'image.&#10;&#10;PRÉRÉGLÉ : script Fond_desature : fond mesuré ; zones faibles (luminance lissée sous fond + 0,15, décroissant jusqu'à + 0,30) : violet neutralisé (G remonté jusqu'à min(R, B), magenta seulement) ; fond (sous + 0,03, rampe jusqu'à + 0,15) : couleur retirée.&#10;&#10;À RÉGLER : glisse sur l'image finie, étoiles comprises, juste après Etoiles_screen, avant Fond_auto.&#10;&#10;SI :&#10;- violet encore visible dans le halo -&gt; violetFin 0,40&#10;- extensions faibles de la galaxie grisées -&gt; fin 0,10</description>
+      <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Fond_desature : fond mesuré ; zones faibles (luminance lissée sous fond + 0,15, décroissant jusqu'à + 0,30) : violet neutralisé (G remonté jusqu'à min(R, B), magenta seulement) ; fond (sous + 0,03, rampe jusqu'à + 0,15) : couleur retirée.&#10;&#10;À RÉGLER : glisse sur l'image finie, étoiles comprises, juste après Etoiles_screen, avant Fond_auto.&#10;&#10;SI :&#10;- violet encore visible dans le halo -&gt; violetFin 0,40&#10;- extensions faibles de la galaxie grisées -&gt; fin 0,10</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="4">
@@ -3672,7 +3753,7 @@ max($T, HaNB*a)</parameter>
       <parameter id="information"></parameter>
    </instance>
    <instance class="Script" version="256" id="E29_Fond_auto_instance">
-      <description>LANCEMENT : glisse l'icône sur l'image.&#10;&#10;PRÉRÉGLÉ : script Fond_auto : fond de chaque canal mesuré (grille 8 × 8, quart le plus sombre des cases), puis mtf canal par canal pour l'amener à 0,12, sans écrêtage ; fond neutre.&#10;&#10;À RÉGLER : glisse sur l'image finie, étoiles comprises, après Fond_desature ; console : fond avant et après.&#10;&#10;SI :&#10;- image trop sombre -&gt; cible 0,13 ou 0,14&#10;- données très propres -&gt; 0,10 à 0,11</description>
+      <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Fond_auto : fond de chaque canal mesuré (grille 8 × 8, quart le plus sombre des cases), puis mtf canal par canal pour l'amener à 0,12, sans écrêtage ; fond neutre.&#10;&#10;À RÉGLER : glisse sur l'image finie, étoiles comprises, après Fond_desature ; console : fond avant et après.&#10;&#10;SI :&#10;- image trop sombre -&gt; cible 0,13 ou 0,14&#10;- données très propres -&gt; 0,10 à 0,11</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="3">
@@ -3820,7 +3901,7 @@ max($T,f1)</parameter>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="8">
+         <table id="parameters" rows="9">
             <tr>
                <td id="id">mode</td>
                <td id="value">attacher</td>
@@ -3852,6 +3933,10 @@ max($T,f1)</parameter>
             <tr>
                <td id="id">exclureGain</td>
                <td id="value">4</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
             </tr>
          </table>
          <parameter id="information"></parameter>
@@ -3990,7 +4075,7 @@ max($T,f1)</parameter>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="2">
+         <table id="parameters" rows="3">
             <tr>
                <td id="id">mode</td>
                <td id="value">retirer</td>
@@ -3998,6 +4083,10 @@ max($T,f1)</parameter>
             <tr>
                <td id="id">nom</td>
                <td id="value">masque_L</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
             </tr>
          </table>
          <parameter id="information"></parameter>
@@ -4007,7 +4096,7 @@ max($T,f1)</parameter>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="8">
+         <table id="parameters" rows="9">
             <tr>
                <td id="id">mode</td>
                <td id="value">attacher</td>
@@ -4039,6 +4128,10 @@ max($T,f1)</parameter>
             <tr>
                <td id="id">exclureGain</td>
                <td id="value">4</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
             </tr>
          </table>
          <parameter id="information"></parameter>
@@ -4177,7 +4270,7 @@ max($T,f1)</parameter>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="2">
+         <table id="parameters" rows="3">
             <tr>
                <td id="id">mode</td>
                <td id="value">retirer</td>
@@ -4186,12 +4279,16 @@ max($T,f1)</parameter>
                <td id="id">nom</td>
                <td id="value">masque_L</td>
             </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
          </table>
          <parameter id="information"></parameter>
       </instance>
    </instance>
    <instance class="Script" version="256" id="Opt_Fond_auto_clair_instance">
-      <description>OPTION — à la place de Fond_auto : image trop sombre, fond amené à 0,14, après Fond_desature.&#10;&#10;LANCEMENT : glisse l'icône sur l'image.&#10;&#10;PRÉRÉGLÉ : script Fond_auto, cible 0,14 : fond de chaque canal mesuré (grille 8 × 8), amené à 0,14 par mtf, sans écrêtage ; fond neutre.&#10;&#10;À RÉGLER : à la place de Fond_auto, image trop sombre : glisse sur l'image finie, étoiles comprises, après Fond_desature.&#10;&#10;SI :&#10;- fond encore trop sombre -&gt; double-clic, cible 0,15</description>
+      <description>OPTION — à la place de Fond_auto : image trop sombre, fond amené à 0,14, après Fond_desature.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Fond_auto, cible 0,14 : fond de chaque canal mesuré (grille 8 × 8), amené à 0,14 par mtf, sans écrêtage ; fond neutre.&#10;&#10;À RÉGLER : à la place de Fond_auto, image trop sombre : glisse sur l'image finie, étoiles comprises, après Fond_desature.&#10;&#10;SI :&#10;- fond encore trop sombre -&gt; double-clic, cible 0,15</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="3">
@@ -4230,7 +4327,7 @@ max($T,f1)</parameter>
       <parameter id="useFloatingPointTransformation" value="true"/>
    </instance>
    <instance class="Script" version="256" id="Opt_Export_TIFF_instance">
-      <description>OPTION — tout à la fin : copie enregistrée en TIFF 16 bits sRGB, profil ICC intégré, pour Photoshop, Lightroom ou Affinity.&#10;&#10;LANCEMENT : glisse l'icône sur l'image.&#10;&#10;PRÉRÉGLÉ : script Export_TIFF : copie de l'image en entiers 16 bits, convertie en sRGB IEC61966-2.1 (icc = true), enregistrée en TIFF (.tiff) sous le NOM DE L'OBJET, sans espace (NGC 1532 -&gt; NGC1532), = nom du dossier des masters ouverts (L, R, G, B, H…), dossiers génériques (master, lights, output, WBPP…) sautés ; enregistrée dans ce dossier ; l'image ouverte ne change pas ; ensuite L et RGB_stars fermées (paramètre fermer).&#10;&#10;À RÉGLER : glisse sur l'image finie (après Fond_desature), L et RGB_stars encore ouvertes (fermées après l'export) ; copie Export_TIFF.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- aucun master ouvert -&gt; mot-clé OBJECT, sinon nom de la vue, dans ton dossier personnel&#10;- autre nom -&gt; remplis nom&#10;- autre dossier -&gt; remplis dossier&#10;- garder plusieurs versions -&gt; suffixe (ex. _v2)&#10;- garder le profil actuel -&gt; icc false</description>
+      <description>OPTION — tout à la fin : copie enregistrée en TIFF 16 bits sRGB, profil ICC intégré, pour Photoshop, Lightroom ou Affinity.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Export_TIFF : copie de l'image en entiers 16 bits, convertie en sRGB IEC61966-2.1 (icc = true), enregistrée en TIFF (.tiff) sous le NOM DE L'OBJET, sans espace (NGC 1532 -&gt; NGC1532), = nom du dossier des masters ouverts (L, R, G, B, H…), dossiers génériques (master, lights, output, WBPP…) sautés ; enregistrée dans ce dossier ; l'image ouverte ne change pas ; ensuite L et RGB_stars fermées (paramètre fermer).&#10;&#10;À RÉGLER : glisse sur l'image finie (après Fond_desature), L et RGB_stars encore ouvertes (fermées après l'export) ; copie Export_TIFF.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- aucun master ouvert -&gt; mot-clé OBJECT, sinon nom de la vue, dans ton dossier personnel&#10;- autre nom -&gt; remplis nom&#10;- autre dossier -&gt; remplis dossier&#10;- garder plusieurs versions -&gt; suffixe (ex. _v2)&#10;- garder le profil actuel -&gt; icc false</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="5">
@@ -4299,7 +4396,7 @@ max($T,f1)</parameter>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="4">
+         <table id="parameters" rows="5">
             <tr>
                <td id="id">debut</td>
                <td id="value">0.03</td>
@@ -4316,13 +4413,17 @@ max($T,f1)</parameter>
                <td id="id">flou</td>
                <td id="value">3</td>
             </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
          </table>
          <parameter id="information"></parameter>
       </instance>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="3">
+         <table id="parameters" rows="4">
             <tr>
                <td id="id">cible</td>
                <td id="value">0.12</td>
@@ -4335,13 +4436,17 @@ max($T,f1)</parameter>
                <td id="id">grille</td>
                <td id="value">8</td>
             </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
          </table>
          <parameter id="information"></parameter>
       </instance>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="5">
+         <table id="parameters" rows="6">
             <tr>
                <td id="id">nom</td>
                <td id="value"></td>
@@ -4361,6 +4466,10 @@ max($T,f1)</parameter>
             <tr>
                <td id="id">fermer</td>
                <td id="value">L, RGB_stars</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
             </tr>
          </table>
          <parameter id="information"></parameter>

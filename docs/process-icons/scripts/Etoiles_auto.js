@@ -25,17 +25,52 @@
 #feature-info  Étire l'image d'étoiles linéaire (RGB_stars) avec la courbe \
    de Star Stretch, sature les couleurs, sans dialogue.
 
+#include "clodoweg_ui.jsh"
+
 #define EA_TITLE "Etoiles auto"
 
-function eaParam( key, value )
+function eaParams()
 {
-   return Parameters.has( key ) ? Parameters.getString( key ).trim() : value;
+   return { vue: cwParam( "vue", "RGB_stars" ), amount: parseFloat( cwParam( "amount", "6" ) ),
+            satAmount: parseFloat( cwParam( "satAmount", "1.3" ) ), scnr: cwBool( "scnr", false ) };
+}
+
+function eaExport( p )
+{
+   Parameters.set( "vue", p.vue );
+   Parameters.set( "amount", p.amount.toFixed( 1 ) );
+   Parameters.set( "satAmount", p.satAmount.toFixed( 2 ) );
+   Parameters.set( "scnr", p.scnr ? "true" : "false" );
+}
+
+function eaDialog( p )
+{
+   let d = new CWDialog( EA_TITLE, "<b>Étoiles</b> : étirement (courbe de Star Stretch), saturation et SCNR de l'image d'étoiles (RGB_stars). " +
+                         "Étoiles déjà étirées (SXT Unscreen sur image étirée) : Étirement = 0.", "Étirement (amount) :" );
+   d.viewList( "Image d'étoiles :", cwViewById( p.vue ), "Image d'étoiles (RGB_stars).", function( v ) { p.vue = v.isNull ? "" : v.id; } );
+   d.numeric( "Étirement (amount) :", 0, 10, 1, p.amount, "0 = pas d'étirement (étoiles déjà étirées) ; 6 = étoiles linéaires (Star Stretch).", function( v ) { p.amount = v; } );
+   d.numeric( "Saturation :", 0, 2, 2, p.satAmount, "1,3 par défaut ; 1,0 si les étoiles sont criardes ; 0 = rien.", function( v ) { p.satAmount = v; } );
+   d.check( "SCNR vert", p.scnr, "Retire la teinte verte des étoiles.", function( c ) { p.scnr = c; } );
+   d.onExport = function() { eaExport( p ); };
+   d.validate = function() { return p.vue ? "" : "Choisis l'image d'étoiles."; };
+   d.finish();
+   return d.execute();
 }
 
 function etoilesAutoMain()
 {
-   etoilesAuto( eaParam( "vue", "RGB_stars" ), parseFloat( eaParam( "amount", "6" ) ),
-                parseFloat( eaParam( "satAmount", "1.3" ) ), eaParam( "scnr", "false" ).toLowerCase() == "true" );
+   let p = eaParams();
+   if ( cwWantsDialog() )
+   {
+      if ( !eaDialog( p ) )
+         return;
+      let w = ImageWindow.windowById( p.vue );
+      if ( w.isNull )
+         return;
+      cwRun( EA_TITLE, function() { cwApplyOnCopy( w.mainView, function( c ) { eaProcess( c, p.vue, p.amount, p.satAmount, p.scnr ); } ); } );
+      return;
+   }
+   etoilesAuto( p.vue, p.amount, p.satAmount, p.scnr );
 }
 
 function etoilesAuto( id, amount, sat, scnr )
@@ -46,7 +81,11 @@ function etoilesAuto( id, amount, sat, scnr )
       console.warningln( EA_TITLE + " : vue " + id + " introuvable, rien n'est fait." );
       return;
    }
-   let view = w.mainView;
+   eaProcess( w.mainView, id, amount, sat, scnr );
+}
+
+function eaProcess( view, id, amount, sat, scnr )
+{
 
    if ( amount > 0 )
    {

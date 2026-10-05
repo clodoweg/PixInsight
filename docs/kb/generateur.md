@@ -37,14 +37,14 @@ Tout est produit par `sh docs/process-icons/build/build.sh` ; ne jamais éditer 
 6. Mettre à jour les fichiers de `docs/kb/` concernés (workflows, outils), `docs/sources.md`, CLAUDE.md si l'état change.
 7. Commit + push sur main.
 
-## Scripts avec fenêtre de réglages (demande de l'utilisateur, 5 octobre 2026)
+## Scripts avec fenêtre de réglages (tous les scripts, demande de l'utilisateur, 5 octobre 2026)
 
-Convention, à reprendre pour chaque script (premier fait : Etoiles_grosses.js, en attente de validation par l'utilisateur) :
-- `Parameters.isViewTarget` (icône glissée sur l'image, ou dans un conteneur) : exécution directe avec les paramètres de l'icône, sans fenêtre ;
-- sinon (double-clic puis Apply Global, ou menu Script) : fenêtre `Dialog` pré-remplie avec les paramètres de l'icône (ou les défauts) ; ViewList pour l'image, NumericControl (`setReal`, `setRange`, `setPrecision`, `slider.setRange(0, 1000)`), CheckBox ; bouton triangle (`:/process-interface/new-instance.png`, `Parameters.set` puis `this.dialog.newInstance()`) ; bouton d'aperçu quand c'est utile ; Appliquer / Annuler ;
-- includes : `pjsr/Sizer.jsh`, `pjsr/TextAlign.jsh`, `pjsr/NumericControl.jsh` ;
-- lancé par la fenêtre (Apply Global), un `executeOn(view)` modifie l'image sans étape d'annulation ni rafraîchissement (retour de l'utilisateur) : calculer le résultat dans une image cachée, puis `view.beginProcess(); view.image.assign(...); view.endProcess();`. Icône glissée sur l'image : `executeOn` direct (PixInsight gère l'historique) ;
-- description de l'icône : base ajoutée à `DIALOGUE` dans `short_desc.py` (texte de lancement LAUNCH_DLG).
+Règle : chaque script a une fenêtre, mise à jour à chaque changement du script.
+- Fichier commun `scripts/clodoweg_ui.jsh` (inclus par `#include "clodoweg_ui.jsh"`, à copier avec les scripts) : `cwParam`, `cwBool`, `cwWantsDialog()`, `cwDefaultView(id)`, `cwApplyOnCopy(view, fn)`, `cwRun(titre, fn)`, et `CWDialog(titre, aide, libellé le plus long)` avec `numeric`, `check`, `edit`, `viewList`, `combo`, `info`, `group`/`endGroup`, `button`, `onExport`, `validate`, `finish(texte OK)`.
+- Lancement : `cwWantsDialog()` est faux si l'icône est glissée sur une image (`Parameters.isViewTarget`) ou si le paramètre `dialogue = false` (ajouté par `no_dialog()` du générateur à tout script de la fiche placé dans un conteneur) : exécution directe, comme avant. Sinon (double-clic puis Apply Global, menu Script) : fenêtre pré-remplie avec les paramètres de l'icône ; triangle = `Parameters.set` puis `newInstance()`.
+- Lancé par la fenêtre, un `executeOn(view)` modifie l'image sans étape d'annulation ni rafraîchissement (retour de l'utilisateur) : les scripts qui changent les pixels d'une image passent par `cwApplyOnCopy` (copie cachée, puis `beginProcess` / `image.assign` / `endProcess`). Exceptions, laissées en `executeOn` direct : Binning_x2 (géométrie et solution astrométrique), LPS_UnClic (moteur LPS), Lineaire_auto (icônes avec SPCC, qui a besoin de la solution astrométrique), GC_Solver_auto et ImageSolver_Date (métadonnées).
+- Etoiles_grosses.js a sa propre fenêtre (première version validée par l'utilisateur), même logique.
+- Description de l'icône : texte de lancement `LAUNCH_DLG` (tout script dont le chemin contient `/clodoweg/`).
 
 ## Contraintes PixInsight
 

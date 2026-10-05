@@ -19,6 +19,8 @@
 #feature-info  Lance des icônes du chemin principal (C_RGB_lineaire, \
    C_L_lineaire…) sur les vues données, en un seul clic.
 
+#include "clodoweg_ui.jsh"
+
 #define LA_TITLE "Lineaire_auto"
 
 function laIcon( base )
@@ -37,10 +39,14 @@ function laIcon( base )
    throw new Error( LA_TITLE + " : icône " + base + " introuvable (charge le fichier Conteneurs-X.xpsm)." );
 }
 
-function main()
+function laParse( etapes )
 {
-   let etapes = Parameters.has( "etapes" ) ? Parameters.getString( "etapes" ) : "";
-   let list = etapes.split( ";" ).map( function( s ) { return s.trim(); } ).filter( function( s ) { return s.length > 0; } );
+   return etapes.split( ";" ).map( function( s ) { return s.trim(); } ).filter( function( s ) { return s.length > 0; } );
+}
+
+function laRun( etapes )
+{
+   let list = laParse( etapes );
    if ( list.length == 0 )
       throw new Error( LA_TITLE + " : paramètre etapes vide." );
    console.show();
@@ -64,6 +70,57 @@ function main()
       }
    }
    console.noteln( "<end><cbr><br>" + LA_TITLE + " : fait : " + bilan.join( ", " ) + "." );
+}
+
+function laDialog( p )
+{
+   let d = new CWDialog( LA_TITLE, "<b>Phase linéaire rapide</b> : lance les icônes du chemin principal sur leurs vues, dans l'ordre. " +
+                         "Le fichier Conteneurs doit être chargé (le script cherche les icônes E##_).", "Étapes :" );
+   let rows = laParse( p.etapes ).map( function( e ) { let parts = e.split( ">" ); return { icone: (parts[ 0 ] || "").trim(), vues: (parts[ 1 ] || "").trim() }; } );
+   d.group( "Étapes (icône : vues, séparées par des virgules)" );
+   for ( let k = 0; k < rows.length; ++k )
+   {
+      let r = rows[ k ], found = "introuvable";
+      try { found = laIcon( r.icone ).name; } catch ( e ) {}
+      d.edit( r.icone + " :", r.vues, "Icône " + found + ".", function( t ) { r.vues = t.trim(); } );
+   }
+   if ( rows.length == 0 )
+      d.info( "Aucune étape : paramètre etapes vide dans l'icône." );
+   d.endGroup();
+   function etapes()
+   {
+      return rows.map( function( r ) { return r.icone + ">" + r.vues; } ).join( " ; " );
+   }
+   d.onExport = function() { Parameters.set( "etapes", etapes() ); };
+   d.validate = function()
+   {
+      for ( let k = 0; k < rows.length; ++k )
+      {
+         try { laIcon( rows[ k ].icone ); } catch ( e ) { return e.message; }
+         let vues = rows[ k ].vues.split( "," );
+         for ( let j = 0; j < vues.length; ++j )
+            if ( ImageWindow.windowById( vues[ j ].trim() ).isNull )
+               return "Vue " + vues[ j ].trim() + " absente (étape " + rows[ k ].icone + ").";
+      }
+      return "";
+   };
+   d.finish( "Lancer" );
+   if ( !d.execute() )
+      return false;
+   p.etapes = etapes();
+   return true;
+}
+
+function main()
+{
+   let p = { etapes: cwParam( "etapes", "" ) };
+   if ( cwWantsDialog() )
+   {
+      if ( laDialog( p ) )
+         cwRun( LA_TITLE, function() { laRun( p.etapes ); } );
+      return;
+   }
+   laRun( p.etapes );
 }
 
 main();

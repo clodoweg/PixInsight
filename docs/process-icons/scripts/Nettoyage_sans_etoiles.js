@@ -50,12 +50,14 @@
 #feature-info  Efface les restes de halos des étoiles brillantes de l'image \
    sans étoiles, sans toucher à la galaxie.
 
+#include "clodoweg_ui.jsh"
+
 #define TITLE "Nettoyage sans etoiles"
 #define WORK 2000
 
 function param( key, value )
 {
-   return Parameters.has( key ) ? Parameters.getString( key ).trim() : value;
+   return cwParam( key, value );
 }
 
 function closeView( id )
@@ -192,31 +194,88 @@ function correctBias( opw, liw )
    return corr;
 }
 
+var NT_KEYS = [ [ "seuilBas", "0.05", 2 ], [ "seuilHaut", "0.12", 2 ], [ "etendue", "25", 0 ], [ "passes", "3", 0 ], [ "protege", "0.08", 2 ],
+                [ "structure", "0.15", 2 ], [ "compact", "0.05", 2 ], [ "tresBrillant", "0.05", 2 ], [ "etendue2", "80", 0 ], [ "gain", "3", 1 ], [ "gain2", "8", 1 ] ];
+
+function ntParams()
+{
+   let p = { etoiles: param( "etoiles", "RGB_stars" ), afficherMasque: param( "afficherMasque", "false" ).toLowerCase() == "true", apercu: false };
+   NT_KEYS.forEach( function( k ) { p[ k[ 0 ] ] = parseFloat( param( k[ 0 ], k[ 1 ] ) ); } );
+   return p;
+}
+
+function ntExport( p )
+{
+   Parameters.set( "etoiles", p.etoiles );
+   NT_KEYS.forEach( function( k ) { Parameters.set( k[ 0 ], p[ k[ 0 ] ].toFixed( k[ 2 ] ) ); } );
+   Parameters.set( "afficherMasque", p.afficherMasque ? "true" : "false" );
+}
+
+function ntDialog( p, view )
+{
+   let d = new CWDialog( TITLE, "<b>Nettoyage autour des étoiles</b> : retire les taches rondes et halos laissés par SXT autour des étoiles brillantes, " +
+                         "sur l'image sans étoiles juste après LRGB (RGB_stars ouverte). « Voir le masque » montre ce qui sera nettoyé (blanc).", "Très brillantes (seuil) :" );
+   let sel = { view: view };
+   d.viewList( "Image sans étoiles :", view, "Image sans étoiles étirée.", function( v ) { sel.view = v; } );
+   d.viewList( "Image d'étoiles :", cwViewById( p.etoiles ), "Étoiles étirées (RGB_stars).", function( v ) { p.etoiles = v.isNull ? "" : v.id; } );
+   d.group( "Étoiles prises en compte" );
+   d.numeric( "Seuil bas :", 0.01, 0.30, 2, p.seuilBas, "Luminance floutée des étoiles : début du masque.", function( v ) { p.seuilBas = v; } );
+   d.numeric( "Seuil haut :", 0.02, 0.50, 2, p.seuilHaut, "Masque plein au-dessus.", function( v ) { p.seuilHaut = v; } );
+   d.numeric( "Étendue (px) :", 5, 60, 0, p.etendue, "Extension du masque au halo (calcul à 2000 px).", function( v ) { p.etendue = v; } );
+   d.numeric( "Gain :", 1, 10, 1, p.gain, "Plus haut = masque plus large et plus plein.", function( v ) { p.gain = v; } );
+   d.endGroup();
+   d.group( "Très grandes étoiles" );
+   d.numeric( "Très brillantes (seuil) :", 0.01, 0.30, 2, p.tresBrillant, "Seuil des très grandes étoiles (luminance floutée 50 px).", function( v ) { p.tresBrillant = v; } );
+   d.numeric( "Étendue 2 (px) :", 20, 200, 0, p.etendue2, "Zone autour des très grandes étoiles.", function( v ) { p.etendue2 = v; } );
+   d.numeric( "Gain 2 :", 1, 20, 1, p.gain2, "", function( v ) { p.gain2 = v; } );
+   d.endGroup();
+   d.group( "Fond local et protections" );
+   d.numeric( "Passes :", 1, 6, 0, p.passes, "Ouverture morphologique (taches de moins de 25 × passes px retirées).", function( v ) { p.passes = v; } );
+   d.numeric( "Galaxie protégée :", 0.00, 0.30, 2, p.protege, "Au-dessus du fond + cette valeur : protégé.", function( v ) { p.protege = v; } );
+   d.numeric( "Structures :", 0.00, 0.50, 2, p.structure, "Structures claires (bras) protégées.", function( v ) { p.structure = v; } );
+   d.numeric( "Objets compacts :", 0.00, 0.30, 2, p.compact, "Petites galaxies dans un halo protégées.", function( v ) { p.compact = v; } );
+   d.endGroup();
+   d.check( "Garder la vue masque_nettoyage après l'application", p.afficherMasque, "", function( c ) { p.afficherMasque = c; } );
+   d.button( "Voir le masque", "Calcule et affiche masque_nettoyage (blanc = nettoyé) ; l'image n'est pas modifiée.", function()
+   {
+      if ( sel.view == null || sel.view.isNull ) { (new MessageBox( "Choisis d'abord l'image.", TITLE )).execute(); return; }
+      cwRun( TITLE, function() { let q = Object.create( p ); q.apercu = true; ntProcess( sel.view, q, sel.view.id ); } );
+   } );
+   d.onExport = function() { ntExport( p ); };
+   d.validate = function() { return (sel.view == null || sel.view.isNull) ? "Choisis l'image sans étoiles." : (p.etoiles ? "" : "Choisis l'image d'étoiles."); };
+   d.finish();
+   return d.execute() ? sel.view : null;
+}
+
 function main()
 {
+   let p = ntParams();
+   if ( cwWantsDialog() )
+   {
+      let v = ntDialog( p, cwDefaultView() );
+      if ( v != null )
+         cwRun( TITLE, function() { cwApplyOnCopy( v, function( c ) { ntProcess( c, p, v.id ); } ); } );
+      return;
+   }
    let view = Parameters.isViewTarget ? Parameters.targetView : ImageWindow.activeWindow.mainView;
    if ( view.isNull )
       throw new Error( TITLE + " : aucune image." );
-   let starsId = param( "etoiles", "RGB_stars" );
-   let seuilBas = parseFloat( param( "seuilBas", "0.05" ) );
-   let seuilHaut = parseFloat( param( "seuilHaut", "0.12" ) );
-   let etendue = parseFloat( param( "etendue", "25" ) );
-   let passes = parseInt( param( "passes", "3" ) );
-   let protege = parseFloat( param( "protege", "0.08" ) );
-   let structure = parseFloat( param( "structure", "0.15" ) );
-   let compact = parseFloat( param( "compact", "0.05" ) );
-   let tresBrillant = parseFloat( param( "tresBrillant", "0.05" ) );
-   let etendue2 = parseFloat( param( "etendue2", "80" ) );
-   let gain = parseFloat( param( "gain", "3" ) );     // force de l'extension (petits halos) : plus haut = masque plus large et plus plein
-   let gain2 = parseFloat( param( "gain2", "8" ) );   // idem pour les très grandes étoiles
-   let afficher = param( "afficherMasque", "false" ).toLowerCase() == "true";
+   ntProcess( view, p, view.id );
+}
+
+// p.apercu = true : calcule et affiche seulement le masque.
+function ntProcess( view, p, name )
+{
+   let starsId = p.etoiles, seuilBas = p.seuilBas, seuilHaut = p.seuilHaut, etendue = p.etendue, passes = Math.round( p.passes );
+   let protege = p.protege, structure = p.structure, compact = p.compact, tresBrillant = p.tresBrillant, etendue2 = p.etendue2;
+   let gain = p.gain, gain2 = p.gain2, afficher = p.afficherMasque || p.apercu;
 
    let sw = ImageWindow.windowById( starsId );
    if ( sw.isNull )
       throw new Error( TITLE + " : la vue " + starsId + " (étoiles étirées) doit être ouverte." );
    let W = view.image.width, H = view.image.height;
    if ( sw.mainView.image.width != W || sw.mainView.image.height != H )
-      throw new Error( TITLE + " : " + starsId + " et " + view.id + " n'ont pas la même taille." );
+      throw new Error( TITLE + " : " + starsId + " et " + name + " n'ont pas la même taille." );
    let color = view.image.isColor;
    let Y = "(0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2])";
    let w2 = Math.min( W, WORK ), h2 = Math.round( H*w2/W ), k = W/w2;
@@ -294,6 +353,13 @@ function main()
       mv.show();
    }
    resize( ex, W, H );
+   let temps = [ "nt_st", "nt_st2", "nt_sl", "nt_sy", "nt_op", "nt_op2", "nt_opy", "nt_g60", "nt_g4", "nt_g1", "nt_core", "nt_p2", "nt_p3", "nt_m", "nt_m2", "nt_li", "nt_e" ];
+   if ( p.apercu )
+   {
+      temps.forEach( closeView );
+      console.noteln( TITLE + " : masque affiché (masque_nettoyage, blanc = nettoyé) ; " + name + " n'est pas modifiée." );
+      return;
+   }
 
    // retrait sur l'image (rien n'est jamais éclairci)
    let P = new PixelMath;
@@ -304,10 +370,10 @@ function main()
    P.truncate = true;
    let ok = P.executeOn( view );
 
-   [ "nt_st", "nt_st2", "nt_sl", "nt_sy", "nt_op", "nt_op2", "nt_opy", "nt_g60", "nt_g4", "nt_g1", "nt_core", "nt_p2", "nt_p3", "nt_m", "nt_m2", "nt_li", "nt_e" ].forEach( closeView );
+   temps.forEach( closeView );
    if ( !ok )
       throw new Error( TITLE + " : le retrait final a échoué (voir la console) ; l'image n'a pas été modifiée." );
-   console.noteln( TITLE + " : " + view.id + " nettoyé autour des étoiles brillantes de " + starsId +
+   console.noteln( TITLE + " : " + name + " nettoyé autour des étoiles brillantes de " + starsId +
                    " (calcul à " + w2 + " px, fond " + bg.toFixed( 4 ) + ")" + (afficher ? " ; masque gardé : masque_nettoyage." : ".") );
 }
 

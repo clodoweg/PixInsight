@@ -23,12 +23,9 @@
 #feature-info  Mesure le fond du ciel (canal par canal) et l'amène sur une \
    valeur cible, neutre, sans écrêtage.
 
-#define TITLE "Fond auto"
+#include "clodoweg_ui.jsh"
 
-function param( key, value )
-{
-   return Parameters.has( key ) ? Parameters.getString( key ).trim() : value;
-}
+#define TITLE "Fond auto"
 
 // Fond de chaque canal : médiane du quart le plus sombre des médianes de cases.
 function background( img, n )
@@ -64,15 +61,22 @@ function fmt( a )
    return a.map( function( v ) { return v.toFixed( 4 ); } ).join( " / " );
 }
 
-function main()
+function faParams()
 {
-   let view = Parameters.isViewTarget ? Parameters.targetView : ImageWindow.activeWindow.mainView;
-   if ( view.isNull )
-      throw new Error( TITLE + " : aucune image." );
-   let target = parseFloat( param( "cible", "0.12" ) );
-   let tol = parseFloat( param( "tolerance", "0.005" ) );
-   let n = parseInt( param( "grille", "8" ) );
+   return { cible: parseFloat( cwParam( "cible", "0.12" ) ), tolerance: parseFloat( cwParam( "tolerance", "0.005" ) ), grille: parseInt( cwParam( "grille", "8" ) ) };
+}
 
+function faExport( p )
+{
+   Parameters.set( "cible", p.cible.toFixed( 3 ) );
+   Parameters.set( "tolerance", p.tolerance.toFixed( 3 ) );
+   Parameters.set( "grille", p.grille.toFixed( 0 ) );
+}
+
+// Traite view ; name : nom affiché dans la console.
+function faProcess( view, p, name )
+{
+   let target = p.cible, tol = p.tolerance, n = p.grille;
    let img = view.image;
    let bg = background( img, n );
    let exprs = [], change = false;
@@ -92,7 +96,6 @@ function main()
       console.noteln( TITLE + " : fond " + fmt( bg ) + " déjà à " + target + " ± " + tol + ", rien n'est changé." );
       return;
    }
-
    let P = new PixelMath;
    if ( img.isColor )
    {
@@ -110,8 +113,38 @@ function main()
    P.rescale = false;
    P.truncate = true;
    P.executeOn( view );
+   console.noteln( TITLE + " : " + name + " fond " + fmt( bg ) + " -> " + fmt( background( view.image, n ) ) + " (cible " + target + ")." );
+}
 
-   console.noteln( TITLE + " : " + view.id + " fond " + fmt( bg ) + " -> " + fmt( background( view.image, n ) ) + " (cible " + target + ")." );
+function faDialog( p, view )
+{
+   let d = new CWDialog( TITLE, "<b>Fond du ciel automatique</b> : le fond de chaque canal est mesuré (grille de cases, quart le plus sombre) " +
+                         "et amené à la cible, neutre, sans écrêtage. Sur l'image finie, étoiles comprises.", "Tolérance :" );
+   let sel = { view: view };
+   d.viewList( "Image :", view, "Image finie (après Etoiles_screen et Fond_desature).", function( v ) { sel.view = v; } );
+   d.numeric( "Cible :", 0.05, 0.25, 3, p.cible, "Fond visé (0,12 par défaut ; 0,14 si l'image est trop sombre).", function( v ) { p.cible = v; } );
+   d.numeric( "Tolérance :", 0.000, 0.020, 3, p.tolerance, "Écart accepté sans rien changer.", function( v ) { p.tolerance = v; } );
+   d.numeric( "Grille :", 4, 16, 0, p.grille, "Nombre de cases par côté pour mesurer le fond.", function( v ) { p.grille = v; } );
+   d.onExport = function() { faExport( p ); };
+   d.validate = function() { return (sel.view == null || sel.view.isNull) ? "Choisis l'image." : ""; };
+   d.finish();
+   return d.execute() ? sel.view : null;
+}
+
+function main()
+{
+   let p = faParams();
+   if ( cwWantsDialog() )
+   {
+      let view = faDialog( p, cwDefaultView() );
+      if ( view != null )
+         cwRun( TITLE, function() { cwApplyOnCopy( view, function( c ) { faProcess( c, p, view.id ); } ); } );
+      return;
+   }
+   let view = Parameters.isViewTarget ? Parameters.targetView : ImageWindow.activeWindow.mainView;
+   if ( view.isNull )
+      throw new Error( TITLE + " : aucune image." );
+   faProcess( view, p, view.id );
 }
 
 main();

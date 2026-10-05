@@ -22,6 +22,7 @@
    zone de fond automatique, image active ou toutes les images ouvertes.
 
 #include <pjsr/LinearPatternSubtraction.jsh>
+#include "clodoweg_ui.jsh"
 
 #define LPS_TITLE "LPS un clic"
 
@@ -123,10 +124,77 @@ function correctWindow( window, P )
    engine.execute();
 }
 
+function lpsCandidate( w )
+{
+   let id = w.mainView.id;
+   if ( id == "LS" || id == "SS" || id == "pattern" || id.indexOf( "LS" ) == 0 || id.indexOf( "SS" ) == 0 || id.indexOf( "pattern" ) == 0 )
+      return false;
+   return !w.mainView.image.isColor;
+}
+
+function lpsExport( P )
+{
+   let b = function( k ) { Parameters.set( k, P[ k ] ? "true" : "false" ); };
+   let i = function( k ) { Parameters.set( k, Math.round( P[ k ] ).toString() ); };
+   b( "correctColumns" ); b( "correctEntireImage" ); Parameters.set( "defectTableFilePath", P.defectTableFilePath );
+   i( "layersToRemove" ); i( "rejectionLimit" ); b( "globalRejection" ); i( "globalRejectionLimit" );
+   i( "backgroundReferenceLeft" ); i( "backgroundReferenceTop" ); i( "backgroundReferenceWidth" ); i( "backgroundReferenceHeight" );
+   b( "autoBackground" ); b( "allOpenImages" ); b( "closeWorkingImages" );
+}
+
+function lpsDialog( P )
+{
+   let d = new CWDialog( LPS_TITLE, "<b>LinearPatternSubtraction</b> (moteur de Vicent Peris) sur les masters mono cochés : " +
+                         "retire les lignes (ou colonnes) du capteur. Zone de fond choisie automatiquement (la plus sombre).", "Limite globale :" );
+   d.combo( "Corriger :", [ "les lignes", "les colonnes" ], P.correctColumns ? 1 : 0, "", function( k ) { P.correctColumns = k == 1; } );
+   d.check( "Corriger toute l'image", P.correctEntireImage, "", function( c ) { P.correctEntireImage = c; } );
+   d.numeric( "Couches retirées :", 1, 12, 0, P.layersToRemove, "Layers to remove (9 par défaut).", function( v ) { P.layersToRemove = v; } );
+   d.numeric( "Rejet :", 1, 10, 0, P.rejectionLimit, "Rejection limit (3 par défaut).", function( v ) { P.rejectionLimit = v; } );
+   d.check( "Rejet global", P.globalRejection, "", function( c ) { P.globalRejection = c; } );
+   d.numeric( "Limite globale :", 1, 10, 0, P.globalRejectionLimit, "Global rejection limit (5 par défaut).", function( v ) { P.globalRejectionLimit = v; } );
+   d.check( "Zone de fond automatique (la plus sombre)", P.autoBackground, "Sinon : zone 0, 0, 512, 512 de l'icône.", function( c ) { P.autoBackground = c; } );
+   d.check( "Fermer les fenêtres de travail (LS, SS, pattern)", P.closeWorkingImages, "", function( c ) { P.closeWorkingImages = c; } );
+   let windows = ImageWindow.windows, boxes = [];
+   d.group( "Masters à corriger (mono)" );
+   for ( let k = 0; k < windows.length; ++k )
+      if ( lpsCandidate( windows[ k ] ) )
+         boxes.push( { w: windows[ k ], box: d.check( windows[ k ].mainView.id, true, "", null ) } );
+   if ( boxes.length == 0 )
+      d.info( "Aucun master mono ouvert." );
+   d.endGroup();
+   d.onExport = function() { lpsExport( P ); };
+   d.finish( "Corriger" );
+   if ( !d.execute() )
+      return null;
+   return boxes.filter( function( b ) { return b.box.checked; } ).map( function( b ) { return b.w; } );
+}
+
+function lpsCorrect( windows, P )
+{
+   if ( windows.length == 0 )
+      throw new Error( LPS_TITLE + " : aucune image à corriger." );
+   console.show();
+   let T = new ElapsedTime;
+   for ( let k = 0; k < windows.length; ++k )
+   {
+      correctWindow( windows[ k ], P );
+      if ( console.abortRequested )
+         break;
+   }
+   console.noteln( "<end><cbr>" + LPS_TITLE + " : " + windows.length + " image(s) corrigée(s) en " + T.text );
+}
+
 function lpsUnClic()
 {
    let P = new LPS1Parameters;
    P.import();
+   if ( cwWantsDialog() )
+   {
+      let wins = lpsDialog( P );
+      if ( wins != null )
+         cwRun( LPS_TITLE, function() { lpsCorrect( wins, P ); } );
+      return;
+   }
    console.show();
 
    let windows = [];

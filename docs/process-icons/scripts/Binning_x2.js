@@ -18,6 +18,8 @@
 #feature-info  Divise par 2 la taille de toutes les images ouvertes \
    (IntegerResample, moyenne), solution astrométrique gardée.
 
+#include "clodoweg_ui.jsh"
+
 #define BX_TITLE "Binning x2"
 
 function bxKeywords( w, f )
@@ -40,14 +42,12 @@ function bxKeywords( w, f )
       w.keywords = kw;
 }
 
-function main()
+function bxRun( f, wins )
 {
-   let f = Parameters.has( "facteur" ) ? parseInt( Parameters.getString( "facteur" ) ) : 2;
    if ( isNaN( f ) || f < 2 )
       throw new Error( BX_TITLE + " : facteur invalide (2 ou plus)." );
-   let wins = ImageWindow.windows.filter( function( w ) { return !w.mainView.id.endsWith( "_stars" ); } );
    if ( wins.length == 0 )
-      throw new Error( BX_TITLE + " : aucune image ouverte." );
+      throw new Error( BX_TITLE + " : aucune image à réduire." );
    let done = [];
    for ( let i = 0; i < wins.length; ++i )
    {
@@ -58,9 +58,51 @@ function main()
       if ( !P.executeOn( w.mainView ) )
          throw new Error( BX_TITLE + " : échec sur " + w.mainView.id + " (voir la console)." );
       bxKeywords( w, f );
+      w.zoomToFit();
       done.push( w.mainView.id + " " + w.mainView.image.width + "x" + w.mainView.image.height );
    }
    console.noteln( BX_TITLE + " : " + done.length + " image(s) réduite(s) d'un facteur " + f + " : " + done.join( ", " ) + "." );
+}
+
+function bxDefaultWindows()
+{
+   return ImageWindow.windows.filter( function( w ) { return !w.mainView.id.endsWith( "_stars" ); } );
+}
+
+function bxDialog( p )
+{
+   let d = new CWDialog( BX_TITLE, "<b>Binning logiciel</b> (IntegerResample, moyenne) des images cochées, solution astrométrique gardée. " +
+                         "Juste après Solver_auto. 2 = 0,528″/px, traitement 4 fois plus rapide ; pour un grand tirage, Agrandir_x2 avant l'export.", "Facteur :" );
+   d.combo( "Facteur :", [ "2 (2×2)", "3 (3×3)" ], p.facteur == 3 ? 1 : 0, "Facteur de réduction.", function( k ) { p.facteur = k + 2; } );
+   let windows = ImageWindow.windows, boxes = [];
+   d.group( "Images à réduire" );
+   if ( windows.length == 0 )
+      d.info( "Aucune image ouverte." );
+   for ( let k = 0; k < windows.length; ++k )
+   {
+      let w = windows[ k ];
+      boxes.push( { w: w, box: d.check( w.mainView.id + "  (" + w.mainView.image.width + "×" + w.mainView.image.height + ")",
+                                         !w.mainView.id.endsWith( "_stars" ), "", null ) } );
+   }
+   d.endGroup();
+   d.onExport = function() { Parameters.set( "facteur", p.facteur.toFixed( 0 ) ); };
+   d.finish( "Réduire" );
+   if ( !d.execute() )
+      return null;
+   return boxes.filter( function( b ) { return b.box.checked; } ).map( function( b ) { return b.w; } );
+}
+
+function main()
+{
+   let p = { facteur: parseInt( cwParam( "facteur", "2" ) ) };
+   if ( cwWantsDialog() )
+   {
+      let wins = bxDialog( p );
+      if ( wins != null )
+         cwRun( BX_TITLE, function() { bxRun( p.facteur, wins ); } );
+      return;
+   }
+   bxRun( p.facteur, bxDefaultWindows() );
 }
 
 main();

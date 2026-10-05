@@ -16,13 +16,23 @@
 #feature-id    Gradient_auto : clodoweg > GradientCorrection sur toutes les images
 #feature-info  GradientCorrection (sans modèle) sur toutes les images ouvertes.
 
+#include "clodoweg_ui.jsh"
+
 #define GA_TITLE "Gradient_auto"
 
-function main()
+function gaGradient( view )
 {
-   let wins = ImageWindow.windows.filter( function( w ) { return !w.mainView.id.endsWith( "_stars" ); } );
+   let G = new GradientCorrection;
+   G.generateGradientModel = false;
+   if ( !G.executeOn( view ) )
+      throw new Error( "échec (voir la console)" );
+}
+
+// onCopy = true (lancé par la fenêtre) : calcul sur une copie puis recopie (étape Ctrl+Z, affichage).
+function gaRun( wins, onCopy )
+{
    if ( wins.length == 0 )
-      throw new Error( GA_TITLE + " : aucune image ouverte." );
+      throw new Error( GA_TITLE + " : aucune image à traiter." );
    console.show();
    let bilan = [];
    for ( let i = 0; i < wins.length; ++i )
@@ -30,10 +40,10 @@ function main()
       let id = wins[ i ].mainView.id;
       try
       {
-         let G = new GradientCorrection;
-         G.generateGradientModel = false;
-         if ( !G.executeOn( wins[ i ].mainView ) )
-            throw new Error( "échec (voir la console)" );
+         if ( onCopy )
+            cwApplyOnCopy( wins[ i ].mainView, gaGradient );
+         else
+            gaGradient( wins[ i ].mainView );
          bilan.push( id + " : GradientCorrection" );
       }
       catch ( e )
@@ -43,6 +53,35 @@ function main()
    }
    console.noteln( "<end><cbr><br>" + GA_TITLE + " :" );
    bilan.forEach( function( l ) { console.noteln( "   " + l ); } );
+}
+
+function gaDialog()
+{
+   let d = new CWDialog( GA_TITLE, "<b>GradientCorrection</b> (réglages par défaut, sans modèle de gradient) sur les images cochées. " +
+                         "Mode rapide, avant R_Lineaire_rapide.", "Images :" );
+   let windows = ImageWindow.windows, boxes = [];
+   d.group( "Images à corriger" );
+   if ( windows.length == 0 )
+      d.info( "Aucune image ouverte." );
+   for ( let k = 0; k < windows.length; ++k )
+      boxes.push( { w: windows[ k ], box: d.check( windows[ k ].mainView.id, !windows[ k ].mainView.id.endsWith( "_stars" ), "", null ) } );
+   d.endGroup();
+   d.finish( "Corriger" );
+   if ( !d.execute() )
+      return null;
+   return boxes.filter( function( b ) { return b.box.checked; } ).map( function( b ) { return b.w; } );
+}
+
+function main()
+{
+   if ( cwWantsDialog() )
+   {
+      let wins = gaDialog();
+      if ( wins != null )
+         cwRun( GA_TITLE, function() { gaRun( wins, true ); } );
+      return;
+   }
+   gaRun( ImageWindow.windows.filter( function( w ) { return !w.mainView.id.endsWith( "_stars" ); } ), false );
 }
 
 main();

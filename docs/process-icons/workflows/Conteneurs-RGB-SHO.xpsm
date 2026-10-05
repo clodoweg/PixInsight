@@ -9,7 +9,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <description>PHASE 1 — Préparation : masters intégrés, recadrés et combinés. Colonne de repère, sans effet.</description>
    </instance>
    <instance class="Script" version="256" id="E00_LinearPatternSubtraction_instance">
-      <description>LANCEMENT : glisse l'icône sur l'image.&#10;&#10;PRÉRÉGLÉ : script LPS_UnClic (moteur de Vicent Peris, sans dialogue) : lignes, Correct the entire image, Layers to remove 9, Rejection limit 3, Global rejection 5, zone de fond choisie automatiquement (la plus sombre), fenêtres de travail fermées, TOUTES les images ouvertes corrigées (allOpenImages = true).&#10;&#10;À RÉGLER : une seule fois par ordinateur (Mac ou PC) : crée le dossier clodoweg dans src/scripts de PixInsight (à côté de PatternCorrection ; Mac : /Applications/PixInsight/src/scripts/clodoweg, PC : en général C:\Program Files\PixInsight\src\scripts\clodoweg ; pas le dossier scripts du premier niveau) et copies-y LPS_UnClic.js ; ensuite ouvre les masters linéaires de la cible (et rien d'autre), puis glisse l'icône sur l'un d'eux : tous sont corrigés, avant le recadrage (la correction se fait dans les images).&#10;&#10;SI :&#10;- corriger des colonnes -&gt; correctColumns = true dans l'icône&#10;- une seule image -&gt; allOpenImages = false dans l'icône, puis glisse-la sur l'image&#10;- artefacts -&gt; Ctrl+Z : le script est conçu pour les brutes, avant alignement&#10;- script introuvable -&gt; vérifie le dossier scripts/clodoweg (à recopier après une réinstallation de PixInsight) ; version avec dialogue : menu Script › Pattern Correction › LinearPatternSubtraction</description>
+      <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script LPS_UnClic (moteur de Vicent Peris, sans dialogue) : lignes, Correct the entire image, Layers to remove 9, Rejection limit 3, Global rejection 5, zone de fond choisie automatiquement (la plus sombre), fenêtres de travail fermées, TOUTES les images ouvertes corrigées (allOpenImages = true).&#10;&#10;À RÉGLER : une seule fois par ordinateur (Mac ou PC) : crée le dossier clodoweg dans src/scripts de PixInsight (à côté de PatternCorrection ; Mac : /Applications/PixInsight/src/scripts/clodoweg, PC : en général C:\Program Files\PixInsight\src\scripts\clodoweg ; pas le dossier scripts du premier niveau) et copies-y LPS_UnClic.js ; ensuite ouvre les masters linéaires de la cible (et rien d'autre), puis glisse l'icône sur l'un d'eux : tous sont corrigés, avant le recadrage (la correction se fait dans les images).&#10;&#10;SI :&#10;- corriger des colonnes -&gt; correctColumns = true dans l'icône&#10;- une seule image -&gt; allOpenImages = false dans l'icône, puis glisse-la sur l'image&#10;- artefacts -&gt; Ctrl+Z : le script est conçu pour les brutes, avant alignement&#10;- script introuvable -&gt; vérifie le dossier scripts/clodoweg (à recopier après une réinstallation de PixInsight) ; version avec dialogue : menu Script › Pattern Correction › LinearPatternSubtraction</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/LPS_UnClic.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="14">
@@ -73,7 +73,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="information"></parameter>
    </instance>
    <instance class="Script" version="256" id="E01_Renommer_auto_instance">
-      <description>LANCEMENT : double-clic sur l'icône, puis Apply Global.&#10;&#10;PRÉRÉGLÉ : script Renommer_auto : renomme les masters mono ouverts L, R, G, B, H, O, S d'après le mot-clé FILTER (Lum, Red, Ha, OIII...), sinon d'après le nom du fichier.&#10;&#10;À RÉGLER : une seule fois par ordinateur : copie Renommer_auto.js dans src/scripts/clodoweg ; ouvre tes masters, puis lance l'icône.&#10;&#10;SI :&#10;- filtre inconnu ou nom déjà pris -&gt; message dans la console, renomme cette vue à la main</description>
+      <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Renommer_auto : renomme les masters mono ouverts L, R, G, B, H, O, S d'après le mot-clé FILTER (Lum, Red, Ha, OIII...), sinon d'après le nom du fichier.&#10;&#10;À RÉGLER : une seule fois par ordinateur : copie Renommer_auto.js dans src/scripts/clodoweg ; ouvre tes masters, puis lance l'icône.&#10;&#10;SI :&#10;- filtre inconnu ou nom déjà pris -&gt; message dans la console, renomme cette vue à la main</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Renommer_auto.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="0"/>
@@ -1147,7 +1147,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="4">
+         <table id="parameters" rows="5">
             <tr>
                <td id="id">mode</td>
                <td id="value">attacher</td>
@@ -1163,6 +1163,10 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
             <tr>
                <td id="id">nom</td>
                <td id="value">masque_L</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
             </tr>
          </table>
          <parameter id="information"></parameter>
@@ -1319,7 +1323,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="2">
+         <table id="parameters" rows="3">
             <tr>
                <td id="id">mode</td>
                <td id="value">retirer</td>
@@ -1327,6 +1331,10 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
             <tr>
                <td id="id">nom</td>
                <td id="value">masque_L</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
             </tr>
          </table>
          <parameter id="information"></parameter>
@@ -1339,7 +1347,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="4">
+         <table id="parameters" rows="5">
             <tr>
                <td id="id">mode</td>
                <td id="value">attacher</td>
@@ -1355,6 +1363,10 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
             <tr>
                <td id="id">nom</td>
                <td id="value">masque_L</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
             </tr>
          </table>
          <parameter id="information"></parameter>
@@ -1504,7 +1516,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="2">
+         <table id="parameters" rows="3">
             <tr>
                <td id="id">mode</td>
                <td id="value">retirer</td>
@@ -1512,6 +1524,10 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
             <tr>
                <td id="id">nom</td>
                <td id="value">masque_L</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
             </tr>
          </table>
          <parameter id="information"></parameter>
@@ -1521,7 +1537,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="4">
+         <table id="parameters" rows="5">
             <tr>
                <td id="id">mode</td>
                <td id="value">attacher</td>
@@ -1537,6 +1553,10 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
             <tr>
                <td id="id">nom</td>
                <td id="value">masque_L</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
             </tr>
          </table>
          <parameter id="information"></parameter>
@@ -1686,7 +1706,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="2">
+         <table id="parameters" rows="3">
             <tr>
                <td id="id">mode</td>
                <td id="value">retirer</td>
@@ -1694,6 +1714,10 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
             <tr>
                <td id="id">nom</td>
                <td id="value">masque_L</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
             </tr>
          </table>
          <parameter id="information"></parameter>
@@ -1784,10 +1808,14 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="1">
+         <table id="parameters" rows="2">
             <tr>
                <td id="id">views</td>
                <td id="value">HDR_avant</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
             </tr>
          </table>
          <parameter id="information"></parameter>
@@ -1878,10 +1906,14 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="1">
+         <table id="parameters" rows="2">
             <tr>
                <td id="id">views</td>
                <td id="value">HDR_avant</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
             </tr>
          </table>
          <parameter id="information"></parameter>
@@ -1972,10 +2004,14 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="1">
+         <table id="parameters" rows="2">
             <tr>
                <td id="id">views</td>
                <td id="value">HDR_avant</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
             </tr>
          </table>
          <parameter id="information"></parameter>
@@ -1983,7 +2019,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="4">
+         <table id="parameters" rows="5">
             <tr>
                <td id="id">mode</td>
                <td id="value">attacher</td>
@@ -1999,6 +2035,10 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
             <tr>
                <td id="id">nom</td>
                <td id="value">masque_L</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
             </tr>
          </table>
          <parameter id="information"></parameter>
@@ -2148,7 +2188,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="2">
+         <table id="parameters" rows="3">
             <tr>
                <td id="id">mode</td>
                <td id="value">retirer</td>
@@ -2156,6 +2196,10 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
             <tr>
                <td id="id">nom</td>
                <td id="value">masque_L</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
             </tr>
          </table>
          <parameter id="information"></parameter>
@@ -2187,7 +2231,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <description>PRÉRÉGLÉ : rien (icône-note).&#10;&#10;À RÉGLER : suis les icônes suivantes : étoiles RGB calibrées pour l'image SHO.</description>
    </instance>
    <instance class="Script" version="256" id="E20_Combinaison_RGB_instance">
-      <description>LANCEMENT : double-clic sur l'icône, puis Apply Global.&#10;&#10;PRÉRÉGLÉ : script Combiner_RGB : R, G, B -&gt; image couleur 'RGB', en-tête FITS du rouge copié (coordonnées et date pour ImageSolver), puis R, G et B fermées sans demander d'enregistrer.&#10;&#10;À RÉGLER : une seule fois par ordinateur : copie Combiner_RGB.js dans src/scripts/clodoweg ; nomme tes masters R, G et B, enregistre-les si tu veux garder une version modifiée (après LPS par exemple), puis lance l'icône.&#10;&#10;SI :&#10;- garder R, G et B ouvertes -&gt; closeSources = false dans l'icône&#10;- une image 'RGB' existe déjà -&gt; ferme-la ou renomme-la</description>
+      <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Combiner_RGB : R, G, B -&gt; image couleur 'RGB', en-tête FITS du rouge copié (coordonnées et date pour ImageSolver), puis R, G et B fermées sans demander d'enregistrer.&#10;&#10;À RÉGLER : une seule fois par ordinateur : copie Combiner_RGB.js dans src/scripts/clodoweg ; nomme tes masters R, G et B, enregistre-les si tu veux garder une version modifiée (après LPS par exemple), puis lance l'icône.&#10;&#10;SI :&#10;- garder R, G et B ouvertes -&gt; closeSources = false dans l'icône&#10;- une image 'RGB' existe déjà -&gt; ferme-la ou renomme-la</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Combiner_RGB.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="7">
@@ -2956,7 +3000,7 @@ $T*(1 - k*t*t)</parameter>
       <parameter id="information"></parameter>
    </instance>
    <instance class="Script" version="256" id="Opt_Fond_desature_instance">
-      <description>OPTION — fond du ciel teinté (violet, bruit de couleur) sur l'image finie : couleur retirée du fond seulement.&#10;&#10;LANCEMENT : glisse l'icône sur l'image.&#10;&#10;PRÉRÉGLÉ : script Fond_desature : fond mesuré ; zones faibles (luminance lissée sous fond + 0,15, décroissant jusqu'à + 0,30) : violet neutralisé (G remonté jusqu'à min(R, B), magenta seulement) ; fond (sous + 0,03, rampe jusqu'à + 0,15) : couleur retirée.&#10;&#10;À RÉGLER : glisse sur l'image finie, étoiles comprises, juste après Etoiles_screen, avant Fond_auto.&#10;&#10;SI :&#10;- violet encore visible dans le halo -&gt; violetFin 0,40&#10;- extensions faibles de la galaxie grisées -&gt; fin 0,10</description>
+      <description>OPTION — fond du ciel teinté (violet, bruit de couleur) sur l'image finie : couleur retirée du fond seulement.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Fond_desature : fond mesuré ; zones faibles (luminance lissée sous fond + 0,15, décroissant jusqu'à + 0,30) : violet neutralisé (G remonté jusqu'à min(R, B), magenta seulement) ; fond (sous + 0,03, rampe jusqu'à + 0,15) : couleur retirée.&#10;&#10;À RÉGLER : glisse sur l'image finie, étoiles comprises, juste après Etoiles_screen, avant Fond_auto.&#10;&#10;SI :&#10;- violet encore visible dans le halo -&gt; violetFin 0,40&#10;- extensions faibles de la galaxie grisées -&gt; fin 0,10</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="4">
@@ -2988,7 +3032,7 @@ $T*(1 - k*t*t)</parameter>
       <parameter id="useFloatingPointTransformation" value="true"/>
    </instance>
    <instance class="Script" version="256" id="Opt_Export_TIFF_instance">
-      <description>OPTION — tout à la fin : copie enregistrée en TIFF 16 bits sRGB, profil ICC intégré, pour Photoshop, Lightroom ou Affinity.&#10;&#10;LANCEMENT : glisse l'icône sur l'image.&#10;&#10;PRÉRÉGLÉ : script Export_TIFF : copie de l'image en entiers 16 bits, convertie en sRGB IEC61966-2.1 (icc = true), enregistrée en TIFF (.tiff) sous le NOM DE L'OBJET, sans espace (NGC 1532 -&gt; NGC1532), = nom du dossier des masters ouverts (L, R, G, B, H…), dossiers génériques (master, lights, output, WBPP…) sautés ; enregistrée dans ce dossier ; l'image ouverte ne change pas ; ensuite L et RGB_stars fermées (paramètre fermer).&#10;&#10;À RÉGLER : glisse sur l'image finie (après Fond_desature), L et RGB_stars encore ouvertes (fermées après l'export) ; copie Export_TIFF.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- aucun master ouvert -&gt; mot-clé OBJECT, sinon nom de la vue, dans ton dossier personnel&#10;- autre nom -&gt; remplis nom&#10;- autre dossier -&gt; remplis dossier&#10;- garder plusieurs versions -&gt; suffixe (ex. _v2)&#10;- garder le profil actuel -&gt; icc false</description>
+      <description>OPTION — tout à la fin : copie enregistrée en TIFF 16 bits sRGB, profil ICC intégré, pour Photoshop, Lightroom ou Affinity.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Export_TIFF : copie de l'image en entiers 16 bits, convertie en sRGB IEC61966-2.1 (icc = true), enregistrée en TIFF (.tiff) sous le NOM DE L'OBJET, sans espace (NGC 1532 -&gt; NGC1532), = nom du dossier des masters ouverts (L, R, G, B, H…), dossiers génériques (master, lights, output, WBPP…) sautés ; enregistrée dans ce dossier ; l'image ouverte ne change pas ; ensuite L et RGB_stars fermées (paramètre fermer).&#10;&#10;À RÉGLER : glisse sur l'image finie (après Fond_desature), L et RGB_stars encore ouvertes (fermées après l'export) ; copie Export_TIFF.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- aucun master ouvert -&gt; mot-clé OBJECT, sinon nom de la vue, dans ton dossier personnel&#10;- autre nom -&gt; remplis nom&#10;- autre dossier -&gt; remplis dossier&#10;- garder plusieurs versions -&gt; suffixe (ex. _v2)&#10;- garder le profil actuel -&gt; icc false</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="5">

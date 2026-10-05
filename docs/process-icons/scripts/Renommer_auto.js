@@ -21,6 +21,8 @@
 #feature-info  Renomme les masters ouverts L, R, G, B, H, O, S d'après le \
    mot-clé FILTER (ou le nom du fichier).
 
+#include "clodoweg_ui.jsh"
+
 #define REN_TITLE "Renommer auto"
 
 // Nom de filtre (en-tête ou morceau du nom de fichier) -> nom de vue.
@@ -83,15 +85,14 @@ function fromFileName( window )
    return "";
 }
 
-function renommerAuto()
+// Renommages prévus : [{ view, old, id, source, note }] (note non vide = pas renommée).
+function renProposals()
 {
-   console.show();
    let windows = ImageWindow.windows;
    let used = {};
    for ( let k = 0; k < windows.length; ++k )
       used[ windows[ k ].mainView.id ] = true;
-
-   let done = 0, skipped = 0;
+   let list = [];
    for ( let k = 0; k < windows.length; ++k )
    {
       let w = windows[ k ];
@@ -107,26 +108,76 @@ function renommerAuto()
       }
       if ( id.length == 0 )
       {
-         console.warningln( REN_TITLE + " : filtre inconnu pour '" + view.id + "' : renomme-la à la main." );
-         ++skipped;
+         list.push( { view: view, old: view.id, id: "", source: "", note: "filtre inconnu : renomme-la à la main" } );
          continue;
       }
       if ( view.id == id )
-         continue;
-      if ( used[ id ] )
       {
-         console.warningln( REN_TITLE + " : '" + view.id + "' serait '" + id + "', mais ce nom est déjà pris : non renommée." );
-         ++skipped;
+         list.push( { view: view, old: view.id, id: id, source: source, note: "déjà bien nommée" } );
          continue;
       }
-      let old = view.id;
-      view.id = id;
+      if ( used[ id ] )
+      {
+         list.push( { view: view, old: view.id, id: id, source: source, note: "nom " + id + " déjà pris : non renommée" } );
+         continue;
+      }
       used[ id ] = true;
-      delete used[ old ];
-      console.noteln( REN_TITLE + " : '" + old + "' -> '" + id + "' (" + source + ")" );
+      delete used[ view.id ];
+      list.push( { view: view, old: view.id, id: id, source: source, note: "" } );
+   }
+   return list;
+}
+
+function renApply( list )
+{
+   console.show();
+   let done = 0, skipped = 0;
+   for ( let k = 0; k < list.length; ++k )
+   {
+      let r = list[ k ];
+      if ( r.note.length > 0 )
+      {
+         if ( r.note != "déjà bien nommée" )
+         {
+            console.warningln( REN_TITLE + " : '" + r.old + "' : " + r.note + "." );
+            ++skipped;
+         }
+         continue;
+      }
+      r.view.id = r.id;
+      console.noteln( REN_TITLE + " : '" + r.old + "' -> '" + r.id + "' (" + r.source + ")" );
       ++done;
    }
    console.noteln( "<end><cbr>" + REN_TITLE + " : " + done + " vue(s) renommée(s), " + skipped + " à vérifier." );
+}
+
+function renDialog( list )
+{
+   let d = new CWDialog( REN_TITLE, "<b>Renommer les masters</b> mono ouverts en L, R, G, B, H, O, S, d'après le mot-clé FILTER (sinon le nom du fichier). " +
+                         "Voici ce qui sera fait :", "Image :" );
+   let html = "<table cellspacing='4'><tr><th align='left'>Vue</th><th align='left'>Nouveau nom</th><th align='left'>D'après</th></tr>";
+   if ( list.length == 0 )
+      html += "<tr><td colspan='3'>Aucune image mono ouverte.</td></tr>";
+   for ( let k = 0; k < list.length; ++k )
+   {
+      let r = list[ k ];
+      html += "<tr><td>" + r.old + "</td><td>" + (r.note.length ? "<i>" + r.note + "</i>" : "<b>" + r.id + "</b>") + "</td><td>" + r.source + "</td></tr>";
+   }
+   d.info( html + "</table>" );
+   d.finish( "Renommer" );
+   return d.execute();
+}
+
+function renommerAuto()
+{
+   let list = renProposals();
+   if ( cwWantsDialog() )
+   {
+      if ( renDialog( list ) )
+         cwRun( REN_TITLE, function() { renApply( list ); } );
+      return;
+   }
+   renApply( list );
 }
 
 renommerAuto();

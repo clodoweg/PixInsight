@@ -15,12 +15,12 @@
 #feature-info  Ferme sans confirmation les vues dont les noms sont donnés \
    dans le paramètre views (séparés par des virgules).
 
+#include "clodoweg_ui.jsh"
+
 #define TITLE "Fermer vues"
 
-function main()
+function fvRun( list, target )
 {
-   let list = Parameters.has( "views" ) ? Parameters.getString( "views" ) : "";
-   let target = Parameters.isViewTarget ? Parameters.targetView.id : "";
    let ids = list.split( "," );
    let closed = 0;
    for ( let k = 0; k < ids.length; ++k )
@@ -35,6 +35,48 @@ function main()
       ++closed;
    }
    console.noteln( TITLE + " : " + closed + " vue(s) fermée(s) (" + list + ")." );
+}
+
+function fvDialog( p )
+{
+   let d = new CWDialog( TITLE, "<b>Fermer des vues</b> sans demander d'enregistrer. Coche les vues à fermer.", "Vues :" );
+   let wanted = p.views.split( "," ).map( function( x ) { return x.trim(); } );
+   let windows = ImageWindow.windows, boxes = [];
+   d.group( "Vues ouvertes" );
+   if ( windows.length == 0 )
+      d.info( "Aucune vue ouverte." );
+   for ( let k = 0; k < windows.length; ++k )
+   {
+      let id = windows[ k ].mainView.id;
+      boxes.push( { id: id, box: d.check( id, wanted.indexOf( id ) >= 0, "", null ) } );
+   }
+   d.endGroup();
+   function selected()
+   {
+      let out = [];
+      for ( let k = 0; k < boxes.length; ++k )
+         if ( boxes[ k ].box.checked )
+            out.push( boxes[ k ].id );
+      return out.join( ", " );
+   }
+   d.onExport = function() { Parameters.set( "views", selected() ); };
+   d.finish( "Fermer" );
+   if ( !d.execute() )
+      return false;
+   p.views = selected();
+   return true;
+}
+
+function main()
+{
+   let p = { views: cwParam( "views", "" ) };
+   if ( cwWantsDialog() )
+   {
+      if ( fvDialog( p ) )
+         cwRun( TITLE, function() { fvRun( p.views, "" ); } );
+      return;
+   }
+   fvRun( p.views, Parameters.isViewTarget ? Parameters.targetView.id : "" );
 }
 
 main();

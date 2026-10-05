@@ -418,6 +418,12 @@ function main()
       egApply( Parameters.targetView, p, true );
       return;
    }
+   if ( Parameters.has( "dialogue" ) && Parameters.getString( "dialogue" ).trim().toLowerCase() == "false" )
+   {
+      // conteneur lancé en Apply Global : exécution directe sur l'image active
+      egApply( egDefaultView(), p, false );
+      return;
+   }
    let dialog = new EGDialog( p, egDefaultView() );
    if ( dialog.execute() )
    {

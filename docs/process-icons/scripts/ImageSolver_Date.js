@@ -35,7 +35,10 @@
 #define SETTINGS_MODULE "ImageSolver"
 #include "../ImageSolver/ImageSolver.js"
 
+#include "clodoweg_ui.jsh"
+
 var DATE_TITLE = "ImageSolver_Date";
+var DATE_DEFAULT = null;   // date choisie dans la fenêtre
 
 function hasObservationDate( window )
 {
@@ -55,9 +58,7 @@ function hasObservationDate( window )
 
 function addDefaultDate( window )
 {
-   let defaultDate = "2020-01-01T00:00:00";
-   if ( Parameters.has( "defaultDate" ) )
-      defaultDate = Parameters.getString( "defaultDate" ).trim();
+   let defaultDate = DATE_DEFAULT || cwParam( "defaultDate", "2020-01-01T00:00:00" );
    if ( hasObservationDate( window ) )
    {
       console.writeln( "<end><cbr>" + DATE_TITLE + " : " + window.mainView.id + " a déjà une date d'observation." );
@@ -95,4 +96,30 @@ function mainDate()
    solve( window );
 }
 
-mainDate();
+function dateDialog()
+{
+   let o = { date: cwParam( "defaultDate", "2020-01-01T00:00:00" ), view: cwDefaultView() };
+   let focal = cwParam( "metadata_focal", "" ), pix = cwParam( "metadata_xpixsz", "" );
+   let d = new CWDialog( DATE_TITLE, "<b>ImageSolver avec date par défaut</b> : ajoute une date d'observation si l'image n'en a pas, " +
+                         "puis la résout avec les réglages du matériel portés par l'icône.", "Date par défaut :" );
+   d.info( focal ? "Réglages ImageSolver de l'icône : focale " + focal + " mm, pixel " + pix + " µm." :
+                   "<b>Pas de réglages ImageSolver</b> (script lancé sans l'icône) : seule la date sera ajoutée." );
+   d.viewList( "Image :", o.view, "Image à résoudre (RGB, L, H, O, S).", function( v ) { o.view = v; } );
+   d.edit( "Date par défaut :", o.date, "Ajoutée seulement si l'image n'a pas de date d'observation.", function( t ) { o.date = t.trim(); } );
+   d.onExport = function() { Parameters.set( "defaultDate", o.date ); };
+   d.validate = function() { return (o.view == null || o.view.isNull) ? "Choisis l'image." : ""; };
+   d.finish( "Résoudre" );
+   return d.execute() ? o : null;
+}
+
+if ( cwWantsDialog() )
+{
+   let o = dateDialog();
+   if ( o != null )
+   {
+      DATE_DEFAULT = o.date;
+      cwRun( DATE_TITLE, function() { addDefaultDate( o.view.window ); solve( o.view.window ); } );
+   }
+}
+else
+   mainDate();

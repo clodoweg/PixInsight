@@ -32,21 +32,72 @@
 #feature-info  Crée un masque de luminance au fond coupé et l'attache à \
    l'image (ou le retire).
 
+#include "clodoweg_ui.jsh"
+
 #define TITLE "Masque auto"
 
-function param( key, value )
+function maParams()
 {
-   return Parameters.has( key ) ? Parameters.getString( key ).trim() : value;
+   return { mode: cwParam( "mode", "attacher" ).toLowerCase(), s: parseFloat( cwParam( "s", "0.14" ) ), gamma: parseFloat( cwParam( "gamma", "1" ) ),
+            flou: parseFloat( cwParam( "flou", "2" ) ), nom: cwParam( "nom", "masque_L" ), source: cwParam( "source", "" ),
+            exclure: cwParam( "exclure", "" ), exclureGain: parseFloat( cwParam( "exclureGain", "4" ) ) };
+}
+
+function maExport( p )
+{
+   Parameters.set( "mode", p.mode );
+   Parameters.set( "s", p.s.toFixed( 2 ) );
+   Parameters.set( "gamma", p.gamma.toFixed( 1 ) );
+   Parameters.set( "flou", p.flou.toFixed( 1 ) );
+   Parameters.set( "nom", p.nom );
+   Parameters.set( "source", p.source );
+   Parameters.set( "exclure", p.exclure );
+   Parameters.set( "exclureGain", p.exclureGain.toFixed( 1 ) );
+}
+
+function maDialog( p, view )
+{
+   let d = new CWDialog( TITLE, "<b>Masque de luminance</b> au fond coupé, créé et attaché à l'image en un clic (ou retiré). " +
+                         "Fond (sous s) protégé ; contrôle à la sonde sur le masque : fond 0 à 0,05.", "Gain d'exclusion :" );
+   let sel = { view: view };
+   d.viewList( "Image :", view, "Image sans étoiles étirée (ou image finie pour le Boost_final).", function( v ) { sel.view = v; } );
+   d.combo( "Action :", [ "créer et attacher le masque", "retirer le masque" ], p.mode == "retirer" ? 1 : 0, "", function( k ) { p.mode = k == 1 ? "retirer" : "attacher"; } );
+   d.edit( "Nom du masque :", p.nom, "Vue créée (masque_L par défaut).", function( t ) { p.nom = t.trim(); } );
+   d.group( "Masque" );
+   d.numeric( "Seuil s :", 0.00, 0.50, 2, p.s, "Tout ce qui est sous s passe à 0 (protégé). Règle : fond mesuré + 0,01.", function( v ) { p.s = v; } );
+   d.numeric( "Gamma :", 0.5, 4, 1, p.gamma, "1 = linéaire ; 2 = masque fort seulement sur le très lumineux (Boost_final).", function( v ) { p.gamma = v; } );
+   d.numeric( "Flou (px) :", 0, 10, 1, p.flou, "Lissage du masque.", function( v ) { p.flou = v; } );
+   d.edit( "Source :", p.source, "Autre vue d'où tirer la luminance (L sans étoiles pour Boost_final) ; vide = l'image.", function( t ) { p.source = t.trim(); } );
+   d.edit( "Étoiles à exclure :", p.exclure, "Image d'étoiles (RGB_stars) retirée du masque ; vide = rien.", function( t ) { p.exclure = t.trim(); } );
+   d.numeric( "Gain d'exclusion :", 1, 10, 1, p.exclureGain, "Force du retrait des étoiles du masque (4 par défaut).", function( v ) { p.exclureGain = v; } );
+   d.endGroup();
+   d.onExport = function() { maExport( p ); };
+   d.validate = function() { return (sel.view == null || sel.view.isNull) ? "Choisis l'image." : (p.nom.length ? "" : "Nom du masque vide."); };
+   d.finish();
+   return d.execute() ? sel.view : null;
 }
 
 function main()
 {
+   let p = maParams();
+   if ( cwWantsDialog() )
+   {
+      let v = maDialog( p, cwDefaultView() );
+      if ( v != null )
+         cwRun( TITLE, function() { maRun( v, p ); v.window.bringToFront(); } );
+      return;
+   }
    let view = Parameters.isViewTarget ? Parameters.targetView : ImageWindow.activeWindow.mainView;
    if ( view.isNull )
       throw new Error( TITLE + " : aucune image." );
+   maRun( view, p );
+}
+
+function maRun( view, p )
+{
    let window = view.window;
-   let name = param( "nom", "masque_L" );
-   let mode = param( "mode", "attacher" ).toLowerCase();
+   let name = p.nom;
+   let mode = p.mode;
 
    if ( mode == "retirer" )
    {
@@ -58,9 +109,7 @@ function main()
       return;
    }
 
-   let s = parseFloat( param( "s", "0.14" ) );
-   let flou = parseFloat( param( "flou", "2" ) );
-   let gamma = parseFloat( param( "gamma", "1" ) );
+   let s = p.s, flou = p.flou, gamma = p.gamma;
 
    let old = ImageWindow.windowById( name );
    if ( !old.isNull && old.mainView.id != view.id )
@@ -70,7 +119,7 @@ function main()
    }
 
    let src = view;
-   let srcId = param( "source", "" );
+   let srcId = p.source;
    if ( srcId.length > 0 )
    {
       let sw = ImageWindow.windowById( srcId );
@@ -99,7 +148,7 @@ function main()
    if ( mask.isNull )
       throw new Error( TITLE + " : le masque " + name + " n'a pas été créé." );
 
-   let exclId = param( "exclure", "" );
+   let exclId = p.exclure;
    if ( exclId.length > 0 )
    {
       let ew = ImageWindow.windowById( exclId );
@@ -107,7 +156,7 @@ function main()
          console.warningln( TITLE + " : image d'étoiles " + exclId + " introuvable ou de taille différente, étoiles non retirées du masque." );
       else
       {
-         let gain = parseFloat( param( "exclureGain", "4" ) );
+         let gain = p.exclureGain;
          let tmp = "masque_etoiles";
          let o = ImageWindow.windowById( tmp );
          if ( !o.isNull )

@@ -156,6 +156,8 @@ def shorten(xml, prefix, base):
     if base in SCRIPTS and 'class="Script"' in xml:
         path, md5, params, launch = SCRIPTS[base]
         drag = launch.startswith(L_DRAG)
+        if '/clodoweg/' in path:
+            drag = 'dlg'   # script de la fiche avec fenêtre de réglages (demande de l'utilisateur)
     short = escape(SD.text(prefix, base, drag, bool(md5)))
     return re.sub(r'<description>.*?</description>', lambda m: '<description>%s</description>' % short, xml, count=1, flags=re.S)
 
@@ -298,7 +300,20 @@ def nested(xml):
     """Instance d'une icône -> instance imbriquée dans un ProcessContainer (format des icônes de référence)."""
     x = re.sub(r'\s*<description>.*?</description>', '', xml, count=1, flags=re.S)
     x = x.replace(' id="__ID___instance"', ' enabled="true"', 1)
+    x = no_dialog(x)
     return '\n'.join('   ' + l for l in x.splitlines())
+
+def no_dialog(x):
+    """Script de la fiche dans un conteneur : paramètre dialogue = false (exécution directe, sans fenêtre de réglages)."""
+    if 'class="Script"' not in x or '/clodoweg/' not in x or '<td id="id">dialogue</td>' in x:
+        return x
+    row = '\n         <tr>\n            <td id="id">dialogue</td>\n            <td id="value">false</td>\n         </tr>'
+    m = re.search(r'<table id="parameters" rows="(\d+)"(/>|>)', x)
+    if m.group(2) == '/>':
+        return x.replace(m.group(0), '<table id="parameters" rows="1">%s\n      </table>' % row, 1)
+    x = x.replace(m.group(0), '<table id="parameters" rows="%d">' % (int(m.group(1)) + 1), 1)
+    i = x.index('</table>', x.index('<table id="parameters"'))
+    return x[:i].rstrip() + row + '\n      ' + x[i:]
 
 def container(name, xmls):
     return '   <instance class="ProcessContainer" id="%s_instance">\n%s\n   </instance>' % (name, '\n'.join(nested(x) for x in xmls))

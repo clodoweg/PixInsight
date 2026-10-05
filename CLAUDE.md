@@ -20,6 +20,10 @@ Avant d'ajouter ou de modifier un contenu technique (réglage, valeur, ordre des
 
 À chaque changement d'une icône (réglage, place, ordre, script, nouvelle icône), mets TOUJOURS à jour sa description, et celles des icônes et conteneurs qui la citent : `short_desc.py` (S et V : PRÉRÉGLÉ, À RÉGLER, SI), `layout.py` (`WHEN` pour une option) et les textes D_/T_ de `make_workflows.py`. Textes courts, une idée par ligne, lisibles sans autre document.
 
+## Scripts : toujours une fenêtre de réglages
+
+Chaque script de `docs/process-icons/scripts/` a une fenêtre de réglages (demande de l'utilisateur) et elle est TOUJOURS mise à jour quand le script change (nouveau paramètre = nouveau contrôle, même texte d'aide que la description de l'icône). Convention dans `docs/kb/generateur.md` : fichier commun `clodoweg_ui.jsh` (CWDialog, cwWantsDialog, cwApplyOnCopy) ; icône glissée ou script dans un conteneur (`dialogue = false`, ajouté par le générateur) = exécution directe ; double-clic puis Apply Global = fenêtre ; une image modifiée depuis la fenêtre passe par cwApplyOnCopy (affichage et Ctrl+Z). Un nouveau script suit la même convention.
+
 ## Publication
 
 - Branche `main`, commits en français avec les lignes d'attribution de la session, puis `git push origin main`.
@@ -40,7 +44,7 @@ PixInsight 1.9.5 sur **PC Windows** ; CDK17 (2 939 mm) + QHY600 (IMX455) ; filtr
 - `docs/kb/` : base de connaissances (voir plus haut).
 - `docs/process-icons/` : `make_workflows.py` (listes d'étapes par workflow, conteneurs rapides), `layout.py` (phase, rôle core / opt / alternative, `CONTAINERS`, textes `WHEN`), `short_desc.py` (descriptions LANCEMENT / PRÉRÉGLÉ / À RÉGLER / SI ; variantes par workflow dans `V`), `make_icons.py` (instances). Sortie : `workflows/Conteneurs-X.xpsm` seulement.
 - `docs/depots-pixinsight.txt` : les dépôts PixInsight à ajouter, une URL par ligne (demande de l'utilisateur).
-- `docs/process-icons/scripts/` : scripts de l'utilisateur, installés par l'utilisateur dans `src/scripts/clodoweg/` (icônes en `$PXI_SRCDIR/scripts/clodoweg/…`) : Renommer_auto, LPS_UnClic, Combiner_RGB (paramètre `garder`), GC_Solver_auto (icône Solver_auto), Gradient_auto (icône R_Gradient_auto_rapide : GradientCorrection seule), Lineaire_auto (icône R_Lineaire_rapide : lance des icônes du chemin principal sur des vues), ImageSolver_Date, Masque_auto, Etoiles_auto, Fond_auto, Fond_desature, Nettoyage_sans_etoiles, Etoiles_grosses, Export_TIFF (paramètre `fermer`), Binning_x2, Fermer_vues.
+- `docs/process-icons/scripts/` : scripts de l'utilisateur, installés par l'utilisateur dans `src/scripts/clodoweg/` (icônes en `$PXI_SRCDIR/scripts/clodoweg/…`) : Renommer_auto, LPS_UnClic, Combiner_RGB (paramètre `garder`), GC_Solver_auto (icône Solver_auto), clodoweg_ui.jsh (fenêtres communes, à copier aussi), Gradient_auto (icône R_Gradient_auto_rapide : GradientCorrection seule), Lineaire_auto (icône R_Lineaire_rapide : lance des icônes du chemin principal sur des vues), ImageSolver_Date, Masque_auto, Etoiles_auto, Fond_auto, Fond_desature, Nettoyage_sans_etoiles, Etoiles_grosses, Export_TIFF (paramètre `fermer`), Binning_x2, Fermer_vues.
 - Disposition : colonnes P1 Préparation … P7 Étoiles ; dans chaque colonne les groupes `P#_Nom` (chemin principal, `E##_`), `P#_options` (`Opt_`), `P#_rapide` (`R_`).
 
 ## Workflows actuels (LRGB et LHaRGB)

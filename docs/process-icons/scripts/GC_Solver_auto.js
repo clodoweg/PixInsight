@@ -35,7 +35,10 @@
 #define SETTINGS_MODULE "ImageSolver"
 #include "../ImageSolver/ImageSolver.js"
 
+#include "clodoweg_ui.jsh"
+
 var GCS_TITLE = "GC_Solver_auto";
+var GCS_DATE = null;   // date par défaut choisie dans la fenêtre
 
 function gcsParam( key, value )
 {
@@ -62,7 +65,7 @@ function addDefaultDate( window )
 {
    if ( hasObservationDate( window ) )
       return;
-   let defaultDate = gcsParam( "defaultDate", "2020-01-01T00:00:00" );
+   let defaultDate = GCS_DATE || gcsParam( "defaultDate", "2020-01-01T00:00:00" );
    let kw = window.keywords;
    kw.push( new FITSKeyword( "DATE-OBS", "'" + defaultDate + "'", "Date par defaut (GC_Solver_auto.js)" ) );
    window.keywords = kw;
@@ -96,7 +99,7 @@ function mainGCS( opts )
    let solveTout = ("solveTout" in opts) ? opts.solveTout : gcsParam( "solveTout", "false" ).toLowerCase() == "true";
    let avecGradient = ("gradient" in opts) ? opts.gradient : gcsParam( "gradient", "true" ).toLowerCase() == "true";
    let avecSolve = ("solve" in opts) ? opts.solve : gcsParam( "solve", "true" ).toLowerCase() == "true";   // solve = false : GradientCorrection seule (R_GC_Solver_auto_rapide)
-   let wins = ImageWindow.windows.filter( function( w ) { return !w.mainView.id.endsWith( "_stars" ); } );
+   let wins = opts.windows || ImageWindow.windows.filter( function( w ) { return !w.mainView.id.endsWith( "_stars" ); } );
    if ( wins.length == 0 )
       throw new Error( GCS_TITLE + " : aucune image ouverte." );
    console.show();
@@ -130,4 +133,48 @@ function mainGCS( opts )
    bilan.forEach( function( l ) { console.noteln( "   " + l ); } );
 }
 
-mainGCS();
+function gcsDialog()
+{
+   let o = { gradient: gcsParam( "gradient", "true" ).toLowerCase() == "true", solve: gcsParam( "solve", "true" ).toLowerCase() == "true",
+             solveTout: gcsParam( "solveTout", "false" ).toLowerCase() == "true", date: gcsParam( "defaultDate", "2020-01-01T00:00:00" ) };
+   let focal = gcsParam( "metadata_focal", "" ), pix = gcsParam( "metadata_xpixsz", "" );
+   let d = new CWDialog( GCS_TITLE, "<b>Astrométrie de toutes les images</b> (ImageSolver, réglages du matériel portés par l'icône), " +
+                         "et GradientCorrection en option. Une image en erreur n'arrête pas les autres.", "Date par défaut :" );
+   d.info( focal ? "Réglages ImageSolver de l'icône : focale " + focal + " mm, pixel " + pix + " µm." :
+                   "<b>Pas de réglages ImageSolver</b> (script lancé sans l'icône) : utilise l'icône Solver_auto." );
+   d.check( "GradientCorrection d'abord", o.gradient, "Sans modèle de gradient.", function( c ) { o.gradient = c; } );
+   d.check( "ImageSolver", o.solve, "", function( c ) { o.solve = c; } );
+   d.check( "Résoudre toutes les images (sinon les images couleur seulement)", o.solveTout, "", function( c ) { o.solveTout = c; } );
+   d.edit( "Date par défaut :", o.date, "Ajoutée seulement aux images sans date d'observation.", function( t ) { o.date = t.trim(); } );
+   let windows = ImageWindow.windows, boxes = [];
+   d.group( "Images" );
+   if ( windows.length == 0 )
+      d.info( "Aucune image ouverte." );
+   for ( let k = 0; k < windows.length; ++k )
+      boxes.push( { w: windows[ k ], box: d.check( windows[ k ].mainView.id, !windows[ k ].mainView.id.endsWith( "_stars" ), "", null ) } );
+   d.endGroup();
+   d.onExport = function()
+   {
+      Parameters.set( "gradient", o.gradient ? "true" : "false" );
+      Parameters.set( "solve", o.solve ? "true" : "false" );
+      Parameters.set( "solveTout", o.solveTout ? "true" : "false" );
+      Parameters.set( "defaultDate", o.date );
+   };
+   d.finish( "Lancer" );
+   if ( !d.execute() )
+      return null;
+   o.windows = boxes.filter( function( b ) { return b.box.checked; } ).map( function( b ) { return b.w; } );
+   return o;
+}
+
+if ( cwWantsDialog() )
+{
+   let o = gcsDialog();
+   if ( o != null )
+   {
+      GCS_DATE = o.date;
+      cwRun( GCS_TITLE, function() { mainGCS( o ); } );
+   }
+}
+else
+   mainGCS();

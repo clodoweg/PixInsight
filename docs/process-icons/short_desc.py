@@ -253,7 +253,7 @@ def text(prefix, base, drag=None, md5=False):
     pre, todo, ifs = V.get(key) or S[base]
     parts = []
     if drag is not None:
-        parts.append((LAUNCH_DLG if base in DIALOGUE else LAUNCH[drag]) + (MD5 if md5 else ''))
+        parts.append((LAUNCH_DLG if drag == 'dlg' or base in DIALOGUE else LAUNCH[drag]) + (MD5 if md5 else ''))
     parts.append("PRÉRÉGLÉ : %s." % pre)
     parts.append("À RÉGLER : %s." % todo)
     if ifs:
