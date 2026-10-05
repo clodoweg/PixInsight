@@ -3996,40 +3996,6 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </table>
       <parameter id="information"></parameter>
    </instance>
-   <instance class="PixelMath" version="256" id="Opt_Etoiles_plafond_instance">
-      <description>OPTION — cœurs d'étoiles cramés à 1 (blanc pur) : glisse sur l'image d'étoiles (RGB_stars) AVANT Etoiles_screen&#10;En rapide, avant R_C_Etoiles_fond_rapide.&#10;&#10;PRÉRÉGLÉ : PixelMath sur l'image d'étoiles : m = max(R, G, B) ; au-dessus de s = 0,70, les 3 canaux × (1 − k·t²), k = 0,06 : cœur à 1 -&gt; 0,94, couleur (rapport R:G:B) gardée, étoiles sous 0,70 inchangées.&#10;&#10;À RÉGLER : glisse sur RGB_stars (ou l'image d'étoiles de ton workflow) juste AVANT Etoiles_screen ; en rapide, avant R_C_Etoiles_fond_rapide.&#10;&#10;SI :&#10;- encore trop blanc -&gt; k = 0,10&#10;- étoiles moyennes touchées -&gt; s = 0,80&#10;- cœur R = G = B = 1 -&gt; saturé à la prise de vue : reste blanc (à 0,94)</description>
-      <parameter id="expression">s = 0.70;
-k = 0.06;
-m = max($T[0], $T[1], $T[2]);
-t = max(0, (m - s)/(1 - s));
-$T*(1 - k*t*t)</parameter>
-      <parameter id="expression1"></parameter>
-      <parameter id="expression2"></parameter>
-      <parameter id="expression3"></parameter>
-      <parameter id="useSingleExpression" value="true"/>
-      <parameter id="symbols">s, k, m, t</parameter>
-      <parameter id="clearImageCacheAndExit" value="false"/>
-      <parameter id="cacheGeneratedImages" value="false"/>
-      <parameter id="generateOutput" value="true"/>
-      <parameter id="singleThreaded" value="false"/>
-      <parameter id="optimization" value="true"/>
-      <parameter id="use64BitWorkingImage" value="false"/>
-      <parameter id="rescale" value="false"/>
-      <parameter id="rescaleLower" value="0"/>
-      <parameter id="rescaleUpper" value="1"/>
-      <parameter id="truncate" value="true"/>
-      <parameter id="truncateLower" value="0"/>
-      <parameter id="truncateUpper" value="1"/>
-      <parameter id="createNewImage" value="false"/>
-      <parameter id="showNewImage" value="true"/>
-      <parameter id="newImageId"></parameter>
-      <parameter id="newImageWidth" value="0"/>
-      <parameter id="newImageHeight" value="0"/>
-      <parameter id="newImageAlpha" value="false"/>
-      <parameter id="newImageColorSpace" value="SameAsTarget"/>
-      <parameter id="newImageSampleFormat" value="SameAsTarget"/>
-      <table id="outputData" rows="0"/>
-   </instance>
    <instance class="Script" version="256" id="Opt_Fond_auto_clair_instance">
       <description>OPTION — à la place de Fond_auto : image trop sombre, fond amené à 0,14, après Fond_desature, avant Etoiles_screen.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Fond_auto, cible 0,14 : fond de chaque canal mesuré (grille 8 × 8), amené à 0,14 par mtf, sans écrêtage ; fond neutre.&#10;&#10;À RÉGLER : à la place de Fond_auto, image trop sombre : glisse sur l'image sans étoiles, après Fond_desature, avant Etoiles_screen.&#10;&#10;SI :&#10;- fond encore trop sombre -&gt; double-clic, cible 0,15</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js</parameter>
@@ -4522,7 +4488,7 @@ max($T,f1)</parameter>
       <description>MODE RAPIDE, phase 7 — Étoiles : R_C_Etoiles_fond_rapide sur l'image sans étoiles finie : Fond_desature, Fond_auto (0,12) sur l'image sans étoiles, étoiles remises (Etoiles_screen), puis Export_TIFF en un seul conteneur. Icône de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="R_C_Etoiles_fond_rapide_instance">
-      <description>MODE RAPIDE, à la place de Fond_desature, Fond_auto, Etoiles_screen et Export_TIFF : sur l'image sans étoiles finie, RGB_stars et L ouvertes.&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : Fond_desature (teinte et violet du fond retirés), Fond_auto (fond amené à 0,12, neutre), Etoiles_screen (~((~$T) * (~RGB_stars))), Export_TIFF (copie TIFF 16 bits sRGB nommée d'après le dossier des masters).&#10;&#10;À RÉGLER : glisse sur l'image sans étoiles finie ; RGB_stars et L ouvertes ; l'image est finie et exportée.&#10;&#10;SI :&#10;- étoiles trop présentes -&gt; Etoiles_reduites (à la place d'Etoiles_screen) ou Etoiles_plafond (avant)&#10;- image trop sombre -&gt; Fond_auto_clair à la place de Fond_auto, puis Etoiles_screen</description>
+      <description>MODE RAPIDE, à la place de Fond_desature, Fond_auto, Etoiles_screen et Export_TIFF : sur l'image sans étoiles finie, RGB_stars et L ouvertes.&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : Fond_desature (teinte et violet du fond retirés), Fond_auto (fond amené à 0,12, neutre), Etoiles_screen (~((~$T) * (~RGB_stars))), Export_TIFF (copie TIFF 16 bits sRGB nommée d'après le dossier des masters).&#10;&#10;À RÉGLER : glisse sur l'image sans étoiles finie ; RGB_stars et L ouvertes ; l'image est finie et exportée.&#10;&#10;SI :&#10;- étoiles trop présentes -&gt; Etoiles_reduites (à la place d'Etoiles_screen)&#10;- grosses étoiles presque blanches -&gt; Saturation_grosses (avant)&#10;- image trop sombre -&gt; Fond_auto_clair à la place de Fond_auto, puis Etoiles_screen</description>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js</parameter>
          <parameter id="md5sum"></parameter>
@@ -4703,14 +4669,13 @@ max($T,f1)</parameter>
    <icon id="Opt_MT_etoiles" instance="Opt_MT_etoiles_instance" xpos="1159" ypos="204" workspace="Workspace01"/>
    <icon id="Opt_Halo_B_Gon" instance="Opt_Halo_B_Gon_instance" xpos="1159" ypos="234" workspace="Workspace01"/>
    <icon id="Opt_Saturation_grosses" instance="Opt_Saturation_grosses_instance" xpos="1159" ypos="264" workspace="Workspace01"/>
-   <icon id="Opt_Etoiles_plafond" instance="Opt_Etoiles_plafond_instance" xpos="1159" ypos="294" workspace="Workspace01"/>
-   <icon id="Opt_Fond_auto_clair" instance="Opt_Fond_auto_clair_instance" xpos="1159" ypos="324" workspace="Workspace01"/>
-   <icon id="Opt_Etoiles_reduites" instance="Opt_Etoiles_reduites_instance" xpos="1159" ypos="354" workspace="Workspace01"/>
-   <icon id="Opt_Boost_final_doux" instance="Opt_Boost_final_doux_instance" xpos="1159" ypos="384" workspace="Workspace01"/>
-   <icon id="Opt_Boost_final" instance="Opt_Boost_final_instance" xpos="1159" ypos="414" workspace="Workspace01"/>
-   <icon id="Opt_Agrandir_x2" instance="Opt_Agrandir_x2_instance" xpos="1159" ypos="444" workspace="Workspace01"/>
-   <icon id="Opt_ICC_sRGB" instance="Opt_ICC_sRGB_instance" xpos="1159" ypos="474" workspace="Workspace01"/>
-   <icon id="Opt_Export_TIFF" instance="Opt_Export_TIFF_instance" xpos="1159" ypos="504" workspace="Workspace01"/>
-   <icon id="P7_rapide" instance="P7_rapide_instance" xpos="1159" ypos="550" workspace="Workspace01"/>
-   <icon id="R_C_Etoiles_fond_rapide" instance="R_C_Etoiles_fond_rapide_instance" xpos="1159" ypos="584" workspace="Workspace01"/>
+   <icon id="Opt_Fond_auto_clair" instance="Opt_Fond_auto_clair_instance" xpos="1159" ypos="294" workspace="Workspace01"/>
+   <icon id="Opt_Etoiles_reduites" instance="Opt_Etoiles_reduites_instance" xpos="1159" ypos="324" workspace="Workspace01"/>
+   <icon id="Opt_Boost_final_doux" instance="Opt_Boost_final_doux_instance" xpos="1159" ypos="354" workspace="Workspace01"/>
+   <icon id="Opt_Boost_final" instance="Opt_Boost_final_instance" xpos="1159" ypos="384" workspace="Workspace01"/>
+   <icon id="Opt_Agrandir_x2" instance="Opt_Agrandir_x2_instance" xpos="1159" ypos="414" workspace="Workspace01"/>
+   <icon id="Opt_ICC_sRGB" instance="Opt_ICC_sRGB_instance" xpos="1159" ypos="444" workspace="Workspace01"/>
+   <icon id="Opt_Export_TIFF" instance="Opt_Export_TIFF_instance" xpos="1159" ypos="474" workspace="Workspace01"/>
+   <icon id="P7_rapide" instance="P7_rapide_instance" xpos="1159" ypos="520" workspace="Workspace01"/>
+   <icon id="R_C_Etoiles_fond_rapide" instance="R_C_Etoiles_fond_rapide_instance" xpos="1159" ypos="554" workspace="Workspace01"/>
 </xpsm>

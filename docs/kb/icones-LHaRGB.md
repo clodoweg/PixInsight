@@ -1046,21 +1046,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - halo pas saturé jusqu'au bord -> etendue 16
 > - pour recommencer -> Ctrl+Z sur RGB_stars
 
-#### Opt_Etoiles_plafond — PixelMath
-   expression = `s = 0.70; k = 0.06; m = max($T[0], $T[1], $T[2]); t = max(0, (m - s)/(1 - s)); $T*(1 - k*t*t)` ; useSingleExpression=true ; symbols = `s, k, m, t` ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
-
-> OPTION — cœurs d'étoiles cramés à 1 (blanc pur) : glisse sur l'image d'étoiles (RGB_stars) AVANT Etoiles_screen
-> En rapide, avant R_C_Etoiles_fond_rapide.
-> 
-> PRÉRÉGLÉ : PixelMath sur l'image d'étoiles : m = max(R, G, B) ; au-dessus de s = 0,70, les 3 canaux × (1 − k·t²), k = 0,06 : cœur à 1 -> 0,94, couleur (rapport R:G:B) gardée, étoiles sous 0,70 inchangées.
-> 
-> À RÉGLER : glisse sur RGB_stars (ou l'image d'étoiles de ton workflow) juste AVANT Etoiles_screen ; en rapide, avant R_C_Etoiles_fond_rapide.
-> 
-> SI :
-> - encore trop blanc -> k = 0,10
-> - étoiles moyennes touchées -> s = 0,80
-> - cœur R = G = B = 1 -> saturé à la prise de vue : reste blanc (à 0,94)
-
 #### Opt_Fond_auto_clair — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js`
    paramètres : `cible=0.14`, `tolerance=0.005`, `grille=8`
@@ -1205,5 +1190,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > À RÉGLER : glisse sur l'image sans étoiles finie ; RGB_stars et L ouvertes ; l'image est finie et exportée.
 > 
 > SI :
-> - étoiles trop présentes -> Etoiles_reduites (à la place d'Etoiles_screen) ou Etoiles_plafond (avant)
+> - étoiles trop présentes -> Etoiles_reduites (à la place d'Etoiles_screen)
+> - grosses étoiles presque blanches -> Saturation_grosses (avant)
 > - image trop sombre -> Fond_auto_clair à la place de Fond_auto, puis Etoiles_screen

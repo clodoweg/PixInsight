@@ -1169,7 +1169,7 @@ insert_after(lhargb, 'NBRGBCombination', [(script('CombineHaWithRGB', ''), '')])
 # options supprimées des workflows galaxies (demande de l'utilisateur, 5 octobre 2026) ; Etoiles_grosses reste en narrowband
 for _st in (lrgb, lhargb):
     insert_before(_st, 'Etoiles_plafond', [(script('Saturation_grosses', ''), '')])   # option P7, sur RGB_stars avant Etoiles_screen (demande de l'utilisateur)
-SUPPR_GALAXIES = {'Etoiles_grosses'}   # Etoiles_auto_etire, GraXpert, VeraLux_HMS, MKStarReduction, Coeurs_etoiles, RepairedHSV, Etoiles_couleur : retirés du code
+SUPPR_GALAXIES = {'Etoiles_grosses', 'Etoiles_plafond'}   # Etoiles_auto_etire, GraXpert, VeraLux_HMS, MKStarReduction, Coeurs_etoiles, RepairedHSV, Etoiles_couleur : retirés du code
 for _st in (lrgb, lhargb):
     _st[:] = [x for x in _st if x[0][0] not in SUPPR_GALAXIES]
 

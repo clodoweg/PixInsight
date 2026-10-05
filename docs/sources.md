@@ -708,3 +708,8 @@ Fait : script Saturation_grosses.js (masque des grosses étoiles repris d'Etoile
 
 Retour : console PixInsight, « PixelMath: Processing view: RGB_stars … sg_m*sg_sat + (1 - sg_m)*$T … *** Error: Unknown error … Saturation grosses : le mélange a échoué ».
 Correction : mélange calculé dans une image cachée (sg_r, PixelMath exécuté sur RGB_stars avec createNewImage), puis recopié dans RGB_stars (beginProcess / assign / endProcess) ; même changement dans Etoiles_grosses (chemin glissé).
+
+### Suppression d'Opt_Etoiles_plafond (5 octobre 2026)
+
+Demande : « supprime Opt_Etoiles_plafond »
+Fait : retirée de LRGB et LHaRGB (gardée en narrowband, comme Etoiles_grosses). Descriptions et kb mises à jour.

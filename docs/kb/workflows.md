@@ -24,7 +24,7 @@ P4| E10 GHS_1_premier, E11 GHS_2_contraste, E16 GHS_3_fond (chemin principal)| L
 P4_rapide| R_C_RGB_etire_rapide| RGB linéaire avec étoiles| MAS (fond 0,15), SXT Unscreen (crée RGB_stars), SCNR vert sur RGB_stars, GHS fond (violet : SCNR_etoiles_violet à part) (SP = HP = 0,12)  
 P5_rapide| R_C_LRGB_rapide| RGB sans étoiles, L ouverte| LRGB_ajout_L (Saturation 0,5) seul  
 P6_rapide| R_C_Fin_rapide| image sans étoiles| HDRMT 30 %, masque, Courbes, LHE, LHE_fin, Sharp_MMT, masque retiré, NXT 0,40  
-P7_rapide| R_C_Etoiles_fond_rapide| image sans étoiles finie| Fond_desature, Fond_auto (0,12), Etoiles_screen, Export_TIFF (aucune vue fermée). Avant, sur RGB_stars si besoin : Opt_Etoiles_plafond  
+P7_rapide| R_C_Etoiles_fond_rapide| image sans étoiles finie| Fond_desature, Fond_auto (0,12), Etoiles_screen, Export_TIFF (aucune vue fermée). Avant, sur RGB_stars si besoin : Opt_Saturation_grosses  
 
 Chemin principal LRGB : E08 C_RGB_lineaire, E09 C_L_lineaire (finit par SXT_L_lineaire), E10 GHS_1, E11 GHS_2 (L), E12 MAS, E13 SXT_RGB_etire (RGB), E14 SCNR_etoiles_vert (SCNR vert 1,0 sur RGB_stars), E15 SCNR_etoiles_violet (Invert, SCNR vert 1,0, Invert : violet retiré ; pas dans le rapide ; vert seul dans R_C_RGB_etire_rapide), E16 GHS_3_fond (L et RGB), E17 LRGB_ajout_L, E18 HDRMT_30, E19 C_Finition, E20 C_Sharp_MMT (accentuation ; en rapide dans R_C_Fin_rapide), E21 NXT_final, E22 Fond_desature, E23 Fond_auto (tous deux sur l'image sans étoiles), E24 Etoiles_screen. Statistical_Stretch est une option.
 
@@ -48,7 +48,7 @@ Partie| Icône par défaut| Options
 2\. Contraste| E19 (E26) C_Finition : masque, Courbes (saturation 0,58), LHE 150, LHE_fin 40, masque retiré| à la place : Finition_saturee (même chose, saturation 0,65 : l'ancienne C_Finition) ; après : Boost_finition_light ou Boost_finition  
 2b. Accentuation| E20 (E27) C_Sharp_MMT (MMT sous masque)| à la place : Sharp_USM (UnsharpMask) ; en rapide : Sharp_MMT dans R_C_Fin_rapide  
 3\. Bruit| E21 (E28) NXT_final 0,40| NXT_final_doux (0,25) ou NXT_final_fort (0,60)  
-4\. Fond, puis étoiles| E22 (E29) Fond_desature, E23 (E30) Fond_auto (0,12), puis E24 (E31) Etoiles_screen (SCNR des étoiles déjà fait en P4, SCNR_etoiles_vert et SCNR_etoiles_violet)| avant, sur RGB_stars : Saturation_grosses (grosses étoiles presque blanches saturées, petites intactes), Etoiles_plafond (cœurs cramés) ; Halo_B_Gon et MT_etoiles réduisent aussi les petites étoiles ; à la place : Etoiles_reduites (réduit toutes les étoiles)  
+4\. Fond, puis étoiles| E22 (E29) Fond_desature, E23 (E30) Fond_auto (0,12), puis E24 (E31) Etoiles_screen (SCNR des étoiles déjà fait en P4, SCNR_etoiles_vert et SCNR_etoiles_violet)| avant, sur RGB_stars : Saturation_grosses (grosses étoiles presque blanches saturées, petites intactes) ; Halo_B_Gon et MT_etoiles réduisent aussi les petites étoiles ; à la place : Etoiles_reduites (réduit toutes les étoiles)  
 5\. Après les étoiles| Boost_final_doux ou Boost_final (L ouverte), en option| à la place de Fond_auto : Fond_auto_clair (0,14)  
   
 ### Finition hors PixInsight
@@ -127,7 +127,7 @@ Recombine en mode _screen_ , puis contrôle les couleurs d'étoiles (étoiles LR
 
 `~((~$T) * (~RGB_stars))`
 
-Glisse Etoiles_screen sur l'image sans étoiles finale : elle devient l'image finale. Grosses étoiles presque blanches : Opt_Saturation_grosses sur RGB_stars avant. Étoiles trop présentes : Etoiles_reduites à la place (réduit toutes les étoiles) ; cœurs cramés : Opt_Etoiles_plafond sur RGB_stars avant.
+Glisse Etoiles_screen sur l'image sans étoiles finale : elle devient l'image finale. Grosses étoiles presque blanches : Opt_Saturation_grosses sur RGB_stars avant. Étoiles trop présentes : Etoiles_reduites à la place (réduit toutes les étoiles) .
 
 ### Couleurs LRGB : le rendu de référence et comment le vérifier
 SPCC calibre la couleur sur le blanc _Average Spiral Galaxy_ : une galaxie spirale est blanche en moyenne.

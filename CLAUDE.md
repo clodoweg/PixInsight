@@ -56,7 +56,7 @@ Process galaxies (demande de l'utilisateur, 5 octobre 2026) : L sans étoiles, R
 - **P4** : GHS_1 (à la main), GHS_2 sur L sans étoiles ; MAS (réglages de l'utilisateur, fond 0,15) puis SXT_RGB_etire (Unscreen, crée RGB_stars) sur RGB, SCNR_etoiles_vert puis SCNR_etoiles_violet (script Etoiles_auto sur RGB_stars seulement : SCNR vert 1,0, puis Invert / SCNR vert 1,0 / Invert pour le violet) ; GHS_3_fond sur L et sur le RGB sans étoiles. Option : Statistical_Stretch (à la place de MAS).
 - **P5** : LRGB_ajout_L sur les deux images sans étoiles, Saturation 0,5.
 - **P6** : HDRMT_30 (par défaut ; HDRMT_40 en option), C_Finition (Courbes saturation 0,58 ; option Finition_saturee = ancienne version à 0,65, aussi saturation 0,58 dans R_C_Fin_rapide), C_Sharp_MMT (Masque_L, script Sharp_MMT : MMT couches 2 à 4 biais +0,04, Masque_retirer ; en rapide : Sharp_MMT dans R_C_Fin_rapide, sous le masque), NXT_final ; option Sharp_USM (UnsharpMask sous masque, à la place) (+ autres options).
-- **P7** : sur l'image sans étoiles Fond_desature, Fond_auto (0,12), puis Etoiles_screen ; options Fond_auto_clair (à la place de Fond_auto), Saturation_grosses (RGB_stars), Etoiles_plafond, Etoiles_reduites, Boost_final, Agrandir_x2, ICC_sRGB, Export_TIFF (ne ferme aucune vue).
+- **P7** : sur l'image sans étoiles Fond_desature, Fond_auto (0,12), puis Etoiles_screen ; options Fond_auto_clair (à la place de Fond_auto), Saturation_grosses (RGB_stars), Etoiles_reduites, Boost_final, Agrandir_x2, ICC_sRGB, Export_TIFF (ne ferme aucune vue).
 - **Rapide** : R_C_Preparation_rapide, R_Gradient_auto_rapide, R_Lineaire_rapide (script Lineaire_auto), GHS_1, GHS_2, GHS_3_fond sur L (chemin principal), R_C_RGB_etire_rapide (MAS, SXT, SCNR_etoiles_vert, GHS fond ; SCNR_etoiles_violet pas dans le rapide), R_C_LRGB_rapide (LRGB seul), R_C_Fin_rapide, R_C_Etoiles_fond_rapide (Fond_desature, Fond_auto, Etoiles_screen, Export_TIFF).
 
 ## Contraintes PixInsight apprises
@@ -71,4 +71,4 @@ Process galaxies (demande de l'utilisateur, 5 octobre 2026) : L sans étoiles, R
 
 Voir `docs/idees-acceleration.md` (inventaire automatique des cibles, traitement en série). Points ouverts : section « Non vérifié » de `docs/sources.md`.
 
-- Options supprimées des workflows galaxies (demande de l'utilisateur, 5 octobre 2026) : GraXpert, Coeurs_etoiles, RepairedHSV, VeraLux_HMS, Etoiles_auto_etire, MKStarReduction, Etoiles_grosses, Etoiles_couleur (script Etoiles_couleur.js supprimé). Ne pas les remettre sans demande.
+- Options supprimées des workflows galaxies (demande de l'utilisateur, 5 octobre 2026) : GraXpert, Coeurs_etoiles, RepairedHSV, VeraLux_HMS, Etoiles_auto_etire, MKStarReduction, Etoiles_grosses, Etoiles_couleur (script Etoiles_couleur.js supprimé), puis Etoiles_plafond. Ne pas les remettre sans demande.
