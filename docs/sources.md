@@ -677,3 +677,8 @@ Fait : icône Opt_RepairedHSV (Script, $PXI_SRCDIR/scripts/misc/RepairedHSVSepar
 Demande : « Quand tu fais E14_SCNR_etoiles , je veux une premier fois pour le vert, puis une seconde en faisant invert, puis vert a 1.0 puis invert, pour supprimer le violet. Fais donc un E14_SCNR_etoiles_vert et E14_SCNR_etoiles_violet et mets les deux l'un a la suite de l'autre dans le rapide »
 
 Fait : Etoiles_auto.js, nouveau paramètre violet (Invert, SCNR vert 1,0 Average Neutral luminosité préservée, Invert ; case dans la fenêtre). SCNR_etoiles renommée SCNR_etoiles_vert (E14) ; nouvelle SCNR_etoiles_violet (E15 en LRGB, E22 en LHaRGB) ; les deux à la suite dans R_C_RGB_etire_rapide (MAS, SXT, vert, violet, GHS fond). Numéros suivants décalés de 1.
+
+### Question : SCNR violet sur les étoiles, est-ce recommandé ? (5 octobre 2026)
+
+Question : « c'est une recommandations de faire ca sur les étoiles? »
+Réponse (connaissance générale, sans nouvelle source) : la technique Invert / SCNR vert / Invert est classique pour les étoiles magenta des images narrowband (SHO), c'est aussi ce que fait le script CorrectMagentaStars ; en RGB calibré par SPCC elle n'est pas une étape standard, et à 1,0 elle verdit et désature un peu les étoiles bleues (G remonté jusqu'à (R + B)/2). Utile en LHaRGB si le H ajouté rosit les étoiles. Pas de changement fait.
