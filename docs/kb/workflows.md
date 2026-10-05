@@ -20,7 +20,7 @@ Où| Icône| Sur| Ce qu'elle fait
 P1_rapide| R_C_Preparation_rapide| masters seuls ouverts ; double-clic puis **Apply Global**| Renommer_auto, LinearPatternSubtraction, Combinaison_RGB (crée `RGB`), Solver_auto  
 P2_rapide| R_Gradient_auto_rapide| double-clic puis Apply Global| GradientCorrection sur toutes les images ouvertes  
 P3_rapide| R_Lineaire_rapide| double-clic puis Apply Global| lance E08_C_RGB_lineaire sur RGB (BXT Correct Only, SPCC, BXT, NXT) puis E09_C_L_lineaire sur L (BXT, NXT, SXT : L sans étoiles)  
-P4| E10 GHS_1_premier, puis R_C_Fin_GHS_rapide| L sans étoiles| GHS_1 à la main, puis GHS_2 et GHS_3_fond  
+P4| E10 GHS_1_premier, E11 GHS_2_contraste, E14 GHS_3_fond (chemin principal)| L sans étoiles| GHS_1 à la main, puis GHS_2 et GHS_3_fond  
 P4_rapide| R_C_RGB_etire_rapide| RGB linéaire avec étoiles| MAS (fond 0,15), SXT Unscreen (crée RGB_stars), GHS fond (SP = HP = 0,12)  
 P5_rapide| R_C_LRGB_rapide| RGB sans étoiles, L ouverte| LRGB_ajout_L (Saturation 0,5) seul  
 P6_rapide| R_C_Fin_rapide| image sans étoiles| HDRMT 30 %, masque, Courbes, LHE, LHE_fin, masque retiré, NXT 0,40  

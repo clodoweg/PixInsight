@@ -594,4 +594,6 @@ Question de l'utilisateur : « quel est la difference entre utiliser MAS ou GHS 
 
 - Ménage (5 octobre 2026) : Etoiles_LRGB.js supprimé (plus utilisé par aucune icône), gardes CLODOWEG_TURBO retirées des scripts (mode Turbo supprimé), code mort du générateur retiré (anciennes listes rapides) ; fichiers .xpsm identiques avant et après. Demande de l'utilisateur : « vérifie maintenant dans les scripts que tu as crée s'il y en a des inutiles ».
 
+- R_C_Fin_GHS_rapide supprimé (LRGB et LHaRGB) : GHS_2_contraste et GHS_3_fond se font au chemin principal (5 octobre 2026). Demande de l'utilisateur : « supprime R_C_Fin_GHS_rapide ».
+
 Non vérifié : réglages de Ron Brecher et Dave Cosgrove lus sur leurs pages (pratique d'imageurs, pas de documentation éditeur) ; plages BXT pour galaxies (Sharpen Stars 0,15–0,20, Nonstellar 0,20–0,35) issues d'un résumé de forum ; paramètres de MAS d'après Starlust Astroguide, l'article PixInsight n'ayant pas pu être lu ; version de l'instance GraXpert (256 supposé ; MAS confirmé par l'utilisateur le 5 octobre 2026) ; chemins des scripts VeraLux et MKStarReduction (icônes-notes) ; formule H_dans_RGB_v2 (part de 0,2 pour Hβ, choix de l'utilisateur à tester).

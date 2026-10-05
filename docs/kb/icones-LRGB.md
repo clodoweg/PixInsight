@@ -297,7 +297,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > PRÉRÉGLÉ : script Lineaire_auto.js, etapes = C_RGB_lineaire>RGB ; C_L_lineaire>L : C_RGB_lineaire (BXT Correct Only, SPCC, BXT, NXT 0,80) sur RGB, puis C_L_lineaire (BXT, NXT 0,60) sur L ; étoiles gardées, images linéaires.
 > 
-> À RÉGLER : double-clic puis Apply Global, après R_Gradient_auto_rapide ; Conteneurs-LRGB chargé ; copie Lineaire_auto.js dans src/scripts/clodoweg ; ensuite GHS_1_premier et R_C_Fin_GHS_rapide sur L, Statistical_Stretch et GHS_3_fond sur RGB.
+> À RÉGLER : double-clic puis Apply Global, après R_Gradient_auto_rapide ; Conteneurs-LRGB chargé ; copie Lineaire_auto.js dans src/scripts/clodoweg ; ensuite GHS_1_premier, GHS_2_contraste et GHS_3_fond sur L, Statistical_Stretch et GHS_3_fond sur RGB.
 > 
 > SI :
 > - vue absente ou autre nom -> change etapes dans l'icône
@@ -384,12 +384,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > À RÉGLER : installe VeraLux (dépôt VeraLuxPorting) ; Script › VeraLux › VeraLux Suite, onglet HyperMetric Stretch, sur L ou RGB linéaire.
 
 ### P4_rapide
-
-#### R_C_Fin_GHS_rapide — ProcessContainer
-   1. GeneralizedHyperbolicStretch
-      stretchType=ST_GeneralisedHyperbolic ; stretchChannel=SC_RGB ; inverse=false ; stretchFactor=1.000 ; localIntensity=4.000 ; symmetryPoint=0.350000 ; highlightProtection=0.900000 ; shadowProtection=0.000000 ; blackPoint=0.000000 ; whitePoint=1.000000 ; colourBlend=1.000 ; clipType=CT_RGBBlend ; useRGBWorkingSpace=false
-   2. GeneralizedHyperbolicStretch
-      stretchType=ST_GeneralisedHyperbolic ; stretchChannel=SC_RGB ; inverse=false ; stretchFactor=1.000 ; localIntensity=10.000 ; symmetryPoint=0.200000 ; highlightProtection=0.200000 ; shadowProtection=0.000000 ; blackPoint=0.000000 ; whitePoint=1.000000 ; colourBlend=1.000 ; clipType=CT_RGBBlend ; useRGBWorkingSpace=false
 
 #### R_C_RGB_etire_rapide — ProcessContainer
    1. MultiscaleAdaptiveStretch
