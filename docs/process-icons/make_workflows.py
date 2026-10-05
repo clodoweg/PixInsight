@@ -217,14 +217,14 @@ RAPIDE_NOTE = {
              4: "GHS_1_premier sur L sans étoiles (chemin principal, à régler), puis GHS_2_contraste et GHS_3_fond (chemin principal) sur L ; R_C_RGB_etire_rapide sur RGB (MAS avec étoiles, SXT Unscreen qui crée RGB_stars, SCNR vert sur RGB_stars, GHS fond)",
              5: "R_C_LRGB_rapide sur RGB sans étoiles (L sans étoiles ouverte) à la place de LRGB_ajout_L : L ajoutée (Saturation 0,5)",
              6: "R_C_Fin_rapide sur l'image sans étoiles après LRGB_ajout_L (ou R_C_LRGB_rapide) : HDRMT à 30 %, masque, Courbes, LHE, LHE_fin, Sharp_MMT, masque retiré, NXT_final 0,40 en un seul conteneur (= HDRMT_30, C_Finition, C_Sharp_MMT et NXT_final)",
-             7: "R_C_Etoiles_fond_rapide sur l'image sans étoiles finie : Fond_desature, Fond_auto (0,12) sur l'image sans étoiles, étoiles remises (Etoiles_screen), puis Export_TIFF en un seul conteneur"},
+             7: "R_C_Etoiles_fond_rapide sur l'image sans étoiles finie : Fond_desature, Fond_auto (0,12) sur l'image sans étoiles, étoiles remises (Etoiles_screen), NXT_dernier (0,25), puis Export_TIFF en un seul conteneur"},
     'LHA': {1: "MODE RAPIDE (galaxies) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre : R_C_Preparation_rapide ; R_Gradient_auto_rapide ; R_Lineaire_rapide (RGB, L et H), Continuum_auto, H_dans_RGB, C_RGB_bruit (étoiles gardées) ; GHS_1_premier, GHS_2_contraste, GHS_3_fond sur L ; R_C_RGB_etire_rapide sur RGB ; R_C_LRGB_rapide (LRGB sans étoiles) ; finition. Phase 1 : R_C_Preparation_rapide (double-clic puis Apply Global) à la place de LinearPatternSubtraction, Renommer_auto, Combinaison_RGB et Solver_auto",
             2: "R_Gradient_auto_rapide à la place de toute la phase 2 : GradientCorrection sur toutes les images ouvertes (R et H compris, pour le continuum) ; l'astrométrie est déjà faite par R_C_Preparation_rapide",
             3: "R_Lineaire_rapide (double-clic puis Apply Global) à la place de C_RGB_couleur, BXT_L_H et NXT_L : lance C_RGB_couleur sur RGB, BXT_L_H sur L et sur H, NXT_L sur L ; puis chemin principal : Continuum_auto, H_dans_RGB (H_dans_L éventuel), C_RGB_bruit",
             4: "GHS_1_premier sur L sans étoiles (chemin principal, à régler), puis GHS_2_contraste et GHS_3_fond (chemin principal) sur L ; R_C_RGB_etire_rapide sur RGB (MAS avec étoiles, SXT Unscreen qui crée RGB_stars, SCNR vert sur RGB_stars, GHS fond)",
             5: "R_C_LRGB_rapide sur RGB sans étoiles (L sans étoiles ouverte) à la place de LRGB_ajout_L : L ajoutée (Saturation 0,5)",
             6: "R_C_Fin_rapide sur l'image sans étoiles après LRGB_ajout_L (ou R_C_LRGB_rapide) : HDRMT à 30 %, masque, Courbes, LHE, LHE_fin, Sharp_MMT, masque retiré, NXT_final 0,40 en un seul conteneur (= HDRMT_30, C_Finition, C_Sharp_MMT et NXT_final)",
-            7: "R_C_Etoiles_fond_rapide sur l'image sans étoiles finie : Fond_desature, Fond_auto (0,12) sur l'image sans étoiles, étoiles remises (Etoiles_screen), puis Export_TIFF en un seul conteneur"}}
+            7: "R_C_Etoiles_fond_rapide sur l'image sans étoiles finie : Fond_desature, Fond_auto (0,12) sur l'image sans étoiles, étoiles remises (Etoiles_screen), NXT_dernier (0,25), puis Export_TIFF en un seul conteneur"}}
 
 def layout_all(main, opts, rapide=None, notes=None, turbo=None):
     """Une colonne par phase : icône-titre, étapes du chemin principal (E01…), puis icône « options » et options (Opt_…)."""
@@ -667,6 +667,8 @@ D_HDRMT30 = ("PARTIE 1 (cœur) — conteneur HDRMT à 30 % (par défaut, demande
 D_HDRMT40 = ("PARTIE 1 (cœur) — conteneur HDRMT à 40 % : copie de l'image (HDR_avant), HDRMultiscaleTransform 6 couches (To lightness, Preserve hue, Lightness mask), "
              "mélange 0,4 × résultat + 0,6 × copie, copie fermée. Sur l'image sans étoiles, AVANT le contraste : détail du cœur sans l'aplatir. "
              "Options de la partie 1, à la place : HDRMT_30 (effet plus léger), HDRMT_50 (cœur brûlé), HDRMT_eclat (cœur détaillé mais terne : HDRMT 40 % puis Boost light) ; cœur déjà parfait : saute-la.")
+D_NXT_DERNIER = ("NoiseXTerminator, toute dernière réduction de bruit (demande de l'utilisateur) : sur l'image finie AVEC ses étoiles, juste après Etoiles_screen, avant l'export. "
+                 "Denoise 0,25, 1 itération (léger : NXT_final 0,40 a déjà débruité l'image sans étoiles ; ici le bruit ramené par les étoiles et les dernières étapes). Aspect plastique -> 0,15 ; bruit encore visible -> 0,35.")
 D_NXT_DOUX = "PARTIE 3, option à la place de NXT_final : NoiseXTerminator Denoise 0,25, données très propres ou aspect plastique avec 0,40."
 D_NXT_FORT = "PARTIE 3, option à la place de NXT_final : NoiseXTerminator Denoise 0,60, peu de poses ou bruit encore visible dans le fond après 0,40."
 D_FOND = ("PARTIE 5 (fond) — conteneur sur l'image FINIE, étoiles comprises : Fond_auto (fond de chaque canal mesuré sur une grille 8 × 8, amené à 0,12, neutre, sans écrêtage), "
@@ -1126,6 +1128,7 @@ insert_after(lrgb, 'Combinaison_RGB', [(prep_l, ''), (gc_solver('Solver_auto'), 
 insert_after(lrgb, 'ImageSolver', [(script('Gradient_auto_rapide', ''), '')])
 # SCNR vert à 1,0 sur les étoiles : en P4, juste après SXT_RGB_etire, sur RGB_stars (script Etoiles_auto) ; plus en P7 (demande de l'utilisateur, 5 octobre 2026)
 for _st in (lrgb, lhargb):
+    insert_after(_st, 'Etoiles_screen', [(M.nxt('NXT_dernier', 0.25, 1), D_NXT_DERNIER)])   # toute dernière réduction de bruit, image finie avec étoiles (demande de l'utilisateur)
     insert_after(_st, 'SXT_RGB_etire', [(script('SCNR_etoiles_vert', ''), ''), (script('SCNR_etoiles_violet', ''), ''), (script('Saturation_grosses', ''), '')])   # vert au chemin principal ; violet et Saturation_grosses en options P4, pas dans le rapide (demande de l'utilisateur)
     # P7 (demande de l'utilisateur) : Fond_desature, Fond_auto (et Fond_auto_clair) sur l'image SANS étoiles, puis Etoiles_screen
     for _b in ('Fond_desature', 'Fond_auto', 'Fond_auto_clair'):
@@ -1137,7 +1140,7 @@ def fin_rapide(steps):
     """P6_rapide et P7_rapide (demande de l'utilisateur) : un conteneur par phase avec les étapes de la finition."""
     c6 = cont('C_Fin_rapide', list(hdrmt_items('0.3')) + [pick(steps, b)[0] for b in ('Masque_L', 'Courbes', 'LHE', 'LHE_fin')]
                + [script('Sharp_MMT', '')] + [pick(steps, b)[0] for b in ('Masque_retirer', 'NXT_final')])   # Sharp_MMT sous le masque (demande de l'utilisateur)
-    c7 = cont('C_Etoiles_fond_rapide', [pick(steps, b)[0] for b in ('Fond_desature', 'Fond_auto', 'Etoiles_screen', 'Export_TIFF')])   # Export_TIFF en dernier (demande de l'utilisateur)
+    c7 = cont('C_Etoiles_fond_rapide', [pick(steps, b)[0] for b in ('Fond_desature', 'Fond_auto', 'Etoiles_screen', 'NXT_dernier', 'Export_TIFF')])   # Export_TIFF en dernier (demande de l'utilisateur)
     return c6, c7
 
 for _st in (lrgb, lhargb):

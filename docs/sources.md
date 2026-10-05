@@ -723,3 +723,8 @@ Fait : les deux en options P4, juste après SCNR_etoiles_vert (sur RGB_stars) ; 
 
 Demande : « fais un turbo process qui fait une une seule fois : R_C_Preparation_rapide puis R_Gradient_auto_rapide puis R_Lineaire_rapide »
 Fait : icône T_Turbo_debut (LRGB et LHaRGB, colonne P1, groupe P1_turbo) : un ProcessContainer avec Renommer_auto, LinearPatternSubtraction, Combinaison_RGB, Solver_auto, Gradient_auto, Lineaire_auto (étapes du workflow) ; double-clic puis Apply Global.
+
+### NXT_dernier après Etoiles_screen (5 octobre 2026)
+
+Demande : « rajoute un NXT apres etoiles screen et met le aussi dans le rapide, pour faire une toute derniere reduction de bruit »
+Fait : NXT_dernier (NoiseXTerminator Denoise 0,25, 1 itération, réglage léger choisi parce que NXT_final 0,40 a déjà débruité l'image sans étoiles) au chemin principal juste après Etoiles_screen (LRGB E24, LHaRGB E31) et dans R_C_Etoiles_fond_rapide entre Etoiles_screen et Export_TIFF.
