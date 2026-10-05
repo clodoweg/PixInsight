@@ -73,20 +73,11 @@ function smProcess( view, p )
       throw new Error( SM_TITLE + " : MultiscaleMedianTransform a échoué (voir la console)." );
 }
 
-// Lancé par la fenêtre : calcul sur une copie qui reçoit le masque de l'image, puis recopie (Ctrl+Z).
-function smApplyFromDialog( view, p )
+// Calcul sur une copie sans masque, puis mélange copie / original selon le masque attaché
+// (Masque_L), par un PixelMath exécuté sur l'image et recopié : affichage et Ctrl+Z.
+function smApply( view, p )
 {
-   let win = view.window;
-   cwApplyOnCopy( view, function( c )
-   {
-      if ( !win.mask.isNull && win.maskEnabled )
-      {
-         c.window.mask = win.mask;
-         c.window.maskInverted = win.maskInverted;
-         c.window.maskEnabled = true;
-      }
-      smProcess( c, p );
-   } );
+   cwApplyOnCopy( view, function( c ) { smProcess( c, p ); }, cwMaskBlend( view ) );
 }
 
 function smDialog( p, view )
@@ -121,13 +112,18 @@ function main()
    {
       let v = smDialog( p, cwDefaultView() );
       if ( v != null )
-         cwRun( SM_TITLE, function() { smApplyFromDialog( v, p ); } );
+         cwRun( SM_TITLE, function() { smApply( v, p ); } );
       return;
    }
    let view = Parameters.isViewTarget ? Parameters.targetView : ImageWindow.activeWindow.mainView;
    if ( view.isNull )
       throw new Error( SM_TITLE + " : aucune image." );
-   smProcess( view, p );
+   // glissée sur l'image : exécution directe (historique géré par PixInsight) ; sinon (conteneur
+   // lancé en Apply Global) même chemin que la fenêtre, pour l'affichage et le Ctrl+Z
+   if ( Parameters.isViewTarget )
+      smProcess( view, p );
+   else
+      smApply( view, p );
    console.noteln( SM_TITLE + " : " + view.id + " accentuée (couches " + p.premiere + " à " + p.derniere + ", biais +" + p.biais + ")." );
 }
 

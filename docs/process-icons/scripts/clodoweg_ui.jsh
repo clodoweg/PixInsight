@@ -75,14 +75,12 @@ function cwViewById( id )
    return w.isNull ? null : w.mainView;
 }
 
-// fn( copie ) travaille sur une copie cachée de view,
-// puis le résultat remplace l'image de view en une étape d'annulation.
-function cwApplyOnCopy( view, fn )
+// Image cachée id = expr calculée par PixelMath EXÉCUTÉ SUR view (même format que view).
+function cwPixelMathNew( view, expr, id )
 {
-   let id = "cw_copie";
    cwCloseWindow( id );
    let P = new PixelMath;
-   P.expression = "$T";
+   P.expression = expr;
    P.useSingleExpression = true;
    P.createNewImage = true;
    P.showNewImage = false;
@@ -90,23 +88,62 @@ function cwApplyOnCopy( view, fn )
    P.newImageColorSpace = PixelMath.prototype.SameAsTarget;
    P.newImageSampleFormat = PixelMath.prototype.SameAsTarget;
    P.rescale = false;
-   P.truncate = false;
-   P.executeOn( view );
+   P.truncate = true;
+   let ok = P.executeOn( view );
    let w = ImageWindow.windowById( id );
-   if ( w.isNull )
-      throw new Error( "copie de travail non créée." );
+   if ( !ok || w.isNull )
+      throw new Error( "PixelMath : image de travail " + id + " non créée (voir la console)." );
+   return w;
+}
+
+// fn( copie ) travaille sur une copie cachée de view (sans masque). Le résultat
+// est ensuite recalculé par un PixelMath exécuté SUR view (expression blend( id
+// de la copie ), par défaut la copie seule), puis recopié dans view entre
+// beginProcess et endProcess : affichage mis à jour et une étape Ctrl+Z.
+// C'est le schéma validé par l'utilisateur sur Etoiles_grosses (le schéma
+// précédent, recopie directe de la copie, ne s'affichait pas et n'avait pas
+// de Ctrl+Z sur Sharp_MMT).
+function cwApplyOnCopy( view, fn, blend )
+{
+   let cid = "cw_copie", rid = "cw_resultat";
+   let win = view.window;
+   let maskOn = win.maskEnabled;
+   let c = cwPixelMathNew( view, "$T", cid );
    try
    {
-      fn( w.mainView );
-      view.beginProcess();
-      view.image.assign( w.mainView.image );
-      view.endProcess();
+      fn( c.mainView );
+      win.maskEnabled = false;
+      let r = cwPixelMathNew( view, blend ? blend( cid ) : cid, rid );
+      try
+      {
+         view.beginProcess();
+         view.image.assign( r.mainView.image );
+         view.endProcess();
+      }
+      finally
+      {
+         r.forceClose();
+      }
    }
    finally
    {
-      w.forceClose();
+      win.maskEnabled = maskOn;
+      cwCloseWindow( cid );
    }
-   view.window.bringToFront();
+   win.bringToFront();
+}
+
+// Expression de mélange copie / original selon le masque attaché à view
+// (actif) : m*copie + (1-m)*$T, m inversé si le masque l'est ; null sans masque.
+function cwMaskBlend( view )
+{
+   let win = view.window;
+   if ( win.mask.isNull || !win.maskEnabled )
+      return null;
+   let m = win.mask.mainView.id;
+   if ( win.maskInverted )
+      m = "(1-" + m + ")";
+   return function( cid ) { return m + "*" + cid + " + (1-" + m + ")*$T"; };
 }
 
 // Lancement fenêtre : exécute run() et affiche l'erreur éventuelle.

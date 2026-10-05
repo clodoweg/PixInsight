@@ -624,3 +624,9 @@ Question de l'utilisateur : « j'aimerais rajouter pour tous les process, un boo
 - Instance MultiscaleMedianTransform donnée par l'utilisateur (code source d'instance, PixInsight 1.9.5, 5 octobre 2026) : layers [enabled, biasEnabled, bias, noiseReductionEnabled, threshold, amount, adaptive], couches 2 à 4 biais 0,040, transform MultiscaleMedianTransform, toLuminance et toChrominance true, linear false ; utilisée par Sharp_MMT.js (C_Sharp_MMT au chemin principal de P6, tous les workflows, pas dans le rapide). Non testé dans PixInsight.
 
 Non vérifié : réglages de Ron Brecher et Dave Cosgrove lus sur leurs pages (pratique d'imageurs, pas de documentation éditeur) ; plages BXT pour galaxies (Sharpen Stars 0,15–0,20, Nonstellar 0,20–0,35) issues d'un résumé de forum ; paramètres de MAS d'après Starlust Astroguide, l'article PixInsight n'ayant pas pu être lu ; version de l'instance GraXpert (256 supposé ; MAS confirmé par l'utilisateur le 5 octobre 2026) ; chemins des scripts VeraLux et MKStarReduction (icônes-notes) ; formule H_dans_RGB_v2 (part de 0,2 pour Hβ, choix de l'utilisateur à tester).
+
+### Sharp_MMT : pas d'affichage ni de Ctrl+Z depuis la fenêtre (5 octobre 2026)
+
+Demande : « pareil , quand j'applique je pas les modifs sur l'image ni ctrl-z »
+
+Correction : `cwApplyOnCopy` (clodoweg_ui.jsh) reprend le schéma validé sur Etoiles_grosses : le résultat final est calculé par un PixelMath exécuté sur l'image cible (nouvelle image cachée), puis recopié entre beginProcess et endProcess. MMT tourne sur une copie sans masque ; le masque attaché (Masque_L) sert au mélange `m*copie + (1-m)*$T` (`cwMaskBlend`). Vaut pour tous les scripts qui utilisent cwApplyOnCopy.
