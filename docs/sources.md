@@ -837,3 +837,8 @@ Fait : R_C_P3_rapide = BXT Correct Only, SPCC, BXT, Lineaire_auto (L, H) (Combin
 
 Question (capture de la fenêtre Combine H Alpha v1.10 : RGB, H, Linear, Link, pas de masque, Amount 1, Beta 0, Background 0,05, Sigma 0) : « je dois mettre quels parametres? »
 Réponse d'après la documentation et le code du script (déjà lus) : Amount 1,5 à 2,5 conseillé par l'auteur avec un H issu de ContinuumSubtraction ; avec H brut (continuum non retiré), plus bas (1 à 1,5) car étoiles et cœur passent aussi dans le rouge ; Beta 0,1 à 0,2 pour le rose (Hβ) ; Background à monter jusqu'à disparition du bruit rouge dans l'aperçu ; Sigma 0 (NXT ensuite) ; masque d'étoiles possible sinon images sans étoiles conseillées. Pas de changement d'icône.
+
+### Continuum_auto remis au chemin principal, réglages CombineHaWithRGB (5 octobre 2026)
+
+Demande : « remet Opt_Continuum_auto avant E14_CombineHaWithRGB ; dans E14_CombineHaWithRGB met : Amount 2, beta 0.2, background: 0.05 »
+Fait : Continuum_auto au chemin principal (E14) avant CombineHaWithRGB (E15) ; CombineHaWithRGB : Amount 2, Beta 0,2, Background 0,05, et H Alpha = HaNB (sortie de Continuum_auto, comme le demande la doc du script ; Amount 2 conseillé par l'auteur avec un H sans continuum). C_RGB_bruit devient E16 ; numéros suivants +1 (NXT_dernier E31). LRGB inchangé.
