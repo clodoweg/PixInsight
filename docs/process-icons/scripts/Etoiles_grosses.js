@@ -188,11 +188,24 @@ function egShowMask( view, p )
    console.noteln( EG_TITLE + " : masque affiché (" + EG_MASK_VIEW + ", blanc = réduit)." );
 }
 
-function egApply( view, p )
+// direct = true : icône glissée sur l'image (PixInsight gère déjà l'historique de la vue) ;
+// direct = false : lancé par la fenêtre (Apply Global) : résultat calculé dans une image cachée
+// puis recopié dans l'image entre beginProcess et endProcess, pour avoir une étape d'annulation
+// (Ctrl+Z) et l'affichage mis à jour (retour de l'utilisateur : sinon rien ne s'affichait).
+function egApply( view, p, direct )
 {
    if ( view == null || view.isNull )
       throw new Error( EG_TITLE + " : aucune image." );
    let m = egMask( view, p );
+   // contrôle : masque vide = aucune grosse étoile trouvée, l'image ne changerait pas
+   let mMax = m.mainView.image.maximum(), mMean = m.mainView.image.mean();
+   console.writeln( EG_TITLE + " : masque max " + mMax.toFixed( 3 ) + ", surface réduite environ " + (100*mMean).toFixed( 2 ) + " % de l'image." );
+   if ( mMax < 0.01 )
+   {
+      egClose( "eg_m" );
+      throw new Error( EG_TITLE + " : aucune grosse étoile trouvée avec ces réglages, l'image n'est pas modifiée. " +
+                       "Baisse le seuil (0,10 puis 0,05) ou la taille (5), et vérifie avec « Voir le masque »." );
+   }
    if ( p.afficherMasque )
       egNew( m.mainView, EG_MASK_VIEW, "$T" ).show();
    else
@@ -203,13 +216,39 @@ function egApply( view, p )
    P.expression = "y = " + Y + ";\nf = iif(y > 0.000001, mtf(" + p.force.toFixed( 4 ) + ", y)/y, 1);\n$T*(1 - eg_m + eg_m*f)";
    P.symbols = "y, f";
    P.useSingleExpression = true;
-   P.createNewImage = false;
    P.rescale = false;
    P.truncate = true;
-   let ok = P.executeOn( view );
+   let ok;
+   if ( direct )
+   {
+      P.createNewImage = false;
+      ok = P.executeOn( view );
+   }
+   else
+   {
+      P.createNewImage = true;
+      P.showNewImage = false;
+      P.newImageId = "eg_r";
+      P.newImageColorSpace = PixelMath.prototype.SameAsTarget;
+      P.newImageSampleFormat = PixelMath.prototype.SameAsTarget;
+      egClose( "eg_r" );
+      ok = P.executeOn( view );
+      let r = ImageWindow.windowById( "eg_r" );
+      ok = ok && !r.isNull;
+      if ( ok )
+      {
+         view.beginProcess();
+         view.image.assign( r.mainView.image );
+         view.endProcess();
+      }
+      egClose( "eg_r" );
+   }
    egClose( "eg_m" );
    if ( !ok )
       throw new Error( EG_TITLE + " : la réduction a échoué (voir la console) ; l'image n'a pas été modifiée." );
+   // l'image traitée passe devant : Ctrl+Z / Ctrl+Y s'appliquent à elle (pas à la vue du masque)
+   view.window.bringToFront();
+   console.noteln( EG_TITLE + " : pour comparer, Ctrl+Z puis Ctrl+Y sur " + view.id + " (fenêtre active), zoom 1:1 sur une grosse étoile." );
    console.noteln( EG_TITLE + " : grosses étoiles de " + view.id + " réduites (taille " + p.taille + ", seuil " + p.seuil +
                    ", étendue " + p.etendue + ", force " + p.force + ")" + (p.afficherMasque ? " ; masque gardé : " + EG_MASK_VIEW + "." : ".") );
 }
@@ -376,12 +415,15 @@ function main()
    if ( Parameters.isViewTarget )
    {
       // icône glissée sur l'image : exécution directe (aussi dans un conteneur)
-      egApply( Parameters.targetView, p );
+      egApply( Parameters.targetView, p, true );
       return;
    }
    let dialog = new EGDialog( p, egDefaultView() );
    if ( dialog.execute() )
-      egApply( dialog.view, p );
+   {
+      try { egApply( dialog.view, p, false ); }
+      catch ( e ) { console.criticalln( e.message ); (new MessageBox( e.message, EG_TITLE )).execute(); }
+   }
 }
 
 main();

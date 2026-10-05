@@ -598,4 +598,6 @@ Question de l'utilisateur : « quel est la difference entre utiliser MAS ou GHS 
 
 - Fenêtre de réglages pour Etoiles_grosses.js (5 octobre 2026), API vérifiée dans le PJSR (NumericControl.jsh : setReal, setRange, setPrecision, slider ; bouton new-instance comme ImageSolver.js). Non testée dans PixInsight. Demande de l'utilisateur : « je veux maintenant que tu me fasse une interface graphique pour chaque script que tu as crée . Commence déja par un que l'on valide ensemble ».
 
+- Etoiles_grosses.js, retour de l'utilisateur (5 octobre 2026) : lancé par la fenêtre, l'image changeait sans affichage ni Ctrl+Z ; correction : résultat recopié entre beginProcess et endProcess.
+
 Non vérifié : réglages de Ron Brecher et Dave Cosgrove lus sur leurs pages (pratique d'imageurs, pas de documentation éditeur) ; plages BXT pour galaxies (Sharpen Stars 0,15–0,20, Nonstellar 0,20–0,35) issues d'un résumé de forum ; paramètres de MAS d'après Starlust Astroguide, l'article PixInsight n'ayant pas pu être lu ; version de l'instance GraXpert (256 supposé ; MAS confirmé par l'utilisateur le 5 octobre 2026) ; chemins des scripts VeraLux et MKStarReduction (icônes-notes) ; formule H_dans_RGB_v2 (part de 0,2 pour Hβ, choix de l'utilisateur à tester).

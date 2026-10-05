@@ -43,6 +43,7 @@ Convention, à reprendre pour chaque script (premier fait : Etoiles_grosses.js, 
 - `Parameters.isViewTarget` (icône glissée sur l'image, ou dans un conteneur) : exécution directe avec les paramètres de l'icône, sans fenêtre ;
 - sinon (double-clic puis Apply Global, ou menu Script) : fenêtre `Dialog` pré-remplie avec les paramètres de l'icône (ou les défauts) ; ViewList pour l'image, NumericControl (`setReal`, `setRange`, `setPrecision`, `slider.setRange(0, 1000)`), CheckBox ; bouton triangle (`:/process-interface/new-instance.png`, `Parameters.set` puis `this.dialog.newInstance()`) ; bouton d'aperçu quand c'est utile ; Appliquer / Annuler ;
 - includes : `pjsr/Sizer.jsh`, `pjsr/TextAlign.jsh`, `pjsr/NumericControl.jsh` ;
+- lancé par la fenêtre (Apply Global), un `executeOn(view)` modifie l'image sans étape d'annulation ni rafraîchissement (retour de l'utilisateur) : calculer le résultat dans une image cachée, puis `view.beginProcess(); view.image.assign(...); view.endProcess();`. Icône glissée sur l'image : `executeOn` direct (PixInsight gère l'historique) ;
 - description de l'icône : base ajoutée à `DIALOGUE` dans `short_desc.py` (texte de lancement LAUNCH_DLG).
 
 ## Contraintes PixInsight
