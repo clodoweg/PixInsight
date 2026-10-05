@@ -3444,13 +3444,57 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <description>PHASE 7 — Étoiles : étoiles : étirement, recombinaison, réduction. Colonne de repère, sans effet.</description>
    </instance>
    <instance class="SCNR" version="256" id="E19_SCNR_vert_instance">
-      <description>PRÉRÉGLÉ : SCNR : Green, Amount 1,0, Average Neutral, Preserve lightness coché.&#10;&#10;À RÉGLER : première étape de P7 : glisse sur l'image SANS étoiles finie (après NXT_final), AVANT Etoiles_screen : vert retiré de la galaxie et du fond, étoiles intactes.&#10;&#10;SI :&#10;- couleurs ternes ou magenta -&gt; Amount 0,5 à 0,8&#10;- étoiles vertes aussi -&gt; passe-le aussi sur RGB_stars avant Etoiles_screen</description>
+      <description>PRÉRÉGLÉ : SCNR : Green, Amount 1,0, Average Neutral, Preserve lightness coché.&#10;&#10;À RÉGLER : première étape de P7 : glisse sur l'image SANS étoiles finie (après NXT_final), avant Fond_desature, Fond_auto et Etoiles_screen : vert retiré de la galaxie et du fond, étoiles intactes.&#10;&#10;SI :&#10;- couleurs ternes ou magenta -&gt; Amount 0,5 à 0,8&#10;- étoiles vertes aussi -&gt; passe-le aussi sur RGB_stars avant Etoiles_screen</description>
       <parameter id="amount" value="1.00"/>
       <parameter id="protectionMethod" value="AverageNeutral"/>
       <parameter id="colorToRemove" value="Green"/>
       <parameter id="preserveLightness" value="true"/>
    </instance>
-   <instance class="PixelMath" version="256" id="E20_Etoiles_screen_instance">
+   <instance class="Script" version="256" id="E20_Fond_desature_instance">
+      <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Fond_desature : fond mesuré ; zones faibles (luminance lissée sous fond + 0,15, décroissant jusqu'à + 0,30) : violet neutralisé (G remonté jusqu'à min(R, B), magenta seulement) ; fond (sous + 0,03, rampe jusqu'à + 0,15) : couleur retirée.&#10;&#10;À RÉGLER : glisse sur l'image SANS étoiles, après SCNR_vert, avant Fond_auto et Etoiles_screen.&#10;&#10;SI :&#10;- violet encore visible dans le halo -&gt; violetFin 0,40&#10;- extensions faibles de la galaxie grisées -&gt; fin 0,10</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="4">
+         <tr>
+            <td id="id">debut</td>
+            <td id="value">0.03</td>
+         </tr>
+         <tr>
+            <td id="id">fin</td>
+            <td id="value">0.15</td>
+         </tr>
+         <tr>
+            <td id="id">violetFin</td>
+            <td id="value">0.30</td>
+         </tr>
+         <tr>
+            <td id="id">flou</td>
+            <td id="value">3</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
+   </instance>
+   <instance class="Script" version="256" id="E21_Fond_auto_instance">
+      <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Fond_auto : fond de chaque canal mesuré (grille 8 × 8, quart le plus sombre des cases), puis mtf canal par canal pour l'amener à 0,12, sans écrêtage ; fond neutre.&#10;&#10;À RÉGLER : glisse sur l'image SANS étoiles, après Fond_desature, avant Etoiles_screen ; console : fond avant et après.&#10;&#10;SI :&#10;- image trop sombre -&gt; cible 0,13 ou 0,14&#10;- données très propres -&gt; 0,10 à 0,11</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="3">
+         <tr>
+            <td id="id">cible</td>
+            <td id="value">0.12</td>
+         </tr>
+         <tr>
+            <td id="id">tolerance</td>
+            <td id="value">0.005</td>
+         </tr>
+         <tr>
+            <td id="id">grille</td>
+            <td id="value">8</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
+   </instance>
+   <instance class="PixelMath" version="256" id="E22_Etoiles_screen_instance">
       <description>PRÉRÉGLÉ : ~((~$T) * (~RGB_stars)), sur l'image elle-même.&#10;&#10;À RÉGLER : glisse sur l'image sans étoiles finale : elle reçoit les étoiles ; étoiles étirées nommées RGB_stars (nom donné par SXT, s minuscule).&#10;&#10;SI :&#10;- autre nom d'étoiles -&gt; corrige-le dans la formule</description>
       <parameter id="expression">~((~$T) * (~RGB_stars))</parameter>
       <parameter id="expression1"></parameter>
@@ -3479,50 +3523,6 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="newImageColorSpace" value="SameAsTarget"/>
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
-   </instance>
-   <instance class="Script" version="256" id="E21_Fond_desature_instance">
-      <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Fond_desature : fond mesuré ; zones faibles (luminance lissée sous fond + 0,15, décroissant jusqu'à + 0,30) : violet neutralisé (G remonté jusqu'à min(R, B), magenta seulement) ; fond (sous + 0,03, rampe jusqu'à + 0,15) : couleur retirée.&#10;&#10;À RÉGLER : glisse sur l'image finie, étoiles comprises, juste après Etoiles_screen, avant Fond_auto.&#10;&#10;SI :&#10;- violet encore visible dans le halo -&gt; violetFin 0,40&#10;- extensions faibles de la galaxie grisées -&gt; fin 0,10</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js</parameter>
-      <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="4">
-         <tr>
-            <td id="id">debut</td>
-            <td id="value">0.03</td>
-         </tr>
-         <tr>
-            <td id="id">fin</td>
-            <td id="value">0.15</td>
-         </tr>
-         <tr>
-            <td id="id">violetFin</td>
-            <td id="value">0.30</td>
-         </tr>
-         <tr>
-            <td id="id">flou</td>
-            <td id="value">3</td>
-         </tr>
-      </table>
-      <parameter id="information"></parameter>
-   </instance>
-   <instance class="Script" version="256" id="E22_Fond_auto_instance">
-      <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Fond_auto : fond de chaque canal mesuré (grille 8 × 8, quart le plus sombre des cases), puis mtf canal par canal pour l'amener à 0,12, sans écrêtage ; fond neutre.&#10;&#10;À RÉGLER : glisse sur l'image finie, étoiles comprises, après Fond_desature ; console : fond avant et après.&#10;&#10;SI :&#10;- image trop sombre -&gt; cible 0,13 ou 0,14&#10;- données très propres -&gt; 0,10 à 0,11</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js</parameter>
-      <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="3">
-         <tr>
-            <td id="id">cible</td>
-            <td id="value">0.12</td>
-         </tr>
-         <tr>
-            <td id="id">tolerance</td>
-            <td id="value">0.005</td>
-         </tr>
-         <tr>
-            <td id="id">grille</td>
-            <td id="value">8</td>
-         </tr>
-      </table>
-      <parameter id="information"></parameter>
    </instance>
    <instance class="NoOperation" version="256" id="P7_options_instance">
       <description>OPTIONS de la phase 7 — Étoiles : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
@@ -3612,6 +3612,26 @@ $T*(1 - k*t*t)</parameter>
       <parameter id="newImageColorSpace" value="SameAsTarget"/>
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
+   </instance>
+   <instance class="Script" version="256" id="Opt_Fond_auto_clair_instance">
+      <description>OPTION — à la place de Fond_auto : image trop sombre, fond amené à 0,14, après Fond_desature, avant Etoiles_screen.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Fond_auto, cible 0,14 : fond de chaque canal mesuré (grille 8 × 8), amené à 0,14 par mtf, sans écrêtage ; fond neutre.&#10;&#10;À RÉGLER : à la place de Fond_auto, image trop sombre : glisse sur l'image sans étoiles, après Fond_desature, avant Etoiles_screen.&#10;&#10;SI :&#10;- fond encore trop sombre -&gt; double-clic, cible 0,15</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="3">
+         <tr>
+            <td id="id">cible</td>
+            <td id="value">0.14</td>
+         </tr>
+         <tr>
+            <td id="id">tolerance</td>
+            <td id="value">0.005</td>
+         </tr>
+         <tr>
+            <td id="id">grille</td>
+            <td id="value">8</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
    </instance>
    <instance class="PixelMath" version="256" id="Opt_Etoiles_reduites_instance">
       <description>ALTERNATIVE — Recombinaison + réduction Blanshan.&#10;&#10;PRÉRÉGLÉ : S = 0,20 (Bill : 0,15) ; recombinaison screen + réduction Blanshan en une formule, sur l'image elle-même.&#10;&#10;À RÉGLER : À LA PLACE d'Etoiles_screen : glisse sur l'image sans étoiles finale ; étoiles étirées nommées RGB_stars.&#10;&#10;SI :&#10;- étoiles encore grosses -&gt; S 0,15&#10;- trop petites -&gt; S 0,25, ou Etoiles_screen&#10;- pour recommencer -&gt; Ctrl+Z</description>
@@ -4039,26 +4059,6 @@ max($T,f1)</parameter>
          <parameter id="information"></parameter>
       </instance>
    </instance>
-   <instance class="Script" version="256" id="Opt_Fond_auto_clair_instance">
-      <description>OPTION — à la place de Fond_auto : image trop sombre, fond amené à 0,14, après Fond_desature.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Fond_auto, cible 0,14 : fond de chaque canal mesuré (grille 8 × 8), amené à 0,14 par mtf, sans écrêtage ; fond neutre.&#10;&#10;À RÉGLER : à la place de Fond_auto, image trop sombre : glisse sur l'image finie, étoiles comprises, après Fond_desature.&#10;&#10;SI :&#10;- fond encore trop sombre -&gt; double-clic, cible 0,15</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js</parameter>
-      <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="3">
-         <tr>
-            <td id="id">cible</td>
-            <td id="value">0.14</td>
-         </tr>
-         <tr>
-            <td id="id">tolerance</td>
-            <td id="value">0.005</td>
-         </tr>
-         <tr>
-            <td id="id">grille</td>
-            <td id="value">8</td>
-         </tr>
-      </table>
-      <parameter id="information"></parameter>
-   </instance>
    <instance class="Resample" version="256" id="Opt_Agrandir_x2_instance">
       <description>OPTION — après Binning_x2, pour un grand tirage : image agrandie 2 fois (Lanczos 3) juste avant Export_TIFF&#10;Ne recrée pas le détail perdu.&#10;&#10;PRÉRÉGLÉ : Resample : × 2 en largeur et hauteur, Lanczos 3, seuil d'écrêtage 0,30.&#10;&#10;À RÉGLER : glisse sur l'image finie, juste avant ICC_sRGB et Export_TIFF ; seulement après Binning_x2, pour un grand tirage.&#10;&#10;SI :&#10;- anneaux noirs autour des étoiles -&gt; interpolation Auto ou Bicubic spline</description>
       <parameter id="xSize" value="2.000000"/>
@@ -4079,7 +4079,7 @@ max($T,f1)</parameter>
       <parameter id="useFloatingPointTransformation" value="true"/>
    </instance>
    <instance class="Script" version="256" id="Opt_Export_TIFF_instance">
-      <description>OPTION — tout à la fin : copie enregistrée en TIFF 16 bits sRGB, profil ICC intégré, pour Photoshop, Lightroom ou Affinity.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Export_TIFF : copie de l'image en entiers 16 bits, convertie en sRGB IEC61966-2.1 (icc = true), enregistrée en TIFF (.tiff) sous le NOM DE L'OBJET, sans espace (NGC 1532 -&gt; NGC1532), = nom du dossier des masters ouverts (L, R, G, B, H…), dossiers génériques (master, lights, output, WBPP…) sautés ; enregistrée dans ce dossier ; l'image ouverte ne change pas ; ensuite L et RGB_stars fermées (paramètre fermer).&#10;&#10;À RÉGLER : glisse sur l'image finie (après Fond_desature), L et RGB_stars encore ouvertes (fermées après l'export) ; copie Export_TIFF.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- aucun master ouvert -&gt; mot-clé OBJECT, sinon nom de la vue, dans ton dossier personnel&#10;- autre nom -&gt; remplis nom&#10;- autre dossier -&gt; remplis dossier&#10;- garder plusieurs versions -&gt; suffixe (ex. _v2)&#10;- garder le profil actuel -&gt; icc false</description>
+      <description>OPTION — tout à la fin : copie enregistrée en TIFF 16 bits sRGB, profil ICC intégré, pour Photoshop, Lightroom ou Affinity.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Export_TIFF : copie de l'image en entiers 16 bits, convertie en sRGB IEC61966-2.1 (icc = true), enregistrée en TIFF (.tiff) sous le NOM DE L'OBJET, sans espace (NGC 1532 -&gt; NGC1532), = nom du dossier des masters ouverts (L, R, G, B, H…), dossiers génériques (master, lights, output, WBPP…) sautés ; enregistrée dans ce dossier ; l'image ouverte ne change pas ; ensuite L et RGB_stars fermées (paramètre fermer).&#10;&#10;À RÉGLER : glisse sur l'image finie (après Etoiles_screen), L et RGB_stars encore ouvertes (fermées après l'export) ; copie Export_TIFF.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- aucun master ouvert -&gt; mot-clé OBJECT, sinon nom de la vue, dans ton dossier personnel&#10;- autre nom -&gt; remplis nom&#10;- autre dossier -&gt; remplis dossier&#10;- garder plusieurs versions -&gt; suffixe (ex. _v2)&#10;- garder le profil actuel -&gt; icc false</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="5">
@@ -4107,7 +4107,7 @@ max($T,f1)</parameter>
       <parameter id="information"></parameter>
    </instance>
    <instance class="NoOperation" version="256" id="P7_rapide_instance">
-      <description>MODE RAPIDE, phase 7 — Étoiles : R_C_Etoiles_fond_rapide sur l'image sans étoiles finie : SCNR vert, étoiles remises (Etoiles_screen), Fond_desature, Fond_auto (0,12), puis Export_TIFF (ferme L et RGB_stars) en un seul conteneur. Icône de repère, sans effet.</description>
+      <description>MODE RAPIDE, phase 7 — Étoiles : R_C_Etoiles_fond_rapide sur l'image sans étoiles finie : SCNR vert, Fond_desature, Fond_auto (0,12) sur l'image sans étoiles, étoiles remises (Etoiles_screen), puis Export_TIFF (ferme L et RGB_stars) en un seul conteneur. Icône de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="R_C_Etoiles_fond_rapide_instance">
       <instance class="SCNR" version="256" enabled="true">
@@ -4115,35 +4115,6 @@ max($T,f1)</parameter>
          <parameter id="protectionMethod" value="AverageNeutral"/>
          <parameter id="colorToRemove" value="Green"/>
          <parameter id="preserveLightness" value="true"/>
-      </instance>
-      <instance class="PixelMath" version="256" enabled="true">
-         <parameter id="expression">~((~$T) * (~RGB_stars))</parameter>
-         <parameter id="expression1"></parameter>
-         <parameter id="expression2"></parameter>
-         <parameter id="expression3"></parameter>
-         <parameter id="useSingleExpression" value="true"/>
-         <parameter id="symbols"></parameter>
-         <parameter id="clearImageCacheAndExit" value="false"/>
-         <parameter id="cacheGeneratedImages" value="false"/>
-         <parameter id="generateOutput" value="true"/>
-         <parameter id="singleThreaded" value="false"/>
-         <parameter id="optimization" value="true"/>
-         <parameter id="use64BitWorkingImage" value="false"/>
-         <parameter id="rescale" value="false"/>
-         <parameter id="rescaleLower" value="0"/>
-         <parameter id="rescaleUpper" value="1"/>
-         <parameter id="truncate" value="true"/>
-         <parameter id="truncateLower" value="0"/>
-         <parameter id="truncateUpper" value="1"/>
-         <parameter id="createNewImage" value="false"/>
-         <parameter id="showNewImage" value="true"/>
-         <parameter id="newImageId"></parameter>
-         <parameter id="newImageWidth" value="0"/>
-         <parameter id="newImageHeight" value="0"/>
-         <parameter id="newImageAlpha" value="false"/>
-         <parameter id="newImageColorSpace" value="SameAsTarget"/>
-         <parameter id="newImageSampleFormat" value="SameAsTarget"/>
-         <table id="outputData" rows="0"/>
       </instance>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js</parameter>
@@ -4194,6 +4165,35 @@ max($T,f1)</parameter>
             </tr>
          </table>
          <parameter id="information"></parameter>
+      </instance>
+      <instance class="PixelMath" version="256" enabled="true">
+         <parameter id="expression">~((~$T) * (~RGB_stars))</parameter>
+         <parameter id="expression1"></parameter>
+         <parameter id="expression2"></parameter>
+         <parameter id="expression3"></parameter>
+         <parameter id="useSingleExpression" value="true"/>
+         <parameter id="symbols"></parameter>
+         <parameter id="clearImageCacheAndExit" value="false"/>
+         <parameter id="cacheGeneratedImages" value="false"/>
+         <parameter id="generateOutput" value="true"/>
+         <parameter id="singleThreaded" value="false"/>
+         <parameter id="optimization" value="true"/>
+         <parameter id="use64BitWorkingImage" value="false"/>
+         <parameter id="rescale" value="false"/>
+         <parameter id="rescaleLower" value="0"/>
+         <parameter id="rescaleUpper" value="1"/>
+         <parameter id="truncate" value="true"/>
+         <parameter id="truncateLower" value="0"/>
+         <parameter id="truncateUpper" value="1"/>
+         <parameter id="createNewImage" value="false"/>
+         <parameter id="showNewImage" value="true"/>
+         <parameter id="newImageId"></parameter>
+         <parameter id="newImageWidth" value="0"/>
+         <parameter id="newImageHeight" value="0"/>
+         <parameter id="newImageAlpha" value="false"/>
+         <parameter id="newImageColorSpace" value="SameAsTarget"/>
+         <parameter id="newImageSampleFormat" value="SameAsTarget"/>
+         <table id="outputData" rows="0"/>
       </instance>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js</parameter>
@@ -4293,19 +4293,19 @@ max($T,f1)</parameter>
    <icon id="R_C_Fin_rapide" instance="R_C_Fin_rapide_instance" xpos="982" ypos="524" workspace="Workspace01"/>
    <icon id="P7_Etoiles" instance="P7_Etoiles_instance" xpos="1186" ypos="20" workspace="Workspace01"/>
    <icon id="E19_SCNR_vert" instance="E19_SCNR_vert_instance" xpos="1186" ypos="64" workspace="Workspace01"/>
-   <icon id="E20_Etoiles_screen" instance="E20_Etoiles_screen_instance" xpos="1186" ypos="94" workspace="Workspace01"/>
-   <icon id="E21_Fond_desature" instance="E21_Fond_desature_instance" xpos="1186" ypos="124" workspace="Workspace01"/>
-   <icon id="E22_Fond_auto" instance="E22_Fond_auto_instance" xpos="1186" ypos="154" workspace="Workspace01"/>
+   <icon id="E20_Fond_desature" instance="E20_Fond_desature_instance" xpos="1186" ypos="94" workspace="Workspace01"/>
+   <icon id="E21_Fond_auto" instance="E21_Fond_auto_instance" xpos="1186" ypos="124" workspace="Workspace01"/>
+   <icon id="E22_Etoiles_screen" instance="E22_Etoiles_screen_instance" xpos="1186" ypos="154" workspace="Workspace01"/>
    <icon id="P7_options" instance="P7_options_instance" xpos="1186" ypos="200" workspace="Workspace01"/>
    <icon id="Opt_MT_etoiles" instance="Opt_MT_etoiles_instance" xpos="1186" ypos="234" workspace="Workspace01"/>
    <icon id="Opt_Halo_B_Gon" instance="Opt_Halo_B_Gon_instance" xpos="1186" ypos="264" workspace="Workspace01"/>
    <icon id="Opt_Etoiles_grosses" instance="Opt_Etoiles_grosses_instance" xpos="1186" ypos="294" workspace="Workspace01"/>
    <icon id="Opt_Etoiles_plafond" instance="Opt_Etoiles_plafond_instance" xpos="1186" ypos="324" workspace="Workspace01"/>
-   <icon id="Opt_Etoiles_reduites" instance="Opt_Etoiles_reduites_instance" xpos="1186" ypos="354" workspace="Workspace01"/>
-   <icon id="Opt_MKStarReduction" instance="Opt_MKStarReduction_instance" xpos="1186" ypos="384" workspace="Workspace01"/>
-   <icon id="Opt_Boost_final_doux" instance="Opt_Boost_final_doux_instance" xpos="1186" ypos="414" workspace="Workspace01"/>
-   <icon id="Opt_Boost_final" instance="Opt_Boost_final_instance" xpos="1186" ypos="444" workspace="Workspace01"/>
-   <icon id="Opt_Fond_auto_clair" instance="Opt_Fond_auto_clair_instance" xpos="1186" ypos="474" workspace="Workspace01"/>
+   <icon id="Opt_Fond_auto_clair" instance="Opt_Fond_auto_clair_instance" xpos="1186" ypos="354" workspace="Workspace01"/>
+   <icon id="Opt_Etoiles_reduites" instance="Opt_Etoiles_reduites_instance" xpos="1186" ypos="384" workspace="Workspace01"/>
+   <icon id="Opt_MKStarReduction" instance="Opt_MKStarReduction_instance" xpos="1186" ypos="414" workspace="Workspace01"/>
+   <icon id="Opt_Boost_final_doux" instance="Opt_Boost_final_doux_instance" xpos="1186" ypos="444" workspace="Workspace01"/>
+   <icon id="Opt_Boost_final" instance="Opt_Boost_final_instance" xpos="1186" ypos="474" workspace="Workspace01"/>
    <icon id="Opt_Agrandir_x2" instance="Opt_Agrandir_x2_instance" xpos="1186" ypos="504" workspace="Workspace01"/>
    <icon id="Opt_ICC_sRGB" instance="Opt_ICC_sRGB_instance" xpos="1186" ypos="534" workspace="Workspace01"/>
    <icon id="Opt_Export_TIFF" instance="Opt_Export_TIFF_instance" xpos="1186" ypos="564" workspace="Workspace01"/>

@@ -581,7 +581,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > PRÉRÉGLÉ : script Fond_desature : fond mesuré ; zones faibles (luminance lissée sous fond + 0,15, décroissant jusqu'à + 0,30) : violet neutralisé (G remonté jusqu'à min(R, B), magenta seulement) ; fond (sous + 0,03, rampe jusqu'à + 0,15) : couleur retirée.
 > 
-> À RÉGLER : glisse sur l'image finie, étoiles comprises, juste après Etoiles_screen, avant Fond_auto.
+> À RÉGLER : glisse sur l'image SANS étoiles, après SCNR_vert, avant Fond_auto et Etoiles_screen.
 > 
 > SI :
 > - violet encore visible dans le halo -> violetFin 0,40
@@ -609,7 +609,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > PRÉRÉGLÉ : script Export_TIFF : copie de l'image en entiers 16 bits, convertie en sRGB IEC61966-2.1 (icc = true), enregistrée en TIFF (.tiff) sous le NOM DE L'OBJET, sans espace (NGC 1532 -> NGC1532), = nom du dossier des masters ouverts (L, R, G, B, H…), dossiers génériques (master, lights, output, WBPP…) sautés ; enregistrée dans ce dossier ; l'image ouverte ne change pas ; ensuite L et RGB_stars fermées (paramètre fermer).
 > 
-> À RÉGLER : glisse sur l'image finie (après Fond_desature), L et RGB_stars encore ouvertes (fermées après l'export) ; copie Export_TIFF.js dans src/scripts/clodoweg.
+> À RÉGLER : glisse sur l'image finie (après Etoiles_screen), L et RGB_stars encore ouvertes (fermées après l'export) ; copie Export_TIFF.js dans src/scripts/clodoweg.
 > 
 > SI :
 > - aucun master ouvert -> mot-clé OBJECT, sinon nom de la vue, dans ton dossier personnel

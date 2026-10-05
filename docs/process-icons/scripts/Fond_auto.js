@@ -119,9 +119,9 @@ function faProcess( view, p, name )
 function faDialog( p, view )
 {
    let d = new CWDialog( TITLE, "<b>Fond du ciel automatique</b> : le fond de chaque canal est mesuré (grille de cases, quart le plus sombre) " +
-                         "et amené à la cible, neutre, sans écrêtage. Sur l'image finie, étoiles comprises.", "Tolérance :" );
+                         "et amené à la cible, neutre, sans écrêtage. Sur l'image sans étoiles, après Fond_desature, avant Etoiles_screen.", "Tolérance :" );
    let sel = { view: view };
-   d.viewList( "Image :", view, "Image finie (après Etoiles_screen et Fond_desature).", function( v ) { sel.view = v; } );
+   d.viewList( "Image :", view, "Image sans étoiles (après Fond_desature, avant Etoiles_screen).", function( v ) { sel.view = v; } );
    d.numeric( "Cible :", 0.05, 0.25, 3, p.cible, "Fond visé (0,12 par défaut ; 0,14 si l'image est trop sombre).", function( v ) { p.cible = v; } );
    d.numeric( "Tolérance :", 0.000, 0.020, 3, p.tolerance, "Écart accepté sans rien changer.", function( v ) { p.tolerance = v; } );
    d.numeric( "Grille :", 4, 16, 0, p.grille, "Nombre de cases par côté pour mesurer le fond.", function( v ) { p.grille = v; } );

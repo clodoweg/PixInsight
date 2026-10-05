@@ -757,13 +757,41 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 > PRÉRÉGLÉ : SCNR : Green, Amount 1,0, Average Neutral, Preserve lightness coché.
 > 
-> À RÉGLER : première étape de P7 : glisse sur l'image SANS étoiles finie (après NXT_final), AVANT Etoiles_screen : vert retiré de la galaxie et du fond, étoiles intactes.
+> À RÉGLER : première étape de P7 : glisse sur l'image SANS étoiles finie (après NXT_final), avant Fond_desature, Fond_auto et Etoiles_screen : vert retiré de la galaxie et du fond, étoiles intactes.
 > 
 > SI :
 > - couleurs ternes ou magenta -> Amount 0,5 à 0,8
 > - étoiles vertes aussi -> passe-le aussi sur RGB_stars avant Etoiles_screen
 
-#### E27_Etoiles_screen — PixelMath
+#### E27_Fond_desature — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js`
+   paramètres : `debut=0.03`, `fin=0.15`, `violetFin=0.30`, `flou=3`
+
+> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
+> 
+> PRÉRÉGLÉ : script Fond_desature : fond mesuré ; zones faibles (luminance lissée sous fond + 0,15, décroissant jusqu'à + 0,30) : violet neutralisé (G remonté jusqu'à min(R, B), magenta seulement) ; fond (sous + 0,03, rampe jusqu'à + 0,15) : couleur retirée.
+> 
+> À RÉGLER : glisse sur l'image SANS étoiles, après SCNR_vert, avant Fond_auto et Etoiles_screen.
+> 
+> SI :
+> - violet encore visible dans le halo -> violetFin 0,40
+> - extensions faibles de la galaxie grisées -> fin 0,10
+
+#### E28_Fond_auto — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js`
+   paramètres : `cible=0.12`, `tolerance=0.005`, `grille=8`
+
+> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
+> 
+> PRÉRÉGLÉ : script Fond_auto : fond de chaque canal mesuré (grille 8 × 8, quart le plus sombre des cases), puis mtf canal par canal pour l'amener à 0,12, sans écrêtage ; fond neutre.
+> 
+> À RÉGLER : glisse sur l'image SANS étoiles, après Fond_desature, avant Etoiles_screen ; console : fond avant et après.
+> 
+> SI :
+> - image trop sombre -> cible 0,13 ou 0,14
+> - données très propres -> 0,10 à 0,11
+
+#### E29_Etoiles_screen — PixelMath
    expression = `~((~$T) * (~RGB_stars))` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
 
 > PRÉRÉGLÉ : ~((~$T) * (~RGB_stars)), sur l'image elle-même.
@@ -772,34 +800,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > SI :
 > - autre nom d'étoiles -> corrige-le dans la formule
-
-#### E28_Fond_desature — Script
-   script `$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js`
-   paramètres : `debut=0.03`, `fin=0.15`, `violetFin=0.30`, `flou=3`
-
-> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
-> 
-> PRÉRÉGLÉ : script Fond_desature : fond mesuré ; zones faibles (luminance lissée sous fond + 0,15, décroissant jusqu'à + 0,30) : violet neutralisé (G remonté jusqu'à min(R, B), magenta seulement) ; fond (sous + 0,03, rampe jusqu'à + 0,15) : couleur retirée.
-> 
-> À RÉGLER : glisse sur l'image finie, étoiles comprises, juste après Etoiles_screen, avant Fond_auto.
-> 
-> SI :
-> - violet encore visible dans le halo -> violetFin 0,40
-> - extensions faibles de la galaxie grisées -> fin 0,10
-
-#### E29_Fond_auto — Script
-   script `$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js`
-   paramètres : `cible=0.12`, `tolerance=0.005`, `grille=8`
-
-> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
-> 
-> PRÉRÉGLÉ : script Fond_auto : fond de chaque canal mesuré (grille 8 × 8, quart le plus sombre des cases), puis mtf canal par canal pour l'amener à 0,12, sans écrêtage ; fond neutre.
-> 
-> À RÉGLER : glisse sur l'image finie, étoiles comprises, après Fond_desature ; console : fond avant et après.
-> 
-> SI :
-> - image trop sombre -> cible 0,13 ou 0,14
-> - données très propres -> 0,10 à 0,11
 
 ### P7_options
 
@@ -866,6 +866,21 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - étoiles moyennes touchées -> s = 0,80
 > - cœur R = G = B = 1 -> saturé à la prise de vue : reste blanc (à 0,94)
 
+#### Opt_Fond_auto_clair — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js`
+   paramètres : `cible=0.14`, `tolerance=0.005`, `grille=8`
+
+> OPTION — à la place de Fond_auto : image trop sombre, fond amené à 0,14, après Fond_desature, avant Etoiles_screen.
+> 
+> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
+> 
+> PRÉRÉGLÉ : script Fond_auto, cible 0,14 : fond de chaque canal mesuré (grille 8 × 8), amené à 0,14 par mtf, sans écrêtage ; fond neutre.
+> 
+> À RÉGLER : à la place de Fond_auto, image trop sombre : glisse sur l'image sans étoiles, après Fond_desature, avant Etoiles_screen.
+> 
+> SI :
+> - fond encore trop sombre -> double-clic, cible 0,15
+
 #### Opt_Etoiles_reduites — PixelMath
    expression = `S=0.20; W=~((~$T)*(~RGB_stars)); f1= ~((~mtf(~S,W)/~mtf(~S,$T))*~$T); max($T,f1)` ; useSingleExpression=true ; symbols = `S, W, f1` ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
 
@@ -908,21 +923,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
       paramètres : `mode=retirer`, `nom=masque_L`, `dialogue=false`
 
-#### Opt_Fond_auto_clair — Script
-   script `$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js`
-   paramètres : `cible=0.14`, `tolerance=0.005`, `grille=8`
-
-> OPTION — à la place de Fond_auto : image trop sombre, fond amené à 0,14, après Fond_desature.
-> 
-> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
-> 
-> PRÉRÉGLÉ : script Fond_auto, cible 0,14 : fond de chaque canal mesuré (grille 8 × 8), amené à 0,14 par mtf, sans écrêtage ; fond neutre.
-> 
-> À RÉGLER : à la place de Fond_auto, image trop sombre : glisse sur l'image finie, étoiles comprises, après Fond_desature.
-> 
-> SI :
-> - fond encore trop sombre -> double-clic, cible 0,15
-
 #### Opt_Agrandir_x2 — Resample
    xSize=2.000000 ; ySize=2.000000 ; mode=RelativeDimensions ; absoluteMode=ForceWidthAndHeight ; interpolation=Lanczos3 ; clampingThreshold=0.30 ; smoothness=1.50 ; noGUIMessages=true
 
@@ -958,7 +958,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > PRÉRÉGLÉ : script Export_TIFF : copie de l'image en entiers 16 bits, convertie en sRGB IEC61966-2.1 (icc = true), enregistrée en TIFF (.tiff) sous le NOM DE L'OBJET, sans espace (NGC 1532 -> NGC1532), = nom du dossier des masters ouverts (L, R, G, B, H…), dossiers génériques (master, lights, output, WBPP…) sautés ; enregistrée dans ce dossier ; l'image ouverte ne change pas ; ensuite L et RGB_stars fermées (paramètre fermer).
 > 
-> À RÉGLER : glisse sur l'image finie (après Fond_desature), L et RGB_stars encore ouvertes (fermées après l'export) ; copie Export_TIFF.js dans src/scripts/clodoweg.
+> À RÉGLER : glisse sur l'image finie (après Etoiles_screen), L et RGB_stars encore ouvertes (fermées après l'export) ; copie Export_TIFF.js dans src/scripts/clodoweg.
 > 
 > SI :
 > - aucun master ouvert -> mot-clé OBJECT, sinon nom de la vue, dans ton dossier personnel
@@ -972,14 +972,14 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 #### R_C_Etoiles_fond_rapide — ProcessContainer
    1. SCNR
       amount=1.00 ; protectionMethod=AverageNeutral ; colorToRemove=Green ; preserveLightness=true
-   2. PixelMath
-      expression = `~((~$T) * (~RGB_stars))` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
-   3. Script
+   2. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js`
       paramètres : `debut=0.03`, `fin=0.15`, `violetFin=0.30`, `flou=3`, `dialogue=false`
-   4. Script
+   3. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js`
       paramètres : `cible=0.12`, `tolerance=0.005`, `grille=8`, `dialogue=false`
+   4. PixelMath
+      expression = `~((~$T) * (~RGB_stars))` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
    5. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js`
       paramètres : `nom=`, `suffixe=`, `dossier=`, `icc=true`, `fermer=L, RGB_stars`, `dialogue=false`

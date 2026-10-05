@@ -56,8 +56,8 @@ Process galaxies (demande de l'utilisateur, 5 octobre 2026) : L sans étoiles, R
 - **P4** : GHS_1 (à la main), GHS_2 sur L sans étoiles ; MAS (réglages de l'utilisateur, fond 0,15) puis SXT_RGB_etire (Unscreen, crée RGB_stars) sur RGB ; GHS_3_fond sur L et sur le RGB sans étoiles. Options : Statistical_Stretch (à la place de MAS), VeraLux_HMS.
 - **P5** : LRGB_ajout_L sur les deux images sans étoiles, Saturation 0,5 ; option Etoiles_auto_etire.
 - **P6** : HDRMT_30 (par défaut ; HDRMT_40 en option), C_Finition, NXT_final (+ options).
-- **P7** : SCNR_vert (vert 1,0, sur l'image sans étoiles), Etoiles_screen, Fond_desature, Fond_auto (0,12) ; options Fond_auto_clair (à la place de Fond_auto), Etoiles_grosses, Etoiles_plafond, Etoiles_reduites, Boost_final, Agrandir_x2, ICC_sRGB, Export_TIFF (ferme L et RGB_stars).
-- **Rapide** : R_C_Preparation_rapide, R_Gradient_auto_rapide, R_Lineaire_rapide (script Lineaire_auto), GHS_1, GHS_2, GHS_3_fond sur L (chemin principal), R_C_RGB_etire_rapide (MAS, SXT, GHS fond), R_C_LRGB_rapide (LRGB seul), R_C_Fin_rapide, R_C_Etoiles_fond_rapide (SCNR vert, Etoiles_screen, Fond_desature, Fond_auto, Export_TIFF).
+- **P7** : sur l'image sans étoiles SCNR_vert (vert 1,0), Fond_desature, Fond_auto (0,12), puis Etoiles_screen ; options Fond_auto_clair (à la place de Fond_auto), Etoiles_grosses, Etoiles_plafond, Etoiles_reduites, Boost_final, Agrandir_x2, ICC_sRGB, Export_TIFF (ferme L et RGB_stars).
+- **Rapide** : R_C_Preparation_rapide, R_Gradient_auto_rapide, R_Lineaire_rapide (script Lineaire_auto), GHS_1, GHS_2, GHS_3_fond sur L (chemin principal), R_C_RGB_etire_rapide (MAS, SXT, GHS fond), R_C_LRGB_rapide (LRGB seul), R_C_Fin_rapide, R_C_Etoiles_fond_rapide (SCNR vert, Fond_desature, Fond_auto, Etoiles_screen, Export_TIFF).
 
 ## Contraintes PixInsight apprises
 

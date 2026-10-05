@@ -125,9 +125,9 @@ function fdProcess( view, p, name )
 function fdDialog( p, view )
 {
    let d = new CWDialog( TITLE, "<b>Fond du ciel désaturé</b> : retire la couleur du fond (violet, bruit de couleur) sans toucher " +
-                         "à la galaxie ni aux étoiles. Sur l'image finie, juste après Etoiles_screen, avant Fond_auto.", "Fin du violet :" );
+                         "à la galaxie ni aux étoiles. Sur l'image sans étoiles, après SCNR_vert, avant Fond_auto et Etoiles_screen.", "Fin du violet :" );
    let sel = { view: view };
-   d.viewList( "Image :", view, "Image couleur finie, étoiles comprises.", function( v ) { sel.view = v; } );
+   d.viewList( "Image :", view, "Image couleur sans étoiles (avant Etoiles_screen).", function( v ) { sel.view = v; } );
    d.group( "Couleur du fond (au-dessus du fond mesuré)" );
    d.numeric( "Début :", 0.00, 0.10, 2, p.debut, "Sous fond + début : couleur retirée entièrement.", function( v ) { p.debut = v; } );
    d.numeric( "Fin :", 0.05, 0.40, 2, p.fin, "Au-dessus de fond + fin : couleur gardée (rampe entre les deux).", function( v ) { p.fin = v; } );
