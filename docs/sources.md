@@ -832,3 +832,8 @@ Réponse : en linéaire, après SPCC et avant l'étirement (ce que font les icô
 
 Demande : « supprime les étapes 5 6 7 de R_C_P3_rapide puis met a jour turbo pour qu'il prenne les étapes rapides de 1,2,3 »
 Fait : R_C_P3_rapide = BXT Correct Only, SPCC, BXT, Lineaire_auto (L, H) (CombineHaWithRGB, NXT, fermeture retirés). T_Turbo_debut LHaRGB : contenait déjà préparation + gradient + Lineaire_auto (C_RGB_couleur>RGB ; BXT_L_H>L,H ; NXT_L>L ; SXT_L_lineaire>L), équivalent des rapides P1, P2, P3 en Apply Global (BXT et SPCC ne peuvent pas tourner directement en Apply Global) ; description mise à jour. LRGB inchangé.
+
+### Question : réglages de CombineHaWithRGB (5 octobre 2026)
+
+Question (capture de la fenêtre Combine H Alpha v1.10 : RGB, H, Linear, Link, pas de masque, Amount 1, Beta 0, Background 0,05, Sigma 0) : « je dois mettre quels parametres? »
+Réponse d'après la documentation et le code du script (déjà lus) : Amount 1,5 à 2,5 conseillé par l'auteur avec un H issu de ContinuumSubtraction ; avec H brut (continuum non retiré), plus bas (1 à 1,5) car étoiles et cœur passent aussi dans le rouge ; Beta 0,1 à 0,2 pour le rose (Hβ) ; Background à monter jusqu'à disparition du bruit rouge dans l'aperçu ; Sigma 0 (NXT ensuite) ; masque d'étoiles possible sinon images sans étoiles conseillées. Pas de changement d'icône.
