@@ -1025,6 +1025,27 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - petites étoiles réduites ou effacées aussi (son masque ne protège que les cœurs) -> Etoiles_grosses à la place (narrowband)
 > - pas assez -> relance en Low (Med = 4 courbes, High = 9)
 
+#### Opt_Saturation_grosses — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Saturation_grosses.js`
+   paramètres : `vue=RGB_stars`, `taille=7`, `seuil=0.15`, `etendue=12`, `passes=1`
+
+> OPTION — grosses étoiles presque blanches, petites assez colorées : glisse sur n'importe quelle image (traite RGB_stars) AVANT Etoiles_screen
+> Seules les grosses étoiles et leur halo sont saturés
+> En rapide, avant R_C_Etoiles_fond_rapide.
+> 
+> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
+> 
+> PRÉRÉGLÉ : script Saturation_grosses sur la vue RGB_stars : masque des grosses étoiles (ouverture morphologique, disque de 7 px sur une copie à 2000 px, au-dessus de 0,15, étendu au halo, flou 12 px) ; sous ce masque, ta courbe de saturation (CurvesTransformation, c : 0,46 -> 0,54 et S : 0,46 -> 0,54, Akima), 1 passe ; petites étoiles intactes.
+> 
+> À RÉGLER : glisse sur n'importe quelle image (traite toujours RGB_stars), AVANT Etoiles_screen ; pour régler à l'œil : double-clic puis Apply Global, « Voir le masque », puis Appliquer ; copie Saturation_grosses.js dans src/scripts/clodoweg.
+> 
+> SI :
+> - pas assez saturé -> passes 2
+> - moyennes étoiles saturées aussi -> taille 9 ou 11
+> - certaines grosses pas saturées -> taille 5, ou seuil 0,10
+> - halo pas saturé jusqu'au bord -> etendue 16
+> - pour recommencer -> Ctrl+Z sur RGB_stars
+
 #### Opt_Etoiles_plafond — PixelMath
    expression = `s = 0.70; k = 0.06; m = max($T[0], $T[1], $T[2]); t = max(0, (m - s)/(1 - s)); $T*(1 - k*t*t)` ; useSingleExpression=true ; symbols = `s, k, m, t` ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
 

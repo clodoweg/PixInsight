@@ -4216,6 +4216,34 @@ max($T, HaNB*a)</parameter>
       <table id="parameters" rows="0"/>
       <parameter id="information"></parameter>
    </instance>
+   <instance class="Script" version="256" id="Opt_Saturation_grosses_instance">
+      <description>OPTION — grosses étoiles presque blanches, petites assez colorées : glisse sur n'importe quelle image (traite RGB_stars) AVANT Etoiles_screen&#10;Seules les grosses étoiles et leur halo sont saturés&#10;En rapide, avant R_C_Etoiles_fond_rapide.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Saturation_grosses sur la vue RGB_stars : masque des grosses étoiles (ouverture morphologique, disque de 7 px sur une copie à 2000 px, au-dessus de 0,15, étendu au halo, flou 12 px) ; sous ce masque, ta courbe de saturation (CurvesTransformation, c : 0,46 -&gt; 0,54 et S : 0,46 -&gt; 0,54, Akima), 1 passe ; petites étoiles intactes.&#10;&#10;À RÉGLER : glisse sur n'importe quelle image (traite toujours RGB_stars), AVANT Etoiles_screen ; pour régler à l'œil : double-clic puis Apply Global, « Voir le masque », puis Appliquer ; copie Saturation_grosses.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- pas assez saturé -&gt; passes 2&#10;- moyennes étoiles saturées aussi -&gt; taille 9 ou 11&#10;- certaines grosses pas saturées -&gt; taille 5, ou seuil 0,10&#10;- halo pas saturé jusqu'au bord -&gt; etendue 16&#10;- pour recommencer -&gt; Ctrl+Z sur RGB_stars</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Saturation_grosses.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="5">
+         <tr>
+            <td id="id">vue</td>
+            <td id="value">RGB_stars</td>
+         </tr>
+         <tr>
+            <td id="id">taille</td>
+            <td id="value">7</td>
+         </tr>
+         <tr>
+            <td id="id">seuil</td>
+            <td id="value">0.15</td>
+         </tr>
+         <tr>
+            <td id="id">etendue</td>
+            <td id="value">12</td>
+         </tr>
+         <tr>
+            <td id="id">passes</td>
+            <td id="value">1</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
+   </instance>
    <instance class="PixelMath" version="256" id="Opt_Etoiles_plafond_instance">
       <description>OPTION — cœurs d'étoiles cramés à 1 (blanc pur) : glisse sur l'image d'étoiles (RGB_stars) AVANT Etoiles_screen&#10;En rapide, avant R_C_Etoiles_fond_rapide.&#10;&#10;PRÉRÉGLÉ : PixelMath sur l'image d'étoiles : m = max(R, G, B) ; au-dessus de s = 0,70, les 3 canaux × (1 − k·t²), k = 0,06 : cœur à 1 -&gt; 0,94, couleur (rapport R:G:B) gardée, étoiles sous 0,70 inchangées.&#10;&#10;À RÉGLER : glisse sur RGB_stars (ou l'image d'étoiles de ton workflow) juste AVANT Etoiles_screen ; en rapide, avant R_C_Etoiles_fond_rapide.&#10;&#10;SI :&#10;- encore trop blanc -&gt; k = 0,10&#10;- étoiles moyennes touchées -&gt; s = 0,80&#10;- cœur R = G = B = 1 -&gt; saturé à la prise de vue : reste blanc (à 0,94)</description>
       <parameter id="expression">s = 0.70;
@@ -4933,14 +4961,15 @@ max($T,f1)</parameter>
    <icon id="P7_options" instance="P7_options_instance" xpos="1163" ypos="170" workspace="Workspace01"/>
    <icon id="Opt_MT_etoiles" instance="Opt_MT_etoiles_instance" xpos="1163" ypos="204" workspace="Workspace01"/>
    <icon id="Opt_Halo_B_Gon" instance="Opt_Halo_B_Gon_instance" xpos="1163" ypos="234" workspace="Workspace01"/>
-   <icon id="Opt_Etoiles_plafond" instance="Opt_Etoiles_plafond_instance" xpos="1163" ypos="264" workspace="Workspace01"/>
-   <icon id="Opt_Fond_auto_clair" instance="Opt_Fond_auto_clair_instance" xpos="1163" ypos="294" workspace="Workspace01"/>
-   <icon id="Opt_Etoiles_reduites" instance="Opt_Etoiles_reduites_instance" xpos="1163" ypos="324" workspace="Workspace01"/>
-   <icon id="Opt_Boost_final_doux" instance="Opt_Boost_final_doux_instance" xpos="1163" ypos="354" workspace="Workspace01"/>
-   <icon id="Opt_Boost_final" instance="Opt_Boost_final_instance" xpos="1163" ypos="384" workspace="Workspace01"/>
-   <icon id="Opt_Agrandir_x2" instance="Opt_Agrandir_x2_instance" xpos="1163" ypos="414" workspace="Workspace01"/>
-   <icon id="Opt_ICC_sRGB" instance="Opt_ICC_sRGB_instance" xpos="1163" ypos="444" workspace="Workspace01"/>
-   <icon id="Opt_Export_TIFF" instance="Opt_Export_TIFF_instance" xpos="1163" ypos="474" workspace="Workspace01"/>
-   <icon id="P7_rapide" instance="P7_rapide_instance" xpos="1163" ypos="520" workspace="Workspace01"/>
-   <icon id="R_C_Etoiles_fond_rapide" instance="R_C_Etoiles_fond_rapide_instance" xpos="1163" ypos="554" workspace="Workspace01"/>
+   <icon id="Opt_Saturation_grosses" instance="Opt_Saturation_grosses_instance" xpos="1163" ypos="264" workspace="Workspace01"/>
+   <icon id="Opt_Etoiles_plafond" instance="Opt_Etoiles_plafond_instance" xpos="1163" ypos="294" workspace="Workspace01"/>
+   <icon id="Opt_Fond_auto_clair" instance="Opt_Fond_auto_clair_instance" xpos="1163" ypos="324" workspace="Workspace01"/>
+   <icon id="Opt_Etoiles_reduites" instance="Opt_Etoiles_reduites_instance" xpos="1163" ypos="354" workspace="Workspace01"/>
+   <icon id="Opt_Boost_final_doux" instance="Opt_Boost_final_doux_instance" xpos="1163" ypos="384" workspace="Workspace01"/>
+   <icon id="Opt_Boost_final" instance="Opt_Boost_final_instance" xpos="1163" ypos="414" workspace="Workspace01"/>
+   <icon id="Opt_Agrandir_x2" instance="Opt_Agrandir_x2_instance" xpos="1163" ypos="444" workspace="Workspace01"/>
+   <icon id="Opt_ICC_sRGB" instance="Opt_ICC_sRGB_instance" xpos="1163" ypos="474" workspace="Workspace01"/>
+   <icon id="Opt_Export_TIFF" instance="Opt_Export_TIFF_instance" xpos="1163" ypos="504" workspace="Workspace01"/>
+   <icon id="P7_rapide" instance="P7_rapide_instance" xpos="1163" ypos="550" workspace="Workspace01"/>
+   <icon id="R_C_Etoiles_fond_rapide" instance="R_C_Etoiles_fond_rapide_instance" xpos="1163" ypos="584" workspace="Workspace01"/>
 </xpsm>

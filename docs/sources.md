@@ -698,3 +698,8 @@ Correction : poids de réduction selon Y (rien sous 0,10, complet à 0,80), eten
 
 Demande : « supprime : Opt_GraXpert Opt_Coeurs_etoiles Opt_RepairedHSV Opt_VeraLux_HMS Opt_Etoiles_auto_etire Opt_MKStarReduction Opt_Etoiles_grosses Opt_Etoiles_couleur »
 Fait : les huit options retirées de LRGB et LHaRGB ; code des icônes GraXpert, VeraLux_HMS, MKStarReduction, Coeurs_etoiles, RepairedHSV, Etoiles_couleur, Etoiles_auto_etire supprimé, script Etoiles_couleur.js supprimé. Etoiles_grosses (et son script) gardée dans les workflows narrowband (RGB-SHO, SHO, HOO).
+
+### Script Saturation_grosses (5 octobre 2026)
+
+Demande : « je veux maintenant un script qui sur RGB_stars fasse une saturation sur les grosses étoiles (qui sont presque blanche) et pas sur les petites. Pour la saturation utiliese: var P = new CurvesTransformation; […] P.c = [[0,0],[0.46094,0.53646],[1,1]] ; P.S = [[0,0],[0.46354,0.54167],[1,1]] ; autres canaux identité, Akima »
+Fait : script Saturation_grosses.js (masque des grosses étoiles repris d'Etoiles_grosses : ouverture morphologique sur une copie à 2000 px, seuil 0,15, flou 12 px ; copie saturée par la courbe de l'utilisateur, « passes » fois ; mélange m × saturée + (1 − m) × image), fenêtre avec « Voir le masque ». Icône Opt_Saturation_grosses (P7, sur RGB_stars avant Etoiles_screen), LRGB et LHaRGB.
