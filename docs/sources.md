@@ -792,3 +792,8 @@ Fait : PhotometricContinuumSubtraction retiré (C_Continuum, Continuum_PCS, HaNB
 
 Demande : « Dans P3 Linear mets avant E15_NXT_L et E16_SXT_L_lineaire avant E12_Continuum_auto et remplace E13_Ha_screen par Opt_CombineHaWithRGB. E13_Ha_screen ne doit servir que dans le rapide »
 Fait : P3 = E10 C_RGB_couleur, E11 BXT_L_H, E12 NXT_L, E13 SXT_L_lineaire, E14 Continuum_auto, E15 CombineHaWithRGB, E16 C_RGB_bruit ; Ha_screen retiré du chemin principal et des options, gardé dans R_C_Ha_rapide. LRGB inchangé.
+
+### Ha_screen : erreur combine() (5 octobre 2026)
+
+Retour : « R_C_Ha_rapide sur RGB -> … *** Error: combine() argument #1: Must be an image reference or a functional subexpression evaluating to an image ».
+Correction : screen écrit en clair, R' = 1 − (1 − R)·(1 − h), h = min(1, 2·(HaNB − méd(HaNB)) au-dessus de la médiane). LRGB inchangé.

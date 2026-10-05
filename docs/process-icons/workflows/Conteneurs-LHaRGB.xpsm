@@ -2145,12 +2145,13 @@ max($T, HaNB*a)</parameter>
       <description>MODE RAPIDE, à la place de Ha_screen et C_RGB_bruit : après Continuum_auto (fait à la main, HaNB ouverte), glisse sur RGB linéaire.&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : Ha_screen (R en screen avec 2 × (HaNB − méd HaNB), calcul de CombineHaWithRGB), NXT 0,80, puis H, R et HaNB fermées (= Ha_screen et C_RGB_bruit).&#10;&#10;À RÉGLER : après R_Lineaire_rapide puis E12_Continuum_auto à la main (HaNB créée) : glisse sur le RGB linéaire ; ensuite GHS_1_premier sur L.&#10;&#10;SI :&#10;- régions HII trop rouges ou trop discrètes -&gt; double-clic sur le conteneur, Ha_screen : Q = 1,5 ou 2,5&#10;- H_dans_L voulu -&gt; fais-le AVANT ce conteneur (il ferme HaNB)&#10;- vue créée HaNB1 par Continuum_auto -&gt; renomme-la HaNB avant</description>
       <instance class="PixelMath" version="256" enabled="true">
          <parameter id="expression">Q = 2.0;
-   combine($T[0], Q*iif(HaNB &gt; med(HaNB), HaNB - med(HaNB), 0), op_screen())</parameter>
-         <parameter id="expression1">$T[1]</parameter>
-         <parameter id="expression2">$T[2]</parameter>
+   h = min(1, Q*iif(HaNB &gt; med(HaNB), HaNB - med(HaNB), 0));
+   1 - (1 - $T)*(1 - h)</parameter>
+         <parameter id="expression1">$T</parameter>
+         <parameter id="expression2">$T</parameter>
          <parameter id="expression3"></parameter>
          <parameter id="useSingleExpression" value="false"/>
-         <parameter id="symbols">Q</parameter>
+         <parameter id="symbols">Q, h</parameter>
          <parameter id="clearImageCacheAndExit" value="false"/>
          <parameter id="cacheGeneratedImages" value="false"/>
          <parameter id="generateOutput" value="true"/>

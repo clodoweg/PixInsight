@@ -1170,7 +1170,7 @@ insert_after(lhargb, 'H_dans_RGB', [(pm('H_dans_RGB_v2', 'w = 1.0;\n$T[0] + w*(H
 insert_before(lhargb, 'H_dans_RGB', [(script('CombineHaWithRGB', ''), '')])
 # LHaRGB (demande de l'utilisateur, 5 octobre 2026) : Continuum_auto au chemin principal (PhotometricContinuumSubtraction essayé puis retiré : résultat jugé moche) ; Ha_screen (PixelMath natif, même calcul que CombineHaWithRGB) au chemin principal : CombineHaWithRGB glissé échoue
 # (« The image is already being processed », il appelle beginProcess sur la vue cible), il reste en option par sa fenêtre
-insert_before(lhargb, 'CombineHaWithRGB', [(pm('Ha_screen', 'Q = 2.0;\ncombine($T[0], Q*iif(HaNB > med(HaNB), HaNB - med(HaNB), 0), op_screen())', '$T[1]', '$T[2]', symbols='Q'), '')])
+insert_before(lhargb, 'CombineHaWithRGB', [(pm('Ha_screen', 'Q = 2.0;\nh = min(1, Q*iif(HaNB > med(HaNB), HaNB - med(HaNB), 0));\n1 - (1 - $T)*(1 - h)', '$T', '$T', symbols='Q, h'), '')])
 # LHaRGB, P3 rapide (demande de l'utilisateur) : R_Lineaire_rapide (BXT, NXT_L, SXT_L), Continuum_auto à la main, puis R_C_Ha_rapide (CombineHaWithRGB + C_RGB_bruit) glissé sur RGB
 # LHaRGB (demande de l'utilisateur) : NXT_L et SXT_L_lineaire avant Continuum_auto ; CombineHaWithRGB au chemin principal ; Ha_screen seulement dans R_C_Ha_rapide
 for _b in ('NXT_L', 'SXT_L_lineaire'):
