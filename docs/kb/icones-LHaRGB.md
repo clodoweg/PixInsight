@@ -494,28 +494,42 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 > PRÉRÉGLÉ : StarXTerminator, Unscreen COCHÉ (image étirée), Generate star image coché, Remove reflections coché : RGB sans étoiles + RGB_stars étirée.
 > 
-> À RÉGLER : glisse sur le RGB juste après MAS ; garde RGB_stars ouverte jusqu'à Etoiles_screen ; ensuite SCNR_etoiles (sur RGB_stars), puis GHS_3_fond sur le RGB sans étoiles.
+> À RÉGLER : glisse sur le RGB juste après MAS ; garde RGB_stars ouverte jusqu'à Etoiles_screen ; ensuite SCNR_etoiles_vert et SCNR_etoiles_violet (sur RGB_stars), puis GHS_3_fond sur le RGB sans étoiles.
 > 
 > SI :
 > - taches ou halos restés -> Nettoyage_sans_etoiles (P6 options)
 > - morceaux de galaxie dans RGB_stars -> masque noir sur le cœur avant SXT
 > - quadrillage -> Large overlap
 
-#### E21_SCNR_etoiles — Script
+#### E21_SCNR_etoiles_vert — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js`
-   paramètres : `vue=RGB_stars`, `amount=0`, `satAmount=0`, `scnr=true`
+   paramètres : `vue=RGB_stars`, `amount=0`, `satAmount=0`, `scnr=true`, `violet=false`
 
 > LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
 > 
 > PRÉRÉGLÉ : script Etoiles_auto réglé SCNR seul : SCNR vert, Amount 1,0, Average Neutral, Preserve lightness, sur RGB_stars (amount 0 = pas d'étirement, satAmount 0 = pas de saturation).
 > 
-> À RÉGLER : glisse sur n'importe quelle image juste après SXT_RGB_etire (traite toujours la vue RGB_stars) : vert retiré des étoiles ; le RGB sans étoiles n'est pas touché.
+> À RÉGLER : glisse sur n'importe quelle image juste après SXT_RGB_etire (traite toujours la vue RGB_stars) : vert retiré des étoiles ; ensuite SCNR_etoiles_violet ; le RGB sans étoiles n'est pas touché.
 > 
 > SI :
 > - étoiles grisées ou magenta -> double-clic : décoche SCNR, ou passe un SCNR natif à 0,5 sur RGB_stars
 > - autre nom d'étoiles -> vue = ce nom dans l'icône
 
-#### E22_GHS_3_fond — GeneralizedHyperbolicStretch
+#### E22_SCNR_etoiles_violet — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js`
+   paramètres : `vue=RGB_stars`, `amount=0`, `satAmount=0`, `scnr=false`, `violet=true`
+
+> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
+> 
+> PRÉRÉGLÉ : script Etoiles_auto réglé violet seul : Invert, SCNR vert (Amount 1,0, Average Neutral, Preserve lightness), Invert sur RGB_stars : le magenta (violet) des étoiles retiré.
+> 
+> À RÉGLER : juste après SCNR_etoiles_vert : glisse sur n'importe quelle image (traite toujours la vue RGB_stars) ; le RGB sans étoiles n'est pas touché.
+> 
+> SI :
+> - étoiles bleues devenues trop vertes ou ternes -> double-clic : décoche « Violet retiré », ou CorrectMagentaStars (moins fort)
+> - autre nom d'étoiles -> vue = ce nom dans l'icône
+
+#### E23_GHS_3_fond — GeneralizedHyperbolicStretch
    stretchType=ST_GeneralisedHyperbolic ; stretchChannel=SC_RGB ; inverse=false ; stretchFactor=1.000 ; localIntensity=10.000 ; symmetryPoint=0.200000 ; highlightProtection=0.200000 ; shadowProtection=0.000000 ; blackPoint=0.000000 ; whitePoint=1.000000 ; colourBlend=1.000 ; clipType=CT_RGBBlend ; useRGBWorkingSpace=false
 
 > PRÉRÉGLÉ : b = 10, SP = HP = 0,20, Stretch factor 1 (fond à 0,23 après GHS_2).
@@ -594,15 +608,18 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
       ml_version=0 ; output_stars=true ; unscreen=true ; remove_stars=true ; remove_spikes=true ; remove_aureoles=true ; remove_reflections=true ; overlap=0.20
    3. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js`
-      paramètres : `vue=RGB_stars`, `amount=0`, `satAmount=0`, `scnr=true`, `dialogue=false`
-   4. GeneralizedHyperbolicStretch
+      paramètres : `vue=RGB_stars`, `amount=0`, `satAmount=0`, `scnr=true`, `violet=false`, `dialogue=false`
+   4. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js`
+      paramètres : `vue=RGB_stars`, `amount=0`, `satAmount=0`, `scnr=false`, `violet=true`, `dialogue=false`
+   5. GeneralizedHyperbolicStretch
       stretchType=ST_GeneralisedHyperbolic ; stretchChannel=SC_RGB ; inverse=false ; stretchFactor=1.000 ; localIntensity=10.000 ; symmetryPoint=0.120000 ; highlightProtection=0.120000 ; shadowProtection=0.000000 ; blackPoint=0.000000 ; whitePoint=1.000000 ; colourBlend=1.000 ; clipType=CT_RGBBlend ; useRGBWorkingSpace=false
 
-> MODE RAPIDE, à la place de MAS, SXT_RGB_etire, SCNR_etoiles et GHS_3_fond sur le RGB : glisse sur RGB linéaire avec étoiles ; MAS, SXT Unscreen (RGB_stars créée), SCNR vert sur RGB_stars, GHS fond (SP = HP = 0,12).
+> MODE RAPIDE, à la place de MAS, SXT_RGB_etire, SCNR_etoiles_vert, SCNR_etoiles_violet et GHS_3_fond sur le RGB : glisse sur RGB linéaire avec étoiles ; MAS, SXT Unscreen (RGB_stars créée), SCNR vert puis violet sur RGB_stars, GHS fond (SP = HP = 0,12).
 > 
 > LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
 > 
-> PRÉRÉGLÉ : conteneur : MAS (tes réglages, fond 0,15), SXT Unscreen (RGB_stars créée), SCNR vert 1,0 sur RGB_stars (script Etoiles_auto), GHS fond (b = 10, SP = HP = 0,12, Stretch factor 1).
+> PRÉRÉGLÉ : conteneur : MAS (tes réglages, fond 0,15), SXT Unscreen (RGB_stars créée), SCNR vert 1,0 puis violet (Invert, SCNR vert, Invert) sur RGB_stars (script Etoiles_auto), GHS fond (b = 10, SP = HP = 0,12, Stretch factor 1).
 > 
 > À RÉGLER : glisse sur le RGB linéaire avec étoiles (après R_Lineaire_rapide) ; RGB sort étiré sans étoiles, RGB_stars étirée ; ensuite R_C_LRGB_rapide.
 > 
@@ -611,7 +628,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 ## P5_Couleur
 
-#### E23_LRGB_ajout_L — LRGBCombination
+#### E24_LRGB_ajout_L — LRGBCombination
    mL=0.500 ; mc=0.500 ; clipHighlights=false ; noiseReduction=true ; layersRemoved=4 ; layersProtected=2 ; inheritAstrometricSolution=true ; table channels (4 lignes)
 
 > PRÉRÉGLÉ : seul L coché, Lightness 0,5, Saturation 0,5, réduction du bruit de chrominance.
@@ -629,11 +646,11 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
    paramètres : `vue=RGB_stars`, `amount=0`, `satAmount=1.3`, `scnr=true`
 
 > OPTION — après SXT_RGB_etire : étoiles ternes
-> Glisse sur n'importe quelle image (traite RGB_stars) : saturation 1,3 (et SCNR, déjà fait par SCNR_etoiles), sans étirement (étoiles déjà étirées).
+> Glisse sur n'importe quelle image (traite RGB_stars) : saturation 1,3 (et SCNR, déjà fait par SCNR_etoiles_vert), sans étirement (étoiles déjà étirées).
 > 
 > LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
 > 
-> PRÉRÉGLÉ : script Etoiles_auto, amount 0 (étoiles déjà étirées) : saturation 1,3 (0,4 × rouges, 0,7 × cyans) et SCNR vert (déjà fait par SCNR_etoiles, sans effet de plus).
+> PRÉRÉGLÉ : script Etoiles_auto, amount 0 (étoiles déjà étirées) : saturation 1,3 (0,4 × rouges, 0,7 × cyans) et SCNR vert (déjà fait par SCNR_etoiles_vert, sans effet de plus).
 > 
 > À RÉGLER : glisse sur n'importe quelle image après SXT_RGB_etire (traite RGB_stars).
 > 
@@ -661,7 +678,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 ## P6_Finition
 
-#### E24_HDRMT_30 — ProcessContainer
+#### E25_HDRMT_30 — ProcessContainer
    1. PixelMath
       expression = `$T` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=true ; showNewImage=true ; newImageId=HDR_avant ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
    2. HDRMultiscaleTransform
@@ -682,7 +699,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - cœur encore trop clair -> HDRMT_40 ou HDRMT_50
 > - aucun effet visible -> saute la partie 1
 
-#### E25_C_Finition — ProcessContainer
+#### E26_C_Finition — ProcessContainer
    1. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
       paramètres : `mode=attacher`, `s=0.14`, `flou=2`, `nom=masque_L`, `dialogue=false`
@@ -704,7 +721,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > Double-clic sur le conteneur pour voir ou changer les réglages de chaque étape.
 
-#### E26_C_Sharp_MMT — ProcessContainer
+#### E27_C_Sharp_MMT — ProcessContainer
    1. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
       paramètres : `mode=attacher`, `s=0.14`, `flou=2`, `nom=masque_L`, `dialogue=false`
@@ -727,7 +744,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - bruit accentué -> première couche 3
 > - autre rendu -> Sharp_USM (P6 options) à la place
 
-#### E27_NXT_final — NoiseXTerminator
+#### E28_NXT_final — NoiseXTerminator
    ml_version=0 ; denoise=0.40 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
 
 > PRÉRÉGLÉ : Denoise 0,40, 1 itération.
@@ -1022,7 +1039,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 ## P7_Etoiles
 
-#### E28_Fond_desature — Script
+#### E29_Fond_desature — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js`
    paramètres : `debut=0.03`, `fin=0.15`, `violetFin=0.30`, `flou=3`
 
@@ -1036,7 +1053,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - violet encore visible dans le halo -> violetFin 0,40
 > - extensions faibles de la galaxie grisées -> fin 0,10
 
-#### E29_Fond_auto — Script
+#### E30_Fond_auto — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js`
    paramètres : `cible=0.12`, `tolerance=0.005`, `grille=8`
 
@@ -1050,7 +1067,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - image trop sombre -> cible 0,13 ou 0,14
 > - données très propres -> 0,10 à 0,11
 
-#### E30_Etoiles_screen — PixelMath
+#### E31_Etoiles_screen — PixelMath
    expression = `~((~$T) * (~RGB_stars))` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
 
 > PRÉRÉGLÉ : ~((~$T) * (~RGB_stars)), sur l'image elle-même.

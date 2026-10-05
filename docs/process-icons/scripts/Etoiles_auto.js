@@ -15,7 +15,10 @@
 //      Star Stretch ; courbe ColorSaturation : 0 = aucun changement, donc
 //      satAmount = 0 laisse les couleurs telles quelles) ;
 //   3. scnr = true : SCNR vert (Average Neutral, pleine force, luminosité
-//      préservée), désactivé par défaut.
+//      préservée), désactivé par défaut ;
+//   4. violet = true : violet (magenta) retiré : Invert, SCNR vert 1,0
+//      (Average Neutral, luminosité préservée), Invert (le vert de l'image
+//      inversée est le magenta de l'image), désactivé par défaut.
 // Modifie la vue elle-même (pas de copie). Vue absente : message, rien d'autre.
 //
 // Installation (Mac et PC) : dans src/scripts/clodoweg de PixInsight.
@@ -32,7 +35,7 @@
 function eaParams()
 {
    return { vue: cwParam( "vue", "RGB_stars" ), amount: parseFloat( cwParam( "amount", "6" ) ),
-            satAmount: parseFloat( cwParam( "satAmount", "1.3" ) ), scnr: cwBool( "scnr", false ) };
+            satAmount: parseFloat( cwParam( "satAmount", "1.3" ) ), scnr: cwBool( "scnr", false ), violet: cwBool( "violet", false ) };
 }
 
 function eaExport( p )
@@ -41,6 +44,7 @@ function eaExport( p )
    Parameters.set( "amount", p.amount.toFixed( 1 ) );
    Parameters.set( "satAmount", p.satAmount.toFixed( 2 ) );
    Parameters.set( "scnr", p.scnr ? "true" : "false" );
+   Parameters.set( "violet", p.violet ? "true" : "false" );
 }
 
 function eaDialog( p )
@@ -51,6 +55,7 @@ function eaDialog( p )
    d.numeric( "Étirement (amount) :", 0, 10, 1, p.amount, "0 = pas d'étirement (étoiles déjà étirées) ; 6 = étoiles linéaires (Star Stretch).", function( v ) { p.amount = v; } );
    d.numeric( "Saturation :", 0, 2, 2, p.satAmount, "1,3 par défaut ; 1,0 si les étoiles sont criardes ; 0 = rien.", function( v ) { p.satAmount = v; } );
    d.check( "SCNR vert", p.scnr, "Retire la teinte verte des étoiles.", function( c ) { p.scnr = c; } );
+   d.check( "Violet retiré (Invert, SCNR vert, Invert)", p.violet, "Retire la teinte violette (magenta) des étoiles.", function( c ) { p.violet = c; } );
    d.onExport = function() { eaExport( p ); };
    d.validate = function() { return p.vue ? "" : "Choisis l'image d'étoiles."; };
    d.finish();
@@ -67,13 +72,13 @@ function etoilesAutoMain()
       let w = ImageWindow.windowById( p.vue );
       if ( w.isNull )
          return;
-      cwRun( EA_TITLE, function() { cwApplyOnCopy( w.mainView, function( c ) { eaProcess( c, p.vue, p.amount, p.satAmount, p.scnr ); } ); } );
+      cwRun( EA_TITLE, function() { cwApplyOnCopy( w.mainView, function( c ) { eaProcess( c, p.vue, p.amount, p.satAmount, p.scnr, p.violet ); } ); } );
       return;
    }
-   etoilesAuto( p.vue, p.amount, p.satAmount, p.scnr );
+   etoilesAuto( p.vue, p.amount, p.satAmount, p.scnr, p.violet );
 }
 
-function etoilesAuto( id, amount, sat, scnr )
+function etoilesAuto( id, amount, sat, scnr, violet )
 {
    let w = ImageWindow.windowById( id );
    if ( w.isNull )
@@ -81,10 +86,20 @@ function etoilesAuto( id, amount, sat, scnr )
       console.warningln( EA_TITLE + " : vue " + id + " introuvable, rien n'est fait." );
       return;
    }
-   eaProcess( w.mainView, id, amount, sat, scnr );
+   eaProcess( w.mainView, id, amount, sat, scnr, violet );
 }
 
-function eaProcess( view, id, amount, sat, scnr )
+function eaScnrVert( view )
+{
+   let S = new SCNR;
+   S.amount = 1;
+   S.protectionMethod = SCNR.prototype.AverageNeutral;
+   S.colorToRemove = SCNR.prototype.Green;
+   S.preserveLightness = true;
+   S.executeOn( view );
+}
+
+function eaProcess( view, id, amount, sat, scnr, violet )
 {
 
    if ( amount > 0 )
@@ -110,16 +125,16 @@ function eaProcess( view, id, amount, sat, scnr )
          C.executeOn( view );
       }
       if ( scnr )
+         eaScnrVert( view );
+      if ( violet )
       {
-         let S = new SCNR;
-         S.amount = 1;
-         S.protectionMethod = SCNR.prototype.AverageNeutral;
-         S.colorToRemove = SCNR.prototype.Green;
-         S.preserveLightness = true;
-         S.executeOn( view );
+         let I = new Invert;
+         I.executeOn( view );
+         eaScnrVert( view );
+         I.executeOn( view );
       }
    }
-   console.noteln( EA_TITLE + " : " + id + " étirée (amount " + amount + ", saturation " + sat + (scnr ? ", SCNR" : "") + ")." );
+   console.noteln( EA_TITLE + " : " + id + " étirée (amount " + amount + ", saturation " + sat + (scnr ? ", SCNR" : "") + (violet ? ", violet retiré" : "") + ")." );
 }
 
 etoilesAutoMain();

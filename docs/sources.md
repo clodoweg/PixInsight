@@ -671,3 +671,9 @@ Demande : « et tu peux faire une icone pour le hsv repaired? »
 
 Source : code du script, https://gitlab.com/pixinsight/PJSR (src/scripts/misc/RepairedHSVSeparation.js, v1.0.3, Bob Andersson) : feature-id Utilities > Repaired HSV Separation ; travaille sur ImageWindow.activeWindow ; toujours avec sa fenêtre, pas de lecture de Parameters (réglages dans Settings) ; défauts BlackClips 0, WhiteClips 0,5 (« Repair level »), StarRadius 16 ; option « Repaired RGB » : ChannelCombination HSV interne, image `<id>_Repaired_RGB`.
 Fait : icône Opt_RepairedHSV (Script, $PXI_SRCDIR/scripts/misc/RepairedHSVSeparation.js), P4, avant MAS, à côté de Coeurs_etoiles, LRGB et LHaRGB, pas en rapide.
+
+### SCNR des étoiles en deux icônes : vert puis violet (5 octobre 2026)
+
+Demande : « Quand tu fais E14_SCNR_etoiles , je veux une premier fois pour le vert, puis une seconde en faisant invert, puis vert a 1.0 puis invert, pour supprimer le violet. Fais donc un E14_SCNR_etoiles_vert et E14_SCNR_etoiles_violet et mets les deux l'un a la suite de l'autre dans le rapide »
+
+Fait : Etoiles_auto.js, nouveau paramètre violet (Invert, SCNR vert 1,0 Average Neutral luminosité préservée, Invert ; case dans la fenêtre). SCNR_etoiles renommée SCNR_etoiles_vert (E14) ; nouvelle SCNR_etoiles_violet (E15 en LRGB, E22 en LHaRGB) ; les deux à la suite dans R_C_RGB_etire_rapide (MAS, SXT, vert, violet, GHS fond). Numéros suivants décalés de 1.
