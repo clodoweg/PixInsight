@@ -547,4 +547,16 @@ Demande de l'utilisateur : « aller chercher encore de nouvelles sources sur Int
 - Forum — [Cloudy Nights, Proper blending of Ha with LRGB](https://www.cloudynights.com/forums/topic/822468-proper-blending-of-ha-w-lrgb/) *(résumé)*
 - Forum — [AstroBin, Hα non linéaire et LRGB](https://ssr.app.astrobin.com/forum/topic/168568/pleiades-astrophoto-pixinsight/integrating-ha-non-linear-master-with-lrgb-or-rgb-non-linear-master-without-using-pixelmath) *(résumé)*
 
-Non vérifié : réglages de Ron Brecher et Dave Cosgrove lus sur leurs pages (pratique d'imageurs, pas de documentation éditeur) ; plages BXT pour galaxies (Sharpen Stars 0,15–0,20, Nonstellar 0,20–0,35) issues d'un résumé de forum ; paramètres de MAS d'après Starlust Astroguide, l'article PixInsight n'ayant pas pu être lu.
+## Icônes à tester (5 octobre 2026)
+
+Demande de l'utilisateur : « ajoute Binning_x2 et Agrandir_x2, la nouvelle formule H_dans_RGB dans enelever l'ancienne que je teste les deux, Une icone mas, Une icone MKStarReduction, VeraLux HyperMetric Stretch, CombineHaWithRGB, DarkStructureEnhance pour tester, […] Une icone GraExpert au cas ou » ; réglages de MAS donnés par l'utilisateur (code de l'instance).
+
+- Officiel — [PCL, IntegerResampleParameters.cpp](https://gitlab.com/pixinsight/PCL/-/blob/master/src/modules/processes/Geometry/IntegerResampleParameters.cpp) : zoomFactor (négatif = réduction), downsamplingMode Average.
+- Officiel — [PCL, ResampleParameters.cpp](https://gitlab.com/pixinsight/PCL/-/blob/master/src/modules/processes/Geometry/ResampleParameters.cpp), [CommonParameters.cpp](https://gitlab.com/pixinsight/PCL/-/blob/master/src/modules/processes/Geometry/CommonParameters.cpp) et ResampleProcess.cpp : xSize, ySize, mode RelativeDimensions, interpolation Lanczos3, clampingThreshold 0,30, smoothness 1,5, version 0x100.
+- Officiel — [PJSR, DarkStructureEnhance.js](https://gitlab.com/pixinsight/PJSR/-/blob/master/src/scripts/misc/DarkStructureEnhance.js) : chemin scripts/misc, menu Utilities, défauts Layers 8, Amount 0,70, Iterations 1 ; pas de lecture des paramètres d'icône.
+- Officiel — [PixInsight Toolbox de Jürgen Terpe](https://www.ideviceapps.de/PixInsight/Utilities/) (paquet du 24 août 2026, CombineHaToRGB.js lu) : paramètres alphaView, amount 2,0, beta, bg 0,015, sigma, linear, rgbLinked ; glissé sur une vue, le script traite sans dialogue.
+- Officiel — [DeepSkyForge, module GraXpert](https://pixinsight.deepskyforge.com/update/graxpert-process/) (paquet et documentation lus) : identifiants backgroundExtraction, correction, smoothing, createBackground, denoising, replaceImage ; GraXpert 2.2.1 ou plus requis.
+- Officiel — [VeraLux pour PixInsight](https://raw.githubusercontent.com/lucasssvaz/VeraLuxPorting/main/dist/) (paquet lu) : script verlux.js, menu VeraLux › VeraLux Suite.
+- Officiel — [MKStarReduction](https://mhkastro.github.io/MKStarReduction/) (déjà cité) : menu Script › Utilities › MK Star Reduction.
+
+Non vérifié : réglages de Ron Brecher et Dave Cosgrove lus sur leurs pages (pratique d'imageurs, pas de documentation éditeur) ; plages BXT pour galaxies (Sharpen Stars 0,15–0,20, Nonstellar 0,20–0,35) issues d'un résumé de forum ; paramètres de MAS d'après Starlust Astroguide, l'article PixInsight n'ayant pas pu être lu ; versions des instances MAS et GraXpert (256 supposé) ; chemins des scripts VeraLux et MKStarReduction (icônes-notes) ; formule H_dans_RGB_v2 (part de 0,2 pour Hβ, choix de l'utilisateur à tester).

@@ -57,6 +57,9 @@ SCRIPTS = {
     'Nettoyage_sans_etoiles': ('$PXI_SRCDIR/scripts/clodoweg/Nettoyage_sans_etoiles.js', '', [('etoiles', 'RGB_stars'), ('seuilBas', '0.05'), ('seuilHaut', '0.12'), ('etendue', '25'), ('passes', '3'), ('protege', '0.08'), ('structure', '0.15'), ('compact', '0.05'), ('tresBrillant', '0.05'), ('etendue2', '80'), ('gain', '3'), ('gain2', '8'), ('afficherMasque', 'false')], L_DRAG),
     'Etoiles_grosses': ('$PXI_SRCDIR/scripts/clodoweg/Etoiles_grosses.js', '', [('taille', '7'), ('seuil', '0.15'), ('etendue', '6'), ('force', '0.70'), ('afficherMasque', 'false')], L_DRAG),   # demande de l'utilisateur : réduire seulement les grosses étoiles
     'Export_TIFF': ('$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js', '', [('nom', ''), ('suffixe', ''), ('dossier', ''), ('icc', 'true'), ('fermer', 'L')], L_DRAG),   # fermer : L fermée après l'export (demande de l'utilisateur)
+    'Binning_x2': ('$PXI_SRCDIR/scripts/clodoweg/Binning_x2.js', '', [('facteur', '2')], L_GLOBAL),   # demande de l'utilisateur : binning logiciel de toutes les images
+    'CombineHaWithRGB': ('$PXI_SRCDIR/scripts/Toolbox/CombineHaToRGB.js', '', [('alphaView', 'H'), ('amount', '2.0'), ('beta', '0.0'), ('bg', '0.015'), ('sigma', '0.0'), ('linear', 'true'), ('rgbLinked', 'true'), ('invertMask', 'true')], L_DRAG),   # PixInsight Toolbox de Jürgen Terpe (test, demande de l'utilisateur)
+    'DarkStructureEnhance': ('$PXI_SRCDIR/scripts/misc/DarkStructureEnhance.js', '', [], L_GLOBAL + "Ce script ne lit pas de paramètres d'icône : les réglages se font dans son dialogue. "),   # script livré avec PixInsight (test)
     'Fond_auto_clair': ('$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js', '', [('cible', '0.14'), ('tolerance', '0.005'), ('grille', '8')], L_DRAG),
     'Solver_auto': ('$PXI_SRCDIR/scripts/clodoweg/GC_Solver_auto.js', '', [('gradient', 'false'), ('solve', 'true'), ('solveTout', 'true'), ('defaultDate', '2020-01-01T00:00:00')], L_GLOBAL),
     'Turbo_1': ('$PXI_SRCDIR/scripts/clodoweg/Turbo_1.js', '', [('vueRGB', 'RGB'), ('vueL', 'L')], L_GLOBAL),
@@ -1181,6 +1184,37 @@ insert_after(lhargb, 'Combinaison_RGB', [(prep_h, ''), (gc_solver('Solver_auto')
 insert_after(lhargb, 'ImageSolver', [(gc_solver(), '')])
 # LHaRGB : C_RGB_couleur_rapide et C_H_rapide sans GradientCorrection = C_RGB_couleur et BXT_L_H du chemin principal : supprimés
 insert_before(lhargb, 'GHS_1_premier', [(rgb_rapide()[1], ''), (l_rapide(M.bxt('BXT_L_H', False, 0.25, 0.0, 0.80), sxt=False), ''), (stf_icon(), '')])
+
+# Icônes à tester (demande de l'utilisateur, 5 octobre 2026) : binning, agrandissement, MAS, GraXpert, H_dans_RGB_v2, scripts tiers
+def agrandir_x2():
+    # Resample (module Geometry, version 0x100) : x 2 en largeur et hauteur, Lanczos 3 (identifiants relevés dans la PCL)
+    return M.build('Resample', 256, 'Agrandir_x2', [('xSize', '2.000000', 'v'), ('ySize', '2.000000', 'v'), ('mode', 'RelativeDimensions', 'v'),
+                   ('absoluteMode', 'ForceWidthAndHeight', 'v'), ('interpolation', 'Lanczos3', 'v'), ('clampingThreshold', '0.30', 'v'), ('smoothness', '1.50', 'v'), ('noGUIMessages', True, 'v')])
+
+def mas():
+    # MultiscaleAdaptiveStretch : réglages donnés par l'utilisateur (version de l'instance non vérifiée)
+    p = [('aggressiveness', '0.70'), ('targetBackground', '0.150'), ('dynamicRangeCompression', '0.40'), ('contrastRecovery', True), ('scaleSeparation', '1024'),
+         ('contrastRecoveryIntensity', '1.000'), ('previewLargeScale', False), ('saturationEnabled', True), ('saturationAmount', '0.75'), ('saturationBoost', '0.50'),
+         ('saturationLightnessMask', True), ('backgroundROIEnabled', False), ('backgroundROIX0', '0'), ('backgroundROIY0', '0'), ('backgroundROIWidth', '0'), ('backgroundROIHeight', '0')]
+    return M.build('MultiscaleAdaptiveStretch', 256, 'MAS', [(k, v, 'v') for k, v in p])
+
+def graxpert():
+    # module GraXpert (Joël Vallier) : identifiants relevés dans le module ; Correction laissée par défaut (Subtraction) ; version non vérifiée
+    return M.build('GraXpert', 256, 'GraXpert', [('backgroundExtraction', True, 'v'), ('smoothing', '0.000', 'v'), ('createBackground', False, 'v'), ('denoising', False, 'v'), ('replaceImage', True, 'v')])
+
+T_VERALUX = ("TEST — VeraLux HyperMetric Stretch (script VeraLux Suite, portage PixInsight de Lucas Svaz, d'après VeraLux de Riccardo Paterniti). Icône-note : chemin du script non vérifié ; "
+             "lance-le par Script › VeraLux › VeraLux Suite, onglet HyperMetric Stretch, sur L ou RGB LINÉAIRE (à la place des GHS ou de Statistical Stretch). Compare avec ton étirement habituel.")
+T_MKSR = ("TEST — MK Star Reduction (script de M. H. Kim). Icône-note : chemin du script non vérifié ; lance-le par Script › Utilities › MK Star Reduction, "
+          "sur l'image d'étoiles ou l'image finie (l'image sans étoiles doit être ouverte), AVANT ou à la place d'Etoiles_screen. Compare avec Etoiles_grosses et Etoiles_reduites.")
+for _st in (lrgb, lhargb):
+    insert_after(_st, 'Solver_auto', [(script('Binning_x2', ''), '')])
+    insert_after(_st, 'DBE', [(graxpert(), '')])
+    insert_after(_st, 'Statistical_Stretch', [(mas(), ''), (note('VeraLux_HMS', T_VERALUX), '')])
+    insert_before(_st, 'Masque_L', [(script('DarkStructureEnhance', ''), '')])
+    insert_after(_st, 'Etoiles_reduites', [(note('MKStarReduction', T_MKSR), '')])
+    insert_before(_st, 'ICC_sRGB', [(agrandir_x2(), '')])
+insert_after(lhargb, 'H_dans_RGB', [(pm('H_dans_RGB_v2', 'w = 1.0;\n$T[0] + w*(HaNB - med(HaNB))', '$T[1]', '$T[2] + 0.2*w*(HaNB - med(HaNB))', symbols='w'), '')])
+insert_after(lhargb, 'NBRGBCombination', [(script('CombineHaWithRGB', ''), '')])
 
 for fn, pre, title, steps in [
     ('Workflow-LRGB.xpsm', 'LRGB', 'Workflow LRGB', lrgb),

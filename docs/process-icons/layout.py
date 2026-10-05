@@ -25,13 +25,15 @@ PHASE = {
     'Masque_L': 6, 'Masque_retirer': 6, 'Courbes': 6, 'LHE': 6, 'LHE_fin': 6, 'Boost_finition_light': 6, 'Boost_finition': 6, 'HDRMT_50': 6, 'HDRMT_eclat': 6, 'NXT_final': 6, 'HDRMT_40': 6, 'Mode_rapide': 1, 'Turbo_1': 1, 'Turbo_2': 5, 'C_Fin_GHS_rapide': 4, 'Boost_final_doux': 7, 'C_Fin_rapide': 6, 'C_Etoiles_fond_rapide': 7, 'SXT_non_lineaire': 4, 'GC_Solver_auto_rapide': 2, 'Solver_auto': 1, 'C_Preparation_rapide': 1, 'C_RGB_rapide': 3, 'SXT_LRGB': 5, 'C_LRGB_rapide': 5, 'Etoiles_auto_etire': 5, 'C_L_rapide': 3, 'STF': 3, 'C_RGB_couleur_rapide': 3, 'C_H_rapide': 3, 'C_RGB_fin_rapide': 3, 'HDRMT_30': 6, 'Nettoyage_sans_etoiles': 6, 'ICC_sRGB': 7, 'Export_TIFF': 7, 'NXT_final_doux': 6, 'NXT_final_fort': 6, 'Fond_auto': 7, 'Fond_auto_clair': 7, 'Boost_final': 7, 'Fond_desature': 7,
     'Etoiles_RGB': 7, 'Etoiles_HOO': 7, 'NB_to_RGB_Stars': 7, 'Etoiles_HOO_synth': 7, 'Etoiles_screen': 7, 'CorrectMagentaStars': 7,
     'Etoiles_reduites': 7, 'Fermer_L_stars': 3, 'Fermer_continuum': 3, 'Fermer_etoiles': 7, 'MT_etoiles': 7, 'Halo_B_Gon': 7, 'Etoiles_plafond': 7, 'Etoiles_grosses': 7,
+    'Binning_x2': 1, 'GraXpert': 2, 'H_dans_RGB_v2': 3, 'CombineHaWithRGB': 3, 'MAS': 4, 'VeraLux_HMS': 4, 'DarkStructureEnhance': 6, 'MKStarReduction': 7, 'Agrandir_x2': 7,
 }
 
 NB = ('RSHO', 'SHO', 'HOO')
 LUM = ('LRGB', 'LHA')   # workflows avec luminance : par défaut Statistical Stretch sur le RGB, GHS sur L
 OPT = {'ImageSolver_seul', 'Boost_finition_light', 'Boost_finition', 'WBPP', 'CC_auto', 'Find_Background', 'LinearFit_ref_H', 'H_dans_L', 'NBRGBCombination', 'HDRMT_30', 'HDRMT_50', 'HDRMT_eclat', 'Boost_final', 'Fond_desature', 'NXT_final', 'NXT_final_doux', 'NXT_final_fort', 'Fond_auto_clair', 'Nettoyage_sans_etoiles', 'ICC_sRGB', 'Export_TIFF', 'GC_Solver_auto_rapide', 'Boost_final_doux', 'Turbo_1', 'Turbo_2', 'C_Fin_GHS_rapide', 'SXT_non_lineaire', 'C_Fin_rapide', 'C_Etoiles_fond_rapide', 'Mode_rapide', 'C_Preparation_rapide', 'C_RGB_rapide', 'C_LRGB_rapide', 'Etoiles_auto_etire', 'C_L_rapide', 'STF', 'C_RGB_couleur_rapide', 'C_H_rapide', 'C_RGB_fin_rapide',
        'MT_etoiles', 'Halo_B_Gon', 'Etoiles_plafond', 'Etoiles_grosses', 'CorrectMagentaStars', 'SCNR_SHO', 'Perfect_Palette_Picker', 'NBColourMapper', 'H_en_luminance',
-       'Etoiles_HOO_synth', 'DualBand_H', 'DualBand_O', 'SPFC_S'}
+       'Etoiles_HOO_synth', 'DualBand_H', 'DualBand_O', 'SPFC_S',
+       'Binning_x2', 'GraXpert', 'H_dans_RGB_v2', 'CombineHaWithRGB', 'MAS', 'VeraLux_HMS', 'DarkStructureEnhance', 'MKStarReduction', 'Agrandir_x2'}
 
 
 def role(prefix, base):
@@ -122,6 +124,16 @@ WHEN = {
     'SPFC_S': "seulement si ta base MARS couvre S (pas le cas de DR2)",
     'ImageSolver_seul': "secours : ImageSolver seul, si l'icône ImageSolver (date + ImageSolver) s'arrête après la date",
     'Etoiles_reduites': "à la place d'Etoiles_screen, si les étoiles sont trop présentes (recombinaison + réduction Blanshan)",
+    # icônes à tester (demande de l'utilisateur, 5 octobre 2026)
+    'Binning_x2': "traitement 4 fois plus rapide et moins de bruit (0,528″/px au lieu de 0,264″/px, l'image du CDK17 est suréchantillonnée) : double-clic puis Apply Global juste après Solver_auto, toutes les images divisées par 2 ; pour un grand tirage, Agrandir_x2 avant l'export",
+    'GraXpert': "TEST, à la place de MGC ou GradientCorrection : gradient retiré par l'IA de GraXpert (module GraXpert et logiciel GraXpert 2.2.1 ou plus installés) ; glisse sur chaque master linéaire",
+    'H_dans_RGB_v2': "TEST, à la place de H_dans_RGB : HaNB injecté sans son fond (HaNB − med(HaNB)) dans R, et 20 % dans B (Hβ) : régions HII plus roses, fond inchangé",
+    'CombineHaWithRGB': "TEST, à la place de Continuum_auto + H_dans_RGB : script CombineHaWithRGB (Toolbox) ; glisse sur RGB linéaire, H ouverte",
+    'MAS': "TEST, à la place des GHS ou de Statistical Stretch : MultiscaleAdaptiveStretch avec tes réglages (fond 0,15, saturation) ; glisse sur l'image LINÉAIRE",
+    'VeraLux_HMS': "TEST, à la place des GHS ou de Statistical Stretch : VeraLux HyperMetric Stretch, lancé depuis le menu Script",
+    'DarkStructureEnhance': "TEST, avant C_Finition : bandes de poussière et structures sombres plus marquées (script livré avec PixInsight)",
+    'MKStarReduction': "TEST, à la place d'Etoiles_grosses ou d'Etoiles_reduites : réduction d'étoiles MK Star Reduction, lancée depuis le menu Script",
+    'Agrandir_x2': "après Binning_x2, pour un grand tirage : image agrandie 2 fois (Lanczos 3) juste avant Export_TIFF ; ne recrée pas le détail perdu",
     'MGC_MARS': "image RGB (étoiles du workflow RGB + SHO) ou master L",
 }
 

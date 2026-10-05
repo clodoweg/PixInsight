@@ -416,6 +416,31 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="useDefectList" value="false"/>
       <table id="defects" rows="0"/>
    </instance>
+   <instance class="Script" version="256" id="Opt_Binning_x2_instance">
+      <description>OPTION — traitement 4 fois plus rapide et moins de bruit (0,528″/px au lieu de 0,264″/px, l'image du CDK17 est suréchantillonnée) : double-clic puis Apply Global juste après Solver_auto, toutes les images divisées par 2 ; pour un grand tirage, Agrandir_x2 avant l'export.
+
+LANCEMENT : double-clic sur l'icône, puis Apply Global.
+
+PRÉRÉGLÉ : script Binning_x2 : IntegerResample −2, moyenne (binning 2×2 logiciel) sur TOUTES les images ouvertes (sauf *_stars) ; solution astrométrique gardée ; mots-clés XPIXSZ et XBINNING mis à jour.
+
+À RÉGLER : double-clic puis Apply Global, juste APRÈS Solver_auto (phase 1) ; copie Binning_x2.js dans src/scripts/clodoweg.
+
+SI :
+- grand tirage voulu -&gt; Agrandir_x2 (P7 options) avant Export_TIFF, ou ne bine pas
+- binning 3×3 -&gt; facteur 3
+- ImageSolver refait ensuite et en échec -&gt; metadata_xpixsz = 7.52 dans l'icône ImageSolver
+
+Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Binning_x2.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="1">
+         <tr>
+            <td id="id">facteur</td>
+            <td id="value">2</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
+   </instance>
    <instance class="NoOperation" version="256" id="P1_rapide_instance">
       <description>MODE RAPIDE, phase 1 — Préparation : MODE RAPIDE (galaxies) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre : R_C_Preparation_rapide ; R_GC_Solver_auto_rapide ; C_RGB_couleur sur RGB, BXT_L_H sur H, Continuum_auto, H_dans_RGB, R_C_RGB_fin_rapide sur RGB, R_C_L_rapide sur L (étoiles gardées) ; GHS_1_premier puis R_C_Fin_GHS_rapide sur L seulement ; R_C_LRGB_rapide (LRGB, puis SXT) ; finition. Phase 1 : R_C_Preparation_rapide (double-clic puis Apply Global) à la place de LinearPatternSubtraction, Renommer_auto, Combinaison_RGB et Solver_auto. Icône de repère, sans effet.</description>
    </instance>
@@ -1430,6 +1455,24 @@ Détails : page docs/pixinsight-workflow.html.</description>
       <parameter id="defaultSampleRadius" value="15"/>
       <parameter id="samplesPerRow" value="15"/>
    </instance>
+   <instance class="GraXpert" version="256" id="Opt_GraXpert_instance">
+      <description>OPTION — TEST, à la place de MGC ou GradientCorrection : gradient retiré par l'IA de GraXpert (module GraXpert et logiciel GraXpert 2.2.1 ou plus installés) ; glisse sur chaque master linéaire.
+
+PRÉRÉGLÉ : module GraXpert : Background Extraction (IA) coché, Correction par défaut (Subtraction), Smoothing 0, fond non affiché, débruitage décoché, image remplacée ; version de l'icône NON VÉRIFIÉE.
+
+À RÉGLER : installe le module GraXpert (dépôt deepskyforge) et le logiciel GraXpert 2.2.1 ou plus ; glisse sur chaque master linéaire, à la place de MGC ou de GradientCorrection.
+
+SI :
+- icône refusée au chargement -&gt; ouvre Process › GraXpert et règle à la main
+- vignetage fort -&gt; Correction Division
+
+Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="backgroundExtraction" value="true"/>
+      <parameter id="smoothing" value="0.000"/>
+      <parameter id="createBackground" value="false"/>
+      <parameter id="denoising" value="false"/>
+      <parameter id="replaceImage" value="true"/>
+   </instance>
    <instance class="NoOperation" version="256" id="P2_rapide_instance">
       <description>MODE RAPIDE, phase 2 — Gradient : R_GC_Solver_auto_rapide à la place de toute la phase 2 : GradientCorrection sur toutes les images ouvertes (R et H compris, pour le continuum) ; l'astrométrie est déjà faite par R_C_Preparation_rapide. Icône de repère, sans effet.</description>
    </instance>
@@ -1965,6 +2008,47 @@ Détails : page docs/pixinsight-workflow.html.</description>
       </table>
       <parameter id="information"></parameter>
    </instance>
+   <instance class="PixelMath" version="256" id="Opt_H_dans_RGB_v2_instance">
+      <description>OPTION — TEST, à la place de H_dans_RGB : HaNB injecté sans son fond (HaNB − med(HaNB)) dans R, et 20 % dans B (Hβ) : régions HII plus roses, fond inchangé.
+
+PRÉRÉGLÉ : w = 1,0 ; R = R + w·(HaNB − med(HaNB)) ; G inchangé ; B = B + 0,2·w·(HaNB − med(HaNB)) (Hβ).
+
+À RÉGLER : glisse sur RGB linéaire, après Continuum_auto (HaNB ouverte), à la place de H_dans_RGB ; compare les deux.
+
+SI :
+- HII trop rose ou violet -&gt; 0,1 au lieu de 0,2 dans B
+- taches HII rouge vif -&gt; baisse w
+
+Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="expression">w = 1.0;
+$T[0] + w*(HaNB - med(HaNB))</parameter>
+      <parameter id="expression1">$T[1]</parameter>
+      <parameter id="expression2">$T[2] + 0.2*w*(HaNB - med(HaNB))</parameter>
+      <parameter id="expression3"></parameter>
+      <parameter id="useSingleExpression" value="false"/>
+      <parameter id="symbols">w</parameter>
+      <parameter id="clearImageCacheAndExit" value="false"/>
+      <parameter id="cacheGeneratedImages" value="false"/>
+      <parameter id="generateOutput" value="true"/>
+      <parameter id="singleThreaded" value="false"/>
+      <parameter id="optimization" value="true"/>
+      <parameter id="use64BitWorkingImage" value="false"/>
+      <parameter id="rescale" value="false"/>
+      <parameter id="rescaleLower" value="0"/>
+      <parameter id="rescaleUpper" value="1"/>
+      <parameter id="truncate" value="true"/>
+      <parameter id="truncateLower" value="0"/>
+      <parameter id="truncateUpper" value="1"/>
+      <parameter id="createNewImage" value="false"/>
+      <parameter id="showNewImage" value="true"/>
+      <parameter id="newImageId"></parameter>
+      <parameter id="newImageWidth" value="0"/>
+      <parameter id="newImageHeight" value="0"/>
+      <parameter id="newImageAlpha" value="false"/>
+      <parameter id="newImageColorSpace" value="SameAsTarget"/>
+      <parameter id="newImageSampleFormat" value="SameAsTarget"/>
+      <table id="outputData" rows="0"/>
+   </instance>
    <instance class="PixelMath" version="256" id="Opt_H_dans_L_instance">
       <description>OPTION — régions HII plus nettes (H injecté dans la luminance).
 
@@ -2016,6 +2100,58 @@ SI :
 - H trop discret -&gt; Scale 3 à 5
 
 Détails : page docs/pixinsight-workflow.html.</description>
+   </instance>
+   <instance class="Script" version="256" id="Opt_CombineHaWithRGB_instance">
+      <description>OPTION — TEST, à la place de Continuum_auto + H_dans_RGB : script CombineHaWithRGB (Toolbox) ; glisse sur RGB linéaire, H ouverte.
+
+LANCEMENT : glisse l'icône sur l'image.
+
+PRÉRÉGLÉ : script CombineHaWithRGB (Toolbox) : H = vue H, Amount 2,0, Beta 0, Background 0,015, Sigma 0, Linear Image coché, canaux liés.
+
+À RÉGLER : installe la PixInsight Toolbox de Jürgen Terpe (dépôt https://www.ideviceapps.de/PixInsight/Utilities/) ; glisse sur RGB LINÉAIRE, H ouverte, à la place de Continuum_auto + H_dans_RGB ; sans glisser (double-clic) : dialogue avec aperçu.
+
+SI :
+- HII trop rouge -&gt; amount 1,0
+- fond rouge -&gt; bg plus haut
+
+Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/Toolbox/CombineHaToRGB.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="8">
+         <tr>
+            <td id="id">alphaView</td>
+            <td id="value">H</td>
+         </tr>
+         <tr>
+            <td id="id">amount</td>
+            <td id="value">2.0</td>
+         </tr>
+         <tr>
+            <td id="id">beta</td>
+            <td id="value">0.0</td>
+         </tr>
+         <tr>
+            <td id="id">bg</td>
+            <td id="value">0.015</td>
+         </tr>
+         <tr>
+            <td id="id">sigma</td>
+            <td id="value">0.0</td>
+         </tr>
+         <tr>
+            <td id="id">linear</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">rgbLinked</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">invertMask</td>
+            <td id="value">true</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
    </instance>
    <instance class="ScreenTransferFunction" version="256" id="Opt_STF_instance">
       <description>OPTION — n'importe quand : double-clic pour ouvrir la fenêtre ScreenTransferFunction (bouton A = auto-étirement de l'affichage, Reset pour revenir), pixels inchangés.
@@ -2356,6 +2492,47 @@ Détails : page docs/pixinsight-workflow.html.</description>
          </tr>
       </table>
       <parameter id="information"></parameter>
+   </instance>
+   <instance class="NoOperation" version="256" id="P4_options_instance">
+      <description>OPTIONS de la phase 4 — Étirement : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
+   </instance>
+   <instance class="MultiscaleAdaptiveStretch" version="256" id="Opt_MAS_instance">
+      <description>OPTION — TEST, à la place des GHS ou de Statistical Stretch : MultiscaleAdaptiveStretch avec tes réglages (fond 0,15, saturation) ; glisse sur l'image LINÉAIRE.
+
+PRÉRÉGLÉ : MultiscaleAdaptiveStretch, tes réglages : Aggressiveness 0,70, Target background 0,150, Dynamic range compression 0,40, Contrast recovery coché (séparation 1024, intensité 1,0), saturation cochée (0,75, boost 0,50, masque de luminosité) ; version de l'icône NON VÉRIFIÉE.
+
+À RÉGLER : glisse sur L ou RGB LINÉAIRE, à la place des GHS ou de Statistical Stretch ; compare.
+
+SI :
+- icône refusée au chargement -&gt; ouvre le process et recopie les réglages
+- L et RGB à fond différent -&gt; même Target background pour les deux
+
+Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="aggressiveness" value="0.70"/>
+      <parameter id="targetBackground" value="0.150"/>
+      <parameter id="dynamicRangeCompression" value="0.40"/>
+      <parameter id="contrastRecovery" value="true"/>
+      <parameter id="scaleSeparation" value="1024"/>
+      <parameter id="contrastRecoveryIntensity" value="1.000"/>
+      <parameter id="previewLargeScale" value="false"/>
+      <parameter id="saturationEnabled" value="true"/>
+      <parameter id="saturationAmount" value="0.75"/>
+      <parameter id="saturationBoost" value="0.50"/>
+      <parameter id="saturationLightnessMask" value="true"/>
+      <parameter id="backgroundROIEnabled" value="false"/>
+      <parameter id="backgroundROIX0" value="0"/>
+      <parameter id="backgroundROIY0" value="0"/>
+      <parameter id="backgroundROIWidth" value="0"/>
+      <parameter id="backgroundROIHeight" value="0"/>
+   </instance>
+   <instance class="NoOperation" version="256" id="Opt_VeraLux_HMS_instance">
+      <description>OPTION — TEST, à la place des GHS ou de Statistical Stretch : VeraLux HyperMetric Stretch, lancé depuis le menu Script.
+
+PRÉRÉGLÉ : rien (icône-note : chemin du script non vérifié).
+
+À RÉGLER : installe VeraLux (dépôt VeraLuxPorting) ; Script › VeraLux › VeraLux Suite, onglet HyperMetric Stretch, sur L ou RGB linéaire.
+
+Détails : page docs/pixinsight-workflow.html.</description>
    </instance>
    <instance class="NoOperation" version="256" id="P4_rapide_instance">
       <description>MODE RAPIDE, phase 4 — Étirement : GHS_1_premier sur L (chemin principal, à régler), puis R_C_Fin_GHS_rapide (« fin de GHS » : GHS_2_contraste et GHS_3_fond en un glisser) sur L SEULEMENT ; saute Statistical_Stretch (RGB déjà étiré, avec ses étoiles, par R_C_RGB_fin_rapide). Icône de repère, sans effet.</description>
@@ -3419,6 +3596,24 @@ Détails : page docs/pixinsight-workflow.html.</description>
          <parameter id="information"></parameter>
       </instance>
    </instance>
+   <instance class="Script" version="256" id="Opt_DarkStructureEnhance_instance">
+      <description>OPTION — TEST, avant C_Finition : bandes de poussière et structures sombres plus marquées (script livré avec PixInsight).
+
+LANCEMENT : double-clic sur l'icône, puis Apply Global.
+
+PRÉRÉGLÉ : rien (réglages dans le dialogue).
+
+À RÉGLER : double-clic, choisis l'image sans étoiles étirée ; défauts : Layers to remove 8, Amount 0,70, Iterations 1.
+
+SI :
+- trop marqué -&gt; Amount 0,40
+
+Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/misc/DarkStructureEnhance.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="0"/>
+      <parameter id="information"></parameter>
+   </instance>
    <instance class="ProcessContainer" id="Opt_Boost_finition_light_instance">
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
@@ -4416,6 +4611,15 @@ max($T,f1)</parameter>
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
+   <instance class="NoOperation" version="256" id="Opt_MKStarReduction_instance">
+      <description>OPTION — TEST, à la place d'Etoiles_grosses ou d'Etoiles_reduites : réduction d'étoiles MK Star Reduction, lancée depuis le menu Script.
+
+PRÉRÉGLÉ : rien (icône-note : chemin du script non vérifié).
+
+À RÉGLER : installe MK Star Reduction (dépôt mhkastro) ; Script › Utilities › MK Star Reduction ; image sans étoiles ouverte.
+
+Détails : page docs/pixinsight-workflow.html.</description>
+   </instance>
    <instance class="ProcessContainer" id="Opt_Boost_final_doux_instance">
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
@@ -4821,6 +5025,26 @@ Détails : page docs/pixinsight-workflow.html.</description>
       </table>
       <parameter id="information"></parameter>
    </instance>
+   <instance class="Resample" version="256" id="Opt_Agrandir_x2_instance">
+      <description>OPTION — après Binning_x2, pour un grand tirage : image agrandie 2 fois (Lanczos 3) juste avant Export_TIFF ; ne recrée pas le détail perdu.
+
+PRÉRÉGLÉ : Resample : × 2 en largeur et hauteur, Lanczos 3, seuil d'écrêtage 0,30.
+
+À RÉGLER : glisse sur l'image finie, juste avant ICC_sRGB et Export_TIFF ; seulement après Binning_x2, pour un grand tirage.
+
+SI :
+- anneaux noirs autour des étoiles -&gt; interpolation Auto ou Bicubic spline
+
+Détails : page docs/pixinsight-workflow.html.</description>
+      <parameter id="xSize" value="2.000000"/>
+      <parameter id="ySize" value="2.000000"/>
+      <parameter id="mode" value="RelativeDimensions"/>
+      <parameter id="absoluteMode" value="ForceWidthAndHeight"/>
+      <parameter id="interpolation" value="Lanczos3"/>
+      <parameter id="clampingThreshold" value="0.30"/>
+      <parameter id="smoothness" value="1.50"/>
+      <parameter id="noGUIMessages" value="true"/>
+   </instance>
    <instance class="ICCProfileTransformation" version="256" id="Opt_ICC_sRGB_instance">
       <description>OPTION — tout à la fin, avant une finition dans Photoshop, Lightroom ou Affinity : image convertie en sRGB IEC61966-2.1 (couleurs identiques dans l'autre logiciel).
 
@@ -5003,8 +5227,9 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <icon id="P1_options" instance="P1_options_instance" xpos="30" ypos="200" workspace="Workspace01"/>
    <icon id="Opt_WBPP" instance="Opt_WBPP_instance" xpos="30" ypos="234" workspace="Workspace01"/>
    <icon id="Opt_CC_auto" instance="Opt_CC_auto_instance" xpos="30" ypos="264" workspace="Workspace01"/>
-   <icon id="P1_rapide" instance="P1_rapide_instance" xpos="30" ypos="310" workspace="Workspace01"/>
-   <icon id="R_C_Preparation_rapide" instance="R_C_Preparation_rapide_instance" xpos="30" ypos="344" workspace="Workspace01"/>
+   <icon id="Opt_Binning_x2" instance="Opt_Binning_x2_instance" xpos="30" ypos="294" workspace="Workspace01"/>
+   <icon id="P1_rapide" instance="P1_rapide_instance" xpos="30" ypos="340" workspace="Workspace01"/>
+   <icon id="R_C_Preparation_rapide" instance="R_C_Preparation_rapide_instance" xpos="30" ypos="374" workspace="Workspace01"/>
    <icon id="P2_Gradient" instance="P2_Gradient_instance" xpos="243" ypos="20" workspace="Workspace01"/>
    <icon id="E04_ImageSolver" instance="E04_ImageSolver_instance" xpos="243" ypos="64" workspace="Workspace01"/>
    <icon id="E05_SPFC_RGB_filtres" instance="E05_SPFC_RGB_filtres_instance" xpos="243" ypos="94" workspace="Workspace01"/>
@@ -5016,8 +5241,9 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <icon id="Opt_ImageSolver_seul" instance="Opt_ImageSolver_seul_instance" xpos="243" ypos="294" workspace="Workspace01"/>
    <icon id="Opt_GradientCorrection" instance="Opt_GradientCorrection_instance" xpos="243" ypos="324" workspace="Workspace01"/>
    <icon id="Opt_DBE" instance="Opt_DBE_instance" xpos="243" ypos="354" workspace="Workspace01"/>
-   <icon id="P2_rapide" instance="P2_rapide_instance" xpos="243" ypos="400" workspace="Workspace01"/>
-   <icon id="R_GC_Solver_auto_rapide" instance="R_GC_Solver_auto_rapide_instance" xpos="243" ypos="434" workspace="Workspace01"/>
+   <icon id="Opt_GraXpert" instance="Opt_GraXpert_instance" xpos="243" ypos="384" workspace="Workspace01"/>
+   <icon id="P2_rapide" instance="P2_rapide_instance" xpos="243" ypos="430" workspace="Workspace01"/>
+   <icon id="R_GC_Solver_auto_rapide" instance="R_GC_Solver_auto_rapide_instance" xpos="243" ypos="464" workspace="Workspace01"/>
    <icon id="P3_Lineaire" instance="P3_Lineaire_instance" xpos="434" ypos="20" workspace="Workspace01"/>
    <icon id="E10_C_RGB_couleur" instance="E10_C_RGB_couleur_instance" xpos="434" ypos="64" workspace="Workspace01"/>
    <icon id="E11_BXT_L_H" instance="E11_BXT_L_H_instance" xpos="434" ypos="94" workspace="Workspace01"/>
@@ -5027,19 +5253,24 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <icon id="E15_NXT_L" instance="E15_NXT_L_instance" xpos="434" ypos="214" workspace="Workspace01"/>
    <icon id="P3_options" instance="P3_options_instance" xpos="434" ypos="260" workspace="Workspace01"/>
    <icon id="Opt_Find_Background" instance="Opt_Find_Background_instance" xpos="434" ypos="294" workspace="Workspace01"/>
-   <icon id="Opt_H_dans_L" instance="Opt_H_dans_L_instance" xpos="434" ypos="324" workspace="Workspace01"/>
-   <icon id="Opt_NBRGBCombination" instance="Opt_NBRGBCombination_instance" xpos="434" ypos="354" workspace="Workspace01"/>
-   <icon id="Opt_STF" instance="Opt_STF_instance" xpos="434" ypos="384" workspace="Workspace01"/>
-   <icon id="P3_rapide" instance="P3_rapide_instance" xpos="434" ypos="430" workspace="Workspace01"/>
-   <icon id="R_C_RGB_fin_rapide" instance="R_C_RGB_fin_rapide_instance" xpos="434" ypos="464" workspace="Workspace01"/>
-   <icon id="R_C_L_rapide" instance="R_C_L_rapide_instance" xpos="434" ypos="494" workspace="Workspace01"/>
+   <icon id="Opt_H_dans_RGB_v2" instance="Opt_H_dans_RGB_v2_instance" xpos="434" ypos="324" workspace="Workspace01"/>
+   <icon id="Opt_H_dans_L" instance="Opt_H_dans_L_instance" xpos="434" ypos="354" workspace="Workspace01"/>
+   <icon id="Opt_NBRGBCombination" instance="Opt_NBRGBCombination_instance" xpos="434" ypos="384" workspace="Workspace01"/>
+   <icon id="Opt_CombineHaWithRGB" instance="Opt_CombineHaWithRGB_instance" xpos="434" ypos="414" workspace="Workspace01"/>
+   <icon id="Opt_STF" instance="Opt_STF_instance" xpos="434" ypos="444" workspace="Workspace01"/>
+   <icon id="P3_rapide" instance="P3_rapide_instance" xpos="434" ypos="490" workspace="Workspace01"/>
+   <icon id="R_C_RGB_fin_rapide" instance="R_C_RGB_fin_rapide_instance" xpos="434" ypos="524" workspace="Workspace01"/>
+   <icon id="R_C_L_rapide" instance="R_C_L_rapide_instance" xpos="434" ypos="554" workspace="Workspace01"/>
    <icon id="P4_Etirement" instance="P4_Etirement_instance" xpos="612" ypos="20" workspace="Workspace01"/>
    <icon id="E16_GHS_1_premier" instance="E16_GHS_1_premier_instance" xpos="612" ypos="64" workspace="Workspace01"/>
    <icon id="E17_GHS_2_contraste" instance="E17_GHS_2_contraste_instance" xpos="612" ypos="94" workspace="Workspace01"/>
    <icon id="E18_GHS_3_fond" instance="E18_GHS_3_fond_instance" xpos="612" ypos="124" workspace="Workspace01"/>
    <icon id="E19_Statistical_Stretch" instance="E19_Statistical_Stretch_instance" xpos="612" ypos="170" workspace="Workspace01"/>
-   <icon id="P4_rapide" instance="P4_rapide_instance" xpos="612" ypos="216" workspace="Workspace01"/>
-   <icon id="R_C_Fin_GHS_rapide" instance="R_C_Fin_GHS_rapide_instance" xpos="612" ypos="250" workspace="Workspace01"/>
+   <icon id="P4_options" instance="P4_options_instance" xpos="612" ypos="216" workspace="Workspace01"/>
+   <icon id="Opt_MAS" instance="Opt_MAS_instance" xpos="612" ypos="250" workspace="Workspace01"/>
+   <icon id="Opt_VeraLux_HMS" instance="Opt_VeraLux_HMS_instance" xpos="612" ypos="280" workspace="Workspace01"/>
+   <icon id="P4_rapide" instance="P4_rapide_instance" xpos="612" ypos="326" workspace="Workspace01"/>
+   <icon id="R_C_Fin_GHS_rapide" instance="R_C_Fin_GHS_rapide_instance" xpos="612" ypos="360" workspace="Workspace01"/>
    <icon id="P5_Couleur" instance="P5_Couleur_instance" xpos="803" ypos="20" workspace="Workspace01"/>
    <icon id="E20_LRGB_ajout_L" instance="E20_LRGB_ajout_L_instance" xpos="803" ypos="64" workspace="Workspace01"/>
    <icon id="E21_SXT_LRGB" instance="E21_SXT_LRGB_instance" xpos="803" ypos="94" workspace="Workspace01"/>
@@ -5056,12 +5287,13 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <icon id="Opt_HDRMT_30" instance="Opt_HDRMT_30_instance" xpos="990" ypos="234" workspace="Workspace01"/>
    <icon id="Opt_HDRMT_50" instance="Opt_HDRMT_50_instance" xpos="990" ypos="264" workspace="Workspace01"/>
    <icon id="Opt_HDRMT_eclat" instance="Opt_HDRMT_eclat_instance" xpos="990" ypos="294" workspace="Workspace01"/>
-   <icon id="Opt_Boost_finition_light" instance="Opt_Boost_finition_light_instance" xpos="990" ypos="324" workspace="Workspace01"/>
-   <icon id="Opt_Boost_finition" instance="Opt_Boost_finition_instance" xpos="990" ypos="354" workspace="Workspace01"/>
-   <icon id="Opt_NXT_final_doux" instance="Opt_NXT_final_doux_instance" xpos="990" ypos="384" workspace="Workspace01"/>
-   <icon id="Opt_NXT_final_fort" instance="Opt_NXT_final_fort_instance" xpos="990" ypos="414" workspace="Workspace01"/>
-   <icon id="P6_rapide" instance="P6_rapide_instance" xpos="990" ypos="460" workspace="Workspace01"/>
-   <icon id="R_C_Fin_rapide" instance="R_C_Fin_rapide_instance" xpos="990" ypos="494" workspace="Workspace01"/>
+   <icon id="Opt_DarkStructureEnhance" instance="Opt_DarkStructureEnhance_instance" xpos="990" ypos="324" workspace="Workspace01"/>
+   <icon id="Opt_Boost_finition_light" instance="Opt_Boost_finition_light_instance" xpos="990" ypos="354" workspace="Workspace01"/>
+   <icon id="Opt_Boost_finition" instance="Opt_Boost_finition_instance" xpos="990" ypos="384" workspace="Workspace01"/>
+   <icon id="Opt_NXT_final_doux" instance="Opt_NXT_final_doux_instance" xpos="990" ypos="414" workspace="Workspace01"/>
+   <icon id="Opt_NXT_final_fort" instance="Opt_NXT_final_fort_instance" xpos="990" ypos="444" workspace="Workspace01"/>
+   <icon id="P6_rapide" instance="P6_rapide_instance" xpos="990" ypos="490" workspace="Workspace01"/>
+   <icon id="R_C_Fin_rapide" instance="R_C_Fin_rapide_instance" xpos="990" ypos="524" workspace="Workspace01"/>
    <icon id="P7_Etoiles" instance="P7_Etoiles_instance" xpos="1194" ypos="20" workspace="Workspace01"/>
    <icon id="E25_Etoiles_screen" instance="E25_Etoiles_screen_instance" xpos="1194" ypos="64" workspace="Workspace01"/>
    <icon id="E26_C_Fond_final" instance="E26_C_Fond_final_instance" xpos="1194" ypos="94" workspace="Workspace01"/>
@@ -5071,11 +5303,13 @@ Détails : page docs/pixinsight-workflow.html.</description>
    <icon id="Opt_Etoiles_grosses" instance="Opt_Etoiles_grosses_instance" xpos="1194" ypos="234" workspace="Workspace01"/>
    <icon id="Opt_Etoiles_plafond" instance="Opt_Etoiles_plafond_instance" xpos="1194" ypos="264" workspace="Workspace01"/>
    <icon id="Opt_Etoiles_reduites" instance="Opt_Etoiles_reduites_instance" xpos="1194" ypos="294" workspace="Workspace01"/>
-   <icon id="Opt_Boost_final_doux" instance="Opt_Boost_final_doux_instance" xpos="1194" ypos="324" workspace="Workspace01"/>
-   <icon id="Opt_Boost_final" instance="Opt_Boost_final_instance" xpos="1194" ypos="354" workspace="Workspace01"/>
-   <icon id="Opt_Fond_auto_clair" instance="Opt_Fond_auto_clair_instance" xpos="1194" ypos="384" workspace="Workspace01"/>
-   <icon id="Opt_ICC_sRGB" instance="Opt_ICC_sRGB_instance" xpos="1194" ypos="414" workspace="Workspace01"/>
-   <icon id="Opt_Export_TIFF" instance="Opt_Export_TIFF_instance" xpos="1194" ypos="444" workspace="Workspace01"/>
-   <icon id="P7_rapide" instance="P7_rapide_instance" xpos="1194" ypos="490" workspace="Workspace01"/>
-   <icon id="R_C_Etoiles_fond_rapide" instance="R_C_Etoiles_fond_rapide_instance" xpos="1194" ypos="524" workspace="Workspace01"/>
+   <icon id="Opt_MKStarReduction" instance="Opt_MKStarReduction_instance" xpos="1194" ypos="324" workspace="Workspace01"/>
+   <icon id="Opt_Boost_final_doux" instance="Opt_Boost_final_doux_instance" xpos="1194" ypos="354" workspace="Workspace01"/>
+   <icon id="Opt_Boost_final" instance="Opt_Boost_final_instance" xpos="1194" ypos="384" workspace="Workspace01"/>
+   <icon id="Opt_Fond_auto_clair" instance="Opt_Fond_auto_clair_instance" xpos="1194" ypos="414" workspace="Workspace01"/>
+   <icon id="Opt_Agrandir_x2" instance="Opt_Agrandir_x2_instance" xpos="1194" ypos="444" workspace="Workspace01"/>
+   <icon id="Opt_ICC_sRGB" instance="Opt_ICC_sRGB_instance" xpos="1194" ypos="474" workspace="Workspace01"/>
+   <icon id="Opt_Export_TIFF" instance="Opt_Export_TIFF_instance" xpos="1194" ypos="504" workspace="Workspace01"/>
+   <icon id="P7_rapide" instance="P7_rapide_instance" xpos="1194" ypos="550" workspace="Workspace01"/>
+   <icon id="R_C_Etoiles_fond_rapide" instance="R_C_Etoiles_fond_rapide_instance" xpos="1194" ypos="584" workspace="Workspace01"/>
 </xpsm>
