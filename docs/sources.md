@@ -610,4 +610,13 @@ Question de l'utilisateur : « quel est la difference entre utiliser MAS ou GHS 
 
 - Retour de l'utilisateur (5 octobre 2026) : R_C_RGB_etire_rapide lancé par le rond Apply Global, erreur « MultiscaleAdaptiveStretch: Cannot execute instance in the global context » ; correction : descriptions ajoutées à tous les conteneurs, avec le mode de lancement (glisser sur l'image).
 
+## Accentuation finale (5 octobre 2026)
+
+Question de l'utilisateur : « j'aimerais rajouter pour tous les process, un boost de sharp a la fin. quels sont les outils recommandées? »
+
+- Tutoriel — [Chaotic Nebula, sharpening with Unsharp Mask and MLT](https://chaoticnebula.com/pixinsight-sharpening/) *(résumé)* : masque sur les zones claires, couches 1-2 de MLT.
+- Tutoriel — [Light Vortex Astronomy, Enhancing Feature Contrast](https://www.lightvortexastronomy.com/tutorial-enhancing-feature-contrast.html) *(déjà cité)*.
+- Officiel — [RC Astro, BlurXTerminator](https://www.rc-astro.com/software/bxt/) et [AI4](https://www.rc-astro.com/blurxterminator-2-0-ai4-release/) *(résumé)* : données linéaires obligatoires.
+- MMT à la place d'une seconde passe de BXT : critique LRGB et LHaRGB (sources 22 et 31, Brecher).
+
 Non vérifié : réglages de Ron Brecher et Dave Cosgrove lus sur leurs pages (pratique d'imageurs, pas de documentation éditeur) ; plages BXT pour galaxies (Sharpen Stars 0,15–0,20, Nonstellar 0,20–0,35) issues d'un résumé de forum ; paramètres de MAS d'après Starlust Astroguide, l'article PixInsight n'ayant pas pu être lu ; version de l'instance GraXpert (256 supposé ; MAS confirmé par l'utilisateur le 5 octobre 2026) ; chemins des scripts VeraLux et MKStarReduction (icônes-notes) ; formule H_dans_RGB_v2 (part de 0,2 pour Hβ, choix de l'utilisateur à tester).

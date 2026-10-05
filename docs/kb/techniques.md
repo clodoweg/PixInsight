@@ -146,6 +146,16 @@ Conseil donné (à valider sur des cibles réelles) : garder GHS sur L ; tester 
 
 Variante proposée par l'utilisateur (5 octobre 2026, pas encore en icônes) : RGB étiré par MAS AVEC étoiles, puis SXT Unscreen (RGB_stars) ; L : SXT en linéaire, GHS sur L sans étoiles ; LRGB sur les deux images sans étoiles ; RGB_stars remises à la fin (Etoiles_screen). Avantages : L étirée librement (pas de HP à gérer), étoiles d'une seule source, couleur gardée par MAS, plus de souci de cohérence L/RGB dans les étoiles. Risques : étoiles moins fines et plus bruitées que celles de L (moins de signal dans le RGB), étoiles faibles de L absentes ; SXT peut prendre des nœuds HII ou des amas compacts de la galaxie pour des étoiles (retirés de L, rendus par RGB_stars, moins nets) ; luminosité des étoiles à doser (Etoiles_grosses, Etoiles_reduites).
 
+## Accentuation finale (« boost de sharp ») : outils
+
+Question de l'utilisateur (5 octobre 2026), pas encore en icônes.
+- Sur l'image SANS étoiles, étirée, sous masque de luminance (masque_L), en fin de P6 (après C_Finition, avant NXT_final) ; jamais sur RGB_stars.
+- MultiscaleMedianTransform (MMT) : petites couches (2 à 4) avec un léger biais (+0,03 à +0,05), couche 1 laissée (bruit) ; peu d'anneaux. Brecher l'utilise à la place d'une seconde passe de BXT (critique LRGB, sources 22 et 31).
+- MultiscaleLinearTransform (MLT) : même principe, biais un peu plus forts possibles, plus d'anneaux qu'MMT.
+- UnsharpMask : classique (écart type 1,5 à 2,5 px, amount 0,2 à 0,4, deringing) sous masque ; halos si trop fort (Chaotic Nebula, Light Vortex).
+- Pas BlurXTerminator : données linéaires seulement (RC Astro, AI4), déjà fait en P3.
+- LHE et HDRMT (déjà dans P6) donnent du contraste local, pas de l'accentuation fine.
+
 ## Réduction d'étoiles Bill Blanshan
 Trois formules PixelMath (version 2) qui réduisent les étoiles sans toucher au fond. Elles s'appliquent à la fin, sur l'image étirée avec étoiles, à tous les workflows.
 
