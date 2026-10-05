@@ -641,7 +641,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > PRÉRÉGLÉ : script Fond_desature : fond mesuré ; zones faibles (luminance lissée sous fond + 0,15, décroissant jusqu'à + 0,30) : violet neutralisé (G remonté jusqu'à min(R, B), magenta seulement) ; fond (sous + 0,03, rampe jusqu'à + 0,15) : couleur retirée.
 > 
-> À RÉGLER : glisse sur l'image finie, étoiles comprises, après Etoiles_screen (E20 en LRGB) ; avant Export_TIFF.
+> À RÉGLER : glisse sur l'image finie, étoiles comprises, juste après Etoiles_screen, avant Fond_auto.
 > 
 > SI :
 > - violet encore visible dans le halo -> violetFin 0,40

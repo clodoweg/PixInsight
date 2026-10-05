@@ -590,4 +590,6 @@ Question de l'utilisateur : « quel est la difference entre utiliser MAS ou GHS 
 
 - Fond_auto remis au chemin principal de P7 (après Etoiles_screen, avant Fond_desature) et dans R_C_Etoiles_fond_rapide (5 octobre 2026). Demande de l'utilisateur : « pareil avec Opt_Fond_auto ».
 
+- P7 : Fond_desature avant Fond_auto (chemin principal et R_C_Etoiles_fond_rapide) (5 octobre 2026). Demande de l'utilisateur : « inverse le fond desaturé et le fond auto ».
+
 Non vérifié : réglages de Ron Brecher et Dave Cosgrove lus sur leurs pages (pratique d'imageurs, pas de documentation éditeur) ; plages BXT pour galaxies (Sharpen Stars 0,15–0,20, Nonstellar 0,20–0,35) issues d'un résumé de forum ; paramètres de MAS d'après Starlust Astroguide, l'article PixInsight n'ayant pas pu être lu ; version de l'instance GraXpert (256 supposé ; MAS confirmé par l'utilisateur le 5 octobre 2026) ; chemins des scripts VeraLux et MKStarReduction (icônes-notes) ; formule H_dans_RGB_v2 (part de 0,2 pour Hβ, choix de l'utilisateur à tester).
