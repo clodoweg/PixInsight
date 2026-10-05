@@ -582,4 +582,6 @@ Question de l'utilisateur : « quel est la difference entre utiliser MAS ou GHS 
 
 - SCNR vert retiré de C_RGB_lineaire, ajouté en option P7 (Opt_SCNR_vert, LRGB et LHaRGB) (5 octobre 2026). Demande de l'utilisateur : « retire le SCNR par defaut mais rajoute une option dans P7 etoiles ».
 
-Non vérifié : réglages de Ron Brecher et Dave Cosgrove lus sur leurs pages (pratique d'imageurs, pas de documentation éditeur) ; plages BXT pour galaxies (Sharpen Stars 0,15–0,20, Nonstellar 0,20–0,35) issues d'un résumé de forum ; paramètres de MAS d'après Starlust Astroguide, l'article PixInsight n'ayant pas pu être lu ; versions des instances MAS et GraXpert (256 supposé) ; chemins des scripts VeraLux et MKStarReduction (icônes-notes) ; formule H_dans_RGB_v2 (part de 0,2 pour Hβ, choix de l'utilisateur à tester).
+- Icône MAS (MultiscaleAdaptiveStretch, version 256) : se charge correctement dans PixInsight 1.9.5 (retour de l'utilisateur, 5 octobre 2026 : « si c'est bon »).
+
+Non vérifié : réglages de Ron Brecher et Dave Cosgrove lus sur leurs pages (pratique d'imageurs, pas de documentation éditeur) ; plages BXT pour galaxies (Sharpen Stars 0,15–0,20, Nonstellar 0,20–0,35) issues d'un résumé de forum ; paramètres de MAS d'après Starlust Astroguide, l'article PixInsight n'ayant pas pu être lu ; version de l'instance GraXpert (256 supposé ; MAS confirmé par l'utilisateur le 5 octobre 2026) ; chemins des scripts VeraLux et MKStarReduction (icônes-notes) ; formule H_dans_RGB_v2 (part de 0,2 pour Hβ, choix de l'utilisateur à tester).

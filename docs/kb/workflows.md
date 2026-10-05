@@ -69,7 +69,7 @@ Agrandir_x2| P7, avant Export_TIFF| Après Binning_x2, pour un grand tirage : Re
 GraXpert| P2| Gradient retiré par l'IA de GraXpert, à la place de MGC ou de GradientCorrection. Module DeepSkyForge et logiciel GraXpert 2.2.1 ou plus. Version de l'icône non vérifiée.  
 H_dans_RGB_v2 (LHaRGB)| P3| À la place de H_dans_RGB : R + w·(HaNB − med(HaNB)) et B + 0,2·w·(HaNB − med(HaNB)) (part de Hβ) ; fond de HaNB retiré avant l'injection, régions HII plus roses.  
 CombineHaWithRGB (LHaRGB)| P3| Script de la PixInsight Toolbox (Jürgen Terpe), à la place de Continuum_auto + H_dans_RGB : glisse sur RGB linéaire, H ouverte (Amount 2, Linear).  
-MAS| P4| MultiscaleAdaptiveStretch avec tes réglages (fond 0,15, compression 0,40, saturation 0,75), à la place des GHS ou de Statistical Stretch, sur image linéaire. Version de l'icône non vérifiée.  
+MAS| P4| Devenu chemin principal (E12 en LRGB) : voir plus haut. Icône vérifiée : elle se charge dans PixInsight (retour de l'utilisateur).  
 VeraLux_HMS| P4| Icône-note : VeraLux HyperMetric Stretch par le menu Script › VeraLux › VeraLux Suite.  
 DarkStructureEnhance| P6, avant C_Finition| Script livré avec PixInsight (Script › Utilities) : bandes de poussière plus marquées. Défauts Layers 8, Amount 0,70 ; trop fort : 0,40.  
 MKStarReduction| P7| Icône-note : MK Star Reduction (Script › Utilities), à comparer avec Etoiles_grosses et Etoiles_reduites.

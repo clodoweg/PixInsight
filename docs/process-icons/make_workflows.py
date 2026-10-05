@@ -738,7 +738,7 @@ D_SXT_RGB_ETIRE = ("StarXTerminator sur le RGB ÉTIRÉ par MAS, Unscreen COCHÉ 
 D_SXT_L_LIN = ("StarXTerminator sur L LINÉAIRE (dernière étape de C_L_lineaire), Unscreen décoché, sans image d'étoiles : L sans étoiles pour les GHS (les étoiles viendront du RGB). "
                "CONTRÔLE : nœuds HII et amas compacts des bras gardés dans L (sinon masque noir sur la zone, ou baisse le retrait).")
 def mas():
-    # MultiscaleAdaptiveStretch : réglages donnés par l'utilisateur (version de l'instance non vérifiée)
+    # MultiscaleAdaptiveStretch : réglages donnés par l'utilisateur ; version 256 confirmée (l'icône se charge, retour de l'utilisateur)
     p = [('aggressiveness', '0.70'), ('targetBackground', '0.150'), ('dynamicRangeCompression', '0.40'), ('contrastRecovery', True), ('scaleSeparation', '1024'),
          ('contrastRecoveryIntensity', '1.000'), ('previewLargeScale', False), ('saturationEnabled', True), ('saturationAmount', '0.75'), ('saturationBoost', '0.50'),
          ('saturationLightnessMask', True), ('backgroundROIEnabled', False), ('backgroundROIX0', '0'), ('backgroundROIY0', '0'), ('backgroundROIWidth', '0'), ('backgroundROIHeight', '0')]

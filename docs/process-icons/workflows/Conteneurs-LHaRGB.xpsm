@@ -1801,7 +1801,7 @@ max($T, HaNB*a)</parameter>
       <parameter id="useRGBWorkingSpace" value="false"/>
    </instance>
    <instance class="MultiscaleAdaptiveStretch" version="256" id="E19_MAS_instance">
-      <description>PRÉRÉGLÉ : MultiscaleAdaptiveStretch, tes réglages : Aggressiveness 0,70, Target background 0,150, Dynamic range compression 0,40, Contrast recovery coché (séparation 1024, intensité 1,0), saturation cochée (0,75, boost 0,50, masque de luminosité) ; version de l'icône NON VÉRIFIÉE.&#10;&#10;À RÉGLER : glisse sur le RGB LINÉAIRE AVEC ses étoiles (après C_RGB_lineaire) ; ensuite SXT_RGB_etire.&#10;&#10;SI :&#10;- icône refusée au chargement -&gt; ouvre le process et recopie les réglages&#10;- étoiles trop saturées -&gt; saturation 0,5&#10;- cœur de galaxie brûlé -&gt; saturation décochée, HDRMT ensuite</description>
+      <description>PRÉRÉGLÉ : MultiscaleAdaptiveStretch, tes réglages : Aggressiveness 0,70, Target background 0,150, Dynamic range compression 0,40, Contrast recovery coché (séparation 1024, intensité 1,0), saturation cochée (0,75, boost 0,50, masque de luminosité).&#10;&#10;À RÉGLER : glisse sur le RGB LINÉAIRE AVEC ses étoiles (après C_RGB_lineaire) ; ensuite SXT_RGB_etire.&#10;&#10;SI :&#10;- étoiles trop saturées -&gt; saturation 0,5&#10;- cœur de galaxie brûlé -&gt; saturation décochée, HDRMT ensuite</description>
       <parameter id="aggressiveness" value="0.70"/>
       <parameter id="targetBackground" value="0.150"/>
       <parameter id="dynamicRangeCompression" value="0.40"/>
