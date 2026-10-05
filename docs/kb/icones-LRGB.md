@@ -655,7 +655,21 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > SI :
 > - autre nom d'étoiles -> corrige-le dans la formule
 
-#### E21_Fond_desature — Script
+#### E21_Fond_auto — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js`
+   paramètres : `cible=0.12`, `tolerance=0.005`, `grille=8`
+
+> LANCEMENT : glisse l'icône sur l'image.
+> 
+> PRÉRÉGLÉ : script Fond_auto : fond de chaque canal mesuré (grille 8 × 8, quart le plus sombre des cases), puis mtf canal par canal pour l'amener à 0,12, sans écrêtage ; fond neutre.
+> 
+> À RÉGLER : glisse sur l'image finie, étoiles comprises, après Etoiles_screen et avant Fond_desature ; console : fond avant et après.
+> 
+> SI :
+> - image trop sombre -> cible 0,13 ou 0,14
+> - données très propres -> 0,10 à 0,11
+
+#### E22_Fond_desature — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js`
    paramètres : `debut=0.03`, `fin=0.15`, `violetFin=0.30`, `flou=3`
 
@@ -776,33 +790,17 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
       paramètres : `mode=retirer`, `nom=masque_L`
 
-#### Opt_Fond_auto — Script
-   script `$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js`
-   paramètres : `cible=0.12`, `tolerance=0.005`, `grille=8`
-
-> OPTION — après Etoiles_screen, avant Fond_desature : fond de l'image finie amené à 0,12 et neutre (grille 8 × 8).
-> 
-> LANCEMENT : glisse l'icône sur l'image.
-> 
-> PRÉRÉGLÉ : script Fond_auto : fond de chaque canal mesuré (grille 8 × 8, quart le plus sombre des cases), puis mtf canal par canal pour l'amener à 0,12, sans écrêtage ; fond neutre.
-> 
-> À RÉGLER : option : glisse sur l'image finie, étoiles comprises, avant Fond_desature ; console : fond avant et après.
-> 
-> SI :
-> - image trop sombre -> cible 0,13 ou 0,14
-> - données très propres -> 0,10 à 0,11
-
 #### Opt_Fond_auto_clair — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js`
    paramètres : `cible=0.14`, `tolerance=0.005`, `grille=8`
 
-> OPTION — comme Fond_auto mais fond amené à 0,14 (image trop sombre), avant Fond_desature.
+> OPTION — à la place de Fond_auto : image trop sombre, fond amené à 0,14, avant Fond_desature.
 > 
 > LANCEMENT : glisse l'icône sur l'image.
 > 
 > PRÉRÉGLÉ : script Fond_auto, cible 0,14 : fond de chaque canal mesuré (grille 8 × 8), amené à 0,14 par mtf, sans écrêtage ; fond neutre.
 > 
-> À RÉGLER : option, image trop sombre : glisse sur l'image finie, étoiles comprises, avant Fond_desature.
+> À RÉGLER : à la place de Fond_auto, image trop sombre : glisse sur l'image finie, étoiles comprises, avant Fond_desature.
 > 
 > SI :
 > - fond encore trop sombre -> double-clic, cible 0,15
@@ -859,8 +857,11 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
    2. PixelMath
       expression = `~((~$T) * (~RGB_stars))` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
    3. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js`
+      paramètres : `cible=0.12`, `tolerance=0.005`, `grille=8`
+   4. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js`
       paramètres : `debut=0.03`, `fin=0.15`, `violetFin=0.30`, `flou=3`
-   4. Script
+   5. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js`
       paramètres : `nom=`, `suffixe=`, `dossier=`, `icc=true`, `fermer=L, RGB_stars`

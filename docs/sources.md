@@ -588,4 +588,6 @@ Question de l'utilisateur : « quel est la difference entre utiliser MAS ou GHS 
 
 - SCNR_vert déplacé au chemin principal de P7 (première étape, sur l'image sans étoiles, avant Etoiles_screen) et ajouté en tête de R_C_Etoiles_fond_rapide (5 octobre 2026). Demande de l'utilisateur : « Opt_SCNR_vert doit etre dans P7 Etoiles non dans Options ».
 
+- Fond_auto remis au chemin principal de P7 (après Etoiles_screen, avant Fond_desature) et dans R_C_Etoiles_fond_rapide (5 octobre 2026). Demande de l'utilisateur : « pareil avec Opt_Fond_auto ».
+
 Non vérifié : réglages de Ron Brecher et Dave Cosgrove lus sur leurs pages (pratique d'imageurs, pas de documentation éditeur) ; plages BXT pour galaxies (Sharpen Stars 0,15–0,20, Nonstellar 0,20–0,35) issues d'un résumé de forum ; paramètres de MAS d'après Starlust Astroguide, l'article PixInsight n'ayant pas pu être lu ; version de l'instance GraXpert (256 supposé ; MAS confirmé par l'utilisateur le 5 octobre 2026) ; chemins des scripts VeraLux et MKStarReduction (icônes-notes) ; formule H_dans_RGB_v2 (part de 0,2 pour Hβ, choix de l'utilisateur à tester).

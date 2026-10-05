@@ -3679,7 +3679,27 @@ max($T, HaNB*a)</parameter>
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
-   <instance class="Script" version="256" id="E28_Fond_desature_instance">
+   <instance class="Script" version="256" id="E28_Fond_auto_instance">
+      <description>LANCEMENT : glisse l'icône sur l'image.&#10;&#10;PRÉRÉGLÉ : script Fond_auto : fond de chaque canal mesuré (grille 8 × 8, quart le plus sombre des cases), puis mtf canal par canal pour l'amener à 0,12, sans écrêtage ; fond neutre.&#10;&#10;À RÉGLER : glisse sur l'image finie, étoiles comprises, après Etoiles_screen et avant Fond_desature ; console : fond avant et après.&#10;&#10;SI :&#10;- image trop sombre -&gt; cible 0,13 ou 0,14&#10;- données très propres -&gt; 0,10 à 0,11</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="3">
+         <tr>
+            <td id="id">cible</td>
+            <td id="value">0.12</td>
+         </tr>
+         <tr>
+            <td id="id">tolerance</td>
+            <td id="value">0.005</td>
+         </tr>
+         <tr>
+            <td id="id">grille</td>
+            <td id="value">8</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
+   </instance>
+   <instance class="Script" version="256" id="E29_Fond_desature_instance">
       <description>LANCEMENT : glisse l'icône sur l'image.&#10;&#10;PRÉRÉGLÉ : script Fond_desature : fond mesuré ; zones faibles (luminance lissée sous fond + 0,15, décroissant jusqu'à + 0,30) : violet neutralisé (G remonté jusqu'à min(R, B), magenta seulement) ; fond (sous + 0,03, rampe jusqu'à + 0,15) : couleur retirée.&#10;&#10;À RÉGLER : glisse sur l'image finie, étoiles comprises, après Etoiles_screen (E20 en LRGB) ; avant Export_TIFF.&#10;&#10;SI :&#10;- violet encore visible dans le halo -&gt; violetFin 0,40&#10;- extensions faibles de la galaxie grisées -&gt; fin 0,10</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js</parameter>
       <parameter id="md5sum"></parameter>
@@ -4202,28 +4222,8 @@ max($T,f1)</parameter>
          <parameter id="information"></parameter>
       </instance>
    </instance>
-   <instance class="Script" version="256" id="Opt_Fond_auto_instance">
-      <description>OPTION — après Etoiles_screen, avant Fond_desature : fond de l'image finie amené à 0,12 et neutre (grille 8 × 8).&#10;&#10;LANCEMENT : glisse l'icône sur l'image.&#10;&#10;PRÉRÉGLÉ : script Fond_auto : fond de chaque canal mesuré (grille 8 × 8, quart le plus sombre des cases), puis mtf canal par canal pour l'amener à 0,12, sans écrêtage ; fond neutre.&#10;&#10;À RÉGLER : option : glisse sur l'image finie, étoiles comprises, avant Fond_desature ; console : fond avant et après.&#10;&#10;SI :&#10;- image trop sombre -&gt; cible 0,13 ou 0,14&#10;- données très propres -&gt; 0,10 à 0,11</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js</parameter>
-      <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="3">
-         <tr>
-            <td id="id">cible</td>
-            <td id="value">0.12</td>
-         </tr>
-         <tr>
-            <td id="id">tolerance</td>
-            <td id="value">0.005</td>
-         </tr>
-         <tr>
-            <td id="id">grille</td>
-            <td id="value">8</td>
-         </tr>
-      </table>
-      <parameter id="information"></parameter>
-   </instance>
    <instance class="Script" version="256" id="Opt_Fond_auto_clair_instance">
-      <description>OPTION — comme Fond_auto mais fond amené à 0,14 (image trop sombre), avant Fond_desature.&#10;&#10;LANCEMENT : glisse l'icône sur l'image.&#10;&#10;PRÉRÉGLÉ : script Fond_auto, cible 0,14 : fond de chaque canal mesuré (grille 8 × 8), amené à 0,14 par mtf, sans écrêtage ; fond neutre.&#10;&#10;À RÉGLER : option, image trop sombre : glisse sur l'image finie, étoiles comprises, avant Fond_desature.&#10;&#10;SI :&#10;- fond encore trop sombre -&gt; double-clic, cible 0,15</description>
+      <description>OPTION — à la place de Fond_auto : image trop sombre, fond amené à 0,14, avant Fond_desature.&#10;&#10;LANCEMENT : glisse l'icône sur l'image.&#10;&#10;PRÉRÉGLÉ : script Fond_auto, cible 0,14 : fond de chaque canal mesuré (grille 8 × 8), amené à 0,14 par mtf, sans écrêtage ; fond neutre.&#10;&#10;À RÉGLER : à la place de Fond_auto, image trop sombre : glisse sur l'image finie, étoiles comprises, avant Fond_desature.&#10;&#10;SI :&#10;- fond encore trop sombre -&gt; double-clic, cible 0,15</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="3">
@@ -4290,7 +4290,7 @@ max($T,f1)</parameter>
       <parameter id="information"></parameter>
    </instance>
    <instance class="NoOperation" version="256" id="P7_rapide_instance">
-      <description>MODE RAPIDE, phase 7 — Étoiles : R_C_Etoiles_fond_rapide sur l'image sans étoiles finie : SCNR vert, étoiles remises (Etoiles_screen), Fond_desature, puis Export_TIFF (ferme L et RGB_stars) en un seul conteneur. Icône de repère, sans effet.</description>
+      <description>MODE RAPIDE, phase 7 — Étoiles : R_C_Etoiles_fond_rapide sur l'image sans étoiles finie : SCNR vert, étoiles remises (Etoiles_screen), Fond_auto (0,12), Fond_desature, puis Export_TIFF (ferme L et RGB_stars) en un seul conteneur. Icône de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="R_C_Etoiles_fond_rapide_instance">
       <instance class="SCNR" version="256" enabled="true">
@@ -4327,6 +4327,25 @@ max($T,f1)</parameter>
          <parameter id="newImageColorSpace" value="SameAsTarget"/>
          <parameter id="newImageSampleFormat" value="SameAsTarget"/>
          <table id="outputData" rows="0"/>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="3">
+            <tr>
+               <td id="id">cible</td>
+               <td id="value">0.12</td>
+            </tr>
+            <tr>
+               <td id="id">tolerance</td>
+               <td id="value">0.005</td>
+            </tr>
+            <tr>
+               <td id="id">grille</td>
+               <td id="value">8</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
       </instance>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js</parameter>
@@ -4458,17 +4477,17 @@ max($T,f1)</parameter>
    <icon id="P7_Etoiles" instance="P7_Etoiles_instance" xpos="1190" ypos="20" workspace="Workspace01"/>
    <icon id="E26_SCNR_vert" instance="E26_SCNR_vert_instance" xpos="1190" ypos="64" workspace="Workspace01"/>
    <icon id="E27_Etoiles_screen" instance="E27_Etoiles_screen_instance" xpos="1190" ypos="94" workspace="Workspace01"/>
-   <icon id="E28_Fond_desature" instance="E28_Fond_desature_instance" xpos="1190" ypos="124" workspace="Workspace01"/>
-   <icon id="P7_options" instance="P7_options_instance" xpos="1190" ypos="170" workspace="Workspace01"/>
-   <icon id="Opt_MT_etoiles" instance="Opt_MT_etoiles_instance" xpos="1190" ypos="204" workspace="Workspace01"/>
-   <icon id="Opt_Halo_B_Gon" instance="Opt_Halo_B_Gon_instance" xpos="1190" ypos="234" workspace="Workspace01"/>
-   <icon id="Opt_Etoiles_grosses" instance="Opt_Etoiles_grosses_instance" xpos="1190" ypos="264" workspace="Workspace01"/>
-   <icon id="Opt_Etoiles_plafond" instance="Opt_Etoiles_plafond_instance" xpos="1190" ypos="294" workspace="Workspace01"/>
-   <icon id="Opt_Etoiles_reduites" instance="Opt_Etoiles_reduites_instance" xpos="1190" ypos="324" workspace="Workspace01"/>
-   <icon id="Opt_MKStarReduction" instance="Opt_MKStarReduction_instance" xpos="1190" ypos="354" workspace="Workspace01"/>
-   <icon id="Opt_Boost_final_doux" instance="Opt_Boost_final_doux_instance" xpos="1190" ypos="384" workspace="Workspace01"/>
-   <icon id="Opt_Boost_final" instance="Opt_Boost_final_instance" xpos="1190" ypos="414" workspace="Workspace01"/>
-   <icon id="Opt_Fond_auto" instance="Opt_Fond_auto_instance" xpos="1190" ypos="444" workspace="Workspace01"/>
+   <icon id="E28_Fond_auto" instance="E28_Fond_auto_instance" xpos="1190" ypos="124" workspace="Workspace01"/>
+   <icon id="E29_Fond_desature" instance="E29_Fond_desature_instance" xpos="1190" ypos="154" workspace="Workspace01"/>
+   <icon id="P7_options" instance="P7_options_instance" xpos="1190" ypos="200" workspace="Workspace01"/>
+   <icon id="Opt_MT_etoiles" instance="Opt_MT_etoiles_instance" xpos="1190" ypos="234" workspace="Workspace01"/>
+   <icon id="Opt_Halo_B_Gon" instance="Opt_Halo_B_Gon_instance" xpos="1190" ypos="264" workspace="Workspace01"/>
+   <icon id="Opt_Etoiles_grosses" instance="Opt_Etoiles_grosses_instance" xpos="1190" ypos="294" workspace="Workspace01"/>
+   <icon id="Opt_Etoiles_plafond" instance="Opt_Etoiles_plafond_instance" xpos="1190" ypos="324" workspace="Workspace01"/>
+   <icon id="Opt_Etoiles_reduites" instance="Opt_Etoiles_reduites_instance" xpos="1190" ypos="354" workspace="Workspace01"/>
+   <icon id="Opt_MKStarReduction" instance="Opt_MKStarReduction_instance" xpos="1190" ypos="384" workspace="Workspace01"/>
+   <icon id="Opt_Boost_final_doux" instance="Opt_Boost_final_doux_instance" xpos="1190" ypos="414" workspace="Workspace01"/>
+   <icon id="Opt_Boost_final" instance="Opt_Boost_final_instance" xpos="1190" ypos="444" workspace="Workspace01"/>
    <icon id="Opt_Fond_auto_clair" instance="Opt_Fond_auto_clair_instance" xpos="1190" ypos="474" workspace="Workspace01"/>
    <icon id="Opt_Agrandir_x2" instance="Opt_Agrandir_x2_instance" xpos="1190" ypos="504" workspace="Workspace01"/>
    <icon id="Opt_ICC_sRGB" instance="Opt_ICC_sRGB_instance" xpos="1190" ypos="534" workspace="Workspace01"/>

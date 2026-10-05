@@ -39,8 +39,8 @@ OPT = {'ImageSolver_seul', 'Boost_finition_light', 'Boost_finition', 'WBPP', 'CC
 def role(prefix, base):
     if prefix in LUM and base in ('NXT_final', 'Fond_desature', 'HDRMT_30'):
         return 'core'   # galaxies : finition en parties, NXT_final et Fond_desature dans le chemin principal (demande de l'utilisateur)
-    if prefix in LUM and base in ('Statistical_Stretch', 'Fond_auto'):
-        return 'opt'    # galaxies (demande de l'utilisateur, 5 octobre 2026) : MAS sur le RGB ; fond final = Fond_desature seul
+    if prefix in LUM and base == 'Statistical_Stretch':
+        return 'opt'    # galaxies (demande de l'utilisateur, 5 octobre 2026) : MAS sur le RGB
     if base in OPT or (base == 'MGC_MARS' and prefix in NB):
         return 'opt'
     if base == 'Etoiles_screen':
@@ -111,7 +111,7 @@ WHEN = {
     'Nettoyage_sans_etoiles': "avant la partie 1, sur l'image sans étoiles juste après LRGB (RGB_stars ouverte) : taches rondes floues ou halo coloré laissés par SXT autour des étoiles",
     'NXT_final_doux': "partie 3, à la place de NXT_final : données très propres, ou aspect plastique avec 0,40 (Denoise 0,25)",
     'NXT_final_fort': "partie 3, à la place de NXT_final : bruit encore visible dans le fond (Denoise 0,60)",
-    'Fond_auto_clair': "comme Fond_auto mais fond amené à 0,14 (image trop sombre), avant Fond_desature",
+    'Fond_auto_clair': "à la place de Fond_auto : image trop sombre, fond amené à 0,14, avant Fond_desature",
     'HDRMT_30': "cœur un peu trop clair, mais HDRMT_40 aplatit trop (HDRMT appliqué à 30 %, effet plus léger)",
     'HDRMT_40': "partie 1, à la place de HDRMT_30 : cœur encore trop clair (HDRMT appliqué à 40 %)",
     'HDRMT_50': "cœur de galaxie ou nébuleuse brillante brûlé (HDRMT appliqué à 50 %)",
