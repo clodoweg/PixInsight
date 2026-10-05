@@ -17,21 +17,20 @@ Où| Icône| Sur| Ce qu'elle fait
 ---|---|---|---  
 P1_rapide| R_C_Preparation_rapide| masters seuls ouverts ; double-clic puis **Apply Global**|  Renommer_auto, LinearPatternSubtraction, Combinaison_RGB (crée `RGB`), Solver_auto (ImageSolver sur toutes les images)  
 P2_rapide| R_Gradient_auto_rapide| double-clic puis Apply Global| GradientCorrection sur toutes les images ouvertes  
-P3_rapide| R_C_RGB_rapide| RGB| BXT Correct Only, SPCC, BXT, NXT, Statistical Stretch 0,25, GHS fond (SP = HP = 0,22) ; étoiles gardées  
-P3_rapide| R_C_L_rapide| L| BXT, NXT ; L reste linéaire, avec ses étoiles  
-E10, puis P4_rapide| GHS_1_premier, puis R_C_Fin_GHS_rapide| L| GHS_1 à la main (méthode GHS), puis GHS_2 et GHS_3_fond en un glisser ; fond vers 0,11–0,13. Saute E13 Statistical_Stretch  
+P3_rapide| R_Lineaire_rapide| double-clic puis Apply Global| script Lineaire_auto.js : lance E08_C_RGB_lineaire sur RGB (BXT Correct Only, SPCC, BXT, NXT) puis E09_C_L_lineaire sur L (BXT, NXT) ; les deux restent linéaires, avec leurs étoiles  
+E10, puis P4_rapide| GHS_1_premier, puis R_C_Fin_GHS_rapide| L| GHS_1 à la main (méthode GHS), puis GHS_2 et GHS_3_fond en un glisser ; fond vers 0,11–0,13. Puis Statistical_Stretch et GHS_3_fond sur RGB (chemin principal)  
 P5_rapide| R_C_LRGB_rapide| RGB, L ouverte| LRGB_ajout_L, SXT Unscreen (crée `RGB_stars`), Etoiles_auto_etire (saturation et SCNR des étoiles)  
 P6_rapide| R_C_Fin_rapide| image sans étoiles| HDRMT 30 %, masque, Courbes, LHE, LHE_fin, masque retiré, NXT 0,40. Une option de finition (Boost…) se place après  
 P7_rapide| R_C_Etoiles_fond_rapide| image sans étoiles finie| Etoiles_screen, Fond_auto (0,12), Fond_desature, Export_TIFF. Avant, sur RGB_stars si besoin : Opt_Etoiles_grosses (grosses étoiles seulement), Opt_Etoiles_plafond (cœurs cramés)  
   
 ### LHaRGB : l'ordre
-R_C_Preparation_rapide, R_Gradient_auto_rapide ; chemin principal pour C_RGB_couleur (RGB), BXT_L_H (H), E12 Continuum_auto (crée HaNB) et H_dans_RGB (Opt_H_dans_L ensuite si besoin) ; puis R_C_RGB_fin_rapide sur RGB (NXT, Statistical Stretch, GHS fond) et R_C_L_rapide sur L ; puis comme en LRGB : GHS_1 et R_C_Fin_GHS_rapide sur L, R_C_LRGB_rapide, R_C_Fin_rapide, R_C_Etoiles_fond_rapide.
+R_C_Preparation_rapide, R_Gradient_auto_rapide ; R_Lineaire_rapide (C_RGB_couleur sur RGB, BXT_L_H sur L et H, NXT_L sur L) ; chemin principal : E12 Continuum_auto (crée HaNB), H_dans_RGB (Opt_H_dans_L si besoin), C_RGB_bruit (NXT RGB, ferme H, R, HaNB) ; puis comme en LRGB : GHS_1 et R_C_Fin_GHS_rapide sur L, R_C_LRGB_rapide, R_C_Fin_rapide, R_C_Etoiles_fond_rapide.
 
 ### Images fermées au fur et à mesure
 Icône| Ferme  
 ---|---  
 Combinaison_RGB| LRGB : R, G, B ; LHaRGB : G, B (R sert à Continuum_auto)  
-LHaRGB : C_RGB_bruit ou R_C_RGB_fin_rapide| H, R, HaNB (fais Opt_H_dans_L avant)  
+LHaRGB : C_RGB_bruit| H, R, HaNB (fais Opt_H_dans_L avant)  
 C_Fond_final, R_C_Etoiles_fond_rapide| RGB_stars (Boost_final se fait avant)  
 Export_TIFF| L, après l'export (paramètre `fermer` vide pour la garder)  
   

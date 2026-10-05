@@ -244,13 +244,13 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 #### R_Gradient_auto_rapide — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Gradient_auto.js`
 
-> MODE RAPIDE, à la place de la phase 2 : GradientCorrection sur TOUTES les images ouvertes (plus d'ImageSolver : fait par Solver_auto en phase 1) ; à faire AVANT C_RGB_rapide et C_L_rapide (sans GradientCorrection).
+> MODE RAPIDE, à la place de la phase 2 : GradientCorrection sur TOUTES les images ouvertes (plus d'ImageSolver : fait par Solver_auto en phase 1) ; à faire AVANT R_Lineaire_rapide (sans GradientCorrection).
 > 
 > LANCEMENT : double-clic sur l'icône, puis Apply Global.
 > 
 > PRÉRÉGLÉ : script Gradient_auto.js : GradientCorrection (sans modèle de gradient) sur TOUTES les images ouvertes, rien d'autre (pas d'ImageSolver) ; images *_stars ignorées ; une erreur n'arrête pas les autres.
 > 
-> À RÉGLER : double-clic puis Apply Global, masters et RGB ouverts, après R_C_Preparation_rapide (astrométrie déjà faite par Solver_auto) ; AVANT R_C_RGB_rapide et R_C_L_rapide, qui n'ont pas de GradientCorrection ; copie Gradient_auto.js dans src/scripts/clodoweg.
+> À RÉGLER : double-clic puis Apply Global, masters et RGB ouverts, après R_C_Preparation_rapide (astrométrie déjà faite par Solver_auto) ; AVANT R_Lineaire_rapide (le chemin principal de la phase 3 n'a pas de GradientCorrection) ; copie Gradient_auto.js dans src/scripts/clodoweg.
 
 ## P3_Lineaire
 
@@ -399,23 +399,21 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 ### P3_rapide
 
-#### R_C_RGB_fin_rapide — ProcessContainer
-   1. NoiseXTerminator
-      ml_version=0 ; denoise=0.80 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
-   2. Script
-      script `$PXI_SRCDIR/scripts/statisticalstretch.js`
-      paramètres : `targetMedian=0.25`, `curvesBoost=0`, `numIterations=1`, `normalizeImageRange=false`, `linkedStretch=true`, `openDialogbox=false`, `autoConvergence=false`, `blackpointSigma=5`, `noBlackClip=false`, `hdrCompress=false`, `hdrAmount=0.25`, `hdrKnee=0.35`, `lumaOnly=false`, `lumaMode=rec709`, `lumaBlend=0.6`
-   3. GeneralizedHyperbolicStretch
-      stretchType=ST_GeneralisedHyperbolic ; stretchChannel=SC_RGB ; inverse=false ; stretchFactor=1.000 ; localIntensity=10.000 ; symmetryPoint=0.220000 ; highlightProtection=0.220000 ; shadowProtection=0.000000 ; blackPoint=0.000000 ; whitePoint=1.000000 ; colourBlend=1.000 ; clipType=CT_RGBBlend ; useRGBWorkingSpace=false
-   4. Script
-      script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
-      paramètres : `views=H, R, HaNB`
+#### R_Lineaire_rapide — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
+   paramètres : `etapes=C_RGB_couleur>RGB ; BXT_L_H>L,H ; NXT_L>L`
 
-#### R_C_L_rapide — ProcessContainer
-   1. BlurXTerminator
-      ml_version=4 ; correct_only=false ; sharpen_stars=0.25 ; adjust_star_halos=0.00 ; nonstellar_diameter=0.0 ; auto_nonstellar_psf=true ; sharpen_nonstellar=0.80 ; lunar_planetary=false ; overlap=0.20
-   2. NoiseXTerminator
-      ml_version=0 ; denoise=0.60 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
+> MODE RAPIDE, à la place de la phase 3 du chemin principal : double-clic puis Apply Global ; lance les icônes du chemin principal sur RGB et L (LRGB : C_RGB_lineaire et C_L_lineaire ; LHaRGB : C_RGB_couleur, BXT_L_H sur L et H, NXT_L) ; RGB et L restent linéaires, avec leurs étoiles.
+> 
+> LANCEMENT : double-clic sur l'icône, puis Apply Global.
+> 
+> PRÉRÉGLÉ : script Lineaire_auto.js, etapes = C_RGB_couleur>RGB ; BXT_L_H>L,H ; NXT_L>L : C_RGB_couleur (BXT Correct Only, SPCC, BXT) sur RGB, BXT (Nonstellar 0,80) sur L et H, NXT 0,60 sur L ; étoiles gardées, images linéaires.
+> 
+> À RÉGLER : double-clic puis Apply Global, après R_Gradient_auto_rapide ; Conteneurs-LHaRGB chargé ; ensuite Continuum_auto, H_dans_RGB, C_RGB_bruit (chemin principal), puis GHS_1_premier sur L.
+> 
+> SI :
+> - H_dans_L voulu -> il se fait après (NXT_L déjà passé sur L)
+> - une étape échoue -> la console dit laquelle
 
 ## P4_Etirement
 
