@@ -2,6 +2,12 @@
 
 Ce dépôt contient les icônes de process PixInsight de l'utilisateur, leur générateur, ma base de connaissances (`docs/kb/`) et la liste des sources (`docs/sources.md`). Réponds en français, en textes courts et simples.
 
+## LRGB GELÉ (demande de l'utilisateur, 5 octobre 2026)
+
+Le workflow LRGB fonctionne bien : NE RIEN CHANGER dans `Conteneurs-LRGB.xpsm` (icônes, réglages, descriptions, ordre) sauf demande EXPLICITE de l'utilisateur. Le travail en cours porte sur le LHaRGB.
+- Beaucoup de code est commun (boucles `for _st in (lrgb, lhargb)`, `lum_block`, `finish_block`, `stars_end`, `fin_rapide`, textes S de `short_desc.py`, `WHEN` de `layout.py`, scripts partagés) : pour le LHaRGB, modifier seulement `lhargb`, ou des variantes `V[('LHA', base)]`, ou une copie du script.
+- Après chaque `build.sh` : `git diff --stat docs/process-icons/workflows/Conteneurs-LRGB.xpsm docs/kb/icones-LRGB.md` doit être vide ; sinon, corriger avant de commiter.
+
 ## Base de connaissances (à lire en premier)
 
 `docs/kb/` est ma référence (l'utilisateur ne la lit pas) : avant de répondre à une question ou de modifier une icône, lis `docs/kb/README.md` puis le fichier concerné (`icones-LRGB.md` / `icones-LHaRGB.md` générés, `workflows.md`, `outils.md`, `techniques.md`, `preparation.md`, `narrowband.md`, `generateur.md`). Après chaque changement, mets à jour le fichier thématique concerné ; `icones-*.md` se régénèrent par `build.sh`.

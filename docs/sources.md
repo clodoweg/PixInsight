@@ -740,3 +740,8 @@ Fait : docs/idees-acceleration.md et docs/critique-lrgb-lhargb.html supprimés (
 
 Demande : « fait une relecture complete de tes fichiers md par rapport a tout ce que l'on a dit ici pour etre sur que le principâl a bien été mémorisé »
 Fait : passages périmés corrigés (ancien process « L et RGB étirés avec leurs étoiles, SXT après LRGB, Statistical Stretch sur le RGB, Saturation 0,35 ») dans workflows.md, techniques.md, outils.md ; variante MAS notée comme adoptée ; generateur.md (lancement Apply Global, SUPPR_GALAXIES) ; CLAUDE.md réorganisé (lancement des conteneurs, règle image cachée + beginProcess, contenu de R_C_Fin_rapide, mise en page des descriptions, options supprimées, état et suite).
+
+### LRGB gelé, passage au LHaRGB (5 octobre 2026)
+
+Demande : « je suis maintenant sur lme HaRGB. A partir de maintenant, sauf si je te le demande explicitement, ne change pour le process icon LRGB qui fonctionne bien »
+Fait : règle ajoutée dans CLAUDE.md et generateur.md (modifications limitées à lhargb ou aux variantes LHA ; contrôle git diff vide sur Conteneurs-LRGB.xpsm et icones-LRGB.md après chaque build).

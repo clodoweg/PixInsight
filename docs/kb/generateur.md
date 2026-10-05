@@ -27,6 +27,10 @@ Tout est produit par `sh docs/process-icons/build/build.sh` ; ne jamais éditer 
 - `lum_block()` (GHS, MAS, SXT_RGB_etire, GHS_3_fond), `mas()`, `finish_block(galaxie=True)`, `sharp_mmt()`, `sharp_usm()`, `finition_saturee()`, `stars_end(...)`, `gradient_block(...)`, `pre_block()` : blocs communs.
 - Mode rapide : `prep_rapide`, `lineaire_rapide(etapes)`, `rgb_etire_rapide`, `lrgb_rapide`, `fin_rapide` (R_C_Fin_rapide et R_C_Etoiles_fond_rapide) ; turbo : `turbo_debut`.
 
+## LRGB gelé
+
+Depuis le 5 octobre 2026, `Conteneurs-LRGB.xpsm` ne doit plus changer sans demande explicite de l'utilisateur (voir CLAUDE.md). Changement LHaRGB : seulement `lhargb`, `V[('LHA', base)]` dans `short_desc.py`, ou une copie de script ; contrôle `git diff --stat` vide sur `Conteneurs-LRGB.xpsm` et `icones-LRGB.md` après `build.sh`.
+
 ## Ajouter ou modifier une icône (check-list)
 
 1. Réglage vérifié par des sources (règle de CLAUDE.md) ; identifiants de paramètres et version de classe relevés dans la PCL (`https://gitlab.com/api/v4/projects/pixinsight%2FPCL/repository/files/<chemin>/raw?ref=master`) ou dans le code du script.
