@@ -13,7 +13,9 @@
 //      (CurvesTransformation, canaux c et S : 0,46094 -> 0,53646 et
 //      0,46354 -> 0,54167, Akima), « passes » fois (1 par défaut) ;
 //   3. résultat = masque × copie saturée + (1 − masque) × image : seules les
-//      grosses étoiles (et leur halo) prennent la saturation.
+//      grosses étoiles (et leur halo) prennent la saturation ; calculé dans
+//      une image cachée puis recopié dans la vue (beginProcess / endProcess :
+//      affichage et Ctrl+Z, comme Etoiles_grosses).
 // Paramètres : vue, taille, seuil, etendue, passes ; fenêtre avec « Voir le
 // masque » (vue masque_sat_grosses, blanc = saturé).
 //
@@ -180,7 +182,7 @@ function sgProcess( view, p )
 {
    if ( !view.image.isColor )
       throw new Error( SG_TITLE + " : " + view.id + " n'est pas une image couleur." );
-   let ids = [ "sg_m", "sg_sat" ];
+   let ids = [ "sg_m", "sg_sat", "sg_r" ];
    try
    {
       let m = sgMask( view, p, "sg_m" );
@@ -192,14 +194,13 @@ function sgProcess( view, p )
       let s = sgNew( view, "sg_sat", "$T", false );
       for ( let k = 0; k < Math.max( 1, p.passes ); ++k )
          sgCurves( s.mainView );
-      let P = new PixelMath;
-      P.expression = "sg_m*sg_sat + (1 - sg_m)*$T";
-      P.useSingleExpression = true;
-      P.createNewImage = false;
-      P.rescale = false;
-      P.truncate = true;
-      if ( !P.executeOn( view ) )
-         throw new Error( SG_TITLE + " : le mélange a échoué (voir la console)." );
+      // résultat dans une image cachée (PixelMath exécuté sur la vue, nouvelle image), puis recopié
+      // dans la vue entre beginProcess et endProcess : affichage et Ctrl+Z. Le mélange écrit
+      // directement dans RGB_stars échouait (« Unknown error », retour de l'utilisateur).
+      let r = sgNew( view, "sg_r", "sg_m*sg_sat + (1 - sg_m)*$T", false );
+      view.beginProcess();
+      view.image.assign( r.mainView.image );
+      view.endProcess();
    }
    finally
    {
@@ -256,7 +257,7 @@ function main()
    {
       let v = sgDialog( p, p.vue ? cwViewById( p.vue ) : cwDefaultView() );
       if ( v != null )
-         cwRun( SG_TITLE, function() { cwApplyOnCopy( v, function( c ) { sgProcess( c, p ); } ); } );
+         cwRun( SG_TITLE, function() { sgProcess( v, p ); v.window.bringToFront(); } );
       return;
    }
    let view;
@@ -273,12 +274,7 @@ function main()
       view = Parameters.isViewTarget ? Parameters.targetView : ImageWindow.activeWindow.mainView;
    if ( view.isNull )
       throw new Error( SG_TITLE + " : aucune image." );
-   // glissée sur l'image elle-même : exécution directe (historique géré par PixInsight) ;
-   // sinon (autre vue, ou lancement global) : copie et recopie, pour l'affichage et le Ctrl+Z
-   if ( Parameters.isViewTarget && Parameters.targetView.id == view.id )
-      sgProcess( view, p );
-   else
-      cwApplyOnCopy( view, function( c ) { sgProcess( c, p ); } );
+   sgProcess( view, p );
    console.noteln( SG_TITLE + " : grosses étoiles de " + view.id + " saturées (taille " + p.taille + ", seuil " + p.seuil +
                    ", étendue " + p.etendue + ", passes " + p.passes + ")." );
 }

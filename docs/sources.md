@@ -703,3 +703,8 @@ Fait : les huit options retirées de LRGB et LHaRGB ; code des icônes GraXpert,
 
 Demande : « je veux maintenant un script qui sur RGB_stars fasse une saturation sur les grosses étoiles (qui sont presque blanche) et pas sur les petites. Pour la saturation utiliese: var P = new CurvesTransformation; […] P.c = [[0,0],[0.46094,0.53646],[1,1]] ; P.S = [[0,0],[0.46354,0.54167],[1,1]] ; autres canaux identité, Akima »
 Fait : script Saturation_grosses.js (masque des grosses étoiles repris d'Etoiles_grosses : ouverture morphologique sur une copie à 2000 px, seuil 0,15, flou 12 px ; copie saturée par la courbe de l'utilisateur, « passes » fois ; mélange m × saturée + (1 − m) × image), fenêtre avec « Voir le masque ». Icône Opt_Saturation_grosses (P7, sur RGB_stars avant Etoiles_screen), LRGB et LHaRGB.
+
+### Saturation_grosses : « Unknown error » au mélange (5 octobre 2026)
+
+Retour : console PixInsight, « PixelMath: Processing view: RGB_stars … sg_m*sg_sat + (1 - sg_m)*$T … *** Error: Unknown error … Saturation grosses : le mélange a échoué ».
+Correction : mélange calculé dans une image cachée (sg_r, PixelMath exécuté sur RGB_stars avec createNewImage), puis recopié dans RGB_stars (beginProcess / assign / endProcess) ; même changement dans Etoiles_grosses (chemin glissé).

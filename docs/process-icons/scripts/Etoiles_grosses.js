@@ -195,8 +195,8 @@ function egShowMask( view, p )
    console.noteln( EG_TITLE + " : masque affiché (" + EG_MASK_VIEW + ", blanc = réduit)." );
 }
 
-// direct = true : icône glissée sur l'image (PixInsight gère déjà l'historique de la vue) ;
-// direct = false : lancé par la fenêtre (Apply Global) : résultat calculé dans une image cachée
+// direct (inutilisé) : le résultat est toujours calculé dans une image cachée puis recopié dans
+// l'image entre beginProcess et endProcess, glissée ou par la fenêtre (Ctrl+Z, affichage).
 // puis recopié dans l'image entre beginProcess et endProcess, pour avoir une étape d'annulation
 // (Ctrl+Z) et l'affichage mis à jour (retour de l'utilisateur : sinon rien ne s'affichait).
 function egApply( view, p, direct )
@@ -226,12 +226,9 @@ function egApply( view, p, direct )
    P.rescale = false;
    P.truncate = true;
    let ok;
-   if ( direct )
-   {
-      P.createNewImage = false;
-      ok = P.executeOn( view );
-   }
-   else
+   // toujours via une image cachée puis recopie (beginProcess / endProcess) : le PixelMath écrit
+   // directement dans l'image avec des références (eg_m) peut échouer (« Unknown error » vu sur
+   // Saturation_grosses, même calcul), et la recopie donne l'affichage et le Ctrl+Z
    {
       P.createNewImage = true;
       P.showNewImage = false;
