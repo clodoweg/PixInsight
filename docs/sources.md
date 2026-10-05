@@ -567,4 +567,15 @@ Demande de l'utilisateur : « ajoute Binning_x2 et Agrandir_x2, la nouvelle form
 
 - SCNR vert, Amount 1,0, Average Neutral, dans C_RGB_lineaire juste après SPCC (LRGB, 5 octobre 2026). Demande de l'utilisateur : « je veux rajouter un SNCR vert à 1.0 dans E08_C_RGB_lineaire et dans Lineaire_auto.js ». Paramètres de l'instance repris du modèle SCNR de theAstroShed.
 
+## Étirements comparés (5 octobre 2026)
+
+Question de l'utilisateur : « quel est la difference entre utiliser MAS ou GHS pour le L ? Et Avec StatStrech pour le RGB ? Ou SoftStrech de EZ ? Quel est l'impact avec ou sans etoiles ? »
+
+- Forum — [Forum PixInsight, EZ Processing Suite](https://pixinsight.com/forum/index.php?threads/ez-processing-suite.14937/) *(résumé)* : EZ Soft Stretch = HistogramTransformation, point noir automatique, médiane cible.
+- Officiel — [GitHub, archive de l'EZ Processing Suite](https://github.com/Arkatufus/Ez-Processing-Suite) *(résumé)* : suite archivée.
+- Forum — [Cloudy Nights, EZ processing suite gone?](https://www.cloudynights.com/forums/topic/888826-ez-processing-suite-gone/) *(résumé)*.
+- Forum — [Cloudy Nights, What stretch method are you using](https://www.cloudynights.com/topic/959611-what-stretch-method-are-you-using-pixinsight-only/) *(résumé)* : la fonction de transfert de HistogramTransformation fait grossir les étoiles ; GHS les ménage.
+- Officiel — [Documentation GHS](https://www.ghsastro.co.uk/doc/tools/GeneralizedHyperbolicStretch/GeneralizedHyperbolicStretch.html) *(déjà cité)*.
+- MAS : sources de la rubrique « Critique LRGB et LHaRGB » (Starlust Astroguide, forum PixInsight Development, AstroBin, Cloudy Nights).
+
 Non vérifié : réglages de Ron Brecher et Dave Cosgrove lus sur leurs pages (pratique d'imageurs, pas de documentation éditeur) ; plages BXT pour galaxies (Sharpen Stars 0,15–0,20, Nonstellar 0,20–0,35) issues d'un résumé de forum ; paramètres de MAS d'après Starlust Astroguide, l'article PixInsight n'ayant pas pu être lu ; versions des instances MAS et GraXpert (256 supposé) ; chemins des scripts VeraLux et MKStarReduction (icônes-notes) ; formule H_dans_RGB_v2 (part de 0,2 pour Hβ, choix de l'utilisateur à tester).

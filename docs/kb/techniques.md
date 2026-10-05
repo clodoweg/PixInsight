@@ -127,6 +127,23 @@ Fond au-dessus de 0,18–0,20 dans l'image finale| Histogramme collé à gauche
   
 **Test simple :** regarde l'image en plein écran à 100 %, puis en vignette, et sur un autre écran (téléphone) : un écran trop lumineux pousse à trop assombrir le fond.
 
+## Comparer les étirements (GHS, MAS, Statistical Stretch, EZ Soft Stretch)
+
+Question de l'utilisateur (5 octobre 2026). Sources : `sources.md`, rubriques « Critique LRGB et LHaRGB » et « Étirements comparés ».
+
+| Outil | Principe | Étoiles (étirées avec) | Contrôle | Pour qui dans le process |
+|---|---|---|---|---|
+| GHS (GeneralizedHyperbolicStretch) | courbe hyperbolique réglée à la main : SP (où va le contraste), b, LP, HP | HP protège les cœurs ; sans HP, les étoiles grossissent | total, à la main, plusieurs passes | L (choix fixe de l'utilisateur : GHS_1 à la main, GHS_2, GHS_3_fond) |
+| MAS (MultiscaleAdaptiveStretch, PixInsight, déc. 2025) | étirement natif multi-échelle vers une cible de fond ; « dynamic range compression » pour garder le profil gaussien des étoiles ; restauration du contraste ; saturation en option | conçu pour étirer fort sans déformer les étoiles (avis d'utilisateurs, docs Starlust) | une passe, quelques curseurs, reproductible | candidat pour RGB (à la place de Statistical Stretch) et à tester sur L à la place de GHS_1 |
+| Statistical Stretch (SetiAstro) | point noir = médiane − sigma × 1,4826 × MAD, puis fonction de transfert vers une médiane cible (0,25) | pas de protection des hautes lumières : étoiles plus grosses, cœurs blancs | automatique | RGB aujourd'hui (il ne donne que la couleur) |
+| EZ Soft Stretch (darkarchon) | HistogramTransformation avec point noir et médiane calculés automatiquement | même famille que Statistical Stretch | automatique, curseurs | aucun apport ; suite abandonnée (archive GitHub) |
+
+Avec ou sans étoiles :
+- Avec étoiles : les étoiles sont les pixels les plus clairs ; une fonction de transfert (Statistical Stretch, EZ, HistogramTransformation) les fait grossir et blanchit leur cœur (couleur perdue). GHS avec HP ou MAS limitent cet effet.
+- Sans étoiles (SXT en linéaire) : n'importe quel étirement va pour la galaxie ; les étoiles sont étirées à part (Star Stretch). RC Astro conseille de retirer les étoiles avant un étirement GHS ou arcsinh. L'utilisateur a choisi d'étirer AVEC les étoiles (LRGB et SXT ensuite) pour des étoiles cohérentes entre L et RGB.
+
+Conseil donné (à valider sur des cibles réelles) : garder GHS sur L ; tester Opt_MAS sur le RGB à la place de Statistical Stretch, même cible de fond que L (0,10 à 0,12), saturation de MAS coupée sur les galaxies à cœur brillant ; puis tester MAS sur L à la place de GHS_1 seulement. Ne pas utiliser EZ Soft Stretch.
+
 ## Réduction d'étoiles Bill Blanshan
 Trois formules PixelMath (version 2) qui réduisent les étoiles sans toucher au fond. Elles s'appliquent à la fin, sur l'image étirée avec étoiles, à tous les workflows.
 
