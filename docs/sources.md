@@ -817,3 +817,8 @@ Fait : R_C_Ha_rapide et Ha_screen supprimés du LHaRGB ; rapide P3 = R_Lineaire_
 
 Demande : « le process E14_CombineHaWithRGB peut maintenant se glisser sur une image. Integre donc cette etape et E15_C_RGB_bruit dans le rapide »
 Fait : CombineHaWithRGB lancé en glissant (L_DRAG) ; R_C_P3_rapide (à glisser sur RGB) = BXT Correct Only, SPCC, BXT (RGB), Lineaire_auto (BXT_L_H>L,H ; NXT_L>L ; SXT_L_lineaire>L), CombineHaWithRGB, NXT 0,80, Fermer_vues H, R, HaNB ; R_Lineaire_rapide retirée du LHaRGB. Lineaire_auto ne traite jamais la vue glissée (risque « already being processed »). Non testé dans PixInsight. LRGB inchangé.
+
+### CombineHaWithRGB à 1 dans le rapide (5 octobre 2026)
+
+Demande : « dans E14_CombineHaWithRGB met a 1 l'effet dans le rapide »
+Fait : CombineHaWithRGB de R_C_P3_rapide : amount 1 ; E14 au chemin principal garde amount 2. LRGB inchangé.

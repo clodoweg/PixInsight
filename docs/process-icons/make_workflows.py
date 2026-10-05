@@ -1189,9 +1189,15 @@ for _st in (lrgb, lhargb):
 # LHaRGB, phase 3 en un seul rapide glissé sur RGB (demande de l'utilisateur ; CombineHaWithRGB se glisse maintenant) : BXT Correct Only, SPCC, BXT sur RGB
 # (la vue glissée), Lineaire_auto sur L et H seulement (BXT_L_H, NXT_L, SXT_L_lineaire : jamais la vue glissée), CombineHaWithRGB, NXT, H, R, HaNB fermées.
 # R_Lineaire_rapide retirée du LHaRGB (le turbo garde ses étapes)
+def _amount1(item):
+    """CombineHaWithRGB du rapide : Amount 1 (demande de l'utilisateur ; 2 au chemin principal)."""
+    n, x = item
+    a = '<td id="id">amount</td>\n            <td id="value">2</td>'
+    assert a in x
+    return n, x.replace(a, a.replace('>2<', '>1<'))
 _i = next(k for k, (it, d) in enumerate(lhargb) if it[0] == 'Lineaire_rapide')
 lhargb[_i] = (cont('C_P3_rapide', [pick(lhargb, b)[0] for b in ('BXT_CorrectOnly', 'SPCC', 'BXT_RGB')] + [lineaire_rapide('BXT_L_H>L,H ; NXT_L>L ; SXT_L_lineaire>L')]
-                   + [pick(lhargb, b)[0] for b in ('CombineHaWithRGB', 'NXT_RGB', 'Fermer_continuum')]), '')
+                   + [_amount1(pick(lhargb, 'CombineHaWithRGB')[0])] + [pick(lhargb, b)[0] for b in ('NXT_RGB', 'Fermer_continuum')]), '')
 
 for fn, pre, title, steps in [
     ('Workflow-LRGB.xpsm', 'LRGB', 'Workflow LRGB', lrgb),

@@ -2130,7 +2130,7 @@ max($T, HaNB*a)</parameter>
       <description>MODE RAPIDE, phase 3 — Linéaire : R_C_P3_rapide glissé sur RGB à la place de toute la phase 3 : BXT Correct Only, SPCC, BXT sur RGB ; BXT_L_H sur L et H, NXT_L et SXT_L_lineaire sur L ; CombineHaWithRGB (H) ; NXT ; H, R et HaNB fermées ; continuum en option (chemin principal). Icône de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="R_C_P3_rapide_instance">
-      <description>MODE RAPIDE, à la place de toute la phase 3 : après R_Gradient_auto_rapide, GLISSE sur RGB (L, H, R ouvertes, Conteneurs-LHaRGB chargé).&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur, toute la phase 3 : BXT Correct Only, SPCC, BXT sur RGB ; Lineaire_auto : BXT_L_H sur L et H, NXT_L et SXT_L_lineaire sur L ; CombineHaWithRGB (H Alpha = H, Amount 2) ; NXT 0,80 ; H, R et HaNB fermées.&#10;&#10;À RÉGLER : après R_Gradient_auto_rapide : glisse sur le RGB linéaire (L, H, R ouvertes ; Conteneurs-LHaRGB chargé pour BXT_L_H, NXT_L, SXT_L_lineaire) ; ensuite GHS_1_premier sur L.&#10;&#10;SI :&#10;- régions HII trop rouges ou trop discrètes -&gt; double-clic sur le conteneur, CombineHaWithRGB : amount 1,5 ou 2,5&#10;- étoiles ou cœur rougis -&gt; chemin principal avec Opt_Continuum_auto&#10;- une étape échoue -&gt; la console dit laquelle</description>
+      <description>MODE RAPIDE, à la place de toute la phase 3 : après R_Gradient_auto_rapide, GLISSE sur RGB (L, H, R ouvertes, Conteneurs-LHaRGB chargé).&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur, toute la phase 3 : BXT Correct Only, SPCC, BXT sur RGB ; Lineaire_auto : BXT_L_H sur L et H, NXT_L et SXT_L_lineaire sur L ; CombineHaWithRGB (H Alpha = H, Amount 1 ; 2 au chemin principal) ; NXT 0,80 ; H, R et HaNB fermées.&#10;&#10;À RÉGLER : après R_Gradient_auto_rapide : glisse sur le RGB linéaire (L, H, R ouvertes ; Conteneurs-LHaRGB chargé pour BXT_L_H, NXT_L, SXT_L_lineaire) ; ensuite GHS_1_premier sur L.&#10;&#10;SI :&#10;- régions HII trop discrètes -&gt; double-clic sur le conteneur, CombineHaWithRGB : amount 1,5 ou 2&#10;- étoiles ou cœur rougis -&gt; chemin principal avec Opt_Continuum_auto&#10;- une étape échoue -&gt; la console dit laquelle</description>
       <instance class="BlurXTerminator" version="256" enabled="true">
          <parameter id="ml_version" value="4"/>
          <parameter id="correct_only" value="true"/>
@@ -2233,7 +2233,7 @@ max($T, HaNB*a)</parameter>
             </tr>
             <tr>
                <td id="id">amount</td>
-               <td id="value">2</td>
+               <td id="value">1</td>
             </tr>
             <tr>
                <td id="id">beta</td>

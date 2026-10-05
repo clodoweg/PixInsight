@@ -475,7 +475,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
       paramètres : `etapes=BXT_L_H>L,H ; NXT_L>L ; SXT_L_lineaire>L`, `dialogue=false`
    5. Script
       script `$PXI_SRCDIR/scripts/Toolbox/CombineHaToRGB.js`
-      paramètres : `alphaView=H`, `amount=2`, `beta=0`, `linear=true`, `rgbLinked=true`, `bg=0.015`, `invertMask=true`, `sigma=0`
+      paramètres : `alphaView=H`, `amount=1`, `beta=0`, `linear=true`, `rgbLinked=true`, `bg=0.015`, `invertMask=true`, `sigma=0`
    6. NoiseXTerminator
       ml_version=0 ; denoise=0.80 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
    7. Script
@@ -486,12 +486,12 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
 > 
-> PRÉRÉGLÉ : conteneur, toute la phase 3 : BXT Correct Only, SPCC, BXT sur RGB ; Lineaire_auto : BXT_L_H sur L et H, NXT_L et SXT_L_lineaire sur L ; CombineHaWithRGB (H Alpha = H, Amount 2) ; NXT 0,80 ; H, R et HaNB fermées.
+> PRÉRÉGLÉ : conteneur, toute la phase 3 : BXT Correct Only, SPCC, BXT sur RGB ; Lineaire_auto : BXT_L_H sur L et H, NXT_L et SXT_L_lineaire sur L ; CombineHaWithRGB (H Alpha = H, Amount 1 ; 2 au chemin principal) ; NXT 0,80 ; H, R et HaNB fermées.
 > 
 > À RÉGLER : après R_Gradient_auto_rapide : glisse sur le RGB linéaire (L, H, R ouvertes ; Conteneurs-LHaRGB chargé pour BXT_L_H, NXT_L, SXT_L_lineaire) ; ensuite GHS_1_premier sur L.
 > 
 > SI :
-> - régions HII trop rouges ou trop discrètes -> double-clic sur le conteneur, CombineHaWithRGB : amount 1,5 ou 2,5
+> - régions HII trop discrètes -> double-clic sur le conteneur, CombineHaWithRGB : amount 1,5 ou 2
 > - étoiles ou cœur rougis -> chemin principal avec Opt_Continuum_auto
 > - une étape échoue -> la console dit laquelle
 
