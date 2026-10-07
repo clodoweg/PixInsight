@@ -1,3 +1,4 @@
 # fichiers lus par PixInsight : toujours en LF (un CR dans une description s affiche mal)
 *.xpsm text eol=lf
 *.js text eol=lf
+*.bat text eol=crlf

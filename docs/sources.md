@@ -866,3 +866,8 @@ Fait : Opt_Etoiles_grosses de nouveau dans les options P7 du LRGB et du LHaRGB (
 
 Demande : « rajoute aussi dans etirement une option Star Stretch réglée par defaut sur 6 et SCNR » (dans la suite des demandes LRGB et LHaRGB).
 Fait : Opt_Star_Stretch (P4) en LRGB et LHaRGB : icône Star_Stretch existante (script star_stretch.js de SetiAstro v2.6 : amount 6, satAmount 1,3, removeGreen true) ; texte galaxies : sur RGB_stars LINÉAIRE (SXT sur le RGB linéaire, Unscreen décoché), à la place de SXT_RGB_etire et SCNR_etoiles_vert ; textes narrowband inchangés.
+
+### Script maj_pc.bat (7 octobre 2026)
+
+Demande : « je veux que tu crée un script a la racine de du repertoire cloud qui fasse un git pull et ensuite qui copie tout ce qui est dans "C:\Dev\PixInsight\docs\process-icons\scripts" vers "C:\Program Files\PixInsight\src\scripts\clodoweg" et que tu l'apelle maj_pc.bat »
+Fait : maj_pc.bat à la racine du dépôt (fins de ligne CRLF forcées par .gitattributes) : relance en administrateur si besoin, git pull dans C:\Dev\PixInsight, puis xcopy /E /I /Y des scripts vers C:\Program Files\PixInsight\src\scripts\clodoweg ; s'arrête si le pull échoue.
