@@ -38,12 +38,16 @@ function ccCandidates( nom )
    } );
 }
 
-// STF automatique (calcul de WBPP : computeAutoStretch, -2,8 MAD, fond 0,25)
+// STF automatique (calcul standard d'AutoSTF : ombres à médiane - 2,8 MAD, fond amené à 0,25)
 function ccAutoSTF( view )
 {
    let img = view.image;
-   let med = Math.max( 0.00001, img.median() );
-   view.stf = img.computeAutoStretch( [ med ], [ 1.4826*img.MAD() ], -2.8, 0.25, false );
+   let med = img.median(), mad = 1.4826*img.MAD();
+   let c0 = Math.min( 1, Math.max( 0, med - 2.8*mad ) );
+   let x = Math.max( 0.000001, med - c0 ), t = 0.25;
+   let m = ( x <= 0 || x >= 1 ) ? 0.5 : ( t - 1 )*x/( ( 2*t - 1 )*x - t );
+   let row = [ m, c0, 1, 0, 1 ];
+   view.stf = [ row, row, row, [ 0.5, 0, 1, 0, 1 ] ];
 }
 
 function ccReference( nom, wins )

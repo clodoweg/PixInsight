@@ -911,3 +911,8 @@ Fait : Crop_commun.js utilisait `UndoFlag.NoSwapFile` ; remplacé par la constan
 
 Demande : « Enleve le "Appuyez sur une touche pour continuer" a la fin de l'execution dans la console »
 Fait : pause finale retirée de maj_pc.bat et copie_tiff_pc.bat (les pauses en cas d'erreur restent, pour lire le message).
+
+### Crop_commun : « img.computeAutoStretch is not a function » (7 octobre 2026)
+
+Demande : console de l'utilisateur, Crop_reference : « img.computeAutoStretch is not a function »
+Fait : STF automatique de l'image Crop_ref calculé à la main (formule AutoSTF standard : ombres = médiane - 2,8 × 1,4826 MAD, tons moyens tels que le fond arrive à 0,25), view.stf mis directement ; vérifié en Python (fond ramené à 0,25).
