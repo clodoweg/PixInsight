@@ -166,7 +166,9 @@ function main()
       console.warningln( TITLE + " : " + view.id + " n'est pas en couleur, rien n'est fait." );
       return;
    }
-   fdProcess( view, p, view.id );
+   // glissé (seul ou dans un conteneur) : deux PixelMath en place sur la vue glissée donnaient
+   // « Unknown error » au second ; traitement sur une copie cachée puis recopie (cwApplyOnCopy)
+   cwApplyOnCopy( view, function( c ) { fdProcess( c, p, view.id ); } );
 }
 
 main();

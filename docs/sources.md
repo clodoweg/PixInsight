@@ -916,3 +916,8 @@ Fait : pause finale retirée de maj_pc.bat et copie_tiff_pc.bat (les pauses en c
 
 Demande : console de l'utilisateur, Crop_reference : « img.computeAutoStretch is not a function »
 Fait : STF automatique de l'image Crop_ref calculé à la main (formule AutoSTF standard : ombres = médiane - 2,8 × 1,4826 MAD, tons moyens tels que le fond arrive à 0,25), view.stf mis directement ; vérifié en Python (fond ramené à 0,25).
+
+### Fond_desature : « Unknown error » glissé dans un conteneur (7 octobre 2026)
+
+Demande : console de l'utilisateur (conteneur glissé sur RGB : le 2e PixelMath en place de Fond_desature échoue, « Unknown error ») ; puis « fais le pour tous les worklow. »
+Fait : Fond_desature.js glissé : traitement sur une copie cachée puis recopie (cwApplyOnCopy, comme la fenêtre, Etoiles_grosses et Saturation_grosses). Script commun, donc tous les workflows (LRGB accepté par l'utilisateur).
