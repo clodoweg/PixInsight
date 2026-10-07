@@ -221,7 +221,7 @@ RAPIDE_NOTE = {
              7: "R_C_Etoiles_fond_rapide sur l'image sans étoiles finie : Fond_desature, Fond_auto (0,12) sur l'image sans étoiles, étoiles remises (Etoiles_screen), NXT_dernier (0,25), puis Export_TIFF en un seul conteneur"},
     'LHA': {1: "MODE RAPIDE (galaxies) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre : R_C_Preparation_rapide ; R_Gradient_auto_rapide ; R_Lineaire_rapide (RGB, L et H), Continuum_auto, H_dans_RGB, C_RGB_bruit (étoiles gardées) ; GHS_1_premier, GHS_2_contraste, GHS_3_fond sur L ; R_C_RGB_etire_rapide sur RGB ; R_C_LRGB_rapide (LRGB sans étoiles) ; finition. Phase 1 : R_C_Preparation_rapide (double-clic puis Apply Global) à la place de LinearPatternSubtraction, Renommer_auto, Combinaison_RGB et Solver_auto",
             2: "R_Gradient_auto_rapide à la place de toute la phase 2 : GradientCorrection sur toutes les images ouvertes (R et H compris, pour le continuum) ; l'astrométrie est déjà faite par R_C_Preparation_rapide",
-            3: "R_C_P3_rapide glissé sur RGB à la place de E10 à E13 : BXT Correct Only, SPCC, BXT sur RGB ; BXT_L_H sur L et H, NXT_L et SXT_L_lineaire sur L ; puis chemin principal : E14_Continuum_auto (fenêtre), E15_CombineHaWithRGB et E16_C_RGB_bruit glissés sur RGB ; T_Turbo_debut fait P1 à P3 jusqu'à E13",
+            3: "R_C_P3_rapide glissé sur RGB à la place de E10 à E13 : BXT Correct Only, SPCC, BXT sur RGB ; BXT_L_H sur L et H, NXT_L et SXT_L_lineaire sur L ; puis chemin principal : E14_Continuum_auto (fenêtre), E15_CombineHaWithRGB et E16_C_RGB_bruit glissés sur RGB, E17_Fermer_continuum ; T_Turbo_debut fait P1 à P3 jusqu'à E13",
             4: "GHS_1_premier sur L sans étoiles (chemin principal, à régler), puis GHS_2_contraste et GHS_3_fond (chemin principal) sur L ; R_C_RGB_etire_rapide sur RGB (MAS avec étoiles, SXT Unscreen qui crée RGB_stars, SCNR vert sur RGB_stars, GHS fond)",
             5: "R_C_LRGB_rapide sur RGB sans étoiles (L sans étoiles ouverte) à la place de LRGB_ajout_L : L ajoutée (Saturation 0,5)",
             6: "R_C_Fin_rapide sur l'image sans étoiles après LRGB_ajout_L (ou R_C_LRGB_rapide) : HDRMT à 30 %, masque, Courbes, LHE, LHE_fin, Sharp_MMT, masque retiré, NXT_final 0,40 en un seul conteneur (= HDRMT_30, C_Finition, C_Sharp_MMT et NXT_final)",
@@ -890,7 +890,7 @@ lhargb = pre_block() + [rgb_comb_item(False), (solver_container(), ''), (solver_
           "Scale 1,2 par défaut (3 à 5 pour un H faible). Compare avec les aperçus RGB et NBRGB."), ''),
     # LHaRGB (comme le LRGB, demande de l'utilisateur) : SXT linéaire sur L ; MAS sur RGB avec étoiles puis SXT Unscreen ; LRGB sans étoiles
     (M.nxt('NXT_RGB', 0.80, 1), "NoiseXTerminator sur RGB (linéaire, après H_dans_RGB, AVEC ses étoiles : SXT vient après LRGB) : Denoise 0,80, Detail 0,15." + NXT_C),
-    (fermer('Fermer_continuum', 'H, R, HaNB'), ''),   # dans C_RGB_bruit (demande de l'utilisateur : fermer au fur et à mesure) ; H_dans_L éventuel fait avant
+    (fermer('Fermer_continuum', 'H, R, HaNB'), ''),   # icône à part après C_RGB_bruit (demande de l'utilisateur) ; H_dans_L éventuel fait avant
     (M.nxt('NXT_L', 0.60, 1), "NoiseXTerminator sur L (linéaire, après BXT_L_H et H_dans_L éventuel) : Denoise 0,60." + NXT_C),
     (M.instance('StarXTerminator', 'SXT_L_lineaire', {'output_stars': False, 'unscreen': False, 'remove_reflections': True}), D_SXT_L_LIN),
 ] + lum_block() + [

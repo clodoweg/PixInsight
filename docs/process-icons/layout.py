@@ -87,7 +87,7 @@ WHEN = {
     'Gradient_auto_rapide': "MODE RAPIDE, à la place de la phase 2 : GradientCorrection sur TOUTES les images ouvertes (plus d'ImageSolver : fait par Solver_auto en phase 1) ; à faire AVANT R_Lineaire_rapide (sans GradientCorrection)",
     'Mode_rapide': "repère du mode rapide (galaxies), sans effet : lis sa description pour l'ordre",
     'Continuum_auto': "avant CombineHaWithRGB, pour retirer le continuum de H (étoiles et cœur moins rougis) : double-clic puis Apply Global, fenêtre (Ha = H, Red = R), crée HaNB ; puis CombineHaWithRGB avec H Alpha = HaNB",
-    'C_P3_rapide': "MODE RAPIDE, à la place de E10 à E13 : après R_Gradient_auto_rapide, GLISSE sur RGB (L et H ouvertes, Conteneurs-LHaRGB chargé) ; ensuite E14_Continuum_auto, E15_CombineHaWithRGB et E16_C_RGB_bruit",
+    'C_P3_rapide': "MODE RAPIDE, à la place de E10 à E13 : après R_Gradient_auto_rapide, GLISSE sur RGB (L et H ouvertes, Conteneurs-LHaRGB chargé) ; ensuite E14_Continuum_auto, E15_CombineHaWithRGB, E16_C_RGB_bruit et E17_Fermer_continuum",
     'Star_Stretch': "étoiles étirées à part : SXT sur le RGB LINÉAIRE (Unscreen décoché, Generate star image coché) donne RGB_stars linéaire ; glisse Star_Stretch sur RGB_stars (Stretch Amount 6, SCNR) ; le RGB sans étoiles s'étire par MAS ou EZ_Soft_Stretch ; à la place de SXT_RGB_etire et SCNR_etoiles_vert",
     'EZ_Soft_Stretch': "à la place de MAS sur le RGB (ou des GHS sur L) : étirement automatique doux (HistogramTransformation, point noir et médiane calculés) ; puis SXT_RGB_etire et GHS_3_fond comme après MAS",
     'Turbo_debut': "MODE TURBO, à la place de R_C_Preparation_rapide, R_Gradient_auto_rapide et R_Lineaire_rapide (phases 1 à 3) : masters seuls ouverts, double-clic puis Apply Global (pas en glissant) ; ensuite GHS_1_premier sur L",
@@ -168,7 +168,7 @@ CONTAINERS = {
              ('C_L_lineaire', "le master L, linéaire, gradient retiré : BXT, NXT, puis SXT (L sans étoiles)", ['BXT_L', 'NXT_L', 'SXT_L_lineaire']),
              _FIN_G],
     'LHA': [('C_RGB_couleur', "l'image RGB combinée, linéaire, gradient retiré", ['BXT_CorrectOnly', 'SPCC', 'BXT_RGB']),
-            ('C_RGB_bruit', "l'image RGB après CombineHaWithRGB (ou H_dans_RGB ; et H_dans_L éventuel) : NXT, puis H, R et HaNB fermées", ['NXT_RGB', 'Fermer_continuum']),
+            ('C_RGB_bruit', "l'image RGB après CombineHaWithRGB (ou H_dans_RGB ; et H_dans_L éventuel) : NXT ; ensuite Fermer_continuum (icône à part, demande de l'utilisateur)", ['NXT_RGB']),
             _FIN_G],   # LHaRGB (demande de l'utilisateur) : étoiles gardées jusqu'à LRGB, plus de C_RGB_etoiles_bruit ni de C_L_lineaire (NXT seul)
     'RSHO': [('C_SHO_lineaire', "l'image SHO combinée, linéaire", ['BXT_NB', 'SXT_lineaire']),
              ('C_Extraction_SHO', "l'image SHO sans étoiles", ['Extraire_S', 'Extraire_H', 'Extraire_O']), _FIN,

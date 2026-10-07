@@ -161,7 +161,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > PRÉRÉGLÉ : conteneur, en une fois : Renommer_auto, LinearPatternSubtraction, Combinaison_RGB, Solver_auto (= R_C_Preparation_rapide), Gradient_auto (= R_Gradient_auto_rapide), Lineaire_auto (C_RGB_couleur sur RGB, BXT_L_H sur L et H, NXT_L et SXT_L_lineaire sur L = R_C_P3_rapide, ici en Apply Global).
 > 
-> À RÉGLER : masters seuls ouverts (L, R, G, B, H) ; double-clic puis Apply Global (pas en glissant : ImageSolver échoue sur une image en cours de traitement) ; Conteneurs-LHaRGB chargé ; ensuite E14_Continuum_auto (fenêtre), E15_CombineHaWithRGB et E16_C_RGB_bruit glissés sur RGB, puis GHS_1_premier sur L.
+> À RÉGLER : masters seuls ouverts (L, R, G, B, H) ; double-clic puis Apply Global (pas en glissant : ImageSolver échoue sur une image en cours de traitement) ; Conteneurs-LHaRGB chargé ; ensuite E14_Continuum_auto (fenêtre), E15_CombineHaWithRGB et E16_C_RGB_bruit glissés sur RGB, E17_Fermer_continuum, puis GHS_1_premier sur L.
 > 
 > SI :
 > - une étape échoue -> lance les icônes R_ une par une pour voir laquelle
@@ -369,17 +369,25 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 #### E16_C_RGB_bruit — ProcessContainer
    1. NoiseXTerminator
       ml_version=0 ; denoise=0.80 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
-   2. Script
-      script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
-      paramètres : `views=H, R, HaNB`, `dialogue=false`
 
 > LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
 > 
-> CONTENEUR : NXT_RGB, Fermer_continuum.
+> CONTENEUR : NXT_RGB.
 > 
-> SUR : l'image RGB après CombineHaWithRGB (ou H_dans_RGB ; et H_dans_L éventuel) : NXT, puis H, R et HaNB fermées.
+> SUR : l'image RGB après CombineHaWithRGB (ou H_dans_RGB ; et H_dans_L éventuel) : NXT ; ensuite Fermer_continuum (icône à part, demande de l'utilisateur).
 > 
 > Double-clic sur le conteneur pour voir ou changer les réglages de chaque étape.
+
+#### E17_Fermer_continuum — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
+   paramètres : `views=H, R, HaNB`
+
+> PRÉRÉGLÉ : script Fermer_vues : ferme H, R et HaNB (plus utiles après H_dans_RGB et H_dans_L).
+> 
+> À RÉGLER : double-clic puis Apply Global, juste après E16_C_RGB_bruit (H_dans_L éventuel fait AVANT) ; ensuite GHS_1_premier sur L.
+> 
+> SI :
+> - une vue absente est ignorée ; la console dit combien de vues sont fermées
 
 ### P3_options
 
@@ -470,20 +478,20 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
       script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
       paramètres : `etapes=BXT_L_H>L,H ; NXT_L>L ; SXT_L_lineaire>L`, `dialogue=false`
 
-> MODE RAPIDE, à la place de E10 à E13 : après R_Gradient_auto_rapide, GLISSE sur RGB (L et H ouvertes, Conteneurs-LHaRGB chargé) ; ensuite E14_Continuum_auto, E15_CombineHaWithRGB et E16_C_RGB_bruit.
+> MODE RAPIDE, à la place de E10 à E13 : après R_Gradient_auto_rapide, GLISSE sur RGB (L et H ouvertes, Conteneurs-LHaRGB chargé) ; ensuite E14_Continuum_auto, E15_CombineHaWithRGB, E16_C_RGB_bruit et E17_Fermer_continuum.
 > 
 > LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
 > 
 > PRÉRÉGLÉ : conteneur : BXT Correct Only, SPCC, BXT sur RGB ; Lineaire_auto : BXT_L_H sur L et H, NXT_L et SXT_L_lineaire sur L (= E10 à E13).
 > 
-> À RÉGLER : après R_Gradient_auto_rapide : glisse sur le RGB linéaire (L et H ouvertes ; Conteneurs-LHaRGB chargé pour BXT_L_H, NXT_L, SXT_L_lineaire) ; ensuite E14_Continuum_auto (fenêtre), E15_CombineHaWithRGB et E16_C_RGB_bruit glissés sur RGB, puis GHS_1_premier sur L.
+> À RÉGLER : après R_Gradient_auto_rapide : glisse sur le RGB linéaire (L et H ouvertes ; Conteneurs-LHaRGB chargé pour BXT_L_H, NXT_L, SXT_L_lineaire) ; ensuite E14_Continuum_auto (fenêtre), E15_CombineHaWithRGB et E16_C_RGB_bruit glissés sur RGB, E17_Fermer_continuum, puis GHS_1_premier sur L.
 > 
 > SI :
 > - une étape échoue -> la console dit laquelle
 
 ## P4_Etirement
 
-#### E17_GHS_1_premier — GeneralizedHyperbolicStretch
+#### E18_GHS_1_premier — GeneralizedHyperbolicStretch
    stretchType=ST_GeneralisedHyperbolic ; stretchChannel=SC_RGB ; inverse=false ; stretchFactor=0.000 ; localIntensity=10.000 ; symmetryPoint=0.000000 ; highlightProtection=1.000000 ; shadowProtection=0.000000 ; blackPoint=0.000000 ; whitePoint=1.000000 ; colourBlend=1.000 ; clipType=CT_RGBBlend ; useRGBWorkingSpace=false
 
 > PRÉRÉGLÉ : b = 10, Stretch factor 0.
@@ -494,7 +502,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - fond bruité qui ressort -> SP trop bas, remonte-le
 > - cœur qui sature -> HP vers sa valeur
 
-#### E18_GHS_2_contraste — GeneralizedHyperbolicStretch
+#### E19_GHS_2_contraste — GeneralizedHyperbolicStretch
    stretchType=ST_GeneralisedHyperbolic ; stretchChannel=SC_RGB ; inverse=false ; stretchFactor=1.000 ; localIntensity=4.000 ; symmetryPoint=0.350000 ; highlightProtection=0.900000 ; shadowProtection=0.000000 ; blackPoint=0.000000 ; whitePoint=1.000000 ; colourBlend=1.000 ; clipType=CT_RGBBlend ; useRGBWorkingSpace=false
 
 > PRÉRÉGLÉ : b = 4, HP 0,9, Stretch factor 1, SP 0,35.
@@ -505,7 +513,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - cœur brillant qui sature -> baisse HP vers sa valeur
 > - fond trop sombre -> monte LP vers sa valeur (pas au-dessus de SP)
 
-#### E19_MAS — MultiscaleAdaptiveStretch
+#### E20_MAS — MultiscaleAdaptiveStretch
    aggressiveness=0.70 ; targetBackground=0.150 ; dynamicRangeCompression=0.40 ; contrastRecovery=true ; scaleSeparation=1024 ; contrastRecoveryIntensity=1.000 ; previewLargeScale=false ; saturationEnabled=true ; saturationAmount=0.75 ; saturationBoost=0.50 ; saturationLightnessMask=true ; backgroundROIEnabled=false ; backgroundROIX0=0 ; backgroundROIY0=0 ; backgroundROIWidth=0 ; backgroundROIHeight=0
 
 > PRÉRÉGLÉ : MultiscaleAdaptiveStretch, tes réglages : Aggressiveness 0,70, Target background 0,150, Dynamic range compression 0,40, Contrast recovery coché (séparation 1024, intensité 1,0), saturation cochée (0,75, boost 0,50, masque de luminosité).
@@ -516,7 +524,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - étoiles trop saturées -> saturation 0,5
 > - cœur de galaxie brûlé -> saturation décochée, HDRMT ensuite
 
-#### E20_SXT_RGB_etire — StarXTerminator
+#### E21_SXT_RGB_etire — StarXTerminator
    ml_version=0 ; output_stars=true ; unscreen=true ; remove_stars=true ; remove_spikes=true ; remove_aureoles=true ; remove_reflections=true ; overlap=0.20
 
 > PRÉRÉGLÉ : StarXTerminator, Unscreen COCHÉ (image étirée), Generate star image coché, Remove reflections coché : RGB sans étoiles + RGB_stars étirée.
@@ -528,7 +536,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - morceaux de galaxie dans RGB_stars -> masque noir sur le cœur avant SXT
 > - quadrillage -> Large overlap
 
-#### E21_SCNR_etoiles_vert — Script
+#### E22_SCNR_etoiles_vert — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js`
    paramètres : `vue=RGB_stars`, `amount=0`, `satAmount=0`, `scnr=true`, `violet=false`
 
@@ -542,7 +550,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - étoiles grisées ou magenta -> double-clic : décoche SCNR, ou passe un SCNR natif à 0,5 sur RGB_stars
 > - autre nom d'étoiles -> vue = ce nom dans l'icône
 
-#### E22_GHS_3_fond — GeneralizedHyperbolicStretch
+#### E23_GHS_3_fond — GeneralizedHyperbolicStretch
    stretchType=ST_GeneralisedHyperbolic ; stretchChannel=SC_RGB ; inverse=false ; stretchFactor=1.000 ; localIntensity=10.000 ; symmetryPoint=0.200000 ; highlightProtection=0.200000 ; shadowProtection=0.000000 ; blackPoint=0.000000 ; whitePoint=1.000000 ; colourBlend=1.000 ; clipType=CT_RGBBlend ; useRGBWorkingSpace=false
 
 > PRÉRÉGLÉ : b = 10, SP = HP = 0,20, Stretch factor 1 (fond à 0,23 après GHS_2).
@@ -671,7 +679,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 ## P5_Couleur
 
-#### E23_LRGB_ajout_L — LRGBCombination
+#### E24_LRGB_ajout_L — LRGBCombination
    mL=0.500 ; mc=0.500 ; clipHighlights=false ; noiseReduction=true ; layersRemoved=4 ; layersProtected=2 ; inheritAstrometricSolution=true ; table channels (4 lignes)
 
 > PRÉRÉGLÉ : seul L coché, Lightness 0,5, Saturation 0,5, réduction du bruit de chrominance.
@@ -701,7 +709,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 ## P6_Finition
 
-#### E24_HDRMT_30 — ProcessContainer
+#### E25_HDRMT_30 — ProcessContainer
    1. PixelMath
       expression = `$T` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=true ; showNewImage=true ; newImageId=HDR_avant ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
    2. HDRMultiscaleTransform
@@ -722,7 +730,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - cœur encore trop clair -> HDRMT_40 ou HDRMT_50
 > - aucun effet visible -> saute la partie 1
 
-#### E25_C_Finition — ProcessContainer
+#### E26_C_Finition — ProcessContainer
    1. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
       paramètres : `mode=attacher`, `s=0.14`, `flou=2`, `nom=masque_L`, `dialogue=false`
@@ -744,7 +752,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > Double-clic sur le conteneur pour voir ou changer les réglages de chaque étape.
 
-#### E26_C_Sharp_MMT — ProcessContainer
+#### E27_C_Sharp_MMT — ProcessContainer
    1. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
       paramètres : `mode=attacher`, `s=0.14`, `flou=2`, `nom=masque_L`, `dialogue=false`
@@ -767,7 +775,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - bruit accentué -> première couche 3
 > - autre rendu -> Sharp_USM (P6 options) à la place
 
-#### E27_NXT_final — NoiseXTerminator
+#### E28_NXT_final — NoiseXTerminator
    ml_version=0 ; denoise=0.40 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
 
 > PRÉRÉGLÉ : Denoise 0,40, 1 itération.
@@ -1062,7 +1070,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 ## P7_Etoiles
 
-#### E28_Fond_desature — Script
+#### E29_Fond_desature — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js`
    paramètres : `debut=0.03`, `fin=0.15`, `violetFin=0.30`, `flou=3`
 
@@ -1076,7 +1084,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - violet encore visible dans le halo -> violetFin 0,40
 > - extensions faibles de la galaxie grisées -> fin 0,10
 
-#### E29_Fond_auto — Script
+#### E30_Fond_auto — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js`
    paramètres : `cible=0.12`, `tolerance=0.005`, `grille=8`
 
@@ -1090,7 +1098,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - image trop sombre -> cible 0,13 ou 0,14
 > - données très propres -> 0,10 à 0,11
 
-#### E30_Etoiles_screen — PixelMath
+#### E31_Etoiles_screen — PixelMath
    expression = `~((~$T) * (~RGB_stars))` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
 
 > PRÉRÉGLÉ : ~((~$T) * (~RGB_stars)), sur l'image elle-même.
@@ -1100,7 +1108,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > SI :
 > - autre nom d'étoiles -> corrige-le dans la formule
 
-#### E31_NXT_dernier — NoiseXTerminator
+#### E32_NXT_dernier — NoiseXTerminator
    ml_version=0 ; denoise=0.25 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
 
 > PRÉRÉGLÉ : NoiseXTerminator Denoise 0,25, 1 itération.

@@ -874,3 +874,8 @@ Fait : maj_pc.bat à la racine du dépôt (fins de ligne CRLF forcées par .gita
 
 Demande : « je ne veux pas qu'il me demande de valider en administrateur a chaque fois »
 Fait : plus de relance admin systématique. Le script teste l'écriture dans clodoweg ; seulement si elle échoue (1re fois), il lance en admin un petit .cmd temporaire qui fait icacls /grant <compte>:(OI)(CI)M /T. Ensuite il tourne sans admin.
+
+### LHaRGB : fermeture de H, R, HaNB en icône à part (7 octobre 2026)
+
+Demande : « dans HaRGB je veux rajouter un process apres E16 qui ferme les vue R,H et HaNB »
+Fait : Fermer_continuum (Fermer_vues, views = H, R, HaNB) sorti du conteneur C_RGB_bruit (qui ne garde que NXT_RGB) et placé comme étape principale E17_Fermer_continuum (double-clic puis Apply Global), juste après E16_C_RGB_bruit ; GHS_1_premier devient E18. LRGB non touché.

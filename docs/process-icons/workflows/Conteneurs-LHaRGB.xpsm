@@ -707,7 +707,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <description>MODE TURBO, phase 1 — Préparation : une icône T_ enchaîne en un clic les étapes de plusieurs icônes rapides (R_) ; elle les contient, les icônes R_ ne sont pas nécessaires. Icône de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="T_Turbo_debut_instance">
-      <description>MODE TURBO, à la place de R_C_Preparation_rapide, R_Gradient_auto_rapide et R_Lineaire_rapide (phases 1 à 3) : masters seuls ouverts, double-clic puis Apply Global (pas en glissant) ; ensuite GHS_1_premier sur L.&#10;&#10;LANCEMENT : masters seuls ouverts, double-clic puis Apply Global (rond bleu) ; pas en glissant (ImageSolver échoue sur une image en cours de traitement).&#10;&#10;PRÉRÉGLÉ : conteneur, en une fois : Renommer_auto, LinearPatternSubtraction, Combinaison_RGB, Solver_auto (= R_C_Preparation_rapide), Gradient_auto (= R_Gradient_auto_rapide), Lineaire_auto (C_RGB_couleur sur RGB, BXT_L_H sur L et H, NXT_L et SXT_L_lineaire sur L = R_C_P3_rapide, ici en Apply Global).&#10;&#10;À RÉGLER : masters seuls ouverts (L, R, G, B, H) ; double-clic puis Apply Global (pas en glissant : ImageSolver échoue sur une image en cours de traitement) ; Conteneurs-LHaRGB chargé ; ensuite E14_Continuum_auto (fenêtre), E15_CombineHaWithRGB et E16_C_RGB_bruit glissés sur RGB, puis GHS_1_premier sur L.&#10;&#10;SI :&#10;- une étape échoue -&gt; lance les icônes R_ une par une pour voir laquelle</description>
+      <description>MODE TURBO, à la place de R_C_Preparation_rapide, R_Gradient_auto_rapide et R_Lineaire_rapide (phases 1 à 3) : masters seuls ouverts, double-clic puis Apply Global (pas en glissant) ; ensuite GHS_1_premier sur L.&#10;&#10;LANCEMENT : masters seuls ouverts, double-clic puis Apply Global (rond bleu) ; pas en glissant (ImageSolver échoue sur une image en cours de traitement).&#10;&#10;PRÉRÉGLÉ : conteneur, en une fois : Renommer_auto, LinearPatternSubtraction, Combinaison_RGB, Solver_auto (= R_C_Preparation_rapide), Gradient_auto (= R_Gradient_auto_rapide), Lineaire_auto (C_RGB_couleur sur RGB, BXT_L_H sur L et H, NXT_L et SXT_L_lineaire sur L = R_C_P3_rapide, ici en Apply Global).&#10;&#10;À RÉGLER : masters seuls ouverts (L, R, G, B, H) ; double-clic puis Apply Global (pas en glissant : ImageSolver échoue sur une image en cours de traitement) ; Conteneurs-LHaRGB chargé ; ensuite E14_Continuum_auto (fenêtre), E15_CombineHaWithRGB et E16_C_RGB_bruit glissés sur RGB, E17_Fermer_continuum, puis GHS_1_premier sur L.&#10;&#10;SI :&#10;- une étape échoue -&gt; lance les icônes R_ une par une pour voir laquelle</description>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Renommer_auto.js</parameter>
          <parameter id="md5sum"></parameter>
@@ -1894,7 +1894,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="information"></parameter>
    </instance>
    <instance class="ProcessContainer" id="E16_C_RGB_bruit_instance">
-      <description>LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;CONTENEUR : NXT_RGB, Fermer_continuum.&#10;&#10;SUR : l'image RGB après CombineHaWithRGB (ou H_dans_RGB ; et H_dans_L éventuel) : NXT, puis H, R et HaNB fermées.&#10;&#10;Double-clic sur le conteneur pour voir ou changer les réglages de chaque étape.</description>
+      <description>LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;CONTENEUR : NXT_RGB.&#10;&#10;SUR : l'image RGB après CombineHaWithRGB (ou H_dans_RGB ; et H_dans_L éventuel) : NXT ; ensuite Fermer_continuum (icône à part, demande de l'utilisateur).&#10;&#10;Double-clic sur le conteneur pour voir ou changer les réglages de chaque étape.</description>
       <instance class="NoiseXTerminator" version="256" enabled="true">
          <parameter id="ml_version" value="0"/>
          <parameter id="denoise" value="0.80"/>
@@ -1913,21 +1913,18 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          <parameter id="detail" value="0.15"/>
          <parameter id="overlap" value="0.20"/>
       </instance>
-      <instance class="Script" version="256" enabled="true">
-         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
-         <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="2">
-            <tr>
-               <td id="id">views</td>
-               <td id="value">H, R, HaNB</td>
-            </tr>
-            <tr>
-               <td id="id">dialogue</td>
-               <td id="value">false</td>
-            </tr>
-         </table>
-         <parameter id="information"></parameter>
-      </instance>
+   </instance>
+   <instance class="Script" version="256" id="E17_Fermer_continuum_instance">
+      <description>PRÉRÉGLÉ : script Fermer_vues : ferme H, R et HaNB (plus utiles après H_dans_RGB et H_dans_L).&#10;&#10;À RÉGLER : double-clic puis Apply Global, juste après E16_C_RGB_bruit (H_dans_L éventuel fait AVANT) ; ensuite GHS_1_premier sur L.&#10;&#10;SI :&#10;- une vue absente est ignorée ; la console dit combien de vues sont fermées</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="1">
+         <tr>
+            <td id="id">views</td>
+            <td id="value">H, R, HaNB</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
    </instance>
    <instance class="NoOperation" version="256" id="P3_options_instance">
       <description>OPTIONS de la phase 3 — Linéaire : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
@@ -2127,10 +2124,10 @@ max($T, HaNB*a)</parameter>
       <parameter id="interaction" value="SeparateChannels"/>
    </instance>
    <instance class="NoOperation" version="256" id="P3_rapide_instance">
-      <description>MODE RAPIDE, phase 3 — Linéaire : R_C_P3_rapide glissé sur RGB à la place de E10 à E13 : BXT Correct Only, SPCC, BXT sur RGB ; BXT_L_H sur L et H, NXT_L et SXT_L_lineaire sur L ; puis chemin principal : E14_Continuum_auto (fenêtre), E15_CombineHaWithRGB et E16_C_RGB_bruit glissés sur RGB ; T_Turbo_debut fait P1 à P3 jusqu'à E13. Icône de repère, sans effet.</description>
+      <description>MODE RAPIDE, phase 3 — Linéaire : R_C_P3_rapide glissé sur RGB à la place de E10 à E13 : BXT Correct Only, SPCC, BXT sur RGB ; BXT_L_H sur L et H, NXT_L et SXT_L_lineaire sur L ; puis chemin principal : E14_Continuum_auto (fenêtre), E15_CombineHaWithRGB et E16_C_RGB_bruit glissés sur RGB, E17_Fermer_continuum ; T_Turbo_debut fait P1 à P3 jusqu'à E13. Icône de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="R_C_P3_rapide_instance">
-      <description>MODE RAPIDE, à la place de E10 à E13 : après R_Gradient_auto_rapide, GLISSE sur RGB (L et H ouvertes, Conteneurs-LHaRGB chargé) ; ensuite E14_Continuum_auto, E15_CombineHaWithRGB et E16_C_RGB_bruit.&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : BXT Correct Only, SPCC, BXT sur RGB ; Lineaire_auto : BXT_L_H sur L et H, NXT_L et SXT_L_lineaire sur L (= E10 à E13).&#10;&#10;À RÉGLER : après R_Gradient_auto_rapide : glisse sur le RGB linéaire (L et H ouvertes ; Conteneurs-LHaRGB chargé pour BXT_L_H, NXT_L, SXT_L_lineaire) ; ensuite E14_Continuum_auto (fenêtre), E15_CombineHaWithRGB et E16_C_RGB_bruit glissés sur RGB, puis GHS_1_premier sur L.&#10;&#10;SI :&#10;- une étape échoue -&gt; la console dit laquelle</description>
+      <description>MODE RAPIDE, à la place de E10 à E13 : après R_Gradient_auto_rapide, GLISSE sur RGB (L et H ouvertes, Conteneurs-LHaRGB chargé) ; ensuite E14_Continuum_auto, E15_CombineHaWithRGB, E16_C_RGB_bruit et E17_Fermer_continuum.&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : BXT Correct Only, SPCC, BXT sur RGB ; Lineaire_auto : BXT_L_H sur L et H, NXT_L et SXT_L_lineaire sur L (= E10 à E13).&#10;&#10;À RÉGLER : après R_Gradient_auto_rapide : glisse sur le RGB linéaire (L et H ouvertes ; Conteneurs-LHaRGB chargé pour BXT_L_H, NXT_L, SXT_L_lineaire) ; ensuite E14_Continuum_auto (fenêtre), E15_CombineHaWithRGB et E16_C_RGB_bruit glissés sur RGB, E17_Fermer_continuum, puis GHS_1_premier sur L.&#10;&#10;SI :&#10;- une étape échoue -&gt; la console dit laquelle</description>
       <instance class="BlurXTerminator" version="256" enabled="true">
          <parameter id="ml_version" value="4"/>
          <parameter id="correct_only" value="true"/>
@@ -2227,7 +2224,7 @@ max($T, HaNB*a)</parameter>
    <instance class="NoOperation" version="256" id="P4_Etirement_instance">
       <description>PHASE 4 — Étirement : passage en non linéaire, même fond pour toutes les images. Colonne de repère, sans effet.</description>
    </instance>
-   <instance class="GeneralizedHyperbolicStretch" version="256" id="E17_GHS_1_premier_instance">
+   <instance class="GeneralizedHyperbolicStretch" version="256" id="E18_GHS_1_premier_instance">
       <description>PRÉRÉGLÉ : b = 10, Stretch factor 0.&#10;&#10;À RÉGLER : sur L SANS étoiles (SXT_L_lineaire fait en phase 3) ; clique le signal faible, Send to SP ; Stretch factor jusqu'au pic à 0,25 (fond lu 0,001 -&gt; 6,5 ; 0,002 -&gt; 5,5 ; 0,005 -&gt; 4,5 ; 0,01 -&gt; 3,5) ; pas d'étoiles : pas de HP à gérer.&#10;&#10;SI :&#10;- fond bruité qui ressort -&gt; SP trop bas, remonte-le&#10;- cœur qui sature -&gt; HP vers sa valeur</description>
       <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
       <parameter id="stretchChannel" value="SC_RGB"/>
@@ -2243,7 +2240,7 @@ max($T, HaNB*a)</parameter>
       <parameter id="clipType" value="CT_RGBBlend"/>
       <parameter id="useRGBWorkingSpace" value="false"/>
    </instance>
-   <instance class="GeneralizedHyperbolicStretch" version="256" id="E18_GHS_2_contraste_instance">
+   <instance class="GeneralizedHyperbolicStretch" version="256" id="E19_GHS_2_contraste_instance">
       <description>PRÉRÉGLÉ : b = 4, HP 0,9, Stretch factor 1, SP 0,35.&#10;&#10;À RÉGLER : sur L ; SP = valeur de ta zone plate, au-dessus du fond (souvent 0,30–0,45 ; jamais 0,25 = le fond) ; Stretch factor 1 à 2.&#10;&#10;SI :&#10;- cœur brillant qui sature -&gt; baisse HP vers sa valeur&#10;- fond trop sombre -&gt; monte LP vers sa valeur (pas au-dessus de SP)</description>
       <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
       <parameter id="stretchChannel" value="SC_RGB"/>
@@ -2259,7 +2256,7 @@ max($T, HaNB*a)</parameter>
       <parameter id="clipType" value="CT_RGBBlend"/>
       <parameter id="useRGBWorkingSpace" value="false"/>
    </instance>
-   <instance class="MultiscaleAdaptiveStretch" version="256" id="E19_MAS_instance">
+   <instance class="MultiscaleAdaptiveStretch" version="256" id="E20_MAS_instance">
       <description>PRÉRÉGLÉ : MultiscaleAdaptiveStretch, tes réglages : Aggressiveness 0,70, Target background 0,150, Dynamic range compression 0,40, Contrast recovery coché (séparation 1024, intensité 1,0), saturation cochée (0,75, boost 0,50, masque de luminosité).&#10;&#10;À RÉGLER : glisse sur le RGB LINÉAIRE AVEC ses étoiles (après C_RGB_lineaire) ; ensuite SXT_RGB_etire.&#10;&#10;SI :&#10;- étoiles trop saturées -&gt; saturation 0,5&#10;- cœur de galaxie brûlé -&gt; saturation décochée, HDRMT ensuite</description>
       <parameter id="aggressiveness" value="0.70"/>
       <parameter id="targetBackground" value="0.150"/>
@@ -2278,7 +2275,7 @@ max($T, HaNB*a)</parameter>
       <parameter id="backgroundROIWidth" value="0"/>
       <parameter id="backgroundROIHeight" value="0"/>
    </instance>
-   <instance class="StarXTerminator" version="256" id="E20_SXT_RGB_etire_instance">
+   <instance class="StarXTerminator" version="256" id="E21_SXT_RGB_etire_instance">
       <description>PRÉRÉGLÉ : StarXTerminator, Unscreen COCHÉ (image étirée), Generate star image coché, Remove reflections coché : RGB sans étoiles + RGB_stars étirée.&#10;&#10;À RÉGLER : glisse sur le RGB juste après MAS ; garde RGB_stars ouverte jusqu'à Etoiles_screen ; ensuite SCNR_etoiles_vert (sur RGB_stars ; options SCNR_etoiles_violet, Saturation_grosses), puis GHS_3_fond sur le RGB sans étoiles.&#10;&#10;SI :&#10;- taches ou halos restés -&gt; Nettoyage_sans_etoiles (P6 options)&#10;- morceaux de galaxie dans RGB_stars -&gt; masque noir sur le cœur avant SXT&#10;- quadrillage -&gt; Large overlap</description>
       <parameter id="ml_version" value="0"/>
       <parameter id="output_stars" value="true"/>
@@ -2289,7 +2286,7 @@ max($T, HaNB*a)</parameter>
       <parameter id="remove_reflections" value="true"/>
       <parameter id="overlap" value="0.20"/>
    </instance>
-   <instance class="Script" version="256" id="E21_SCNR_etoiles_vert_instance">
+   <instance class="Script" version="256" id="E22_SCNR_etoiles_vert_instance">
       <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Etoiles_auto réglé SCNR seul : SCNR vert, Amount 1,0, Average Neutral, Preserve lightness, sur RGB_stars (amount 0 = pas d'étirement, satAmount 0 = pas de saturation).&#10;&#10;À RÉGLER : glisse sur n'importe quelle image juste après SXT_RGB_etire (traite toujours la vue RGB_stars) : vert retiré des étoiles ; options ensuite : SCNR_etoiles_violet, Saturation_grosses ; le RGB sans étoiles n'est pas touché.&#10;&#10;SI :&#10;- étoiles grisées ou magenta -&gt; double-clic : décoche SCNR, ou passe un SCNR natif à 0,5 sur RGB_stars&#10;- autre nom d'étoiles -&gt; vue = ce nom dans l'icône</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js</parameter>
       <parameter id="md5sum"></parameter>
@@ -2317,7 +2314,7 @@ max($T, HaNB*a)</parameter>
       </table>
       <parameter id="information"></parameter>
    </instance>
-   <instance class="GeneralizedHyperbolicStretch" version="256" id="E22_GHS_3_fond_instance">
+   <instance class="GeneralizedHyperbolicStretch" version="256" id="E23_GHS_3_fond_instance">
       <description>PRÉRÉGLÉ : b = 10, SP = HP = 0,20, Stretch factor 1 (fond à 0,23 après GHS_2).&#10;&#10;À RÉGLER : sur L après GHS_2 ; puis sur le RGB SANS étoiles après MAS et SXT_RGB_etire (SP = HP = 0,12, fond MAS 0,15) ; SP = HP = fond lu - 0,03 ; Stretch factor 0,8 à 1,2 jusqu'au fond vers 0,12–0,14 sur les deux, AVANT LRGB.</description>
       <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
       <parameter id="stretchChannel" value="SC_RGB"/>
@@ -2574,7 +2571,7 @@ max($T, HaNB*a)</parameter>
    <instance class="NoOperation" version="256" id="P5_Couleur_instance">
       <description>PHASE 5 — Couleur : combinaison finale et palette. Colonne de repère, sans effet.</description>
    </instance>
-   <instance class="LRGBCombination" version="256" id="E23_LRGB_ajout_L_instance">
+   <instance class="LRGBCombination" version="256" id="E24_LRGB_ajout_L_instance">
       <description>PRÉRÉGLÉ : seul L coché, Lightness 0,5, Saturation 0,5, réduction du bruit de chrominance.&#10;&#10;À RÉGLER : vue L nommée 'L' (sans étoiles, GHS faits) ; glisse sur le RGB SANS étoiles (après MAS, SXT_RGB_etire, GHS_3_fond) ; les étoiles reviennent en phase 7 (Etoiles_screen).&#10;&#10;SI :&#10;- couleurs délavées -&gt; étire L moins fort&#10;- couleurs trop vives -&gt; Saturation plus haute (0,6)</description>
       <table id="channels" rows="4">
          <tr>
@@ -2646,7 +2643,7 @@ max($T, HaNB*a)</parameter>
    <instance class="NoOperation" version="256" id="P6_Finition_instance">
       <description>PHASE 6 — Finition : contraste et saturation sur l'image sans étoiles. Colonne de repère, sans effet.</description>
    </instance>
-   <instance class="ProcessContainer" id="E24_HDRMT_30_instance">
+   <instance class="ProcessContainer" id="E25_HDRMT_30_instance">
       <description>LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : copie de l'image (vue HDR_avant), HDRMT 6 couches To lightness / Preserve hue / Lightness mask, mélange 0,3 × résultat + 0,7 × copie, puis fermeture de la copie.&#10;&#10;À RÉGLER : PARTIE 1 de la finition (cœur), par défaut : glisse sur l'image sans étoiles étirée, AVANT C_Finition ; la copie HDR_avant est fermée automatiquement.&#10;&#10;SI :&#10;- cœur encore trop clair -&gt; HDRMT_40 ou HDRMT_50&#10;- aucun effet visible -&gt; saute la partie 1</description>
       <instance class="PixelMath" version="256" enabled="true">
          <parameter id="expression">$T</parameter>
@@ -2745,7 +2742,7 @@ max($T, HaNB*a)</parameter>
          <parameter id="information"></parameter>
       </instance>
    </instance>
-   <instance class="ProcessContainer" id="E25_C_Finition_instance">
+   <instance class="ProcessContainer" id="E26_C_Finition_instance">
       <description>LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;CONTENEUR : Masque_L, Courbes, LHE, LHE_fin, Masque_retirer.&#10;&#10;SUR : l'image sans étoiles étirée (masque créé, attaché puis retiré automatiquement) ; courbe en S, saturation 0,5 -&gt; 0,58 (couleurs trop ternes : Finition_saturee, 0,65, à la place).&#10;&#10;Double-clic sur le conteneur pour voir ou changer les réglages de chaque étape.</description>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
@@ -2943,7 +2940,7 @@ max($T, HaNB*a)</parameter>
          <parameter id="information"></parameter>
       </instance>
    </instance>
-   <instance class="ProcessContainer" id="E26_C_Sharp_MMT_instance">
+   <instance class="ProcessContainer" id="E27_C_Sharp_MMT_instance">
       <description>LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : masque de luminance attaché (Masque_L, s = 0,14), script Sharp_MMT (MultiscaleMedianTransform 5 couches, couches 2 à 4 biais +0,04, couche 1 inchangée), masque retiré.&#10;&#10;À RÉGLER : glisse sur l'image SANS étoiles étirée, après C_Finition, avant NXT_final ; regarde à 100 % sur la galaxie ; copie Sharp_MMT.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- pas assez net -&gt; double-clic sur le conteneur, Sharp_MMT : biais 0.06&#10;- halos ou aspect dur -&gt; biais 0.02&#10;- bruit accentué -&gt; première couche 3&#10;- autre rendu -&gt; Sharp_USM (P6 options) à la place</description>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
@@ -3019,7 +3016,7 @@ max($T, HaNB*a)</parameter>
          <parameter id="information"></parameter>
       </instance>
    </instance>
-   <instance class="NoiseXTerminator" version="256" id="E27_NXT_final_instance">
+   <instance class="NoiseXTerminator" version="256" id="E28_NXT_final_instance">
       <description>PRÉRÉGLÉ : Denoise 0,40, 1 itération.&#10;&#10;À RÉGLER : PARTIE 3 de la finition (bruit) : glisse sur l'image sans étoiles après C_Finition (et le Boost éventuel) ; options à la place : NXT_final_doux (0,25), NXT_final_fort (0,60).&#10;&#10;SI :&#10;- aspect plastique -&gt; NXT_final_doux&#10;- bruit encore visible -&gt; NXT_final_fort</description>
       <parameter id="ml_version" value="0"/>
       <parameter id="denoise" value="0.40"/>
@@ -4617,7 +4614,7 @@ max($T, HaNB*a)</parameter>
    <instance class="NoOperation" version="256" id="P7_Etoiles_instance">
       <description>PHASE 7 — Étoiles : étoiles : étirement, recombinaison, réduction. Colonne de repère, sans effet.</description>
    </instance>
-   <instance class="Script" version="256" id="E28_Fond_desature_instance">
+   <instance class="Script" version="256" id="E29_Fond_desature_instance">
       <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Fond_desature : fond mesuré ; zones faibles (luminance lissée sous fond + 0,15, décroissant jusqu'à + 0,30) : violet neutralisé (G remonté jusqu'à min(R, B), magenta seulement) ; fond (sous + 0,03, rampe jusqu'à + 0,15) : couleur retirée.&#10;&#10;À RÉGLER : glisse sur l'image SANS étoiles finie (après NXT_final), avant Fond_auto et Etoiles_screen.&#10;&#10;SI :&#10;- violet encore visible dans le halo -&gt; violetFin 0,40&#10;- extensions faibles de la galaxie grisées -&gt; fin 0,10</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js</parameter>
       <parameter id="md5sum"></parameter>
@@ -4641,7 +4638,7 @@ max($T, HaNB*a)</parameter>
       </table>
       <parameter id="information"></parameter>
    </instance>
-   <instance class="Script" version="256" id="E29_Fond_auto_instance">
+   <instance class="Script" version="256" id="E30_Fond_auto_instance">
       <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Fond_auto : fond de chaque canal mesuré (grille 8 × 8, quart le plus sombre des cases), puis mtf canal par canal pour l'amener à 0,12, sans écrêtage ; fond neutre.&#10;&#10;À RÉGLER : glisse sur l'image SANS étoiles, après Fond_desature, avant Etoiles_screen ; console : fond avant et après.&#10;&#10;SI :&#10;- image trop sombre -&gt; cible 0,13 ou 0,14&#10;- données très propres -&gt; 0,10 à 0,11</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js</parameter>
       <parameter id="md5sum"></parameter>
@@ -4661,7 +4658,7 @@ max($T, HaNB*a)</parameter>
       </table>
       <parameter id="information"></parameter>
    </instance>
-   <instance class="PixelMath" version="256" id="E30_Etoiles_screen_instance">
+   <instance class="PixelMath" version="256" id="E31_Etoiles_screen_instance">
       <description>PRÉRÉGLÉ : ~((~$T) * (~RGB_stars)), sur l'image elle-même.&#10;&#10;À RÉGLER : glisse sur l'image sans étoiles finale : elle reçoit les étoiles ; étoiles étirées nommées RGB_stars (nom donné par SXT, s minuscule).&#10;&#10;SI :&#10;- autre nom d'étoiles -&gt; corrige-le dans la formule</description>
       <parameter id="expression">~((~$T) * (~RGB_stars))</parameter>
       <parameter id="expression1"></parameter>
@@ -4691,7 +4688,7 @@ max($T, HaNB*a)</parameter>
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
-   <instance class="NoiseXTerminator" version="256" id="E31_NXT_dernier_instance">
+   <instance class="NoiseXTerminator" version="256" id="E32_NXT_dernier_instance">
       <description>PRÉRÉGLÉ : NoiseXTerminator Denoise 0,25, 1 itération.&#10;&#10;À RÉGLER : toute dernière étape avant l'export : glisse sur l'image finie AVEC ses étoiles, juste après Etoiles_screen.&#10;&#10;SI :&#10;- aspect plastique -&gt; Denoise 0,15&#10;- bruit encore visible -&gt; 0,35&#10;- étoiles adoucies -&gt; 0,15, ou saute cette étape</description>
       <parameter id="ml_version" value="0"/>
       <parameter id="denoise" value="0.25"/>
@@ -5417,22 +5414,23 @@ max($T,f1)</parameter>
    <icon id="E14_Continuum_auto" instance="E14_Continuum_auto_instance" xpos="430" ypos="184" workspace="Workspace01"/>
    <icon id="E15_CombineHaWithRGB" instance="E15_CombineHaWithRGB_instance" xpos="430" ypos="214" workspace="Workspace01"/>
    <icon id="E16_C_RGB_bruit" instance="E16_C_RGB_bruit_instance" xpos="430" ypos="244" workspace="Workspace01"/>
-   <icon id="P3_options" instance="P3_options_instance" xpos="430" ypos="290" workspace="Workspace01"/>
-   <icon id="Opt_Find_Background" instance="Opt_Find_Background_instance" xpos="430" ypos="324" workspace="Workspace01"/>
-   <icon id="Opt_H_dans_RGB" instance="Opt_H_dans_RGB_instance" xpos="430" ypos="354" workspace="Workspace01"/>
-   <icon id="Opt_H_dans_RGB_v2" instance="Opt_H_dans_RGB_v2_instance" xpos="430" ypos="384" workspace="Workspace01"/>
-   <icon id="Opt_H_dans_L" instance="Opt_H_dans_L_instance" xpos="430" ypos="414" workspace="Workspace01"/>
-   <icon id="Opt_NBRGBCombination" instance="Opt_NBRGBCombination_instance" xpos="430" ypos="444" workspace="Workspace01"/>
-   <icon id="Opt_STF" instance="Opt_STF_instance" xpos="430" ypos="474" workspace="Workspace01"/>
-   <icon id="P3_rapide" instance="P3_rapide_instance" xpos="430" ypos="520" workspace="Workspace01"/>
-   <icon id="R_C_P3_rapide" instance="R_C_P3_rapide_instance" xpos="430" ypos="554" workspace="Workspace01"/>
+   <icon id="E17_Fermer_continuum" instance="E17_Fermer_continuum_instance" xpos="430" ypos="274" workspace="Workspace01"/>
+   <icon id="P3_options" instance="P3_options_instance" xpos="430" ypos="320" workspace="Workspace01"/>
+   <icon id="Opt_Find_Background" instance="Opt_Find_Background_instance" xpos="430" ypos="354" workspace="Workspace01"/>
+   <icon id="Opt_H_dans_RGB" instance="Opt_H_dans_RGB_instance" xpos="430" ypos="384" workspace="Workspace01"/>
+   <icon id="Opt_H_dans_RGB_v2" instance="Opt_H_dans_RGB_v2_instance" xpos="430" ypos="414" workspace="Workspace01"/>
+   <icon id="Opt_H_dans_L" instance="Opt_H_dans_L_instance" xpos="430" ypos="444" workspace="Workspace01"/>
+   <icon id="Opt_NBRGBCombination" instance="Opt_NBRGBCombination_instance" xpos="430" ypos="474" workspace="Workspace01"/>
+   <icon id="Opt_STF" instance="Opt_STF_instance" xpos="430" ypos="504" workspace="Workspace01"/>
+   <icon id="P3_rapide" instance="P3_rapide_instance" xpos="430" ypos="550" workspace="Workspace01"/>
+   <icon id="R_C_P3_rapide" instance="R_C_P3_rapide_instance" xpos="430" ypos="584" workspace="Workspace01"/>
    <icon id="P4_Etirement" instance="P4_Etirement_instance" xpos="608" ypos="20" workspace="Workspace01"/>
-   <icon id="E17_GHS_1_premier" instance="E17_GHS_1_premier_instance" xpos="608" ypos="64" workspace="Workspace01"/>
-   <icon id="E18_GHS_2_contraste" instance="E18_GHS_2_contraste_instance" xpos="608" ypos="94" workspace="Workspace01"/>
-   <icon id="E19_MAS" instance="E19_MAS_instance" xpos="608" ypos="124" workspace="Workspace01"/>
-   <icon id="E20_SXT_RGB_etire" instance="E20_SXT_RGB_etire_instance" xpos="608" ypos="154" workspace="Workspace01"/>
-   <icon id="E21_SCNR_etoiles_vert" instance="E21_SCNR_etoiles_vert_instance" xpos="608" ypos="184" workspace="Workspace01"/>
-   <icon id="E22_GHS_3_fond" instance="E22_GHS_3_fond_instance" xpos="608" ypos="214" workspace="Workspace01"/>
+   <icon id="E18_GHS_1_premier" instance="E18_GHS_1_premier_instance" xpos="608" ypos="64" workspace="Workspace01"/>
+   <icon id="E19_GHS_2_contraste" instance="E19_GHS_2_contraste_instance" xpos="608" ypos="94" workspace="Workspace01"/>
+   <icon id="E20_MAS" instance="E20_MAS_instance" xpos="608" ypos="124" workspace="Workspace01"/>
+   <icon id="E21_SXT_RGB_etire" instance="E21_SXT_RGB_etire_instance" xpos="608" ypos="154" workspace="Workspace01"/>
+   <icon id="E22_SCNR_etoiles_vert" instance="E22_SCNR_etoiles_vert_instance" xpos="608" ypos="184" workspace="Workspace01"/>
+   <icon id="E23_GHS_3_fond" instance="E23_GHS_3_fond_instance" xpos="608" ypos="214" workspace="Workspace01"/>
    <icon id="P4_options" instance="P4_options_instance" xpos="608" ypos="260" workspace="Workspace01"/>
    <icon id="Opt_SCNR_etoiles_violet" instance="Opt_SCNR_etoiles_violet_instance" xpos="608" ypos="294" workspace="Workspace01"/>
    <icon id="Opt_Saturation_grosses" instance="Opt_Saturation_grosses_instance" xpos="608" ypos="324" workspace="Workspace01"/>
@@ -5442,14 +5440,14 @@ max($T,f1)</parameter>
    <icon id="P4_rapide" instance="P4_rapide_instance" xpos="608" ypos="460" workspace="Workspace01"/>
    <icon id="R_C_RGB_etire_rapide" instance="R_C_RGB_etire_rapide_instance" xpos="608" ypos="494" workspace="Workspace01"/>
    <icon id="P5_Couleur" instance="P5_Couleur_instance" xpos="799" ypos="20" workspace="Workspace01"/>
-   <icon id="E23_LRGB_ajout_L" instance="E23_LRGB_ajout_L_instance" xpos="799" ypos="64" workspace="Workspace01"/>
+   <icon id="E24_LRGB_ajout_L" instance="E24_LRGB_ajout_L_instance" xpos="799" ypos="64" workspace="Workspace01"/>
    <icon id="P5_rapide" instance="P5_rapide_instance" xpos="799" ypos="110" workspace="Workspace01"/>
    <icon id="R_C_LRGB_rapide" instance="R_C_LRGB_rapide_instance" xpos="799" ypos="144" workspace="Workspace01"/>
    <icon id="P6_Finition" instance="P6_Finition_instance" xpos="959" ypos="20" workspace="Workspace01"/>
-   <icon id="E24_HDRMT_30" instance="E24_HDRMT_30_instance" xpos="959" ypos="64" workspace="Workspace01"/>
-   <icon id="E25_C_Finition" instance="E25_C_Finition_instance" xpos="959" ypos="94" workspace="Workspace01"/>
-   <icon id="E26_C_Sharp_MMT" instance="E26_C_Sharp_MMT_instance" xpos="959" ypos="124" workspace="Workspace01"/>
-   <icon id="E27_NXT_final" instance="E27_NXT_final_instance" xpos="959" ypos="154" workspace="Workspace01"/>
+   <icon id="E25_HDRMT_30" instance="E25_HDRMT_30_instance" xpos="959" ypos="64" workspace="Workspace01"/>
+   <icon id="E26_C_Finition" instance="E26_C_Finition_instance" xpos="959" ypos="94" workspace="Workspace01"/>
+   <icon id="E27_C_Sharp_MMT" instance="E27_C_Sharp_MMT_instance" xpos="959" ypos="124" workspace="Workspace01"/>
+   <icon id="E28_NXT_final" instance="E28_NXT_final_instance" xpos="959" ypos="154" workspace="Workspace01"/>
    <icon id="P6_options" instance="P6_options_instance" xpos="959" ypos="200" workspace="Workspace01"/>
    <icon id="Opt_Nettoyage_sans_etoiles" instance="Opt_Nettoyage_sans_etoiles_instance" xpos="959" ypos="234" workspace="Workspace01"/>
    <icon id="Opt_HDRMT_40" instance="Opt_HDRMT_40_instance" xpos="959" ypos="264" workspace="Workspace01"/>
@@ -5465,10 +5463,10 @@ max($T,f1)</parameter>
    <icon id="P6_rapide" instance="P6_rapide_instance" xpos="959" ypos="580" workspace="Workspace01"/>
    <icon id="R_C_Fin_rapide" instance="R_C_Fin_rapide_instance" xpos="959" ypos="614" workspace="Workspace01"/>
    <icon id="P7_Etoiles" instance="P7_Etoiles_instance" xpos="1163" ypos="20" workspace="Workspace01"/>
-   <icon id="E28_Fond_desature" instance="E28_Fond_desature_instance" xpos="1163" ypos="64" workspace="Workspace01"/>
-   <icon id="E29_Fond_auto" instance="E29_Fond_auto_instance" xpos="1163" ypos="94" workspace="Workspace01"/>
-   <icon id="E30_Etoiles_screen" instance="E30_Etoiles_screen_instance" xpos="1163" ypos="124" workspace="Workspace01"/>
-   <icon id="E31_NXT_dernier" instance="E31_NXT_dernier_instance" xpos="1163" ypos="154" workspace="Workspace01"/>
+   <icon id="E29_Fond_desature" instance="E29_Fond_desature_instance" xpos="1163" ypos="64" workspace="Workspace01"/>
+   <icon id="E30_Fond_auto" instance="E30_Fond_auto_instance" xpos="1163" ypos="94" workspace="Workspace01"/>
+   <icon id="E31_Etoiles_screen" instance="E31_Etoiles_screen_instance" xpos="1163" ypos="124" workspace="Workspace01"/>
+   <icon id="E32_NXT_dernier" instance="E32_NXT_dernier_instance" xpos="1163" ypos="154" workspace="Workspace01"/>
    <icon id="P7_options" instance="P7_options_instance" xpos="1163" ypos="200" workspace="Workspace01"/>
    <icon id="Opt_MT_etoiles" instance="Opt_MT_etoiles_instance" xpos="1163" ypos="234" workspace="Workspace01"/>
    <icon id="Opt_Halo_B_Gon" instance="Opt_Halo_B_Gon_instance" xpos="1163" ypos="264" workspace="Workspace01"/>
