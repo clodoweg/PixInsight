@@ -42,6 +42,41 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 ### P1_options
 
+#### Opt_Crop_reference — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Crop_commun.js`
+   paramètres : `mode=reference`, `nom=Crop_ref`
+
+> OPTION — bandes noires sur les bords (masters décalés) : étape 1 du crop commun, après Renommer_auto, avant Combinaison_RGB
+> Image Crop_ref (minimum de toutes les images) et DynamicCrop ouvert.
+> 
+> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
+> 
+> PRÉRÉGLÉ : script Crop_commun, mode reference : crée Crop_ref = minimum pixel par pixel de toutes les images ouvertes (= ImageIntegration en Minimum, sans normalisation) ; une bande noire d'UNE image y est noire ; Crop_ref étirée (STF auto) ; DynamicCrop s'ouvre.
+> 
+> À RÉGLER : masters ouverts, après Renommer_auto, avant Combinaison_RGB (mode rapide : avant R_C_Preparation_rapide) ; double-clic puis Apply Global, OK ; dans DynamicCrop, trace le cadre sur Crop_ref sans bande noire, coche verte ; puis Crop_appliquer ; copie Crop_commun.js dans src/scripts/clodoweg.
+> 
+> SI :
+> - tailles différentes -> décoche l'image d'une autre taille
+> - DynamicCrop ne s'ouvre pas -> Process > Geometry > DynamicCrop
+> - pas de rotation dans DynamicCrop (angle 0)
+
+#### Opt_Crop_appliquer — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Crop_commun.js`
+   paramètres : `mode=appliquer`, `nom=Crop_ref`
+
+> OPTION — étape 2 du crop commun, après le cadre tracé et appliqué sur Crop_ref : même crop sur toutes les images ouvertes.
+> 
+> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
+> 
+> PRÉRÉGLÉ : script Crop_commun, mode appliquer : relit le dernier DynamicCrop appliqué à Crop_ref et l'applique à toutes les images ouvertes de même taille, puis ferme Crop_ref.
+> 
+> À RÉGLER : après le cadre appliqué sur Crop_ref : double-clic puis Apply Global, OK ; ensuite Combinaison_RGB.
+> 
+> SI :
+> - « aucun DynamicCrop » -> applique d'abord le cadre sur Crop_ref (coche verte)
+> - cadre à refaire -> Ctrl+Z sur Crop_ref, nouveau cadre, coche verte, puis relance
+> - une image n'est pas recadrée -> taille différente, la console la nomme
+
 #### Opt_WBPP — Script
    script `$PXI_SRCDIR/scripts/BatchPreprocessing/BPP-Main.js`
 

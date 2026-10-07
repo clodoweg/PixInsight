@@ -66,6 +66,7 @@ Rangées dans les options (`Opt_`). Compare toujours avec le chemin principal su
 
 Icône| Phase| Rôle  
 ---|---|---  
+Crop_reference, Crop_appliquer| P1, après Renommer_auto, avant Combinaison_RGB (tous les workflows)| Bandes noires sur les bords : image minimum Crop_ref, cadre tracé dans DynamicCrop, puis même crop sur toutes les images ouvertes.  
 Binning_x2| P1, après Solver_auto| Toutes les images divisées par 2 (IntegerResample, moyenne), solution astrométrique gardée. 0,528″/px au lieu de 0,264″/px : le CDK17 sur QHY600 est suréchantillonné par un seeing courant de 2 à 3″, on perd peu de détail, le bruit baisse et le traitement va 4 fois plus vite. Image finale 4 800 px au lieu de 9 600.  
 Agrandir_x2| P7, avant Export_TIFF| Après Binning_x2, pour un grand tirage : Resample × 2, Lanczos 3. Rend la taille, pas le détail perdu. Grand tirage très net voulu : ne bine pas.  
 H_dans_RGB_v2 (LHaRGB)| P3| À la place de H_dans_RGB : R + w·(HaNB − med(HaNB)) et B + 0,2·w·(HaNB − med(HaNB)) (part de Hβ) ; fond de HaNB retiré avant l'injection, régions HII plus roses.  

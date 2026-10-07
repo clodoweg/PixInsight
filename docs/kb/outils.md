@@ -151,6 +151,7 @@ Très utile quand les gradients varient d'une nuit à l'autre.
 - **Cadre** : exclut les bords bruités, quelques dizaines de pixels de marge
 - **Rotation** : 0
 - **Autres masters** : même icône appliquée à tous
+- **Icônes Opt_Crop_reference puis Opt_Crop_appliquer** (P1 options, tous les workflows, script Crop_commun.js) : Crop_ref = minimum pixel par pixel de toutes les images ouvertes (même calcul qu'ImageIntegration en combinaison Minimum sans normalisation ni rejet ; fait sur les vues car ImageIntegration demande des fichiers et des images de même type), affichée en STF auto, DynamicCrop ouvert ; cadre tracé et appliqué sur Crop_ref ; Crop_appliquer relit le dernier DynamicCrop de l'historique de Crop_ref (`view.processing`) et l'applique aux images de même taille (paramètres relatifs : même cadre), puis ferme Crop_ref. Après Renommer_auto, avant Combinaison_RGB et Solver_auto.
 
 **Détails, explications et sources**
 

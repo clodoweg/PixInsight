@@ -54,6 +54,8 @@ SCRIPTS = {
     'Saturation_grosses': ('$PXI_SRCDIR/scripts/clodoweg/Saturation_grosses.js', '', [('vue', 'RGB_stars'), ('taille', '7'), ('seuil', '0.15'), ('etendue', '12'), ('passes', '1')], L_DRAG),   # option P4 : courbe de saturation de l'utilisateur sur les grosses étoiles seulement (demande de l'utilisateur)
     'Etoiles_grosses': ('$PXI_SRCDIR/scripts/clodoweg/Etoiles_grosses.js', '', [('taille', '7'), ('seuil', '0.15'), ('etendue', '12'), ('force', '0.80'), ('afficherMasque', 'false')], L_DRAG),   # demande de l'utilisateur : réduire seulement les grosses étoiles
     'Export_TIFF': ('$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js', '', [('nom', ''), ('suffixe', ''), ('dossier', ''), ('icc', 'true')], L_DRAG),   # plus aucune vue fermée (demande de l'utilisateur)
+    'Crop_reference': ('$PXI_SRCDIR/scripts/clodoweg/Crop_commun.js', '', [('mode', 'reference'), ('nom', 'Crop_ref')], L_GLOBAL),   # option P1 (demande de l'utilisateur) : image minimum + DynamicCrop
+    'Crop_appliquer': ('$PXI_SRCDIR/scripts/clodoweg/Crop_commun.js', '', [('mode', 'appliquer'), ('nom', 'Crop_ref')], L_GLOBAL),   # même crop sur toutes les images ouvertes
     'Binning_x2': ('$PXI_SRCDIR/scripts/clodoweg/Binning_x2.js', '', [('facteur', '2')], L_GLOBAL),   # demande de l'utilisateur : binning logiciel de toutes les images
     'EZ_Soft_Stretch': ('$PXI_SRCDIR/scripts/EZProcessingSuite/EZ_SoftStretch.js', '', [], L_GLOBAL + "Ce script ne lit pas de paramètres d'icône : réglages dans sa fenêtre (gardés d'une fois sur l'autre). "),   # EZ Processing Suite (Elveteek), option d'étirement (demande de l'utilisateur)
     'CombineHaWithRGB': ('$PXI_SRCDIR/scripts/Toolbox/CombineHaToRGB.js', '140cbb0fc118263dc1d71b8e9e39f0e1', [('alphaView', 'HaNB'), ('amount', '2'), ('beta', '0.2'), ('linear', 'true'), ('rgbLinked', 'true'), ('bg', '0.05'), ('invertMask', 'true'), ('sigma', '0')], L_DRAG),   # PixInsight Toolbox de Jürgen Terpe (test, demande de l'utilisateur)
@@ -655,7 +657,7 @@ T_LPS = ("OPTION — LinearPatternSubtraction (Vicent Peris, script livré avec 
          "Postfix _lps ; Layers to remove 9 ; Rejection limit 3 ; Global rejection coché, limite 5 ; Background reference region 0, 0, 512, 512 (à placer sur une zone sombre).")
 
 def pre_block():
-    return [(note('LinearPatternSubtraction', T_LPS), ''), (note('Renommer_auto', ''), ''), (note('WBPP', T_WBPP), ''), (cc(), D_CC)]
+    return [(note('LinearPatternSubtraction', T_LPS), ''), (note('Renommer_auto', ''), ''), (script('Crop_reference', ''), ''), (script('Crop_appliquer', ''), ''), (note('WBPP', T_WBPP), ''), (cc(), D_CC)]
 
 D_MASK = ("MASQUE DE LUMINANCE créé ET attaché en un clic (script Masque_auto.js) : glisse l'icône sur l'image SANS ÉTOILES étirée ; elle crée la vue mono 'masque_L' = luminance Rec. 709 (0,2126 R + 0,7152 G + 0,0722 B ; l'image elle-même si elle est mono) "
           "dont le fond est coupé : tout ce qui est sous s passe à 0 (protégé), le reste va de 0 à 1 ; puis léger flou gaussien (flou = 2 px) et masque ATTACHÉ à l'image, sans affichage rouge : plus de Ctrl+M. "

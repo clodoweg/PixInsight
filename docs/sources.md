@@ -353,6 +353,7 @@ Les schémas ne reprennent que des faits déjà sourcés plus haut ; ils n'ajout
 
 Points toujours sans source directe (contrôle du 30 septembre 2026) :
 
+- Crop_commun.js (7 octobre 2026) : ouverture de DynamicCrop par `launch()` et lecture du dernier DynamicCrop dans l'historique de Crop_ref non testées dans PixInsight ; effet de DynamicCrop sur la solution astrométrique non vérifié (crop fait avant Solver_auto).
 - Ha en luminance en HOO : aucune valeur de Saturation propre au HOO dans une source lisible ; la fiche garde 0,40 (réglage LRGBCombination de Chaotic Nebula). Un résumé de recherche cite Lightness 0,5 / Saturation 0,25 pour ajouter Ha à une image HOO ou SHO, sans source retrouvée ; les tutoriels lus disent seulement « ajuste la saturation au besoin » (The Astro Geek, Madratter).
 - MLDenoise contre NoiseXTerminator : pas de comparaison rigoureuse. Usage officiel vérifié (images linéaires calibrées en couleur, modèle .xmlm, [annonce PixInsight](https://pixinsight.net/dev/index.php?articles/technology-preview-mldenoise-for-macos-arm64.19/)) ; avis « très prometteur » de [ScopeTrader](https://scopetrader.com/pixinsight-mldenoise-technology-preview-for-macos-arm64-released/) ; retours d'utilisateurs mitigés (fil AstroBin inaccessible, contenu connu par un résumé). La fiche garde NXT.
 - Chargement des icônes dans PixInsight : impossible à tester ici ; schéma XPSM officiel introuvable (404 à l'adresse déclarée dans les fichiers, jamais archivé). Contrôle de substitution : 213 icônes sur 258 ont exactement la structure d'icônes réelles du même process ; les 45 icônes SPFC, MGC et DBE (sans modèle réel) utilisent les noms de paramètres employés en 2026 par AutoIntegrate (SPFC, MGC), pixinsight-connector (SPFC, MGC) et pixinsight-mcp d'iftahs (DBE). Deux paramètres SPFC non confirmés (psfChannelSearchTolerance, outputDirectory, copiés du modèle SPCC) ont été retirés par prudence.
@@ -889,3 +890,14 @@ Fait : icône NoOperation R_Main_continuum (colonne P3 rapide, juste après R_C_
 
 Demande : « Rajoute tous les tous les process dans les options apres save en tiff, un process fermer toutes les vues »
 Fait : Fermer_vues.js accepte `views = *` (toutes les vues ouvertes ; la vue cible reste ouverte si l'icône est glissée ; fenêtre : toutes cochées). Icône Opt_Fermer_tout (P7 options, juste après Opt_Export_TIFF) dans LRGB, LHaRGB, RGB-SHO, SHO-sans-RGB et HOO (changement LRGB demandé par l'utilisateur). Source : `ImageWindow.windows` et `forceClose()` (PJSR, déjà utilisés). Non testé dans PixInsight.
+
+### Option crop commun (Crop_reference, Crop_appliquer), tous les workflows (7 octobre 2026)
+
+Demande : « ajoute pour tout le monde dans les P1 options, un processus qui fait image integration en mode minimun pour créer une image dans laquelle je devrais voir le max des bandes noires. il faut qu'ensuite ca m'ouvre dynamique crop que je puisse le faire dessus pour choisir l'image sans les bandes noirs, puis appliquer ce crop a toutes les images ouvertes »
+Fait : script Crop_commun.js, deux icônes P1 options (après Renommer_auto) dans les 5 workflows (LRGB compris, demande de l'utilisateur). Minimum calculé directement sur les vues (identique à ImageIntegration Minimum sans normalisation ni rejet ; ImageIntegration travaille sur des fichiers).
+Sources (code des scripts livrés avec PixInsight 1.9.5, installés sur le PC) :
+- `view.processing` (historique, `.at(i)`, `.length`) et `view.historyIndex` : EZProcessingSuite/Elveteek_Common.js, Toolbox/ProjectArchiver.js — Officiel/Tutoriel (code).
+- `ProcessInstance.launch()` (ouvre l'interface du process) : EZProcessingSuite/EZ_Decon.js — code.
+- `image.computeAutoStretch(median, mad, -2.8, 0.25, false)` : BatchPreprocessing/BPP-Helper.js (WBPP) — Officiel (code).
+- DynamicCrop : centerX/centerY/width/height relatifs : PixInsightBenchmark/benchmark.js, WhatsInMyImage.js — Officiel (code).
+Non vérifié : DynamicCrop lancé depuis un script et lecture de l'historique non testés dans PixInsight ; DynamicCrop après Solver_auto (solution astrométrique) non vérifié : faire le crop avant.

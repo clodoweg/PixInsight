@@ -326,6 +326,38 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
    <instance class="NoOperation" version="256" id="P1_options_instance">
       <description>OPTIONS de la phase 1 — Préparation : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
    </instance>
+   <instance class="Script" version="256" id="Opt_Crop_reference_instance">
+      <description>OPTION — bandes noires sur les bords (masters décalés) : étape 1 du crop commun, après Renommer_auto, avant Combinaison_RGB&#10;Image Crop_ref (minimum de toutes les images) et DynamicCrop ouvert.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Crop_commun, mode reference : crée Crop_ref = minimum pixel par pixel de toutes les images ouvertes (= ImageIntegration en Minimum, sans normalisation) ; une bande noire d'UNE image y est noire ; Crop_ref étirée (STF auto) ; DynamicCrop s'ouvre.&#10;&#10;À RÉGLER : masters ouverts, après Renommer_auto, avant Combinaison_RGB (mode rapide : avant R_C_Preparation_rapide) ; double-clic puis Apply Global, OK ; dans DynamicCrop, trace le cadre sur Crop_ref sans bande noire, coche verte ; puis Crop_appliquer ; copie Crop_commun.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- tailles différentes -&gt; décoche l'image d'une autre taille&#10;- DynamicCrop ne s'ouvre pas -&gt; Process &gt; Geometry &gt; DynamicCrop&#10;- pas de rotation dans DynamicCrop (angle 0)</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Crop_commun.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="2">
+         <tr>
+            <td id="id">mode</td>
+            <td id="value">reference</td>
+         </tr>
+         <tr>
+            <td id="id">nom</td>
+            <td id="value">Crop_ref</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
+   </instance>
+   <instance class="Script" version="256" id="Opt_Crop_appliquer_instance">
+      <description>OPTION — étape 2 du crop commun, après le cadre tracé et appliqué sur Crop_ref : même crop sur toutes les images ouvertes.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Crop_commun, mode appliquer : relit le dernier DynamicCrop appliqué à Crop_ref et l'applique à toutes les images ouvertes de même taille, puis ferme Crop_ref.&#10;&#10;À RÉGLER : après le cadre appliqué sur Crop_ref : double-clic puis Apply Global, OK ; ensuite Combinaison_RGB.&#10;&#10;SI :&#10;- « aucun DynamicCrop » -&gt; applique d'abord le cadre sur Crop_ref (coche verte)&#10;- cadre à refaire -&gt; Ctrl+Z sur Crop_ref, nouveau cadre, coche verte, puis relance&#10;- une image n'est pas recadrée -&gt; taille différente, la console la nomme</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Crop_commun.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="2">
+         <tr>
+            <td id="id">mode</td>
+            <td id="value">appliquer</td>
+         </tr>
+         <tr>
+            <td id="id">nom</td>
+            <td id="value">Crop_ref</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
+   </instance>
    <instance class="Script" version="256" id="Opt_WBPP_instance">
       <description>OPTION — seulement si tu repars des brutes (masters pas encore empilés).&#10;&#10;LANCEMENT : double-clic sur l'icône, puis Apply Global.&#10;&#10;PRÉRÉGLÉ : rien (WBPP garde ses propres réglages).&#10;&#10;À RÉGLER : Maximum quality ; CosmeticCorrection = icône CC_auto ; PSF Signal Weight ; Local normalization activée ; Rejection Auto ; Large-scale rejection High ; pas de drizzle (sauf FWHM &lt; 2 px).&#10;&#10;SI :&#10;- un groupe de lights sans dark ou flat (onglet Calibration) -&gt; corrige avant Run&#10;- plusieurs nuits -&gt; Grouping keywords = SESSION</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/BatchPreprocessing/BPP-Main.js</parameter>
@@ -5070,13 +5102,15 @@ max($T,f1)</parameter>
    <icon id="E02_Combinaison_RGB" instance="E02_Combinaison_RGB_instance" xpos="30" ypos="124" workspace="Workspace01"/>
    <icon id="E03_Solver_auto" instance="E03_Solver_auto_instance" xpos="30" ypos="154" workspace="Workspace01"/>
    <icon id="P1_options" instance="P1_options_instance" xpos="30" ypos="200" workspace="Workspace01"/>
-   <icon id="Opt_WBPP" instance="Opt_WBPP_instance" xpos="30" ypos="234" workspace="Workspace01"/>
-   <icon id="Opt_CC_auto" instance="Opt_CC_auto_instance" xpos="30" ypos="264" workspace="Workspace01"/>
-   <icon id="Opt_Binning_x2" instance="Opt_Binning_x2_instance" xpos="30" ypos="294" workspace="Workspace01"/>
-   <icon id="P1_rapide" instance="P1_rapide_instance" xpos="30" ypos="340" workspace="Workspace01"/>
-   <icon id="R_C_Preparation_rapide" instance="R_C_Preparation_rapide_instance" xpos="30" ypos="374" workspace="Workspace01"/>
-   <icon id="P1_turbo" instance="P1_turbo_instance" xpos="30" ypos="420" workspace="Workspace01"/>
-   <icon id="T_Turbo_debut" instance="T_Turbo_debut_instance" xpos="30" ypos="454" workspace="Workspace01"/>
+   <icon id="Opt_Crop_reference" instance="Opt_Crop_reference_instance" xpos="30" ypos="234" workspace="Workspace01"/>
+   <icon id="Opt_Crop_appliquer" instance="Opt_Crop_appliquer_instance" xpos="30" ypos="264" workspace="Workspace01"/>
+   <icon id="Opt_WBPP" instance="Opt_WBPP_instance" xpos="30" ypos="294" workspace="Workspace01"/>
+   <icon id="Opt_CC_auto" instance="Opt_CC_auto_instance" xpos="30" ypos="324" workspace="Workspace01"/>
+   <icon id="Opt_Binning_x2" instance="Opt_Binning_x2_instance" xpos="30" ypos="354" workspace="Workspace01"/>
+   <icon id="P1_rapide" instance="P1_rapide_instance" xpos="30" ypos="400" workspace="Workspace01"/>
+   <icon id="R_C_Preparation_rapide" instance="R_C_Preparation_rapide_instance" xpos="30" ypos="434" workspace="Workspace01"/>
+   <icon id="P1_turbo" instance="P1_turbo_instance" xpos="30" ypos="480" workspace="Workspace01"/>
+   <icon id="T_Turbo_debut" instance="T_Turbo_debut_instance" xpos="30" ypos="514" workspace="Workspace01"/>
    <icon id="P2_Gradient" instance="P2_Gradient_instance" xpos="243" ypos="20" workspace="Workspace01"/>
    <icon id="E04_ImageSolver" instance="E04_ImageSolver_instance" xpos="243" ypos="64" workspace="Workspace01"/>
    <icon id="E05_SPFC_RGB_filtres" instance="E05_SPFC_RGB_filtres_instance" xpos="243" ypos="94" workspace="Workspace01"/>

@@ -39,6 +39,7 @@ Icônes non testées par l'auteur dans PixInsight 1.9.5 : si l'une ne se charge 
 | `Nettoyage_sans_etoiles.js` | restes de halos des étoiles brillantes après SXT |
 | `Etoiles_grosses.js` | réduit seulement les grosses étoiles de RGB_stars, avant Etoiles_screen |
 | `Export_TIFF.js` | TIFF 16 bits sRGB nommé d'après le dossier des masters ; ferme L ensuite (`fermer`) |
+| `Crop_commun.js` | crop commun : image minimum Crop_ref + DynamicCrop (`mode=reference`), puis même crop sur toutes les images (`mode=appliquer`) |
 | `Fermer_vues.js` | ferme les vues listées (`views`) |
 
 ## Régénérer
