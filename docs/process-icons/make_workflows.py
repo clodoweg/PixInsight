@@ -794,8 +794,9 @@ def mas():
 def lum_block():
     """Galaxies (demande de l'utilisateur) : GHS_1, GHS_2 sur L sans étoiles ; MAS puis SXT_RGB_etire sur RGB ; GHS_3_fond sur les deux ; Statistical_Stretch en option."""
     return [(ghs('GHS_1_premier', 10), D_GHS1 + L_GHS_SANS), (ghs('GHS_2_contraste', 4, hp=0.9, sf=1.0, sp=0.35), D_GHS2),
+            # GHS_3_fond juste après GHS_2_contraste (demande de l'utilisateur), puis MAS et SXT_RGB_etire
+            (ghs('GHS_3_fond', 10, hp=0.20, sf=1.0, sp=0.20), D_GHS3 + " Galaxies : sur L juste après GHS_2 (SP = HP = 0,20), puis de nouveau sur le RGB sans étoiles après MAS, SXT_RGB_etire et SCNR_etoiles_vert (SP = HP = 0,12), avant LRGB, même fond 0,12-0,14 sur les deux."),
             (mas(), D_MAS), (M.sxt('SXT_RGB_etire', True), D_SXT_RGB_ETIRE),
-            (ghs('GHS_3_fond', 10, hp=0.20, sf=1.0, sp=0.20), D_GHS3 + " Galaxies : sur L (SP = HP = 0,20 après GHS_2) et sur le RGB sans étoiles après MAS (SP = HP = 0,12), avant LRGB, même fond 0,12-0,14 sur les deux."),
             (note('Statistical_Stretch', T_STAT + " Galaxies : OPTION, à la place de MAS sur le RGB avec étoiles (étoiles plus grosses)."), '')]
 def rgb_comb(close=True):
     n, x = note('Combinaison_RGB', '')

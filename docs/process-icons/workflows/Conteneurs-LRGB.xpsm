@@ -1960,7 +1960,23 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="clipType" value="CT_RGBBlend"/>
       <parameter id="useRGBWorkingSpace" value="false"/>
    </instance>
-   <instance class="MultiscaleAdaptiveStretch" version="256" id="E12_MAS_instance">
+   <instance class="GeneralizedHyperbolicStretch" version="256" id="E12_GHS_3_fond_instance">
+      <description>PRÉRÉGLÉ : b = 10, SP = HP = 0,20, Stretch factor 1 (fond à 0,23 après GHS_2).&#10;&#10;À RÉGLER : sur L juste après GHS_2 ; puis de nouveau sur le RGB SANS étoiles après MAS, SXT_RGB_etire et SCNR_etoiles_vert (SP = HP = 0,12, fond MAS 0,15) ; SP = HP = fond lu - 0,03 ; Stretch factor 0,8 à 1,2 jusqu'au fond vers 0,12–0,14 sur les deux, AVANT LRGB.</description>
+      <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
+      <parameter id="stretchChannel" value="SC_RGB"/>
+      <parameter id="inverse" value="false"/>
+      <parameter id="stretchFactor" value="1.000"/>
+      <parameter id="localIntensity" value="10.000"/>
+      <parameter id="symmetryPoint" value="0.200000"/>
+      <parameter id="highlightProtection" value="0.200000"/>
+      <parameter id="shadowProtection" value="0.000000"/>
+      <parameter id="blackPoint" value="0.000000"/>
+      <parameter id="whitePoint" value="1.000000"/>
+      <parameter id="colourBlend" value="1.000"/>
+      <parameter id="clipType" value="CT_RGBBlend"/>
+      <parameter id="useRGBWorkingSpace" value="false"/>
+   </instance>
+   <instance class="MultiscaleAdaptiveStretch" version="256" id="E13_MAS_instance">
       <description>PRÉRÉGLÉ : MultiscaleAdaptiveStretch, tes réglages : Aggressiveness 0,70, Target background 0,150, Dynamic range compression 0,40, Contrast recovery coché (séparation 1024, intensité 1,0), saturation cochée (0,75, boost 0,50, masque de luminosité).&#10;&#10;À RÉGLER : glisse sur le RGB LINÉAIRE AVEC ses étoiles (après C_RGB_lineaire) ; ensuite SXT_RGB_etire.&#10;&#10;SI :&#10;- étoiles trop saturées -&gt; saturation 0,5&#10;- cœur de galaxie brûlé -&gt; saturation décochée, HDRMT ensuite</description>
       <parameter id="aggressiveness" value="0.70"/>
       <parameter id="targetBackground" value="0.150"/>
@@ -1979,7 +1995,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="backgroundROIWidth" value="0"/>
       <parameter id="backgroundROIHeight" value="0"/>
    </instance>
-   <instance class="StarXTerminator" version="256" id="E13_SXT_RGB_etire_instance">
+   <instance class="StarXTerminator" version="256" id="E14_SXT_RGB_etire_instance">
       <description>PRÉRÉGLÉ : StarXTerminator, Unscreen COCHÉ (image étirée), Generate star image coché, Remove reflections coché : RGB sans étoiles + RGB_stars étirée.&#10;&#10;À RÉGLER : glisse sur le RGB juste après MAS ; garde RGB_stars ouverte jusqu'à Etoiles_screen ; ensuite SCNR_etoiles_vert (sur RGB_stars ; options SCNR_etoiles_violet, Saturation_grosses), puis GHS_3_fond sur le RGB sans étoiles.&#10;&#10;SI :&#10;- taches ou halos restés -&gt; Nettoyage_sans_etoiles (P6 options)&#10;- morceaux de galaxie dans RGB_stars -&gt; masque noir sur le cœur avant SXT&#10;- quadrillage -&gt; Large overlap</description>
       <parameter id="ml_version" value="0"/>
       <parameter id="output_stars" value="true"/>
@@ -1990,7 +2006,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="remove_reflections" value="true"/>
       <parameter id="overlap" value="0.20"/>
    </instance>
-   <instance class="Script" version="256" id="E14_SCNR_etoiles_vert_instance">
+   <instance class="Script" version="256" id="E15_SCNR_etoiles_vert_instance">
       <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Etoiles_auto réglé SCNR seul : SCNR vert, Amount 1,0, Average Neutral, Preserve lightness, sur RGB_stars (amount 0 = pas d'étirement, satAmount 0 = pas de saturation).&#10;&#10;À RÉGLER : glisse sur n'importe quelle image juste après SXT_RGB_etire (traite toujours la vue RGB_stars) : vert retiré des étoiles ; options ensuite : SCNR_etoiles_violet, Saturation_grosses ; le RGB sans étoiles n'est pas touché.&#10;&#10;SI :&#10;- étoiles grisées ou magenta -&gt; double-clic : décoche SCNR, ou passe un SCNR natif à 0,5 sur RGB_stars&#10;- autre nom d'étoiles -&gt; vue = ce nom dans l'icône</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js</parameter>
       <parameter id="md5sum"></parameter>
@@ -2017,22 +2033,6 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          </tr>
       </table>
       <parameter id="information"></parameter>
-   </instance>
-   <instance class="GeneralizedHyperbolicStretch" version="256" id="E15_GHS_3_fond_instance">
-      <description>PRÉRÉGLÉ : b = 10, SP = HP = 0,20, Stretch factor 1 (fond à 0,23 après GHS_2).&#10;&#10;À RÉGLER : sur L après GHS_2 ; puis sur le RGB SANS étoiles après MAS et SXT_RGB_etire (SP = HP = 0,12, fond MAS 0,15) ; SP = HP = fond lu - 0,03 ; Stretch factor 0,8 à 1,2 jusqu'au fond vers 0,12–0,14 sur les deux, AVANT LRGB.</description>
-      <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
-      <parameter id="stretchChannel" value="SC_RGB"/>
-      <parameter id="inverse" value="false"/>
-      <parameter id="stretchFactor" value="1.000"/>
-      <parameter id="localIntensity" value="10.000"/>
-      <parameter id="symmetryPoint" value="0.200000"/>
-      <parameter id="highlightProtection" value="0.200000"/>
-      <parameter id="shadowProtection" value="0.000000"/>
-      <parameter id="blackPoint" value="0.000000"/>
-      <parameter id="whitePoint" value="1.000000"/>
-      <parameter id="colourBlend" value="1.000"/>
-      <parameter id="clipType" value="CT_RGBBlend"/>
-      <parameter id="useRGBWorkingSpace" value="false"/>
    </instance>
    <instance class="NoOperation" version="256" id="P4_options_instance">
       <description>OPTIONS de la phase 4 — Étirement : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
@@ -5133,10 +5133,10 @@ max($T,f1)</parameter>
    <icon id="P4_Etirement" instance="P4_Etirement_instance" xpos="604" ypos="20" workspace="Workspace01"/>
    <icon id="E10_GHS_1_premier" instance="E10_GHS_1_premier_instance" xpos="604" ypos="64" workspace="Workspace01"/>
    <icon id="E11_GHS_2_contraste" instance="E11_GHS_2_contraste_instance" xpos="604" ypos="94" workspace="Workspace01"/>
-   <icon id="E12_MAS" instance="E12_MAS_instance" xpos="604" ypos="124" workspace="Workspace01"/>
-   <icon id="E13_SXT_RGB_etire" instance="E13_SXT_RGB_etire_instance" xpos="604" ypos="154" workspace="Workspace01"/>
-   <icon id="E14_SCNR_etoiles_vert" instance="E14_SCNR_etoiles_vert_instance" xpos="604" ypos="184" workspace="Workspace01"/>
-   <icon id="E15_GHS_3_fond" instance="E15_GHS_3_fond_instance" xpos="604" ypos="214" workspace="Workspace01"/>
+   <icon id="E12_GHS_3_fond" instance="E12_GHS_3_fond_instance" xpos="604" ypos="124" workspace="Workspace01"/>
+   <icon id="E13_MAS" instance="E13_MAS_instance" xpos="604" ypos="154" workspace="Workspace01"/>
+   <icon id="E14_SXT_RGB_etire" instance="E14_SXT_RGB_etire_instance" xpos="604" ypos="184" workspace="Workspace01"/>
+   <icon id="E15_SCNR_etoiles_vert" instance="E15_SCNR_etoiles_vert_instance" xpos="604" ypos="214" workspace="Workspace01"/>
    <icon id="P4_options" instance="P4_options_instance" xpos="604" ypos="260" workspace="Workspace01"/>
    <icon id="Opt_SCNR_etoiles_violet" instance="Opt_SCNR_etoiles_violet_instance" xpos="604" ypos="294" workspace="Workspace01"/>
    <icon id="Opt_Saturation_grosses" instance="Opt_Saturation_grosses_instance" xpos="604" ypos="324" workspace="Workspace01"/>

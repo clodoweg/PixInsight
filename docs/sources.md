@@ -921,3 +921,8 @@ Fait : STF automatique de l'image Crop_ref calculé à la main (formule AutoSTF 
 
 Demande : console de l'utilisateur (conteneur glissé sur RGB : le 2e PixelMath en place de Fond_desature échoue, « Unknown error ») ; puis « fais le pour tous les worklow. »
 Fait : Fond_desature.js glissé : traitement sur une copie cachée puis recopie (cwApplyOnCopy, comme la fenêtre, Etoiles_grosses et Saturation_grosses). Script commun, donc tous les workflows (LRGB accepté par l'utilisateur).
+
+### GHS_3_fond juste après GHS_2_contraste (7 octobre 2026)
+
+Demande : « dans les workflow met E23_GHS_3_fond juste apres E19_GHS_2_contraste »
+Fait : dans lum_block (LRGB et LHaRGB, LRGB demandé par « les workflow ») : GHS_1, GHS_2, GHS_3_fond, puis MAS, SXT_RGB_etire, SCNR_etoiles_vert. LRGB : E12 GHS_3_fond, E13 MAS, E14 SXT_RGB_etire, E15 SCNR_etoiles_vert ; LHaRGB : E20 GHS_3_fond, E21 MAS, E22 SXT_RGB_etire, E23 SCNR_etoiles_vert. Les workflows SHO, RGB-SHO, HOO avaient déjà GHS_3_fond juste après GHS_2. Rapides inchangés (GHS fond déjà dans R_C_RGB_etire_rapide pour le RGB).
