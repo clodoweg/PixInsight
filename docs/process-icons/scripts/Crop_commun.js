@@ -24,6 +24,7 @@
 #feature-info  Image minimum de toutes les images ouvertes (bandes noires \
    visibles), DynamicCrop dessus, puis même crop sur toutes les images.
 
+#include <pjsr/UndoFlag.jsh>
 #include "clodoweg_ui.jsh"
 
 #define CC_TITLE "Crop commun"
@@ -60,7 +61,7 @@ function ccReference( nom, wins )
    cwCloseWindow( nom );
    let out = new ImageWindow( W, H, 1, 32, true, false, nom );
    let v = out.mainView;
-   v.beginProcess( UndoFlag.NoSwapFile );
+   v.beginProcess( UndoFlag_NoSwapFile );
    let rows = 256, acc = new Float32Array( W*rows ), buf = new Float32Array( W*rows );
    for ( let y0 = 0; y0 < H; y0 += rows )
    {

@@ -901,3 +901,8 @@ Sources (code des scripts livrés avec PixInsight 1.9.5, installés sur le PC) :
 - `image.computeAutoStretch(median, mad, -2.8, 0.25, false)` : BatchPreprocessing/BPP-Helper.js (WBPP) — Officiel (code).
 - DynamicCrop : centerX/centerY/width/height relatifs : PixInsightBenchmark/benchmark.js, WhatsInMyImage.js — Officiel (code).
 Non vérifié : DynamicCrop lancé depuis un script et lecture de l'historique non testés dans PixInsight ; DynamicCrop après Solver_auto (solution astrométrique) non vérifié : faire le crop avant.
+
+### Crop_commun : erreur « UndoFlag is not defined » (7 octobre 2026)
+
+Demande : console de l'utilisateur, Crop_reference (mode reference, nom Crop_ref) : « UndoFlag is not defined »
+Fait : Crop_commun.js utilisait `UndoFlag.NoSwapFile` ; remplacé par la constante PJSR `UndoFlag_NoSwapFile` avec `#include <pjsr/UndoFlag.jsh>` (comme Export_TIFF.js).
