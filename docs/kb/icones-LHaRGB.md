@@ -489,6 +489,14 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > SI :
 > - une étape échoue -> la console dit laquelle
 
+#### R_Main_continuum — NoOperation
+
+> MODE RAPIDE, repère sans effet, après R_C_P3_rapide : la suite du continuum se fait À LA MAIN au chemin principal (E14 à E17).
+> 
+> PRÉRÉGLÉ : repère NoOperation, sans effet : la suite du continuum n'a pas de rapide, elle se fait À LA MAIN.
+> 
+> À RÉGLER : après R_C_P3_rapide : E14_Continuum_auto (fenêtre), E15_CombineHaWithRGB et E16_C_RGB_bruit glissés sur RGB, E17_Fermer_continuum (double-clic puis Apply Global), puis GHS_1_premier sur L ; rien à lancer sur cette icône.
+
 ## P4_Etirement
 
 #### E18_GHS_1_premier — GeneralizedHyperbolicStretch

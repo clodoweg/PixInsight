@@ -879,3 +879,8 @@ Fait : plus de relance admin systématique. Le script teste l'écriture dans clo
 
 Demande : « dans HaRGB je veux rajouter un process apres E16 qui ferme les vue R,H et HaNB »
 Fait : Fermer_continuum (Fermer_vues, views = H, R, HaNB) sorti du conteneur C_RGB_bruit (qui ne garde que NXT_RGB) et placé comme étape principale E17_Fermer_continuum (double-clic puis Apply Global), juste après E16_C_RGB_bruit ; GHS_1_premier devient E18. LRGB non touché.
+
+### LHaRGB : repère R_Main_continuum dans P3 rapide (7 octobre 2026)
+
+Demande : « rajoute un NOP dans P3 RAPIDE qui marque qu'il faut faire a la main la suite de continuun »
+Fait : icône NoOperation R_Main_continuum (colonne P3 rapide, juste après R_C_P3_rapide), sans effet : rappelle de faire à la main E14_Continuum_auto, E15_CombineHaWithRGB, E16_C_RGB_bruit et E17_Fermer_continuum, puis GHS_1_premier sur L. LRGB non touché.

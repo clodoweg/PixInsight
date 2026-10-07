@@ -2221,6 +2221,9 @@ max($T, HaNB*a)</parameter>
          <parameter id="information"></parameter>
       </instance>
    </instance>
+   <instance class="NoOperation" version="256" id="R_Main_continuum_instance">
+      <description>MODE RAPIDE, repère sans effet, après R_C_P3_rapide : la suite du continuum se fait À LA MAIN au chemin principal (E14 à E17).&#10;&#10;PRÉRÉGLÉ : repère NoOperation, sans effet : la suite du continuum n'a pas de rapide, elle se fait À LA MAIN.&#10;&#10;À RÉGLER : après R_C_P3_rapide : E14_Continuum_auto (fenêtre), E15_CombineHaWithRGB et E16_C_RGB_bruit glissés sur RGB, E17_Fermer_continuum (double-clic puis Apply Global), puis GHS_1_premier sur L ; rien à lancer sur cette icône.</description>
+   </instance>
    <instance class="NoOperation" version="256" id="P4_Etirement_instance">
       <description>PHASE 4 — Étirement : passage en non linéaire, même fond pour toutes les images. Colonne de repère, sans effet.</description>
    </instance>
@@ -5424,6 +5427,7 @@ max($T,f1)</parameter>
    <icon id="Opt_STF" instance="Opt_STF_instance" xpos="430" ypos="504" workspace="Workspace01"/>
    <icon id="P3_rapide" instance="P3_rapide_instance" xpos="430" ypos="550" workspace="Workspace01"/>
    <icon id="R_C_P3_rapide" instance="R_C_P3_rapide_instance" xpos="430" ypos="584" workspace="Workspace01"/>
+   <icon id="R_Main_continuum" instance="R_Main_continuum_instance" xpos="430" ypos="614" workspace="Workspace01"/>
    <icon id="P4_Etirement" instance="P4_Etirement_instance" xpos="608" ypos="20" workspace="Workspace01"/>
    <icon id="E18_GHS_1_premier" instance="E18_GHS_1_premier_instance" xpos="608" ypos="64" workspace="Workspace01"/>
    <icon id="E19_GHS_2_contraste" instance="E19_GHS_2_contraste_instance" xpos="608" ypos="94" workspace="Workspace01"/>
