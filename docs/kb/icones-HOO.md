@@ -749,3 +749,17 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - autre dossier -> remplis dossier
 > - garder plusieurs versions -> suffixe (ex. _v2)
 > - garder le profil actuel -> icc false
+
+#### Opt_Fermer_tout — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
+   paramètres : `views=*`
+
+> OPTION — tout à la fin, après Export_TIFF : ferme toutes les vues ouvertes sans demander (image suivante).
+> 
+> PRÉRÉGLÉ : script Fermer_vues, views = * : ferme TOUTES les vues ouvertes, sans demander d'enregistrer.
+> 
+> À RÉGLER : après Export_TIFF (TIFF déjà enregistré) : double-clic puis Apply Global, la fenêtre s'ouvre avec toutes les vues cochées, clique Fermer ; glissée sur une image, ferme tout sauf cette image ; copie Fermer_vues.js dans src/scripts/clodoweg.
+> 
+> SI :
+> - une vue à garder -> décoche-la dans la fenêtre
+> - rien n'est enregistré : exporte ou sauve AVANT

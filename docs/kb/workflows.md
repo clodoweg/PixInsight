@@ -37,7 +37,7 @@ Icône| Ferme
 ---|---  
 Combinaison_RGB| LRGB : R, G, B ; LHaRGB : G, B (R sert à Continuum_auto)  
 LHaRGB : C_RGB_bruit| H, R, HaNB (fais Opt_H_dans_L avant)  
-Export_TIFF| plus rien (demande de l'utilisateur) ; ferme L et RGB_stars à la main si besoin  
+Export_TIFF| plus rien (demande de l'utilisateur) ; ensuite option Opt_Fermer_tout (toutes les vues)  
   
 ### Finition du workflow normal en 5 parties
 Après E16 LRGB_ajout_L (E23 en LHaRGB). Regarde l'image après chaque partie ; les options sont rangées dans P6_options et P7_options. Numéros LRGB (LHaRGB entre parenthèses).
@@ -53,7 +53,7 @@ Partie| Icône par défaut| Options
 5\. Après les étoiles| Boost_final_doux ou Boost_final (L ouverte), en option| à la place de Fond_auto : Fond_auto_clair (0,14)  
   
 ### Finition hors PixInsight
-`Opt_Export_TIFF` (fin de P7) enregistre une copie en TIFF 16 bits sRGB, profil ICC intégré, sous le nom du dossier des masters (/Astro/NGC1532/master/… donne /Astro/NGC1532/NGC1532.tiff, sans espace). `Opt_ICC_sRGB` ne sert que si tu enregistres toi-même. Ensuite, des retouches légères seulement, pas de nouvel étirement.
+`Opt_Export_TIFF` (fin de P7) enregistre une copie en TIFF 16 bits sRGB, profil ICC intégré, sous le nom du dossier des masters (/Astro/NGC1532/master/… donne /Astro/NGC1532/NGC1532.tiff, sans espace). `Opt_ICC_sRGB` ne sert que si tu enregistres toi-même. Après l'export, `Opt_Fermer_tout` (tous les workflows) ferme toutes les vues sans demander (script Fermer_vues, `views = *` ; double-clic puis Apply Global = fenêtre, toutes cochées). Ensuite, des retouches légères seulement, pas de nouvel étirement.
 
   * **Photoshop** pour la finition : convertis le calque en objet dynamique, puis filtre Camera Raw léger : saturation des bleus et cyans −10 à −15, vibrance +5 à +10, clarté +5 au plus, texture 0 ; correcteur sur un calque vide (« Échantillonner tous les calques ») ; halo coloré : calque Teinte/Saturation masqué sur le halo. Enregistre en PSD, exporte en JPEG sRGB.
   * **Affinity** , même marche : calques de réglage HSL (bleus vers cyans −10 à −15) et Vibrance (+5 à +10), filtre en direct Clarté 5 à 10 %, pinceau correcteur sur un calque vide ; export JPEG sRGB.

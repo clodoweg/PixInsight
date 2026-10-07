@@ -2,8 +2,8 @@
 // Fermer_vues.js — ferme sans demander les vues temporaires d'un traitement.
 // ----------------------------------------------------------------------------
 // Paramètre « views » : noms des vues à fermer, séparés par des virgules
-// (par exemple HDR_avant, ou L_stars). Les vues absentes sont ignorées ;
-// l'image cible n'est jamais fermée. Sert de dernière étape dans les
+// (par exemple HDR_avant, ou L_stars), ou * pour TOUTES les vues ouvertes.
+// Les vues absentes sont ignorées ; l'image cible n'est jamais fermée. Sert de dernière étape dans les
 // conteneurs de la fiche (HDRMT_50, C_L_lineaire, C_L_rapide...).
 //
 // Installation (Mac et PC) : dossier clodoweg dans src/scripts de PixInsight
@@ -13,7 +13,7 @@
 
 #feature-id    Fermer_vues : clodoweg > Fermer des vues
 #feature-info  Ferme sans confirmation les vues dont les noms sont donnés \
-   dans le paramètre views (séparés par des virgules).
+   dans le paramètre views (séparés par des virgules ; * = toutes).
 
 #include "clodoweg_ui.jsh"
 
@@ -22,6 +22,8 @@
 function fvRun( list, target )
 {
    let ids = list.split( "," );
+   if ( list.trim() == "*" )
+      ids = ImageWindow.windows.map( function( w ) { return w.mainView.id; } );
    let closed = 0;
    for ( let k = 0; k < ids.length; ++k )
    {
@@ -40,6 +42,7 @@ function fvRun( list, target )
 function fvDialog( p )
 {
    let d = new CWDialog( TITLE, "<b>Fermer des vues</b> sans demander d'enregistrer. Coche les vues à fermer.", "Vues :" );
+   let all = p.views.trim() == "*";
    let wanted = p.views.split( "," ).map( function( x ) { return x.trim(); } );
    let windows = ImageWindow.windows, boxes = [];
    d.group( "Vues ouvertes" );
@@ -48,7 +51,7 @@ function fvDialog( p )
    for ( let k = 0; k < windows.length; ++k )
    {
       let id = windows[ k ].mainView.id;
-      boxes.push( { id: id, box: d.check( id, wanted.indexOf( id ) >= 0, "", null ) } );
+      boxes.push( { id: id, box: d.check( id, all || wanted.indexOf( id ) >= 0, "", null ) } );
    }
    d.endGroup();
    function selected()

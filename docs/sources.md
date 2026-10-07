@@ -884,3 +884,8 @@ Fait : Fermer_continuum (Fermer_vues, views = H, R, HaNB) sorti du conteneur C_R
 
 Demande : « rajoute un NOP dans P3 RAPIDE qui marque qu'il faut faire a la main la suite de continuun »
 Fait : icône NoOperation R_Main_continuum (colonne P3 rapide, juste après R_C_P3_rapide), sans effet : rappelle de faire à la main E14_Continuum_auto, E15_CombineHaWithRGB, E16_C_RGB_bruit et E17_Fermer_continuum, puis GHS_1_premier sur L. LRGB non touché.
+
+### Option Fermer_tout après Export_TIFF, tous les workflows (7 octobre 2026)
+
+Demande : « Rajoute tous les tous les process dans les options apres save en tiff, un process fermer toutes les vues »
+Fait : Fermer_vues.js accepte `views = *` (toutes les vues ouvertes ; la vue cible reste ouverte si l'icône est glissée ; fenêtre : toutes cochées). Icône Opt_Fermer_tout (P7 options, juste après Opt_Export_TIFF) dans LRGB, LHaRGB, RGB-SHO, SHO-sans-RGB et HOO (changement LRGB demandé par l'utilisateur). Source : `ImageWindow.windows` et `forceClose()` (PJSR, déjà utilisés). Non testé dans PixInsight.
