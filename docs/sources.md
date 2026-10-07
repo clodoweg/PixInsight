@@ -906,3 +906,8 @@ Non vérifié : DynamicCrop lancé depuis un script et lecture de l'historique n
 
 Demande : console de l'utilisateur, Crop_reference (mode reference, nom Crop_ref) : « UndoFlag is not defined »
 Fait : Crop_commun.js utilisait `UndoFlag.NoSwapFile` ; remplacé par la constante PJSR `UndoFlag_NoSwapFile` avec `#include <pjsr/UndoFlag.jsh>` (comme Export_TIFF.js).
+
+### .bat : plus de pause finale (7 octobre 2026)
+
+Demande : « Enleve le "Appuyez sur une touche pour continuer" a la fin de l'execution dans la console »
+Fait : pause finale retirée de maj_pc.bat et copie_tiff_pc.bat (les pauses en cas d'erreur restent, pour lire le message).

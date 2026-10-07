@@ -22,7 +22,6 @@ echo === copie de %SOURCE% vers %CIBLE% ===
 xcopy "%SOURCE%\*" "%CIBLE%\" /E /I /Y
 if errorlevel 1 (echo La copie a echoue. & pause & exit /b 1)
 echo Termine. Relance PixInsight si des scripts ont change.
-pause
 exit /b 0
 
 :test_ecriture

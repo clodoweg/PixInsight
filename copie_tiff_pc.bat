@@ -31,7 +31,6 @@ echo Nouveaux : %NOUVEAUX%
 echo Remplacés : %REMPLACES%
 echo Erreurs : %ERREURS%
 echo ===============================
-pause
 exit /b 0
 
 :annee
