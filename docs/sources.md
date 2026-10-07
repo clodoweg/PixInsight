@@ -871,3 +871,6 @@ Fait : Opt_Star_Stretch (P4) en LRGB et LHaRGB : icône Star_Stretch existante (
 
 Demande : « je veux que tu crée un script a la racine de du repertoire cloud qui fasse un git pull et ensuite qui copie tout ce qui est dans "C:\Dev\PixInsight\docs\process-icons\scripts" vers "C:\Program Files\PixInsight\src\scripts\clodoweg" et que tu l'apelle maj_pc.bat »
 Fait : maj_pc.bat à la racine du dépôt (fins de ligne CRLF forcées par .gitattributes) : relance en administrateur si besoin, git pull dans C:\Dev\PixInsight, puis xcopy /E /I /Y des scripts vers C:\Program Files\PixInsight\src\scripts\clodoweg ; s'arrête si le pull échoue.
+
+Demande : « je ne veux pas qu'il me demande de valider en administrateur a chaque fois »
+Fait : plus de relance admin systématique. Le script teste l'écriture dans clodoweg ; seulement si elle échoue (1re fois), il lance en admin un petit .cmd temporaire qui fait icacls /grant <compte>:(OI)(CI)M /T. Ensuite il tourne sans admin.
