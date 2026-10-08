@@ -140,6 +140,8 @@ Question de l'utilisateur (5 octobre 2026). Sources : `sources.md`, rubriques «
 
 MAS ou GHS sur L et les canaux narrowband (sources relues le 8 octobre 2026, détail dans `sources.md`) : pas de test publié ; forums : MAS donne un fond identique sur chaque canal (L, R, G, B, Ha, OIII, SII) et approche un GHS bien réglé, en plus simple ; utilisateurs d'images sans étoiles : GHS ou Statistical Stretch suffisent ; GHS règle mieux le contraste d'une luminance narrowband à histogramme étroit. Choix gardés : GHS sur L et les canaux (chemin principal), MAS_canaux en option rapide à comparer.
 
+Option MAS_light (8 octobre 2026, tous les workflows, réglages de l'utilisateur) : MAS plus doux, Aggressiveness 0,15 au lieu de 0,70, saturation 0,50 au lieu de 0,75, le reste identique ; à la place de MAS quand l'image sort trop claire ou trop saturée (cas NGC 253).
+
 Avec ou sans étoiles :
 - Avec étoiles : les étoiles sont les pixels les plus clairs ; une fonction de transfert (Statistical Stretch, EZ, HistogramTransformation) les fait grossir et blanchit leur cœur (couleur perdue). GHS avec HP ou MAS limitent cet effet.
 - Sans étoiles (SXT en linéaire) : n'importe quel étirement va pour la galaxie ; les étoiles sont étirées à part (Star Stretch). RC Astro conseille de retirer les étoiles avant un étirement GHS ou arcsinh. Choix actuel de l'utilisateur (5 octobre 2026) : L sans étoiles étirée par GHS, RGB étiré AVEC étoiles par MAS, étoiles du RGB remises à la fin (variante ci-dessous).

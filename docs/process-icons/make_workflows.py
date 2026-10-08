@@ -1303,6 +1303,17 @@ for _st, _et in ((rgbsho, 'RGB_stars'), (sho, 'NBtoRGB_stars'), (hoo, 'HOO_stars
     assert _a in _x
     _st[_k] = ((_n, _x.replace(_a, _a.replace('RGB_stars', _et))), _d)
 
+# Option MAS_light dans tous les workflows (demande de l'utilisateur, 8 octobre 2026, réglages donnés en code PJSR) :
+# MAS plus doux (Aggressiveness 0,15 au lieu de 0,70, saturation 0,50 au lieu de 0,75), le reste comme MAS
+def mas_light():
+    n, x = mas()
+    for a, b in (('id="aggressiveness" value="0.70"', 'id="aggressiveness" value="0.15"'), ('id="saturationAmount" value="0.75"', 'id="saturationAmount" value="0.50"')):
+        assert a in x
+        x = x.replace(a, b)
+    return 'MAS_light', x.replace('id="MAS_instance"', 'id="MAS_light_instance"', 1)
+for _st in (lrgb, lhargb, rgbsho, sho, hoo):
+    insert_after(_st, 'Statistical_Stretch', [(mas_light(), '')])
+
 # options supprimées des workflows galaxies (demande de l'utilisateur, 5 octobre 2026) ; Etoiles_grosses reste en narrowband
 SUPPR_GALAXIES = {'Etoiles_plafond'}   # Etoiles_grosses remise en option P7 (demande de l'utilisateur) ; Etoiles_auto_etire, GraXpert, VeraLux_HMS, MKStarReduction, Coeurs_etoiles, RepairedHSV, Etoiles_couleur : retirés du code
 for _st in (lrgb, lhargb):

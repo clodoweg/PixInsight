@@ -511,6 +511,21 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > SI :
 > - étoiles grossies ou cœurs blancs -> MAS (chemin principal)
 
+#### Opt_MAS_light — MultiscaleAdaptiveStretch
+   aggressiveness=0.15 ; targetBackground=0.150 ; dynamicRangeCompression=0.40 ; contrastRecovery=true ; scaleSeparation=1024 ; contrastRecoveryIntensity=1.000 ; previewLargeScale=false ; saturationEnabled=true ; saturationAmount=0.50 ; saturationBoost=0.50 ; saturationLightnessMask=true ; backgroundROIEnabled=false ; backgroundROIX0=0 ; backgroundROIY0=0 ; backgroundROIWidth=0 ; backgroundROIHeight=0
+
+> OPTION — étirement plus doux que MAS (Aggressiveness 0,15 au lieu de 0,70, saturation 0,50 au lieu de 0,75) : à la place de MAS, sur le RGB LINÉAIRE avec ses étoiles, quand MAS rend l'image trop claire ou trop saturée
+> Ensuite SXT_RGB_etire comme après MAS.
+> 
+> PRÉRÉGLÉ : MultiscaleAdaptiveStretch doux, tes réglages : Aggressiveness 0,15, Target background 0,150, Dynamic range compression 0,40, Contrast recovery coché (séparation 1024, intensité 1,0), saturation cochée (0,50, boost 0,50, masque de luminosité).
+> 
+> À RÉGLER : glisse sur l'image LINÉAIRE à la place de MAS (même place dans le workflow) ; compare avec MAS sur la même image.
+> 
+> SI :
+> - encore trop clair -> Target background 0,12
+> - trop sombre ou plat -> Aggressiveness 0,30, ou MAS
+> - couleurs trop fades -> saturation 0,60
+
 #### Opt_EZ_Soft_Stretch — Script
    script `$PXI_SRCDIR/scripts/EZProcessingSuite/EZ_SoftStretch.js`
 

@@ -2734,6 +2734,25 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </table>
       <parameter id="information"></parameter>
    </instance>
+   <instance class="MultiscaleAdaptiveStretch" version="256" id="Opt_MAS_light_instance">
+      <description>OPTION — étirement plus doux que MAS (Aggressiveness 0,15, saturation 0,50) : à la place de MAS sur le RGB (RGB + SHO), ou de MAS_canaux / des GHS sur chaque canal sans étoiles&#10;Glisse sur l'image linéaire.&#10;&#10;PRÉRÉGLÉ : MultiscaleAdaptiveStretch doux, tes réglages : Aggressiveness 0,15, Target background 0,150, Dynamic range compression 0,40, Contrast recovery coché (séparation 1024, intensité 1,0), saturation cochée (0,50, boost 0,50, masque de luminosité).&#10;&#10;À RÉGLER : glisse sur l'image LINÉAIRE à la place de MAS (même place dans le workflow) ; compare avec MAS sur la même image.&#10;&#10;SI :&#10;- encore trop clair -&gt; Target background 0,12&#10;- trop sombre ou plat -&gt; Aggressiveness 0,30, ou MAS&#10;- couleurs trop fades -&gt; saturation 0,60</description>
+      <parameter id="aggressiveness" value="0.15"/>
+      <parameter id="targetBackground" value="0.150"/>
+      <parameter id="dynamicRangeCompression" value="0.40"/>
+      <parameter id="contrastRecovery" value="true"/>
+      <parameter id="scaleSeparation" value="1024"/>
+      <parameter id="contrastRecoveryIntensity" value="1.000"/>
+      <parameter id="previewLargeScale" value="false"/>
+      <parameter id="saturationEnabled" value="true"/>
+      <parameter id="saturationAmount" value="0.50"/>
+      <parameter id="saturationBoost" value="0.50"/>
+      <parameter id="saturationLightnessMask" value="true"/>
+      <parameter id="backgroundROIEnabled" value="false"/>
+      <parameter id="backgroundROIX0" value="0"/>
+      <parameter id="backgroundROIY0" value="0"/>
+      <parameter id="backgroundROIWidth" value="0"/>
+      <parameter id="backgroundROIHeight" value="0"/>
+   </instance>
    <instance class="MultiscaleAdaptiveStretch" version="256" id="Opt_MAS_canaux_instance">
       <description>OPTION — à la place des GHS : MultiscaleAdaptiveStretch sur chaque canal sans étoiles, même fond cible 0,15 pour tous (règle du même fond)&#10;Glisse sur S, puis H, puis O (ou R_C_MAS_canaux_rapide)&#10;Non testé en narrowband.&#10;&#10;PRÉRÉGLÉ : MultiscaleAdaptiveStretch, tes réglages MAS (Aggressiveness 0,70, Target background 0,150, Dynamic range compression 0,40, Contrast recovery) ; saturation décochée (canaux en gris).&#10;&#10;À RÉGLER : glisse sur chaque canal SANS étoiles, linéaire (S, H, O ; HOO : H, O), à la place des GHS ; même fond cible pour tous ; ensuite contrôle le fond et la médiane de chaque canal, puis la palette.&#10;&#10;SI :&#10;- fond d'un canal différent des autres -&gt; GHS_3_fond sur ce canal&#10;- O ou S trop faible -&gt; Aggressiveness plus haut sur ce canal, ou GHS&#10;- cœur brûlé -&gt; Dynamic range compression plus haut</description>
       <parameter id="aggressiveness" value="0.70"/>
@@ -5453,13 +5472,14 @@ max($T,f1)</parameter>
    <icon id="E22_Fermer_RGB" instance="E22_Fermer_RGB_instance" xpos="621" ypos="244" workspace="Workspace01"/>
    <icon id="P4_options" instance="P4_options_instance" xpos="621" ypos="290" workspace="Workspace01"/>
    <icon id="Opt_Statistical_Stretch" instance="Opt_Statistical_Stretch_instance" xpos="621" ypos="324" workspace="Workspace01"/>
-   <icon id="Opt_MAS_canaux" instance="Opt_MAS_canaux_instance" xpos="621" ypos="354" workspace="Workspace01"/>
-   <icon id="Opt_EZ_Soft_Stretch" instance="Opt_EZ_Soft_Stretch_instance" xpos="621" ypos="384" workspace="Workspace01"/>
-   <icon id="Opt_SCNR_etoiles_violet" instance="Opt_SCNR_etoiles_violet_instance" xpos="621" ypos="414" workspace="Workspace01"/>
-   <icon id="Opt_Saturation_grosses" instance="Opt_Saturation_grosses_instance" xpos="621" ypos="444" workspace="Workspace01"/>
-   <icon id="P4_rapide" instance="P4_rapide_instance" xpos="621" ypos="490" workspace="Workspace01"/>
-   <icon id="R_C_MAS_canaux_rapide" instance="R_C_MAS_canaux_rapide_instance" xpos="621" ypos="524" workspace="Workspace01"/>
-   <icon id="R_C_RGB_etoiles_rapide" instance="R_C_RGB_etoiles_rapide_instance" xpos="621" ypos="554" workspace="Workspace01"/>
+   <icon id="Opt_MAS_light" instance="Opt_MAS_light_instance" xpos="621" ypos="354" workspace="Workspace01"/>
+   <icon id="Opt_MAS_canaux" instance="Opt_MAS_canaux_instance" xpos="621" ypos="384" workspace="Workspace01"/>
+   <icon id="Opt_EZ_Soft_Stretch" instance="Opt_EZ_Soft_Stretch_instance" xpos="621" ypos="414" workspace="Workspace01"/>
+   <icon id="Opt_SCNR_etoiles_violet" instance="Opt_SCNR_etoiles_violet_instance" xpos="621" ypos="444" workspace="Workspace01"/>
+   <icon id="Opt_Saturation_grosses" instance="Opt_Saturation_grosses_instance" xpos="621" ypos="474" workspace="Workspace01"/>
+   <icon id="P4_rapide" instance="P4_rapide_instance" xpos="621" ypos="520" workspace="Workspace01"/>
+   <icon id="R_C_MAS_canaux_rapide" instance="R_C_MAS_canaux_rapide_instance" xpos="621" ypos="554" workspace="Workspace01"/>
+   <icon id="R_C_RGB_etoiles_rapide" instance="R_C_RGB_etoiles_rapide_instance" xpos="621" ypos="584" workspace="Workspace01"/>
    <icon id="P5_Couleur" instance="P5_Couleur_instance" xpos="812" ypos="20" workspace="Workspace01"/>
    <icon id="E23_SHO_simple" instance="E23_SHO_simple_instance" xpos="812" ypos="64" workspace="Workspace01"/>
    <icon id="E24_NBN_SHO" instance="E24_NBN_SHO_instance" xpos="812" ypos="94" workspace="Workspace01"/>
