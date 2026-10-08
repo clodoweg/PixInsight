@@ -70,3 +70,13 @@ Règle : chaque script a une fenêtre, mise à jour à chaque changement du scri
 - Options retirées des galaxies : `SUPPR_GALAXIES` (fin de make_workflows.py) filtre lrgb et lhargb après toutes les insertions (Etoiles_grosses, Etoiles_plafond, gardées en narrowband) ; les autres options supprimées n'ont plus de code.
 - Mode Turbo : `TURBO` (make_workflows.py) = icônes T_ rangées dans le groupe P#_turbo de leur colonne. `turbo_debut(steps)` : conteneur des étapes de C_Preparation_rapide, Gradient_auto_rapide et Lineaire_rapide (mêmes items, pas de conteneur imbriqué), inséré après C_Preparation_rapide (colonne P1), Apply Global (contient Solver_auto).
 - Script lancé sur une vue cible (icône glissée ou conteneur glissé) : la vue cible est déjà « en cours de traitement » ; `targetView.beginProcess()` y échoue (« The image is already being processed », CombineHaToRGB, retour de l'utilisateur). Saturation_grosses (beginProcess sur RGB_stars) marche pourtant chez l'utilisateur en LRGB (retour du 5 octobre 2026) : ne pas le changer sans problème signalé. Sur la vue cible, si l'erreur apparaît : modifier `view.image` directement, sans beginProcess (à vérifier).
+
+## Ctrl+Z dans les rapides narrowband (revue du code, 8 octobre 2026, demande de l'utilisateur)
+
+Aucun test dans PixInsight. Règle : process natif lancé sur une vue (executeOn, hors fenêtre de script) ou recopie par cwApplyOnCopy (beginProcess / assign / endProcess) = étape d'historique, annulable ; fermeture (Fermer_vues, forceClose) = jamais annulable.
+- R_Gradient_auto_rapide : GradientCorrection par executeOn, annulable image par image.
+- R_C_MAS_canaux_rapide : MAS par executeOn (Lineaire_auto), annulable canal par canal.
+- R_C_Palette_rapide : NBN_SHO annulable sur SHO_etire ; S, H, O fermés (non récupérables).
+- R_C_RGB_etoiles_rapide : SCNR vert (Etoiles_auto, executeOn) annulable sur RGB_stars ; MAS et SXT faits sur RGB, fermé ensuite.
+- R_C_Fin_rapide, R_C_Etoiles_fond_rapide (glissés) : natifs + Sharp_MMT et Fond_desature par cwApplyOnCopy, Fond_auto par executeOn : annulables (plusieurs Ctrl+Z, une étape par process) ; Export_TIFF travaille sur une copie.
+- R_C_Preparation_rapide, T_Turbo_debut, R_C_Lineaire_rapide : masters fermés (Combiner_RGB, Fermer_vues) : pas de retour arrière, recharger les masters. LPS_UnClic : écriture faite par le moteur LinearPatternSubtraction.jsh, annulation non vérifiée.
