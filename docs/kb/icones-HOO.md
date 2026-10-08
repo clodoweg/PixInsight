@@ -522,11 +522,11 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > À RÉGLER : vues H et O étirées.
 
 #### E15_NBN_HOO — NarrowbandNormalization
-   palette=Palette_HOO ; lightness=Lightness_Off ; blendMode=Blend_Mode1 ; haBlend=0.000 ; scnr=0.000 ; o3Boost=0.000 ; s2Boost=0.000 ; shadowpoint=1.000 ; highlightReduction=0.000 ; brightness=0.000
+   palette=Palette_HOO ; lightness=Lightness_Off ; blendMode=Blend_Mode1 ; haBlend=0.000 ; scnr=0.000 ; o3Boost=1.000 ; s2Boost=1.000 ; shadowpoint=1.000 ; highlightReduction=1.000 ; brightness=1.000
 
-> PRÉRÉGLÉ : palette HOO, boost à 0.
+> PRÉRÉGLÉ : palette HOO ; O3 boost, Brightness, Highlight reduction à 1 (neutres : multiplicateurs, 0 rend l'image noire) ; Shadow point 1.
 > 
-> À RÉGLER : Lightness = H ; Shadowpoint ; O3 boost peu à peu.
+> À RÉGLER : glisse sur HOO_etire (HOO_simple) ; Lightness = H ; O3 boost au-dessus de 1, peu à peu ; Shadow point : 1 = à partir de la médiane, vers 0 = zones faibles aussi (plus de bruit).
 > 
 > SI :
 > - tout rouge -> O3 boost

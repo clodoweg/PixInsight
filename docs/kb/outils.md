@@ -737,8 +737,9 @@ GRATUIT
 
 - **Palette** : SHO ou HOO selon ta combinaison
 - **Lightness** : H
-- **O3 / S2 boost** : 0, puis monte peu à peu
-- **Shadowpoint** : fond gris foncé, sans écrêter
+- **O3 / S2 boost** : 1 (neutre), puis monte au-dessus de 1 peu à peu ; 0 = canal supprimé (image noire si tout est à 0)
+- **Shadow point** : 1 (normalisation à partir de la médiane) ; vers 0 = les zones faibles aussi, plus de bruit
+- **Brightness, Highlight reduction** : 1 (neutres)
 - **SCNR** : 0, partiel si besoin
 
   * Trop vert → SCNR partiel.
@@ -758,13 +759,13 @@ Paramètres
 
 - **Palette** : Celle de ta combinaison : HOO, SHO, HSO ou HOS
 
-- **O3 boost / S2 boost** : 0 par défaut ; monter progressivement jusqu'à l'équilibre voulu
+- **O3 boost / S2 boost** : multiplicateurs, neutres à 1 (aide du module 1.1 : « a value greater than 1 will boost and a value less than 1 will reduce ») ; monter progressivement au-dessus de 1. Erreur corrigée le 8 octobre 2026 : les icônes étaient à 0 (modèle theAstroShed), image noire chez l'utilisateur
 
-- **Shadowpoint** : Point noir : ajuster le fond sans l'écrêter
+- **Shadow point** : point de départ de la normalisation dans les zones sombres, interpolé entre le minimum (0) et la médiane (1) de l'image (aide du module) ; vers 0 : signaux faibles normalisés aussi, plus de bruit. Ce n'est pas un point noir
 
-- **Highlight reduction** : Atténuer les hautes lumières
+- **Highlight reduction** : étirement MTF inverse sur les hautes lumières ; 1 = neutre, au-dessus de 1 réduit les hautes lumières (cœur brillant), en dessous les augmente
 
-- **Brightness** : Luminosité globale
+- **Brightness** : étirement MTF ; 1 = neutre, au-dessus de 1 éclaircit, en dessous assombrit (pas pour récupérer un écrêtage)
 
 - **Lightness** : Off (défaut), Preserve, H, O ou S : canal qui porte la luminance, souvent H
 

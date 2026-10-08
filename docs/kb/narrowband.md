@@ -102,7 +102,7 @@ Constat| Réglage
 Tout est vert ou vert-jaune| **SCNR** du module en partiel, ou SCNR après coup (Amount 0,50 à 0,80)  
 Pas de bleu, O invisible| Monte **O3 boost**  
 Pas de nuances orange ou rouges, soufre absent| Monte **S2 boost** , avec prudence (S est le plus bruité)  
-Fond coloré ou trop clair| **Shadowpoint** ; si ça ne suffit pas, le problème vient de l'étirement des canaux, pas de NBN  
+Fond coloré ou trop clair| Le problème vient surtout de l'étirement des canaux (même fond pour tous) ; dans NBN, **Shadow point** vers 1 (normalisation à partir de la médiane, le fond est moins touché)  
 Cœur brûlé ou blanc| **Highlight reduction**  
 Détail pâteux| **Lightness = Ha** (H porte le détail)  
 Presque bon, teinte à affiner| Après NBN : **CurvesTransformation** , canal teinte (H) pour déplacer or et cyan, canal S pour la saturation, sous masque de luminance  
@@ -302,7 +302,7 @@ Constat| Réglage
 ---|---  
 Tout est rouge, O invisible| Monte **O3 boost** ; si O reste noyé, reprends son étirement (même fond et même médiane que H)  
 Cyan trop saturé, froid| Baisse O3 boost, ou mets un peu de H dans le vert (variante Hubble ou Optical Mechanics) pour réchauffer  
-Fond rouge ou cyan| **Shadowpoint** , sinon reprends l'étirement des canaux  
+Fond rouge ou cyan| Reprends l'étirement des canaux (même fond) ; dans NBN, **Shadow point** vers 1  
 O bruité, fond granuleux cyan| NXT plus fort sur O (0,60 à 0,85), LP plus haut dans GHS  
 Détail pâteux| **Lightness = Ha** , ou H en luminance (étape 9)  
 Vert parasite| Rare en HOO, où le SCNR est souvent inutile ; sinon SCNR léger  

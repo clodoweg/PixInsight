@@ -1938,17 +1938,17 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <table id="outputData" rows="0"/>
    </instance>
    <instance class="NarrowbandNormalization" version="256" id="E15_NBN_HOO_instance">
-      <description>PRÉRÉGLÉ : palette HOO, boost à 0.&#10;&#10;À RÉGLER : Lightness = H ; Shadowpoint ; O3 boost peu à peu.&#10;&#10;SI :&#10;- tout rouge -&gt; O3 boost</description>
+      <description>PRÉRÉGLÉ : palette HOO ; O3 boost, Brightness, Highlight reduction à 1 (neutres : multiplicateurs, 0 rend l'image noire) ; Shadow point 1.&#10;&#10;À RÉGLER : glisse sur HOO_etire (HOO_simple) ; Lightness = H ; O3 boost au-dessus de 1, peu à peu ; Shadow point : 1 = à partir de la médiane, vers 0 = zones faibles aussi (plus de bruit).&#10;&#10;SI :&#10;- tout rouge -&gt; O3 boost</description>
       <parameter id="palette" value="Palette_HOO"/>
       <parameter id="lightness" value="Lightness_Off"/>
       <parameter id="blendMode" value="Blend_Mode1"/>
       <parameter id="haBlend" value="0.000"/>
       <parameter id="scnr" value="0.000"/>
-      <parameter id="o3Boost" value="0.000"/>
-      <parameter id="s2Boost" value="0.000"/>
+      <parameter id="o3Boost" value="1.000"/>
+      <parameter id="s2Boost" value="1.000"/>
       <parameter id="shadowpoint" value="1.000"/>
-      <parameter id="highlightReduction" value="0.000"/>
-      <parameter id="brightness" value="0.000"/>
+      <parameter id="highlightReduction" value="1.000"/>
+      <parameter id="brightness" value="1.000"/>
    </instance>
    <instance class="NoOperation" version="256" id="P5_options_instance">
       <description>OPTIONS de la phase 5 — Couleur : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
