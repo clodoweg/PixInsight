@@ -926,3 +926,22 @@ Fait : Fond_desature.js glissé : traitement sur une copie cachée puis recopie 
 
 Demande : « dans les workflow met E23_GHS_3_fond juste apres E19_GHS_2_contraste »
 Fait : dans lum_block (LRGB et LHaRGB, LRGB demandé par « les workflow ») : GHS_1, GHS_2, GHS_3_fond, puis MAS, SXT_RGB_etire, SCNR_etoiles_vert. LRGB : E12 GHS_3_fond, E13 MAS, E14 SXT_RGB_etire, E15 SCNR_etoiles_vert ; LHaRGB : E20 GHS_3_fond, E21 MAS, E22 SXT_RGB_etire, E23 SCNR_etoiles_vert. Les workflows SHO, RGB-SHO, HOO avaient déjà GHS_3_fond juste après GHS_2. Rapides inchangés (GHS fond déjà dans R_C_RGB_etire_rapide pour le RGB).
+
+### BXT et NXT en SHO : comparaison avec le LRGB (8 octobre 2026)
+
+Demande : « Avant d'agir je voudrais que tu benchmark bien les BXT et NXT par defaut pour les sho dans toutes les sources, savoir si c'est une bonne chose de ne pas avoir les meme qu'en LRGB. Fais une anaylse profonde de toutes les sources »
+Fait : analyse dans kb/narrowband.md (section « BXT et NXT en SHO »). Rien changé dans les icônes.
+Sources :
+- https://www.rc-astro.com/blurxterminator-2-0-ai4-release/
+- https://www.rc-astro.com/blurxterminator-technical-manual/
+- https://www.rc-astro.com/noisexterminator-2-ai3-user-manual-pixinsight/
+- https://cosgrovescosmos.com/projects/m27-the-dumbbell-nebula-reprocess
+- https://cosgrovescosmos.com/tips-n-techniques/blurxtermintor-a-breakthrough-for-decon
+- https://brettjoastro.co.uk/fieldnotes/streamlined-narrowband-workflow/
+- https://www.theastroshed.com/my-rgb-and-sho-workflows-2024-edition/
+- https://www.astrobin.com/forum/c/astrophotography/deep-sky-processing-techniques/blurxterminator-technique-and-usage-thread/?page=1
+- https://app.astrobin.com/forum/topic/122336/seeking-noisexterminator-and-graxpert-denoise-preferences-and-recommendations-in-pixinsight
+- https://app.astrobin.com/forum/topic/177247/what-is-your-real-world-experience-with-oversampling
+- https://www.cloudynights.com/forums/topic/907829-when-to-run-blur-terminator-for-narrow-band/
+- https://chaoticnebula.com/how-to-reduce-blurring-in-astrophotos-with-blurxterminator/
+Non vérifié : aucune source ne donne de valeurs officielles pour le narrowband ; pas testé sur les données de l'utilisateur.

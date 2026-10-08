@@ -319,3 +319,20 @@ Cyan saturé| Légère désaturation, ou Color Boost plus bas (Star Stretch, NB 
 Anneau cœur rouge / halo cyan| Réduction d'étoiles, ou désaturation des halos  
 Toutes blanches| Étirement trop fort : Stretch Factor plus bas, ou GHS avec HP  
 Étoiles trop présentes| Réduction d'étoiles après recombinaison
+
+## BXT et NXT en SHO : réglages comparés au LRGB (analyse du 8 octobre 2026)
+
+Question de l'utilisateur : faut-il les mêmes BXT et NXT qu'en LRGB ? Aucune décision prise, rien changé dans les icônes.
+
+### Réglages actuels
+- LRGB : BXT sur RGB (Correct Only, puis SPCC, puis complet : étoiles 0,25, halos 0, non stellaire 0,50) et sur L (non stellaire 0,80), PSF automatique ; NXT sur le RGB combiné 0,80 et sur L 0,60 (linéaire). LHaRGB : pareil, H comme L.
+- SHO, RGB + SHO, HOO : BXT une fois sur la combinaison SHO (ou HOO) à poids égaux, linéaire, étoiles présentes : étoiles 0,25, halos 0, non stellaire 0,60, PSF automatique, puis SXT ; NXT par canal APRÈS extraction, sans étoiles, linéaire : H 0,60, O et S 0,75. Étoiles RGB du RGB + SHO : exactement les BXT du LRGB.
+
+### Ce que disent les sources
+- RC Astro, BXT AI4 et manuel : en narrowband, combinaison SHO simple, poids proches, PUIS BXT, mélange et équilibrage forts APRÈS ; mélanger ou booster avant fausse la PSF. Correct Only séparé : utile AVANT SPCC (pas de SPCC en SHO) ou par canal si les aberrations diffèrent entre filtres. Aucune valeur chiffrée pour le narrowband. SXT après BXT. Longue focale, peu d'étoiles : PSF automatique peut trop accentuer, PSF manuelle = FWHM ; PSF plafonnée à 8 px.
+- RC Astro, NXT AI3 : « probablement mieux après la combinaison des canaux » ; le réseau est entraîné aux écarts de bruit entre canaux (S II souvent bien plus bruité) ; séparation intensité/couleur seulement sur une image couleur ; jamais avant BXT ; linéaire ou étiré, même efficacité ; « Detail » sans effet en AI3.
+- Pratiques publiées : Cosgrove (M27 SHO, 1085 mm) BXT sur le SHO combiné, non stellaire 0,9, PSF manuelle 3 px, NXT 0,55 sur le SHO linéaire ; BrettjoAstro NXT 0,7 × 2 itérations sur l'image combinée, puis 0,7 sur le sans étoiles étiré ; theAstroShed BXT par canal, NXT sur le SHO combiné ; forum AstroBin : galaxies non stellaire 0,20–0,35, grandes nébuleuses plus haut ; NB : Ha 0,50–0,55, O III et S II 0,60–0,75 ; suréchantillonné, PSF proche de 8 px -> non stellaire plus bas.
+
+### Conclusion
+- BXT : différence justifiée. Nébuleuse en SHO : une seule image porte détail et couleur (pas de L) : 0,60, entre RGB 0,50 et L 0,80, et un peu en dessous des pratiques nébuleuses (0,9) parce qu'au CDK17 (0,264″/px, FWHM souvent 6 à 10 px, près du plafond de 8 px) les sources conseillent moins. BXT sur la combinaison à poids égaux : conforme à RC Astro. Étoiles 0,25 et halos 0 : identiques au LRGB.
+- NXT : valeurs cohérentes avec le LRGB (H 0,60 = L 0,60 ; O, S 0,75 ≈ RGB 0,80), filtres 3 nm donc O et S faibles. Seule vraie différence : par canal au lieu de l'image combinée, ce que RC Astro conseille. Le par canal garde un réglage séparé pour O et S, mais perd la séparation intensité/couleur.
