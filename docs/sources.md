@@ -352,6 +352,14 @@ Les schémas ne reprennent que des faits déjà sourcés plus haut ; ils n'ajout
 
 - Officiel — [Dépôt Cosmic Photons du module](https://www.cosmicphotons.com/pi-modules/narrowbandnormalization/) : module 1.1 pour PixInsight 1.9 (Windows et macOS) examiné ; valeurs internes Palette_HOO, Palette_SHO, Palette_HSO, Palette_HOS ; Lightness_Off, Lightness_Preserve, Lightness_Ha, Lightness_OIII, Lightness_SII ; Blend_Mode1 à 3.
 
+## Réglages façon Lightroom (question de l'utilisateur, 8 octobre 2026)
+
+Question : « Est-ce que tu penses qu'il est possible de rajouter à la fin une option qui ferait l'équivalent suivant de lightroom : haute lumière- 50, blanc + 50, balance des blancs couleur + 10, teinte + 20 ». Algorithmes d'Adobe non publiés : équivalent PixInsight seulement approché.
+
+- [How to Adjust the Highlights in Photos Using Lightroom Classic (Envato Tuts+)](https://photography.tutsplus.com/tutorials/how-to-adjust-highlights-in-lightroom--cms-40036) — Tutoriel *(résumé)* : Hautes lumières négatives = détail récupéré dans les zones claires ; Blancs = point blanc, positif = plage tonale étendue (peut écrêter à +100).
+- [Basic adjustments (Loupedeck)](https://support.loupedeck.com/basic-adjustments.html) — Tutoriel *(résumé)* : Temp. vers la droite = jaune (plus chaud), Teinte vers la droite = magenta.
+- [Lightroom Basic Panel 101 (YSU)](https://www.schalmers.people.ysu.edu/2674-bwphoto/HANDOUT%20-%20Lightroom%20Basic%20Panel%20101.pdf) — Tutoriel *(résumé)* : mêmes définitions.
+
 ## Non vérifié
 
 - Etoiles_NB_auto.js (8 octobre 2026) : Color Boost de l'option Apply Star Stretch de NBtoRGBStars.js supposé identique à celui de star_stretch.js (non relu) ; script non testé dans PixInsight.
