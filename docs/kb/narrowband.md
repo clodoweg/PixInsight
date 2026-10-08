@@ -343,7 +343,8 @@ Demande de l'utilisateur (« Commence faire le premier rapide pour SHO, SHO RGB 
 - **P4 (RGB + SHO seul) : R_C_RGB_etoiles_rapide** (double-clic puis Apply Global, rien à glisser) = Lineaire_auto (MAS puis SXT_RGB_etire du chemin principal sur RGB), Etoiles_auto (SCNR vert 1,0 sur RGB_stars), Fermer_vues (RGB) ; équivalent du R_C_RGB_etire_rapide du LRGB, sans GHS fond (le RGB sans étoiles est fermé). Les GHS de S, H, O restent à la main.
 - **P4 canaux : R_C_MAS_canaux_rapide** (3 workflows, Apply Global) = Lineaire_auto lance l'option Opt_MAS_canaux (réglages MAS de l'utilisateur, fond cible 0,15 pour tous, saturation décochée) sur S, H, O (HOO : H, O), à la place des GHS. Demande de l'utilisateur ; aucune source sur MAS en narrowband (non vérifié) ; un même fond cible suit la règle « même fond pour tous les canaux », la médiane n'est pas égalisée : contrôler les fonds après.
 - **P5 (SHO sans RGB, RGB + SHO) : R_C_Palette_rapide** (double-clic puis Apply Global) = Lineaire_auto (SHO_simple sur H, puis NBN_SHO sur SHO_etire), Fermer_vues (S, H, O). NBN_SHO préréglé palette SHO, Lightness Ha, SCNR 0,7 (demandes de l'utilisateur ; SCNR partiel 0,5 à 0,8 déjà conseillé dans la base), boosts à 1. HOO : pas de rapide P5 pour l'instant.
-- À venir : P6, P7.
+- **P6 et P7 (3 workflows) : R_C_Fin_rapide et R_C_Etoiles_fond_rapide**, les mêmes conteneurs que les galaxies (fin_rapide), à GLISSER sur l'image sans étoiles : P6 = HDRMT 30 %, masque, Courbes, LHE, LHE_fin, Sharp_MMT, masque retiré, NXT_final 0,40 ; P7 = Fond_desature, Fond_auto 0,12, Etoiles_screen (étoiles du workflow : RGB_stars, NBtoRGB_stars, HOO_stars), NXT_dernier 0,25, Export_TIFF.
+- Rapides : tous faits (P4 : GHS à la main ou MAS_canaux ; pas de P5 rapide en HOO).
 
 ## BXT et NXT en SHO : réglages comparés au LRGB (analyse du 8 octobre 2026)
 

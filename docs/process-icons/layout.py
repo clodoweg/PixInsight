@@ -190,6 +190,8 @@ CONTAINERS = {
 
 # Textes d'option propres au narrowband (pas de Solver_auto, pas de MAS, pas de RGB_stars partout)
 WHEN_NB = {
+    'C_Fin_rapide': "MODE RAPIDE, à la place de HDRMT_30, C_Finition, C_Sharp_MMT et NXT_final : GLISSE sur l'image sans étoiles après la palette (SHO_etire après NBN_SHO, ou l'image de ta palette)",
+    'C_Etoiles_fond_rapide': "MODE RAPIDE, à la place de Fond_desature, Fond_auto, Etoiles_screen, NXT_dernier et Export_TIFF : GLISSE sur l'image sans étoiles finie, image d'étoiles du workflow ouverte et étirée",
     'MAS_canaux': "à la place des GHS : MultiscaleAdaptiveStretch sur chaque canal sans étoiles, même fond cible 0,15 pour tous (règle du même fond) ; glisse sur S, puis H, puis O (ou R_C_MAS_canaux_rapide) ; non testé en narrowband",
     'C_MAS_canaux_rapide': "MODE RAPIDE, à la place des GHS sur les canaux : S, H, O (HOO : H, O) linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut), double-clic puis Apply Global (pas en glissant) ; ensuite la palette",
     'C_Palette_rapide': "MODE RAPIDE, à la place de SHO_simple et NBN_SHO : S, H, O étirés (après les GHS, même fond), double-clic puis Apply Global (pas en glissant) ; ensuite la finition sur SHO_etire",

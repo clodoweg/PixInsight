@@ -241,6 +241,9 @@ for _p, _x in (('RSHO', ", Combinaison_RGB comprise (RGB des étoiles)"), ('SHO'
         'C_HOO_lineaire (BXT, SXT, NXT)' if _p == 'HOO' else 'C_SHO_lineaire (BXT, SXT, NXT)', 'H, O' if _p == 'HOO' else 'S, H, O',
         ' ; aussi C_RGB_lineaire sur RGB (BXT Correct Only, SPCC, BXT, NXT : RGB reste linéaire avec ses étoiles)' if _p == 'RSHO' else ' ; étoiles S_stars, H_stars, O_stars extraites de SHO_stars' if _p == 'SHO' else ' ; HOO_stars gardée')
 RAPIDE_NOTE['RSHO'][3] += " ; AVEC CONTINUUM (option) : ensuite Opt_C_Continuum_prep, Opt_Continuum_SHO (fenêtre, Starless), Opt_C_Continuum_fin, avant GHS_1_premier"
+for _p, _et in (('RSHO', 'RGB_stars'), ('SHO', 'NBtoRGB_stars'), ('HOO', 'HOO_stars')):
+    RAPIDE_NOTE[_p][6] = "R_C_Fin_rapide GLISSÉ sur l'image sans étoiles après la palette : HDRMT à 30 %, masque, Courbes, LHE, LHE_fin, Sharp_MMT, masque retiré, NXT_final 0,40 (= HDRMT_30, C_Finition, C_Sharp_MMT et NXT_final)"
+    RAPIDE_NOTE[_p][7] = "R_C_Etoiles_fond_rapide GLISSÉ sur l'image sans étoiles finie : Fond_desature, Fond_auto (0,12), étoiles remises (Etoiles_screen avec %s), NXT_dernier (0,25), Export_TIFF" % _et
 for _p in ('RSHO', 'SHO'):
     RAPIDE_NOTE[_p][5] = "R_C_Palette_rapide (double-clic puis Apply Global) à la place de SHO_simple et NBN_SHO : S, H, O étirés combinés en SHO_etire, NarrowbandNormalization (palette SHO, Lightness Ha, SCNR 0,7), puis S, H, O fermés"
 RAPIDE_NOTE['RSHO'][4] = "GHS_1_premier, GHS_2_contraste, GHS_3_fond sur S, H, O (chemin principal, à régler) ; R_C_RGB_etoiles_rapide (double-clic puis Apply Global) à la place de MAS, SXT_RGB_etire, SCNR_etoiles_vert et Fermer_RGB : crée RGB_stars, ferme le RGB sans étoiles"
@@ -1277,6 +1280,12 @@ for _st, _rgb in ((rgbsho, True), (sho, False), (hoo, False)):
     insert_after(_st, 'C_Preparation_rapide', [(cont('Turbo_debut', [pick(_st, b)[0] for b in ('Renommer_auto', 'LinearPatternSubtraction')]
                                                     + ([rgb_comb_item()[0]] if _rgb else []) + [gc_solver('Solver_auto'), script('Gradient_auto_rapide', '')]
                                                     + lineaire_nb_items(_p)), '')])
+# P6 et P7 rapides narrowband (demande de l'utilisateur, 8 octobre 2026 : « fais un P6 et un P7 rapide aussi ») : mêmes conteneurs que les galaxies
+# (fin_rapide : finition identique, P7 avec les étoiles du workflow dans Etoiles_screen), à GLISSER sur l'image sans étoiles
+for _st in (rgbsho, sho, hoo):
+    _c6, _c7 = fin_rapide(_st)
+    insert_after(_st, 'NXT_final_fort', [(_c6, '')])
+    _st.append((_c7, ''))
 for _st, _et in ((rgbsho, 'RGB_stars'), (sho, 'NBtoRGB_stars'), (hoo, 'HOO_stars')):
     # Nettoyage_sans_etoiles : image d'étoiles du workflow
     _k = next(k for k, (it, d) in enumerate(_st) if it[0] == 'Nettoyage_sans_etoiles')
