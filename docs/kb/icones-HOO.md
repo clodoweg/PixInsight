@@ -1026,7 +1026,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > SI :
 > - image trop sombre -> cible 0,13 ou 0,14
 > - données très propres -> 0,10 à 0,11
-> - nébuleuse qui remplit le champ (pas de vrai fond) -> saute cette étape
+> - nébuleuse qui remplit le champ : regarde le fond AVANT dans la console ; au-dessus d'environ 0,20 (seuil au jugé), ce n'est pas du vrai ciel -> Ctrl+Z et saute cette étape
 
 #### E24_Etoiles_screen — PixelMath
    expression = `~((~$T) * (~HOO_stars))` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
@@ -1218,3 +1218,4 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - étoiles trop présentes -> fais les étapes à la main avec Etoiles_reduites (à la place d'Etoiles_screen)
 > - étoiles d'un autre nom (Stars_HOO, RGB_stars…) -> double-clic sur le conteneur, change le nom dans Etoiles_screen
 > - fond trop sombre -> Fond_auto_clair à la main à la place
+> - nébuleuse qui remplit le champ (fond AVANT lu par Fond_auto au-dessus d'environ 0,20 dans la console) -> Ctrl+Z, puis les étapes à la main sans Fond_auto
