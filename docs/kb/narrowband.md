@@ -385,3 +385,7 @@ Demande de l'utilisateur : « dans SHO (sans RGB) les etoiles s'appelent SHO_sta
 ## MAS_canaux : fond 0,25 puis GHS_3_fond (8 octobre 2026)
 
 Demande de l'utilisateur : « en SHO, le MAS doit avoir taget median 0.25 comme ca apres je fais le GH3. tu peux mettre ca dans le rapide? ». Opt_MAS_canaux (lancée par R_C_MAS_canaux_rapide), 3 workflows narrowband : Target background 0,250 au lieu de 0,150 (MAS n'a pas de « Target Median » ; Target background est son réglage de fond, comme le Target Median 0,25 de Statistical Stretch), puis GHS_3_fond à la main sur chaque canal (SP = HP = fond lu − 0,03, fond final 0,12–0,14). MAS_light garde 0,15 (réglages de l'utilisateur). Non testé.
+
+## Option CorrectMagentaStars supprimée (8 octobre 2026)
+
+Demande de l'utilisateur : « supprime Opt_CorrectMagentaStars ». Icône retirée de la P7 du SHO sans RGB et du RGB + SHO ; textes qui la citaient renvoyés vers SCNR_etoiles_violet. Le script CorrectMagentaStars reste dans le menu Script de PixInsight (texte de SCNR_etoiles_violet en LRGB / LHaRGB inchangé).

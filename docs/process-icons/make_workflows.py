@@ -794,8 +794,7 @@ def stars_end(stars='RGB_stars', cms=False, screen_extra='', cms_extra='', alt='
     b.append((pm('Etoiles_screen', '~((~$T) * (~%s))' % stars),
               D_SCREEN % (stars, stars) + alt + screen_extra))
     b.append((pm('Etoiles_reduites', "S=0.20;\nW=~((~$T)*(~%s));\nf1= ~((~mtf(~S,W)/~mtf(~S,$T))*~$T);\nmax($T,f1)" % stars, symbols='S, W, f1'), D_BL % stars))
-    if cms:
-        b.append((note('CorrectMagentaStars', T_CMS + cms_extra), ''))
+    # option CorrectMagentaStars supprimée (demande de l'utilisateur, 8 octobre 2026 : « supprime Opt_CorrectMagentaStars ») ; cms gardé sans effet
     if galaxie:
         # partie 5 (fond) : Boost_final (option, avant), Fond_desature puis Fond_auto au chemin principal (demande de l'utilisateur), Fond_auto_clair (option, à la place de Fond_auto)
         return b + [(boost_final(True), ''), (boost_final(), ''), (script('Fond_desature', ''), ''), (note('Fond_auto', D_FOND), ''),   # Fond_desature puis Fond_auto (demande de l'utilisateur)
@@ -1003,7 +1002,7 @@ sho_finish = [(M.instance('SCNR', 'SCNR_SHO', {'amount': '0.70', 'protectionMeth
                "SCNR sur la palette SHO si un vert reste : Green, Average Neutral, Amount 0,70 (1,0 par défaut convient souvent ; plus bas pour garder un peu de vert).")]
 
 SCREEN_RGBSHO = (" RGB + SHO — CONTRÔLE après recombinaison, à 100 % : pas de restes d'étoiles SHO sous les étoiles RGB (anneaux ou points magenta, trous sombres : SXT incomplet sur l'image SHO, "
-                 "refais-le ou passe CorrectMagentaStars) ; étoiles pas « collées » (ni plus grosses ni plus brillantes que la nébuleuse ne le laisse attendre, sinon réduction d'étoiles ou étirement plus doux) ; "
+                 "refais-le ou SCNR_etoiles_violet sur RGB_stars) ; étoiles pas « collées » (ni plus grosses ni plus brillantes que la nébuleuse ne le laisse attendre, sinon réduction d'étoiles ou étirement plus doux) ; "
                  "pas de décalage entre étoiles RGB et leurs traces (aligne RGB et SHO sur la même référence dans WBPP, même recadrage) ; fond toujours R = G = B (fond éclairci ou teinté : fond de l'image d'étoiles pas à 0). "
                  "Nébuleuse en fausses couleurs et étoiles en vraies couleurs : c'est voulu.")
 # Étoiles RGB du RGB + SHO : faites comme en LRGB (P2 à P4, demande de l'utilisateur, 8 octobre 2026) ; ancien rgb_stars_block (P7, SXT linéaire + Star Stretch) supprimé
@@ -1020,7 +1019,7 @@ rgbsho = pre_block() + [rgb_comb_item()] + nb_masters(['S', 'H', 'O']) + [   # R
 STARS_NB = (" STANDARD DES ÉTOILES SANS RGB : couleurs non calibrées, on vise des étoiles PLAUSIBLES, proches du RGB : du bleu-blanc au jaune-orange, peu saturées, une gamme de couleurs, "
             "JAMAIS magenta (R et B nettement au-dessus de G) ni vertes (G au-dessus de R et B). CONTRÔLE à la sonde 15x15 sur le halo (le cœur est souvent blanc) : étoiles chaudes R >= G >= B, bleues B >= G >= R ; "
             "parcours une dizaine d'étoiles, toutes identiques = couleurs écrasées. ")
-STARS_NB_FIX = ("AJUSTER : magenta -> NB to RGB ou étoiles HOO synthétiques, sinon CorrectMagentaStars ; bleues verdâtres ou étoiles trop rouges -> plus de H dans le vert (G = a·H + (1 − a)·O : monter a rend les bleues moins vertes et les rouges plus jaunes) ; étoiles chaudes trop jaunes ou verdâtres -> moins de H dans le vert ; "
+STARS_NB_FIX = ("AJUSTER : magenta -> NB to RGB ou étoiles HOO synthétiques, sinon SCNR_etoiles_violet ; bleues verdâtres ou étoiles trop rouges -> plus de H dans le vert (G = a·H + (1 − a)·O : monter a rend les bleues moins vertes et les rouges plus jaunes) ; étoiles chaudes trop jaunes ou verdâtres -> moins de H dans le vert ; "
                 "criardes -> Color Boost plus bas ; toutes blanches -> étirement plus doux ; anneau cœur rouge / halo cyan -> réduction d'étoiles ou désaturation des halos. "
                 "Étoiles vraiment calibrées : quelques poses RGB courtes (workflow RGB + SHO).")
 

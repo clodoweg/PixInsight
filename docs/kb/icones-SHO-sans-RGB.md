@@ -1213,7 +1213,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > À RÉGLER : option, après Star_Stretch (et SCNR_etoiles_vert) : glisse sur n'importe quelle image (traite toujours SHO_stars) ; à vérifier à la sonde : utile si R et B nettement au-dessus de G sur les étoiles.
 > 
 > SI :
-> - étoiles bleues devenues trop vertes ou ternes -> Ctrl+Z, ou CorrectMagentaStars (moins fort)
+> - étoiles bleues devenues trop vertes ou ternes -> Ctrl+Z
 > - autre nom d'étoiles -> vue = ce nom dans l'icône
 
 #### Opt_Saturation_grosses — Script
@@ -1372,21 +1372,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > SI :
 > - NB to RGB -> remplace SHO_stars par NBtoRGB_stars ; synthétiques -> par Stars_HOO
 > - pour recommencer -> Ctrl+Z
-
-#### Opt_CorrectMagentaStars — Script
-   script `$PXI_SRCDIR/scripts/CorrectMagentaStars/CorrectMagentaStars.js`
-   paramètres : `scnrAmount=0.8`, `scnrPresLight=true`
-
-> OPTION — étoiles magenta.
-> 
-> LANCEMENT : double-clic sur l'icône, puis Apply Global.
-> 
-> PRÉRÉGLÉ : Amount 0,8.
-> 
-> À RÉGLER : rien ; sur l'image SHO finale avec étoiles.
-> 
-> SI :
-> - magenta encore visible -> 1,0
 
 #### Opt_Agrandir_x2 — Resample
    xSize=2.000000 ; ySize=2.000000 ; mode=RelativeDimensions ; absoluteMode=ForceWidthAndHeight ; interpolation=Lanczos3 ; clampingThreshold=0.30 ; smoothness=1.50 ; noGUIMessages=true

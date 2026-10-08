@@ -2780,7 +2780,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="information"></parameter>
    </instance>
    <instance class="Script" version="256" id="Opt_SCNR_etoiles_violet_instance">
-      <description>OPTION — étoiles violettes (R et B nettement au-dessus de G à la sonde) : après SCNR_etoiles_vert, glisse sur n'importe quelle image&#10;Invert, SCNR vert 1,0, Invert&#10;Pas dans le rapide.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Etoiles_auto réglé violet seul : Invert, SCNR vert (Amount 1,0, Average Neutral, Preserve lightness), Invert sur RGB_stars : le magenta (violet) des étoiles retiré.&#10;&#10;À RÉGLER : option, après SCNR_etoiles_vert : glisse sur n'importe quelle image (traite toujours la vue RGB_stars) ; le RGB sans étoiles n'est pas touché ; pas dans le rapide : à la main après R_C_RGB_etire_rapide si besoin ; à vérifier à la sonde : utile si R et B nettement au-dessus de G sur les étoiles bleues.&#10;&#10;SI :&#10;- étoiles bleues devenues trop vertes ou ternes -&gt; double-clic : décoche « Violet retiré », ou CorrectMagentaStars (moins fort)&#10;- autre nom d'étoiles -&gt; vue = ce nom dans l'icône</description>
+      <description>OPTION — étoiles violettes (R et B nettement au-dessus de G à la sonde) : après SCNR_etoiles_vert, glisse sur n'importe quelle image&#10;Invert, SCNR vert 1,0, Invert&#10;Pas dans le rapide.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Etoiles_auto réglé violet seul : Invert, SCNR vert (Amount 1,0, Average Neutral, Preserve lightness), Invert sur RGB_stars : le magenta (violet) des étoiles retiré.&#10;&#10;À RÉGLER : option, après SCNR_etoiles_vert : glisse sur n'importe quelle image (traite toujours la vue RGB_stars) ; le RGB sans étoiles n'est pas touché ; pas dans le rapide : à la main après R_C_RGB_etire_rapide si besoin ; à vérifier à la sonde : utile si R et B nettement au-dessus de G sur les étoiles bleues.&#10;&#10;SI :&#10;- étoiles bleues devenues trop vertes ou ternes -&gt; double-clic : décoche « Violet retiré »&#10;- autre nom d'étoiles -&gt; vue = ce nom dans l'icône</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="5">
@@ -6283,22 +6283,6 @@ max($T,f1)</parameter>
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
-   <instance class="Script" version="256" id="Opt_CorrectMagentaStars_instance">
-      <description>OPTION — étoiles magenta.&#10;&#10;LANCEMENT : double-clic sur l'icône, puis Apply Global.&#10;&#10;PRÉRÉGLÉ : Amount 0,8.&#10;&#10;À RÉGLER : rien ; sur l'image SHO finale avec étoiles.&#10;&#10;SI :&#10;- magenta encore visible -&gt; 1,0</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/CorrectMagentaStars/CorrectMagentaStars.js</parameter>
-      <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="2">
-         <tr>
-            <td id="id">scnrAmount</td>
-            <td id="value">0.8</td>
-         </tr>
-         <tr>
-            <td id="id">scnrPresLight</td>
-            <td id="value">true</td>
-         </tr>
-      </table>
-      <parameter id="information"></parameter>
-   </instance>
    <instance class="Resample" version="256" id="Opt_Agrandir_x2_instance">
       <description>OPTION — après Binning_x2, pour un grand tirage : image agrandie 2 fois (Lanczos 3) juste avant Export_TIFF&#10;Ne recrée pas le détail perdu.&#10;&#10;PRÉRÉGLÉ : Resample : × 2 en largeur et hauteur, Lanczos 3, seuil d'écrêtage 0,30.&#10;&#10;À RÉGLER : glisse sur l'image finie, juste avant ICC_sRGB et Export_TIFF ; seulement après Binning_x2, pour un grand tirage.&#10;&#10;SI :&#10;- anneaux noirs autour des étoiles -&gt; interpolation Auto ou Bicubic spline</description>
       <parameter id="xSize" value="2.000000"/>
@@ -6593,11 +6577,10 @@ max($T,f1)</parameter>
    <icon id="Opt_Boost_final" instance="Opt_Boost_final_instance" xpos="1220" ypos="354" workspace="Workspace01"/>
    <icon id="Opt_Fond_auto_clair" instance="Opt_Fond_auto_clair_instance" xpos="1220" ypos="384" workspace="Workspace01"/>
    <icon id="Opt_Etoiles_reduites" instance="Opt_Etoiles_reduites_instance" xpos="1220" ypos="414" workspace="Workspace01"/>
-   <icon id="Opt_CorrectMagentaStars" instance="Opt_CorrectMagentaStars_instance" xpos="1220" ypos="444" workspace="Workspace01"/>
-   <icon id="Opt_Agrandir_x2" instance="Opt_Agrandir_x2_instance" xpos="1220" ypos="474" workspace="Workspace01"/>
-   <icon id="Opt_ICC_sRGB" instance="Opt_ICC_sRGB_instance" xpos="1220" ypos="504" workspace="Workspace01"/>
-   <icon id="Opt_Export_TIFF" instance="Opt_Export_TIFF_instance" xpos="1220" ypos="534" workspace="Workspace01"/>
-   <icon id="Opt_Fermer_tout" instance="Opt_Fermer_tout_instance" xpos="1220" ypos="564" workspace="Workspace01"/>
-   <icon id="P7_rapide" instance="P7_rapide_instance" xpos="1220" ypos="610" workspace="Workspace01"/>
-   <icon id="R_C_Etoiles_fond_rapide" instance="R_C_Etoiles_fond_rapide_instance" xpos="1220" ypos="644" workspace="Workspace01"/>
+   <icon id="Opt_Agrandir_x2" instance="Opt_Agrandir_x2_instance" xpos="1220" ypos="444" workspace="Workspace01"/>
+   <icon id="Opt_ICC_sRGB" instance="Opt_ICC_sRGB_instance" xpos="1220" ypos="474" workspace="Workspace01"/>
+   <icon id="Opt_Export_TIFF" instance="Opt_Export_TIFF_instance" xpos="1220" ypos="504" workspace="Workspace01"/>
+   <icon id="Opt_Fermer_tout" instance="Opt_Fermer_tout_instance" xpos="1220" ypos="534" workspace="Workspace01"/>
+   <icon id="P7_rapide" instance="P7_rapide_instance" xpos="1220" ypos="580" workspace="Workspace01"/>
+   <icon id="R_C_Etoiles_fond_rapide" instance="R_C_Etoiles_fond_rapide_instance" xpos="1220" ypos="614" workspace="Workspace01"/>
 </xpsm>

@@ -765,7 +765,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > À RÉGLER : option, après SCNR_etoiles_vert : glisse sur n'importe quelle image (traite toujours la vue RGB_stars) ; le RGB sans étoiles n'est pas touché ; pas dans le rapide : à la main après R_C_RGB_etire_rapide si besoin ; à vérifier à la sonde : utile si R et B nettement au-dessus de G sur les étoiles bleues.
 > 
 > SI :
-> - étoiles bleues devenues trop vertes ou ternes -> double-clic : décoche « Violet retiré », ou CorrectMagentaStars (moins fort)
+> - étoiles bleues devenues trop vertes ou ternes -> double-clic : décoche « Violet retiré »
 > - autre nom d'étoiles -> vue = ce nom dans l'icône
 
 #### Opt_Saturation_grosses — Script
@@ -1527,21 +1527,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - étoiles encore grosses -> S 0,15
 > - trop petites -> S 0,25, ou Etoiles_screen
 > - pour recommencer -> Ctrl+Z
-
-#### Opt_CorrectMagentaStars — Script
-   script `$PXI_SRCDIR/scripts/CorrectMagentaStars/CorrectMagentaStars.js`
-   paramètres : `scnrAmount=0.8`, `scnrPresLight=true`
-
-> OPTION — étoiles magenta.
-> 
-> LANCEMENT : double-clic sur l'icône, puis Apply Global.
-> 
-> PRÉRÉGLÉ : Amount 0,8.
-> 
-> À RÉGLER : rien ; sur l'image SHO finale avec étoiles.
-> 
-> SI :
-> - magenta encore visible -> 1,0
 
 #### Opt_Agrandir_x2 — Resample
    xSize=2.000000 ; ySize=2.000000 ; mode=RelativeDimensions ; absoluteMode=ForceWidthAndHeight ; interpolation=Lanczos3 ; clampingThreshold=0.30 ; smoothness=1.50 ; noGUIMessages=true
