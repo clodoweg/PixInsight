@@ -335,7 +335,8 @@ Toutes blanches| Étirement trop fort : Stretch Factor plus bas, ou GHS avec HP
 ## Mode rapide narrowband (en cours, 8 octobre 2026)
 
 Demande de l'utilisateur (« Commence faire le premier rapide pour SHO, SHO RGB et HOO ») : les rapides se font phase par phase ; les colonnes ont un groupe P#_rapide, « pas encore de rapide » sauf en P1.
-- **P1 : R_C_Preparation_rapide** (double-clic puis Apply Global, masters seuls ouverts) = Renommer_auto, LinearPatternSubtraction, Solver_auto (ImageSolver sur toutes les images). Remplace E00, E01 et l'ImageSolver de P2. Pas de combinaison SHO ou HOO : elle se fait après le gradient (P3), qui se retire par master.
+- **P1 : R_C_Preparation_rapide** (double-clic puis Apply Global, masters seuls ouverts) = Renommer_auto, LinearPatternSubtraction, Solver_auto (ImageSolver sur toutes les images). Remplace les mêmes étapes du chemin principal P1.
+- **Chemin principal P1 : Solver_auto** (8 octobre 2026, comme en LRGB, après Renommer_auto ; RGB + SHO : après Combinaison_RGB) : ImageSolver sur toutes les images en Apply Global ; l'ImageSolver de P2 ne sert plus que pour une image en échec. Cause : SPCC du RGB en échec (« The image has no valid astrometric solution: RGB ») quand ImageSolver de P2 n'avait pas été glissé sur RGB. Pas de combinaison SHO ou HOO : elle se fait après le gradient (P3), qui se retire par master.
 - **RGB + SHO** : Combinaison_RGB en plus, avant Solver_auto (comme en LRGB et comme le chemin principal, E02).
 - HOO caméra couleur dual-band : pas ce rapide (DualBand_H / DualBand_O au chemin principal).
 - Mêmes scripts et réglages qu'en galaxies (Renommer_auto reconnaît Ha, OIII, SII) : aucune nouvelle valeur technique.

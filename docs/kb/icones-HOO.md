@@ -34,6 +34,20 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > SI :
 > - filtre inconnu ou nom déjà pris -> message dans la console, renomme cette vue à la main
 
+#### E02_Solver_auto — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/GC_Solver_auto.js`
+   paramètres : `gradient=false`, `solve=true`, `solveTout=true`, `defaultDate=2020-01-01T00:00:00`, `metadata_focal=2939`, `metadata_xpixsz=3.76`, `solver_catalogMode=2`, `solver_distortionCorrection=true`, `(+ 42 autres réglages ImageSolver)`
+
+> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
+> 
+> PRÉRÉGLÉ : script GC_Solver_auto.js (gradient false, solveTout true) : ImageSolver (date par défaut si absente, réglages du matériel) sur TOUTES les images ouvertes, sans GradientCorrection ; images *_stars ignorées ; une erreur n'arrête pas les autres.
+> 
+> À RÉGLER : double-clic puis Apply Global, juste après Renommer_auto, masters ouverts (H, O) ; ensuite ImageSolver (phase 2) est inutile, sauf pour une image en erreur dans le bilan de la console ; copie GC_Solver_auto.js dans src/scripts/clodoweg.
+> 
+> SI :
+> - seulement la RGB -> solveTout false
+> - une image en erreur -> lis le bilan en fin de console, refais-la avec ImageSolver
+
 ### P1_options
 
 #### Opt_Crop_reference — Script
@@ -130,13 +144,13 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
       script `$PXI_SRCDIR/scripts/clodoweg/GC_Solver_auto.js`
       paramètres : `gradient=false`, `solve=true`, `solveTout=true`, `defaultDate=2020-01-01T00:00:00`, `dialogue=false`, `metadata_focal=2939`, `metadata_xpixsz=3.76`, `solver_catalogMode=2`, `solver_distortionCorrection=true`, `(+ 42 autres réglages ImageSolver)`
 
-> MODE RAPIDE, à la place de LinearPatternSubtraction, Renommer_auto et ImageSolver (phase 2) : masters seuls ouverts, double-clic puis Apply Global (pas en glissant : ImageSolver échoue sur une image en cours de traitement) ; ensuite la phase 2 sans ImageSolver.
+> MODE RAPIDE, à la place de LinearPatternSubtraction, Renommer_auto (Combinaison_RGB en RGB + SHO) et Solver_auto : masters seuls ouverts, double-clic puis Apply Global (pas en glissant : ImageSolver échoue sur une image en cours de traitement) ; ensuite la phase 2 sans ImageSolver.
 > 
 > LANCEMENT : masters seuls ouverts, double-clic puis Apply Global (rond bleu) ; pas en glissant (ImageSolver échoue sur une image en cours de traitement).
 > 
 > PRÉRÉGLÉ : conteneur : Renommer_auto (H, O d'après FILTER), LinearPatternSubtraction sur tous les masters ouverts, Solver_auto (ImageSolver sur toutes les images) ; pas de combinaison (HOO combinée en phase 3, après le gradient).
 > 
-> À RÉGLER : masters H et O seuls ouverts (caméra mono) ; double-clic puis Apply Global (pas en glissant) ; remplace LinearPatternSubtraction, Renommer_auto et ImageSolver (phase 2) ; ensuite R_Gradient_auto_rapide, ou la phase 2 du chemin principal sans ImageSolver.
+> À RÉGLER : masters H et O seuls ouverts (caméra mono) ; double-clic puis Apply Global (pas en glissant) ; remplace LinearPatternSubtraction, Renommer_auto et Solver_auto ; ensuite R_Gradient_auto_rapide, ou la phase 2 du chemin principal sans ImageSolver.
 > 
 > SI :
 > - une étape en erreur -> lis la console, puis fais les icônes une par une
@@ -187,7 +201,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 ## P2_Gradient
 
-#### E02_ImageSolver — Script
+#### E03_ImageSolver — Script
    script `$PXI_SRCDIR/scripts/clodoweg/ImageSolver_Date.js`
    paramètres : `defaultDate=2020-01-01T00:00:00`, `metadata_focal=2939`, `metadata_xpixsz=3.76`, `solver_catalogMode=2`, `solver_distortionCorrection=true`, `(+ 42 autres réglages ImageSolver)`
 
@@ -195,28 +209,28 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > PRÉRÉGLÉ : script ImageSolver_Date.js en une seule icône (pas de conteneur) : date d'observation 2020-01-01 ajoutée seulement si l'image n'en a pas, puis ImageSolver 6.4.2 lancé avec focale 2 939 mm, pixel 3,76 µm (0,264″/px), catalogue automatique (Gaia DR3 local), correction de distorsion ; coordonnées et vraie date lues dans l'image.
 > 
-> À RÉGLER : une seule fois par ordinateur : copie la NOUVELLE version d'ImageSolver_Date.js dans src/scripts/clodoweg ; ensuite glisse l'icône sur CHAQUE image à calibrer, juste avant SPFC ou SPCC : image RGB combinée, master L, masters H, O et S.
+> À RÉGLER : seulement si Solver_auto (phase 1) a échoué sur une image (bilan de la console) : glisse l'icône sur cette image, avant SPFC.
 > 
 > SI :
 > - la date est ajoutée mais ImageSolver ne se lance pas -> glisse l'icône ImageSolver_seul (options) sur la même image
 > - échec sans coordonnées dans l'en-tête -> lance ImageSolver depuis le menu Script et utilise Search (nom de l'objet)
 > - master en bin 2 -> metadata_xpixsz = 7.52 et metadata_resolution = 0.0001466 dans solverParams
 
-#### E03_SPFC_H — SpectrophotometricFluxCalibration
+#### E04_SPFC_H — SpectrophotometricFluxCalibration
    narrowbandMode=true ; grayFilterTrCurve=300,0.000,302,0.000,304,0.000,306,0.000,308,0.000,310,0.000,312,0.000,314,0.0… ; grayFilterName=Antlia V Pro Series L (approx. 420-715 nm) ; redFilterTrCurve=594,0,596,0.001,598,0.001,600,0.002,602,0.003,604,0.004,606,0.005,608,0.006,6… ; redFilterName=Antlia V Pro Series R ; greenFilterTrCurve=480,0.001,482,0.004,484,0.009,486,0.018,488,0.053,490,0.151,492,0.357,494,0.6… ; greenFilterName=Antlia V Pro Series G ; blueFilterTrCurve=420,0.002,422,0.006,424,0.021,426,0.088,428,0.237,430,0.418,432,0.611,434,0.7… ; blueFilterName=Antlia V Pro Series B ; grayFilterWavelength=656.3 ; grayFilterBandwidth=3.0 ; redFilterWavelength=656.3 ; redFilterBandwidth=3.0 ; greenFilterWavelength=500.7 ; greenFilterBandwidth=3.0 ; blueFilterWavelength=500.7 ; blueFilterBandwidth=3.0 ; deviceQECurve=402,0.7219,404,0.7367,406,0.75,408,0.7618,410,0.7751,412,0.787,414,0.7944,416… ; deviceQECurveName=Sony IMX411/455/461/533/571 ; broadbandIntegrationStepSize=0.50 ; narrowbandIntegrationSteps=10 ; rejectionLimit=0.30 ; catalogId=GaiaDR3SP ; minMagnitude=0.00 ; limitMagnitude=12.00 ; autoLimitMagnitude=true ; psfStructureLayers=5 ; saturationThreshold=0.75 ; saturationRelative=true ; saturationShrinkFactor=0.10 ; psfNoiseLayers=1 ; psfHotPixelFilterRadius=1 ; psfNoiseReductionFilterRadius=0 ; psfMinStructureSize=0 ; psfMinSNR=40.00 ; psfAllowClusteredSources=false ; psfType=PSFType_Auto ; psfGrowth=1.75 ; psfMaxStars=24576 ; psfSearchTolerance=4.00 ; generateGraphs=false ; generateStarMaps=false ; generateTextFiles=false
 
 > PRÉRÉGLÉ : QE IMX455, Narrowband 656,3 nm, 3 nm.
 > 
 > À RÉGLER : rien ; applique sur le master H, puis MGC_MARS_H.
 
-#### E04_SPFC_O — SpectrophotometricFluxCalibration
+#### E05_SPFC_O — SpectrophotometricFluxCalibration
    narrowbandMode=true ; grayFilterTrCurve=300,0.000,302,0.000,304,0.000,306,0.000,308,0.000,310,0.000,312,0.000,314,0.0… ; grayFilterName=Antlia V Pro Series L (approx. 420-715 nm) ; redFilterTrCurve=594,0,596,0.001,598,0.001,600,0.002,602,0.003,604,0.004,606,0.005,608,0.006,6… ; redFilterName=Antlia V Pro Series R ; greenFilterTrCurve=480,0.001,482,0.004,484,0.009,486,0.018,488,0.053,490,0.151,492,0.357,494,0.6… ; greenFilterName=Antlia V Pro Series G ; blueFilterTrCurve=420,0.002,422,0.006,424,0.021,426,0.088,428,0.237,430,0.418,432,0.611,434,0.7… ; blueFilterName=Antlia V Pro Series B ; grayFilterWavelength=500.7 ; grayFilterBandwidth=3.0 ; redFilterWavelength=656.3 ; redFilterBandwidth=3.0 ; greenFilterWavelength=500.7 ; greenFilterBandwidth=3.0 ; blueFilterWavelength=500.7 ; blueFilterBandwidth=3.0 ; deviceQECurve=402,0.7219,404,0.7367,406,0.75,408,0.7618,410,0.7751,412,0.787,414,0.7944,416… ; deviceQECurveName=Sony IMX411/455/461/533/571 ; broadbandIntegrationStepSize=0.50 ; narrowbandIntegrationSteps=10 ; rejectionLimit=0.30 ; catalogId=GaiaDR3SP ; minMagnitude=0.00 ; limitMagnitude=12.00 ; autoLimitMagnitude=true ; psfStructureLayers=5 ; saturationThreshold=0.75 ; saturationRelative=true ; saturationShrinkFactor=0.10 ; psfNoiseLayers=1 ; psfHotPixelFilterRadius=1 ; psfNoiseReductionFilterRadius=0 ; psfMinStructureSize=0 ; psfMinSNR=40.00 ; psfAllowClusteredSources=false ; psfType=PSFType_Auto ; psfGrowth=1.75 ; psfMaxStars=24576 ; psfSearchTolerance=4.00 ; generateGraphs=false ; generateStarMaps=false ; generateTextFiles=false
 
 > PRÉRÉGLÉ : QE IMX455, Narrowband 500,7 nm, 3 nm.
 > 
 > À RÉGLER : rien ; applique sur le master O, puis MGC_MARS_O.
 
-#### E05_MGC_MARS_H — MultiscaleGradientCorrection
+#### E06_MGC_MARS_H — MultiscaleGradientCorrection
    command= ; useMARSDatabase=true ; grayMARSFilter=Ha ; redMARSFilter=R ; greenMARSFilter=G ; blueMARSFilter=B ; referenceImageId= ; gradientScale=1024 ; structureSeparation=3 ; modelSmoothness=1.00 ; minFieldRatio=0.017 ; maxFieldRatio=0.167 ; enforceFieldLimits=true ; scaleFactorRK=1.00 ; scaleFactorG=1.00 ; scaleFactorB=1.00 ; showGradientModel=true
 
 > PRÉRÉGLÉ : comme MGC_MARS, filtre MARS Gray = Ha.
@@ -227,7 +241,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - cible au sud au-delà de −15° environ (et narrowband au-delà de +75°) -> pas de référence MARS : GradientCorrection ou DBE
 > - gradient restant -> Gradient scale 512 puis 256
 
-#### E06_MGC_MARS_O — MultiscaleGradientCorrection
+#### E07_MGC_MARS_O — MultiscaleGradientCorrection
    command= ; useMARSDatabase=true ; grayMARSFilter=OIII ; redMARSFilter=R ; greenMARSFilter=G ; blueMARSFilter=B ; referenceImageId= ; gradientScale=1024 ; structureSeparation=3 ; modelSmoothness=1.00 ; minFieldRatio=0.017 ; maxFieldRatio=0.167 ; enforceFieldLimits=true ; scaleFactorRK=1.00 ; scaleFactorG=1.00 ; scaleFactorB=1.00 ; showGradientModel=true
 
 > PRÉRÉGLÉ : comme MGC_MARS, filtre MARS Gray = OIII.
@@ -238,7 +252,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - cible au sud au-delà de −15° environ (et narrowband au-delà de +75°) -> pas de référence MARS : GradientCorrection ou DBE
 > - gradient restant -> Gradient scale 512 puis 256
 
-#### E07_GradientCorrection — GradientCorrection
+#### E08_GradientCorrection — GradientCorrection
    reference=0.50 ; lowThreshold=0.20 ; lowTolerance=0.50 ; highThreshold=0.05 ; highTolerance=0.00 ; iterations=15 ; scale=5.00 ; smoothness=0.60 ; downsamplingFactor=16 ; protection=true ; protectionThreshold=0.10 ; protectionAmount=0.50 ; protectionSmoothingFactor=16 ; lowClippingLevel=0.000076 ; automaticConvergence=true ; convergenceLimit=0.00001000 ; maxIterations=10 ; useSimplification=false ; simplificationDegree=1 ; simplificationScale=1024 ; generateSimpleModel=false ; generateGradientModel=false ; generateProtectionMasks=false ; gridSamplingDelta=16
 
 > PRÉRÉGLÉ : valeurs par défaut, Structure protection activée.
@@ -256,14 +270,14 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
    paramètres : `facteur=2`
 
 > OPTION — traitement 4 fois plus rapide et moins de bruit (0,528″/px au lieu de 0,264″/px, l'image du CDK17 est suréchantillonnée
-> FWHM sous le plafond de 8 px de BXT) : double-clic puis Apply Global juste après ImageSolver (phase 2) ou après R_C_Preparation_rapide, toutes les images divisées par 2
+> FWHM sous le plafond de 8 px de BXT) : double-clic puis Apply Global juste après Solver_auto (phase 1) ou R_C_Preparation_rapide, toutes les images divisées par 2
 > Pour un grand tirage, Agrandir_x2 avant l'export.
 > 
 > LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
 > 
 > PRÉRÉGLÉ : script Binning_x2 : IntegerResample −2, moyenne (binning 2×2 logiciel) sur TOUTES les images ouvertes (sauf *_stars) ; solution astrométrique gardée ; mots-clés XPIXSZ et XBINNING mis à jour.
 > 
-> À RÉGLER : double-clic puis Apply Global, juste APRÈS ImageSolver (phase 2) ou R_C_Preparation_rapide, avant SPFC et MGC ; copie Binning_x2.js dans src/scripts/clodoweg.
+> À RÉGLER : double-clic puis Apply Global, juste APRÈS Solver_auto (phase 1) ou R_C_Preparation_rapide, avant SPFC et MGC ; copie Binning_x2.js dans src/scripts/clodoweg.
 > 
 > SI :
 > - grand tirage voulu -> Agrandir_x2 (P7 options) avant Export_TIFF, ou ne bine pas
@@ -341,14 +355,14 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 ## P3_Lineaire
 
-#### E08_Combinaison_HOO — PixelMath
+#### E09_Combinaison_HOO — PixelMath
    expression = `H` ; expression1 = `O` ; expression2 = `O` ; useSingleExpression=false ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=true ; showNewImage=true ; newImageId=HOO ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=RGB ; newImageSampleFormat=SameAsTarget
 
 > PRÉRÉGLÉ : R = H, G = O, B = O, image 'HOO'.
 > 
 > À RÉGLER : nomme tes masters H et O.
 
-#### E09_C_HOO_lineaire — ProcessContainer
+#### E10_C_HOO_lineaire — ProcessContainer
    1. BlurXTerminator
       ml_version=4 ; correct_only=false ; sharpen_stars=0.25 ; adjust_star_halos=0.00 ; nonstellar_diameter=0.0 ; auto_nonstellar_psf=true ; sharpen_nonstellar=0.60 ; lunar_planetary=false ; overlap=0.20
    2. StarXTerminator
@@ -364,7 +378,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > Double-clic sur le conteneur pour voir ou changer les réglages de chaque étape.
 
-#### E10_C_Extraction_HOO — ProcessContainer
+#### E11_C_Extraction_HOO — ProcessContainer
    1. PixelMath
       expression = `$T[0]` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=true ; showNewImage=true ; newImageId=H ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=Gray ; newImageSampleFormat=SameAsTarget
    2. PixelMath
@@ -450,7 +464,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 ## P4_Etirement
 
-#### E11_GHS_1_premier — GeneralizedHyperbolicStretch
+#### E12_GHS_1_premier — GeneralizedHyperbolicStretch
    stretchType=ST_GeneralisedHyperbolic ; stretchChannel=SC_RGB ; inverse=false ; stretchFactor=0.000 ; localIntensity=10.000 ; symmetryPoint=0.000000 ; highlightProtection=1.000000 ; shadowProtection=0.000000 ; blackPoint=0.000000 ; whitePoint=1.000000 ; colourBlend=1.000 ; clipType=CT_RGBBlend ; useRGBWorkingSpace=false
 
 > PRÉRÉGLÉ : b = 10, Stretch factor 0.
@@ -460,7 +474,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > SI :
 > - bruit de O ou S qui ressort -> SP trop bas, remonte-le
 
-#### E12_GHS_2_contraste — GeneralizedHyperbolicStretch
+#### E13_GHS_2_contraste — GeneralizedHyperbolicStretch
    stretchType=ST_GeneralisedHyperbolic ; stretchChannel=SC_RGB ; inverse=false ; stretchFactor=1.000 ; localIntensity=4.000 ; symmetryPoint=0.350000 ; highlightProtection=0.900000 ; shadowProtection=0.000000 ; blackPoint=0.000000 ; whitePoint=1.000000 ; colourBlend=1.000 ; clipType=CT_RGBBlend ; useRGBWorkingSpace=false
 
 > PRÉRÉGLÉ : b = 4, HP 0,9, Stretch factor 1, SP 0,35.
@@ -472,7 +486,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - fond trop sombre -> monte LP vers sa valeur (pas au-dessus de SP)
 > - fond bruité qui ressort -> SP trop bas
 
-#### E13_GHS_3_fond — GeneralizedHyperbolicStretch
+#### E14_GHS_3_fond — GeneralizedHyperbolicStretch
    stretchType=ST_GeneralisedHyperbolic ; stretchChannel=SC_RGB ; inverse=false ; stretchFactor=1.000 ; localIntensity=10.000 ; symmetryPoint=0.200000 ; highlightProtection=0.200000 ; shadowProtection=0.000000 ; blackPoint=0.000000 ; whitePoint=1.000000 ; colourBlend=1.000 ; clipType=CT_RGBBlend ; useRGBWorkingSpace=false
 
 > PRÉRÉGLÉ : b = 10, SP = HP = 0,20, Stretch factor 1 (fond à 0,23 après GHS_2).
@@ -547,14 +561,14 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 ## P5_Couleur
 
-#### E14_HOO_simple — PixelMath
+#### E15_HOO_simple — PixelMath
    expression = `H` ; expression1 = `O` ; expression2 = `O` ; useSingleExpression=false ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=true ; showNewImage=true ; newImageId=HOO_etire ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=RGB ; newImageSampleFormat=SameAsTarget
 
 > PRÉRÉGLÉ : R = H, G = O, B = O.
 > 
 > À RÉGLER : vues H et O étirées.
 
-#### E15_NBN_HOO — NarrowbandNormalization
+#### E16_NBN_HOO — NarrowbandNormalization
    palette=Palette_HOO ; lightness=Lightness_Off ; blendMode=Blend_Mode1 ; haBlend=0.000 ; scnr=0.000 ; o3Boost=1.000 ; s2Boost=1.000 ; shadowpoint=1.000 ; highlightReduction=1.000 ; brightness=1.000
 
 > PRÉRÉGLÉ : palette HOO ; O3 boost, Brightness, Highlight reduction à 1 (neutres : multiplicateurs, 0 rend l'image noire) ; Shadow point 1.
@@ -616,7 +630,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 ## P6_Finition
 
-#### E16_HDRMT_30 — ProcessContainer
+#### E17_HDRMT_30 — ProcessContainer
    1. PixelMath
       expression = `$T` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=true ; showNewImage=true ; newImageId=HDR_avant ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
    2. HDRMultiscaleTransform
@@ -637,7 +651,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - cœur encore trop clair -> HDRMT_40 ou HDRMT_50
 > - aucun effet visible -> saute la partie 1
 
-#### E17_C_Finition — ProcessContainer
+#### E18_C_Finition — ProcessContainer
    1. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
       paramètres : `mode=attacher`, `s=0.14`, `flou=2`, `nom=masque_L`, `dialogue=false`
@@ -659,7 +673,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > Double-clic sur le conteneur pour voir ou changer les réglages de chaque étape.
 
-#### E18_C_Sharp_MMT — ProcessContainer
+#### E19_C_Sharp_MMT — ProcessContainer
    1. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
       paramètres : `mode=attacher`, `s=0.14`, `flou=2`, `nom=masque_L`, `dialogue=false`
@@ -682,7 +696,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - bruit accentué -> première couche 3
 > - autre rendu -> Sharp_USM (P6 options) à la place
 
-#### E19_NXT_final — NoiseXTerminator
+#### E20_NXT_final — NoiseXTerminator
    ml_version=0 ; denoise=0.40 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
 
 > PRÉRÉGLÉ : Denoise 0,40, 1 itération.
@@ -977,13 +991,13 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 ## P7_Etoiles
 
-#### E20_Etoiles_HOO — NoOperation
+#### E21_Etoiles_HOO — NoOperation
 
 > PRÉRÉGLÉ : rien (icône-note).
 > 
 > À RÉGLER : avec RGB : étoiles RGB ; sans RGB : étoiles de SXT, NB to RGB ou étoiles synthétiques.
 
-#### E21_Star_Stretch — Script
+#### E22_Star_Stretch — Script
    script `$PXI_SRCDIR/scripts/star_stretch.js`
    paramètres : `amount=6`, `satAmount=1.3`, `removeGreen=true`, `showPreview=false`
 
@@ -999,7 +1013,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - étoiles grisées par le SCNR -> décoche Remove Green
 > - étoiles criardes -> Color Boost 1,0
 
-#### E22_Fond_desature — Script
+#### E23_Fond_desature — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js`
    paramètres : `debut=0.03`, `fin=0.08`, `violetFin=0.30`, `flou=3`
 
@@ -1014,7 +1028,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - fond encore coloré -> fin 0,12
 > - voiles faibles grisés -> fin 0,05, ou saute cette étape
 
-#### E23_Fond_auto — Script
+#### E24_Fond_auto — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js`
    paramètres : `cible=0.12`, `tolerance=0.005`, `grille=8`
 
@@ -1029,7 +1043,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - données très propres -> 0,10 à 0,11
 > - nébuleuse qui remplit le champ : regarde le fond AVANT dans la console ; au-dessus d'environ 0,20 (seuil au jugé), ce n'est pas du vrai ciel -> Ctrl+Z et saute cette étape
 
-#### E24_Etoiles_screen — PixelMath
+#### E25_Etoiles_screen — PixelMath
    expression = `~((~$T) * (~HOO_stars))` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
 
 > PRÉRÉGLÉ : ~((~$T) * (~HOO_stars)), sur l'image elle-même.
@@ -1041,7 +1055,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - NB to RGB -> NBtoRGB_stars
 > - synthétiques -> Stars_HOO
 
-#### E25_NXT_dernier — NoiseXTerminator
+#### E26_NXT_dernier — NoiseXTerminator
    ml_version=0 ; denoise=0.25 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
 
 > PRÉRÉGLÉ : NoiseXTerminator Denoise 0,25, 1 itération.

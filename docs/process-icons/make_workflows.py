@@ -231,7 +231,7 @@ RAPIDE_NOTE = {
 
 # Narrowband (demande de l'utilisateur, 8 octobre 2026) : rapides faits phase par phase ; les autres phases gardent le chemin principal
 _NB_RAP1 = ("MODE RAPIDE (nébuleuses, en cours) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre : R_C_Preparation_rapide, R_Gradient_auto_rapide, R_C_Lineaire_rapide (ou les trois en un : T_Turbo_debut), puis chemin principal à partir de la phase 4. "
-            "Phase 1 : R_C_Preparation_rapide (masters seuls ouverts, double-clic puis Apply Global) à la place de LinearPatternSubtraction, Renommer_auto et ImageSolver (phase 2)%s")
+            "Phase 1 : R_C_Preparation_rapide (masters seuls ouverts, double-clic puis Apply Global) à la place de LinearPatternSubtraction, Renommer_auto et Solver_auto%s")
 _NB_VIDE = "pas encore de rapide narrowband : chemin principal"
 for _p, _x in (('RSHO', ", Combinaison_RGB comprise (RGB des étoiles)"), ('SHO', ""), ('HOO', "")):
     RAPIDE_NOTE[_p] = {k: _NB_VIDE for k in range(2, 8)}
@@ -1274,6 +1274,11 @@ insert_after(rgbsho, 'NXT_RGB', [
                               fermer('Fermer_NB', 'HaNB, OIIINB, SIINB')]), '')])
 # Mode rapide narrowband, phase 1 (demande de l'utilisateur, 8 octobre 2026) : R_C_Preparation_rapide comme en galaxies, sans Combinaison_RGB
 # (la combinaison SHO ou HOO se fait après le gradient, en phase 3) ; RGB + SHO : Combinaison_RGB des étoiles RGB gardée, comme en LRGB
+# Solver_auto au chemin principal P1, comme en LRGB (demande de l'utilisateur, 8 octobre 2026 : « il manque pas un P1 Image Solver? » ;
+# SPCC du RGB a échoué faute d'astrométrie) : ImageSolver sur toutes les images, Apply Global ; après Combinaison_RGB en RGB + SHO
+insert_after(rgbsho, 'Combinaison_RGB', [(gc_solver('Solver_auto'), '')])
+for _st in (sho, hoo):
+    insert_after(_st, 'Renommer_auto', [(gc_solver('Solver_auto'), '')])
 for _st, _rgb in ((rgbsho, True), (sho, False), (hoo, False)):
     insert_after(_st, 'Renommer_auto', [(cont('C_Preparation_rapide', [pick(_st, b)[0] for b in ('Renommer_auto', 'LinearPatternSubtraction')]
                                               + ([rgb_comb_item()[0]] if _rgb else []) + [gc_solver('Solver_auto')]), '')])
