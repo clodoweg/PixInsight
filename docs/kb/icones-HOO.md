@@ -142,7 +142,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > PRÉRÉGLÉ : conteneur : Renommer_auto (H, O d'après FILTER), LinearPatternSubtraction sur tous les masters ouverts, Solver_auto (ImageSolver sur toutes les images) ; pas de combinaison (HOO combinée en phase 3, après le gradient).
 > 
-> À RÉGLER : masters H et O seuls ouverts (caméra mono) ; double-clic puis Apply Global (pas en glissant) ; remplace E00, E01 et l'ImageSolver de la phase 2 ; ensuite la phase 2 sans ImageSolver.
+> À RÉGLER : masters H et O seuls ouverts (caméra mono) ; double-clic puis Apply Global (pas en glissant) ; remplace E00, E01 et l'ImageSolver de la phase 2 ; ensuite R_Gradient_auto_rapide, ou la phase 2 du chemin principal sans ImageSolver.
 > 
 > SI :
 > - une étape en erreur -> lis la console, puis fais les icônes une par une
@@ -286,6 +286,22 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > À RÉGLER : applique sur O puis sur S.
 
 ### P2_rapide
+
+#### R_Gradient_auto_rapide — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Gradient_auto.js`
+
+> MODE RAPIDE, à la place de toute la phase 2 (ImageSolver, SPFC, MGC + MARS, GradientCorrection) : GradientCorrection sur TOUTES les images ouvertes, après R_C_Preparation_rapide (astrométrie déjà faite) ; ensuite la phase 3 du chemin principal (Combinaison).
+> 
+> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
+> 
+> PRÉRÉGLÉ : script Gradient_auto.js : GradientCorrection (sans modèle de gradient) sur TOUTES les images ouvertes (masters narrowband ; RGB aussi en RGB + SHO), rien d'autre ; pas de SPFC ni de MGC + MARS ; images *_stars ignorées ; une erreur n'arrête pas les autres.
+> 
+> À RÉGLER : double-clic puis Apply Global, masters ouverts, après R_C_Preparation_rapide (astrométrie déjà faite) ; remplace toute la phase 2 ; ensuite Combinaison_SHO (ou Combinaison_HOO) en phase 3 ; copie Gradient_auto.js dans src/scripts/clodoweg.
+> 
+> SI :
+> - O (ou un autre canal) garde un gradient, Lune -> Ctrl+Z, puis chemin principal de la phase 2 (SPFC, MGC + MARS) pour ce master
+> - nébuleuse assombrie -> Ctrl+Z, GradientCorrection à la main avec Protection amount plus haut
+> - nébuleuse qui remplit le champ -> chemin principal (MGC + MARS) ou DBE
 
 ## P3_Lineaire
 

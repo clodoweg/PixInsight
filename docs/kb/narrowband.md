@@ -327,7 +327,8 @@ Demande de l'utilisateur (« Commence faire le premier rapide pour SHO, SHO RGB 
 - **RGB + SHO** : Combinaison_RGB en plus, avant Solver_auto (comme en LRGB) : RGB des étoiles créée et résolue dès P1 ; en P7, sauter Combinaison_RGB et ImageSolver du bloc Etoiles_RGB ; en P2, GradientCorrection aussi sur RGB.
 - HOO caméra couleur dual-band : pas ce rapide (DualBand_H / DualBand_O au chemin principal).
 - Mêmes scripts et réglages qu'en galaxies (Renommer_auto reconnaît Ha, OIII, SII) : aucune nouvelle valeur technique.
-- À venir : P2 (gradient), P3, P4…, puis turbo.
+- **P2 : R_Gradient_auto_rapide** (double-clic puis Apply Global, après R_C_Preparation_rapide) = script Gradient_auto : GradientCorrection sans modèle sur toutes les images ouvertes (S, H, O ; RGB en RGB + SHO). Remplace toute la phase 2 (ImageSolver, SPFC, MGC + MARS, GradientCorrection), comme en galaxies. Limites : O garde un gradient (Lune) ou nébuleuse qui remplit le champ -> chemin principal (MGC + MARS) ou DBE ; nébuleuse assombrie -> Protection amount plus haut (`outils.md`). RGB + SHO : le gradient du RGB est fait ici, à sauter dans le bloc Etoiles_RGB.
+- À venir : P3, P4…, puis turbo.
 
 ## BXT et NXT en SHO : réglages comparés au LRGB (analyse du 8 octobre 2026)
 

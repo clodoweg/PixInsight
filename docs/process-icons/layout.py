@@ -189,6 +189,7 @@ CONTAINERS = {
 
 # Textes d'option propres au narrowband (pas de Solver_auto, pas de MAS, pas de RGB_stars partout)
 WHEN_NB = {
+    'Gradient_auto_rapide': "MODE RAPIDE, à la place de toute la phase 2 (ImageSolver, SPFC, MGC + MARS, GradientCorrection) : GradientCorrection sur TOUTES les images ouvertes, après R_C_Preparation_rapide (astrométrie déjà faite) ; ensuite la phase 3 du chemin principal (Combinaison)",
     'C_Preparation_rapide': "MODE RAPIDE, à la place de LinearPatternSubtraction, Renommer_auto et ImageSolver (phase 2) : masters seuls ouverts, double-clic puis Apply Global (pas en glissant : ImageSolver échoue sur une image en cours de traitement) ; ensuite la phase 2 sans ImageSolver",
     'Binning_x2': "traitement 4 fois plus rapide et moins de bruit (0,528″/px au lieu de 0,264″/px, l'image du CDK17 est suréchantillonnée ; FWHM sous le plafond de 8 px de BXT) : double-clic puis Apply Global juste après ImageSolver (phase 2) ou après R_C_Preparation_rapide, toutes les images divisées par 2 ; pour un grand tirage, Agrandir_x2 avant l'export",
     'EZ_Soft_Stretch': "à la place des GHS : étirement automatique doux de chaque canal sans étoiles (HistogramTransformation, point noir et médiane calculés) ; même médiane cible pour tous les canaux",

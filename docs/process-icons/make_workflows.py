@@ -230,14 +230,14 @@ RAPIDE_NOTE = {
             7: "R_C_Etoiles_fond_rapide sur l'image sans étoiles finie : Fond_desature, Fond_auto (0,12) sur l'image sans étoiles, étoiles remises (Etoiles_screen), NXT_dernier (0,25), puis Export_TIFF en un seul conteneur"}}
 
 # Narrowband (demande de l'utilisateur, 8 octobre 2026) : rapides faits phase par phase ; les autres phases gardent le chemin principal
-_NB_RAP1 = ("MODE RAPIDE (nébuleuses, en cours) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. "
+_NB_RAP1 = ("MODE RAPIDE (nébuleuses, en cours) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre : R_C_Preparation_rapide, R_Gradient_auto_rapide, puis chemin principal à partir de la phase 3. "
             "Phase 1 : R_C_Preparation_rapide (masters seuls ouverts, double-clic puis Apply Global) à la place de LinearPatternSubtraction, Renommer_auto et ImageSolver (phase 2)%s")
 _NB_VIDE = "pas encore de rapide narrowband : chemin principal"
 for _p, _x in (('RSHO', ", Combinaison_RGB des étoiles RGB comprise (phase 7)"), ('SHO', ""), ('HOO', "")):
     RAPIDE_NOTE[_p] = {k: _NB_VIDE for k in range(2, 8)}
     RAPIDE_NOTE[_p][1] = _NB_RAP1 % _x
-    RAPIDE_NOTE[_p][2] = "pas encore de rapide narrowband : chemin principal, SANS ImageSolver si R_C_Preparation_rapide est fait (astrométrie déjà faite par Solver_auto)"
-RAPIDE_NOTE['RSHO'][7] = "pas encore de rapide narrowband : chemin principal ; après R_C_Preparation_rapide, RGB est déjà combiné et résolu : saute Combinaison_RGB et ImageSolver du bloc Etoiles_RGB"
+    RAPIDE_NOTE[_p][2] = "R_Gradient_auto_rapide (double-clic puis Apply Global) à la place de toute la phase 2 (ImageSolver, SPFC, MGC + MARS, GradientCorrection) : GradientCorrection sur toutes les images ouvertes (%s) ; l'astrométrie est déjà faite par R_C_Preparation_rapide" % ('S, H, O et RGB' if _p == 'RSHO' else 'S, H, O' if _p == 'SHO' else 'H, O')
+RAPIDE_NOTE['RSHO'][7] = "pas encore de rapide narrowband : chemin principal ; après R_C_Preparation_rapide et R_Gradient_auto_rapide, RGB est déjà combiné, résolu et sans gradient : saute Combinaison_RGB, ImageSolver et le gradient du bloc Etoiles_RGB"
 
 def layout_all(main, opts, rapide=None, notes=None, turbo=None):
     """Une colonne par phase : icône-titre, étapes du chemin principal (E01…), puis icône « options » et options (Opt_…)."""
@@ -1228,6 +1228,7 @@ for _st in (rgbsho, sho, hoo):
 for _st, _rgb in ((rgbsho, True), (sho, False), (hoo, False)):
     insert_after(_st, 'Renommer_auto', [(cont('C_Preparation_rapide', [pick(_st, b)[0] for b in ('Renommer_auto', 'LinearPatternSubtraction')]
                                               + ([rgb_comb_item()[0]] if _rgb else []) + [gc_solver('Solver_auto')]), '')])
+    insert_after(_st, 'ImageSolver', [(script('Gradient_auto_rapide', ''), '')])   # P2 rapide (demande de l'utilisateur) : GradientCorrection sur toutes les images, comme en galaxies
 for _st, _et in ((rgbsho, 'RGB_stars'), (sho, 'NBtoRGB_stars'), (hoo, 'HOO_stars')):
     # Nettoyage_sans_etoiles : image d'étoiles du workflow
     _k = next(k for k, (it, d) in enumerate(_st) if it[0] == 'Nettoyage_sans_etoiles')
