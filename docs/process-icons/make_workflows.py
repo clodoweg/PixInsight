@@ -442,7 +442,7 @@ def write(filename, prefix, title, steps):
         if base in RAPIDE or base in TURBO:
             tag = '%s.\n\n' % L.WHEN[base]
         elif r == 'opt':
-            tag = 'OPTION — %s.\n\n' % opt_lines(L.WHEN[base])
+            tag = 'OPTION — %s.\n\n' % opt_lines(L.when(prefix, base))
         elif not L.is_default(r, prefix):
             tag = 'ALTERNATIVE — %s.\n\n' % label(r)
         else:
@@ -719,7 +719,7 @@ def finish_block(extra=None, galaxie=False):
              (sharp_mmt(), ''), (sharp_usm(), ''),   # accentuation finale : MMT au chemin principal, UnsharpMask en option (demande de l'utilisateur)
              (M.nxt('NXT_final', 0.40, 1), "PARTIE 3 (bruit) — " + D_NXT_F),
              (M.nxt('NXT_final_doux', 0.25, 1), D_NXT_DOUX), (M.nxt('NXT_final_fort', 0.60, 1), D_NXT_FORT)]
-        return b
+        return (extra or []) + b   # narrowband (demande de l'utilisateur, 8 octobre 2026) : même finition, options propres en tête (SCNR_SHO)
     b = [(note('Masque_L', D_MASK), ''),
          (curves('Courbes'), D_CURVES), (M.instance('LocalHistogramEqualization', 'LHE', {'radius': 150, 'histogramBins': 'Bit12', 'slopeLimit': '2.0', 'amount': '0.300', 'circularKernel': True}), D_LHE),
          (M.instance('LocalHistogramEqualization', 'LHE_fin', {'radius': 40, 'histogramBins': 'Bit10', 'slopeLimit': '2.0', 'amount': '0.250', 'circularKernel': True}), D_LHE_FIN),
@@ -985,7 +985,7 @@ rgbsho = pre_block() + nb_masters(['S', 'H', 'O']) + [
     (M.bxt('BXT_NB', False, 0.25, 0.0, 0.60), D_BXT_NB + BXT_C),
     (M.sxt('SXT_lineaire', False), D_SXT_LIN + " Sur l'image SHO : garde le fond sans étoiles (les étoiles viendront du RGB)."),
     NXT_NB,
-] + extract([(0, 'S'), (1, 'H'), (2, 'O')], "l'image SHO sans étoiles") + nb_noise + ghs_block(GHS_NB, STAT_NB) + sho_palette + finish_block(sho_finish) + rgb_stars_block() + stars_end('RGB_stars', cms=True, screen_extra=SCREEN_RGBSHO)
+] + extract([(0, 'S'), (1, 'H'), (2, 'O')], "l'image SHO sans étoiles") + nb_noise + ghs_block(GHS_NB, STAT_NB) + sho_palette + finish_block(sho_finish, galaxie=True) + rgb_stars_block() + stars_end('RGB_stars', cms=True, screen_extra=SCREEN_RGBSHO)
 
 # ---------------------------------------------------------------- SHO sans RGB
 STARS_NB = (" STANDARD DES ÉTOILES SANS RGB : couleurs non calibrées, on vise des étoiles PLAUSIBLES, proches du RGB : du bleu-blanc au jaune-orange, peu saturées, une gamme de couleurs, "
@@ -1000,7 +1000,7 @@ sho = pre_block() + nb_masters(['S', 'H', 'O']) + [
     (M.bxt('BXT_NB', False, 0.25, 0.0, 0.60), D_BXT_NB + BXT_C),
     (M.sxt('SXT_lineaire', False), D_SXT_LIN + " Sur l'image SHO : GARDE LES DEUX images (fond et étoiles), les étoiles viennent ici du narrowband."),
     NXT_NB,
-] + extract([(0, 'S'), (1, 'H'), (2, 'O')], "l'image SHO sans étoiles") + extract([(0, 'S_stars'), (1, 'H_stars'), (2, 'O_stars')], "l'image d'étoiles SHO (linéaire)") + nb_noise + ghs_block(GHS_NB, STAT_NB) + sho_palette + finish_block(sho_finish) + [
+] + extract([(0, 'S'), (1, 'H'), (2, 'O')], "l'image SHO sans étoiles") + extract([(0, 'S_stars'), (1, 'H_stars'), (2, 'O_stars')], "l'image d'étoiles SHO (linéaire)") + nb_noise + ghs_block(GHS_NB, STAT_NB) + sho_palette + finish_block(sho_finish, galaxie=True) + [
     (note('NB_to_RGB_Stars', "ÉTOILES — méthode 1 : NB to RGB Star Combination (SetiAstro, script). Ha Stars et OIII Stars (linéaires, obligatoires), S optionnel. "
           "Green Channel Blend Ratio décoché par défaut (Ha to OIII ratio 0,3 si activé). Apply Star Stretch recommandé par l'auteur : Stretch Factor 5, Color Boost 1,0. "
           "Mélange du script (code v1.6) : R = 0,5·H + 0,5·S (H seul sans S), G = ratio·H + (1 − ratio)·O (0,3·H + 0,7·O par défaut), B = O ; monte le ratio si les étoiles bleues sont verdâtres ou les rouges trop rouges, baisse-le si les étoiles chaudes tirent vers le jaune-vert." + STARS_NB + STARS_NB_FIX), ''),
@@ -1042,7 +1042,7 @@ hoo = pre_block() + [
     (note('NBColourMapper', T_NBCM), ''),
     (M.instance('LRGBCombination', 'H_en_luminance', {'mL': '0.500', 'mc': '0.400', 'noiseReduction': True}, post=M.lrgb_post),
      "Option — H en luminance : fais une copie de H étiré nommée 'L' (même fond et médiane proche que l'image HOO, sinon couleurs délavées), puis applique sur l'image HOO. Seul L activé, Lightness 0,5, Saturation 0,40."),
-] + finish_block() + [
+] + finish_block(galaxie=True) + [
     (note('Etoiles_HOO', "ÉTOILES — avec RGB : suis le bloc étoiles RGB du workflow RGB + SHO. Sans RGB : utilise l'image d'étoiles de SXT sur HOO (ou NB to RGB Star Combination), étire-la avec Star Stretch ; son nom ('HOO_stars' après SXT, 'NBtoRGB_stars' après NB to RGB, 'RGB_stars' avec RGB) doit être celui de l'icône Etoiles_screen. "
           "Les étoiles HOO tirent vers le rouge et le cyan : désature-les légèrement si besoin. "
           "STANDARD : étoiles plausibles, du bleu-blanc au jaune-orange, peu saturées, une gamme de couleurs, jamais vertes. En HOO classique (G = B = O), le magenta est impossible "
@@ -1195,6 +1195,31 @@ def turbo_debut(steps, extra=()):
                 script('Gradient_auto_rapide', ''), pick(steps, 'Lineaire_rapide')[0]] + list(extra))
 insert_after(lrgb, 'C_Preparation_rapide', [(turbo_debut(lrgb), '')])   # colonne P1, à côté de R_C_Preparation_rapide
 insert_after(lhargb, 'C_Preparation_rapide', [(turbo_debut(lhargb), '')])   # turbo LHaRGB laissé tel quel (Lineaire_auto), à revoir (demande de l'utilisateur)
+
+# Narrowband (demande de l'utilisateur, 8 octobre 2026) : mêmes ajouts que le LRGB et le LHaRGB, sauf les rapides et le turbo (plus tard).
+# Finition galaxies (HDRMT_30, C_Finition à 0,58, C_Sharp_MMT, NXT_final au chemin principal, options P6) via finish_block(galaxie=True) ;
+# fin P7 : Fond_desature, Fond_auto (options Fond_auto_clair) sur l'image SANS étoiles avant la recombinaison, NXT_dernier juste après ;
+# la recombinaison par défaut reste Etoiles_reduites en nébuleuse (Etoiles_screen en alternative). Options STF, EZ_Soft_Stretch, Binning_x2,
+# DarkStructureEnhance, Agrandir_x2 ; Etoiles_plafond retiré. Pas de Boost_final (masque tiré de L).
+D_NXT_DERNIER_NB = D_NXT_DERNIER.replace("juste après Etoiles_screen", "juste après la recombinaison des étoiles (Etoiles_reduites ou Etoiles_screen)")
+for _st in (rgbsho, sho, hoo):
+    _st.insert(next(k for k, (it, d) in enumerate(_st) if it[0] == 'GHS_1_premier'), (stf_icon(), ''))
+    insert_after(_st, 'Statistical_Stretch', [(script('EZ_Soft_Stretch', ''), '')])
+    insert_after(_st, 'ImageSolver', [(script('Binning_x2', ''), '')])
+    insert_before(_st, 'Masque_L', [(script('DarkStructureEnhance', ''), '')])
+    insert_before(_st, 'ICC_sRGB', [(agrandir_x2(), '')])
+    _it = pick(_st, 'Fond_desature')
+    _st.remove(_it)
+    insert_before(_st, 'Etoiles_screen', [_it, (note('Fond_auto', D_FOND), ''), (script('Fond_auto_clair', ''), '')])
+    insert_after(_st, 'Etoiles_reduites', [(M.nxt('NXT_dernier', 0.25, 1), D_NXT_DERNIER_NB)])
+    _st[:] = [x for x in _st if x[0][0] != 'Etoiles_plafond']
+for _st, _et in ((rgbsho, 'RGB_stars'), (sho, 'NBtoRGB_stars'), (hoo, 'HOO_stars')):
+    # Nettoyage_sans_etoiles : image d'étoiles du workflow
+    _k = next(k for k, (it, d) in enumerate(_st) if it[0] == 'Nettoyage_sans_etoiles')
+    (_n, _x), _d = _st[_k]
+    _a = '<td id="id">etoiles</td>\n            <td id="value">RGB_stars</td>'
+    assert _a in _x
+    _st[_k] = ((_n, _x.replace(_a, _a.replace('RGB_stars', _et))), _d)
 
 # options supprimées des workflows galaxies (demande de l'utilisateur, 5 octobre 2026) ; Etoiles_grosses reste en narrowband
 SUPPR_GALAXIES = {'Etoiles_plafond'}   # Etoiles_grosses remise en option P7 (demande de l'utilisateur) ; Etoiles_auto_etire, GraXpert, VeraLux_HMS, MKStarReduction, Coeurs_etoiles, RepairedHSV, Etoiles_couleur : retirés du code

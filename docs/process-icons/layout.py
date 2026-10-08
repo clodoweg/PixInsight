@@ -39,8 +39,8 @@ OPT = {'NXT_H', 'NXT_O_S', 'Main_continuum', 'ImageSolver_seul', 'EZ_Soft_Stretc
 def role(prefix, base):
     if prefix in LUM and base == 'Star_Stretch':
         return 'opt'    # galaxies (demande de l'utilisateur) : option d'étirement des étoiles linéaires
-    if prefix in LUM and base in ('NXT_final', 'Fond_desature', 'HDRMT_30'):
-        return 'core'   # galaxies : finition en parties, NXT_final et Fond_desature dans le chemin principal (demande de l'utilisateur)
+    if (prefix in LUM or prefix in NB) and base in ('NXT_final', 'Fond_desature', 'HDRMT_30'):
+        return 'core'   # narrowband aussi (demande de l'utilisateur, 8 octobre 2026)   # galaxies : finition en parties, NXT_final et Fond_desature dans le chemin principal (demande de l'utilisateur)
     if prefix in LUM and base == 'Statistical_Stretch':
         return 'opt'    # galaxies (demande de l'utilisateur, 5 octobre 2026) : MAS sur le RGB
     if base in OPT or (base == 'MGC_MARS' and prefix in NB):
@@ -177,11 +177,23 @@ CONTAINERS = {
             ('C_RGB_bruit', "l'image RGB après CombineHaWithRGB (ou H_dans_RGB ; et H_dans_L éventuel) : NXT ; ensuite Fermer_continuum (icône à part, demande de l'utilisateur)", ['NXT_RGB']),
             _FIN_G],   # LHaRGB (demande de l'utilisateur) : étoiles gardées jusqu'à LRGB, plus de C_RGB_etoiles_bruit ni de C_L_lineaire (NXT seul)
     'RSHO': [('C_SHO_lineaire', "l'image SHO combinée, linéaire : BXT, SXT (étoiles à part), puis NXT sur l'image sans étoiles", ['BXT_NB', 'SXT_lineaire', 'NXT_NB']),
-             ('C_Extraction_SHO', "l'image SHO sans étoiles", ['Extraire_S', 'Extraire_H', 'Extraire_O']), _FIN,
+             ('C_Extraction_SHO', "l'image SHO sans étoiles", ['Extraire_S', 'Extraire_H', 'Extraire_O']), _FIN_G,
              ('C_Etoiles_RGB', "l'image RGB combinée, linéaire, gradient retiré", ['BXT_CorrectOnly', 'SPCC', 'BXT_RGB', 'SXT_RGB_lineaire'])],
     'SHO': [('C_SHO_lineaire', "l'image SHO combinée, linéaire : BXT, SXT (étoiles à part), puis NXT sur l'image sans étoiles", ['BXT_NB', 'SXT_lineaire', 'NXT_NB']),
             ('C_Extraction_SHO', "l'image SHO sans étoiles", ['Extraire_S', 'Extraire_H', 'Extraire_O']),
-            ('C_Extraction_etoiles', "l'image d'étoiles SHO, linéaire", ['Extraire_S_stars', 'Extraire_H_stars', 'Extraire_O_stars']), _FIN],
+            ('C_Extraction_etoiles', "l'image d'étoiles SHO, linéaire", ['Extraire_S_stars', 'Extraire_H_stars', 'Extraire_O_stars']), _FIN_G],
     'HOO': [('C_HOO_lineaire', "l'image HOO combinée, linéaire : BXT, SXT (étoiles à part), puis NXT sur l'image sans étoiles", ['BXT_NB', 'SXT_lineaire', 'NXT_NB']),
-            ('C_Extraction_HOO', "l'image HOO sans étoiles", ['Extraire_H', 'Extraire_O']), _FIN],
+            ('C_Extraction_HOO', "l'image HOO sans étoiles", ['Extraire_H', 'Extraire_O']), _FIN_G],
 }
+
+
+# Textes d'option propres au narrowband (pas de Solver_auto, pas de MAS, pas de RGB_stars partout)
+WHEN_NB = {
+    'Binning_x2': "traitement 4 fois plus rapide et moins de bruit (0,528″/px au lieu de 0,264″/px, l'image du CDK17 est suréchantillonnée ; FWHM sous le plafond de 8 px de BXT) : double-clic puis Apply Global juste après ImageSolver (phase 2), toutes les images divisées par 2 ; pour un grand tirage, Agrandir_x2 avant l'export",
+    'EZ_Soft_Stretch': "à la place des GHS : étirement automatique doux de chaque canal sans étoiles (HistogramTransformation, point noir et médiane calculés) ; même médiane cible pour tous les canaux",
+    'Nettoyage_sans_etoiles': "avant la partie 1, sur l'image sans étoiles après la palette (image d'étoiles ouverte) : taches rondes floues ou halo coloré laissés par SXT autour des étoiles",
+    'Fond_auto_clair': "à la place de Fond_auto : image trop sombre, fond amené à 0,14, après Fond_desature, avant la recombinaison des étoiles",
+}
+
+def when(prefix, base):
+    return WHEN_NB.get(base, WHEN[base]) if prefix in NB else WHEN[base]

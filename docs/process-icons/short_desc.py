@@ -256,6 +256,18 @@ V = {
     ('HOO', 'SXT_lineaire'): ("Generate star image coché, Unscreen décoché", "rien ; garde l'image d'étoiles si tu n'as pas de RGB", ["quadrillage -> Large overlap"]),
 }
 
+# Narrowband (demande de l'utilisateur, 8 octobre 2026) : mêmes ajouts que les galaxies, textes adaptés
+_ET_NB = {'RSHO': 'RGB_stars', 'SHO': 'NBtoRGB_stars', 'HOO': 'HOO_stars'}
+for _p, _et in _ET_NB.items():
+    V[(_p, 'Binning_x2')] = (S['Binning_x2'][0], "double-clic puis Apply Global, juste APRÈS ImageSolver (phase 2), avant SPFC et MGC ; copie Binning_x2.js dans src/scripts/clodoweg", S['Binning_x2'][2])
+    V[(_p, 'EZ_Soft_Stretch')] = (S['EZ_Soft_Stretch'][0], "à la place des GHS : clique sur chaque canal SANS étoiles (S, H, O après extraction et NXT), double-clic puis Apply Global ; dans la fenêtre : Target Median 0,15 pour tous les canaux, Expand Low 0,05, Aggressiveness 5, Zero in White Point décoché ; ensuite la palette (même fond sur tous les canaux) ; dépôt https://elveteek.ch/pixinsight-updates/ez-processing-suite/", ["fond trop sombre ou nébuleuse faible -> Target Median 0,20 (défaut) ou Expand Low 0,08", "fond délavé, gris -> Target Median 0,12", "fond coupé à noir -> Aggressiveness plus bas (2 à 3)"])
+    V[(_p, 'NXT_final')] = ("Denoise 0,40, 1 itération", "PARTIE 3 de la finition (bruit) : glisse sur l'image sans étoiles après C_Finition et C_Sharp_MMT ; options à la place : NXT_final_doux (0,25), NXT_final_fort (0,60)", ["aspect plastique -> NXT_final_doux", "bruit encore visible -> NXT_final_fort"])
+    V[(_p, 'Nettoyage_sans_etoiles')] = (S['Nettoyage_sans_etoiles'][0].replace('RGB_stars', _et), "glisse sur l'image sans étoiles après la palette, AVANT HDRMT_30 ; %s doit être ouverte (étirée) ; vérifie à 1:1, Ctrl+Z pour annuler" % _et, [x.replace('galaxie', 'nébuleuse') for x in S['Nettoyage_sans_etoiles'][2]])
+    V[(_p, 'Fond_desature')] = (S['Fond_desature'][0], "glisse sur l'image SANS étoiles finie (après NXT_final), avant Fond_auto et la recombinaison des étoiles (Etoiles_reduites ou Etoiles_screen)", ["violet encore visible dans les zones faibles -> violetFin 0,40", "nébuleuse faible grisée -> fin 0,10 ; zones H faibles devenues grises -> saute cette étape"])
+    V[(_p, 'Fond_auto')] = (S['Fond_auto'][0], "glisse sur l'image SANS étoiles, après Fond_desature, avant la recombinaison des étoiles ; console : fond avant et après", S['Fond_auto'][2] + ["nébuleuse qui remplit le champ (pas de vrai fond) -> saute cette étape"])
+    V[(_p, 'Fond_auto_clair')] = (S['Fond_auto_clair'][0], "à la place de Fond_auto, image trop sombre : glisse sur l'image sans étoiles, après Fond_desature, avant la recombinaison des étoiles", S['Fond_auto_clair'][2])
+    V[(_p, 'NXT_dernier')] = (S['NXT_dernier'][0], "toute dernière étape avant l'export : glisse sur l'image finie AVEC ses étoiles, juste après la recombinaison (Etoiles_reduites ou Etoiles_screen)", S['NXT_dernier'][2])
+
 LAUNCH = {True: "LANCEMENT : glisse l'icône sur l'image.", False: "LANCEMENT : double-clic sur l'icône, puis Apply Global.",
           'cont': "LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).",
           'cont_global': "LANCEMENT : masters seuls ouverts, double-clic puis Apply Global (rond bleu) ; pas en glissant (ImageSolver échoue sur une image en cours de traitement)."}

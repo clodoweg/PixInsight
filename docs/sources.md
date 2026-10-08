@@ -950,3 +950,8 @@ Non vérifié : aucune source ne donne de valeurs officielles pour le narrowband
 
 Demande : « 1 ok / 2 -> B » (BXT gardé à 0,60 ; NXT choix B)
 Fait : NXT_NB (Denoise 0,75, 1 itération) ajouté en fin de C_SHO_lineaire (RGB-SHO, SHO sans RGB) et C_HOO_lineaire (HOO), après SXT_lineaire : sur l'image sans étoiles, linéaire, avant l'extraction. NXT_H et NXT_O_S passent en options P3. LRGB et LHaRGB non touchés.
+
+### SHO, RGB + SHO, HOO : ajouts des galaxies (8 octobre 2026)
+
+Demande : « oui » (faire les ajouts proposés à l'audit SHO : options STF, EZ_Soft_Stretch, Binning_x2, options P6 manquantes, fin P7 comme en LRGB ; HDRMT_30 et NXT_final au chemin principal ; saturation 0,58 avec Finition_saturee en option ; suppression d'Etoiles_plafond)
+Fait : finish_block(galaxie=True) pour les trois workflows narrowband (SCNR_SHO gardé en option en tête), conteneur C_Finition à 0,58 ; role() : HDRMT_30, NXT_final, Fond_desature au chemin principal en narrowband ; P7 : Fond_desature, Fond_auto (+ Fond_auto_clair) avant la recombinaison, NXT_dernier après Etoiles_reduites (recombinaison par défaut gardée en nébuleuse) ; options STF (P3), EZ_Soft_Stretch (P4), Binning_x2 (après ImageSolver), DarkStructureEnhance, Agrandir_x2 ; Etoiles_plafond retiré ; Nettoyage_sans_etoiles réglé sur l'image d'étoiles du workflow (RGB_stars, NBtoRGB_stars, HOO_stars) ; textes d'options adaptés (layout.WHEN_NB, short_desc V). Pas de Boost_final (masque tiré de L), pas de rapide ni de turbo (plus tard). LRGB et LHaRGB non touchés.

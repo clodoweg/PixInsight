@@ -83,4 +83,4 @@ Process galaxies (demande de l'utilisateur, 5 octobre 2026) : L sans étoiles, R
 
 ## État et suite
 
-Workflow LRGB terminé et validé par l'utilisateur (5 octobre 2026). Prochains chantiers : LHaRGB (même process ; à vérifier sur des cibles), puis SHO et RGB + SHO (n'ont pas encore reçu les changements des galaxies : MAS, SCNR des étoiles, finition à 0,58, Sharp_MMT au rapide, NXT_dernier…). Points ouverts : section « Non vérifié » de `docs/sources.md`.
+Workflow LRGB terminé et validé par l'utilisateur (5 octobre 2026). Prochains chantiers : LHaRGB (même process ; à vérifier sur des cibles), puis SHO, RGB + SHO et HOO (8 octobre 2026 : NXT_NB 0,75 sur la combinaison sans étoiles, BXT gardé à 0,60 ; finition des galaxies : HDRMT_30, C_Finition 0,58, C_Sharp_MMT, NXT_final au chemin principal et toutes ses options ; P7 : Fond_desature, Fond_auto, recombinaison (Etoiles_reduites par défaut en nébuleuse), NXT_dernier ; options STF, EZ_Soft_Stretch, Binning_x2, DarkStructureEnhance, Agrandir_x2 ; Etoiles_plafond retiré. Restent à faire : rapides et turbo). Points ouverts : section « Non vérifié » de `docs/sources.md`.
