@@ -233,14 +233,14 @@ RAPIDE_NOTE = {
 _NB_RAP1 = ("MODE RAPIDE (nébuleuses, en cours) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre : R_C_Preparation_rapide, R_Gradient_auto_rapide, R_C_Lineaire_rapide, puis chemin principal à partir de la phase 4. "
             "Phase 1 : R_C_Preparation_rapide (masters seuls ouverts, double-clic puis Apply Global) à la place de LinearPatternSubtraction, Renommer_auto et ImageSolver (phase 2)%s")
 _NB_VIDE = "pas encore de rapide narrowband : chemin principal"
-for _p, _x in (('RSHO', ", Combinaison_RGB des étoiles RGB comprise (phase 7)"), ('SHO', ""), ('HOO', "")):
+for _p, _x in (('RSHO', ", Combinaison_RGB comprise (RGB des étoiles)"), ('SHO', ""), ('HOO', "")):
     RAPIDE_NOTE[_p] = {k: _NB_VIDE for k in range(2, 8)}
     RAPIDE_NOTE[_p][1] = _NB_RAP1 % _x
     RAPIDE_NOTE[_p][2] = "R_Gradient_auto_rapide (double-clic puis Apply Global) à la place de toute la phase 2 (ImageSolver, SPFC, MGC + MARS, GradientCorrection) : GradientCorrection sur toutes les images ouvertes (%s) ; l'astrométrie est déjà faite par R_C_Preparation_rapide" % ('S, H, O et RGB' if _p == 'RSHO' else 'S, H, O' if _p == 'SHO' else 'H, O')
     RAPIDE_NOTE[_p][3] = "R_C_Lineaire_rapide (double-clic puis Apply Global) à la place de toute la phase 3 : combinaison, %s, extraction des canaux (vues %s linéaires sans étoiles) ; masters et images linéaires inutiles fermés%s" % (
         'C_HOO_lineaire (BXT, SXT, NXT)' if _p == 'HOO' else 'C_SHO_lineaire (BXT, SXT, NXT)', 'H, O' if _p == 'HOO' else 'S, H, O',
-        ' ; aussi C_Etoiles_RGB sur RGB (BXT Correct Only, SPCC, BXT, SXT : crée RGB_stars)' if _p == 'RSHO' else ' ; étoiles S_stars, H_stars, O_stars extraites de SHO_stars' if _p == 'SHO' else ' ; HOO_stars gardée')
-RAPIDE_NOTE['RSHO'][7] = "pas encore de rapide narrowband : chemin principal ; après R_C_Lineaire_rapide, RGB_stars existe déjà (linéaire) : saute Combinaison_RGB, ImageSolver et C_Etoiles_RGB, commence à Star_Stretch"
+        ' ; aussi C_RGB_lineaire sur RGB (BXT Correct Only, SPCC, BXT, NXT : RGB reste linéaire avec ses étoiles)' if _p == 'RSHO' else ' ; étoiles S_stars, H_stars, O_stars extraites de SHO_stars' if _p == 'SHO' else ' ; HOO_stars gardée')
+RAPIDE_NOTE['RSHO'][4] = "pas encore de rapide narrowband : chemin principal ; canaux S, H, O par les GHS, RGB par MAS, SXT_RGB_etire (crée RGB_stars), SCNR_etoiles_vert, Fermer_RGB"
 
 def layout_all(main, opts, rapide=None, notes=None, turbo=None):
     """Une colonne par phase : icône-titre, étapes du chemin principal (E01…), puis icône « options » et options (Opt_…)."""
@@ -975,30 +975,15 @@ SCREEN_RGBSHO = (" RGB + SHO — CONTRÔLE après recombinaison, à 100 % : pas 
                  "refais-le ou passe CorrectMagentaStars) ; étoiles pas « collées » (ni plus grosses ni plus brillantes que la nébuleuse ne le laisse attendre, sinon réduction d'étoiles ou étirement plus doux) ; "
                  "pas de décalage entre étoiles RGB et leurs traces (aligne RGB et SHO sur la même référence dans WBPP, même recadrage) ; fond toujours R = G = B (fond éclairci ou teinté : fond de l'image d'étoiles pas à 0). "
                  "Nébuleuse en fausses couleurs et étoiles en vraies couleurs : c'est voulu.")
-STARS_RGBSHO = (" RGB + SHO — les étoiles doivent avoir des couleurs NATURELLES calibrées : du bleu-blanc au jaune-orange, jamais vertes (G au-dessus de R et B) ni magenta (R et B nettement au-dessus de G). "
-                "Contrôle sur l'image d'étoiles seule avant recombinaison : graphes SPCC corrects, toute une gamme bleue et jaune-orange ; lis la couleur à la sonde 15x15 sur le HALO (le cœur des étoiles brillantes est souvent saturé et blanc) : chaudes R >= G >= B, bleues B >= G >= R. Même standard que les étoiles LRGB. Étoiles toutes blanches : étirement trop fort ; criardes : Color Boost plus bas ou légère désaturation ; "
-                "vertes, bleues ou jaunes en bloc : SPCC du RGB à revoir.")
-
-def rgb_stars_block():
-    return [
-        (note('Etoiles_RGB', "ÉTOILES RGB — masters R, G, B : même recadrage, puis les icônes suivantes dans l'ordre (combinaison, gradient via l'icône GradientCorrection ou les notes, BXT Correct Only, SPCC, BXT, SXT)." + STARS_RGBSHO), ''),
-        rgb_comb_item(),
-        (solver_container(), ''),   # ImageSolver_seul déjà en option P2 (nb_masters) : deux icônes du même nom refusées par PixInsight
-        (M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), D_BXT_CO + BXT_C),
-        (note('Find_Background', T_FINDBG), ''),
-        spcc(),
-        (M.bxt('BXT_RGB', False, 0.25, 0.0, 0.50), "BlurXTerminator complet sur RGB après SPCC : Sharpen Stars 0,25, Halos 0, Nonstellar 0,50." + BXT_C),
-        (M.sxt('SXT_RGB_lineaire', False), D_SXT_LIN + " Garde uniquement l'image d'étoiles RGB."),
-        (note('Star_Stretch', T_STARSTRETCH + STARS_RGBSHO), ''),
-    ]
+# Étoiles RGB du RGB + SHO : faites comme en LRGB (P2 à P4, demande de l'utilisateur, 8 octobre 2026) ; ancien rgb_stars_block (P7, SXT linéaire + Star Stretch) supprimé
 
 # ---------------------------------------------------------------- RGB + SHO
-rgbsho = pre_block() + nb_masters(['S', 'H', 'O']) + [
+rgbsho = pre_block() + [rgb_comb_item()] + nb_masters(['S', 'H', 'O']) + [   # RGB des étoiles combiné dès P1, comme en LRGB (demande de l'utilisateur, 8 octobre 2026)
     sho_combine,
     (M.bxt('BXT_NB', False, 0.25, 0.0, 0.60), D_BXT_NB + BXT_C),
     (M.sxt('SXT_lineaire', False), D_SXT_LIN + " Sur l'image SHO : garde le fond sans étoiles (les étoiles viendront du RGB)."),
     NXT_NB,
-] + extract([(0, 'S'), (1, 'H'), (2, 'O')], "l'image SHO sans étoiles") + nb_noise + ghs_block(GHS_NB, STAT_NB) + sho_palette + finish_block(sho_finish, galaxie=True) + rgb_stars_block() + stars_end('RGB_stars', cms=True, screen_extra=SCREEN_RGBSHO)
+] + extract([(0, 'S'), (1, 'H'), (2, 'O')], "l'image SHO sans étoiles") + nb_noise + ghs_block(GHS_NB, STAT_NB) + sho_palette + finish_block(sho_finish, galaxie=True) + stars_end('RGB_stars', cms=True, screen_extra=SCREEN_RGBSHO)   # étoiles RGB faites comme en LRGB (P2 à P4), plus de bloc étoiles en P7
 
 # ---------------------------------------------------------------- SHO sans RGB
 STARS_NB = (" STANDARD DES ÉTOILES SANS RGB : couleurs non calibrées, on vise des étoiles PLAUSIBLES, proches du RGB : du bleu-blanc au jaune-orange, peu saturées, une gamme de couleurs, "
@@ -1229,13 +1214,19 @@ for _st in (rgbsho, sho, hoo):
 # P3 rapide narrowband (demande de l'utilisateur, 8 octobre 2026) : conteneur de scripts (Apply Global) ; Lineaire_auto lance les icônes du chemin
 # principal sur leurs vues, Fermer_vues ferme les masters avant l'extraction (elle recrée S, H, O) et les images linéaires devenues inutiles
 _P3_NB = {
-    'RSHO': ('Combinaison_SHO>H', 'S, H, O', 'C_SHO_lineaire>SHO ; C_Extraction_SHO>SHO ; C_Etoiles_RGB>RGB', 'SHO, SHO_stars, RGB'),
+    'RSHO': ('Combinaison_SHO>H', 'S, H, O', 'C_SHO_lineaire>SHO ; C_Extraction_SHO>SHO ; C_RGB_lineaire>RGB', 'SHO, SHO_stars'),
     'SHO': ('Combinaison_SHO>H', 'S, H, O', 'C_SHO_lineaire>SHO ; C_Extraction_SHO>SHO ; C_Extraction_etoiles>SHO_stars', 'SHO'),
     'HOO': ('Combinaison_HOO>H', 'H, O', 'C_HOO_lineaire>HOO ; C_Extraction_HOO>HOO', 'HOO'),
 }
 def lineaire_rapide_nb(prefix):
     comb, masters, suite, fin = _P3_NB[prefix]
     return cont('C_Lineaire_rapide', [lineaire_rapide(comb), fermer('Fermer_masters', masters), lineaire_rapide(suite), fermer('Fermer_lineaires', fin)])
+# RGB + SHO (demande de l'utilisateur, 8 octobre 2026 : « Il faut faire la meme chose que sur LRGB pour arriver jusqu'a RGB_stars ») :
+# P2 SPFC_RGB_filtres + MGC_MARS sur RGB, P3 C_RGB_lineaire (BXT Correct Only, SPCC, BXT, NXT), P4 MAS, SXT_RGB_etire (RGB_stars), SCNR_etoiles_vert,
+# options SCNR_etoiles_violet et Saturation_grosses, puis Fermer_RGB (le RGB sans étoiles ne sert plus). Mêmes icônes que le LRGB.
+insert_before(rgbsho, 'MGC_MARS', [pick(lrgb, 'SPFC_RGB_filtres')])
+insert_after(rgbsho, 'Extraire_O', [pick(lrgb, b) for b in ('BXT_CorrectOnly', 'Find_Background', 'SPCC', 'BXT_RGB', 'NXT_RGB')])
+insert_after(rgbsho, 'GHS_3_fond', [pick(lrgb, b) for b in ('MAS', 'SXT_RGB_etire', 'SCNR_etoiles_vert', 'SCNR_etoiles_violet', 'Saturation_grosses')] + [(fermer('Fermer_RGB', 'RGB'), '')])
 # Mode rapide narrowband, phase 1 (demande de l'utilisateur, 8 octobre 2026) : R_C_Preparation_rapide comme en galaxies, sans Combinaison_RGB
 # (la combinaison SHO ou HOO se fait après le gradient, en phase 3) ; RGB + SHO : Combinaison_RGB des étoiles RGB gardée, comme en LRGB
 for _st, _rgb in ((rgbsho, True), (sho, False), (hoo, False)):
