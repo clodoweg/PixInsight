@@ -406,6 +406,9 @@ Points clos au dernier contrôle (30 septembre 2026) :
 
 ## Conteneurs de process
 
+- [Masking Facts in PixInsight](https://www.pixinsight.com/doc/legacy/LE/15_masks/masking_facts/masking_facts.html) — Officiel (doc LE, ancienne) : « The ProcessContainer process cannot be masked » ; le lien au masque est gardé DANS chaque instance du conteneur, appliqué quand chaque process s'exécute. Hypothèse tirée (8 octobre 2026, question de l'utilisateur : « le E C Finition ne fait pas la meme chose en process d'un coup que un par un. Ca peut pas etre du a la gestion des masques? ») : Courbes, LHE, LHE_fin du conteneur C_Finition n'ont pas de masque enregistré, donc s'appliquent sans masque_L attaché par le script ; à confirmer par un test.
+- [Workflow refinement using projects (AstroBin)](https://app.astrobin.com/forum/topic/10931/pixinsight-tutorial-workflow-refinement-using-projects) — Forum *(résumé)* : un process ajouté à un conteneur ressort sans son masque ; masque gardé seulement par un glisser depuis l'History Explorer.
+
 - Modèle — [theAstroShed, icônes de process](https://github.com/jamiesmith/pixinsight-icons) : trois *ProcessContainer* réels (`RGB_PostProcess` : SPCC → BXT → NXT → script → SXT → script ; `for_each_in_RGB` ; `for_each_SHO__ADD_CROP`), générés par PixInsight 1.9.3 : instances imbriquées sans identifiant, attribut `enabled="true"`, pas de description sur le conteneur. Format recopié pour les fichiers Conteneurs-X et le préparateur ; non testé dans PixInsight 1.9.5.
 
 ## Solution astrométrique (ImageSolver)
