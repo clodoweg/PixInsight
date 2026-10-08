@@ -409,7 +409,8 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
       script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
       paramètres : `etapes=Opt_Copie_RGB_continuum>RGB ; Opt_SXT_RGB_continuum>RGB_cont`, `dialogue=false`
 
-> OPTION — continuum retiré de H, O, S (étoiles et lumière d'étoiles hors des canaux) : étape 1 de 3, fin de phase 3 (après C_Extraction_SHO et C_RGB_lineaire, ou après R_C_Lineaire_rapide)
+> OPTION — continuum retiré de H, O, S (lumière d'étoiles et de poussière hors des canaux)
+> Pas sur une nébuleuse en émission brillante (cœur noirci : son émission est aussi dans R et G) : étape 1 de 3, fin de phase 3 (après C_Extraction_SHO et C_RGB_lineaire, ou après R_C_Lineaire_rapide)
 > Double-clic puis Apply Global : copie RGB_cont du RGB, sans étoiles (RGB garde les siennes pour MAS).
 > 
 > LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).
@@ -435,6 +436,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > À RÉGLER : après Opt_C_Continuum_prep (S, H, O sans étoiles et RGB_cont ouverts) : double-clic puis Apply Global ; fenêtre : Ha = H, OIII = O, SII = S, Red (or RGB) = RGB_cont, Green = Select Image (pas un RGB : ce champ veut une image en gris), Starless coché ; Execute ; ensuite Opt_C_Continuum_fin.
 > 
 > SI :
+> - zones NOIRES dans HaNB, SIINB ou OIIINB (cœur brillant, R ou G proche de 1 dans RGB_cont) -> l'émission de la nébuleuse est aussi dans le rouge et le vert : ne lance PAS C_Continuum_fin, ferme les *NB et garde S, H, O (option à éviter sur une nébuleuse en émission brillante)
 > - « The image RGB_cont is the wrong color space » -> RGB_cont mis dans Green : remets Green sur Select Image
 > - vue créée HaNB1 (ou OIIINB1…) -> ferme les anciennes *NB avant
 > - SIINB ou OIIINB nettement plus faibles que S ou O sur la nébuleuse -> le rouge contient aussi la raie H, le vert un peu d'OIII : ferme HaNB, OIIINB, SIINB et saute Opt_C_Continuum_fin (S, H, O restent sans continuum retiré)
@@ -478,6 +480,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > À RÉGLER : après Opt_Continuum_SHO : double-clic puis Apply Global (pas en glissant) ; ensuite GHS_1_premier sur H, comme sans continuum.
 > 
 > SI :
+> - regarde HaNB, OIIINB, SIINB AVANT : zones noires -> ne lance pas ce conteneur (il ferme S, H, O sans enregistrer)
 > - HaNB, OIIINB ou SIINB absente -> la console le dit, rien n'est recréé : relance Continuum_SHO (S, H, O sont déjà fermées : refais la phase 3)
 
 #### Opt_NXT_H — NoiseXTerminator

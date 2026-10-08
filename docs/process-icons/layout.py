@@ -189,7 +189,7 @@ CONTAINERS = {
 
 # Textes d'option propres au narrowband (pas de Solver_auto, pas de MAS, pas de RGB_stars partout)
 WHEN_NB = {
-    'C_Continuum_prep': "continuum retiré de H, O, S (étoiles et lumière d'étoiles hors des canaux) : étape 1 de 3, fin de phase 3 (après C_Extraction_SHO et C_RGB_lineaire, ou après R_C_Lineaire_rapide) ; double-clic puis Apply Global : copie RGB_cont du RGB, sans étoiles (RGB garde les siennes pour MAS)",
+    'C_Continuum_prep': "continuum retiré de H, O, S (lumière d'étoiles et de poussière hors des canaux) ; pas sur une nébuleuse en émission brillante (cœur noirci : son émission est aussi dans R et G) : étape 1 de 3, fin de phase 3 (après C_Extraction_SHO et C_RGB_lineaire, ou après R_C_Lineaire_rapide) ; double-clic puis Apply Global : copie RGB_cont du RGB, sans étoiles (RGB garde les siennes pour MAS)",
     'Continuum_SHO': "étape 2 de 3, après C_Continuum_prep : double-clic puis Apply Global, fenêtre : Ha = H, OIII = O, SII = S, Red (or RGB) = RGB_cont, Green = Select Image, Starless coché ; crée HaNB, OIIINB, SIINB",
     'C_Continuum_fin': "étape 3 de 3, après Continuum_SHO : double-clic puis Apply Global ; ferme S, H, O, RGB_cont, puis HaNB, OIIINB, SIINB deviennent H, O, S ; ensuite GHS_1_premier sur H",
     'Copie_RGB_continuum': "lancée par C_Continuum_prep (ne pas utiliser seule) : copie RGB_cont du RGB linéaire",
