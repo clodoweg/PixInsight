@@ -1252,10 +1252,14 @@ insert_after(rgbsho, 'GHS_3_fond', [pick(lrgb, b) for b in ('MAS', 'SXT_RGB_etir
 # P5 rapide SHO (demande de l'utilisateur, 8 octobre 2026 : « fais un P5 rapide avec SHO, puis Narrowband normalisation pour le SNCR a 0.7 ») :
 # Apply Global ; Lineaire_auto lance SHO_simple (canaux étirés -> SHO_etire) puis NBN_SHO (SCNR 0,7) sur SHO_etire ; S, H, O restent ouverts
 # P4 rapide MAS sur les canaux (demande de l'utilisateur, 8 octobre 2026 : « un rapide dans P4 qui me ferait MAS sur les 3 S H O ») :
-# option MAS_canaux (réglages MAS de l'utilisateur, fond 0,15 pour tous les canaux, saturation décochée : images en gris) et R_C_MAS_canaux_rapide (Apply Global)
+# option MAS_canaux (réglages MAS de l'utilisateur, fond 0,25 pour tous les canaux puis GHS_3_fond, saturation décochée : images en gris) et R_C_MAS_canaux_rapide (Apply Global)
 def mas_canaux():
     n, x = mas()
     x = x.replace('id="saturationEnabled" value="true"', 'id="saturationEnabled" value="false"')
+    # fond cible 0,25 (demande de l'utilisateur, 8 octobre 2026 : « le MAS doit avoir taget median 0.25 comme ca apres je fais le GH3 ») : GHS_3_fond ensuite
+    a = 'id="targetBackground" value="0.150"'
+    assert a in x
+    x = x.replace(a, 'id="targetBackground" value="0.250"')
     return 'MAS_canaux', x.replace('id="MAS_instance"', 'id="MAS_canaux_instance"', 1)
 for _st, _v in ((rgbsho, 'S,H,O'), (sho, 'S,H,O'), (hoo, 'H,O')):
     insert_after(_st, 'Statistical_Stretch', [(mas_canaux(), ''), (cont('C_MAS_canaux_rapide', [lineaire_rapide('Opt_MAS_canaux>' + _v)]), '')])

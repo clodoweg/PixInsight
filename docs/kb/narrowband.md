@@ -381,3 +381,7 @@ Question de l'utilisateur : même analyse pour le HOO. Réglages actuels : Combi
 ## SHO sans RGB : étoiles SHO_stars et options étoiles (8 octobre 2026)
 
 Demande de l'utilisateur : « dans SHO (sans RGB) les etoiles s'appelent SHO_stars et il manque les options de saturation grosses étoiles, retirer le violet etc qu'il y a dans le SHO RGB ». Image d'étoiles par défaut du SHO sans RGB : SHO_stars (SXT_lineaire, étirée par Star_Stretch) dans Etoiles_screen, Etoiles_reduites, R_C_Etoiles_fond_rapide, Nettoyage_sans_etoiles, Halo_B_Gon ; NB_to_RGB_Stars (NBtoRGB_stars) et Etoiles_HOO_synth (Stars_HOO) deviennent des méthodes à part (nom à changer dans Etoiles_screen). Options P7 après Star_Stretch, avant Etoiles_screen, mêmes scripts que le RGB + SHO, vue = SHO_stars : SCNR_etoiles_vert (option ici, chemin principal en RGB + SHO), SCNR_etoiles_violet, Saturation_grosses. Non testé sur des étoiles narrowband (SCNR vert sur des étoiles SHO : à juger à la sonde).
+
+## MAS_canaux : fond 0,25 puis GHS_3_fond (8 octobre 2026)
+
+Demande de l'utilisateur : « en SHO, le MAS doit avoir taget median 0.25 comme ca apres je fais le GH3. tu peux mettre ca dans le rapide? ». Opt_MAS_canaux (lancée par R_C_MAS_canaux_rapide), 3 workflows narrowband : Target background 0,250 au lieu de 0,150 (MAS n'a pas de « Target Median » ; Target background est son réglage de fond, comme le Target Median 0,25 de Statistical Stretch), puis GHS_3_fond à la main sur chaque canal (SP = HP = fond lu − 0,03, fond final 0,12–0,14). MAS_light garde 0,15 (réglages de l'utilisateur). Non testé.

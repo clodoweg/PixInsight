@@ -523,15 +523,15 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - couleurs trop fades -> saturation 0,60
 
 #### Opt_MAS_canaux — MultiscaleAdaptiveStretch
-   aggressiveness=0.70 ; targetBackground=0.150 ; dynamicRangeCompression=0.40 ; contrastRecovery=true ; scaleSeparation=1024 ; contrastRecoveryIntensity=1.000 ; previewLargeScale=false ; saturationEnabled=false ; saturationAmount=0.75 ; saturationBoost=0.50 ; saturationLightnessMask=true ; backgroundROIEnabled=false ; backgroundROIX0=0 ; backgroundROIY0=0 ; backgroundROIWidth=0 ; backgroundROIHeight=0
+   aggressiveness=0.70 ; targetBackground=0.250 ; dynamicRangeCompression=0.40 ; contrastRecovery=true ; scaleSeparation=1024 ; contrastRecoveryIntensity=1.000 ; previewLargeScale=false ; saturationEnabled=false ; saturationAmount=0.75 ; saturationBoost=0.50 ; saturationLightnessMask=true ; backgroundROIEnabled=false ; backgroundROIX0=0 ; backgroundROIY0=0 ; backgroundROIWidth=0 ; backgroundROIHeight=0
 
-> OPTION — à la place des GHS : MultiscaleAdaptiveStretch sur chaque canal sans étoiles, même fond cible 0,15 pour tous (règle du même fond)
+> OPTION — à la place de GHS_1 et GHS_2 : MultiscaleAdaptiveStretch sur chaque canal sans étoiles, même fond cible 0,25 pour tous (règle du même fond), puis GHS_3_fond sur chaque canal
 > Glisse sur S, puis H, puis O (ou R_C_MAS_canaux_rapide)
 > Non testé en narrowband.
 > 
-> PRÉRÉGLÉ : MultiscaleAdaptiveStretch, tes réglages MAS (Aggressiveness 0,70, Target background 0,150, Dynamic range compression 0,40, Contrast recovery) ; saturation décochée (canaux en gris).
+> PRÉRÉGLÉ : MultiscaleAdaptiveStretch, tes réglages MAS (Aggressiveness 0,70, Target background 0,250 comme le Target Median 0,25 de Statistical Stretch, Dynamic range compression 0,40, Contrast recovery) ; saturation décochée (canaux en gris).
 > 
-> À RÉGLER : glisse sur chaque canal SANS étoiles, linéaire (S, H, O ; HOO : H, O), à la place des GHS ; même fond cible pour tous ; ensuite contrôle le fond et la médiane de chaque canal, puis la palette.
+> À RÉGLER : glisse sur chaque canal SANS étoiles, linéaire (S, H, O ; HOO : H, O), à la place de GHS_1 et GHS_2 ; même fond cible pour tous ; ensuite GHS_3_fond sur chaque canal (SP = HP = fond lu - 0,03, vers 0,22), puis la palette.
 > 
 > SI :
 > - fond d'un canal différent des autres -> GHS_3_fond sur ce canal
@@ -562,13 +562,13 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
       script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
       paramètres : `etapes=Opt_MAS_canaux>H,O`, `dialogue=false`
 
-> MODE RAPIDE, à la place des GHS sur les canaux : S, H, O (HOO : H, O) linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut), double-clic puis Apply Global (pas en glissant) ; ensuite la palette.
+> MODE RAPIDE, à la place de GHS_1 et GHS_2 sur les canaux (MAS fond 0,25) : S, H, O (HOO : H, O) linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut), double-clic puis Apply Global (pas en glissant) ; ensuite GHS_3_fond sur chaque canal, puis la palette.
 > 
 > LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).
 > 
-> PRÉRÉGLÉ : conteneur de scripts : Lineaire_auto lance Opt_MAS_canaux sur H et O (fond cible 0,15 pour les deux).
+> PRÉRÉGLÉ : conteneur de scripts : Lineaire_auto lance Opt_MAS_canaux sur H et O (fond cible 0,25 pour les deux).
 > 
-> À RÉGLER : H, O linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut) ; Conteneurs-HOO chargé ; double-clic puis Apply Global (pas en glissant) ; ensuite contrôle des fonds, puis HOO_simple et NBN_HOO.
+> À RÉGLER : H, O linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut) ; Conteneurs-HOO chargé ; double-clic puis Apply Global (pas en glissant) ; ensuite GHS_3_fond sur H et O (même fond, vers 0,12–0,14), puis HOO_simple et NBN_HOO.
 > 
 > SI :
 > - un canal mal étiré -> Ctrl+Z sur ce canal, puis GHS à la main
