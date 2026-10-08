@@ -385,6 +385,33 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 ### P3_rapide
 
+#### R_C_Lineaire_rapide — ProcessContainer
+   1. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
+      paramètres : `etapes=Combinaison_HOO>H`, `dialogue=false`
+   2. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
+      paramètres : `views=H, O`, `dialogue=false`
+   3. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
+      paramètres : `etapes=C_HOO_lineaire>HOO ; C_Extraction_HOO>HOO`, `dialogue=false`
+   4. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
+      paramètres : `views=HOO`, `dialogue=false`
+
+> MODE RAPIDE, à la place de toute la phase 3 (combinaison, conteneur linéaire, extraction) : après R_Gradient_auto_rapide, double-clic puis Apply Global (pas en glissant) ; Conteneurs du workflow chargé ; ensuite GHS_1_premier sur H.
+> 
+> LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).
+> 
+> PRÉRÉGLÉ : conteneur de scripts : Lineaire_auto lance E09_Combinaison_HOO (crée HOO) ; Fermer_vues ferme les masters H, O ; Lineaire_auto lance C_HOO_lineaire sur HOO (BXT_NB, SXT_lineaire qui crée HOO_stars, NXT_NB 0,75) et C_Extraction_HOO sur HOO (crée H, O sans étoiles) ; Fermer_vues ferme HOO ; HOO_stars gardée (étoiles du HOO sans RGB).
+> 
+> À RÉGLER : après R_Gradient_auto_rapide (ou la phase 2), double-clic puis Apply Global (pas en glissant) ; le fichier Conteneurs du workflow doit être chargé (icônes E## lancées par Lineaire_auto) ; les masters sont FERMÉS sans enregistrer : enregistre-les avant si tu veux les garder ; ensuite GHS_1_premier sur H ; caméra couleur dual-band : pas ce conteneur.
+> 
+> SI :
+> - une étape en erreur -> la console dit laquelle ; fais la suite au chemin principal à partir de cette icône
+> - NXT par canal voulu (NXT_H, NXT_O_S) -> après ce conteneur, sur les vues extraites
+> - BXT, SXT ou NXT à changer -> double-clic sur le conteneur linéaire du chemin principal (c'est lui qui est lancé)
+
 ## P4_Etirement
 
 #### E12_GHS_1_premier — GeneralizedHyperbolicStretch

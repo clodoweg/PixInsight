@@ -328,7 +328,9 @@ Demande de l'utilisateur (« Commence faire le premier rapide pour SHO, SHO RGB 
 - HOO caméra couleur dual-band : pas ce rapide (DualBand_H / DualBand_O au chemin principal).
 - Mêmes scripts et réglages qu'en galaxies (Renommer_auto reconnaît Ha, OIII, SII) : aucune nouvelle valeur technique.
 - **P2 : R_Gradient_auto_rapide** (double-clic puis Apply Global, après R_C_Preparation_rapide) = script Gradient_auto : GradientCorrection sans modèle sur toutes les images ouvertes (S, H, O ; RGB en RGB + SHO). Remplace toute la phase 2 (ImageSolver, SPFC, MGC + MARS, GradientCorrection), comme en galaxies. Limites : O garde un gradient (Lune) ou nébuleuse qui remplit le champ -> chemin principal (MGC + MARS) ou DBE ; nébuleuse assombrie -> Protection amount plus haut (`outils.md`). RGB + SHO : le gradient du RGB est fait ici, à sauter dans le bloc Etoiles_RGB.
-- À venir : P3, P4…, puis turbo.
+- **P3 : R_C_Lineaire_rapide** (double-clic puis Apply Global, après R_Gradient_auto_rapide ; Conteneurs du workflow chargé) = conteneur de scripts : Lineaire_auto (E09_Combinaison_SHO ou _HOO sur H) ; Fermer_vues (masters S, H, O ou H, O : l'extraction recrée ces noms) ; Lineaire_auto (C_SHO_lineaire ou C_HOO_lineaire, C_Extraction_SHO ou _HOO ; SHO sans RGB : C_Extraction_etoiles sur SHO_stars ; RGB + SHO : C_Etoiles_RGB sur RGB, crée RGB_stars) ; Fermer_vues (SHO ou HOO linéaire sans étoiles ; RGB + SHO : aussi SHO_stars et RGB sans étoiles). Gardées : SHO_stars (SHO), HOO_stars (HOO), RGB_stars (RGB + SHO). Les réglages sont ceux des icônes du chemin principal (Lineaire_auto les lance). Pas en glissant : mode de lancement `cont_scripts` du générateur.
+- Masters fermés sans enregistrement (préférence : images inutiles fermées) ; les enregistrer avant pour les garder.
+- À venir : P4, P5…, puis turbo.
 
 ## BXT et NXT en SHO : réglages comparés au LRGB (analyse du 8 octobre 2026)
 

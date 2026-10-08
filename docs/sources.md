@@ -362,7 +362,7 @@ Points toujours sans source directe (contrôle du 30 septembre 2026) :
 
 - Pas encore confirmés dans PixInsight par l'utilisateur (5 octobre 2026) : Sharp_MMT depuis sa fenêtre et cwApplyOnCopy nouvelle version (résultat recalculé sur la vue) ; Saturation_grosses après la correction de l'« Unknown error » ; Etoiles_grosses sans anneau (vérifié seulement en simulation) ; T_Turbo_debut ; SCNR_etoiles_violet (Invert en script). Réglages choisis sans source chiffrée : Courbes de C_Finition saturation 0,58 (au jugé de l'utilisateur : 0,65 trop saturé), NXT_dernier Denoise 0,25.
 
-- Mode rapide narrowband P1 (8 octobre 2026) : R_C_Preparation_rapide et R_Gradient_auto_rapide de SHO sans RGB, RGB + SHO et HOO pas encore lancés dans PixInsight (ImageSolver par Solver_auto sur des masters 3 nm non testé).
+- Mode rapide narrowband P1 (8 octobre 2026) : R_C_Preparation_rapide, R_Gradient_auto_rapide et R_C_Lineaire_rapide de SHO sans RGB, RGB + SHO et HOO pas encore lancés dans PixInsight (R_C_Lineaire_rapide : Lineaire_auto sur des icônes PixelMath et conteneurs d'extraction, nom SHO_stars de SXT supposé) (ImageSolver par Solver_auto sur des masters 3 nm non testé).
 
 Points clos au dernier contrôle (30 septembre 2026) :
 
@@ -983,3 +983,4 @@ Fait : CLAUDE.md mis à jour (état des workflows narrowband, décisions BXT/NXT
 - Demande de l'utilisateur : « Commence faire le premier rapide pour SHO, SHO RGB et HOO (en fait je vais travailler sur les 3 a la fois dans cette conversation) ».
 - Aucune nouvelle valeur : R_C_Preparation_rapide reprend les scripts déjà validés en galaxies (Renommer_auto, LPS_UnClic, Combiner_RGB, GC_Solver_auto). Ordre combinaison après gradient : manuel RC Astro et rubrique « Combinaison et narrowband » (déjà sourcés). Non testé dans PixInsight sur des masters narrowband (ImageSolver sur masters 3 nm).
 - Phase 2 (demande de l'utilisateur : « fait un P2 rapide aussi ») : R_Gradient_auto_rapide, même script Gradient_auto que les galaxies (GradientCorrection seule, réglages par défaut, sans modèle) ; conseils SI repris de `docs/kb/outils.md` (GradientCorrection : Protection amount ; MGC + MARS, DBE). Pas de nouvelle valeur.
+- Phase 3 (demande de l'utilisateur : « fais aussi un P3 rapide ») : R_C_Lineaire_rapide, conteneur de scripts déjà validés (Lineaire_auto, Fermer_vues) qui lance les icônes du chemin principal ; aucun nouveau réglage. Ordre combinaison simple puis BXT, SXT, NXT : manuel RC Astro (rubrique RC Astro, analyse BXT/NXT du 8 octobre 2026). Supposé non vérifié : nom de l'image d'étoiles de SXT = `<vue>_stars` (SHO_stars, HOO_stars), comme RGB_stars en galaxies.

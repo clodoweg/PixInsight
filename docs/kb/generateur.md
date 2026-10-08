@@ -56,6 +56,8 @@ Règle : chaque script a une fenêtre, mise à jour à chaque changement du scri
 
 - Un conteneur de process natifs (MAS, SXT, BXT, GHS…) se GLISSE sur l'image : lancé par le rond Apply Global, PixInsight refuse (« Cannot execute instance in the global context », retour de l'utilisateur). Se lancent en Apply Global seulement les icônes faites de scripts : R_C_Preparation_rapide et T_Turbo_debut (avec Solver_auto), R_Gradient_auto_rapide, R_Lineaire_rapide. Les conteneurs portent une description (texte de lancement LAUNCH['cont'] ou LAUNCH['cont_global'] dans `short_desc.py`).
 
+- Conteneur fait de scripts qui choisissent leurs vues (narrowband R_C_Lineaire_rapide : Lineaire_auto + Fermer_vues) : texte de lancement `LAUNCH['cont_scripts']` (Apply Global), choisi par `shorten()` sur le nom de base. Ne pas généraliser à « tout conteneur de scripts » : C_Sharp_MMT et C_P3_rapide (LHaRGB) se glissent.
+- `layout.when()` : texte `WHEN_NB` en narrowband, sinon `WHEN` ; les icônes R_ et T_ l'utilisent aussi (`WHEN` peut ne pas avoir l'entrée d'un rapide narrowband).
 - Un script ne peut pas lancer une instance Script ; un ProcessContainer peut enchaîner des scripts. `ProcessInstance.fromIcon(id)` exécute une icône de process natif.
 - `#engine v8` (ImageSolver) casse l'ancien code (`PixelMath.prototype.RGB`, LinearPatternSubtraction.jsh).
 - ImageSolver échoue sur l'image glissée dans un conteneur : conteneurs avec Solver_auto en Apply Global.

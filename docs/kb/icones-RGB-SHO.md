@@ -381,6 +381,34 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 ### P3_rapide
 
+#### R_C_Lineaire_rapide — ProcessContainer
+   1. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
+      paramètres : `etapes=Combinaison_SHO>H`, `dialogue=false`
+   2. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
+      paramètres : `views=S, H, O`, `dialogue=false`
+   3. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
+      paramètres : `etapes=C_SHO_lineaire>SHO ; C_Extraction_SHO>SHO ; C_Etoiles_RGB>RGB`, `dialogue=false`
+   4. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
+      paramètres : `views=SHO, SHO_stars, RGB`, `dialogue=false`
+
+> MODE RAPIDE, à la place de toute la phase 3 (combinaison, conteneur linéaire, extraction) : après R_Gradient_auto_rapide, double-clic puis Apply Global (pas en glissant) ; Conteneurs du workflow chargé ; ensuite GHS_1_premier sur H.
+> 
+> LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).
+> 
+> PRÉRÉGLÉ : conteneur de scripts : Lineaire_auto lance E09_Combinaison_SHO (crée SHO) ; Fermer_vues ferme les masters S, H, O ; Lineaire_auto lance C_SHO_lineaire sur SHO (BXT_NB, SXT_lineaire, NXT_NB 0,75), C_Extraction_SHO sur SHO (crée S, H, O sans étoiles) et C_Etoiles_RGB sur RGB (BXT Correct Only, SPCC, BXT, SXT : crée RGB_stars, linéaire) ; Fermer_vues ferme SHO, SHO_stars et RGB sans étoiles.
+> 
+> À RÉGLER : après R_Gradient_auto_rapide (ou la phase 2), double-clic puis Apply Global (pas en glissant) ; le fichier Conteneurs du workflow doit être chargé (icônes E## lancées par Lineaire_auto) ; les masters sont FERMÉS sans enregistrer : enregistre-les avant si tu veux les garder ; ensuite GHS_1_premier sur H ; RGB doit venir de R_C_Preparation_rapide (combinée, résolue) et R_Gradient_auto_rapide ; en phase 7, commence à Star_Stretch sur RGB_stars.
+> 
+> SI :
+> - une étape en erreur -> la console dit laquelle ; fais la suite au chemin principal à partir de cette icône
+> - NXT par canal voulu (NXT_H, NXT_O_S) -> après ce conteneur, sur les vues extraites
+> - BXT, SXT ou NXT à changer -> double-clic sur le conteneur linéaire du chemin principal (c'est lui qui est lancé)
+> - pas de RGB ouverte -> l'étape C_Etoiles_RGB s'arrête : fais le bloc étoiles RGB au chemin principal (phase 7)
+
 ## P4_Etirement
 
 #### E12_GHS_1_premier — GeneralizedHyperbolicStretch

@@ -161,7 +161,7 @@ def shorten(xml, prefix, base):
     drag = md5 = None
     if xml.lstrip().startswith('<instance class="ProcessContainer"'):
         # conteneur (retour de l'utilisateur) : rien ne disait de le GLISSER ; le rond Apply Global échoue avec des process natifs
-        drag = 'cont_global' if '/GC_Solver_auto.js' in xml else 'cont'
+        drag = 'cont_global' if '/GC_Solver_auto.js' in xml else 'cont_scripts' if base == 'C_Lineaire_rapide' else 'cont'
         if '<description>' not in xml:
             xml = re.sub(r'(<instance class="ProcessContainer" id="[^"]*">)', r'\1\n      <description></description>', xml, count=1)
     elif base in SCRIPTS and 'class="Script"' in xml:
@@ -169,7 +169,7 @@ def shorten(xml, prefix, base):
         drag = launch.startswith(L_DRAG)
         if '/clodoweg/' in path:
             drag = 'dlg'   # script de la fiche avec fenêtre de réglages (demande de l'utilisateur)
-    short = escape(SD.text(prefix, base, drag, bool(md5)) if SD.has(prefix, base) else SD.LAUNCH[drag] if drag in ('cont', 'cont_global') else '')
+    short = escape(SD.text(prefix, base, drag, bool(md5)) if SD.has(prefix, base) else SD.LAUNCH[drag] if drag in ('cont', 'cont_global', 'cont_scripts') else '')
     return re.sub(r'<description>.*?</description>', lambda m: '<description>%s</description>' % short, xml, count=1, flags=re.S)
 
 ASCII = ['Preparation', 'Gradient', 'Lineaire', 'Etirement', 'Couleur', 'Finition', 'Etoiles']
@@ -212,7 +212,7 @@ def layout(entries, naming):
     return insts, icons
 
 TURBO = {'Turbo_debut'}   # ancien mode Turbo supprimé ; Turbo_debut ajouté ensuite (demande de l'utilisateur, 5 octobre 2026)
-RAPIDE = {'Main_continuum', 'Lineaire_rapide', 'C_P3_rapide', 'C_RGB_etire_rapide', 'C_Fin_rapide', 'C_Etoiles_fond_rapide', 'C_Preparation_rapide', 'Gradient_auto_rapide', 'C_RGB_rapide', 'C_L_rapide', 'C_RGB_fin_rapide', 'C_LRGB_rapide'}
+RAPIDE = {'C_Lineaire_rapide', 'Main_continuum', 'Lineaire_rapide', 'C_P3_rapide', 'C_RGB_etire_rapide', 'C_Fin_rapide', 'C_Etoiles_fond_rapide', 'C_Preparation_rapide', 'Gradient_auto_rapide', 'C_RGB_rapide', 'C_L_rapide', 'C_RGB_fin_rapide', 'C_LRGB_rapide'}
 RAPIDE_NOTE = {
     'LRGB': {1: "MODE RAPIDE (galaxies) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre (étoiles gardées jusqu'à LRGB) : R_C_Preparation_rapide ; R_Gradient_auto_rapide ; R_Lineaire_rapide (RGB et L) ; GHS_1_premier, GHS_2_contraste, GHS_3_fond sur L ; R_C_RGB_etire_rapide sur RGB ; R_C_LRGB_rapide (LRGB sans étoiles) ; finition. Phase 1 : R_C_Preparation_rapide (double-clic puis Apply Global) à la place de LinearPatternSubtraction, Renommer_auto, Combinaison_RGB et Solver_auto",
              2: "R_Gradient_auto_rapide à la place de toute la phase 2 : GradientCorrection sur toutes les images ouvertes (l'astrométrie est déjà faite par R_C_Preparation_rapide)",
@@ -230,14 +230,17 @@ RAPIDE_NOTE = {
             7: "R_C_Etoiles_fond_rapide sur l'image sans étoiles finie : Fond_desature, Fond_auto (0,12) sur l'image sans étoiles, étoiles remises (Etoiles_screen), NXT_dernier (0,25), puis Export_TIFF en un seul conteneur"}}
 
 # Narrowband (demande de l'utilisateur, 8 octobre 2026) : rapides faits phase par phase ; les autres phases gardent le chemin principal
-_NB_RAP1 = ("MODE RAPIDE (nébuleuses, en cours) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre : R_C_Preparation_rapide, R_Gradient_auto_rapide, puis chemin principal à partir de la phase 3. "
+_NB_RAP1 = ("MODE RAPIDE (nébuleuses, en cours) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre : R_C_Preparation_rapide, R_Gradient_auto_rapide, R_C_Lineaire_rapide, puis chemin principal à partir de la phase 4. "
             "Phase 1 : R_C_Preparation_rapide (masters seuls ouverts, double-clic puis Apply Global) à la place de LinearPatternSubtraction, Renommer_auto et ImageSolver (phase 2)%s")
 _NB_VIDE = "pas encore de rapide narrowband : chemin principal"
 for _p, _x in (('RSHO', ", Combinaison_RGB des étoiles RGB comprise (phase 7)"), ('SHO', ""), ('HOO', "")):
     RAPIDE_NOTE[_p] = {k: _NB_VIDE for k in range(2, 8)}
     RAPIDE_NOTE[_p][1] = _NB_RAP1 % _x
     RAPIDE_NOTE[_p][2] = "R_Gradient_auto_rapide (double-clic puis Apply Global) à la place de toute la phase 2 (ImageSolver, SPFC, MGC + MARS, GradientCorrection) : GradientCorrection sur toutes les images ouvertes (%s) ; l'astrométrie est déjà faite par R_C_Preparation_rapide" % ('S, H, O et RGB' if _p == 'RSHO' else 'S, H, O' if _p == 'SHO' else 'H, O')
-RAPIDE_NOTE['RSHO'][7] = "pas encore de rapide narrowband : chemin principal ; après R_C_Preparation_rapide et R_Gradient_auto_rapide, RGB est déjà combiné, résolu et sans gradient : saute Combinaison_RGB, ImageSolver et le gradient du bloc Etoiles_RGB"
+    RAPIDE_NOTE[_p][3] = "R_C_Lineaire_rapide (double-clic puis Apply Global) à la place de toute la phase 3 : combinaison, %s, extraction des canaux (vues %s linéaires sans étoiles) ; masters et images linéaires inutiles fermés%s" % (
+        'C_HOO_lineaire (BXT, SXT, NXT)' if _p == 'HOO' else 'C_SHO_lineaire (BXT, SXT, NXT)', 'H, O' if _p == 'HOO' else 'S, H, O',
+        ' ; aussi C_Etoiles_RGB sur RGB (BXT Correct Only, SPCC, BXT, SXT : crée RGB_stars)' if _p == 'RSHO' else ' ; étoiles S_stars, H_stars, O_stars extraites de SHO_stars' if _p == 'SHO' else ' ; HOO_stars gardée')
+RAPIDE_NOTE['RSHO'][7] = "pas encore de rapide narrowband : chemin principal ; après R_C_Lineaire_rapide, RGB_stars existe déjà (linéaire) : saute Combinaison_RGB, ImageSolver et C_Etoiles_RGB, commence à Star_Stretch"
 
 def layout_all(main, opts, rapide=None, notes=None, turbo=None):
     """Une colonne par phase : icône-titre, étapes du chemin principal (E01…), puis icône « options » et options (Opt_…)."""
@@ -1223,12 +1226,23 @@ for _st in (rgbsho, sho, hoo):
     insert_before(_st, 'Etoiles_screen', [_it, (note('Fond_auto', D_FOND), ''), (script('Fond_auto_clair', ''), '')])
     insert_after(_st, 'Etoiles_reduites', [(M.nxt('NXT_dernier', 0.25, 1), D_NXT_DERNIER_NB)])
     _st[:] = [x for x in _st if x[0][0] != 'Etoiles_plafond']
+# P3 rapide narrowband (demande de l'utilisateur, 8 octobre 2026) : conteneur de scripts (Apply Global) ; Lineaire_auto lance les icônes du chemin
+# principal sur leurs vues, Fermer_vues ferme les masters avant l'extraction (elle recrée S, H, O) et les images linéaires devenues inutiles
+_P3_NB = {
+    'RSHO': ('Combinaison_SHO>H', 'S, H, O', 'C_SHO_lineaire>SHO ; C_Extraction_SHO>SHO ; C_Etoiles_RGB>RGB', 'SHO, SHO_stars, RGB'),
+    'SHO': ('Combinaison_SHO>H', 'S, H, O', 'C_SHO_lineaire>SHO ; C_Extraction_SHO>SHO ; C_Extraction_etoiles>SHO_stars', 'SHO'),
+    'HOO': ('Combinaison_HOO>H', 'H, O', 'C_HOO_lineaire>HOO ; C_Extraction_HOO>HOO', 'HOO'),
+}
+def lineaire_rapide_nb(prefix):
+    comb, masters, suite, fin = _P3_NB[prefix]
+    return cont('C_Lineaire_rapide', [lineaire_rapide(comb), fermer('Fermer_masters', masters), lineaire_rapide(suite), fermer('Fermer_lineaires', fin)])
 # Mode rapide narrowband, phase 1 (demande de l'utilisateur, 8 octobre 2026) : R_C_Preparation_rapide comme en galaxies, sans Combinaison_RGB
 # (la combinaison SHO ou HOO se fait après le gradient, en phase 3) ; RGB + SHO : Combinaison_RGB des étoiles RGB gardée, comme en LRGB
 for _st, _rgb in ((rgbsho, True), (sho, False), (hoo, False)):
     insert_after(_st, 'Renommer_auto', [(cont('C_Preparation_rapide', [pick(_st, b)[0] for b in ('Renommer_auto', 'LinearPatternSubtraction')]
                                               + ([rgb_comb_item()[0]] if _rgb else []) + [gc_solver('Solver_auto')]), '')])
     insert_after(_st, 'ImageSolver', [(script('Gradient_auto_rapide', ''), '')])   # P2 rapide (demande de l'utilisateur) : GradientCorrection sur toutes les images, comme en galaxies
+    insert_before(_st, 'STF', [(lineaire_rapide_nb({id(rgbsho): 'RSHO', id(sho): 'SHO', id(hoo): 'HOO'}[id(_st)]), '')])   # P3 rapide
 for _st, _et in ((rgbsho, 'RGB_stars'), (sho, 'NBtoRGB_stars'), (hoo, 'HOO_stars')):
     # Nettoyage_sans_etoiles : image d'étoiles du workflow
     _k = next(k for k, (it, d) in enumerate(_st) if it[0] == 'Nettoyage_sans_etoiles')
