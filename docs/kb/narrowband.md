@@ -43,6 +43,10 @@ Courbes de teinte et saturation, SCNR sur le vert si besoin, contraste local, NX
 
 Le RGB suit le LRGB jusqu'à RGB_stars, en parallèle du SHO : P1 Combinaison_RGB ; P2 ImageSolver, SPFC_RGB_filtres, MGC_MARS sur RGB ; P3 C_RGB_lineaire (BXT _Correct Only_, SPCC, BXT, NXT 0,80) ; P4 MAS (avec étoiles), SXT_RGB_etire (_Unscreen_ coché : crée RGB_stars), SCNR_etoiles_vert (options SCNR_etoiles_violet, Saturation_grosses), puis Fermer_RGB (le RGB sans étoiles ne sert plus). En P7 : RGB_stars directement à la recombinaison. Ancienne méthode (SXT en linéaire, puis Star Stretch ou GHS sur les étoiles seules), plus courante dans les tutoriels narrowband : retirée du fichier ; elle reste l'option Star_Stretch du LRGB.
 
+8b. #### Continuum (option, demande de l'utilisateur, 8 octobre 2026)
+
+Avant Combinaison_SHO, après le gradient : Continuum_SHO (ContinuumSubtraction.js de SetiAstro, fenêtre : Ha = H, OIII = O, SII = S, Red (or RGB) = RGB) crée HaNB, SIINB (continuum = rouge) et OIIINB (continuum = vert) par `NB − Q·(C − med(C))`, Q = 0,9 en Starry (code 1.3.5 lu). Puis Combinaison_SHO_continuum (R = SIINB, G = HaNB, B = OIIINB) à la place de Combinaison_SHO, puis Fermer_NB (S, H, O et les *NB). Rapide : R_C_Lineaire_continuum_rapide après Continuum_SHO. But : retirer étoiles et lumière d'étoiles (continuum) des canaux, émission pure. Limite (raisonnement, non vérifié par une source) : le filtre R contient aussi les raies H et S, le G l'OIII (Antlia : OIII transmis par B et G), donc une petite part de l'émission est retirée aussi, surtout sur S (Ha brillant dans le rouge) ; si SIINB ou OIIINB s'affaiblit trop, garder S ou O bruts dans la combinaison.
+
 9. #### Réintégration des étoiles
 
 Recombine en mode _screen_. S'il reste des étoiles magenta ou des halos, passe CorrectMagentaStars ou Halo-B-Gon. Contrôle ensuite l'accord entre nébuleuse et étoiles (couleurs RGB + SHO).

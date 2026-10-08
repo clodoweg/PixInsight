@@ -362,6 +362,7 @@ Points toujours sans source directe (contrôle du 30 septembre 2026) :
 
 - Pas encore confirmés dans PixInsight par l'utilisateur (5 octobre 2026) : Sharp_MMT depuis sa fenêtre et cwApplyOnCopy nouvelle version (résultat recalculé sur la vue) ; Saturation_grosses après la correction de l'« Unknown error » ; Etoiles_grosses sans anneau (vérifié seulement en simulation) ; T_Turbo_debut ; SCNR_etoiles_violet (Invert en script). Réglages choisis sans source chiffrée : Courbes de C_Finition saturation 0,58 (au jugé de l'utilisateur : 0,65 trop saturé), NXT_dernier Denoise 0,25.
 
+- Continuum_SHO (RGB + SHO, 8 octobre 2026) : non testé dans PixInsight ; part de l'émission retirée avec le continuum (raies dans R et G) non chiffrée.
 - Mode rapide narrowband P1 (8 octobre 2026) : R_C_Preparation_rapide, R_Gradient_auto_rapide et R_C_Lineaire_rapide de SHO sans RGB, RGB + SHO et HOO pas encore lancés dans PixInsight (R_C_Lineaire_rapide : Lineaire_auto sur des icônes PixelMath et conteneurs d'extraction, nom SHO_stars de SXT supposé) (ImageSolver par Solver_auto sur des masters 3 nm non testé).
 
 Points clos au dernier contrôle (30 septembre 2026) :
@@ -989,3 +990,11 @@ Fait : CLAUDE.md mis à jour (état des workflows narrowband, décisions BXT/NXT
 
 - Demande de l'utilisateur : « dans SHO RGB dans les premiers P, il n'y a rien sur les RGB pour faire les étoiles? Il faut faire la meme chose que sur LRGB pour arriver jusqu'a RGB_stars ».
 - Mêmes icônes et réglages que le LRGB validé (Combinaison_RGB, SPFC_RGB_filtres, MGC_MARS, C_RGB_lineaire, MAS, SXT_RGB_etire, SCNR_etoiles_vert) : aucune nouvelle valeur. Divergence : les tutoriels narrowband lus (rubrique « Combinaison et narrowband ») étirent les étoiles RGB à part (SXT linéaire puis Star Stretch ou GHS) ; choix de l'utilisateur : la méthode LRGB (MAS avec étoiles puis SXT Unscreen).
+
+### RGB + SHO : continuum de H, O, S (8 octobre 2026)
+
+- Demande de l'utilisateur : « il faut pouvoir gerer le continuum aussi » ; choix (question posée) : « Nettoyer H, O, S par le RGB », « RGB + SHO seulement ».
+- Code — ContinuumSubtraction.js 1.3.5 (archive `SetiAstroScripts10.06.2026.zip`, dépôt https://github.com/setiastro/pixinsight-updates-194, MD5 e795144823fb111101f269c22eaaf8cf identique à l'icône) : entrées Ha, OIII, SII, Red (or RGB), Green ; avec un RGB, extraction de R et G ; sorties HaNB et SIINB (continuum R), OIIINB (continuum G) ; Q = 0,9 (Starry) ou 1,0 (Starless) — Officiel (code).
+- Tutoriel — [Antlia LRGB-V Pro (fiche revendeur)](https://telescopescanada.ca/products/antlia-lrgb-v-pro-series-filters) *(résumé)* : OIII transmis à plus de 95 % par B et G, Ha et SII par R.
+- Forum/exemple — [SH2-170, simg.de](https://www.simg.de/nebulae1/cas-03.html) *(résumé)* : SHO avec étoiles partiellement retirées par des images de continuum.
+- Non vérifié : part de l'émission retirée avec le continuum (raies H et S dans R, OIII dans G) ; estimation par raisonnement seulement.
