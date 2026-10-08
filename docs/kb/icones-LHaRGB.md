@@ -381,7 +381,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > SI :
 > - vue créée HaNB1 -> renomme-la HaNB (ou ferme l'ancienne HaNB avant)
-> - étoiles ou disque encore visibles dans HaNB -> relance avec Starless
+> - étoiles ou disque encore visibles dans HaNB -> relance en cochant Starless : soustraction plus forte (coefficient 1,0 au lieu de 0,9), tes images gardent leurs étoiles
 > - cœur rougi dans l'image finale -> baisse w dans H_dans_RGB
 
 #### E15_CombineHaWithRGB — Script

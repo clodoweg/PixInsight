@@ -224,7 +224,7 @@ Comme en LRGB, sauf les **régions HII, roses** et plus visibles. Piège : trop 
 ### Quoi ajuster
 Constat| Cause, réglage  
 ---|---  
-Cœur ou halo rougi, étoiles à halo rouge| **Continuum mal soustrait** : relance Continuum_auto en mode Starless, ou baisse w ; étoiles et disque doivent disparaître de HaNB  
+Cœur ou halo rougi, étoiles à halo rouge| **Continuum mal soustrait** : relance Continuum_auto en cochant Starless (soustraction plus forte, Q = 1,0 au lieu de 0,9 ; les images gardent leurs étoiles), ou baisse w ; étoiles et disque doivent disparaître de HaNB  
 Taches HII rouge vif, trop saturées| **w trop fort** dans R' = R + w·HaNB : baisse w (0,5 à 2)  
 Régions HII invisibles| w trop faible ou HaNB trop sombre : monte w, ou injecte aussi dans L  
 Fond rouge ou granuleux| Bruit de HaNB injecté : NXT sur HaNB avant injection ; vérifie que le fond de HaNB reste près de 0  
@@ -234,7 +234,7 @@ Comme en LRGB, **et pas plus rouges qu'avant l'injection** : les étoiles reçoi
 
 Défaut| Cause| Réglage  
 ---|---|---  
-Étoiles rougies, halo rouge| Continuum mal soustrait : un reste de H stellaire est injecté| Relance Continuum_auto en mode Starless, ou baisse w ; les étoiles doivent disparaître de HaNB  
+Étoiles rougies, halo rouge| Continuum mal soustrait : un reste de H stellaire est injecté| Relance Continuum_auto en cochant Starless (soustraction plus forte, Q = 1,0), ou baisse w ; les étoiles doivent disparaître de HaNB  
 Anneaux clairs ou sombres autour des étoiles| PSF différentes entre H et R| Prends les étoiles avant injection (ci-dessous)  
 Étoiles grossies| H trop fort| Baisse w  
   

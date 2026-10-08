@@ -683,7 +683,7 @@ GRATUIT
 - **Output Linear Image Only** : coché
 - **Noise reduction** : décochée
 
-  * Étoiles ou disque encore visibles dans HaNB → relance en mode Starless.
+  * Étoiles ou disque encore visibles dans HaNB → relance en cochant Starless : soustraction plus forte (Q = 1,0 au lieu de 0,9), les images gardent leurs étoiles. Galaxie (LHaRGB) : rester en Starry (Peris, M31) ; nébuleuse (RGB + SHO) : vraies images sans étoiles et mode Starless.
   * Vue créée HaNB1 → renomme-la HaNB (H_dans_RGB et H_dans_L lisent HaNB).
 
 **Détails, explications et sources**

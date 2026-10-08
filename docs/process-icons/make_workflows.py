@@ -892,7 +892,7 @@ lhargb = pre_block() + [rgb_comb_item(False), (solver_container(), ''), (solver_
           "Le script combine H et R, neutralise le fond et égalise les deux canaux sur le fond (le coefficient se calcule tout seul), puis HaNB = H − 0,9·(R − med(R)) (Starry), en niveaux de gris, LINÉAIRE. "
           "Il crée la vue HaNB (HaNB1… si elle existe déjà : renomme-la HaNB, ou ferme l'ancienne avant). "
           "CONTRÔLE : dans HaNB, étoiles et disque galactique presque disparus, il reste les taches HII sur un fond proche de 0. "
-          "Continuum mal soustrait (cœur et halo de la galaxie rougis, étoiles à halo rouge dans l'image finale) : relance avec Starless, ou réduis w dans H_dans_RGB. NXT sur HaNB avant injection si son fond est granuleux."), ''),
+          "Continuum mal soustrait (cœur et halo de la galaxie rougis, étoiles à halo rouge dans l'image finale) : relance en cochant Starless (soustraction plus forte, coefficient 1,0 au lieu de 0,9 ; images toujours avec étoiles), ou réduis w dans H_dans_RGB. NXT sur HaNB avant injection si son fond est granuleux."), ''),
     (pm('H_dans_RGB', 'w = 1.0;\n$T[0] + w*HaNB', '$T[1]', '$T[2]', symbols='w'),
      "Injection de HaNB dans le rouge : applique sur l'image RGB (linéaire, calibrée) ; R' = R + w*HaNB, G et B inchangés. w de 0,5 à 2 selon l'effet voulu. "
      "Garde une copie du RGB avant injection pour comparer. RENDU VISÉ : identique au LRGB partout, sauf les régions HII, rose à rouge rosé (Hα + Hβ), plus visibles mais ponctuelles ; cœur, bras, étoiles et fond inchangés. "
