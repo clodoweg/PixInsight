@@ -245,7 +245,7 @@ for _p, _et in (('RSHO', 'RGB_stars'), ('SHO', 'NBtoRGB_stars'), ('HOO', 'HOO_st
     RAPIDE_NOTE[_p][6] = "R_C_Fin_rapide GLISSÉ sur l'image sans étoiles après la palette : HDRMT à 30 %, masque, Courbes, LHE, LHE_fin, Sharp_MMT, masque retiré, NXT_final 0,40 (= HDRMT_30, C_Finition, C_Sharp_MMT et NXT_final)"
     RAPIDE_NOTE[_p][7] = "R_C_Etoiles_fond_rapide GLISSÉ sur l'image sans étoiles finie : Fond_desature, Fond_auto (0,12), étoiles remises (Etoiles_screen avec %s), NXT_dernier (0,25), Export_TIFF" % _et
 for _p in ('RSHO', 'SHO'):
-    RAPIDE_NOTE[_p][5] = "R_C_Palette_rapide (double-clic puis Apply Global) à la place de SHO_simple et NBN_SHO : S, H, O étirés combinés en SHO_etire, NarrowbandNormalization (palette SHO, Lightness Ha, SCNR 0,7), puis S, H, O fermés"
+    RAPIDE_NOTE[_p][5] = "R_C_Palette_rapide (double-clic puis Apply Global) à la place de SHO_simple et NBN_SHO : S, H, O étirés combinés en SHO_etire, NarrowbandNormalization (palette SHO, Lightness Ha, SCNR 0,7) ; S, H, O restent ouverts"
 RAPIDE_NOTE['RSHO'][4] = "GHS_1_premier, GHS_2_contraste, GHS_3_fond sur S, H, O (chemin principal, à régler) ; R_C_RGB_etoiles_rapide (double-clic puis Apply Global) à la place de MAS, SXT_RGB_etire, SCNR_etoiles_vert et Fermer_RGB : crée RGB_stars, ferme le RGB sans étoiles"
 
 def layout_all(main, opts, rapide=None, notes=None, turbo=None):
@@ -1244,7 +1244,7 @@ insert_after(rgbsho, 'GHS_3_fond', [pick(lrgb, b) for b in ('MAS', 'SXT_RGB_etir
 # P4 rapide RGB + SHO (demande de l'utilisateur, 8 octobre 2026 : « un P4 comme pour LRGB qui travaille sur le RGB et fait le RGB_stars a la fin ») :
 # conteneur de scripts en Apply Global (rien à glisser) : Lineaire_auto lance MAS et SXT_RGB_etire du chemin principal sur RGB, SCNR_etoiles_vert sur RGB_stars, Fermer_RGB
 # P5 rapide SHO (demande de l'utilisateur, 8 octobre 2026 : « fais un P5 rapide avec SHO, puis Narrowband normalisation pour le SNCR a 0.7 ») :
-# Apply Global ; Lineaire_auto lance SHO_simple (canaux étirés -> SHO_etire) puis NBN_SHO (SCNR 0,7) sur SHO_etire ; S, H, O fermés ensuite
+# Apply Global ; Lineaire_auto lance SHO_simple (canaux étirés -> SHO_etire) puis NBN_SHO (SCNR 0,7) sur SHO_etire ; S, H, O restent ouverts
 # P4 rapide MAS sur les canaux (demande de l'utilisateur, 8 octobre 2026 : « un rapide dans P4 qui me ferait MAS sur les 3 S H O ») :
 # option MAS_canaux (réglages MAS de l'utilisateur, fond 0,15 pour tous les canaux, saturation décochée : images en gris) et R_C_MAS_canaux_rapide (Apply Global)
 def mas_canaux():
@@ -1254,7 +1254,7 @@ def mas_canaux():
 for _st, _v in ((rgbsho, 'S,H,O'), (sho, 'S,H,O'), (hoo, 'H,O')):
     insert_after(_st, 'Statistical_Stretch', [(mas_canaux(), ''), (cont('C_MAS_canaux_rapide', [lineaire_rapide('Opt_MAS_canaux>' + _v)]), '')])
 for _st in (rgbsho, sho):
-    insert_after(_st, 'NBN_SHO', [(cont('C_Palette_rapide', [lineaire_rapide('SHO_simple>H ; NBN_SHO>SHO_etire'), fermer('Fermer_canaux', 'S, H, O')]), '')])
+    insert_after(_st, 'NBN_SHO', [(cont('C_Palette_rapide', [lineaire_rapide('SHO_simple>H ; NBN_SHO>SHO_etire')]), '')])   # S, H, O gardés ouverts (demande de l'utilisateur, 8 octobre 2026)
 insert_after(rgbsho, 'Fermer_RGB', [(cont('C_RGB_etoiles_rapide', [lineaire_rapide('MAS>RGB ; SXT_RGB_etire>RGB'), script('SCNR_etoiles_vert', ''), fermer('Fermer_RGB', 'RGB')]), '')])
 # RGB + SHO, continuum (demande de l'utilisateur, 8 octobre 2026 : « il faut pouvoir gerer le continuum aussi » ; choix : nettoyer H, O, S par le RGB,
 # RGB + SHO seulement) : options P3 avant Combinaison_SHO ; ContinuumSubtraction.js (SetiAstro, code 1.3.5 lu) accepte Ha, OIII, SII et un RGB

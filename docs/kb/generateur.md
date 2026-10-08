@@ -76,7 +76,7 @@ Règle : chaque script a une fenêtre, mise à jour à chaque changement du scri
 Aucun test dans PixInsight. Règle : process natif lancé sur une vue (executeOn, hors fenêtre de script) ou recopie par cwApplyOnCopy (beginProcess / assign / endProcess) = étape d'historique, annulable ; fermeture (Fermer_vues, forceClose) = jamais annulable.
 - R_Gradient_auto_rapide : GradientCorrection par executeOn, annulable image par image.
 - R_C_MAS_canaux_rapide : MAS par executeOn (Lineaire_auto), annulable canal par canal.
-- R_C_Palette_rapide : NBN_SHO annulable sur SHO_etire ; S, H, O fermés (non récupérables).
+- R_C_Palette_rapide : NBN_SHO annulable sur SHO_etire ; S, H, O restent ouverts.
 - R_C_RGB_etoiles_rapide : SCNR vert (Etoiles_auto, executeOn) annulable sur RGB_stars ; MAS et SXT faits sur RGB, fermé ensuite.
 - R_C_Fin_rapide, R_C_Etoiles_fond_rapide (glissés) : natifs + Sharp_MMT et Fond_desature par cwApplyOnCopy, Fond_auto par executeOn : annulables (plusieurs Ctrl+Z, une étape par process) ; Export_TIFF travaille sur une copie.
 - R_C_Preparation_rapide, T_Turbo_debut, R_C_Lineaire_rapide : masters fermés (Combiner_RGB, Fermer_vues) : pas de retour arrière, recharger les masters. LPS_UnClic : écriture faite par le moteur LinearPatternSubtraction.jsh, annulation non vérifiée.
