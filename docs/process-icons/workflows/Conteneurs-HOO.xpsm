@@ -1894,6 +1894,25 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </table>
       <parameter id="information"></parameter>
    </instance>
+   <instance class="MultiscaleAdaptiveStretch" version="256" id="Opt_MAS_canaux_instance">
+      <description>OPTION — à la place des GHS : MultiscaleAdaptiveStretch sur chaque canal sans étoiles, même fond cible 0,15 pour tous (règle du même fond)&#10;Glisse sur S, puis H, puis O (ou R_C_MAS_canaux_rapide)&#10;Non testé en narrowband.&#10;&#10;PRÉRÉGLÉ : MultiscaleAdaptiveStretch, tes réglages MAS (Aggressiveness 0,70, Target background 0,150, Dynamic range compression 0,40, Contrast recovery) ; saturation décochée (canaux en gris).&#10;&#10;À RÉGLER : glisse sur chaque canal SANS étoiles, linéaire (S, H, O ; HOO : H, O), à la place des GHS ; même fond cible pour tous ; ensuite contrôle le fond et la médiane de chaque canal, puis la palette.&#10;&#10;SI :&#10;- fond d'un canal différent des autres -&gt; GHS_3_fond sur ce canal&#10;- O ou S trop faible -&gt; Aggressiveness plus haut sur ce canal, ou GHS&#10;- cœur brûlé -&gt; Dynamic range compression plus haut</description>
+      <parameter id="aggressiveness" value="0.70"/>
+      <parameter id="targetBackground" value="0.150"/>
+      <parameter id="dynamicRangeCompression" value="0.40"/>
+      <parameter id="contrastRecovery" value="true"/>
+      <parameter id="scaleSeparation" value="1024"/>
+      <parameter id="contrastRecoveryIntensity" value="1.000"/>
+      <parameter id="previewLargeScale" value="false"/>
+      <parameter id="saturationEnabled" value="false"/>
+      <parameter id="saturationAmount" value="0.75"/>
+      <parameter id="saturationBoost" value="0.50"/>
+      <parameter id="saturationLightnessMask" value="true"/>
+      <parameter id="backgroundROIEnabled" value="false"/>
+      <parameter id="backgroundROIX0" value="0"/>
+      <parameter id="backgroundROIY0" value="0"/>
+      <parameter id="backgroundROIWidth" value="0"/>
+      <parameter id="backgroundROIHeight" value="0"/>
+   </instance>
    <instance class="Script" version="256" id="Opt_EZ_Soft_Stretch_instance">
       <description>OPTION — à la place des GHS : étirement automatique doux de chaque canal sans étoiles (HistogramTransformation, point noir et médiane calculés)&#10;Même médiane cible pour tous les canaux.&#10;&#10;LANCEMENT : double-clic sur l'icône, puis Apply Global.&#10;&#10;PRÉRÉGLÉ : script EZ Soft Stretch (EZ Processing Suite, Elveteek / darkarchon) : HistogramTransformation avec point noir trouvé dans l'histogramme et fonction de transfert vers une médiane cible ; réglages dans sa fenêtre.&#10;&#10;À RÉGLER : à la place des GHS : clique sur chaque canal SANS étoiles (S, H, O après extraction et NXT), double-clic puis Apply Global ; dans la fenêtre : Target Median 0,15 pour tous les canaux, Expand Low 0,05, Aggressiveness 5, Zero in White Point décoché ; ensuite la palette (même fond sur tous les canaux) ; dépôt https://elveteek.ch/pixinsight-updates/ez-processing-suite/.&#10;&#10;SI :&#10;- fond trop sombre ou nébuleuse faible -&gt; Target Median 0,20 (défaut) ou Expand Low 0,08&#10;- fond délavé, gris -&gt; Target Median 0,12&#10;- fond coupé à noir -&gt; Aggressiveness plus bas (2 à 3)</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/EZProcessingSuite/EZ_SoftStretch.js</parameter>
@@ -1903,6 +1922,24 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
    </instance>
    <instance class="NoOperation" version="256" id="P4_rapide_instance">
       <description>MODE RAPIDE, phase 4 — Étirement : pas encore de rapide narrowband : chemin principal. Icône de repère, sans effet.</description>
+   </instance>
+   <instance class="ProcessContainer" id="R_C_MAS_canaux_rapide_instance">
+      <description>MODE RAPIDE, à la place des GHS sur les canaux : S, H, O (HOO : H, O) linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut), double-clic puis Apply Global (pas en glissant) ; ensuite la palette.&#10;&#10;LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).&#10;&#10;PRÉRÉGLÉ : conteneur de scripts : Lineaire_auto lance Opt_MAS_canaux sur H et O (fond cible 0,15 pour les deux).&#10;&#10;À RÉGLER : H, O linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut) ; Conteneurs-HOO chargé ; double-clic puis Apply Global (pas en glissant) ; ensuite contrôle des fonds, puis HOO_simple et NBN_HOO.&#10;&#10;SI :&#10;- un canal mal étiré -&gt; Ctrl+Z sur ce canal, puis GHS à la main&#10;- réglage MAS à changer -&gt; double-clic sur Opt_MAS_canaux</description>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="2">
+            <tr>
+               <td id="id">etapes</td>
+               <td id="value">Opt_MAS_canaux&gt;H,O</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
    </instance>
    <instance class="NoOperation" version="256" id="P5_Couleur_instance">
       <description>PHASE 5 — Couleur : combinaison finale et palette. Colonne de repère, sans effet.</description>
@@ -4024,8 +4061,10 @@ max($T,f1)</parameter>
    <icon id="E13_GHS_3_fond" instance="E13_GHS_3_fond_instance" xpos="608" ypos="124" workspace="Workspace01"/>
    <icon id="P4_options" instance="P4_options_instance" xpos="608" ypos="170" workspace="Workspace01"/>
    <icon id="Opt_Statistical_Stretch" instance="Opt_Statistical_Stretch_instance" xpos="608" ypos="204" workspace="Workspace01"/>
-   <icon id="Opt_EZ_Soft_Stretch" instance="Opt_EZ_Soft_Stretch_instance" xpos="608" ypos="234" workspace="Workspace01"/>
-   <icon id="P4_rapide" instance="P4_rapide_instance" xpos="608" ypos="280" workspace="Workspace01"/>
+   <icon id="Opt_MAS_canaux" instance="Opt_MAS_canaux_instance" xpos="608" ypos="234" workspace="Workspace01"/>
+   <icon id="Opt_EZ_Soft_Stretch" instance="Opt_EZ_Soft_Stretch_instance" xpos="608" ypos="264" workspace="Workspace01"/>
+   <icon id="P4_rapide" instance="P4_rapide_instance" xpos="608" ypos="310" workspace="Workspace01"/>
+   <icon id="R_C_MAS_canaux_rapide" instance="R_C_MAS_canaux_rapide_instance" xpos="608" ypos="344" workspace="Workspace01"/>
    <icon id="P5_Couleur" instance="P5_Couleur_instance" xpos="799" ypos="20" workspace="Workspace01"/>
    <icon id="E14_HOO_simple" instance="E14_HOO_simple_instance" xpos="799" ypos="64" workspace="Workspace01"/>
    <icon id="E15_NBN_HOO" instance="E15_NBN_HOO_instance" xpos="799" ypos="94" workspace="Workspace01"/>

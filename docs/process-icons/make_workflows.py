@@ -161,7 +161,7 @@ def shorten(xml, prefix, base):
     drag = md5 = None
     if xml.lstrip().startswith('<instance class="ProcessContainer"'):
         # conteneur (retour de l'utilisateur) : rien ne disait de le GLISSER ; le rond Apply Global échoue avec des process natifs
-        drag = 'cont_global' if '/GC_Solver_auto.js' in xml else 'cont_scripts' if base in ('C_Lineaire_rapide', 'C_Palette_rapide', 'C_Continuum_prep', 'C_Continuum_fin', 'C_RGB_etoiles_rapide') else 'cont'
+        drag = 'cont_global' if '/GC_Solver_auto.js' in xml else 'cont_scripts' if base in ('C_Lineaire_rapide', 'C_MAS_canaux_rapide', 'C_Palette_rapide', 'C_Continuum_prep', 'C_Continuum_fin', 'C_RGB_etoiles_rapide') else 'cont'
         if '<description>' not in xml:
             xml = re.sub(r'(<instance class="ProcessContainer" id="[^"]*">)', r'\1\n      <description></description>', xml, count=1)
     elif base in SCRIPTS and 'class="Script"' in xml:
@@ -212,7 +212,7 @@ def layout(entries, naming):
     return insts, icons
 
 TURBO = {'Turbo_debut'}   # ancien mode Turbo supprimé ; Turbo_debut ajouté ensuite (demande de l'utilisateur, 5 octobre 2026)
-RAPIDE = {'C_Lineaire_rapide', 'C_Palette_rapide', 'C_RGB_etoiles_rapide', 'Main_continuum', 'Lineaire_rapide', 'C_P3_rapide', 'C_RGB_etire_rapide', 'C_Fin_rapide', 'C_Etoiles_fond_rapide', 'C_Preparation_rapide', 'Gradient_auto_rapide', 'C_RGB_rapide', 'C_L_rapide', 'C_RGB_fin_rapide', 'C_LRGB_rapide'}
+RAPIDE = {'C_Lineaire_rapide', 'C_MAS_canaux_rapide', 'C_Palette_rapide', 'C_RGB_etoiles_rapide', 'Main_continuum', 'Lineaire_rapide', 'C_P3_rapide', 'C_RGB_etire_rapide', 'C_Fin_rapide', 'C_Etoiles_fond_rapide', 'C_Preparation_rapide', 'Gradient_auto_rapide', 'C_RGB_rapide', 'C_L_rapide', 'C_RGB_fin_rapide', 'C_LRGB_rapide'}
 RAPIDE_NOTE = {
     'LRGB': {1: "MODE RAPIDE (galaxies) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre (étoiles gardées jusqu'à LRGB) : R_C_Preparation_rapide ; R_Gradient_auto_rapide ; R_Lineaire_rapide (RGB et L) ; GHS_1_premier, GHS_2_contraste, GHS_3_fond sur L ; R_C_RGB_etire_rapide sur RGB ; R_C_LRGB_rapide (LRGB sans étoiles) ; finition. Phase 1 : R_C_Preparation_rapide (double-clic puis Apply Global) à la place de LinearPatternSubtraction, Renommer_auto, Combinaison_RGB et Solver_auto",
              2: "R_Gradient_auto_rapide à la place de toute la phase 2 : GradientCorrection sur toutes les images ouvertes (l'astrométrie est déjà faite par R_C_Preparation_rapide)",
@@ -1238,6 +1238,14 @@ insert_after(rgbsho, 'GHS_3_fond', [pick(lrgb, b) for b in ('MAS', 'SXT_RGB_etir
 # conteneur de scripts en Apply Global (rien à glisser) : Lineaire_auto lance MAS et SXT_RGB_etire du chemin principal sur RGB, SCNR_etoiles_vert sur RGB_stars, Fermer_RGB
 # P5 rapide SHO (demande de l'utilisateur, 8 octobre 2026 : « fais un P5 rapide avec SHO, puis Narrowband normalisation pour le SNCR a 0.7 ») :
 # Apply Global ; Lineaire_auto lance SHO_simple (canaux étirés -> SHO_etire) puis NBN_SHO (SCNR 0,7) sur SHO_etire ; S, H, O fermés ensuite
+# P4 rapide MAS sur les canaux (demande de l'utilisateur, 8 octobre 2026 : « un rapide dans P4 qui me ferait MAS sur les 3 S H O ») :
+# option MAS_canaux (réglages MAS de l'utilisateur, fond 0,15 pour tous les canaux, saturation décochée : images en gris) et R_C_MAS_canaux_rapide (Apply Global)
+def mas_canaux():
+    n, x = mas()
+    x = x.replace('id="saturationEnabled" value="true"', 'id="saturationEnabled" value="false"')
+    return 'MAS_canaux', x.replace('id="MAS_instance"', 'id="MAS_canaux_instance"', 1)
+for _st, _v in ((rgbsho, 'S,H,O'), (sho, 'S,H,O'), (hoo, 'H,O')):
+    insert_after(_st, 'Statistical_Stretch', [(mas_canaux(), ''), (cont('C_MAS_canaux_rapide', [lineaire_rapide('Opt_MAS_canaux>' + _v)]), '')])
 for _st in (rgbsho, sho):
     insert_after(_st, 'NBN_SHO', [(cont('C_Palette_rapide', [lineaire_rapide('SHO_simple>H ; NBN_SHO>SHO_etire'), fermer('Fermer_canaux', 'S, H, O')]), '')])
 insert_after(rgbsho, 'Fermer_RGB', [(cont('C_RGB_etoiles_rapide', [lineaire_rapide('MAS>RGB ; SXT_RGB_etire>RGB'), script('SCNR_etoiles_vert', ''), fermer('Fermer_RGB', 'RGB')]), '')])
