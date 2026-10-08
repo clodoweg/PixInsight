@@ -80,7 +80,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="information"></parameter>
    </instance>
    <instance class="Script" version="256" id="E02_Combinaison_RGB_instance">
-      <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Combiner_RGB : R, G, B -&gt; image couleur 'RGB', en-tête FITS du rouge copié ; G et B fermées, R gardée OUVERTE (garder = R : elle sert à Continuum_auto, puis C_RGB_bruit la ferme).&#10;&#10;À RÉGLER : nomme tes masters R, G et B (ou Renommer_auto), puis lance l'icône.</description>
+      <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Combiner_RGB : R, G, B -&gt; image couleur 'RGB', en-tête FITS du rouge copié (coordonnées et date pour ImageSolver), puis R, G et B fermées sans demander d'enregistrer.&#10;&#10;À RÉGLER : une seule fois par ordinateur : copie Combiner_RGB.js dans src/scripts/clodoweg ; nomme tes masters R, G et B, enregistre-les si tu veux garder une version modifiée (après LPS par exemple), puis lance l'icône.&#10;&#10;SI :&#10;- garder R, G et B ouvertes -&gt; closeSources = false dans l'icône&#10;- une image 'RGB' existe déjà -&gt; ferme-la ou renomme-la</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Combiner_RGB.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="7">
@@ -110,7 +110,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          </tr>
          <tr>
             <td id="id">garder</td>
-            <td id="value">R</td>
+            <td id="value"></td>
          </tr>
       </table>
       <parameter id="information"></parameter>
@@ -514,7 +514,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
             </tr>
             <tr>
                <td id="id">garder</td>
-               <td id="value">R</td>
+               <td id="value"></td>
             </tr>
             <tr>
                <td id="id">dialogue</td>
@@ -848,7 +848,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
             </tr>
             <tr>
                <td id="id">garder</td>
-               <td id="value">R</td>
+               <td id="value"></td>
             </tr>
             <tr>
                <td id="id">dialogue</td>
@@ -1858,7 +1858,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="overlap" value="0.20"/>
    </instance>
    <instance class="Script" version="256" id="E14_Continuum_auto_instance">
-      <description>LANCEMENT : double-clic sur l'icône, puis Apply Global. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.&#10;&#10;PRÉRÉGLÉ : script SetiAstro ContinuumSubtraction.js : Starry, sortie linéaire seule, pas de réduction de bruit ; coefficient calculé automatiquement ; crée HaNB (gris, linéaire).&#10;&#10;À RÉGLER : double-clic puis Apply Global ; dans le dialogue : Ha = H, Red (or RGB) = R (ou le RGB calibré), le reste vide ; Execute.&#10;&#10;SI :&#10;- vue créée HaNB1 -&gt; renomme-la HaNB (ou ferme l'ancienne HaNB avant)&#10;- étoiles ou disque encore visibles dans HaNB -&gt; relance en cochant Starless : soustraction plus forte (coefficient 1,0 au lieu de 0,9), tes images gardent leurs étoiles&#10;- cœur rougi dans l'image finale -&gt; baisse w dans H_dans_RGB</description>
+      <description>LANCEMENT : double-clic sur l'icône, puis Apply Global. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.&#10;&#10;PRÉRÉGLÉ : script SetiAstro ContinuumSubtraction.js : Starry, sortie linéaire seule, pas de réduction de bruit ; coefficient calculé automatiquement ; crée HaNB (gris, linéaire).&#10;&#10;À RÉGLER : double-clic puis Apply Global ; dans le dialogue : Ha = H, Red (or RGB) = RGB (linéaire calibré, après C_RGB_couleur ; le script en prend le rouge), le reste vide ; Execute.&#10;&#10;SI :&#10;- vue créée HaNB1 -&gt; renomme-la HaNB (ou ferme l'ancienne HaNB avant)&#10;- étoiles ou disque encore visibles dans HaNB -&gt; relance en cochant Starless : soustraction plus forte (coefficient 1,0 au lieu de 0,9), tes images gardent leurs étoiles&#10;- cœur rougi dans l'image finale -&gt; baisse w dans H_dans_RGB</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/ContinuumSubtraction.js</parameter>
       <parameter id="md5sum">e795144823fb111101f269c22eaaf8cf</parameter>
       <table id="parameters" rows="5">
@@ -1947,13 +1947,13 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </instance>
    </instance>
    <instance class="Script" version="256" id="E17_Fermer_continuum_instance">
-      <description>PRÉRÉGLÉ : script Fermer_vues : ferme H, R et HaNB (plus utiles après H_dans_RGB et H_dans_L).&#10;&#10;À RÉGLER : double-clic puis Apply Global, juste après E16_C_RGB_bruit (H_dans_L éventuel fait AVANT) ; ensuite GHS_1_premier sur L.&#10;&#10;SI :&#10;- une vue absente est ignorée ; la console dit combien de vues sont fermées</description>
+      <description>PRÉRÉGLÉ : script Fermer_vues : ferme H et HaNB (plus utiles après H_dans_RGB et H_dans_L).&#10;&#10;À RÉGLER : double-clic puis Apply Global, juste après E16_C_RGB_bruit (H_dans_L éventuel fait AVANT) ; ensuite GHS_1_premier sur L.&#10;&#10;SI :&#10;- une vue absente est ignorée ; la console dit combien de vues sont fermées</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="1">
          <tr>
             <td id="id">views</td>
-            <td id="value">H, R, HaNB</td>
+            <td id="value">H, HaNB</td>
          </tr>
       </table>
       <parameter id="information"></parameter>

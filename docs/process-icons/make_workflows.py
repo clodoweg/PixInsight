@@ -887,7 +887,8 @@ lrgb = pre_block() + [rgb_comb_item(), (solver_container(), ''), (solver_seul(),
 ] + finish_block(galaxie=True) + stars_end('RGB_stars', screen_extra=SCREEN_LRGB_ET, galaxie=True)
 
 # ---------------------------------------------------------------- LHaRGB
-lhargb = pre_block() + [rgb_comb_item(False), (solver_container(), ''), (solver_seul(), '')] + gradient_block('lha') + [
+lhargb = pre_block() + [rgb_comb_item(),   # R fermée comme en LRGB : Continuum_auto prend le RGB (demande de l'utilisateur, 8 octobre 2026)
+                           (solver_container(), ''), (solver_seul(), '')] + gradient_block('lha') + [
     (M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), D_BXT_CO + BXT_C),
     (note('Find_Background', T_FINDBG), ''),
     spcc(),
@@ -895,8 +896,8 @@ lhargb = pre_block() + [rgb_comb_item(False), (solver_container(), ''), (solver_
     (M.bxt('BXT_L_H', False, 0.25, 0.0, 0.80), "BlurXTerminator complet sur L et sur le master H (mono, linéaires) : Sharpen Stars 0,25, Halos 0, Nonstellar 0,80. Déconvolue AVANT tout mélange (soustraction du continuum, injection)." + BXT_C),
     # Continuum_H (PixelMath, k à la main) supprimé (demande de l'utilisateur) : Continuum_auto au chemin principal
     (note('Continuum_auto', "Soustraction du continuum AUTOMATIQUE (SetiAstro, Automatic Continuum Subtraction, ContinuumSubtraction.js), au chemin principal (demande de l'utilisateur, à la place de l'ancien Continuum_H). "
-          "Double-clic puis Apply Global : dans le dialogue, Ha = H (master linéaire, BXT fait), Red (or RGB) = R (master rouge linéaire, gradient retiré) ou le RGB calibré ; le reste vide ; Execute. "
-          "Le script combine H et R, neutralise le fond et égalise les deux canaux sur le fond (le coefficient se calcule tout seul), puis HaNB = H − 0,9·(R − med(R)) (Starry), en niveaux de gris, LINÉAIRE. "
+          "Double-clic puis Apply Global : dans le dialogue, Ha = H (master linéaire, BXT fait), Red (or RGB) = RGB (l'image RGB linéaire calibrée, après C_RGB_couleur : le script en prend le rouge ; R n'est plus gardée) ; le reste vide ; Execute. "
+          "Le script combine H et le rouge du RGB, neutralise le fond et égalise les deux canaux sur le fond (le coefficient se calcule tout seul), puis HaNB = H − 0,9·(R − med(R)) (Starry), en niveaux de gris, LINÉAIRE. "
           "Il crée la vue HaNB (HaNB1… si elle existe déjà : renomme-la HaNB, ou ferme l'ancienne avant). "
           "CONTRÔLE : dans HaNB, étoiles et disque galactique presque disparus, il reste les taches HII sur un fond proche de 0. "
           "Continuum mal soustrait (cœur et halo de la galaxie rougis, étoiles à halo rouge dans l'image finale) : relance en cochant Starless (soustraction plus forte, coefficient 1,0 au lieu de 0,9 ; images toujours avec étoiles), ou réduis w dans H_dans_RGB. NXT sur HaNB avant injection si son fond est granuleux."), ''),
@@ -915,7 +916,8 @@ lhargb = pre_block() + [rgb_comb_item(False), (solver_container(), ''), (solver_
           "Scale 1,2 par défaut (3 à 5 pour un H faible). Compare avec les aperçus RGB et NBRGB."), ''),
     # LHaRGB (comme le LRGB, demande de l'utilisateur) : SXT linéaire sur L ; MAS sur RGB avec étoiles puis SXT Unscreen ; LRGB sans étoiles
     (M.nxt('NXT_RGB', 0.80, 1), "NoiseXTerminator sur RGB (linéaire, après H_dans_RGB, AVEC ses étoiles : SXT vient après LRGB) : Denoise 0,80, Detail 0,15." + NXT_C),
-    (fermer('Fermer_continuum', 'H, R, HaNB'), ''),   # icône à part après C_RGB_bruit (demande de l'utilisateur) ; H_dans_L éventuel fait avant
+    (fermer('Fermer_continuum', 'H, HaNB'), ''),   # R fermée dès Combinaison_RGB (demande de l'utilisateur, 8 octobre 2026)
+      # icône à part après C_RGB_bruit (demande de l'utilisateur) ; H_dans_L éventuel fait avant
     (M.nxt('NXT_L', 0.60, 1), "NoiseXTerminator sur L (linéaire, après BXT_L_H et H_dans_L éventuel) : Denoise 0,60." + NXT_C),
     (M.instance('StarXTerminator', 'SXT_L_lineaire', {'output_stars': False, 'unscreen': False, 'remove_reflections': True}), D_SXT_L_LIN),
 ] + lum_block() + [
@@ -1333,7 +1335,7 @@ SUPPR_GALAXIES = {'Etoiles_plafond'}   # Etoiles_grosses remise en option P7 (de
 for _st in (lrgb, lhargb):
     _st[:] = [x for x in _st if x[0][0] not in SUPPR_GALAXIES]
 # LHaRGB, phase 3 en un seul rapide glissé sur RGB (demande de l'utilisateur ; CombineHaWithRGB se glisse maintenant) : BXT Correct Only, SPCC, BXT sur RGB
-# (la vue glissée), Lineaire_auto sur L et H seulement (BXT_L_H, NXT_L, SXT_L_lineaire : jamais la vue glissée), CombineHaWithRGB, NXT, H, R, HaNB fermées.
+# (la vue glissée), Lineaire_auto sur L et H seulement (BXT_L_H, NXT_L, SXT_L_lineaire : jamais la vue glissée), CombineHaWithRGB, NXT, H, HaNB fermées.
 # R_Lineaire_rapide retirée du LHaRGB (le turbo garde ses étapes)
 _i = next(k for k, (it, d) in enumerate(lhargb) if it[0] == 'Lineaire_rapide')
 lhargb[_i] = (cont('C_P3_rapide', [pick(lhargb, b)[0] for b in ('BXT_CorrectOnly', 'SPCC', 'BXT_RGB')] + [lineaire_rapide('BXT_L_H>L,H ; NXT_L>L ; SXT_L_lineaire>L')]

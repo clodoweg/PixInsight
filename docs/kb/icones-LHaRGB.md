@@ -36,13 +36,17 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 #### E02_Combinaison_RGB — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Combiner_RGB.js`
-   paramètres : `red=R`, `green=G`, `blue=B`, `newId=RGB`, `closeSources=true`, `copyKeywords=true`, `garder=R`
+   paramètres : `red=R`, `green=G`, `blue=B`, `newId=RGB`, `closeSources=true`, `copyKeywords=true`, `garder=`
 
 > LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
 > 
-> PRÉRÉGLÉ : script Combiner_RGB : R, G, B -> image couleur 'RGB', en-tête FITS du rouge copié ; G et B fermées, R gardée OUVERTE (garder = R : elle sert à Continuum_auto, puis C_RGB_bruit la ferme).
+> PRÉRÉGLÉ : script Combiner_RGB : R, G, B -> image couleur 'RGB', en-tête FITS du rouge copié (coordonnées et date pour ImageSolver), puis R, G et B fermées sans demander d'enregistrer.
 > 
-> À RÉGLER : nomme tes masters R, G et B (ou Renommer_auto), puis lance l'icône.
+> À RÉGLER : une seule fois par ordinateur : copie Combiner_RGB.js dans src/scripts/clodoweg ; nomme tes masters R, G et B, enregistre-les si tu veux garder une version modifiée (après LPS par exemple), puis lance l'icône.
+> 
+> SI :
+> - garder R, G et B ouvertes -> closeSources = false dans l'icône
+> - une image 'RGB' existe déjà -> ferme-la ou renomme-la
 
 #### E03_Solver_auto — Script
    script `$PXI_SRCDIR/scripts/clodoweg/GC_Solver_auto.js`
@@ -152,7 +156,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
       paramètres : `correctColumns=false`, `correctEntireImage=true`, `defectTableFilePath=`, `layersToRemove=9`, `rejectionLimit=3`, `globalRejection=true`, `globalRejectionLimit=5`, `autoBackground=true`, `backgroundReferenceLeft=0`, `backgroundReferenceTop=0`, `backgroundReferenceWidth=512`, `backgroundReferenceHeight=512`, `allOpenImages=true`, `closeWorkingImages=true`, `dialogue=false`
    3. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Combiner_RGB.js`
-      paramètres : `red=R`, `green=G`, `blue=B`, `newId=RGB`, `closeSources=true`, `copyKeywords=true`, `garder=R`, `dialogue=false`
+      paramètres : `red=R`, `green=G`, `blue=B`, `newId=RGB`, `closeSources=true`, `copyKeywords=true`, `garder=`, `dialogue=false`
    4. Script
       script `$PXI_SRCDIR/scripts/clodoweg/GC_Solver_auto.js`
       paramètres : `gradient=false`, `solve=true`, `solveTout=true`, `defaultDate=2020-01-01T00:00:00`, `dialogue=false`, `metadata_focal=2939`, `metadata_xpixsz=3.76`, `solver_catalogMode=2`, `solver_distortionCorrection=true`, `(+ 42 autres réglages ImageSolver)`
@@ -179,7 +183,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
       paramètres : `correctColumns=false`, `correctEntireImage=true`, `defectTableFilePath=`, `layersToRemove=9`, `rejectionLimit=3`, `globalRejection=true`, `globalRejectionLimit=5`, `autoBackground=true`, `backgroundReferenceLeft=0`, `backgroundReferenceTop=0`, `backgroundReferenceWidth=512`, `backgroundReferenceHeight=512`, `allOpenImages=true`, `closeWorkingImages=true`, `dialogue=false`
    3. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Combiner_RGB.js`
-      paramètres : `red=R`, `green=G`, `blue=B`, `newId=RGB`, `closeSources=true`, `copyKeywords=true`, `garder=R`, `dialogue=false`
+      paramètres : `red=R`, `green=G`, `blue=B`, `newId=RGB`, `closeSources=true`, `copyKeywords=true`, `garder=`, `dialogue=false`
    4. Script
       script `$PXI_SRCDIR/scripts/clodoweg/GC_Solver_auto.js`
       paramètres : `gradient=false`, `solve=true`, `solveTout=true`, `defaultDate=2020-01-01T00:00:00`, `dialogue=false`, `metadata_focal=2939`, `metadata_xpixsz=3.76`, `solver_catalogMode=2`, `solver_distortionCorrection=true`, `(+ 42 autres réglages ImageSolver)`
@@ -377,7 +381,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > PRÉRÉGLÉ : script SetiAstro ContinuumSubtraction.js : Starry, sortie linéaire seule, pas de réduction de bruit ; coefficient calculé automatiquement ; crée HaNB (gris, linéaire).
 > 
-> À RÉGLER : double-clic puis Apply Global ; dans le dialogue : Ha = H, Red (or RGB) = R (ou le RGB calibré), le reste vide ; Execute.
+> À RÉGLER : double-clic puis Apply Global ; dans le dialogue : Ha = H, Red (or RGB) = RGB (linéaire calibré, après C_RGB_couleur ; le script en prend le rouge), le reste vide ; Execute.
 > 
 > SI :
 > - vue créée HaNB1 -> renomme-la HaNB (ou ferme l'ancienne HaNB avant)
@@ -415,9 +419,9 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 #### E17_Fermer_continuum — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
-   paramètres : `views=H, R, HaNB`
+   paramètres : `views=H, HaNB`
 
-> PRÉRÉGLÉ : script Fermer_vues : ferme H, R et HaNB (plus utiles après H_dans_RGB et H_dans_L).
+> PRÉRÉGLÉ : script Fermer_vues : ferme H et HaNB (plus utiles après H_dans_RGB et H_dans_L).
 > 
 > À RÉGLER : double-clic puis Apply Global, juste après E16_C_RGB_bruit (H_dans_L éventuel fait AVANT) ; ensuite GHS_1_premier sur L.
 > 

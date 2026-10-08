@@ -36,7 +36,7 @@ Comme le LRGB, sauf la phase 3 (demande de l'utilisateur, 5 octobre 2026) : E10 
 Icône| Ferme  
 ---|---  
 Combinaison_RGB| LRGB : R, G, B ; LHaRGB : G, B (R sert à Continuum_auto)  
-LHaRGB : C_RGB_bruit| H, R, HaNB (fais Opt_H_dans_L avant)  
+LHaRGB : C_RGB_bruit| H, HaNB (fais Opt_H_dans_L avant)  
 Export_TIFF| plus rien (demande de l'utilisateur) ; ensuite option Opt_Fermer_tout (toutes les vues)  
   
 ### Finition du workflow normal en 5 parties
@@ -195,7 +195,7 @@ RGB comme en LRGB (gradient, BXT _Correct Only_ , SPCC, BXT) ; gradient et BXT s
 
 2. #### Soustraction du continuum sur H
 
-Icône E12 **Continuum_auto** (Automatic Continuum Subtraction) : double-clic puis Apply Global ; Ha = H, Red (or RGB) = R, Execute. Le coefficient se calcule tout seul ; le script crée `HaNB` (renomme HaNB1 en HaNB si besoin). Contrôle : étoiles et disque presque disparus de HaNB.
+Icône E12 **Continuum_auto** (Automatic Continuum Subtraction) : double-clic puis Apply Global ; Ha = H, Red (or RGB) = RGB (linéaire calibré ; le script en prend le rouge ; R fermée dès Combinaison_RGB depuis le 8 octobre 2026, demande de l'utilisateur), Execute. Le coefficient se calcule tout seul ; le script crée `HaNB` (renomme HaNB1 en HaNB si besoin). Contrôle : étoiles et disque presque disparus de HaNB.
 
 3. #### Injection dans R
 

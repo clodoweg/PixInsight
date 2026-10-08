@@ -89,7 +89,7 @@ WHEN = {
     'SXT_non_lineaire': "double-clic : ouvre StarXTerminator réglé pour une image ÉTIRÉE (Unscreen coché, Generate star image coché) ; à glisser sur une image non linéaire qui a encore des étoiles",
     'Gradient_auto_rapide': "MODE RAPIDE, à la place de la phase 2 : GradientCorrection sur TOUTES les images ouvertes (plus d'ImageSolver : fait par Solver_auto en phase 1) ; à faire AVANT R_Lineaire_rapide (sans GradientCorrection)",
     'Mode_rapide': "repère du mode rapide (galaxies), sans effet : lis sa description pour l'ordre",
-    'Continuum_auto': "avant CombineHaWithRGB, pour retirer le continuum de H (étoiles et cœur moins rougis) : double-clic puis Apply Global, fenêtre (Ha = H, Red = R), crée HaNB ; puis CombineHaWithRGB avec H Alpha = HaNB",
+    'Continuum_auto': "avant CombineHaWithRGB, pour retirer le continuum de H (étoiles et cœur moins rougis) : double-clic puis Apply Global, fenêtre (Ha = H, Red (or RGB) = RGB), crée HaNB ; puis CombineHaWithRGB avec H Alpha = HaNB",
     'NXT_H': "ancien réglage par canal, à la place de NXT_NB : NXT 0,60 sur H sans étoiles après l'extraction",
     'NXT_O_S': "ancien réglage par canal : NXT 0,75 sur O et S sans étoiles après l'extraction, à la place de NXT_NB ou en plus si O ou S reste granuleux",
     'Main_continuum': "MODE RAPIDE, repère sans effet, après R_C_P3_rapide : la suite du continuum se fait À LA MAIN au chemin principal (E14 à E17)",

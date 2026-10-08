@@ -690,7 +690,7 @@ GRATUIT
 
 Méthode
 
-1. Choisis le master H et le master R (ou O et G).
+1. Choisis le master H et le RGB linéaire calibré dans « Red (or RGB) » (le script en extrait le rouge ; LHaRGB depuis le 8 octobre 2026, R master fermé dès Combinaison_RGB), ou un master R.
 2. Le script calcule le coefficient et produit HaNB (gris, linéaire), sans continuum ; c'est l'icône E12 Continuum_auto du chemin principal LHaRGB.
 
 Paramètres
