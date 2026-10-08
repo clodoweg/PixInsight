@@ -2862,13 +2862,13 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <description>OPTIONS de la phase 6 — Finition : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
    </instance>
    <instance class="Script" version="256" id="Opt_Nettoyage_sans_etoiles_instance">
-      <description>OPTION — avant la partie 1, sur l'image sans étoiles après la palette (image d'étoiles ouverte) : taches rondes floues ou halo coloré laissés par SXT autour des étoiles.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Nettoyage_sans_etoiles (calcul sur une copie à 2000 px) : seules les étoiles BRILLANTES de SHO_stars comptent (luminance floutée 20 px au-dessus de 0,05 à 0,12), zone étendue au halo ; fond LOCAL par ouverture morphologique (disque 25 px, 3 passes : taches de moins de 75 px retirées, halo de la galaxie gardé) ; galaxie et structures claires protégées ; excès au-dessus du fond local retiré, bruit fin gardé ; TRÈS grandes étoiles (luminance floutée 50 px au-dessus de 0,05) : zone d'environ 170 px et fond local à grande échelle (environ 300 px).&#10;&#10;À RÉGLER : glisse sur l'image sans étoiles après la palette, AVANT HDRMT_30 ; SHO_stars doit être ouverte (étirée) ; vérifie à 1:1, Ctrl+Z pour annuler.&#10;&#10;SI :&#10;- voir ce qui est touché -&gt; afficherMasque true (vue masque_nettoyage : seulement les grandes étoiles)&#10;- trop d'étoiles touchées -&gt; seuilBas 0,07, seuilHaut 0,15&#10;- halo d'une étoile moyenne encore visible -&gt; seuilBas 0,04, seuilHaut 0,09&#10;- halo d'une très grande étoile pas entièrement couvert -&gt; etendue2 100 et gain2 10 (masque plus large et plein)&#10;- halo d'une étoile brillante moyenne pas couvert -&gt; etendue 35 et gain 4&#10;- trou sombre à la place du halo -&gt; etendue2 60 et gain2 5&#10;- anneau sombre autour d'une petite nébuleuse dans un halo -&gt; compact 0,03&#10;- un seul passage : chaque passage en plus assombrit un peu (Ctrl+Z puis réglages)&#10;- bras ou petite nébuleuse atténué -&gt; structure 0,10</description>
+      <description>OPTION — avant la partie 1, sur l'image sans étoiles après la palette (image d'étoiles ouverte) : taches rondes floues ou halo coloré laissés par SXT autour des étoiles.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Nettoyage_sans_etoiles (calcul sur une copie à 2000 px) : seules les étoiles BRILLANTES de NBtoRGB_stars comptent (luminance floutée 20 px au-dessus de 0,05 à 0,12), zone étendue au halo ; fond LOCAL par ouverture morphologique (disque 25 px, 3 passes : taches de moins de 75 px retirées, halo de la galaxie gardé) ; galaxie et structures claires protégées ; excès au-dessus du fond local retiré, bruit fin gardé ; TRÈS grandes étoiles (luminance floutée 50 px au-dessus de 0,05) : zone d'environ 170 px et fond local à grande échelle (environ 300 px).&#10;&#10;À RÉGLER : glisse sur l'image sans étoiles après la palette, AVANT HDRMT_30 ; NBtoRGB_stars doit être ouverte (étirée) ; vérifie à 1:1, Ctrl+Z pour annuler.&#10;&#10;SI :&#10;- voir ce qui est touché -&gt; afficherMasque true (vue masque_nettoyage : seulement les grandes étoiles)&#10;- trop d'étoiles touchées -&gt; seuilBas 0,07, seuilHaut 0,15&#10;- halo d'une étoile moyenne encore visible -&gt; seuilBas 0,04, seuilHaut 0,09&#10;- halo d'une très grande étoile pas entièrement couvert -&gt; etendue2 100 et gain2 10 (masque plus large et plein)&#10;- halo d'une étoile brillante moyenne pas couvert -&gt; etendue 35 et gain 4&#10;- trou sombre à la place du halo -&gt; etendue2 60 et gain2 5&#10;- anneau sombre autour d'une petite nébuleuse dans un halo -&gt; compact 0,03&#10;- un seul passage : chaque passage en plus assombrit un peu (Ctrl+Z puis réglages)&#10;- bras ou petite nébuleuse atténué -&gt; structure 0,10</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Nettoyage_sans_etoiles.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="13">
          <tr>
             <td id="id">etoiles</td>
-            <td id="value">SHO_stars</td>
+            <td id="value">NBtoRGB_stars</td>
          </tr>
          <tr>
             <td id="id">seuilBas</td>
@@ -4997,8 +4997,8 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="information"></parameter>
    </instance>
    <instance class="PixelMath" version="256" id="E26_Etoiles_screen_instance">
-      <description>PRÉRÉGLÉ : ~((~$T) * (~SHO_stars)), sur l'image elle-même.&#10;&#10;À RÉGLER : glisse sur l'image SHO sans étoiles finale ; étoiles SHO_stars (de SXT_lineaire), étirées.&#10;&#10;SI :&#10;- NB to RGB -&gt; remplace SHO_stars par NBtoRGB_stars&#10;- étoiles synthétiques -&gt; par Stars_HOO</description>
-      <parameter id="expression">~((~$T) * (~SHO_stars))</parameter>
+      <description>PRÉRÉGLÉ : ~((~$T) * (~NBtoRGB_stars)), sur l'image elle-même.&#10;&#10;À RÉGLER : glisse sur l'image SHO sans étoiles finale ; étoiles de NB to RGB (NBtoRGB_stars), étirées.&#10;&#10;SI :&#10;- étoiles synthétiques -&gt; remplace par Stars_HOO&#10;- étoiles aux couleurs de la palette -&gt; par SHO_stars (étirée)</description>
+      <parameter id="expression">~((~$T) * (~NBtoRGB_stars))</parameter>
       <parameter id="expression1"></parameter>
       <parameter id="expression2"></parameter>
       <parameter id="expression3"></parameter>
@@ -5079,13 +5079,13 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <table id="outputData" rows="0"/>
    </instance>
    <instance class="Script" version="256" id="Opt_SCNR_etoiles_vert_instance">
-      <description>OPTION — étoiles vertes : sur SHO_stars étirée (SHO sans RGB) ou RGB_stars, avant Etoiles_screen&#10;Glisse sur n'importe quelle image.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Etoiles_auto réglé SCNR seul : SCNR vert, Amount 1,0, Average Neutral, Preserve lightness, sur SHO_stars (amount 0 = pas d'étirement, satAmount 0 = pas de saturation).&#10;&#10;À RÉGLER : option : glisse sur n'importe quelle image (traite toujours SHO_stars), après Star_Stretch, avant Etoiles_screen : vert retiré des étoiles ; options ensuite : SCNR_etoiles_violet, Saturation_grosses.&#10;&#10;SI :&#10;- étoiles grisées ou magenta -&gt; Ctrl+Z, ou double-clic : décoche SCNR&#10;- autre nom d'étoiles (NBtoRGB_stars, Stars_HOO) -&gt; vue = ce nom dans l'icône</description>
+      <description>OPTION — étoiles vertes : sur NBtoRGB_stars étirée (SHO sans RGB) ou RGB_stars, avant Etoiles_screen&#10;Glisse sur n'importe quelle image.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Etoiles_auto réglé SCNR seul : SCNR vert, Amount 1,0, Average Neutral, Preserve lightness, sur NBtoRGB_stars (amount 0 = pas d'étirement, satAmount 0 = pas de saturation).&#10;&#10;À RÉGLER : option : glisse sur n'importe quelle image (traite toujours NBtoRGB_stars), après Star_Stretch, avant Etoiles_screen : vert retiré des étoiles ; options ensuite : SCNR_etoiles_violet, Saturation_grosses.&#10;&#10;SI :&#10;- étoiles grisées ou magenta -&gt; Ctrl+Z, ou double-clic : décoche SCNR&#10;- autre nom d'étoiles (Stars_HOO, SHO_stars) -&gt; vue = ce nom dans l'icône</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="5">
          <tr>
             <td id="id">vue</td>
-            <td id="value">SHO_stars</td>
+            <td id="value">NBtoRGB_stars</td>
          </tr>
          <tr>
             <td id="id">amount</td>
@@ -5107,13 +5107,13 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="information"></parameter>
    </instance>
    <instance class="Script" version="256" id="Opt_SCNR_etoiles_violet_instance">
-      <description>OPTION — étoiles violettes (R et B nettement au-dessus de G à la sonde) : après SCNR_etoiles_vert, glisse sur n'importe quelle image&#10;Invert, SCNR vert 1,0, Invert&#10;Pas dans le rapide.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Etoiles_auto réglé violet seul : Invert, SCNR vert (Amount 1,0, Average Neutral, Preserve lightness), Invert sur SHO_stars : le magenta (violet) des étoiles retiré.&#10;&#10;À RÉGLER : option, après Star_Stretch (et SCNR_etoiles_vert) : glisse sur n'importe quelle image (traite toujours SHO_stars) ; à vérifier à la sonde : utile si R et B nettement au-dessus de G sur les étoiles.&#10;&#10;SI :&#10;- étoiles bleues devenues trop vertes ou ternes -&gt; Ctrl+Z&#10;- autre nom d'étoiles -&gt; vue = ce nom dans l'icône</description>
+      <description>OPTION — étoiles violettes (R et B nettement au-dessus de G à la sonde) : après SCNR_etoiles_vert, glisse sur n'importe quelle image&#10;Invert, SCNR vert 1,0, Invert&#10;Pas dans le rapide.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Etoiles_auto réglé violet seul : Invert, SCNR vert (Amount 1,0, Average Neutral, Preserve lightness), Invert sur NBtoRGB_stars : le magenta (violet) des étoiles retiré.&#10;&#10;À RÉGLER : option, après Star_Stretch (et SCNR_etoiles_vert) : glisse sur n'importe quelle image (traite toujours NBtoRGB_stars) ; à vérifier à la sonde : utile si R et B nettement au-dessus de G sur les étoiles.&#10;&#10;SI :&#10;- étoiles bleues devenues trop vertes ou ternes -&gt; Ctrl+Z&#10;- autre nom d'étoiles -&gt; vue = ce nom dans l'icône</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="5">
          <tr>
             <td id="id">vue</td>
-            <td id="value">SHO_stars</td>
+            <td id="value">NBtoRGB_stars</td>
          </tr>
          <tr>
             <td id="id">amount</td>
@@ -5135,13 +5135,13 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="information"></parameter>
    </instance>
    <instance class="Script" version="256" id="Opt_Saturation_grosses_instance">
-      <description>OPTION — grosses étoiles presque blanches, petites assez colorées : glisse sur n'importe quelle image après les SCNR&#10;Seules les grosses étoiles et leur halo sont saturés&#10;Pas dans le rapide.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Saturation_grosses sur la vue SHO_stars : masque des grosses étoiles (ouverture morphologique, disque de 7 px sur une copie à 2000 px, au-dessus de 0,15, étendu au halo, flou 12 px) ; sous ce masque, ta courbe de saturation (CurvesTransformation, c : 0,46 -&gt; 0,54 et S : 0,46 -&gt; 0,54, Akima), 1 passe ; petites étoiles intactes.&#10;&#10;À RÉGLER : option : glisse sur n'importe quelle image (traite toujours SHO_stars), après Star_Stretch et les SCNR, avant Etoiles_screen ; pour régler à l'œil : double-clic puis Apply Global, « Voir le masque », puis Appliquer.&#10;&#10;SI :&#10;- pas assez saturé -&gt; passes 2&#10;- moyennes étoiles saturées aussi -&gt; taille 9 ou 11&#10;- certaines grosses pas saturées -&gt; taille 5, ou seuil 0,10&#10;- halo pas saturé jusqu'au bord -&gt; etendue 16&#10;- pour recommencer -&gt; Ctrl+Z sur RGB_stars</description>
+      <description>OPTION — grosses étoiles presque blanches, petites assez colorées : glisse sur n'importe quelle image après les SCNR&#10;Seules les grosses étoiles et leur halo sont saturés&#10;Pas dans le rapide.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Saturation_grosses sur la vue NBtoRGB_stars : masque des grosses étoiles (ouverture morphologique, disque de 7 px sur une copie à 2000 px, au-dessus de 0,15, étendu au halo, flou 12 px) ; sous ce masque, ta courbe de saturation (CurvesTransformation, c : 0,46 -&gt; 0,54 et S : 0,46 -&gt; 0,54, Akima), 1 passe ; petites étoiles intactes.&#10;&#10;À RÉGLER : option : glisse sur n'importe quelle image (traite toujours NBtoRGB_stars), après Star_Stretch et les SCNR, avant Etoiles_screen ; pour régler à l'œil : double-clic puis Apply Global, « Voir le masque », puis Appliquer.&#10;&#10;SI :&#10;- pas assez saturé -&gt; passes 2&#10;- moyennes étoiles saturées aussi -&gt; taille 9 ou 11&#10;- certaines grosses pas saturées -&gt; taille 5, ou seuil 0,10&#10;- halo pas saturé jusqu'au bord -&gt; etendue 16&#10;- pour recommencer -&gt; Ctrl+Z sur RGB_stars</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Saturation_grosses.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="5">
          <tr>
             <td id="id">vue</td>
-            <td id="value">SHO_stars</td>
+            <td id="value">NBtoRGB_stars</td>
          </tr>
          <tr>
             <td id="id">taille</td>
@@ -5180,7 +5180,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </table>
    </instance>
    <instance class="Script" version="256" id="Opt_Halo_B_Gon_instance">
-      <description>OPTION — halos autour des étoiles brillantes&#10;Attention, réduit aussi les petites étoiles (pour les grosses seulement : Etoiles_grosses).&#10;&#10;LANCEMENT : double-clic sur l'icône, puis Apply Global. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.&#10;&#10;PRÉRÉGLÉ : rien (réglages dans le dialogue).&#10;&#10;À RÉGLER : Select stars-only image = l'image d'étoiles étirée (SHO_stars), AVANT Etoiles_screen ; Reduction Amount Low ; Linear Data décoché.&#10;&#10;SI :&#10;- petites étoiles réduites ou effacées aussi (son masque ne protège que les cœurs) -&gt; Etoiles_grosses à la place&#10;- pas assez -&gt; relance en Low (Med = 4 courbes, High = 9)</description>
+      <description>OPTION — halos autour des étoiles brillantes&#10;Attention, réduit aussi les petites étoiles (pour les grosses seulement : Etoiles_grosses).&#10;&#10;LANCEMENT : double-clic sur l'icône, puis Apply Global. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.&#10;&#10;PRÉRÉGLÉ : rien (réglages dans le dialogue).&#10;&#10;À RÉGLER : Select stars-only image = l'image d'étoiles étirée (NBtoRGB_stars), AVANT Etoiles_screen ; Reduction Amount Low ; Linear Data décoché.&#10;&#10;SI :&#10;- petites étoiles réduites ou effacées aussi (son masque ne protège que les cœurs) -&gt; Etoiles_grosses à la place&#10;- pas assez -&gt; relance en Low (Med = 4 courbes, High = 9)</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/Halo-B-Gon.js</parameter>
       <parameter id="md5sum">b9427e718e2b9760704c8c738e0893b7</parameter>
       <table id="parameters" rows="0"/>
@@ -5749,9 +5749,9 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="information"></parameter>
    </instance>
    <instance class="PixelMath" version="256" id="Opt_Etoiles_reduites_instance">
-      <description>ALTERNATIVE — Recombinaison + réduction Blanshan.&#10;&#10;PRÉRÉGLÉ : S = 0,20 ; screen + réduction Blanshan avec SHO_stars, sur l'image elle-même.&#10;&#10;À RÉGLER : à la place d'Etoiles_screen : glisse sur l'image SHO sans étoiles finale.&#10;&#10;SI :&#10;- NB to RGB -&gt; remplace SHO_stars par NBtoRGB_stars ; synthétiques -&gt; par Stars_HOO&#10;- pour recommencer -&gt; Ctrl+Z</description>
+      <description>ALTERNATIVE — Recombinaison + réduction Blanshan.&#10;&#10;PRÉRÉGLÉ : S = 0,20 ; screen + réduction Blanshan avec NBtoRGB_stars, sur l'image elle-même.&#10;&#10;À RÉGLER : à la place d'Etoiles_screen : glisse sur l'image SHO sans étoiles finale.&#10;&#10;SI :&#10;- étoiles synthétiques -&gt; remplace NBtoRGB_stars par Stars_HOO&#10;- pour recommencer -&gt; Ctrl+Z</description>
       <parameter id="expression">S=0.20;
-W=~((~$T)*(~SHO_stars));
+W=~((~$T)*(~NBtoRGB_stars));
 f1= ~((~mtf(~S,W)/~mtf(~S,$T))*~$T);
 max($T,f1)</parameter>
       <parameter id="expression1"></parameter>
@@ -5837,10 +5837,10 @@ max($T,f1)</parameter>
       <parameter id="information"></parameter>
    </instance>
    <instance class="NoOperation" version="256" id="P7_rapide_instance">
-      <description>MODE RAPIDE, phase 7 — Étoiles : R_C_Etoiles_fond_rapide GLISSÉ sur l'image sans étoiles finie : Fond_desature, Fond_auto (0,12), étoiles remises (Etoiles_screen avec SHO_stars), NXT_dernier (0,25), Export_TIFF. Icône de repère, sans effet.</description>
+      <description>MODE RAPIDE, phase 7 — Étoiles : R_C_Etoiles_fond_rapide GLISSÉ sur l'image sans étoiles finie : Fond_desature, Fond_auto (0,12), étoiles remises (Etoiles_screen avec NBtoRGB_stars), NXT_dernier (0,25), Export_TIFF. Icône de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="R_C_Etoiles_fond_rapide_instance">
-      <description>MODE RAPIDE, à la place de Fond_desature, Fond_auto, Etoiles_screen, NXT_dernier et Export_TIFF : GLISSE sur l'image sans étoiles finie, image d'étoiles du workflow ouverte et étirée.&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : Fond_desature (teinte du fond retirée), Fond_auto (fond amené à 0,12, neutre), Etoiles_screen (~((~$T) * (~SHO_stars))), NXT_dernier (Denoise 0,25, image avec étoiles), Export_TIFF (copie TIFF 16 bits sRGB nommée d'après le dossier des masters).&#10;&#10;À RÉGLER : glisse sur l'image sans étoiles finie ; SHO_stars étirée (Star_Stretch) ouverte ; l'image est finie et exportée.&#10;&#10;SI :&#10;- étoiles trop présentes -&gt; fais les étapes à la main avec Etoiles_reduites (à la place d'Etoiles_screen)&#10;- étoiles d'un autre nom (Stars_HOO, RGB_stars…) -&gt; double-clic sur le conteneur, change le nom dans Etoiles_screen&#10;- fond trop sombre -&gt; Fond_auto_clair à la main à la place&#10;- nébuleuse qui remplit le champ (fond AVANT lu par Fond_auto au-dessus d'environ 0,20 dans la console) -&gt; Ctrl+Z, puis les étapes à la main sans Fond_auto</description>
+      <description>MODE RAPIDE, à la place de Fond_desature, Fond_auto, Etoiles_screen, NXT_dernier et Export_TIFF : GLISSE sur l'image sans étoiles finie, image d'étoiles du workflow ouverte et étirée.&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : Fond_desature (teinte du fond retirée), Fond_auto (fond amené à 0,12, neutre), Etoiles_screen (~((~$T) * (~NBtoRGB_stars))), NXT_dernier (Denoise 0,25, image avec étoiles), Export_TIFF (copie TIFF 16 bits sRGB nommée d'après le dossier des masters).&#10;&#10;À RÉGLER : glisse sur l'image sans étoiles finie ; NBtoRGB_stars (NB_to_RGB_Stars puis Star_Stretch) ouverte ; l'image est finie et exportée.&#10;&#10;SI :&#10;- étoiles trop présentes -&gt; fais les étapes à la main avec Etoiles_reduites (à la place d'Etoiles_screen)&#10;- étoiles d'un autre nom (Stars_HOO, RGB_stars…) -&gt; double-clic sur le conteneur, change le nom dans Etoiles_screen&#10;- fond trop sombre -&gt; Fond_auto_clair à la main à la place&#10;- nébuleuse qui remplit le champ (fond AVANT lu par Fond_auto au-dessus d'environ 0,20 dans la console) -&gt; Ctrl+Z, puis les étapes à la main sans Fond_auto</description>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js</parameter>
          <parameter id="md5sum"></parameter>
@@ -5892,7 +5892,7 @@ max($T,f1)</parameter>
          <parameter id="information"></parameter>
       </instance>
       <instance class="PixelMath" version="256" enabled="true">
-         <parameter id="expression">~((~$T) * (~SHO_stars))</parameter>
+         <parameter id="expression">~((~$T) * (~NBtoRGB_stars))</parameter>
          <parameter id="expression1"></parameter>
          <parameter id="expression2"></parameter>
          <parameter id="expression3"></parameter>

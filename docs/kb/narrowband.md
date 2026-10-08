@@ -389,3 +389,5 @@ Demande de l'utilisateur : « en SHO, le MAS doit avoir taget median 0.25 comme 
 ## Option CorrectMagentaStars supprimée (8 octobre 2026)
 
 Demande de l'utilisateur : « supprime Opt_CorrectMagentaStars ». Icône retirée de la P7 du SHO sans RGB et du RGB + SHO ; textes qui la citaient renvoyés vers SCNR_etoiles_violet. Le script CorrectMagentaStars reste dans le menu Script de PixInsight (texte de SCNR_etoiles_violet en LRGB / LHaRGB inchangé).
+
+Mise à jour (8 octobre 2026, question de l'utilisateur : « sur SHO sans RGB ca crée des SHO Stars au debut mais a la fin y a le process NBtoRGB alors? », puis choix « NB_to_RGB ») : l'image d'étoiles par défaut du SHO sans RGB redevient NBtoRGB_stars (E22_NB_to_RGB_Stars sur S_stars, H_stars, O_stars extraites de SHO_stars en P3, puis Star_Stretch) ; Etoiles_screen, Etoiles_reduites, R_C_Etoiles_fond_rapide, Nettoyage_sans_etoiles, Halo_B_Gon et les options SCNR_etoiles_vert / violet, Saturation_grosses visent NBtoRGB_stars. SHO_stars directe (couleurs de la palette) ou Stars_HOO : changer le nom dans Etoiles_screen.

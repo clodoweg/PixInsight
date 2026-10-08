@@ -246,7 +246,7 @@ for _p, _x in (('RSHO', ", Combinaison_RGB comprise (RGB des étoiles)"), ('SHO'
         'C_HOO_lineaire (BXT, SXT, NXT)' if _p == 'HOO' else 'C_SHO_lineaire (BXT, SXT, NXT)', 'H, O' if _p == 'HOO' else 'S, H, O',
         ' ; aussi C_RGB_lineaire sur RGB (BXT Correct Only, SPCC, BXT, NXT : RGB reste linéaire avec ses étoiles)' if _p == 'RSHO' else ' ; étoiles S_stars, H_stars, O_stars extraites de SHO_stars' if _p == 'SHO' else ' ; HOO_stars gardée')
 RAPIDE_NOTE['RSHO'][3] += " ; AVEC CONTINUUM (option) : ensuite Opt_C_Continuum_prep, Opt_Continuum_SHO (fenêtre, Starless), Opt_C_Continuum_fin, avant GHS_1_premier"
-for _p, _et in (('RSHO', 'RGB_stars'), ('SHO', 'SHO_stars'), ('HOO', 'HOO_stars')):
+for _p, _et in (('RSHO', 'RGB_stars'), ('SHO', 'NBtoRGB_stars'), ('HOO', 'HOO_stars')):
     RAPIDE_NOTE[_p][6] = "R_C_Fin_rapide GLISSÉ sur l'image sans étoiles après la palette : HDRMT à 30 %, masque, Courbes, LHE, LHE_fin, Sharp_MMT, masque retiré, NXT_final 0,40 (= HDRMT_30, C_Finition, C_Sharp_MMT et NXT_final)"
     RAPIDE_NOTE[_p][7] = "R_C_Etoiles_fond_rapide GLISSÉ sur l'image sans étoiles finie : Fond_desature, Fond_auto (0,12), étoiles remises (Etoiles_screen avec %s), NXT_dernier (0,25), Export_TIFF" % _et
 for _p in ('RSHO', 'SHO'):
@@ -1029,15 +1029,15 @@ sho = pre_block() + nb_masters(['S', 'H', 'O']) + [
     (M.sxt('SXT_lineaire', False), D_SXT_LIN + " Sur l'image SHO : GARDE LES DEUX images (fond et étoiles), les étoiles viennent ici du narrowband."),
     NXT_NB,
 ] + extract([(0, 'S'), (1, 'H'), (2, 'O')], "l'image SHO sans étoiles") + extract([(0, 'S_stars'), (1, 'H_stars'), (2, 'O_stars')], "l'image d'étoiles SHO (linéaire)") + nb_noise + ghs_block(GHS_NB, STAT_NB) + sho_palette + finish_block(sho_finish, galaxie=True) + [
-    (note('NB_to_RGB_Stars', "ÉTOILES — méthode 1 (option) : NB to RGB Star Combination (SetiAstro, script) ; crée NBtoRGB_stars : mets ce nom dans Etoiles_screen à la place de SHO_stars. Ha Stars et OIII Stars (linéaires, obligatoires), S optionnel. "
+    (note('NB_to_RGB_Stars', "ÉTOILES — chemin principal (choix de l'utilisateur, 8 octobre 2026) : NB to RGB Star Combination (SetiAstro, script) sur S_stars, H_stars, O_stars (extraites de SHO_stars en P3) ; crée NBtoRGB_stars, l'image d'étoiles d'Etoiles_screen. Ha Stars et OIII Stars (linéaires, obligatoires), S optionnel. "
           "Green Channel Blend Ratio décoché par défaut (Ha to OIII ratio 0,3 si activé). Apply Star Stretch recommandé par l'auteur : Stretch Factor 5, Color Boost 1,0. "
           "Mélange du script (code v1.6) : R = 0,5·H + 0,5·S (H seul sans S), G = ratio·H + (1 − ratio)·O (0,3·H + 0,7·O par défaut), B = O ; monte le ratio si les étoiles bleues sont verdâtres ou les rouges trop rouges, baisse-le si les étoiles chaudes tirent vers le jaune-vert." + STARS_NB + STARS_NB_FIX), ''),
     (pm('Etoiles_HOO_synth', 'H_stars', '0.2*H_stars + 0.8*O_stars', 'O_stars', new_image=True, new_id='Stars_HOO', space='RGB'),
      "ÉTOILES — méthode 2 : étoiles HOO synthétiques (AIASTRO) sur les images d'étoiles linéaires 'H_stars' et 'O_stars' : R = H, G = 20 % H + 80 % O, B = O. "
-     "Calibre ensuite la couleur, puis étire avec Star Stretch. Crée 'Stars_HOO' : mets ce nom dans l'icône Etoiles_screen à la place de SHO_stars. Rapport choisi par l'auteur en comparant à des étoiles RGB, propre à son matériel ; "
+     "Calibre ensuite la couleur, puis étire avec Star Stretch. Crée 'Stars_HOO' : mets ce nom dans l'icône Etoiles_screen à la place de NBtoRGB_stars. Rapport choisi par l'auteur en comparant à des étoiles RGB, propre à son matériel ; "
      "une légère teinte verte peut rester sur les étoiles bleues (passe à 0,3·H + 0,7·O)." + STARS_NB),
-    (note('Star_Stretch', T_STARSTRETCH + " SHO sans RGB : sur SHO_stars (étoiles de SXT_lineaire, linéaires), ou sur l'image de la méthode 1 ou 2. Étoiles narrowband : Color Boost plus bas si criardes, Stretch Amount plus bas si toutes blanches."), ''),
-] + stars_end('SHO_stars', cms=True, cms_extra=' ' + STARS_NB + STARS_NB_FIX, alt=" NB to RGB Star Combination (méthode 1) : remplace SHO_stars par NBtoRGB_stars dans l'icône ; étoiles HOO synthétiques (méthode 2) : par Stars_HOO.")
+    (note('Star_Stretch', T_STARSTRETCH + " SHO sans RGB : sur NBtoRGB_stars (créée par NB_to_RGB_Stars, linéaire), ou sur Stars_HOO (méthode 2). Étoiles narrowband : Color Boost plus bas si criardes, Stretch Amount plus bas si toutes blanches."), ''),
+] + stars_end('NBtoRGB_stars', cms=True, cms_extra=' ' + STARS_NB + STARS_NB_FIX, alt=" Étoiles HOO synthétiques (méthode 2) : remplace NBtoRGB_stars par Stars_HOO dans l'icône ; SHO_stars directe (couleurs de la palette) : par SHO_stars.")
 
 # ---------------------------------------------------------------- HOO
 hoo = pre_block() + [
@@ -1324,7 +1324,7 @@ for _st in (rgbsho, sho, hoo):
     _c6, _c7 = fin_rapide(_st)
     insert_after(_st, 'NXT_final_fort', [(_c6, '')])
     _st.append((_c7, ''))
-for _st, _et in ((rgbsho, 'RGB_stars'), (sho, 'SHO_stars'), (hoo, 'HOO_stars')):
+for _st, _et in ((rgbsho, 'RGB_stars'), (sho, 'NBtoRGB_stars'), (hoo, 'HOO_stars')):
     # Nettoyage_sans_etoiles : image d'étoiles du workflow
     _k = next(k for k, (it, d) in enumerate(_st) if it[0] == 'Nettoyage_sans_etoiles')
     (_n, _x), _d = _st[_k]
@@ -1333,13 +1333,13 @@ for _st, _et in ((rgbsho, 'RGB_stars'), (sho, 'SHO_stars'), (hoo, 'HOO_stars')):
     _st[_k] = ((_n, _x.replace(_a, _a.replace('RGB_stars', _et))), _d)
 
 # SHO sans RGB (demande de l'utilisateur, 8 octobre 2026 : « les etoiles s'appelent SHO_stars et il manque les options de saturation grosses étoiles,
-# retirer le violet etc qu'il y a dans le SHO RGB ») : SCNR_etoiles_vert, SCNR_etoiles_violet, Saturation_grosses en options P7 sur SHO_stars étirée
+# retirer le violet etc qu'il y a dans le SHO RGB ») : SCNR_etoiles_vert, SCNR_etoiles_violet, Saturation_grosses en options P7 sur NBtoRGB_stars étirée (choix de l'utilisateur ensuite : étoiles NB to RGB par défaut)
 _opts = []
 for _b in ('SCNR_etoiles_vert', 'SCNR_etoiles_violet', 'Saturation_grosses'):
     (_n, _x), _d = pick(lrgb, _b)
     _a = '<td id="id">vue</td>\n            <td id="value">RGB_stars</td>'
     assert _a in _x
-    _opts.append(((_n, _x.replace(_a, _a.replace('RGB_stars', 'SHO_stars'))), _d))
+    _opts.append(((_n, _x.replace(_a, _a.replace('RGB_stars', 'NBtoRGB_stars'))), _d))
 insert_after(sho, 'Star_Stretch', _opts)
 
 # Option MAS_light dans tous les workflows (demande de l'utilisateur, 8 octobre 2026, réglages donnés en code PJSR) :

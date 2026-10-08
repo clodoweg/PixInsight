@@ -44,7 +44,7 @@ def role(prefix, base):
     if prefix in LUM and base == 'Statistical_Stretch':
         return 'opt'    # galaxies (demande de l'utilisateur, 5 octobre 2026) : MAS sur le RGB
     if prefix == 'SHO' and base == 'SCNR_etoiles_vert':
-        return 'opt'    # SHO sans RGB : options étoiles sur SHO_stars (demande de l'utilisateur, 8 octobre 2026)
+        return 'opt'    # SHO sans RGB : options étoiles sur NBtoRGB_stars (demande de l'utilisateur, 8 octobre 2026)
     if base in OPT or (base == 'MGC_MARS' and prefix in ('SHO', 'HOO')):   # RGB + SHO : MGC_MARS sur RGB au chemin principal (comme en LRGB)
         return 'opt'
     if base == 'Etoiles_screen':
@@ -193,7 +193,7 @@ CONTAINERS = {
 
 # Textes d'option propres au narrowband
 WHEN_NB = {
-    'SCNR_etoiles_vert': "étoiles vertes : sur SHO_stars étirée (SHO sans RGB) ou RGB_stars, avant Etoiles_screen ; glisse sur n'importe quelle image",
+    'SCNR_etoiles_vert': "étoiles vertes : sur NBtoRGB_stars étirée (SHO sans RGB) ou RGB_stars, avant Etoiles_screen ; glisse sur n'importe quelle image",
     'SCNR_etoiles_violet': "étoiles violettes (R et B nettement au-dessus de G à la sonde) : après SCNR_etoiles_vert, glisse sur n'importe quelle image ; Invert, SCNR vert 1,0, Invert ; pas dans le rapide",
     'Saturation_grosses': "grosses étoiles presque blanches, petites assez colorées : glisse sur n'importe quelle image après les SCNR ; seules les grosses étoiles et leur halo sont saturés ; pas dans le rapide",
     'Boost_final': "un peu plus de couleur sur les zones brillantes : sur l'image SANS étoiles finie, avant Fond_desature et Etoiles_screen (pas de L : masque tiré de l'image elle-même)",
