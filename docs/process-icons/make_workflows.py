@@ -42,6 +42,7 @@ SCRIPTS = {
     'Combinaison_RGB': ('$PXI_SRCDIR/scripts/clodoweg/Combiner_RGB.js', '',
              [('red', 'R'), ('green', 'G'), ('blue', 'B'), ('newId', 'RGB'), ('closeSources', 'true'), ('copyKeywords', 'true'), ('garder', '')], L_GLOBAL),
     'Masque_L': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'attacher'), ('s', '0.14'), ('flou', '2'), ('nom', 'masque_L')], L_DRAG),
+    'Masque_L_boost_nb': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'attacher'), ('s', '0.20'), ('gamma', '2'), ('flou', '2'), ('nom', 'masque_L')], L_DRAG),   # narrowband : masque tiré de l'image sans étoiles elle-même
     'Masque_L_source': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'attacher'), ('s', '0.20'), ('gamma', '2'), ('flou', '2'), ('nom', 'masque_L'), ('source', 'L'), ('exclure', 'RGB_stars'), ('exclureGain', '4')], L_DRAG),
     'Masque_retirer': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'retirer'), ('nom', 'masque_L')], L_DRAG),
     'Fermer_vues': ('$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js', '', [('views', '')], L_GLOBAL),
@@ -369,16 +370,17 @@ def curves_cs(name, c, s):
         return t
     return M.instance('CurvesTransformation', name, post=post)
 
-def boost_final_items(doux=False):
+def boost_final_items(doux=False, nb=False):
     """Image finie (étoiles comprises) : masque tiré de L sans étoiles, étoiles de RGB_stars retirées, courbes c et S
     (réglage de l'utilisateur : c 0,46094 -> 0,53646, S 0,46354 -> 0,54167), masque retiré.
     doux (demande de l'utilisateur) : même masque, montée des courbes divisée par deux (c -> 0,49870, S -> 0,50261)."""
     c, s = ((0.46094, 0.49870), (0.46354, 0.50261)) if doux else ((0.46094, 0.53646), (0.46354, 0.54167))
-    return [script('Masque_L_source', ''), curves_cs('Courbes_boost_final', [(0, 0), c, (1, 1)], [(0, 0), s, (1, 1)]),
+    # nb (demande de l'utilisateur, 8 octobre 2026) : pas de L en narrowband ; sur l'image SANS étoiles avant Etoiles_screen, masque tiré d'elle-même
+    return [script('Masque_L_boost_nb' if nb else 'Masque_L_source', ''), curves_cs('Courbes_boost_final', [(0, 0), c, (1, 1)], [(0, 0), s, (1, 1)]),
             script('Masque_retirer', '')]
 
-def boost_final(doux=False):
-    items = boost_final_items(doux)
+def boost_final(doux=False, nb=False):
+    items = boost_final_items(doux, nb)
     name = 'Boost_final_doux' if doux else 'Boost_final'
     return name, container(name, [x.replace('id="%s_instance"' % n, 'id="__ID___instance"', 1) for n, x in items])
 
@@ -1206,7 +1208,7 @@ insert_after(lhargb, 'C_Preparation_rapide', [(turbo_debut(lhargb), '')])   # tu
 # Finition galaxies (HDRMT_30, C_Finition à 0,58, C_Sharp_MMT, NXT_final au chemin principal, options P6) via finish_block(galaxie=True) ;
 # fin P7 : Fond_desature, Fond_auto (options Fond_auto_clair) sur l'image SANS étoiles avant la recombinaison, NXT_dernier juste après ;
 # la recombinaison par défaut reste Etoiles_reduites en nébuleuse (Etoiles_screen en alternative). Options STF, EZ_Soft_Stretch, Binning_x2,
-# DarkStructureEnhance, Agrandir_x2 ; Etoiles_plafond retiré. Pas de Boost_final (masque tiré de L).
+# DarkStructureEnhance, Agrandir_x2 ; Etoiles_plafond retiré. Boost_final et Boost_final_doux en option, sur l'image sans étoiles (pas de L : masque tiré d'elle-même).
 D_NXT_DERNIER_NB = D_NXT_DERNIER.replace("juste après Etoiles_screen", "juste après la recombinaison des étoiles (Etoiles_screen, ou Etoiles_reduites en alternative)")
 for _st in (rgbsho, sho, hoo):
     _st.insert(next(k for k, (it, d) in enumerate(_st) if it[0] == 'GHS_1_premier'), (stf_icon(), ''))
@@ -1221,6 +1223,8 @@ for _st in (rgbsho, sho, hoo):
     assert _a in _it[0][1]
     _it = ((_it[0][0], _it[0][1].replace(_a, _a.replace('0.15', '0.08'))), _it[1])
     insert_before(_st, 'Etoiles_screen', [_it, (note('Fond_auto', D_FOND), ''), (script('Fond_auto_clair', ''), '')])
+    # options Boost_final_doux et Boost_final (demande de l'utilisateur, 8 octobre 2026) : sur l'image sans étoiles, avant Fond_desature et Etoiles_screen
+    insert_before(_st, 'Fond_desature', [(boost_final(True, nb=True), ''), (boost_final(nb=True), '')])
     insert_after(_st, 'Etoiles_reduites', [(M.nxt('NXT_dernier', 0.25, 1), D_NXT_DERNIER_NB)])
     _st[:] = [x for x in _st if x[0][0] != 'Etoiles_plafond']
 # P3 rapide narrowband (demande de l'utilisateur, 8 octobre 2026) : conteneur de scripts (Apply Global) ; Lineaire_auto lance les icônes du chemin

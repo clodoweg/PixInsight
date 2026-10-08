@@ -191,6 +191,8 @@ CONTAINERS = {
 
 # Textes d'option propres au narrowband
 WHEN_NB = {
+    'Boost_final': "un peu plus de couleur sur les zones brillantes : sur l'image SANS étoiles finie, avant Fond_desature et Etoiles_screen (pas de L : masque tiré de l'image elle-même)",
+    'Boost_final_doux': "comme Boost_final mais moitié moins fort : un petit cran de couleur, sur l'image SANS étoiles, avant Fond_desature et Etoiles_screen",
     'MAS_light': "étirement plus doux que MAS (Aggressiveness 0,15, saturation 0,50) : à la place de MAS sur le RGB (RGB + SHO), ou de MAS_canaux / des GHS sur chaque canal sans étoiles ; glisse sur l'image linéaire",
     'C_Fin_rapide': "MODE RAPIDE, à la place de HDRMT_30, C_Finition, C_Sharp_MMT et NXT_final : GLISSE sur l'image sans étoiles après la palette (SHO_etire après NBN_SHO, ou l'image de ta palette)",
     'C_Etoiles_fond_rapide': "MODE RAPIDE, à la place de Fond_desature, Fond_auto, Etoiles_screen, NXT_dernier et Export_TIFF : GLISSE sur l'image sans étoiles finie, image d'étoiles du workflow ouverte et étirée",

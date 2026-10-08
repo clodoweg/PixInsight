@@ -351,6 +351,8 @@ Les schémas ne reprennent que des faits déjà sourcés plus haut ; ils n'ajout
 
 ## Non vérifié
 
+- Boost_final narrowband (8 octobre 2026, demande de l'utilisateur : « oui mais mets les option ») : masque tiré de l'image sans étoiles elle-même au lieu de L, appliqué avant Etoiles_screen ; non testé. C_Finition glissé : carrés noirs ou pixellisés signalés par l'utilisateur (un par un, ça marche) ; cause non trouvée (hypothèse : masque attaché pendant le conteneur).
+
 - cwApplyOnCopy dans un conteneur glissé (vue en lecture seule : traitement direct par process natifs) : Ctrl+Z non testé (erreurs « already being processed » puis « read-only image » de l'utilisateur sur R_C_Fin_rapide, 8 octobre 2026).
 
 Points toujours sans source directe (contrôle du 30 septembre 2026) :

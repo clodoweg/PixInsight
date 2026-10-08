@@ -4573,6 +4573,374 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </table>
       <parameter id="information"></parameter>
    </instance>
+   <instance class="ProcessContainer" id="Opt_Boost_final_doux_instance">
+      <description>OPTION — comme Boost_final mais moitié moins fort : un petit cran de couleur, sur l'image SANS étoiles, avant Fond_desature et Etoiles_screen.&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : comme Boost_final, courbes montées de moitié (c 0,46094 -&gt; 0,49870, S 0,46354 -&gt; 0,50261).&#10;&#10;À RÉGLER : glisse sur l'image SANS étoiles finie, avant Fond_desature et Etoiles_screen ; un glisser = un petit cran.&#10;&#10;SI :&#10;- pas assez -&gt; un deuxième passage, ou Boost_final&#10;- masque trop large -&gt; gamma 3 dans Masque_L_boost_nb</description>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="6">
+            <tr>
+               <td id="id">mode</td>
+               <td id="value">attacher</td>
+            </tr>
+            <tr>
+               <td id="id">s</td>
+               <td id="value">0.20</td>
+            </tr>
+            <tr>
+               <td id="id">gamma</td>
+               <td id="value">2</td>
+            </tr>
+            <tr>
+               <td id="id">flou</td>
+               <td id="value">2</td>
+            </tr>
+            <tr>
+               <td id="id">nom</td>
+               <td id="value">masque_L</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+      <instance class="CurvesTransformation" version="256" enabled="true">
+         <table id="R" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="Rt" value="AkimaSubsplines"/>
+         <table id="G" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="Gt" value="AkimaSubsplines"/>
+         <table id="B" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="Bt" value="AkimaSubsplines"/>
+         <table id="K" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="Kt" value="AkimaSubsplines"/>
+         <table id="A" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="At" value="AkimaSubsplines"/>
+         <table id="L" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="Lt" value="AkimaSubsplines"/>
+         <table id="a" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="at" value="AkimaSubsplines"/>
+         <table id="b" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="bt" value="AkimaSubsplines"/>
+         <table id="c" rows="3">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="0.46094"/>
+               <td id="y" value="0.49870"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="ct" value="AkimaSubsplines"/>
+         <table id="H" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="Ht" value="AkimaSubsplines"/>
+         <table id="S" rows="3">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="0.46354"/>
+               <td id="y" value="0.50261"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="St" value="AkimaSubsplines"/>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="3">
+            <tr>
+               <td id="id">mode</td>
+               <td id="value">retirer</td>
+            </tr>
+            <tr>
+               <td id="id">nom</td>
+               <td id="value">masque_L</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+   </instance>
+   <instance class="ProcessContainer" id="Opt_Boost_final_instance">
+      <description>OPTION — un peu plus de couleur sur les zones brillantes : sur l'image SANS étoiles finie, avant Fond_desature et Etoiles_screen (pas de L : masque tiré de l'image elle-même).&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : masque de luminance tiré de l'image elle-même (script Masque_auto, s = 0,20, gamma 2 : fort sur les zones brillantes, faible sur les voiles) attaché, CurvesTransformation c 0,46094 -&gt; 0,53646 et S 0,46354 -&gt; 0,54167, masque retiré.&#10;&#10;À RÉGLER : glisse sur l'image SANS étoiles finie (après la finition), avant Fond_desature et Etoiles_screen.&#10;&#10;SI :&#10;- masque encore trop large -&gt; gamma 3 dans Masque_L_boost_nb&#10;- trop fort -&gt; Boost_final_doux&#10;- fond teinté -&gt; Fond_desature ensuite le retire</description>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="6">
+            <tr>
+               <td id="id">mode</td>
+               <td id="value">attacher</td>
+            </tr>
+            <tr>
+               <td id="id">s</td>
+               <td id="value">0.20</td>
+            </tr>
+            <tr>
+               <td id="id">gamma</td>
+               <td id="value">2</td>
+            </tr>
+            <tr>
+               <td id="id">flou</td>
+               <td id="value">2</td>
+            </tr>
+            <tr>
+               <td id="id">nom</td>
+               <td id="value">masque_L</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+      <instance class="CurvesTransformation" version="256" enabled="true">
+         <table id="R" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="Rt" value="AkimaSubsplines"/>
+         <table id="G" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="Gt" value="AkimaSubsplines"/>
+         <table id="B" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="Bt" value="AkimaSubsplines"/>
+         <table id="K" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="Kt" value="AkimaSubsplines"/>
+         <table id="A" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="At" value="AkimaSubsplines"/>
+         <table id="L" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="Lt" value="AkimaSubsplines"/>
+         <table id="a" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="at" value="AkimaSubsplines"/>
+         <table id="b" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="bt" value="AkimaSubsplines"/>
+         <table id="c" rows="3">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="0.46094"/>
+               <td id="y" value="0.53646"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="ct" value="AkimaSubsplines"/>
+         <table id="H" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="Ht" value="AkimaSubsplines"/>
+         <table id="S" rows="3">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="0.46354"/>
+               <td id="y" value="0.54167"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="St" value="AkimaSubsplines"/>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="3">
+            <tr>
+               <td id="id">mode</td>
+               <td id="value">retirer</td>
+            </tr>
+            <tr>
+               <td id="id">nom</td>
+               <td id="value">masque_L</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+   </instance>
    <instance class="Script" version="256" id="Opt_Fond_auto_clair_instance">
       <description>OPTION — à la place de Fond_auto : image trop sombre, fond amené à 0,14, après Fond_desature, avant la recombinaison des étoiles.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Fond_auto, cible 0,14 : fond de chaque canal mesuré (grille 8 × 8), amené à 0,14 par mtf, sans écrêtage ; fond neutre.&#10;&#10;À RÉGLER : à la place de Fond_auto, image trop sombre : glisse sur l'image sans étoiles, après Fond_desature, avant la recombinaison des étoiles.&#10;&#10;SI :&#10;- fond encore trop sombre -&gt; double-clic, cible 0,15</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js</parameter>
@@ -4919,13 +5287,15 @@ max($T,f1)</parameter>
    <icon id="Opt_MT_etoiles" instance="Opt_MT_etoiles_instance" xpos="1225" ypos="324" workspace="Workspace01"/>
    <icon id="Opt_Halo_B_Gon" instance="Opt_Halo_B_Gon_instance" xpos="1225" ypos="354" workspace="Workspace01"/>
    <icon id="Opt_Etoiles_grosses" instance="Opt_Etoiles_grosses_instance" xpos="1225" ypos="384" workspace="Workspace01"/>
-   <icon id="Opt_Fond_auto_clair" instance="Opt_Fond_auto_clair_instance" xpos="1225" ypos="414" workspace="Workspace01"/>
-   <icon id="Opt_Etoiles_reduites" instance="Opt_Etoiles_reduites_instance" xpos="1225" ypos="444" workspace="Workspace01"/>
-   <icon id="Opt_CorrectMagentaStars" instance="Opt_CorrectMagentaStars_instance" xpos="1225" ypos="474" workspace="Workspace01"/>
-   <icon id="Opt_Agrandir_x2" instance="Opt_Agrandir_x2_instance" xpos="1225" ypos="504" workspace="Workspace01"/>
-   <icon id="Opt_ICC_sRGB" instance="Opt_ICC_sRGB_instance" xpos="1225" ypos="534" workspace="Workspace01"/>
-   <icon id="Opt_Export_TIFF" instance="Opt_Export_TIFF_instance" xpos="1225" ypos="564" workspace="Workspace01"/>
-   <icon id="Opt_Fermer_tout" instance="Opt_Fermer_tout_instance" xpos="1225" ypos="594" workspace="Workspace01"/>
-   <icon id="P7_rapide" instance="P7_rapide_instance" xpos="1225" ypos="640" workspace="Workspace01"/>
-   <icon id="R_C_Etoiles_fond_rapide" instance="R_C_Etoiles_fond_rapide_instance" xpos="1225" ypos="674" workspace="Workspace01"/>
+   <icon id="Opt_Boost_final_doux" instance="Opt_Boost_final_doux_instance" xpos="1225" ypos="414" workspace="Workspace01"/>
+   <icon id="Opt_Boost_final" instance="Opt_Boost_final_instance" xpos="1225" ypos="444" workspace="Workspace01"/>
+   <icon id="Opt_Fond_auto_clair" instance="Opt_Fond_auto_clair_instance" xpos="1225" ypos="474" workspace="Workspace01"/>
+   <icon id="Opt_Etoiles_reduites" instance="Opt_Etoiles_reduites_instance" xpos="1225" ypos="504" workspace="Workspace01"/>
+   <icon id="Opt_CorrectMagentaStars" instance="Opt_CorrectMagentaStars_instance" xpos="1225" ypos="534" workspace="Workspace01"/>
+   <icon id="Opt_Agrandir_x2" instance="Opt_Agrandir_x2_instance" xpos="1225" ypos="564" workspace="Workspace01"/>
+   <icon id="Opt_ICC_sRGB" instance="Opt_ICC_sRGB_instance" xpos="1225" ypos="594" workspace="Workspace01"/>
+   <icon id="Opt_Export_TIFF" instance="Opt_Export_TIFF_instance" xpos="1225" ypos="624" workspace="Workspace01"/>
+   <icon id="Opt_Fermer_tout" instance="Opt_Fermer_tout_instance" xpos="1225" ypos="654" workspace="Workspace01"/>
+   <icon id="P7_rapide" instance="P7_rapide_instance" xpos="1225" ypos="700" workspace="Workspace01"/>
+   <icon id="R_C_Etoiles_fond_rapide" instance="R_C_Etoiles_fond_rapide_instance" xpos="1225" ypos="734" workspace="Workspace01"/>
 </xpsm>

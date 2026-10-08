@@ -1133,6 +1133,51 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - pas assez réduites -> force 0,85 (au plus ; 0,5 = rien)
 > - voir ce qui est réduit -> fenêtre (double-clic puis Apply Global), « Voir le masque » (vue masque_grosses)
 
+#### Opt_Boost_final_doux — ProcessContainer
+   1. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
+      paramètres : `mode=attacher`, `s=0.20`, `gamma=2`, `flou=2`, `nom=masque_L`, `dialogue=false`
+   2. CurvesTransformation
+      Rt=AkimaSubsplines ; Gt=AkimaSubsplines ; Bt=AkimaSubsplines ; Kt=AkimaSubsplines ; At=AkimaSubsplines ; Lt=AkimaSubsplines ; at=AkimaSubsplines ; bt=AkimaSubsplines ; ct=AkimaSubsplines ; Ht=AkimaSubsplines ; St=AkimaSubsplines ; table R (2 lignes) ; table G (2 lignes) ; table B (2 lignes) ; table K (2 lignes) ; table A (2 lignes) ; table L (2 lignes) ; table a (2 lignes) ; table b (2 lignes) ; table c (3 lignes) ; table H (2 lignes) ; table S (3 lignes)
+   3. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
+      paramètres : `mode=retirer`, `nom=masque_L`, `dialogue=false`
+
+> OPTION — comme Boost_final mais moitié moins fort : un petit cran de couleur, sur l'image SANS étoiles, avant Fond_desature et Etoiles_screen.
+> 
+> LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
+> 
+> PRÉRÉGLÉ : conteneur : comme Boost_final, courbes montées de moitié (c 0,46094 -> 0,49870, S 0,46354 -> 0,50261).
+> 
+> À RÉGLER : glisse sur l'image SANS étoiles finie, avant Fond_desature et Etoiles_screen ; un glisser = un petit cran.
+> 
+> SI :
+> - pas assez -> un deuxième passage, ou Boost_final
+> - masque trop large -> gamma 3 dans Masque_L_boost_nb
+
+#### Opt_Boost_final — ProcessContainer
+   1. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
+      paramètres : `mode=attacher`, `s=0.20`, `gamma=2`, `flou=2`, `nom=masque_L`, `dialogue=false`
+   2. CurvesTransformation
+      Rt=AkimaSubsplines ; Gt=AkimaSubsplines ; Bt=AkimaSubsplines ; Kt=AkimaSubsplines ; At=AkimaSubsplines ; Lt=AkimaSubsplines ; at=AkimaSubsplines ; bt=AkimaSubsplines ; ct=AkimaSubsplines ; Ht=AkimaSubsplines ; St=AkimaSubsplines ; table R (2 lignes) ; table G (2 lignes) ; table B (2 lignes) ; table K (2 lignes) ; table A (2 lignes) ; table L (2 lignes) ; table a (2 lignes) ; table b (2 lignes) ; table c (3 lignes) ; table H (2 lignes) ; table S (3 lignes)
+   3. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
+      paramètres : `mode=retirer`, `nom=masque_L`, `dialogue=false`
+
+> OPTION — un peu plus de couleur sur les zones brillantes : sur l'image SANS étoiles finie, avant Fond_desature et Etoiles_screen (pas de L : masque tiré de l'image elle-même).
+> 
+> LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
+> 
+> PRÉRÉGLÉ : conteneur : masque de luminance tiré de l'image elle-même (script Masque_auto, s = 0,20, gamma 2 : fort sur les zones brillantes, faible sur les voiles) attaché, CurvesTransformation c 0,46094 -> 0,53646 et S 0,46354 -> 0,54167, masque retiré.
+> 
+> À RÉGLER : glisse sur l'image SANS étoiles finie (après la finition), avant Fond_desature et Etoiles_screen.
+> 
+> SI :
+> - masque encore trop large -> gamma 3 dans Masque_L_boost_nb
+> - trop fort -> Boost_final_doux
+> - fond teinté -> Fond_desature ensuite le retire
+
 #### Opt_Fond_auto_clair — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js`
    paramètres : `cible=0.14`, `tolerance=0.005`, `grille=8`
