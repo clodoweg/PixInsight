@@ -230,7 +230,7 @@ RAPIDE_NOTE = {
             7: "R_C_Etoiles_fond_rapide sur l'image sans étoiles finie : Fond_desature, Fond_auto (0,12) sur l'image sans étoiles, étoiles remises (Etoiles_screen), NXT_dernier (0,25), puis Export_TIFF en un seul conteneur"}}
 
 # Narrowband (demande de l'utilisateur, 8 octobre 2026) : rapides faits phase par phase ; les autres phases gardent le chemin principal
-_NB_RAP1 = ("MODE RAPIDE (nébuleuses, en cours) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre : R_C_Preparation_rapide, R_Gradient_auto_rapide, R_C_Lineaire_rapide, puis chemin principal à partir de la phase 4. "
+_NB_RAP1 = ("MODE RAPIDE (nébuleuses, en cours) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre : R_C_Preparation_rapide, R_Gradient_auto_rapide, R_C_Lineaire_rapide (ou les trois en un : T_Turbo_debut), puis chemin principal à partir de la phase 4. "
             "Phase 1 : R_C_Preparation_rapide (masters seuls ouverts, double-clic puis Apply Global) à la place de LinearPatternSubtraction, Renommer_auto et ImageSolver (phase 2)%s")
 _NB_VIDE = "pas encore de rapide narrowband : chemin principal"
 for _p, _x in (('RSHO', ", Combinaison_RGB comprise (RGB des étoiles)"), ('SHO', ""), ('HOO', "")):
@@ -1218,9 +1218,11 @@ _P3_NB = {
     'SHO': ('Combinaison_SHO>H', 'S, H, O', 'C_SHO_lineaire>SHO ; C_Extraction_SHO>SHO ; C_Extraction_etoiles>SHO_stars', 'SHO'),
     'HOO': ('Combinaison_HOO>H', 'H, O', 'C_HOO_lineaire>HOO ; C_Extraction_HOO>HOO', 'HOO'),
 }
-def lineaire_rapide_nb(prefix):
+def lineaire_nb_items(prefix):
     comb, masters, suite, fin = _P3_NB[prefix]
-    return cont('C_Lineaire_rapide', [lineaire_rapide(comb), fermer('Fermer_masters', masters), lineaire_rapide(suite), fermer('Fermer_lineaires', fin)])
+    return [lineaire_rapide(comb), fermer('Fermer_masters', masters), lineaire_rapide(suite), fermer('Fermer_lineaires', fin)]
+def lineaire_rapide_nb(prefix):
+    return cont('C_Lineaire_rapide', lineaire_nb_items(prefix))
 # RGB + SHO (demande de l'utilisateur, 8 octobre 2026 : « Il faut faire la meme chose que sur LRGB pour arriver jusqu'a RGB_stars ») :
 # P2 SPFC_RGB_filtres + MGC_MARS sur RGB, P3 C_RGB_lineaire (BXT Correct Only, SPCC, BXT, NXT), P4 MAS, SXT_RGB_etire (RGB_stars), SCNR_etoiles_vert,
 # options SCNR_etoiles_violet et Saturation_grosses, puis Fermer_RGB (le RGB sans étoiles ne sert plus). Mêmes icônes que le LRGB.
@@ -1250,6 +1252,11 @@ for _st, _rgb in ((rgbsho, True), (sho, False), (hoo, False)):
                                               + ([rgb_comb_item()[0]] if _rgb else []) + [gc_solver('Solver_auto')]), '')])
     insert_after(_st, 'ImageSolver', [(script('Gradient_auto_rapide', ''), '')])   # P2 rapide (demande de l'utilisateur) : GradientCorrection sur toutes les images, comme en galaxies
     insert_before(_st, 'STF', [(lineaire_rapide_nb({id(rgbsho): 'RSHO', id(sho): 'SHO', id(hoo): 'HOO'}[id(_st)]), '')])   # P3 rapide
+    # Turbo narrowband (demande de l'utilisateur, 8 octobre 2026) : R_C_Preparation_rapide + R_Gradient_auto_rapide + R_C_Lineaire_rapide en un seul conteneur, Apply Global
+    _p = {id(rgbsho): 'RSHO', id(sho): 'SHO', id(hoo): 'HOO'}[id(_st)]
+    insert_after(_st, 'C_Preparation_rapide', [(cont('Turbo_debut', [pick(_st, b)[0] for b in ('Renommer_auto', 'LinearPatternSubtraction')]
+                                                    + ([rgb_comb_item()[0]] if _rgb else []) + [gc_solver('Solver_auto'), script('Gradient_auto_rapide', '')]
+                                                    + lineaire_nb_items(_p)), '')])
 for _st, _et in ((rgbsho, 'RGB_stars'), (sho, 'NBtoRGB_stars'), (hoo, 'HOO_stars')):
     # Nettoyage_sans_etoiles : image d'étoiles du workflow
     _k = next(k for k, (it, d) in enumerate(_st) if it[0] == 'Nettoyage_sans_etoiles')

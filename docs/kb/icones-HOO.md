@@ -143,6 +143,48 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - caméra couleur dual-band -> pas ce conteneur : chemin principal (DualBand_H, DualBand_O)
 > - masters décalés, bandes noires -> Crop_reference et Crop_appliquer AVANT ce conteneur
 
+### P1_turbo
+
+#### T_Turbo_debut — ProcessContainer
+   1. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Renommer_auto.js`
+      paramètres : `dialogue=false`
+   2. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/LPS_UnClic.js`
+      paramètres : `correctColumns=false`, `correctEntireImage=true`, `defectTableFilePath=`, `layersToRemove=9`, `rejectionLimit=3`, `globalRejection=true`, `globalRejectionLimit=5`, `autoBackground=true`, `backgroundReferenceLeft=0`, `backgroundReferenceTop=0`, `backgroundReferenceWidth=512`, `backgroundReferenceHeight=512`, `allOpenImages=true`, `closeWorkingImages=true`, `dialogue=false`
+   3. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/GC_Solver_auto.js`
+      paramètres : `gradient=false`, `solve=true`, `solveTout=true`, `defaultDate=2020-01-01T00:00:00`, `dialogue=false`, `metadata_focal=2939`, `metadata_xpixsz=3.76`, `solver_catalogMode=2`, `solver_distortionCorrection=true`, `(+ 42 autres réglages ImageSolver)`
+   4. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Gradient_auto.js`
+      paramètres : `dialogue=false`
+   5. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
+      paramètres : `etapes=Combinaison_HOO>H`, `dialogue=false`
+   6. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
+      paramètres : `views=H, O`, `dialogue=false`
+   7. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
+      paramètres : `etapes=C_HOO_lineaire>HOO ; C_Extraction_HOO>HOO`, `dialogue=false`
+   8. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
+      paramètres : `views=HOO`, `dialogue=false`
+
+> MODE TURBO, à la place de R_C_Preparation_rapide, R_Gradient_auto_rapide et R_C_Lineaire_rapide (phases 1 à 3) : masters seuls ouverts, Conteneurs du workflow chargé, double-clic puis Apply Global (pas en glissant) ; ensuite GHS_1_premier sur H.
+> 
+> LANCEMENT : masters seuls ouverts, double-clic puis Apply Global (rond bleu) ; pas en glissant (ImageSolver échoue sur une image en cours de traitement).
+> 
+> PRÉRÉGLÉ : conteneur, en une fois : Renommer_auto, LinearPatternSubtraction, Solver_auto (= R_C_Preparation_rapide) ; Gradient_auto (= R_Gradient_auto_rapide) ; Lineaire_auto Combinaison_HOO, masters H, O fermés, Lineaire_auto C_HOO_lineaire (BXT, SXT, NXT_NB) et C_Extraction_HOO, HOO fermée (= R_C_Lineaire_rapide) ; résultat : H, O sans étoiles, linéaires, et HOO_stars.
+> 
+> À RÉGLER : masters H et O seuls ouverts (caméra mono) ; Conteneurs-HOO chargé ; double-clic puis Apply Global (pas en glissant) ; ensuite GHS_1_premier sur H.
+> 
+> SI :
+> - une étape échoue -> la console dit laquelle ; lance les icônes R_ une par une pour voir où
+> - gradient mal retiré (O, Lune) -> fais plutôt R_C_Preparation_rapide, la phase 2 du chemin principal (MGC + MARS), puis R_C_Lineaire_rapide
+> - masters à garder -> enregistre-les AVANT : ils sont fermés sans enregistrer
+> - caméra couleur dual-band -> pas le turbo : chemin principal (DualBand_H, DualBand_O)
+
 ## P2_Gradient
 
 #### E02_ImageSolver — Script
