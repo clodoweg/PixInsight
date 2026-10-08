@@ -1216,6 +1216,10 @@ for _st in (rgbsho, sho, hoo):
     insert_before(_st, 'ICC_sRGB', [(agrandir_x2(), '')])
     _it = pick(_st, 'Fond_desature')
     _st.remove(_it)
+    # narrowband : désaturation du fond plus douce (fin 0,08 au lieu de 0,15 ; demande de l'utilisateur, 8 octobre 2026 : « plus doux ») pour garder la couleur des voiles faibles
+    _a = '<td id="id">fin</td>\n            <td id="value">0.15</td>'
+    assert _a in _it[0][1]
+    _it = ((_it[0][0], _it[0][1].replace(_a, _a.replace('0.15', '0.08'))), _it[1])
     insert_before(_st, 'Etoiles_screen', [_it, (note('Fond_auto', D_FOND), ''), (script('Fond_auto_clair', ''), '')])
     insert_after(_st, 'Etoiles_reduites', [(M.nxt('NXT_dernier', 0.25, 1), D_NXT_DERNIER_NB)])
     _st[:] = [x for x in _st if x[0][0] != 'Etoiles_plafond']

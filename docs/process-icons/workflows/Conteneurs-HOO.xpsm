@@ -4097,7 +4097,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="information"></parameter>
    </instance>
    <instance class="Script" version="256" id="E22_Fond_desature_instance">
-      <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Fond_desature : fond mesuré ; zones faibles (luminance lissée sous fond + 0,15, décroissant jusqu'à + 0,30) : violet neutralisé (G remonté jusqu'à min(R, B), magenta seulement) ; fond (sous + 0,03, rampe jusqu'à + 0,15) : couleur retirée.&#10;&#10;À RÉGLER : glisse sur l'image SANS étoiles finie (après NXT_final), avant Fond_auto et la recombinaison des étoiles (Etoiles_reduites ou Etoiles_screen).&#10;&#10;SI :&#10;- violet encore visible dans les zones faibles -&gt; violetFin 0,40&#10;- nébuleuse faible grisée -&gt; fin 0,10 ; zones H faibles devenues grises -&gt; saute cette étape</description>
+      <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Fond_desature, réglé plus doux en narrowband : fond mesuré ; violet neutralisé (G remonté jusqu'à min(R, B)) à plein sous fond + 0,08, décroissant jusqu'à + 0,30 ; couleur retirée seulement tout près du fond (rampe de + 0,03 à + 0,08 au lieu de + 0,15) : les voiles faibles de la nébuleuse gardent leur couleur.&#10;&#10;À RÉGLER : glisse sur l'image SANS étoiles finie (après NXT_final), avant Fond_auto et la recombinaison des étoiles (Etoiles_screen, ou Etoiles_reduites).&#10;&#10;SI :&#10;- violet encore visible dans les zones faibles -&gt; violetFin 0,40&#10;- fond encore coloré -&gt; fin 0,12&#10;- voiles faibles grisés -&gt; fin 0,05, ou saute cette étape</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="4">
@@ -4107,7 +4107,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          </tr>
          <tr>
             <td id="id">fin</td>
-            <td id="value">0.15</td>
+            <td id="value">0.08</td>
          </tr>
          <tr>
             <td id="id">violetFin</td>
@@ -4367,7 +4367,7 @@ max($T,f1)</parameter>
             </tr>
             <tr>
                <td id="id">fin</td>
-               <td id="value">0.15</td>
+               <td id="value">0.08</td>
             </tr>
             <tr>
                <td id="id">violetFin</td>
