@@ -96,6 +96,18 @@ function cwPixelMathNew( view, expr, id )
    return w;
 }
 
+// Vrai si view est l'image sur laquelle un CONTENEUR a été glissé : le conteneur
+// la verrouille, beginProcess y échoue (« already being processed », test de
+// l'utilisateur du 8 octobre 2026 sur R_C_Fin_rapide). Les scripts d'un
+// conteneur portent dialogue = false (ajouté par le générateur) ; une icône
+// script glissée seule ne le porte pas et n'est pas verrouillée.
+function cwTargetLocked( view )
+{
+   return Parameters.isViewTarget && !Parameters.targetView.isNull &&
+          Parameters.targetView.id == view.id &&
+          Parameters.has( "dialogue" ) && Parameters.getString( "dialogue" ).trim().toLowerCase() == "false";
+}
+
 // fn( copie ) travaille sur une copie cachée de view (sans masque). Le résultat
 // est ensuite recalculé par un PixelMath exécuté SUR view (expression blend( id
 // de la copie ), par défaut la copie seule), puis recopié dans view entre
@@ -116,9 +128,16 @@ function cwApplyOnCopy( view, fn, blend )
       let r = cwPixelMathNew( view, blend ? blend( cid ) : cid, rid );
       try
       {
-         view.beginProcess();
-         view.image.assign( r.mainView.image );
-         view.endProcess();
+         // vue verrouillée par le conteneur : recopie directe (un PixelMath en
+         // place avec référence à une image cachée donne « Unknown error »)
+         if ( cwTargetLocked( view ) )
+            view.image.assign( r.mainView.image );
+         else
+         {
+            view.beginProcess();
+            view.image.assign( r.mainView.image );
+            view.endProcess();
+         }
       }
       finally
       {

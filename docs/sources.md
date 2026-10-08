@@ -351,6 +351,8 @@ Les schémas ne reprennent que des faits déjà sourcés plus haut ; ils n'ajout
 
 ## Non vérifié
 
+- Recopie de cwApplyOnCopy dans un conteneur glissé (vue verrouillée : `image.assign` sans beginProcess) : Ctrl+Z non testé (erreur « already being processed » de l'utilisateur sur R_C_Fin_rapide, 8 octobre 2026).
+
 Points toujours sans source directe (contrôle du 30 septembre 2026) :
 
 - Crop_commun.js (7 octobre 2026) : ouverture de DynamicCrop par `launch()` et lecture du dernier DynamicCrop dans l'historique de Crop_ref non testées dans PixInsight ; effet de DynamicCrop sur la solution astrométrique non vérifié (crop fait avant Solver_auto).
