@@ -13,8 +13,10 @@
 //      masters, lights, output, WBPP…) est sauté au profit du dossier parent.
 //      Ex. : /Astro/NGC1532/master/masterLight_L.xisf -> NGC1532.tiff, enregistré
 //      dans /Astro/NGC1532/. Espaces toujours retirés : « NGC 1532 » -> NGC1532.
-//      Si aucune image ouverte n'a de fichier : mot-clé
-//      OBJECT de l'image, sinon identifiant de la vue ; dossier personnel.
+//      Si aucune image ouverte n'a de fichier (narrowband : masters fermés
+//      par les rapides) : dossier retenu par Renommer_auto au début du
+//      traitement ; sinon mot-clé OBJECT de l'image, sinon identifiant de la
+//      vue ; dossier personnel.
 //      Paramètres : nom (force le nom), dossier (force le dossier), suffixe
 //      (ajouté au nom, vide par défaut). Un fichier existant est remplacé.
 // Aucune vue n'est fermée (demande de l'utilisateur).
@@ -32,35 +34,16 @@
 #include <pjsr/UndoFlag.jsh>
 
 #include "clodoweg_ui.jsh"
+#include "clodoweg_objet.jsh"
 
 #define TITLE "Export TIFF"
 
-var GENERIQUES = [ "master", "masters", "light", "lights", "output", "wbpp", "calibrated", "registered",
-                   "integration", "integrated", "stacked", "fits", "xisf", "traitement", "pixinsight" ];
-
-function lastName( dir )
-{
-   let parts = dir.split( "/" ).filter( function( p ) { return p.length > 0; } );
-   return parts.length > 0 ? parts[ parts.length - 1 ] : "";
-}
-
-// Dossier de l'objet : dossier des masters ouverts (L, R, G, B, H, O, S d'abord), dossiers génériques sautés.
+// Dossier de l'objet : dossier des masters ouverts ; sinon celui retenu par Renommer_auto
+// (narrowband : les masters sont fermés par les rapides).
 function objectDir()
 {
-   let prio = [ "L", "R", "G", "B", "H", "O", "S" ];
-   let wins = ImageWindow.windows.filter( function( w ) { return w.filePath.length > 0; } );
-   wins.sort( function( a, b )
-   {
-      let ia = prio.indexOf( a.mainView.id ), ib = prio.indexOf( b.mainView.id );
-      return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib);
-   } );
-   if ( wins.length == 0 )
-      return "";
-   let fp = wins[ 0 ].filePath;
-   let dir = File.extractDrive( fp ) + File.extractDirectory( fp );
-   while ( GENERIQUES.indexOf( lastName( dir ).toLowerCase() ) >= 0 && dir.lastIndexOf( "/" ) > 0 )
-      dir = dir.substring( 0, dir.lastIndexOf( "/" ) );
-   return dir;
+   let dir = cwObjectDirFromWindows();
+   return dir.length > 0 ? dir : cwSavedObjectDir();
 }
 
 function keyword( view, name )
@@ -92,7 +75,7 @@ function etPath( view, p )
    let nom = p.nom, dossier = p.dossier;
    let dir = objectDir();
    if ( nom.length == 0 )
-      nom = dir.length > 0 ? lastName( dir ) : keyword( view, "OBJECT" );
+      nom = dir.length > 0 ? cwLastName( dir ) : keyword( view, "OBJECT" );
    if ( nom.length == 0 )
       nom = view.id;
    nom = nom.replace( /\s+/g, "" ).replace( /[\/\\:*?"<>|]/g, "_" );   // jamais d'espace (demande de l'utilisateur) : NGC 1532 -> NGC1532

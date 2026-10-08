@@ -7,6 +7,8 @@
 // FILTER, il cherche le filtre dans le nom du fichier (FILTER-L, _Ha_...).
 // Les images couleur et les vues déjà bien nommées ne sont pas touchées ;
 // si deux images ont le même filtre, seule la première est renommée.
+// Retient aussi le dossier de l'objet (dossier des masters, clodoweg_objet.jsh)
+// pour Export_TIFF, utile quand les masters sont fermés avant l'export.
 //
 // Installation (Mac et PC) : dossier clodoweg dans src/scripts de PixInsight
 // (Mac : /Applications/PixInsight/src/scripts/clodoweg ; PC : en général
@@ -22,6 +24,7 @@
    mot-clé FILTER (ou le nom du fichier).
 
 #include "clodoweg_ui.jsh"
+#include "clodoweg_objet.jsh"
 
 #define REN_TITLE "Renommer auto"
 
@@ -149,6 +152,11 @@ function renApply( list )
       ++done;
    }
    console.noteln( "<end><cbr>" + REN_TITLE + " : " + done + " vue(s) renommée(s), " + skipped + " à vérifier." );
+   // dossier de l'objet retenu pour Export_TIFF (narrowband : les masters sont fermés avant l'export)
+   let dir = cwObjectDirFromWindows();
+   cwSaveObjectDir( dir );
+   if ( dir.length > 0 )
+      console.noteln( REN_TITLE + " : dossier de l'objet retenu pour Export_TIFF : " + dir );
 }
 
 function renDialog( list )
@@ -163,7 +171,8 @@ function renDialog( list )
       let r = list[ k ];
       html += "<tr><td>" + r.old + "</td><td>" + (r.note.length ? "<i>" + r.note + "</i>" : "<b>" + r.id + "</b>") + "</td><td>" + r.source + "</td></tr>";
    }
-   d.info( html + "</table>" );
+   let dir = cwObjectDirFromWindows();
+   d.info( html + "</table><p>Dossier de l'objet retenu pour Export_TIFF : <b>" + (dir.length > 0 ? dir : "aucun (images sans fichier)") + "</b></p>" );
    d.finish( "Renommer" );
    return d.execute();
 }

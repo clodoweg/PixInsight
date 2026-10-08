@@ -80,3 +80,7 @@ Aucun test dans PixInsight. Règle : process natif lancé sur une vue (executeOn
 - R_C_RGB_etoiles_rapide : SCNR vert (Etoiles_auto, executeOn) annulable sur RGB_stars ; MAS et SXT faits sur RGB, fermé ensuite.
 - R_C_Fin_rapide, R_C_Etoiles_fond_rapide (glissés) : natifs + Sharp_MMT et Fond_desature par cwApplyOnCopy, Fond_auto par executeOn : annulables (plusieurs Ctrl+Z, une étape par process) ; Export_TIFF travaille sur une copie.
 - R_C_Preparation_rapide, T_Turbo_debut, R_C_Lineaire_rapide : masters fermés (Combiner_RGB, Fermer_vues) : pas de retour arrière, recharger les masters. LPS_UnClic : écriture faite par le moteur LinearPatternSubtraction.jsh, annulation non vérifiée.
+
+## Dossier de l'objet (8 octobre 2026)
+
+`scripts/clodoweg_objet.jsh` (commun à Renommer_auto et Export_TIFF) : `cwObjectDirFromWindows()` (dossier des masters ouverts, dossiers génériques sautés), `cwSaveObjectDir` / `cwSavedObjectDir` (réglage PixInsight `clodoweg/objectDir`, `Settings` + `DataType_String`). Renommer_auto retient le dossier au début du traitement ; Export_TIFF le relit si aucune image ouverte n'a de fichier (narrowband : masters fermés par les rapides ; avant : export dans le dossier personnel sous le nom de la vue, retour de l'utilisateur). LRGB et LHaRGB : même résultat (L reste ouverte), changement accepté par l'utilisateur (« oui »).
