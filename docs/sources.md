@@ -945,3 +945,8 @@ Sources :
 - https://www.cloudynights.com/forums/topic/907829-when-to-run-blur-terminator-for-narrow-band/
 - https://chaoticnebula.com/how-to-reduce-blurring-in-astrophotos-with-blurxterminator/
 Non vérifié : aucune source ne donne de valeurs officielles pour le narrowband ; pas testé sur les données de l'utilisateur.
+
+### SHO : NXT sur la combinaison sans étoiles (8 octobre 2026)
+
+Demande : « 1 ok / 2 -> B » (BXT gardé à 0,60 ; NXT choix B)
+Fait : NXT_NB (Denoise 0,75, 1 itération) ajouté en fin de C_SHO_lineaire (RGB-SHO, SHO sans RGB) et C_HOO_lineaire (HOO), après SXT_lineaire : sur l'image sans étoiles, linéaire, avant l'extraction. NXT_H et NXT_O_S passent en options P3. LRGB et LHaRGB non touchés.

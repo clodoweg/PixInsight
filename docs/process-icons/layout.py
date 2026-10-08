@@ -18,7 +18,7 @@ PHASE = {
     'BXT_CorrectOnly': 3, 'Find_Background': 3, 'SPCC': 3, 'BXT_RGB': 3, 'BXT_L': 3, 'BXT_L_H': 3, 'BXT_NB': 3, 'Combinaison_SHO': 3, 'Combinaison_HOO': 3,
     'Continuum_auto': 3, 'H_dans_RGB': 3, 'H_dans_L': 3, 'NBRGBCombination': 3, 'SXT_lineaire': 3, 'SXT_RGB_lineaire': 3, 'SXT_L_etire': 4, 'Etoiles_LRGB_etire': 4, 'SXT_L_lineaire': 3, 'Etoiles_LRGB': 4,
     'Extraire_S': 3, 'Extraire_H': 3, 'Extraire_O': 3, 'Extraire_S_stars': 3, 'Extraire_H_stars': 3, 'Extraire_O_stars': 3,
-    'NXT_RGB': 3, 'NXT_L': 3, 'NXT_H': 3, 'NXT_O_S': 3,
+    'NXT_RGB': 3, 'NXT_L': 3, 'NXT_H': 3, 'NXT_O_S': 3, 'NXT_NB': 3,
     'GHS_1_premier': 4, 'GHS_2_contraste': 4, 'GHS_3_fond': 4, 'Statistical_Stretch': 4, 'Star_Stretch': 4,
     'LRGB_ajout_L': 5, 'NBN_SHO': 5, 'NBN_HOO': 5, 'Foraxx_SHO': 5, 'Foraxx_HOO': 5, 'HOO_simple': 5, 'HOO_Hubble': 5,
     'Perfect_Palette_Picker': 5, 'NBColourMapper': 5, 'SCNR_SHO': 5, 'H_en_luminance': 5,
@@ -30,7 +30,7 @@ PHASE = {
 
 NB = ('RSHO', 'SHO', 'HOO')
 LUM = ('LRGB', 'LHA')   # workflows avec luminance : par défaut Statistical Stretch sur le RGB, GHS sur L
-OPT = {'Main_continuum', 'ImageSolver_seul', 'EZ_Soft_Stretch', 'Turbo_debut', 'H_dans_RGB', 'C_P3_rapide', 'Finition_saturee', 'Boost_finition_light', 'Boost_finition', 'WBPP', 'CC_auto', 'Find_Background', 'LinearFit_ref_H', 'H_dans_L', 'NBRGBCombination', 'HDRMT_30', 'HDRMT_40', 'HDRMT_50', 'HDRMT_eclat', 'Boost_final', 'Fond_desature', 'NXT_final', 'NXT_final_doux', 'NXT_final_fort', 'Fond_auto_clair', 'Nettoyage_sans_etoiles', 'ICC_sRGB', 'Export_TIFF', 'Fermer_tout', 'Gradient_auto_rapide', 'Boost_final_doux', 'SXT_non_lineaire', 'C_Fin_rapide', 'C_Etoiles_fond_rapide', 'Mode_rapide', 'C_Preparation_rapide', 'C_RGB_rapide', 'C_LRGB_rapide', 'C_L_rapide', 'STF', 'C_RGB_couleur_rapide', 'C_H_rapide', 'C_RGB_fin_rapide',
+OPT = {'NXT_H', 'NXT_O_S', 'Main_continuum', 'ImageSolver_seul', 'EZ_Soft_Stretch', 'Turbo_debut', 'H_dans_RGB', 'C_P3_rapide', 'Finition_saturee', 'Boost_finition_light', 'Boost_finition', 'WBPP', 'CC_auto', 'Find_Background', 'LinearFit_ref_H', 'H_dans_L', 'NBRGBCombination', 'HDRMT_30', 'HDRMT_40', 'HDRMT_50', 'HDRMT_eclat', 'Boost_final', 'Fond_desature', 'NXT_final', 'NXT_final_doux', 'NXT_final_fort', 'Fond_auto_clair', 'Nettoyage_sans_etoiles', 'ICC_sRGB', 'Export_TIFF', 'Fermer_tout', 'Gradient_auto_rapide', 'Boost_final_doux', 'SXT_non_lineaire', 'C_Fin_rapide', 'C_Etoiles_fond_rapide', 'Mode_rapide', 'C_Preparation_rapide', 'C_RGB_rapide', 'C_LRGB_rapide', 'C_L_rapide', 'STF', 'C_RGB_couleur_rapide', 'C_H_rapide', 'C_RGB_fin_rapide',
        'MT_etoiles', 'Halo_B_Gon', 'Etoiles_plafond', 'Saturation_grosses', 'SCNR_etoiles_violet', 'Etoiles_grosses', 'CorrectMagentaStars', 'SCNR_SHO', 'Perfect_Palette_Picker', 'NBColourMapper', 'H_en_luminance',
        'Etoiles_HOO_synth', 'DualBand_H', 'DualBand_O', 'SPFC_S',
        'Binning_x2', 'Crop_reference', 'Crop_appliquer', 'H_dans_RGB_v2', 'C_RGB_etire_rapide', 'DarkStructureEnhance', 'Agrandir_x2', 'Lineaire_rapide', 'Sharp_USM'}
@@ -87,6 +87,8 @@ WHEN = {
     'Gradient_auto_rapide': "MODE RAPIDE, à la place de la phase 2 : GradientCorrection sur TOUTES les images ouvertes (plus d'ImageSolver : fait par Solver_auto en phase 1) ; à faire AVANT R_Lineaire_rapide (sans GradientCorrection)",
     'Mode_rapide': "repère du mode rapide (galaxies), sans effet : lis sa description pour l'ordre",
     'Continuum_auto': "avant CombineHaWithRGB, pour retirer le continuum de H (étoiles et cœur moins rougis) : double-clic puis Apply Global, fenêtre (Ha = H, Red = R), crée HaNB ; puis CombineHaWithRGB avec H Alpha = HaNB",
+    'NXT_H': "ancien réglage par canal, à la place de NXT_NB : NXT 0,60 sur H sans étoiles après l'extraction",
+    'NXT_O_S': "ancien réglage par canal : NXT 0,75 sur O et S sans étoiles après l'extraction, à la place de NXT_NB ou en plus si O ou S reste granuleux",
     'Main_continuum': "MODE RAPIDE, repère sans effet, après R_C_P3_rapide : la suite du continuum se fait À LA MAIN au chemin principal (E14 à E17)",
     'C_P3_rapide': "MODE RAPIDE, à la place de E10 à E13 : après R_Gradient_auto_rapide, GLISSE sur RGB (L et H ouvertes, Conteneurs-LHaRGB chargé) ; ensuite E14_Continuum_auto, E15_CombineHaWithRGB, E16_C_RGB_bruit et E17_Fermer_continuum",
     'Star_Stretch': "étoiles étirées à part : SXT sur le RGB LINÉAIRE (Unscreen décoché, Generate star image coché) donne RGB_stars linéaire ; glisse Star_Stretch sur RGB_stars (Stretch Amount 6, SCNR) ; le RGB sans étoiles s'étire par MAS ou EZ_Soft_Stretch ; à la place de SXT_RGB_etire et SCNR_etoiles_vert",
@@ -174,12 +176,12 @@ CONTAINERS = {
     'LHA': [('C_RGB_couleur', "l'image RGB combinée, linéaire, gradient retiré", ['BXT_CorrectOnly', 'SPCC', 'BXT_RGB']),
             ('C_RGB_bruit', "l'image RGB après CombineHaWithRGB (ou H_dans_RGB ; et H_dans_L éventuel) : NXT ; ensuite Fermer_continuum (icône à part, demande de l'utilisateur)", ['NXT_RGB']),
             _FIN_G],   # LHaRGB (demande de l'utilisateur) : étoiles gardées jusqu'à LRGB, plus de C_RGB_etoiles_bruit ni de C_L_lineaire (NXT seul)
-    'RSHO': [('C_SHO_lineaire', "l'image SHO combinée, linéaire", ['BXT_NB', 'SXT_lineaire']),
+    'RSHO': [('C_SHO_lineaire', "l'image SHO combinée, linéaire : BXT, SXT (étoiles à part), puis NXT sur l'image sans étoiles", ['BXT_NB', 'SXT_lineaire', 'NXT_NB']),
              ('C_Extraction_SHO', "l'image SHO sans étoiles", ['Extraire_S', 'Extraire_H', 'Extraire_O']), _FIN,
              ('C_Etoiles_RGB', "l'image RGB combinée, linéaire, gradient retiré", ['BXT_CorrectOnly', 'SPCC', 'BXT_RGB', 'SXT_RGB_lineaire'])],
-    'SHO': [('C_SHO_lineaire', "l'image SHO combinée, linéaire", ['BXT_NB', 'SXT_lineaire']),
+    'SHO': [('C_SHO_lineaire', "l'image SHO combinée, linéaire : BXT, SXT (étoiles à part), puis NXT sur l'image sans étoiles", ['BXT_NB', 'SXT_lineaire', 'NXT_NB']),
             ('C_Extraction_SHO', "l'image SHO sans étoiles", ['Extraire_S', 'Extraire_H', 'Extraire_O']),
             ('C_Extraction_etoiles', "l'image d'étoiles SHO, linéaire", ['Extraire_S_stars', 'Extraire_H_stars', 'Extraire_O_stars']), _FIN],
-    'HOO': [('C_HOO_lineaire', "l'image HOO combinée, linéaire", ['BXT_NB', 'SXT_lineaire']),
+    'HOO': [('C_HOO_lineaire', "l'image HOO combinée, linéaire : BXT, SXT (étoiles à part), puis NXT sur l'image sans étoiles", ['BXT_NB', 'SXT_lineaire', 'NXT_NB']),
             ('C_Extraction_HOO', "l'image HOO sans étoiles", ['Extraire_H', 'Extraire_O']), _FIN],
 }

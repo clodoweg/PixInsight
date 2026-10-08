@@ -245,12 +245,14 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
       ml_version=4 ; correct_only=false ; sharpen_stars=0.25 ; adjust_star_halos=0.00 ; nonstellar_diameter=0.0 ; auto_nonstellar_psf=true ; sharpen_nonstellar=0.60 ; lunar_planetary=false ; overlap=0.20
    2. StarXTerminator
       ml_version=0 ; output_stars=true ; unscreen=false ; remove_stars=true ; remove_spikes=true ; remove_aureoles=true ; remove_reflections=true ; overlap=0.20
+   3. NoiseXTerminator
+      ml_version=0 ; denoise=0.75 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
 
 > LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
 > 
-> CONTENEUR : BXT_NB, SXT_lineaire.
+> CONTENEUR : BXT_NB, SXT_lineaire, NXT_NB.
 > 
-> SUR : l'image SHO combinée, linéaire.
+> SUR : l'image SHO combinée, linéaire : BXT, SXT (étoiles à part), puis NXT sur l'image sans étoiles.
 > 
 > Double-clic sur le conteneur pour voir ou changer les réglages de chaque étape.
 
@@ -286,23 +288,29 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > Double-clic sur le conteneur pour voir ou changer les réglages de chaque étape.
 
-#### E13_NXT_H — NoiseXTerminator
+### P3_options
+
+#### Opt_NXT_H — NoiseXTerminator
    ml_version=0 ; denoise=0.60 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
 
-> PRÉRÉGLÉ : Denoise 0,60, 1 itération.
+> OPTION — ancien réglage par canal, à la place de NXT_NB : NXT 0,60 sur H sans étoiles après l'extraction.
 > 
-> À RÉGLER : rien.
+> PRÉRÉGLÉ : option, ancien réglage par canal : Denoise 0,60, 1 itération.
+> 
+> À RÉGLER : glisse sur H sans étoiles après l'extraction, à la place de NXT_NB (enlève-le du conteneur).
 > 
 > SI :
 > - encore bruité -> 0,70
 > - aspect plastique -> 0,50
 
-#### E14_NXT_O_S — NoiseXTerminator
+#### Opt_NXT_O_S — NoiseXTerminator
    ml_version=0 ; denoise=0.75 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
 
-> PRÉRÉGLÉ : Denoise 0,75, 1 itération.
+> OPTION — ancien réglage par canal : NXT 0,75 sur O et S sans étoiles après l'extraction, à la place de NXT_NB ou en plus si O ou S reste granuleux.
 > 
-> À RÉGLER : rien.
+> PRÉRÉGLÉ : option, ancien réglage par canal : Denoise 0,75, 1 itération.
+> 
+> À RÉGLER : glisse sur O (et S) sans étoiles après l'extraction : à la place de NXT_NB, ou en plus si O ou S reste granuleux.
 > 
 > SI :
 > - très bruité -> 2 itérations
@@ -310,7 +318,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 ## P4_Etirement
 
-#### E15_GHS_1_premier — GeneralizedHyperbolicStretch
+#### E13_GHS_1_premier — GeneralizedHyperbolicStretch
    stretchType=ST_GeneralisedHyperbolic ; stretchChannel=SC_RGB ; inverse=false ; stretchFactor=0.000 ; localIntensity=10.000 ; symmetryPoint=0.000000 ; highlightProtection=1.000000 ; shadowProtection=0.000000 ; blackPoint=0.000000 ; whitePoint=1.000000 ; colourBlend=1.000 ; clipType=CT_RGBBlend ; useRGBWorkingSpace=false
 
 > PRÉRÉGLÉ : b = 10, Stretch factor 0.
@@ -320,7 +328,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > SI :
 > - bruit de O ou S qui ressort -> SP trop bas, remonte-le
 
-#### E16_GHS_2_contraste — GeneralizedHyperbolicStretch
+#### E14_GHS_2_contraste — GeneralizedHyperbolicStretch
    stretchType=ST_GeneralisedHyperbolic ; stretchChannel=SC_RGB ; inverse=false ; stretchFactor=1.000 ; localIntensity=4.000 ; symmetryPoint=0.350000 ; highlightProtection=0.900000 ; shadowProtection=0.000000 ; blackPoint=0.000000 ; whitePoint=1.000000 ; colourBlend=1.000 ; clipType=CT_RGBBlend ; useRGBWorkingSpace=false
 
 > PRÉRÉGLÉ : b = 4, HP 0,9, Stretch factor 1, SP 0,35.
@@ -332,7 +340,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - fond trop sombre -> monte LP vers sa valeur (pas au-dessus de SP)
 > - fond bruité qui ressort -> SP trop bas
 
-#### E17_GHS_3_fond — GeneralizedHyperbolicStretch
+#### E15_GHS_3_fond — GeneralizedHyperbolicStretch
    stretchType=ST_GeneralisedHyperbolic ; stretchChannel=SC_RGB ; inverse=false ; stretchFactor=1.000 ; localIntensity=10.000 ; symmetryPoint=0.200000 ; highlightProtection=0.200000 ; shadowProtection=0.000000 ; blackPoint=0.000000 ; whitePoint=1.000000 ; colourBlend=1.000 ; clipType=CT_RGBBlend ; useRGBWorkingSpace=false
 
 > PRÉRÉGLÉ : b = 10, SP = HP = 0,20, Stretch factor 1 (fond à 0,23 après GHS_2).
@@ -355,7 +363,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 ## P5_Couleur
 
-#### E18_NBN_SHO — NarrowbandNormalization
+#### E16_NBN_SHO — NarrowbandNormalization
    palette=Palette_SHO ; lightness=Lightness_Off ; blendMode=Blend_Mode1 ; haBlend=0.000 ; scnr=0.000 ; o3Boost=0.000 ; s2Boost=0.000 ; shadowpoint=1.000 ; highlightReduction=0.000 ; brightness=0.000
 
 > PRÉRÉGLÉ : palette SHO, boosts à 0.
@@ -411,7 +419,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 ## P6_Finition
 
-#### E19_C_Finition — ProcessContainer
+#### E17_C_Finition — ProcessContainer
    1. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
       paramètres : `mode=attacher`, `s=0.14`, `flou=2`, `nom=masque_L`, `dialogue=false`
@@ -433,7 +441,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > Double-clic sur le conteneur pour voir ou changer les réglages de chaque étape.
 
-#### E20_C_Sharp_MMT — ProcessContainer
+#### E18_C_Sharp_MMT — ProcessContainer
    1. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
       paramètres : `mode=attacher`, `s=0.14`, `flou=2`, `nom=masque_L`, `dialogue=false`
@@ -623,7 +631,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 ## P7_Etoiles
 
-#### E21_NB_to_RGB_Stars — Script
+#### E19_NB_to_RGB_Stars — Script
    script `$PXI_SRCDIR/scripts/NBtoRGBStars.js`
 
 > LANCEMENT : glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
@@ -635,7 +643,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > SI :
 > - étoiles bleues verdâtres -> active le ratio et monte-le
 
-#### E22_Star_Stretch — Script
+#### E20_Star_Stretch — Script
    script `$PXI_SRCDIR/scripts/star_stretch.js`
    paramètres : `amount=6`, `satAmount=1.3`, `removeGreen=true`, `showPreview=false`
 
@@ -651,7 +659,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - étoiles grisées par le SCNR -> décoche Remove Green
 > - étoiles criardes -> Color Boost 1,0
 
-#### E23_Etoiles_reduites — PixelMath
+#### E21_Etoiles_reduites — PixelMath
    expression = `S=0.20; W=~((~$T)*(~NBtoRGB_stars)); f1= ~((~mtf(~S,W)/~mtf(~S,$T))*~$T); max($T,f1)` ; useSingleExpression=true ; symbols = `S, W, f1` ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
 
 > PRÉRÉGLÉ : S = 0,20 ; screen + réduction Blanshan avec NBtoRGB_stars, sur l'image elle-même.

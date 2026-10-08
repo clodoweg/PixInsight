@@ -25,7 +25,7 @@ SXT sur l'image SHO combinée, _Unscreen_ décoché (données linéaires). Ne ga
 
 5. #### Bruit et étirement des canaux
 
-NXT sur chaque canal, plus fort sur O et S. Puis étire **chaque canal séparément** jusqu'au **même fond et à une médiane proche** (on n'égalise pas la nébuleuse : l'écart de signal, c'est la couleur) :
+NXT_NB (0,75) une fois sur l'image SHO sans étoiles, linéaire, avant l'extraction (choix B de l'utilisateur, 8 octobre 2026) ; NXT par canal (NXT_H 0,60, NXT_O_S 0,75) en option. Puis étire **chaque canal séparément** jusqu'au **même fond et à une médiane proche** (on n'égalise pas la nébuleuse : l'écart de signal, c'est la couleur) :
 
      * **GHS** : H d'abord (pic à 0,25), puis O et S avec un Stretch factor plus élevé jusqu'au même fond ; LP pour ne pas faire ressortir le bruit.
      * **Statistical Stretch** : même Target median (0,25) pour les trois ; sur une image combinée, _Linked Stretch_ décoché.
@@ -157,7 +157,7 @@ SXT sur l'image SHO combinée, _Generate star image_ coché, _Unscreen_ décoch�
 
 5. #### Bruit et étirement du fond
 
-NXT sur chaque canal sans étoiles, plus fort sur O et S (0,60 à 0,85) que sur H (0,50 à 0,70). Puis étire chaque canal séparément jusqu'au même fond et à une médiane proche, comme en RGB + SHO.
+NXT_NB (0,75) sur l'image SHO sans étoiles avant extraction ; en option, NXT par canal, plus fort sur O et S (0,60 à 0,85) que sur H (0,50 à 0,70). Puis étire chaque canal séparément jusqu'au même fond et à une médiane proche, comme en RGB + SHO.
 
 6. #### Palette et finition
 
@@ -231,7 +231,7 @@ SXT, _Unscreen_ décoché ; garde les étoiles si tu n'as pas de RGB. ChannelExt
 
 6. #### Bruit
 
-NXT : 0,60 à 0,85 sur O, 0,50 à 0,70 sur H ; au-delà, le fond devient plastique.
+NXT_NB 0,75 sur l'image HOO sans étoiles avant extraction ; en option par canal : 0,60 à 0,85 sur O, 0,50 à 0,70 sur H ; au-delà, le fond devient plastique.
 
 7. #### Étirement des deux canaux
 
@@ -322,7 +322,7 @@ Toutes blanches| Étirement trop fort : Stretch Factor plus bas, ou GHS avec HP
 
 ## BXT et NXT en SHO : réglages comparés au LRGB (analyse du 8 octobre 2026)
 
-Question de l'utilisateur : faut-il les mêmes BXT et NXT qu'en LRGB ? Aucune décision prise, rien changé dans les icônes.
+Question de l'utilisateur : faut-il les mêmes BXT et NXT qu'en LRGB ? Décision de l'utilisateur : BXT gardé à 0,60 ; NXT choix B (NXT_NB 0,75 sur la combinaison sans étoiles, dans C_SHO_lineaire / C_HOO_lineaire après SXT ; NXT_H et NXT_O_S en options P3).
 
 ### Réglages actuels
 - LRGB : BXT sur RGB (Correct Only, puis SPCC, puis complet : étoiles 0,25, halos 0, non stellaire 0,50) et sur L (non stellaire 0,80), PSF automatique ; NXT sur le RGB combiné 0,80 et sur L 0,60 (linéaire). LHaRGB : pareil, H comme L.

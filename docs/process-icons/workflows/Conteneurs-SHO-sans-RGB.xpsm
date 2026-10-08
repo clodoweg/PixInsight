@@ -835,7 +835,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <table id="outputData" rows="0"/>
    </instance>
    <instance class="ProcessContainer" id="E10_C_SHO_lineaire_instance">
-      <description>LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;CONTENEUR : BXT_NB, SXT_lineaire.&#10;&#10;SUR : l'image SHO combinée, linéaire.&#10;&#10;Double-clic sur le conteneur pour voir ou changer les réglages de chaque étape.</description>
+      <description>LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;CONTENEUR : BXT_NB, SXT_lineaire, NXT_NB.&#10;&#10;SUR : l'image SHO combinée, linéaire : BXT, SXT (étoiles à part), puis NXT sur l'image sans étoiles.&#10;&#10;Double-clic sur le conteneur pour voir ou changer les réglages de chaque étape.</description>
       <instance class="BlurXTerminator" version="256" enabled="true">
          <parameter id="ml_version" value="4"/>
          <parameter id="correct_only" value="false"/>
@@ -855,6 +855,24 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          <parameter id="remove_spikes" value="true"/>
          <parameter id="remove_aureoles" value="true"/>
          <parameter id="remove_reflections" value="true"/>
+         <parameter id="overlap" value="0.20"/>
+      </instance>
+      <instance class="NoiseXTerminator" version="256" enabled="true">
+         <parameter id="ml_version" value="0"/>
+         <parameter id="denoise" value="0.75"/>
+         <parameter id="enable_color_separation" value="false"/>
+         <parameter id="enable_frequency_separation" value="false"/>
+         <parameter id="denoise_intensity" value="0.90"/>
+         <parameter id="denoise_color" value="0.90"/>
+         <parameter id="denoise_high_freq" value="0.90"/>
+         <parameter id="denoise_low_freq" value="0.90"/>
+         <parameter id="denoise_intensity_high_freq" value="0.90"/>
+         <parameter id="denoise_intensity_low_freq" value="0.90"/>
+         <parameter id="denoise_color_high_freq" value="0.90"/>
+         <parameter id="denoise_color_low_freq" value="0.90"/>
+         <parameter id="frequency_scale" value="5.0"/>
+         <parameter id="iterations" value="1"/>
+         <parameter id="detail" value="0.15"/>
          <parameter id="overlap" value="0.20"/>
       </instance>
    </instance>
@@ -1038,8 +1056,11 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          <table id="outputData" rows="0"/>
       </instance>
    </instance>
-   <instance class="NoiseXTerminator" version="256" id="E13_NXT_H_instance">
-      <description>PRÉRÉGLÉ : Denoise 0,60, 1 itération.&#10;&#10;À RÉGLER : rien.&#10;&#10;SI :&#10;- encore bruité -&gt; 0,70&#10;- aspect plastique -&gt; 0,50</description>
+   <instance class="NoOperation" version="256" id="P3_options_instance">
+      <description>OPTIONS de la phase 3 — Linéaire : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
+   </instance>
+   <instance class="NoiseXTerminator" version="256" id="Opt_NXT_H_instance">
+      <description>OPTION — ancien réglage par canal, à la place de NXT_NB : NXT 0,60 sur H sans étoiles après l'extraction.&#10;&#10;PRÉRÉGLÉ : option, ancien réglage par canal : Denoise 0,60, 1 itération.&#10;&#10;À RÉGLER : glisse sur H sans étoiles après l'extraction, à la place de NXT_NB (enlève-le du conteneur).&#10;&#10;SI :&#10;- encore bruité -&gt; 0,70&#10;- aspect plastique -&gt; 0,50</description>
       <parameter id="ml_version" value="0"/>
       <parameter id="denoise" value="0.60"/>
       <parameter id="enable_color_separation" value="false"/>
@@ -1057,8 +1078,8 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="detail" value="0.15"/>
       <parameter id="overlap" value="0.20"/>
    </instance>
-   <instance class="NoiseXTerminator" version="256" id="E14_NXT_O_S_instance">
-      <description>PRÉRÉGLÉ : Denoise 0,75, 1 itération.&#10;&#10;À RÉGLER : rien.&#10;&#10;SI :&#10;- très bruité -&gt; 2 itérations&#10;- aspect plastique -&gt; 0,60</description>
+   <instance class="NoiseXTerminator" version="256" id="Opt_NXT_O_S_instance">
+      <description>OPTION — ancien réglage par canal : NXT 0,75 sur O et S sans étoiles après l'extraction, à la place de NXT_NB ou en plus si O ou S reste granuleux.&#10;&#10;PRÉRÉGLÉ : option, ancien réglage par canal : Denoise 0,75, 1 itération.&#10;&#10;À RÉGLER : glisse sur O (et S) sans étoiles après l'extraction : à la place de NXT_NB, ou en plus si O ou S reste granuleux.&#10;&#10;SI :&#10;- très bruité -&gt; 2 itérations&#10;- aspect plastique -&gt; 0,60</description>
       <parameter id="ml_version" value="0"/>
       <parameter id="denoise" value="0.75"/>
       <parameter id="enable_color_separation" value="false"/>
@@ -1079,7 +1100,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
    <instance class="NoOperation" version="256" id="P4_Etirement_instance">
       <description>PHASE 4 — Étirement : passage en non linéaire, même fond pour toutes les images. Colonne de repère, sans effet.</description>
    </instance>
-   <instance class="GeneralizedHyperbolicStretch" version="256" id="E15_GHS_1_premier_instance">
+   <instance class="GeneralizedHyperbolicStretch" version="256" id="E13_GHS_1_premier_instance">
       <description>PRÉRÉGLÉ : b = 10, Stretch factor 0.&#10;&#10;À RÉGLER : étire H d'abord (pic à 0,25 ; Stretch factor 3,5 à 6,5 selon le fond lu), puis O et S jusqu'au MÊME fond (Stretch factor plus élevé).&#10;&#10;SI :&#10;- bruit de O ou S qui ressort -&gt; SP trop bas, remonte-le</description>
       <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
       <parameter id="stretchChannel" value="SC_RGB"/>
@@ -1095,7 +1116,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="clipType" value="CT_RGBBlend"/>
       <parameter id="useRGBWorkingSpace" value="false"/>
    </instance>
-   <instance class="GeneralizedHyperbolicStretch" version="256" id="E16_GHS_2_contraste_instance">
+   <instance class="GeneralizedHyperbolicStretch" version="256" id="E14_GHS_2_contraste_instance">
       <description>PRÉRÉGLÉ : b = 4, HP 0,9, Stretch factor 1, SP 0,35.&#10;&#10;À RÉGLER : SP = valeur de ta zone plate, au-dessus du fond (souvent 0,30–0,45 ; jamais 0,25 = le fond) ; Stretch factor 1 à 2.&#10;&#10;SI :&#10;- cœur brillant qui sature -&gt; baisse HP vers sa valeur&#10;- fond trop sombre -&gt; monte LP vers sa valeur (pas au-dessus de SP)&#10;- fond bruité qui ressort -&gt; SP trop bas</description>
       <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
       <parameter id="stretchChannel" value="SC_RGB"/>
@@ -1111,7 +1132,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="clipType" value="CT_RGBBlend"/>
       <parameter id="useRGBWorkingSpace" value="false"/>
    </instance>
-   <instance class="GeneralizedHyperbolicStretch" version="256" id="E17_GHS_3_fond_instance">
+   <instance class="GeneralizedHyperbolicStretch" version="256" id="E15_GHS_3_fond_instance">
       <description>PRÉRÉGLÉ : b = 10, SP = HP = 0,20, Stretch factor 1 (fond à 0,23 après GHS_2).&#10;&#10;À RÉGLER : SP = HP = fond lu - 0,03 (0,22 après Statistical Stretch à 0,25) ; Stretch factor 0,8 à 1,2 jusqu'au fond vers 0,12–0,14.</description>
       <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
       <parameter id="stretchChannel" value="SC_RGB"/>
@@ -1201,7 +1222,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
    <instance class="NoOperation" version="256" id="P5_Couleur_instance">
       <description>PHASE 5 — Couleur : combinaison finale et palette. Colonne de repère, sans effet.</description>
    </instance>
-   <instance class="NarrowbandNormalization" version="256" id="E18_NBN_SHO_instance">
+   <instance class="NarrowbandNormalization" version="256" id="E16_NBN_SHO_instance">
       <description>PRÉRÉGLÉ : palette SHO, boosts à 0.&#10;&#10;À RÉGLER : Lightness = H ; Shadowpoint pour un fond gris foncé ; O3 puis S2 boost peu à peu.&#10;&#10;SI :&#10;- trop vert -&gt; SCNR partiel&#10;- O discret -&gt; O3 boost</description>
       <parameter id="palette" value="Palette_SHO"/>
       <parameter id="lightness" value="Lightness_Off"/>
@@ -1267,7 +1288,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
    <instance class="NoOperation" version="256" id="P6_Finition_instance">
       <description>PHASE 6 — Finition : contraste et saturation sur l'image sans étoiles. Colonne de repère, sans effet.</description>
    </instance>
-   <instance class="ProcessContainer" id="E19_C_Finition_instance">
+   <instance class="ProcessContainer" id="E17_C_Finition_instance">
       <description>LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;CONTENEUR : Masque_L, Courbes, LHE, LHE_fin, Masque_retirer.&#10;&#10;SUR : l'image sans étoiles étirée (masque créé, attaché puis retiré automatiquement).&#10;&#10;Double-clic sur le conteneur pour voir ou changer les réglages de chaque étape.</description>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
@@ -1465,7 +1486,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          <parameter id="information"></parameter>
       </instance>
    </instance>
-   <instance class="ProcessContainer" id="E20_C_Sharp_MMT_instance">
+   <instance class="ProcessContainer" id="E18_C_Sharp_MMT_instance">
       <description>LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : masque de luminance attaché (Masque_L, s = 0,14), script Sharp_MMT (MultiscaleMedianTransform 5 couches, couches 2 à 4 biais +0,04, couche 1 inchangée), masque retiré.&#10;&#10;À RÉGLER : glisse sur l'image SANS étoiles étirée, après C_Finition, avant NXT_final ; regarde à 100 % sur la galaxie ; copie Sharp_MMT.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- pas assez net -&gt; double-clic sur le conteneur, Sharp_MMT : biais 0.06&#10;- halos ou aspect dur -&gt; biais 0.02&#10;- bruit accentué -&gt; première couche 3&#10;- autre rendu -&gt; Sharp_USM (P6 options) à la place</description>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
@@ -2494,14 +2515,14 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
    <instance class="NoOperation" version="256" id="P7_Etoiles_instance">
       <description>PHASE 7 — Étoiles : étoiles : étirement, recombinaison, réduction. Colonne de repère, sans effet.</description>
    </instance>
-   <instance class="Script" version="256" id="E21_NB_to_RGB_Stars_instance">
+   <instance class="Script" version="256" id="E19_NB_to_RGB_Stars_instance">
       <description>LANCEMENT : glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.&#10;&#10;PRÉRÉGLÉ : rien (le script ne relit pas l'icône).&#10;&#10;À RÉGLER : étoiles H et O (S en option), linéaires ; Apply Star Stretch 5 / 1,0.&#10;&#10;SI :&#10;- étoiles bleues verdâtres -&gt; active le ratio et monte-le</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/NBtoRGBStars.js</parameter>
       <parameter id="md5sum">0fae2f23d6f23037fb118fd1ef749592</parameter>
       <table id="parameters" rows="0"/>
       <parameter id="information"></parameter>
    </instance>
-   <instance class="Script" version="256" id="E22_Star_Stretch_instance">
+   <instance class="Script" version="256" id="E20_Star_Stretch_instance">
       <description>LANCEMENT : glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.&#10;&#10;PRÉRÉGLÉ : Stretch Amount 6, Color Boost 1,3, Remove Green (SCNR) coché.&#10;&#10;À RÉGLER : rien ; sur l'image d'étoiles linéaire.&#10;&#10;SI :&#10;- cœurs d'étoiles blancs (R = G = B = 1) -&gt; 5,5&#10;- étoiles trop grosses -&gt; 5 ou 4&#10;- étoiles grisées par le SCNR -&gt; décoche Remove Green&#10;- étoiles criardes -&gt; Color Boost 1,0</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/star_stretch.js</parameter>
       <parameter id="md5sum">69a1ee6db4e9f5374c2cddb1e5a7f4ae</parameter>
@@ -2525,7 +2546,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </table>
       <parameter id="information"></parameter>
    </instance>
-   <instance class="PixelMath" version="256" id="E23_Etoiles_reduites_instance">
+   <instance class="PixelMath" version="256" id="E21_Etoiles_reduites_instance">
       <description>PRÉRÉGLÉ : S = 0,20 ; screen + réduction Blanshan avec NBtoRGB_stars, sur l'image elle-même.&#10;&#10;À RÉGLER : à la place d'Etoiles_screen : glisse sur l'image SHO sans étoiles finale.&#10;&#10;SI :&#10;- étoiles synthétiques -&gt; remplace NBtoRGB_stars par Stars_HOO&#10;- pour recommencer -&gt; Ctrl+Z</description>
       <parameter id="expression">S=0.20;
 W=~((~$T)*(~NBtoRGB_stars));
@@ -2818,24 +2839,25 @@ $T*(1 - k*t*t)</parameter>
    <icon id="E10_C_SHO_lineaire" instance="E10_C_SHO_lineaire_instance" xpos="430" ypos="94" workspace="Workspace01"/>
    <icon id="E11_C_Extraction_SHO" instance="E11_C_Extraction_SHO_instance" xpos="430" ypos="124" workspace="Workspace01"/>
    <icon id="E12_C_Extraction_etoiles" instance="E12_C_Extraction_etoiles_instance" xpos="430" ypos="154" workspace="Workspace01"/>
-   <icon id="E13_NXT_H" instance="E13_NXT_H_instance" xpos="430" ypos="184" workspace="Workspace01"/>
-   <icon id="E14_NXT_O_S" instance="E14_NXT_O_S_instance" xpos="430" ypos="214" workspace="Workspace01"/>
+   <icon id="P3_options" instance="P3_options_instance" xpos="430" ypos="200" workspace="Workspace01"/>
+   <icon id="Opt_NXT_H" instance="Opt_NXT_H_instance" xpos="430" ypos="234" workspace="Workspace01"/>
+   <icon id="Opt_NXT_O_S" instance="Opt_NXT_O_S_instance" xpos="430" ypos="264" workspace="Workspace01"/>
    <icon id="P4_Etirement" instance="P4_Etirement_instance" xpos="626" ypos="20" workspace="Workspace01"/>
-   <icon id="E15_GHS_1_premier" instance="E15_GHS_1_premier_instance" xpos="626" ypos="64" workspace="Workspace01"/>
-   <icon id="E16_GHS_2_contraste" instance="E16_GHS_2_contraste_instance" xpos="626" ypos="94" workspace="Workspace01"/>
-   <icon id="E17_GHS_3_fond" instance="E17_GHS_3_fond_instance" xpos="626" ypos="124" workspace="Workspace01"/>
+   <icon id="E13_GHS_1_premier" instance="E13_GHS_1_premier_instance" xpos="626" ypos="64" workspace="Workspace01"/>
+   <icon id="E14_GHS_2_contraste" instance="E14_GHS_2_contraste_instance" xpos="626" ypos="94" workspace="Workspace01"/>
+   <icon id="E15_GHS_3_fond" instance="E15_GHS_3_fond_instance" xpos="626" ypos="124" workspace="Workspace01"/>
    <icon id="P4_options" instance="P4_options_instance" xpos="626" ypos="170" workspace="Workspace01"/>
    <icon id="Opt_Statistical_Stretch" instance="Opt_Statistical_Stretch_instance" xpos="626" ypos="204" workspace="Workspace01"/>
    <icon id="P5_Couleur" instance="P5_Couleur_instance" xpos="817" ypos="20" workspace="Workspace01"/>
-   <icon id="E18_NBN_SHO" instance="E18_NBN_SHO_instance" xpos="817" ypos="64" workspace="Workspace01"/>
+   <icon id="E16_NBN_SHO" instance="E16_NBN_SHO_instance" xpos="817" ypos="64" workspace="Workspace01"/>
    <icon id="P5_options" instance="P5_options_instance" xpos="817" ypos="110" workspace="Workspace01"/>
    <icon id="Opt_Foraxx_SHO" instance="Opt_Foraxx_SHO_instance" xpos="817" ypos="144" workspace="Workspace01"/>
    <icon id="Opt_Perfect_Palette_Picker" instance="Opt_Perfect_Palette_Picker_instance" xpos="817" ypos="174" workspace="Workspace01"/>
    <icon id="Opt_NBColourMapper" instance="Opt_NBColourMapper_instance" xpos="817" ypos="204" workspace="Workspace01"/>
    <icon id="Opt_SCNR_SHO" instance="Opt_SCNR_SHO_instance" xpos="817" ypos="234" workspace="Workspace01"/>
    <icon id="P6_Finition" instance="P6_Finition_instance" xpos="1021" ypos="20" workspace="Workspace01"/>
-   <icon id="E19_C_Finition" instance="E19_C_Finition_instance" xpos="1021" ypos="64" workspace="Workspace01"/>
-   <icon id="E20_C_Sharp_MMT" instance="E20_C_Sharp_MMT_instance" xpos="1021" ypos="94" workspace="Workspace01"/>
+   <icon id="E17_C_Finition" instance="E17_C_Finition_instance" xpos="1021" ypos="64" workspace="Workspace01"/>
+   <icon id="E18_C_Sharp_MMT" instance="E18_C_Sharp_MMT_instance" xpos="1021" ypos="94" workspace="Workspace01"/>
    <icon id="P6_options" instance="P6_options_instance" xpos="1021" ypos="140" workspace="Workspace01"/>
    <icon id="Opt_Boost_finition_light" instance="Opt_Boost_finition_light_instance" xpos="1021" ypos="174" workspace="Workspace01"/>
    <icon id="Opt_Boost_finition" instance="Opt_Boost_finition_instance" xpos="1021" ypos="204" workspace="Workspace01"/>
@@ -2845,9 +2867,9 @@ $T*(1 - k*t*t)</parameter>
    <icon id="Opt_Sharp_USM" instance="Opt_Sharp_USM_instance" xpos="1021" ypos="324" workspace="Workspace01"/>
    <icon id="Opt_NXT_final" instance="Opt_NXT_final_instance" xpos="1021" ypos="354" workspace="Workspace01"/>
    <icon id="P7_Etoiles" instance="P7_Etoiles_instance" xpos="1217" ypos="20" workspace="Workspace01"/>
-   <icon id="E21_NB_to_RGB_Stars" instance="E21_NB_to_RGB_Stars_instance" xpos="1217" ypos="64" workspace="Workspace01"/>
-   <icon id="E22_Star_Stretch" instance="E22_Star_Stretch_instance" xpos="1217" ypos="94" workspace="Workspace01"/>
-   <icon id="E23_Etoiles_reduites" instance="E23_Etoiles_reduites_instance" xpos="1217" ypos="124" workspace="Workspace01"/>
+   <icon id="E19_NB_to_RGB_Stars" instance="E19_NB_to_RGB_Stars_instance" xpos="1217" ypos="64" workspace="Workspace01"/>
+   <icon id="E20_Star_Stretch" instance="E20_Star_Stretch_instance" xpos="1217" ypos="94" workspace="Workspace01"/>
+   <icon id="E21_Etoiles_reduites" instance="E21_Etoiles_reduites_instance" xpos="1217" ypos="124" workspace="Workspace01"/>
    <icon id="P7_options" instance="P7_options_instance" xpos="1217" ypos="170" workspace="Workspace01"/>
    <icon id="Opt_Etoiles_HOO_synth" instance="Opt_Etoiles_HOO_synth_instance" xpos="1217" ypos="204" workspace="Workspace01"/>
    <icon id="Opt_MT_etoiles" instance="Opt_MT_etoiles_instance" xpos="1217" ypos="234" workspace="Workspace01"/>

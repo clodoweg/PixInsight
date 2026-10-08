@@ -921,8 +921,13 @@ def extract(prefix_names, src_desc):
                     "AVANT : renomme les masters linéaires qui portent déjà ce nom (par exemple '%s_lin'), sinon PixInsight donnera un autre nom à la nouvelle vue et les formules suivantes ne la trouveront pas." % (idx, src_desc, n, n)))
     return out
 
-nb_noise = [(M.nxt('NXT_H', 0.60, 1), "NoiseXTerminator sur H sans étoiles : Denoise 0,60 (0,50 à 0,70), Detail 0,15. En linéaire ou après étirement." + NXT_C),
-            (M.nxt('NXT_O_S', 0.75, 1), "NoiseXTerminator sur O et S sans étoiles, plus bruités : Denoise 0,75 (0,60 à 0,85). Ne pousse pas plus : aspect plastique." + NXT_C)]
+nb_noise = [(M.nxt('NXT_H', 0.60, 1), "OPTION, à la place de NXT_NB (ancien réglage par canal) : NoiseXTerminator sur H sans étoiles : Denoise 0,60 (0,50 à 0,70), Detail 0,15. En linéaire ou après étirement." + NXT_C),
+            (M.nxt('NXT_O_S', 0.75, 1), "OPTION, à la place de NXT_NB (ancien réglage par canal) : NoiseXTerminator sur O et S sans étoiles, plus bruités : Denoise 0,75 (0,60 à 0,85). Ne pousse pas plus : aspect plastique." + NXT_C)]
+# NXT sur la combinaison narrowband sans étoiles, avant extraction (demande de l'utilisateur, choix B du 8 octobre 2026 :
+# conseil RC Astro, réseau entraîné aux écarts de bruit entre canaux ; NXT_H et NXT_O_S passent en options)
+NXT_NB = (M.nxt('NXT_NB', 0.75, 1), "NoiseXTerminator sur la combinaison narrowband SANS étoiles, linéaire (juste après SXT_lineaire, avant l'extraction des canaux) : Denoise 0,75. "
+          "RC Astro conseille NXT après la combinaison des canaux : le réseau gère lui-même un S ou un O plus bruité que H. "
+          "H trop lissé (aspect plastique) -> 0,65 ; O ou S encore granuleux -> 2 itérations, ou NXT_O_S en plus sur ce canal après extraction." + NXT_C)
 GHS_NB = (" En narrowband, étire chaque canal séparément. Règle : même niveau de fond et médiane proche pour tous les canaux (on n'égalise pas la nébuleuse : l'écart de signal, c'est la couleur). "
           "Étire H en premier (pic d'histogramme vers 0,20-0,25) et note ce niveau : c'est la référence. Puis O et S jusqu'au MÊME fond et à la même médiane ; ils demandent un Stretch factor plus élevé, monte LP pour ne pas faire ressortir leur bruit. "
           "Vérifie le fond avec Statistics ou la lecture de pixel. CONTRÔLE : combinaison simple des canaux étirés ; le fond doit être gris neutre, sinon le fond du canal dominant est trop clair : reprends son étirement. "
@@ -979,6 +984,7 @@ rgbsho = pre_block() + nb_masters(['S', 'H', 'O']) + [
     sho_combine,
     (M.bxt('BXT_NB', False, 0.25, 0.0, 0.60), D_BXT_NB + BXT_C),
     (M.sxt('SXT_lineaire', False), D_SXT_LIN + " Sur l'image SHO : garde le fond sans étoiles (les étoiles viendront du RGB)."),
+    NXT_NB,
 ] + extract([(0, 'S'), (1, 'H'), (2, 'O')], "l'image SHO sans étoiles") + nb_noise + ghs_block(GHS_NB, STAT_NB) + sho_palette + finish_block(sho_finish) + rgb_stars_block() + stars_end('RGB_stars', cms=True, screen_extra=SCREEN_RGBSHO)
 
 # ---------------------------------------------------------------- SHO sans RGB
@@ -993,6 +999,7 @@ sho = pre_block() + nb_masters(['S', 'H', 'O']) + [
     sho_combine,
     (M.bxt('BXT_NB', False, 0.25, 0.0, 0.60), D_BXT_NB + BXT_C),
     (M.sxt('SXT_lineaire', False), D_SXT_LIN + " Sur l'image SHO : GARDE LES DEUX images (fond et étoiles), les étoiles viennent ici du narrowband."),
+    NXT_NB,
 ] + extract([(0, 'S'), (1, 'H'), (2, 'O')], "l'image SHO sans étoiles") + extract([(0, 'S_stars'), (1, 'H_stars'), (2, 'O_stars')], "l'image d'étoiles SHO (linéaire)") + nb_noise + ghs_block(GHS_NB, STAT_NB) + sho_palette + finish_block(sho_finish) + [
     (note('NB_to_RGB_Stars', "ÉTOILES — méthode 1 : NB to RGB Star Combination (SetiAstro, script). Ha Stars et OIII Stars (linéaires, obligatoires), S optionnel. "
           "Green Channel Blend Ratio décoché par défaut (Ha to OIII ratio 0,3 si activé). Apply Star Stretch recommandé par l'auteur : Stretch Factor 5, Color Boost 1,0. "
@@ -1016,6 +1023,7 @@ hoo = pre_block() + [
      "Combinaison HOO SIMPLE : R = H, G = O, B = O, sans boost. Sert à BXT et SXT (en caméra couleur, BXT s'applique plutôt sur l'image d'origine avant extraction). Crée 'HOO'."),
     (M.bxt('BXT_NB', False, 0.25, 0.0, 0.60), D_BXT_NB + BXT_C),
     (M.sxt('SXT_lineaire', False), D_SXT_LIN + " Sur l'image HOO : garde l'image d'étoiles si tu n'as pas d'étoiles RGB."),
+    NXT_NB,
 ] + extract([(0, 'H'), (1, 'O')], "l'image HOO sans étoiles") + nb_noise + ghs_block(GHS_NB, STAT_NB) + [
     (pm('HOO_simple', 'H', 'O', 'O', new_image=True, new_id='HOO_etire', space='RGB'),
      "PALETTE — combinaison simple sur 'H' et 'O' étirés sans étoiles, à équilibrer ensuite avec NarrowbandNormalization (icône suivante)."),
