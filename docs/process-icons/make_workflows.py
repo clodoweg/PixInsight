@@ -43,6 +43,8 @@ SCRIPTS = {
              [('red', 'R'), ('green', 'G'), ('blue', 'B'), ('newId', 'RGB'), ('closeSources', 'true'), ('copyKeywords', 'true'), ('garder', '')], L_GLOBAL),
     'Masque_L': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'attacher'), ('s', '0.14'), ('flou', '2'), ('nom', 'masque_L')], L_DRAG),
     # mode creer (demande de l'utilisateur, 8 octobre 2026) : masque créé SANS être attaché ; les conteneurs mélangent eux-mêmes (sous_masque)
+    # étoiles RGB plausibles depuis les étoiles narrowband, en un clic (demande de l'utilisateur, 8 octobre 2026) : LinearFit sur H, mélange NB to RGB, Star Stretch 5, boost 1
+    'Etoiles_NB_auto': ('$PXI_SRCDIR/scripts/clodoweg/Etoiles_NB_auto.js', '', [('h', 'H_stars'), ('o', 'O_stars'), ('s', 'S_stars'), ('ratio', '0.30'), ('linearfit', 'true'), ('stretch', '5.0'), ('boost', '1.00'), ('scnr', 'false'), ('nom', 'NBtoRGB_stars'), ('fermer', 'true')], L_GLOBAL),
     'Masque_L_creer': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'creer'), ('s', '0.14'), ('flou', '2'), ('nom', 'masque_L')], L_DRAG),
     'Masque_L_source_creer': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'creer'), ('s', '0.20'), ('gamma', '2'), ('flou', '2'), ('nom', 'masque_L'), ('source', 'L'), ('exclure', 'RGB_stars'), ('exclureGain', '4')], L_DRAG),
     'Masque_L_boost_nb_creer': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'creer'), ('s', '0.20'), ('gamma', '2'), ('flou', '2'), ('nom', 'masque_L')], L_DRAG),
@@ -784,6 +786,16 @@ def icc_srgb():
 EXPORT = [(icc_srgb(), ''), (script('Export_TIFF', ''), '')]   # options, tout à la fin : finition hors PixInsight (demande de l'utilisateur)
 EXPORT.append((fermer('Fermer_tout', '*'), ''))   # option après Export_TIFF : fermer toutes les vues (demande de l'utilisateur)
 
+def etoiles_nb_item(s_stars=True):
+    """Étoiles du SHO sans RGB et du HOO au chemin principal (demande de l'utilisateur, 8 octobre 2026 : NB_to_RGB_Stars « avec les parametres
+    directement et le faire agir tout seul », LinearFit « comme le reste ») : script Etoiles_NB_auto (LinearFit sur H_stars, mélange NB to RGB, Star Stretch 5, boost 1)."""
+    n, x = script('Etoiles_NB_auto', '')
+    if not s_stars:
+        a = '<td id="id">s</td>\n            <td id="value">S_stars</td>'
+        assert a in x
+        x = x.replace(a, '<td id="id">s</td>\n            <td id="value"></td>')
+    return (n, x), ''
+
 def stars_end(stars='RGB_stars', cms=False, screen_extra='', cms_extra='', alt='', galaxie=False):
     # options sur l'image d'étoiles seule : AVANT la recombinaison
     b = [(M.instance('MorphologicalTransformation', 'MT_etoiles', {'operator': 'Selection', 'numberOfIterations': 1, 'amount': '0.60', 'selectionPoint': '0.25', 'structureSize': 5}, post=M.mt_post), D_MT),
@@ -1029,9 +1041,8 @@ sho = pre_block() + nb_masters(['S', 'H', 'O']) + [
     (M.sxt('SXT_lineaire', False), D_SXT_LIN + " Sur l'image SHO : GARDE LES DEUX images (fond et étoiles), les étoiles viennent ici du narrowband."),
     NXT_NB,
 ] + extract([(0, 'S'), (1, 'H'), (2, 'O')], "l'image SHO sans étoiles") + extract([(0, 'S_stars'), (1, 'H_stars'), (2, 'O_stars')], "l'image d'étoiles SHO (linéaire)") + nb_noise + ghs_block(GHS_NB, STAT_NB) + sho_palette + finish_block(sho_finish, galaxie=True) + [
-    (M.instance('LinearFit', 'LinearFit_etoiles', {'rejectLow': '0.000000', 'rejectHigh': '0.920000'}, {'referenceViewId': 'H_stars'}),
-     "LinearFit, référence H_stars (étoiles linéaires) : glisse sur S_stars, puis sur O_stars. Égalise les niveaux des étoiles des canaux avant NB_to_RGB_Stars : sans cela O_stars, plus brillante (capteur plus sensible vers 500 nm), donne des étoiles toutes bleues (retour de l'utilisateur, 8 octobre 2026)."),
-    (note('NB_to_RGB_Stars', "ÉTOILES — chemin principal (choix de l'utilisateur, 8 octobre 2026) : NB to RGB Star Combination (SetiAstro, script) sur S_stars, H_stars, O_stars (extraites de SHO_stars en P3, égalisées par LinearFit_etoiles) ; crée NBtoRGB_stars, l'image d'étoiles d'Etoiles_screen. Ha Stars et OIII Stars (linéaires, obligatoires), S optionnel. "
+    etoiles_nb_item(),
+    (note('NB_to_RGB_Stars', "OPTION, à la place d'Etoiles_NB_auto (même calcul, à la main) : NB to RGB Star Combination (SetiAstro, script) sur S_stars, H_stars, O_stars (extraites de SHO_stars en P3 ; LinearFit sur H_stars avant, à la main) ; crée NBtoRGB_stars, l'image d'étoiles d'Etoiles_screen. Ha Stars et OIII Stars (linéaires, obligatoires), S optionnel. "
           "Green Channel Blend Ratio décoché par défaut (Ha to OIII ratio 0,3 si activé). Apply Star Stretch coché : Stretch Factor 5, Color Boost 1,0 (réglages de l'utilisateur et de l'auteur ; le script ne relit pas l'icône : à régler dans sa fenêtre) ; pas de Star_Stretch ensuite. "
           "Mélange du script (code v1.6) : R = 0,5·H + 0,5·S (H seul sans S), G = ratio·H + (1 − ratio)·O (0,3·H + 0,7·O par défaut), B = O ; monte le ratio si les étoiles bleues sont verdâtres ou les rouges trop rouges, baisse-le si les étoiles chaudes tirent vers le jaune-vert." + STARS_NB + STARS_NB_FIX), ''),
     (pm('Etoiles_HOO_synth', 'H_stars', '0.2*H_stars + 0.8*O_stars', 'O_stars', new_image=True, new_id='Stars_HOO', space='RGB'),
@@ -1073,7 +1084,7 @@ hoo = pre_block() + [
     (M.instance('LRGBCombination', 'H_en_luminance', {'mL': '0.500', 'mc': '0.400', 'noiseReduction': True}, post=M.lrgb_post),
      "Option — H en luminance : fais une copie de H étiré nommée 'L' (même fond et médiane proche que l'image HOO, sinon couleurs délavées), puis applique sur l'image HOO. Seul L activé, Lightness 0,5, Saturation 0,40."),
 ] + finish_block(galaxie=True) + [
-    (note('Etoiles_HOO', "ÉTOILES — avec RGB : suis le bloc étoiles RGB du workflow RGB + SHO. Sans RGB (chemin principal, 8 octobre 2026) : LinearFit_etoiles sur O_stars, puis NB_to_RGB_Stars (H_stars, O_stars ; Apply Star Stretch 5, Color Boost 1,0) qui crée NBtoRGB_stars, l'image d'Etoiles_screen ; HOO_stars directe ou RGB_stars : change le nom dans Etoiles_screen. "
+    (note('Etoiles_HOO', "ÉTOILES — avec RGB : suis le bloc étoiles RGB du workflow RGB + SHO. Sans RGB (chemin principal, 8 octobre 2026) : Etoiles_NB_auto (LinearFit d'O_stars sur H_stars, mélange NB to RGB sans S, Star Stretch 5, Color Boost 1,0) qui crée NBtoRGB_stars, l'image d'Etoiles_screen ; HOO_stars directe ou RGB_stars : change le nom dans Etoiles_screen. "
           "Les étoiles HOO tirent vers le rouge et le cyan : désature-les légèrement si besoin. "
           "STANDARD : étoiles plausibles, du bleu-blanc au jaune-orange, peu saturées, une gamme de couleurs, jamais vertes. En HOO classique (G = B = O), le magenta est impossible "
           "mais les étoiles chaudes sortent rouges ou saumon (jamais jaunes) et les froides cyan ; cœur rouge / halo cyan fréquent (étoiles O plus grosses). "
@@ -1082,10 +1093,9 @@ hoo = pre_block() + [
           "CONTRÔLE à la sonde 15x15 sur le halo : chaude R >= G >= B (G = B exactement = HOO classique, pas de jaune possible), froide B >= G >= R, pas de G au-dessus de R et B ; une dizaine d'étoiles pas toutes identiques. "
           "AJUSTER : bleues verdâtres ou chaudes trop rouges -> plus de H dans le vert ; chaudes jaune-vert -> moins ; cyan saturé -> désature ou Color Boost plus bas ; anneau rouge/cyan -> réduction d'étoiles ; toutes blanches -> étirement plus doux."), ''),
     # HOO sans RGB (demande de l'utilisateur, 8 octobre 2026 : « linear fit du H_stars vers les autres, puis NBtoRGBStars avec strech 5 et color boost 1 ») :
-    # H_stars et O_stars extraites de HOO_stars en P3 ; LinearFit_etoiles sur O_stars, NB_to_RGB_Stars (sans S) -> NBtoRGB_stars
-    (M.instance('LinearFit', 'LinearFit_etoiles', {'rejectLow': '0.000000', 'rejectHigh': '0.920000'}, {'referenceViewId': 'H_stars'}),
-     "LinearFit, référence H_stars (étoiles linéaires) : glisse sur O_stars. Égalise les niveaux des étoiles des canaux avant NB_to_RGB_Stars : sans cela O_stars, plus brillante (capteur plus sensible vers 500 nm), donne des étoiles toutes bleues (retour de l'utilisateur, 8 octobre 2026)."),
-    (note('NB_to_RGB_Stars', "ÉTOILES — chemin principal (choix de l'utilisateur, 8 octobre 2026) : NB to RGB Star Combination (SetiAstro, script) sur H_stars et O_stars (extraites de HOO_stars en P3, égalisées par LinearFit_etoiles), pas de S ; crée NBtoRGB_stars, l'image d'étoiles d'Etoiles_screen. "
+    # H_stars et O_stars extraites de HOO_stars en P3 ; Etoiles_NB_auto (LinearFit sur H, mélange sans S, Star Stretch) -> NBtoRGB_stars
+    etoiles_nb_item(False),
+    (note('NB_to_RGB_Stars', "OPTION, à la place d'Etoiles_NB_auto (même calcul, à la main) : NB to RGB Star Combination (SetiAstro, script) sur H_stars et O_stars (extraites de HOO_stars en P3 ; LinearFit sur H_stars avant, à la main), pas de S ; crée NBtoRGB_stars, l'image d'étoiles d'Etoiles_screen. "
           "Mélange du script sans S : R = H, G = 0,3·H + 0,7·O si Green Channel Blend Ratio coché (sinon G = O), B = O : coche-le, sinon étoiles chaudes rouges et froides cyan. "
           "Apply Star Stretch coché : Stretch Factor 5, Color Boost 1,0 (réglages de l'utilisateur et de l'auteur ; le script ne relit pas l'icône : à régler dans sa fenêtre) ; pas de Star_Stretch ensuite."), ''),
     (note('Star_Stretch', T_STARSTRETCH + " HOO : OPTION, seulement si NB_to_RGB_Stars a été lancé sans Apply Star Stretch, ou pour HOO_stars / Stars_HOO. Color Boost plus bas si le cyan ou le rouge est criard."), ''),

@@ -23,7 +23,7 @@ PHASE = {
     'LRGB_ajout_L': 5, 'NBN_SHO': 5, 'NBN_HOO': 5, 'Foraxx_SHO': 5, 'Foraxx_HOO': 5, 'HOO_simple': 5, 'SHO_simple': 5, 'HOO_Hubble': 5,
     'Perfect_Palette_Picker': 5, 'NBColourMapper': 5, 'SCNR_SHO': 5, 'H_en_luminance': 5,
     'Masque_L': 6, 'Masque_retirer': 6, 'Courbes': 6, 'LHE': 6, 'LHE_fin': 6, 'Boost_finition_light': 6, 'Finition_saturee': 6, 'Boost_finition': 6, 'HDRMT_50': 6, 'HDRMT_eclat': 6, 'NXT_final': 6, 'HDRMT_40': 6, 'Mode_rapide': 1, 'Turbo_debut': 1, 'Boost_final_doux': 7, 'C_Fin_rapide': 6, 'C_Etoiles_fond_rapide': 7, 'SXT_non_lineaire': 4, 'Gradient_auto_rapide': 2, 'Solver_auto': 1, 'C_Preparation_rapide': 1, 'C_RGB_rapide': 3, 'SXT_LRGB': 5, 'C_LRGB_rapide': 5, 'C_L_rapide': 3, 'STF': 3, 'C_RGB_couleur_rapide': 3, 'C_H_rapide': 3, 'C_RGB_fin_rapide': 3, 'HDRMT_30': 6, 'Nettoyage_sans_etoiles': 6, 'ICC_sRGB': 7, 'Export_TIFF': 7, 'Fermer_tout': 7, 'NXT_final_doux': 6, 'NXT_final_fort': 6, 'Fond_auto': 7, 'Fond_auto_clair': 7, 'Boost_final': 7, 'Fond_desature': 7,
-    'Etoiles_RGB': 7, 'Etoiles_HOO': 7, 'NB_to_RGB_Stars': 7, 'Etoiles_HOO_synth': 7, 'Etoiles_screen': 7, 'CorrectMagentaStars': 7, 'LinearFit_etoiles': 7,
+    'Etoiles_RGB': 7, 'Etoiles_HOO': 7, 'NB_to_RGB_Stars': 7, 'Etoiles_HOO_synth': 7, 'Etoiles_screen': 7, 'CorrectMagentaStars': 7, 'LinearFit_etoiles': 7, 'Etoiles_NB_auto': 7,
     'Etoiles_reduites': 7, 'Fermer_RGB': 4, 'Fermer_L_stars': 3, 'Fermer_continuum': 3, 'Fermer_etoiles': 7, 'MT_etoiles': 7, 'Halo_B_Gon': 7, 'Etoiles_plafond': 7, 'Saturation_grosses': 4, 'EZ_Soft_Stretch': 4, 'C_P3_rapide': 3, 'Main_continuum': 3, 'NXT_dernier': 7, 'Etoiles_grosses': 7, 'Lineaire_rapide': 3, 'SCNR_etoiles_vert': 4, 'SCNR_etoiles_violet': 4, 'SXT_RGB_etire': 4, 'Sharp_USM': 6, 'C_Sharp_MMT': 6, 'C_RGB_etire_rapide': 4, 'C_RGB_etoiles_rapide': 4, 'MAS_canaux': 4, 'C_MAS_canaux_rapide': 4, 'C_Palette_rapide': 5, 'C_Lineaire_rapide': 3, 'Continuum_SHO': 3, 'Copie_RGB_continuum': 3, 'SXT_RGB_continuum': 3, 'C_Continuum_prep': 3, 'C_NB_renommer': 3, 'C_Continuum_fin': 3,
     'Binning_x2': 1, 'Crop_reference': 1, 'Crop_appliquer': 1, 'H_dans_RGB_v2': 3, 'CombineHaWithRGB': 3, 'MAS': 4, 'MAS_light': 4, 'DarkStructureEnhance': 6, 'Agrandir_x2': 7,
 }
@@ -43,7 +43,7 @@ def role(prefix, base):
         return 'core'   # narrowband aussi (demande de l'utilisateur, 8 octobre 2026)   # galaxies : finition en parties, NXT_final et Fond_desature dans le chemin principal (demande de l'utilisateur)
     if prefix in LUM and base == 'Statistical_Stretch':
         return 'opt'    # galaxies (demande de l'utilisateur, 5 octobre 2026) : MAS sur le RGB
-    if prefix in ('SHO', 'HOO') and base == 'Star_Stretch':
+    if prefix in ('SHO', 'HOO') and base in ('Star_Stretch', 'NB_to_RGB_Stars'):
         return 'opt'    # étirement fait par NB_to_RGB_Stars (Apply Star Stretch 5 / 1,0, demande de l'utilisateur, 8 octobre 2026)
     if prefix == 'SHO' and base == 'SCNR_etoiles_vert':
         return 'opt'    # SHO sans RGB : options étoiles sur NBtoRGB_stars (demande de l'utilisateur, 8 octobre 2026)
@@ -196,6 +196,7 @@ CONTAINERS = {
 
 # Textes d'option propres au narrowband
 WHEN_NB = {
+    'NB_to_RGB_Stars': "à la place d'Etoiles_NB_auto, à la main dans la fenêtre du script SetiAstro (même mélange) ; LinearFit des étoiles sur H_stars avant",
     'Star_Stretch': "seulement si NB_to_RGB_Stars a été lancé sans Apply Star Stretch (ou pour HOO_stars, Stars_HOO) : sur l'image d'étoiles LINÉAIRE",
     'SCNR_etoiles_vert': "étoiles vertes : sur NBtoRGB_stars étirée (SHO sans RGB) ou RGB_stars, avant Etoiles_screen ; glisse sur n'importe quelle image",
     'SCNR_etoiles_violet': "étoiles violettes (R et B nettement au-dessus de G à la sonde) : après SCNR_etoiles_vert, glisse sur n'importe quelle image ; Invert, SCNR vert 1,0, Invert ; pas dans le rapide",

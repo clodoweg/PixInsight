@@ -354,6 +354,8 @@ Les schémas ne reprennent que des faits déjà sourcés plus haut ; ils n'ajout
 
 ## Non vérifié
 
+- Etoiles_NB_auto.js (8 octobre 2026) : Color Boost de l'option Apply Star Stretch de NBtoRGBStars.js supposé identique à celui de star_stretch.js (non relu) ; script non testé dans PixInsight.
+
 - Conteneurs de finition par mélange PixelMath (sous_masque, 8 octobre 2026, choix de l'utilisateur : « tous les workflow ») : résultat identique au un par un non testé dans PixInsight.
 
 - Lineaire_auto, étapes « * » sur copie (8 octobre 2026, retour de l'utilisateur : « R_C_MAS_canaux_rapide ne permet pas de faire CTRL Z ») : Ctrl+Z et résultat identique (MAS, NBN sur une copie) non testés.

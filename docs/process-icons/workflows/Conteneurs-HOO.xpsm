@@ -4917,20 +4917,55 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
    <instance class="NoOperation" version="256" id="E22_Etoiles_HOO_instance">
       <description>PRÉRÉGLÉ : rien (icône-note).&#10;&#10;À RÉGLER : avec RGB : étoiles RGB ; sans RGB : étoiles de SXT, NB to RGB ou étoiles synthétiques.</description>
    </instance>
-   <instance class="LinearFit" version="256" id="E23_LinearFit_etoiles_instance">
-      <description>PRÉRÉGLÉ : LinearFit, référence H_stars (Reject low 0, Reject high 0,92).&#10;&#10;À RÉGLER : glisse sur O_stars (linéaire), avant NB_to_RGB_Stars : niveaux des étoiles égalisés sur H.&#10;&#10;SI :&#10;- étoiles encore bleues -&gt; vérifie à la sonde que O_stars est au niveau de H_stars&#10;- étoiles toutes blanches -&gt; normal : NB_to_RGB garde les écarts de couleur, Color Boost un peu plus haut</description>
-      <parameter id="referenceViewId">H_stars</parameter>
-      <parameter id="rejectLow" value="0.000000"/>
-      <parameter id="rejectHigh" value="0.920000"/>
-   </instance>
-   <instance class="Script" version="256" id="E24_NB_to_RGB_Stars_instance">
-      <description>LANCEMENT : glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.&#10;&#10;PRÉRÉGLÉ : rien (le script ne relit pas l'icône).&#10;&#10;À RÉGLER : double-clic puis Apply Global ; fenêtre : Ha Stars = H_stars, OIII Stars = O_stars (après LinearFit_etoiles), SII vide ; Green Channel Blend Ratio coché (0,3) ; Apply Star Stretch coché, Stretch Factor 5, Color Boost 1,0 ; crée NBtoRGB_stars, déjà étirée.&#10;&#10;SI :&#10;- étoiles chaudes trop rouges ou froides vertes -&gt; monte ou baisse le ratio&#10;- étoiles encore toutes bleues -&gt; LinearFit_etoiles oublié sur O_stars</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/NBtoRGBStars.js</parameter>
-      <parameter id="md5sum">0fae2f23d6f23037fb118fd1ef749592</parameter>
-      <table id="parameters" rows="0"/>
+   <instance class="Script" version="256" id="E23_Etoiles_NB_auto_instance">
+      <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Etoiles_NB_auto, sans S : LinearFit d'O_stars sur H_stars ; mélange R = H, G = 0,3·H + 0,7·O, B = O dans NBtoRGB_stars ; étirement Star Stretch 5 ; Color Boost 1,0 ; H_stars, O_stars fermées.&#10;&#10;À RÉGLER : double-clic puis Apply Global (fenêtre : vues et réglages), ou glisse l'icône sur n'importe quelle image (réglages de l'icône) ; étoiles linéaires extraites en phase 3 ; ensuite Etoiles_screen (NBtoRGB_stars) ; copie Etoiles_NB_auto.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- étoiles chaudes trop rouges -&gt; ratio 0,4&#10;- bleues verdâtres -&gt; ratio 0,2&#10;- étoiles criardes -&gt; Color Boost 0,7&#10;- étoiles trop grosses ou blanches -&gt; étirement 4</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Etoiles_NB_auto.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="10">
+         <tr>
+            <td id="id">h</td>
+            <td id="value">H_stars</td>
+         </tr>
+         <tr>
+            <td id="id">o</td>
+            <td id="value">O_stars</td>
+         </tr>
+         <tr>
+            <td id="id">s</td>
+            <td id="value"></td>
+         </tr>
+         <tr>
+            <td id="id">ratio</td>
+            <td id="value">0.30</td>
+         </tr>
+         <tr>
+            <td id="id">linearfit</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">stretch</td>
+            <td id="value">5.0</td>
+         </tr>
+         <tr>
+            <td id="id">boost</td>
+            <td id="value">1.00</td>
+         </tr>
+         <tr>
+            <td id="id">scnr</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">nom</td>
+            <td id="value">NBtoRGB_stars</td>
+         </tr>
+         <tr>
+            <td id="id">fermer</td>
+            <td id="value">true</td>
+         </tr>
+      </table>
       <parameter id="information"></parameter>
    </instance>
-   <instance class="Script" version="256" id="E25_Fond_desature_instance">
+   <instance class="Script" version="256" id="E24_Fond_desature_instance">
       <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Fond_desature, réglé plus doux en narrowband : fond mesuré ; violet neutralisé (G remonté jusqu'à min(R, B)) à plein sous fond + 0,08, décroissant jusqu'à + 0,30 ; couleur retirée seulement tout près du fond (rampe de + 0,03 à + 0,08 au lieu de + 0,15) : les voiles faibles de la nébuleuse gardent leur couleur.&#10;&#10;À RÉGLER : glisse sur l'image SANS étoiles finie (après NXT_final), avant Fond_auto et la recombinaison des étoiles (Etoiles_screen, ou Etoiles_reduites).&#10;&#10;SI :&#10;- violet encore visible dans les zones faibles -&gt; violetFin 0,40&#10;- fond encore coloré -&gt; fin 0,12&#10;- voiles faibles grisés -&gt; fin 0,05, ou saute cette étape</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js</parameter>
       <parameter id="md5sum"></parameter>
@@ -4954,7 +4989,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </table>
       <parameter id="information"></parameter>
    </instance>
-   <instance class="Script" version="256" id="E26_Fond_auto_instance">
+   <instance class="Script" version="256" id="E25_Fond_auto_instance">
       <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Fond_auto : fond de chaque canal mesuré (grille 8 × 8, quart le plus sombre des cases), puis mtf canal par canal pour l'amener à 0,12, sans écrêtage ; fond neutre.&#10;&#10;À RÉGLER : glisse sur l'image SANS étoiles, après Fond_desature, avant la recombinaison des étoiles ; console : fond avant et après.&#10;&#10;SI :&#10;- image trop sombre -&gt; cible 0,13 ou 0,14&#10;- données très propres -&gt; 0,10 à 0,11&#10;- nébuleuse qui remplit le champ : regarde le fond AVANT dans la console ; au-dessus d'environ 0,20 (seuil au jugé), ce n'est pas du vrai ciel -&gt; Ctrl+Z et saute cette étape</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js</parameter>
       <parameter id="md5sum"></parameter>
@@ -4974,7 +5009,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </table>
       <parameter id="information"></parameter>
    </instance>
-   <instance class="PixelMath" version="256" id="E27_Etoiles_screen_instance">
+   <instance class="PixelMath" version="256" id="E26_Etoiles_screen_instance">
       <description>PRÉRÉGLÉ : ~((~$T) * (~NBtoRGB_stars)), sur l'image elle-même.&#10;&#10;À RÉGLER : glisse sur l'image HOO sans étoiles finale ; étoiles de NB to RGB (NBtoRGB_stars), étirées par le script.&#10;&#10;SI :&#10;- étoiles RGB -&gt; RGB_stars&#10;- étoiles HOO classiques -&gt; HOO_stars (étirée)&#10;- synthétiques -&gt; Stars_HOO</description>
       <parameter id="expression">~((~$T) * (~NBtoRGB_stars))</parameter>
       <parameter id="expression1"></parameter>
@@ -5004,7 +5039,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
-   <instance class="NoiseXTerminator" version="256" id="E28_NXT_dernier_instance">
+   <instance class="NoiseXTerminator" version="256" id="E27_NXT_dernier_instance">
       <description>PRÉRÉGLÉ : NoiseXTerminator Denoise 0,25, 1 itération.&#10;&#10;À RÉGLER : toute dernière étape avant l'export : glisse sur l'image finie AVEC ses étoiles, juste après la recombinaison (Etoiles_reduites ou Etoiles_screen).&#10;&#10;SI :&#10;- aspect plastique -&gt; Denoise 0,15&#10;- bruit encore visible -&gt; 0,35&#10;- étoiles adoucies -&gt; 0,15, ou saute cette étape</description>
       <parameter id="ml_version" value="0"/>
       <parameter id="denoise" value="0.25"/>
@@ -5025,6 +5060,13 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
    </instance>
    <instance class="NoOperation" version="256" id="P7_options_instance">
       <description>OPTIONS de la phase 7 — Étoiles : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
+   </instance>
+   <instance class="Script" version="256" id="Opt_NB_to_RGB_Stars_instance">
+      <description>OPTION — à la place d'Etoiles_NB_auto, à la main dans la fenêtre du script SetiAstro (même mélange)&#10;LinearFit des étoiles sur H_stars avant.&#10;&#10;LANCEMENT : glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.&#10;&#10;PRÉRÉGLÉ : rien (le script ne relit pas l'icône).&#10;&#10;À RÉGLER : double-clic puis Apply Global ; fenêtre : Ha Stars = H_stars, OIII Stars = O_stars (après LinearFit_etoiles), SII vide ; Green Channel Blend Ratio coché (0,3) ; Apply Star Stretch coché, Stretch Factor 5, Color Boost 1,0 ; crée NBtoRGB_stars, déjà étirée.&#10;&#10;SI :&#10;- étoiles chaudes trop rouges ou froides vertes -&gt; monte ou baisse le ratio&#10;- étoiles encore toutes bleues -&gt; LinearFit_etoiles oublié sur O_stars</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/NBtoRGBStars.js</parameter>
+      <parameter id="md5sum">0fae2f23d6f23037fb118fd1ef749592</parameter>
+      <table id="parameters" rows="0"/>
+      <parameter id="information"></parameter>
    </instance>
    <instance class="Script" version="256" id="Opt_Star_Stretch_instance">
       <description>OPTION — seulement si NB_to_RGB_Stars a été lancé sans Apply Star Stretch (ou pour HOO_stars, Stars_HOO) : sur l'image d'étoiles LINÉAIRE.&#10;&#10;LANCEMENT : glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.&#10;&#10;PRÉRÉGLÉ : Stretch Amount 6, Color Boost 1,3, Remove Green (SCNR) coché.&#10;&#10;À RÉGLER : rien ; sur l'image d'étoiles linéaire.&#10;&#10;SI :&#10;- cœurs d'étoiles blancs (R = G = B = 1) -&gt; 5,5&#10;- étoiles trop grosses -&gt; 5 ou 4&#10;- étoiles grisées par le SCNR -&gt; décoche Remove Green&#10;- étoiles criardes -&gt; Color Boost 1,0</description>
@@ -5937,13 +5979,13 @@ max($T,f1)</parameter>
    <icon id="R_C_Fin_rapide" instance="R_C_Fin_rapide_instance" xpos="1021" ypos="614" workspace="Workspace01"/>
    <icon id="P7_Etoiles" instance="P7_Etoiles_instance" xpos="1225" ypos="20" workspace="Workspace01"/>
    <icon id="E22_Etoiles_HOO" instance="E22_Etoiles_HOO_instance" xpos="1225" ypos="64" workspace="Workspace01"/>
-   <icon id="E23_LinearFit_etoiles" instance="E23_LinearFit_etoiles_instance" xpos="1225" ypos="94" workspace="Workspace01"/>
-   <icon id="E24_NB_to_RGB_Stars" instance="E24_NB_to_RGB_Stars_instance" xpos="1225" ypos="124" workspace="Workspace01"/>
-   <icon id="E25_Fond_desature" instance="E25_Fond_desature_instance" xpos="1225" ypos="154" workspace="Workspace01"/>
-   <icon id="E26_Fond_auto" instance="E26_Fond_auto_instance" xpos="1225" ypos="184" workspace="Workspace01"/>
-   <icon id="E27_Etoiles_screen" instance="E27_Etoiles_screen_instance" xpos="1225" ypos="214" workspace="Workspace01"/>
-   <icon id="E28_NXT_dernier" instance="E28_NXT_dernier_instance" xpos="1225" ypos="244" workspace="Workspace01"/>
-   <icon id="P7_options" instance="P7_options_instance" xpos="1225" ypos="290" workspace="Workspace01"/>
+   <icon id="E23_Etoiles_NB_auto" instance="E23_Etoiles_NB_auto_instance" xpos="1225" ypos="94" workspace="Workspace01"/>
+   <icon id="E24_Fond_desature" instance="E24_Fond_desature_instance" xpos="1225" ypos="124" workspace="Workspace01"/>
+   <icon id="E25_Fond_auto" instance="E25_Fond_auto_instance" xpos="1225" ypos="154" workspace="Workspace01"/>
+   <icon id="E26_Etoiles_screen" instance="E26_Etoiles_screen_instance" xpos="1225" ypos="184" workspace="Workspace01"/>
+   <icon id="E27_NXT_dernier" instance="E27_NXT_dernier_instance" xpos="1225" ypos="214" workspace="Workspace01"/>
+   <icon id="P7_options" instance="P7_options_instance" xpos="1225" ypos="260" workspace="Workspace01"/>
+   <icon id="Opt_NB_to_RGB_Stars" instance="Opt_NB_to_RGB_Stars_instance" xpos="1225" ypos="294" workspace="Workspace01"/>
    <icon id="Opt_Star_Stretch" instance="Opt_Star_Stretch_instance" xpos="1225" ypos="324" workspace="Workspace01"/>
    <icon id="Opt_MT_etoiles" instance="Opt_MT_etoiles_instance" xpos="1225" ypos="354" workspace="Workspace01"/>
    <icon id="Opt_Halo_B_Gon" instance="Opt_Halo_B_Gon_instance" xpos="1225" ypos="384" workspace="Workspace01"/>

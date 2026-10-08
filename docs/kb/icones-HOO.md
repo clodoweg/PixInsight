@@ -1081,31 +1081,23 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > À RÉGLER : avec RGB : étoiles RGB ; sans RGB : étoiles de SXT, NB to RGB ou étoiles synthétiques.
 
-#### E23_LinearFit_etoiles — LinearFit
-   referenceViewId=H_stars ; rejectLow=0.000000 ; rejectHigh=0.920000
+#### E23_Etoiles_NB_auto — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Etoiles_NB_auto.js`
+   paramètres : `h=H_stars`, `o=O_stars`, `s=`, `ratio=0.30`, `linearfit=true`, `stretch=5.0`, `boost=1.00`, `scnr=false`, `nom=NBtoRGB_stars`, `fermer=true`
 
-> PRÉRÉGLÉ : LinearFit, référence H_stars (Reject low 0, Reject high 0,92).
+> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
 > 
-> À RÉGLER : glisse sur O_stars (linéaire), avant NB_to_RGB_Stars : niveaux des étoiles égalisés sur H.
+> PRÉRÉGLÉ : script Etoiles_NB_auto, sans S : LinearFit d'O_stars sur H_stars ; mélange R = H, G = 0,3·H + 0,7·O, B = O dans NBtoRGB_stars ; étirement Star Stretch 5 ; Color Boost 1,0 ; H_stars, O_stars fermées.
+> 
+> À RÉGLER : double-clic puis Apply Global (fenêtre : vues et réglages), ou glisse l'icône sur n'importe quelle image (réglages de l'icône) ; étoiles linéaires extraites en phase 3 ; ensuite Etoiles_screen (NBtoRGB_stars) ; copie Etoiles_NB_auto.js dans src/scripts/clodoweg.
 > 
 > SI :
-> - étoiles encore bleues -> vérifie à la sonde que O_stars est au niveau de H_stars
-> - étoiles toutes blanches -> normal : NB_to_RGB garde les écarts de couleur, Color Boost un peu plus haut
+> - étoiles chaudes trop rouges -> ratio 0,4
+> - bleues verdâtres -> ratio 0,2
+> - étoiles criardes -> Color Boost 0,7
+> - étoiles trop grosses ou blanches -> étirement 4
 
-#### E24_NB_to_RGB_Stars — Script
-   script `$PXI_SRCDIR/scripts/NBtoRGBStars.js`
-
-> LANCEMENT : glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
-> 
-> PRÉRÉGLÉ : rien (le script ne relit pas l'icône).
-> 
-> À RÉGLER : double-clic puis Apply Global ; fenêtre : Ha Stars = H_stars, OIII Stars = O_stars (après LinearFit_etoiles), SII vide ; Green Channel Blend Ratio coché (0,3) ; Apply Star Stretch coché, Stretch Factor 5, Color Boost 1,0 ; crée NBtoRGB_stars, déjà étirée.
-> 
-> SI :
-> - étoiles chaudes trop rouges ou froides vertes -> monte ou baisse le ratio
-> - étoiles encore toutes bleues -> LinearFit_etoiles oublié sur O_stars
-
-#### E25_Fond_desature — Script
+#### E24_Fond_desature — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js`
    paramètres : `debut=0.03`, `fin=0.08`, `violetFin=0.30`, `flou=3`
 
@@ -1120,7 +1112,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - fond encore coloré -> fin 0,12
 > - voiles faibles grisés -> fin 0,05, ou saute cette étape
 
-#### E26_Fond_auto — Script
+#### E25_Fond_auto — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js`
    paramètres : `cible=0.12`, `tolerance=0.005`, `grille=8`
 
@@ -1135,7 +1127,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - données très propres -> 0,10 à 0,11
 > - nébuleuse qui remplit le champ : regarde le fond AVANT dans la console ; au-dessus d'environ 0,20 (seuil au jugé), ce n'est pas du vrai ciel -> Ctrl+Z et saute cette étape
 
-#### E27_Etoiles_screen — PixelMath
+#### E26_Etoiles_screen — PixelMath
    expression = `~((~$T) * (~NBtoRGB_stars))` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
 
 > PRÉRÉGLÉ : ~((~$T) * (~NBtoRGB_stars)), sur l'image elle-même.
@@ -1147,7 +1139,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - étoiles HOO classiques -> HOO_stars (étirée)
 > - synthétiques -> Stars_HOO
 
-#### E28_NXT_dernier — NoiseXTerminator
+#### E27_NXT_dernier — NoiseXTerminator
    ml_version=0 ; denoise=0.25 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
 
 > PRÉRÉGLÉ : NoiseXTerminator Denoise 0,25, 1 itération.
@@ -1160,6 +1152,22 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - étoiles adoucies -> 0,15, ou saute cette étape
 
 ### P7_options
+
+#### Opt_NB_to_RGB_Stars — Script
+   script `$PXI_SRCDIR/scripts/NBtoRGBStars.js`
+
+> OPTION — à la place d'Etoiles_NB_auto, à la main dans la fenêtre du script SetiAstro (même mélange)
+> LinearFit des étoiles sur H_stars avant.
+> 
+> LANCEMENT : glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
+> 
+> PRÉRÉGLÉ : rien (le script ne relit pas l'icône).
+> 
+> À RÉGLER : double-clic puis Apply Global ; fenêtre : Ha Stars = H_stars, OIII Stars = O_stars (après LinearFit_etoiles), SII vide ; Green Channel Blend Ratio coché (0,3) ; Apply Star Stretch coché, Stretch Factor 5, Color Boost 1,0 ; crée NBtoRGB_stars, déjà étirée.
+> 
+> SI :
+> - étoiles chaudes trop rouges ou froides vertes -> monte ou baisse le ratio
+> - étoiles encore toutes bleues -> LinearFit_etoiles oublié sur O_stars
 
 #### Opt_Star_Stretch — Script
    script `$PXI_SRCDIR/scripts/star_stretch.js`
