@@ -170,6 +170,9 @@ Légende :
 
 ## SHO sans RGB (étoiles narrowband)
 
+- [How to get good stars in OSC data using dual narrowband filter (AstroBin)](https://app.astrobin.com/forum/topic/134842/how-to-get-good-stars-in-osc-data-using-dual-narrowband-filter) — Forum *(résumé)* : couleurs d'étoiles narrowband jamais aussi justes que de vraies étoiles RGB ; SPCC en mode narrowband comme rattrapage. Question de l'utilisateur (8 octobre 2026) : « avec NBtoRGB les étoiles sortent toutes bleue? » ; cause probable (non vérifiée) : O_stars plus brillante que H_stars et S_stars (QE de l'IMX455 plus haute vers 500 nm, canaux non égalisés), B = O et R = 0,5·H + 0,5·S.
+- [Enhance your deep sky workflow with Seti Astro Suite (DIYPhotography)](https://www.diyphotography.net/enhance-your-deep-sky-workflow-with-seti-astro-suite/) — Tutoriel *(résumé)* : NB to RGB Star Combination combine Ha, OIII (et SII) en étoiles RGB, Star Stretch en option.
+
 - Officiel — [Seti Astro, `NBtoRGBStars.js` v1.6](https://github.com/setiastro/pixinsight-updates-194) (code source) : étoiles Ha et OIII obligatoires, SII optionnel ; Green Channel Blend Ratio décoché, Ha to OIII ratio 0,3 ; Apply Star Stretch recommandé, Stretch Factor 5, Color Boost 1,0.
 - Tutoriel — [AIASTRO, étoiles RGB à partir du narrowband](https://aiastro.wordpress.com/2020/06/02/rgb-stars-from-narroband-data/) : R = Ha, G = 20 % Ha + 80 % OIII, B = OIII, puis calibration photométrique.
 - Tutoriel — [Telescope Live, étoiles violettes en SHO](https://telescope.live/blog/how-remove-purple-stars-sho-images) : cause (Ha bien plus fort que SII et OIII) et méthode par inversion.
