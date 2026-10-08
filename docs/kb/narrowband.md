@@ -109,6 +109,9 @@ Fond coloré ou trop clair| Le problème vient surtout de l'étirement des canau
 Cœur brûlé ou blanc| **Highlight reduction**  
 Détail pâteux| **Lightness = Ha** (H porte le détail)  
 Presque bon, teinte à affiner| Après NBN : **CurvesTransformation** , canal teinte (H) pour déplacer or et cyan, canal S pour la saturation, sous masque de luminance  
+### Teinte orange ou rouille (essai de l'utilisateur, casque de Thor, 8 octobre 2026)
+SCNR de NBN sans effet sur la teinte orange (il ne retire que le vert au-dessus de (R + B)/2, et G est déjà bas dans l'orange) ; S2 boost à 1,1–1,2 rend plus rouge. L'orange vient de S (R) : pour de l'or, S2 boost sous 1 (0,8–0,9), ou S ramené au même fond (GHS_3_fond).
+
 ### Quand utiliser une autre palette ou un autre outil
   * **S très faible** (nébuleuses planétaires, beaucoup de rémanents, cibles riches en O) : HOO, sans le signal le plus faible.
   * **Galaxie avec régions HII** : workflow LHaRGB, pas une palette SHO.
