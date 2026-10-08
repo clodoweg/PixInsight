@@ -189,7 +189,7 @@ CONTAINERS = {
 
 # Textes d'option propres au narrowband (pas de Solver_auto, pas de MAS, pas de RGB_stars partout)
 WHEN_NB = {
-    'Continuum_SHO': "continuum retiré de H, O, S par le RGB (étoiles et lumière d'étoiles hors des canaux, émission pure) : étape 1 de 3, avant Combinaison_SHO, après le gradient ; double-clic puis Apply Global, fenêtre : Ha = H, OIII = O, SII = S, Red (or RGB) = RGB ; crée HaNB, OIIINB, SIINB",
+    'Continuum_SHO': "continuum retiré de H, O, S par le RGB (étoiles et lumière d'étoiles hors des canaux, émission pure) : étape 1 de 3, avant Combinaison_SHO, après le gradient ; double-clic puis Apply Global, fenêtre : Ha = H, OIII = O, SII = S, Red (or RGB) = RGB, Green = Select Image ; crée HaNB, OIIINB, SIINB",
     'Combinaison_SHO_continuum': "étape 2 de 3, à la place de Combinaison_SHO, après Continuum_SHO : R = SIINB, G = HaNB, B = OIIINB, crée SHO ; ensuite Fermer_NB",
     'Fermer_NB': "étape 3 de 3, après Combinaison_SHO_continuum : ferme S, H, O, HaNB, OIIINB, SIINB (l'extraction recrée S, H, O) ; ensuite C_SHO_lineaire sur SHO",
     'C_Lineaire_continuum_rapide': "MODE RAPIDE AVEC CONTINUUM, à la place de R_C_Lineaire_rapide : après R_Gradient_auto_rapide, fais d'abord Continuum_SHO à la main (fenêtre), puis double-clic sur ce conteneur et Apply Global ; ensuite GHS_1_premier sur H",

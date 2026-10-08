@@ -376,20 +376,21 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
    paramètres : `applyNoiseReduction=false`, `noiseReductionMethod=NoiseXterminator`, `starrySelected=true`, `outputLinearImageOnly=true`, `aiModel=2.0.0`
 
 > OPTION — continuum retiré de H, O, S par le RGB (étoiles et lumière d'étoiles hors des canaux, émission pure) : étape 1 de 3, avant Combinaison_SHO, après le gradient
-> Double-clic puis Apply Global, fenêtre : Ha = H, OIII = O, SII = S, Red (or RGB) = RGB
+> Double-clic puis Apply Global, fenêtre : Ha = H, OIII = O, SII = S, Red (or RGB) = RGB, Green = Select Image
 > Crée HaNB, OIIINB, SIINB.
 > 
 > LANCEMENT : double-clic sur l'icône, puis Apply Global. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
 > 
 > PRÉRÉGLÉ : script SetiAstro ContinuumSubtraction.js : Starry (coefficient 0,9), sortie linéaire seule, pas de réduction de bruit ; continuum calculé seul : H et S avec le rouge du RGB, O avec le vert ; crée HaNB, SIINB, OIIINB (gris, linéaires).
 > 
-> À RÉGLER : après le gradient (phase 2), avant Combinaison_SHO : double-clic puis Apply Global ; dans la fenêtre : Ha = H, OIII = O, SII = S, Red (or RGB) = RGB, Green vide ; Execute ; ensuite Combinaison_SHO_continuum.
+> À RÉGLER : après le gradient (phase 2), avant Combinaison_SHO : double-clic puis Apply Global ; dans la fenêtre : Ha = H, OIII = O, SII = S, Red (or RGB) = RGB, Green = Select Image (surtout pas RGB : ce champ veut une image en gris) ; Starry coché ; Execute ; ensuite Combinaison_SHO_continuum.
 > 
 > SI :
 > - vue créée HaNB1 (ou OIIINB1…) -> ferme les anciennes *NB avant, ou renomme
 > - étoiles encore visibles dans les *NB -> relance en Starless (coefficient 1,0)
 > - SIINB ou OIIINB nettement plus faibles que S ou O sur la nébuleuse -> le rouge contient aussi la raie H, le vert un peu d'OIII : dans Combinaison_SHO_continuum, remplace SIINB par S (ou OIIINB par O)
 > - tailles différentes -> masters et RGB doivent avoir le même cadrage (Crop_appliquer)
+> - « The image RGB is the wrong color space » -> RGB mis dans Green : remets Green sur Select Image
 
 #### Opt_Combinaison_SHO_continuum — PixelMath
    expression = `SIINB` ; expression1 = `HaNB` ; expression2 = `OIIINB` ; useSingleExpression=false ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=true ; showNewImage=true ; newImageId=SHO ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=RGB ; newImageSampleFormat=SameAsTarget

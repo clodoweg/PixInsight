@@ -678,7 +678,7 @@ GRATUIT
 
 **À régler :**
 
-- **Entrées** : master H + master R (ou O + G), linéaires ; aussi H, OIII, SII ensemble avec un RGB dans « Red (or RGB) » (le script en extrait R et G) : crée HaNB, SIINB, OIIINB (icône Continuum_SHO, RGB + SHO)
+- **Entrées** : master H + master R (ou O + G), linéaires ; aussi H, OIII, SII ensemble avec un RGB dans « Red (or RGB) » (le script en extrait R et G ; Green reste sur Select Image, sinon « wrong color space » : ce champ n'accepte qu'une image en gris) : crée HaNB, SIINB, OIIINB (icône Continuum_SHO, RGB + SHO)
 - **Mode** : Starry
 - **Output Linear Image Only** : coché
 - **Noise reduction** : décochée
