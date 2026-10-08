@@ -351,7 +351,7 @@ Les schémas ne reprennent que des faits déjà sourcés plus haut ; ils n'ajout
 
 ## Non vérifié
 
-- Recopie de cwApplyOnCopy dans un conteneur glissé (vue verrouillée : `image.assign` sans beginProcess) : Ctrl+Z non testé (erreur « already being processed » de l'utilisateur sur R_C_Fin_rapide, 8 octobre 2026).
+- cwApplyOnCopy dans un conteneur glissé (vue en lecture seule : traitement direct par process natifs) : Ctrl+Z non testé (erreurs « already being processed » puis « read-only image » de l'utilisateur sur R_C_Fin_rapide, 8 octobre 2026).
 
 Points toujours sans source directe (contrôle du 30 septembre 2026) :
 

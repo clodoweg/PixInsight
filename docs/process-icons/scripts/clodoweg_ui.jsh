@@ -117,6 +117,15 @@ function cwTargetLocked( view )
 // de Ctrl+Z sur Sharp_MMT).
 function cwApplyOnCopy( view, fn, blend )
 {
+   // vue verrouillée par le conteneur glissé : ni beginProcess (« already being
+   // processed ») ni image.assign (« read-only image », test du 8 octobre 2026) ;
+   // seuls les process natifs lancés sur elle y écrivent : fn directement sur la
+   // vue (son masque attaché est respecté par les process natifs).
+   if ( cwTargetLocked( view ) )
+   {
+      fn( view );
+      return;
+   }
    let cid = "cw_copie", rid = "cw_resultat";
    let win = view.window;
    let maskOn = win.maskEnabled;
@@ -128,16 +137,9 @@ function cwApplyOnCopy( view, fn, blend )
       let r = cwPixelMathNew( view, blend ? blend( cid ) : cid, rid );
       try
       {
-         // vue verrouillée par le conteneur : recopie directe (un PixelMath en
-         // place avec référence à une image cachée donne « Unknown error »)
-         if ( cwTargetLocked( view ) )
-            view.image.assign( r.mainView.image );
-         else
-         {
-            view.beginProcess();
-            view.image.assign( r.mainView.image );
-            view.endProcess();
-         }
+         view.beginProcess();
+         view.image.assign( r.mainView.image );
+         view.endProcess();
       }
       finally
       {
