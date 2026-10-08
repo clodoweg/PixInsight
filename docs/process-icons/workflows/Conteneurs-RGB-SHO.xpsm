@@ -6283,6 +6283,42 @@ max($T,f1)</parameter>
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
+   <instance class="Script" version="256" id="Opt_Look_Lightroom_instance">
+      <description>OPTION — retouche finale façon Lightroom (Hautes lumières -50, Blancs +50, Température +10, Teinte +20) : glisse sur l'image finie, après NXT_dernier, avant Export_TIFF&#10;Sous masque de luminance par défaut (fond neutre).&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Look_Lightroom, équivalents approchés de Lightroom : Hautes lumières -50 (courbe de luminosité : 0,75 -&gt; 0,71, 0,90 -&gt; 0,90), Blancs +50 (0,97 -&gt; 0,98), Température +10 (R × 1,03, B × 0,97), Teinte +20 (G × 0,97, vers le magenta) ; sous masque de luminance (s = 0,14, flou 2 px) : fond neutre gardé ; Ctrl+Z possible.&#10;&#10;À RÉGLER : glisse sur l'image finie (après NXT_dernier, avant Export_TIFF) ; pour changer une valeur ou enlever le masque : double-clic puis Apply Global (fenêtre) ; copie Look_Lightroom.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- trop chaud ou trop magenta -&gt; Température ou Teinte plus bas&#10;- zones claires trop éteintes -&gt; Hautes lumières -25&#10;- fond devenu coloré -&gt; coche le masque, ou s plus haut&#10;- dans un conteneur : le masque n'est pas appliqué, glisse l'icône seule</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Look_Lightroom.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="7">
+         <tr>
+            <td id="id">hautes</td>
+            <td id="value">-50</td>
+         </tr>
+         <tr>
+            <td id="id">blancs</td>
+            <td id="value">50</td>
+         </tr>
+         <tr>
+            <td id="id">temperature</td>
+            <td id="value">10</td>
+         </tr>
+         <tr>
+            <td id="id">teinte</td>
+            <td id="value">20</td>
+         </tr>
+         <tr>
+            <td id="id">masque</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">s</td>
+            <td id="value">0.14</td>
+         </tr>
+         <tr>
+            <td id="id">flou</td>
+            <td id="value">2.0</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
+   </instance>
    <instance class="Resample" version="256" id="Opt_Agrandir_x2_instance">
       <description>OPTION — après Binning_x2, pour un grand tirage : image agrandie 2 fois (Lanczos 3) juste avant Export_TIFF&#10;Ne recrée pas le détail perdu.&#10;&#10;PRÉRÉGLÉ : Resample : × 2 en largeur et hauteur, Lanczos 3, seuil d'écrêtage 0,30.&#10;&#10;À RÉGLER : glisse sur l'image finie, juste avant ICC_sRGB et Export_TIFF ; seulement après Binning_x2, pour un grand tirage.&#10;&#10;SI :&#10;- anneaux noirs autour des étoiles -&gt; interpolation Auto ou Bicubic spline</description>
       <parameter id="xSize" value="2.000000"/>
@@ -6577,10 +6613,11 @@ max($T,f1)</parameter>
    <icon id="Opt_Boost_final" instance="Opt_Boost_final_instance" xpos="1220" ypos="354" workspace="Workspace01"/>
    <icon id="Opt_Fond_auto_clair" instance="Opt_Fond_auto_clair_instance" xpos="1220" ypos="384" workspace="Workspace01"/>
    <icon id="Opt_Etoiles_reduites" instance="Opt_Etoiles_reduites_instance" xpos="1220" ypos="414" workspace="Workspace01"/>
-   <icon id="Opt_Agrandir_x2" instance="Opt_Agrandir_x2_instance" xpos="1220" ypos="444" workspace="Workspace01"/>
-   <icon id="Opt_ICC_sRGB" instance="Opt_ICC_sRGB_instance" xpos="1220" ypos="474" workspace="Workspace01"/>
-   <icon id="Opt_Export_TIFF" instance="Opt_Export_TIFF_instance" xpos="1220" ypos="504" workspace="Workspace01"/>
-   <icon id="Opt_Fermer_tout" instance="Opt_Fermer_tout_instance" xpos="1220" ypos="534" workspace="Workspace01"/>
-   <icon id="P7_rapide" instance="P7_rapide_instance" xpos="1220" ypos="580" workspace="Workspace01"/>
-   <icon id="R_C_Etoiles_fond_rapide" instance="R_C_Etoiles_fond_rapide_instance" xpos="1220" ypos="614" workspace="Workspace01"/>
+   <icon id="Opt_Look_Lightroom" instance="Opt_Look_Lightroom_instance" xpos="1220" ypos="444" workspace="Workspace01"/>
+   <icon id="Opt_Agrandir_x2" instance="Opt_Agrandir_x2_instance" xpos="1220" ypos="474" workspace="Workspace01"/>
+   <icon id="Opt_ICC_sRGB" instance="Opt_ICC_sRGB_instance" xpos="1220" ypos="504" workspace="Workspace01"/>
+   <icon id="Opt_Export_TIFF" instance="Opt_Export_TIFF_instance" xpos="1220" ypos="534" workspace="Workspace01"/>
+   <icon id="Opt_Fermer_tout" instance="Opt_Fermer_tout_instance" xpos="1220" ypos="564" workspace="Workspace01"/>
+   <icon id="P7_rapide" instance="P7_rapide_instance" xpos="1220" ypos="610" workspace="Workspace01"/>
+   <icon id="R_C_Etoiles_fond_rapide" instance="R_C_Etoiles_fond_rapide_instance" xpos="1220" ypos="644" workspace="Workspace01"/>
 </xpsm>

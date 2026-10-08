@@ -1395,6 +1395,25 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - étoiles synthétiques -> remplace NBtoRGB_stars par Stars_HOO
 > - pour recommencer -> Ctrl+Z
 
+#### Opt_Look_Lightroom — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Look_Lightroom.js`
+   paramètres : `hautes=-50`, `blancs=50`, `temperature=10`, `teinte=20`, `masque=true`, `s=0.14`, `flou=2.0`
+
+> OPTION — retouche finale façon Lightroom (Hautes lumières -50, Blancs +50, Température +10, Teinte +20) : glisse sur l'image finie, après NXT_dernier, avant Export_TIFF
+> Sous masque de luminance par défaut (fond neutre).
+> 
+> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
+> 
+> PRÉRÉGLÉ : script Look_Lightroom, équivalents approchés de Lightroom : Hautes lumières -50 (courbe de luminosité : 0,75 -> 0,71, 0,90 -> 0,90), Blancs +50 (0,97 -> 0,98), Température +10 (R × 1,03, B × 0,97), Teinte +20 (G × 0,97, vers le magenta) ; sous masque de luminance (s = 0,14, flou 2 px) : fond neutre gardé ; Ctrl+Z possible.
+> 
+> À RÉGLER : glisse sur l'image finie (après NXT_dernier, avant Export_TIFF) ; pour changer une valeur ou enlever le masque : double-clic puis Apply Global (fenêtre) ; copie Look_Lightroom.js dans src/scripts/clodoweg.
+> 
+> SI :
+> - trop chaud ou trop magenta -> Température ou Teinte plus bas
+> - zones claires trop éteintes -> Hautes lumières -25
+> - fond devenu coloré -> coche le masque, ou s plus haut
+> - dans un conteneur : le masque n'est pas appliqué, glisse l'icône seule
+
 #### Opt_Agrandir_x2 — Resample
    xSize=2.000000 ; ySize=2.000000 ; mode=RelativeDimensions ; absoluteMode=ForceWidthAndHeight ; interpolation=Lanczos3 ; clampingThreshold=0.30 ; smoothness=1.50 ; noGUIMessages=true
 
