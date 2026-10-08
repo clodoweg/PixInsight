@@ -794,13 +794,13 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 #### R_C_MAS_canaux_rapide — ProcessContainer
    1. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
-      paramètres : `etapes=Opt_MAS_canaux>S,H,O`, `dialogue=false`
+      paramètres : `etapes=Opt_MAS_canaux*>S,H,O`, `dialogue=false`
 
 > MODE RAPIDE, à la place de GHS_1 et GHS_2 sur les canaux (MAS fond 0,25) : S, H, O (HOO : H, O) linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut), double-clic puis Apply Global (pas en glissant) ; ensuite GHS_3_fond sur chaque canal, puis la palette.
 > 
 > LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).
 > 
-> PRÉRÉGLÉ : conteneur de scripts : Lineaire_auto lance Opt_MAS_canaux sur S, H et O (fond cible 0,25 pour les trois).
+> PRÉRÉGLÉ : conteneur de scripts : Lineaire_auto lance Opt_MAS_canaux sur S, H et O (fond cible 0,25 pour les trois), chaque canal sur une copie puis recopié : un Ctrl+Z par canal.
 > 
 > À RÉGLER : S, H, O linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut) ; Conteneurs du workflow chargé ; double-clic puis Apply Global (pas en glissant) ; ensuite GHS_3_fond sur S, H et O (même fond, vers 0,12–0,14), puis R_C_Palette_rapide ou la palette.
 > 
@@ -811,7 +811,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 #### R_C_RGB_etoiles_rapide — ProcessContainer
    1. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
-      paramètres : `etapes=MAS>RGB ; SXT_RGB_etire>RGB`, `dialogue=false`
+      paramètres : `etapes=MAS*>RGB ; SXT_RGB_etire>RGB`, `dialogue=false`
    2. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js`
       paramètres : `vue=RGB_stars`, `amount=0`, `satAmount=0`, `scnr=true`, `violet=false`, `dialogue=false`
@@ -823,7 +823,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).
 > 
-> PRÉRÉGLÉ : conteneur de scripts : Lineaire_auto lance MAS (fond 0,15, tes réglages) puis SXT_RGB_etire (Unscreen : crée RGB_stars) sur RGB ; Etoiles_auto : SCNR vert 1,0 sur RGB_stars ; Fermer_vues ferme RGB (sans étoiles, inutile) ; résultat : RGB_stars étirée, prête pour la phase 7.
+> PRÉRÉGLÉ : conteneur de scripts : Lineaire_auto lance MAS (fond 0,15, tes réglages ; sur une copie puis recopié : Ctrl+Z possible) puis SXT_RGB_etire (Unscreen : crée RGB_stars) sur RGB ; Etoiles_auto : SCNR vert 1,0 sur RGB_stars ; Fermer_vues ferme RGB (sans étoiles, inutile) ; résultat : RGB_stars étirée, prête pour la phase 7.
 > 
 > À RÉGLER : RGB linéaire avec ses étoiles ouvert, Conteneurs-RGB-SHO chargé (icônes MAS et SXT_RGB_etire du chemin principal) ; double-clic puis Apply Global (pas en glissant) ; à faire avant ou après les GHS de S, H, O.
 > 
@@ -904,13 +904,13 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 #### R_C_Palette_rapide — ProcessContainer
    1. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
-      paramètres : `etapes=SHO_simple>H ; NBN_SHO>SHO_etire`, `dialogue=false`
+      paramètres : `etapes=SHO_simple>H ; NBN_SHO*>SHO_etire`, `dialogue=false`
 
 > MODE RAPIDE, à la place de SHO_simple et NBN_SHO : S, H, O étirés (après les GHS, même fond), double-clic puis Apply Global (pas en glissant) ; ensuite la finition sur SHO_etire.
 > 
 > LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).
 > 
-> PRÉRÉGLÉ : conteneur de scripts : Lineaire_auto lance SHO_simple (S, H, O étirés -> SHO_etire) puis NBN_SHO sur SHO_etire (palette SHO, Lightness Ha, SCNR 0,7, boosts à 1) ; S, H, O restent ouverts (Foraxx ou autre palette possible ensuite).
+> PRÉRÉGLÉ : conteneur de scripts : Lineaire_auto lance SHO_simple (S, H, O étirés -> SHO_etire) puis NBN_SHO sur SHO_etire (palette SHO, Lightness Ha, SCNR 0,7, boosts à 1 ; sur une copie puis recopié : Ctrl+Z annule NBN) ; S, H, O restent ouverts (Foraxx ou autre palette possible ensuite).
 > 
 > À RÉGLER : S, H, O étirés, sans étoiles, même fond (après les GHS) ; Conteneurs du workflow chargé (icônes SHO_simple et NBN_SHO du chemin principal) ; double-clic puis Apply Global (pas en glissant) ; ensuite la finition (phase 6) sur SHO_etire.
 > 

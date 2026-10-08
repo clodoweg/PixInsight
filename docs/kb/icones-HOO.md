@@ -560,13 +560,13 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 #### R_C_MAS_canaux_rapide — ProcessContainer
    1. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
-      paramètres : `etapes=Opt_MAS_canaux>H,O`, `dialogue=false`
+      paramètres : `etapes=Opt_MAS_canaux*>H,O`, `dialogue=false`
 
 > MODE RAPIDE, à la place de GHS_1 et GHS_2 sur les canaux (MAS fond 0,25) : S, H, O (HOO : H, O) linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut), double-clic puis Apply Global (pas en glissant) ; ensuite GHS_3_fond sur chaque canal, puis la palette.
 > 
 > LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).
 > 
-> PRÉRÉGLÉ : conteneur de scripts : Lineaire_auto lance Opt_MAS_canaux sur H et O (fond cible 0,25 pour les deux).
+> PRÉRÉGLÉ : conteneur de scripts : Lineaire_auto lance Opt_MAS_canaux sur H et O (fond cible 0,25 pour les deux), chaque canal sur une copie puis recopié : un Ctrl+Z par canal.
 > 
 > À RÉGLER : H, O linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut) ; Conteneurs-HOO chargé ; double-clic puis Apply Global (pas en glissant) ; ensuite GHS_3_fond sur H et O (même fond, vers 0,12–0,14), puis HOO_simple et NBN_HOO.
 > 

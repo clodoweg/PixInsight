@@ -351,6 +351,8 @@ Les schémas ne reprennent que des faits déjà sourcés plus haut ; ils n'ajout
 
 ## Non vérifié
 
+- Lineaire_auto, étapes « * » sur copie (8 octobre 2026, retour de l'utilisateur : « R_C_MAS_canaux_rapide ne permet pas de faire CTRL Z ») : Ctrl+Z et résultat identique (MAS, NBN sur une copie) non testés.
+
 - MAS_canaux à Target background 0,25 puis GHS_3_fond (8 octobre 2026, demande de l'utilisateur : « le MAS doit avoir taget median 0.25 comme ca apres je fais le GH3 ») : non testé sur des canaux narrowband.
 
 - LHaRGB, Continuum_auto avec le RGB calibré (après C_RGB_couleur : BXT, SPCC) au lieu du master R (8 octobre 2026, demande de l'utilisateur : « pour hargb je peux faire le continuum avec RGB plutot que R non? si oui, tu peux le fermer apres l'étape RGB? ») : entrée RGB prévue par le script (code 1.3.5 lu : il en extrait le rouge) ; coefficient recalculé, donc l'échelle SPCC ne gêne pas ; résultat non testé par l'utilisateur.

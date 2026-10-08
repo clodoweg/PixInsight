@@ -7,6 +7,10 @@
 // numéro : C_RGB_lineaire trouve E08_C_RGB_lineaire (ou E07_…, etc.).
 //   LRGB    : C_RGB_lineaire>RGB ; C_L_lineaire>L
 //   LHaRGB  : C_RGB_couleur>RGB ; BXT_L_H>L,H ; NXT_L>L
+// Icône suivie de « * » (ex. Opt_MAS_canaux*>S,H,O) : traitée sur une copie
+// cachée puis recopiée (cwApplyOnCopy) : une étape Ctrl+Z par vue. Seulement
+// pour une icône qui modifie les pixels de la vue sans créer d'image ni avoir
+// besoin de l'astrométrie (MAS, NBN… ; pas SXT, SPCC, extraction).
 // Les icônes doivent être chargées (fichier Conteneurs-X.xpsm) et ne contenir
 // que des process natifs (un script ne peut pas lancer une icône Script).
 // Une étape en erreur arrête le script : la console dit laquelle.
@@ -25,6 +29,7 @@
 
 function laIcon( base )
 {
+   base = base.replace( /\*$/, "" ).trim();   // « * » = étape annulable, voir laRun
    // icône exacte, sinon E00_base à E99_base
    let names = [ base ];
    for ( let k = 0; k < 100; ++k )
@@ -56,6 +61,7 @@ function laRun( etapes )
       let parts = list[ i ].split( ">" );
       if ( parts.length != 2 )
          throw new Error( LA_TITLE + " : étape mal écrite : " + list[ i ] + " (attendu icône>vue)." );
+      let copie = /\*$/.test( parts[ 0 ].trim() );
       let ic = laIcon( parts[ 0 ].trim() );
       let vues = parts[ 1 ].split( "," ).map( function( s ) { return s.trim(); } );
       for ( let j = 0; j < vues.length; ++j )
@@ -64,7 +70,14 @@ function laRun( etapes )
          if ( w.isNull )
             throw new Error( LA_TITLE + " : vue " + vues[ j ] + " absente (étape " + ic.name + ")." );
          console.noteln( "<end><cbr><br>" + LA_TITLE + " : " + ic.name + " sur " + vues[ j ] );
-         if ( !ic.process.executeOn( w.mainView ) )
+         if ( copie )
+            // sur une copie cachée puis recopie : étape Ctrl+Z (retour de l'utilisateur, 8 octobre 2026 : pas de Ctrl+Z après R_C_MAS_canaux_rapide)
+            cwApplyOnCopy( w.mainView, function( c )
+            {
+               if ( !ic.process.executeOn( c ) )
+                  throw new Error( LA_TITLE + " : " + ic.name + " a échoué sur " + vues[ j ] + " (voir la console)." );
+            } );
+         else if ( !ic.process.executeOn( w.mainView ) )
             throw new Error( LA_TITLE + " : " + ic.name + " a échoué sur " + vues[ j ] + " (voir la console)." );
          bilan.push( ic.name + " sur " + vues[ j ] );
       }
@@ -75,7 +88,8 @@ function laRun( etapes )
 function laDialog( p )
 {
    let d = new CWDialog( LA_TITLE, "<b>Phase linéaire rapide</b> : lance les icônes du chemin principal sur leurs vues, dans l'ordre. " +
-                         "Le fichier Conteneurs doit être chargé (le script cherche les icônes E##_).", "Étapes :" );
+                         "Le fichier Conteneurs doit être chargé (le script cherche les icônes E##_). " +
+                         "Icône suivie de * : traitée sur une copie puis recopiée (Ctrl+Z possible).", "Étapes :" );
    let rows = laParse( p.etapes ).map( function( e ) { let parts = e.split( ">" ); return { icone: (parts[ 0 ] || "").trim(), vues: (parts[ 1 ] || "").trim() }; } );
    d.group( "Étapes (icône : vues, séparées par des virgules)" );
    for ( let k = 0; k < rows.length; ++k )

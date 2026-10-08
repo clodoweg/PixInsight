@@ -89,3 +89,7 @@ Aucun test dans PixInsight. Règle : process natif lancé sur une vue (executeOn
 ## Solver_auto : RGB seulement dans les rapides (8 octobre 2026)
 
 Demande de l'utilisateur : « le image solver, met le par defaut que sur les images RGB (pas besoin des autres) », puis choix « Rapides et turbo seuls ». `gc_solver(base, tout=False)` met `solveTout = false` (GC_Solver_auto.js : ImageSolver sur les images couleur seulement) dans R_C_Preparation_rapide et T_Turbo_debut des 5 workflows. E03_Solver_auto (chemin principal) garde `solveTout = true` : SPFC (et MGC + MARS) a besoin de la solution astrométrique sur L, H, O. SHO sans RGB et HOO : aucune image couleur, le rapide ne résout rien (rien n'en a besoin ensuite dans les rapides).
+
+## Lineaire_auto : étapes annulables « * » (8 octobre 2026)
+
+Retour de l'utilisateur : « R_C_MAS_canaux_rapide ne permet pas de faire CTRL Z » (executeOn lancé par un script en Apply Global : pas d'étape d'annulation). Une icône suivie de `*` dans `etapes` (ex. `Opt_MAS_canaux*>S,H,O`) est lancée sur une copie cachée puis recopiée par cwApplyOnCopy (beginProcess / assign / endProcess) : un Ctrl+Z par vue. Réservé aux icônes qui ne modifient que les pixels de la vue (MAS, NBN) : pas SXT (crée une image), ni SPCC (astrométrie absente de la copie), ni extraction. Utilisé dans R_C_MAS_canaux_rapide, R_C_RGB_etoiles_rapide (MAS*) et R_C_Palette_rapide (NBN_SHO*). Les icônes du LRGB n'ont pas de `*` : comportement inchangé. Non testé.

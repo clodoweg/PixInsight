@@ -1267,10 +1267,10 @@ def mas_canaux():
     x = x.replace(a, 'id="targetBackground" value="0.250"')
     return 'MAS_canaux', x.replace('id="MAS_instance"', 'id="MAS_canaux_instance"', 1)
 for _st, _v in ((rgbsho, 'S,H,O'), (sho, 'S,H,O'), (hoo, 'H,O')):
-    insert_after(_st, 'Statistical_Stretch', [(mas_canaux(), ''), (cont('C_MAS_canaux_rapide', [lineaire_rapide('Opt_MAS_canaux>' + _v)]), '')])
+    insert_after(_st, 'Statistical_Stretch', [(mas_canaux(), ''), (cont('C_MAS_canaux_rapide', [lineaire_rapide('Opt_MAS_canaux*>' + _v)]), '')])
 for _st in (rgbsho, sho):
-    insert_after(_st, 'NBN_SHO', [(cont('C_Palette_rapide', [lineaire_rapide('SHO_simple>H ; NBN_SHO>SHO_etire')]), '')])   # S, H, O gardés ouverts (demande de l'utilisateur, 8 octobre 2026)
-insert_after(rgbsho, 'Fermer_RGB', [(cont('C_RGB_etoiles_rapide', [lineaire_rapide('MAS>RGB ; SXT_RGB_etire>RGB'), script('SCNR_etoiles_vert', ''), fermer('Fermer_RGB', 'RGB')]), '')])
+    insert_after(_st, 'NBN_SHO', [(cont('C_Palette_rapide', [lineaire_rapide('SHO_simple>H ; NBN_SHO*>SHO_etire')]), '')])   # S, H, O gardés ouverts (demande de l'utilisateur, 8 octobre 2026)
+insert_after(rgbsho, 'Fermer_RGB', [(cont('C_RGB_etoiles_rapide', [lineaire_rapide('MAS*>RGB ; SXT_RGB_etire>RGB'), script('SCNR_etoiles_vert', ''), fermer('Fermer_RGB', 'RGB')]), '')])
 # RGB + SHO, continuum (demande de l'utilisateur, 8 octobre 2026 : « il faut pouvoir gerer le continuum aussi » ; choix : nettoyer H, O, S par le RGB,
 # RGB + SHO seulement) : options P3 avant Combinaison_SHO ; ContinuumSubtraction.js (SetiAstro, code 1.3.5 lu) accepte Ha, OIII, SII et un RGB
 # (Red (or RGB) : il en extrait R et G) et crée HaNB, SIINB (avec R), OIIINB (avec G)

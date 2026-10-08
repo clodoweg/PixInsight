@@ -2151,14 +2151,14 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <description>MODE RAPIDE, phase 4 — Étirement : pas encore de rapide narrowband : chemin principal. Icône de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="R_C_MAS_canaux_rapide_instance">
-      <description>MODE RAPIDE, à la place de GHS_1 et GHS_2 sur les canaux (MAS fond 0,25) : S, H, O (HOO : H, O) linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut), double-clic puis Apply Global (pas en glissant) ; ensuite GHS_3_fond sur chaque canal, puis la palette.&#10;&#10;LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).&#10;&#10;PRÉRÉGLÉ : conteneur de scripts : Lineaire_auto lance Opt_MAS_canaux sur H et O (fond cible 0,25 pour les deux).&#10;&#10;À RÉGLER : H, O linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut) ; Conteneurs-HOO chargé ; double-clic puis Apply Global (pas en glissant) ; ensuite GHS_3_fond sur H et O (même fond, vers 0,12–0,14), puis HOO_simple et NBN_HOO.&#10;&#10;SI :&#10;- un canal mal étiré -&gt; Ctrl+Z sur ce canal, puis GHS à la main&#10;- réglage MAS à changer -&gt; double-clic sur Opt_MAS_canaux</description>
+      <description>MODE RAPIDE, à la place de GHS_1 et GHS_2 sur les canaux (MAS fond 0,25) : S, H, O (HOO : H, O) linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut), double-clic puis Apply Global (pas en glissant) ; ensuite GHS_3_fond sur chaque canal, puis la palette.&#10;&#10;LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).&#10;&#10;PRÉRÉGLÉ : conteneur de scripts : Lineaire_auto lance Opt_MAS_canaux sur H et O (fond cible 0,25 pour les deux), chaque canal sur une copie puis recopié : un Ctrl+Z par canal.&#10;&#10;À RÉGLER : H, O linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut) ; Conteneurs-HOO chargé ; double-clic puis Apply Global (pas en glissant) ; ensuite GHS_3_fond sur H et O (même fond, vers 0,12–0,14), puis HOO_simple et NBN_HOO.&#10;&#10;SI :&#10;- un canal mal étiré -&gt; Ctrl+Z sur ce canal, puis GHS à la main&#10;- réglage MAS à changer -&gt; double-clic sur Opt_MAS_canaux</description>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js</parameter>
          <parameter id="md5sum"></parameter>
          <table id="parameters" rows="2">
             <tr>
                <td id="id">etapes</td>
-               <td id="value">Opt_MAS_canaux&gt;H,O</td>
+               <td id="value">Opt_MAS_canaux*&gt;H,O</td>
             </tr>
             <tr>
                <td id="id">dialogue</td>
