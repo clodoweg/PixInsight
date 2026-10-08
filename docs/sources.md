@@ -955,3 +955,18 @@ Fait : NXT_NB (Denoise 0,75, 1 itération) ajouté en fin de C_SHO_lineaire (RGB
 
 Demande : « oui » (faire les ajouts proposés à l'audit SHO : options STF, EZ_Soft_Stretch, Binning_x2, options P6 manquantes, fin P7 comme en LRGB ; HDRMT_30 et NXT_final au chemin principal ; saturation 0,58 avec Finition_saturee en option ; suppression d'Etoiles_plafond)
 Fait : finish_block(galaxie=True) pour les trois workflows narrowband (SCNR_SHO gardé en option en tête), conteneur C_Finition à 0,58 ; role() : HDRMT_30, NXT_final, Fond_desature au chemin principal en narrowband ; P7 : Fond_desature, Fond_auto (+ Fond_auto_clair) avant la recombinaison, NXT_dernier après Etoiles_reduites (recombinaison par défaut gardée en nébuleuse) ; options STF (P3), EZ_Soft_Stretch (P4), Binning_x2 (après ImageSolver), DarkStructureEnhance, Agrandir_x2 ; Etoiles_plafond retiré ; Nettoyage_sans_etoiles réglé sur l'image d'étoiles du workflow (RGB_stars, NBtoRGB_stars, HOO_stars) ; textes d'options adaptés (layout.WHEN_NB, short_desc V). Pas de Boost_final (masque tiré de L), pas de rapide ni de turbo (plus tard). LRGB et LHaRGB non touchés.
+
+### BXT et NXT en HOO (8 octobre 2026)
+
+Demande : « fais aussi l'analyse pour le HOO »
+Fait : analyse dans kb/narrowband.md (section « BXT et NXT en HOO ») ; aucun changement d'icône (le HOO suit déjà le choix B).
+Sources :
+- https://www.rc-astro.com/noisexterminator-2-ai3-user-manual-pixinsight/
+- https://www.rc-astro.com/blurxterminator-2-0-ai4-release/
+- https://www.junruiye.com/hoo-processing-pixinsight-pencil-nebula/
+- https://www.galactic-hunter.com/post/pixinsight-bi-color-combination-tutorial
+- https://www.cloudynights.com/forums/topic/638625-why-are-s-ii-and-o-iii-integrations-so-noisy/
+- https://app.astrobin.com/forum/topic/112831/dual-band-processing-as-osc-vs-hoo
+- https://www.cloudynights.com/forums/topic/898771-what-is-the-best-way-to-process-osc-data-with-dual-banddual-band/
+- https://stargazerslounge.com/topic/419872-ways-of-dealing-with-oiii-noise-in-narrowband-mono-recomposition/ (page non lue : 403 ; contenu d'après le résumé de recherche)
+Non vérifié : aucune valeur officielle pour le HOO ; pas testé sur les données de l'utilisateur.
