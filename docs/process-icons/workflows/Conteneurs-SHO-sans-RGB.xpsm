@@ -2043,9 +2043,9 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <table id="outputData" rows="0"/>
    </instance>
    <instance class="NarrowbandNormalization" version="256" id="E16_NBN_SHO_instance">
-      <description>PRÉRÉGLÉ : palette SHO ; O3 boost, S2 boost, Brightness, Highlight reduction à 1 (neutres : ce sont des multiplicateurs, 0 rend l'image noire) ; Shadow point 1 (normalisation à partir de la médiane).&#10;&#10;À RÉGLER : glisse sur SHO_etire (SHO_simple) ; Lightness = H ; O3 puis S2 boost au-dessus de 1, peu à peu ; Shadow point : 1 = normalisation à partir de la médiane, vers 0 = zones faibles aussi (plus de bruit).&#10;&#10;SI :&#10;- trop vert -&gt; SCNR partiel&#10;- O discret -&gt; O3 boost</description>
+      <description>PRÉRÉGLÉ : palette SHO, Lightness = Ha (H porte le détail ; demande de l'utilisateur) ; O3 boost, S2 boost, Brightness, Highlight reduction à 1 (neutres : ce sont des multiplicateurs, 0 rend l'image noire) ; Shadow point 1 (normalisation à partir de la médiane).&#10;&#10;À RÉGLER : glisse sur SHO_etire (SHO_simple) ; O3 puis S2 boost au-dessus de 1, peu à peu ; Shadow point : 1 = normalisation à partir de la médiane, vers 0 = zones faibles aussi (plus de bruit).&#10;&#10;SI :&#10;- trop vert -&gt; SCNR partiel&#10;- O discret -&gt; O3 boost</description>
       <parameter id="palette" value="Palette_SHO"/>
-      <parameter id="lightness" value="Lightness_Off"/>
+      <parameter id="lightness" value="Lightness_Ha"/>
       <parameter id="blendMode" value="Blend_Mode1"/>
       <parameter id="haBlend" value="0.000"/>
       <parameter id="scnr" value="0.000"/>

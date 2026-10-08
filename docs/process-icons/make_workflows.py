@@ -954,7 +954,7 @@ sho_palette = [
     # combinaison des canaux ÉTIRÉS avant NBN (demande de l'utilisateur, 8 octobre 2026 : « il ne manque pas un process pour combiner les canaux ? »), comme HOO_simple
     (pm('SHO_simple', 'S', 'H', 'O', new_image=True, new_id='SHO_etire', space='RGB'),
      "PALETTE — combinaison simple sur 'S', 'H' et 'O' étirés sans étoiles (R = S, G = H, B = O), à équilibrer ensuite avec NarrowbandNormalization (icône suivante). Crée 'SHO_etire'."),
-    (M.instance('NarrowbandNormalization', 'NBN_SHO', {'palette': 'Palette_SHO', 'o3Boost': '1.000', 's2Boost': '1.000', 'highlightReduction': '1.000', 'brightness': '1.000'}),
+    (M.instance('NarrowbandNormalization', 'NBN_SHO', {'palette': 'Palette_SHO', 'lightness': 'Lightness_Ha', 'o3Boost': '1.000', 's2Boost': '1.000', 'highlightReduction': '1.000', 'brightness': '1.000'}),
      "PALETTE — NarrowbandNormalization, palette SHO (valeurs par défaut ; nom interne Palette_SHO vérifié dans le module 1.1). Sur l'image SHO combinée (R = S, G = H, B = O), "
      "ÉTIRÉE et sans étoiles, canaux étirés avec le même fond et la même médiane (recombinés par l'icône SHO_simple : image 'SHO_etire'). Active l'aperçu. "
      "Ordre de réglage conseillé (suggestion de la fiche, pas une consigne de l'auteur) : Lightness (Off, Preserve, Ha, OIII ou SII ; souvent Ha) ; Shadowpoint pour le fond, sans l'écrêter ; "

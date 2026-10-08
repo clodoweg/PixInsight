@@ -736,7 +736,7 @@ GRATUIT
 **À régler :**
 
 - **Palette** : SHO ou HOO selon ta combinaison
-- **Lightness** : H
+- **Lightness** : H (préréglé Lightness_Ha dans NBN_SHO, demande de l'utilisateur ; NBN_HOO reste à Off)
 - **O3 / S2 boost** : 1 (neutre), puis monte au-dessus de 1 peu à peu ; 0 = canal supprimé (image noire si tout est à 0)
 - **Shadow point** : 1 (normalisation à partir de la médiane) ; vers 0 = les zones faibles aussi, plus de bruit
 - **Brightness, Highlight reduction** : 1 (neutres)
