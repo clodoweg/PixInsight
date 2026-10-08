@@ -371,54 +371,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 ### P3_options
 
-#### Opt_Continuum_SHO — Script
-   script `$PXI_SRCDIR/scripts/ContinuumSubtraction.js`
-   paramètres : `applyNoiseReduction=false`, `noiseReductionMethod=NoiseXterminator`, `starrySelected=true`, `outputLinearImageOnly=true`, `aiModel=2.0.0`
-
-> OPTION — continuum retiré de H, O, S par le RGB (étoiles et lumière d'étoiles hors des canaux, émission pure) : étape 1 de 3, avant Combinaison_SHO, après le gradient
-> Double-clic puis Apply Global, fenêtre : Ha = H, OIII = O, SII = S, Red (or RGB) = RGB, Green = Select Image
-> Crée HaNB, OIIINB, SIINB.
-> 
-> LANCEMENT : double-clic sur l'icône, puis Apply Global. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
-> 
-> PRÉRÉGLÉ : script SetiAstro ContinuumSubtraction.js : Starry (coefficient 0,9), sortie linéaire seule, pas de réduction de bruit ; continuum calculé seul : H et S avec le rouge du RGB, O avec le vert ; crée HaNB, SIINB, OIIINB (gris, linéaires).
-> 
-> À RÉGLER : après le gradient (phase 2), avant Combinaison_SHO : double-clic puis Apply Global ; dans la fenêtre : Ha = H, OIII = O, SII = S, Red (or RGB) = RGB, Green = Select Image (surtout pas RGB : ce champ veut une image en gris) ; Starry coché ; Execute ; ensuite Combinaison_SHO_continuum.
-> 
-> SI :
-> - vue créée HaNB1 (ou OIIINB1…) -> ferme les anciennes *NB avant, ou renomme
-> - étoiles encore visibles dans les *NB -> relance en Starless (coefficient 1,0)
-> - SIINB ou OIIINB nettement plus faibles que S ou O sur la nébuleuse -> le rouge contient aussi la raie H, le vert un peu d'OIII : dans Combinaison_SHO_continuum, remplace SIINB par S (ou OIIINB par O)
-> - tailles différentes -> masters et RGB doivent avoir le même cadrage (Crop_appliquer)
-> - « The image RGB is the wrong color space » -> RGB mis dans Green : remets Green sur Select Image
-
-#### Opt_Combinaison_SHO_continuum — PixelMath
-   expression = `SIINB` ; expression1 = `HaNB` ; expression2 = `OIIINB` ; useSingleExpression=false ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=true ; showNewImage=true ; newImageId=SHO ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=RGB ; newImageSampleFormat=SameAsTarget
-
-> OPTION — étape 2 de 3, à la place de Combinaison_SHO, après Continuum_SHO : R = SIINB, G = HaNB, B = OIIINB, crée SHO
-> Ensuite Fermer_NB.
-> 
-> PRÉRÉGLÉ : R = SIINB, G = HaNB, B = OIIINB, image 'SHO' (comme Combinaison_SHO, avec les canaux sans continuum).
-> 
-> À RÉGLER : après Continuum_SHO, à la place de Combinaison_SHO : double-clic puis Apply Global (ou glisse sur une image) ; ensuite Fermer_NB, puis C_SHO_lineaire sur SHO.
-> 
-> SI :
-> - une image 'SHO' existe déjà -> ferme-la avant
-
-#### Opt_Fermer_NB — Script
-   script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
-   paramètres : `views=S, H, O, HaNB, OIIINB, SIINB`
-
-> OPTION — étape 3 de 3, après Combinaison_SHO_continuum : ferme S, H, O, HaNB, OIIINB, SIINB (l'extraction recrée S, H, O)
-> Ensuite C_SHO_lineaire sur SHO.
-> 
-> PRÉRÉGLÉ : script Fermer_vues : ferme S, H, O, HaNB, OIIINB, SIINB (SHO les contient ; l'extraction recrée S, H, O).
-> 
-> À RÉGLER : double-clic puis Apply Global, juste après Combinaison_SHO_continuum ; enregistre avant les masters à garder.
-> 
-> SI :
-> - une vue absente est ignorée ; la console dit combien de vues sont fermées
-
 #### Opt_Find_Background — Script
    script `$PXI_SRCDIR/scripts/FindBackground.js`
    paramètres : `filterAvg=true`, `filterSdev=true`, `filterPoisonIndex=false`, `filterMAAD=false`, `filterObjects=false`, `printInformation=true`, `generatePreview=true`, `previewName=Background`, `slowSearch=false`, `fastSearch=true`, `size=50`, `spacingRate=2`, `searchGridSize=100`, `startingPoints=40`
@@ -430,6 +382,103 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > PRÉRÉGLÉ : rien.
 > 
 > À RÉGLER : glisse sur l'image : crée l'aperçu Background ; dans SPCC, Region of Interest › From Preview.
+
+#### Opt_Copie_RGB_continuum — PixelMath
+   expression = `$T` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=true ; showNewImage=true ; newImageId=RGB_cont ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=RGB ; newImageSampleFormat=SameAsTarget
+
+> OPTION — lancée par C_Continuum_prep (ne pas utiliser seule) : copie RGB_cont du RGB linéaire.
+> 
+> PRÉRÉGLÉ : PixelMath $T -> nouvelle image RGB_cont (copie du RGB).
+> 
+> À RÉGLER : rien : lancée par Opt_C_Continuum_prep.
+
+#### Opt_SXT_RGB_continuum — StarXTerminator
+   ml_version=0 ; output_stars=false ; unscreen=false ; remove_stars=true ; remove_spikes=true ; remove_aureoles=true ; remove_reflections=true ; overlap=0.20
+
+> OPTION — lancée par C_Continuum_prep (ne pas utiliser seule) : étoiles retirées de RGB_cont, sans image d'étoiles.
+> 
+> PRÉRÉGLÉ : StarXTerminator, Unscreen décoché (linéaire), sans image d'étoiles, Remove reflections coché.
+> 
+> À RÉGLER : rien : lancée par Opt_C_Continuum_prep sur RGB_cont.
+> 
+> SI :
+> - quadrillage -> Large overlap
+
+#### Opt_C_Continuum_prep — ProcessContainer
+   1. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
+      paramètres : `etapes=Opt_Copie_RGB_continuum>RGB ; Opt_SXT_RGB_continuum>RGB_cont`, `dialogue=false`
+
+> OPTION — continuum retiré de H, O, S (étoiles et lumière d'étoiles hors des canaux) : étape 1 de 3, fin de phase 3 (après C_Extraction_SHO et C_RGB_lineaire, ou après R_C_Lineaire_rapide)
+> Double-clic puis Apply Global : copie RGB_cont du RGB, sans étoiles (RGB garde les siennes pour MAS).
+> 
+> LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).
+> 
+> PRÉRÉGLÉ : conteneur de scripts : Lineaire_auto lance Opt_Copie_RGB_continuum sur RGB (crée RGB_cont) puis Opt_SXT_RGB_continuum sur RGB_cont (étoiles retirées) ; RGB n'est pas touché.
+> 
+> À RÉGLER : à la fin de la phase 3 : S, H, O extraits SANS étoiles et RGB linéaire ouverts (après C_Extraction_SHO et C_RGB_lineaire, ou R_C_Lineaire_rapide) ; double-clic puis Apply Global (pas en glissant) ; ensuite Opt_Continuum_SHO.
+> 
+> SI :
+> - une image RGB_cont existe déjà -> ferme-la avant
+
+#### Opt_Continuum_SHO — Script
+   script `$PXI_SRCDIR/scripts/ContinuumSubtraction.js`
+   paramètres : `applyNoiseReduction=false`, `noiseReductionMethod=NoiseXterminator`, `starrySelected=false`, `outputLinearImageOnly=true`, `aiModel=2.0.0`
+
+> OPTION — étape 2 de 3, après C_Continuum_prep : double-clic puis Apply Global, fenêtre : Ha = H, OIII = O, SII = S, Red (or RGB) = RGB_cont, Green = Select Image, Starless coché
+> Crée HaNB, OIIINB, SIINB.
+> 
+> LANCEMENT : double-clic sur l'icône, puis Apply Global. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
+> 
+> PRÉRÉGLÉ : script SetiAstro ContinuumSubtraction.js : Starless (coefficient 1,0 : images SANS étoiles), sortie linéaire seule, pas de réduction de bruit ; H et S moins le rouge de RGB_cont, O moins son vert ; crée HaNB, SIINB, OIIINB (gris, linéaires).
+> 
+> À RÉGLER : après Opt_C_Continuum_prep (S, H, O sans étoiles et RGB_cont ouverts) : double-clic puis Apply Global ; fenêtre : Ha = H, OIII = O, SII = S, Red (or RGB) = RGB_cont, Green = Select Image (pas un RGB : ce champ veut une image en gris), Starless coché ; Execute ; ensuite Opt_C_Continuum_fin.
+> 
+> SI :
+> - « The image RGB_cont is the wrong color space » -> RGB_cont mis dans Green : remets Green sur Select Image
+> - vue créée HaNB1 (ou OIIINB1…) -> ferme les anciennes *NB avant
+> - SIINB ou OIIINB nettement plus faibles que S ou O sur la nébuleuse -> le rouge contient aussi la raie H, le vert un peu d'OIII : ferme HaNB, OIIINB, SIINB et saute Opt_C_Continuum_fin (S, H, O restent sans continuum retiré)
+> - tailles différentes -> masters et RGB doivent avoir le même cadrage (Crop_appliquer)
+
+#### Opt_C_NB_renommer — ProcessContainer
+   1. PixelMath
+      expression = `HaNB` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=true ; showNewImage=true ; newImageId=H ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=Gray ; newImageSampleFormat=SameAsTarget
+   2. PixelMath
+      expression = `OIIINB` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=true ; showNewImage=true ; newImageId=O ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=Gray ; newImageSampleFormat=SameAsTarget
+   3. PixelMath
+      expression = `SIINB` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=true ; showNewImage=true ; newImageId=S ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=Gray ; newImageSampleFormat=SameAsTarget
+
+> OPTION — lancé par C_Continuum_fin (ne pas utiliser seul) : HaNB, OIIINB, SIINB recopiées en H, O, S.
+> 
+> LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
+> 
+> PRÉRÉGLÉ : conteneur : PixelMath HaNB -> H, OIIINB -> O, SIINB -> S (nouvelles vues en gris).
+> 
+> À RÉGLER : rien : lancé par Opt_C_Continuum_fin, après la fermeture de S, H, O.
+
+#### Opt_C_Continuum_fin — ProcessContainer
+   1. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
+      paramètres : `views=S, H, O, RGB_cont, RGB_cont_R, RGB_cont_G`, `dialogue=false`
+   2. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
+      paramètres : `etapes=Opt_C_NB_renommer>HaNB`, `dialogue=false`
+   3. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
+      paramètres : `views=HaNB, OIIINB, SIINB`, `dialogue=false`
+
+> OPTION — étape 3 de 3, après Continuum_SHO : double-clic puis Apply Global
+> Ferme S, H, O, RGB_cont, puis HaNB, OIIINB, SIINB deviennent H, O, S
+> Ensuite GHS_1_premier sur H.
+> 
+> LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).
+> 
+> PRÉRÉGLÉ : conteneur de scripts : Fermer_vues ferme S, H, O, RGB_cont (et RGB_cont_R, RGB_cont_G si le script les a laissées) ; Lineaire_auto lance Opt_C_NB_renommer (HaNB, OIIINB, SIINB recopiées en H, O, S) ; Fermer_vues ferme HaNB, OIIINB, SIINB.
+> 
+> À RÉGLER : après Opt_Continuum_SHO : double-clic puis Apply Global (pas en glissant) ; ensuite GHS_1_premier sur H, comme sans continuum.
+> 
+> SI :
+> - HaNB, OIIINB ou SIINB absente -> la console le dit, rien n'est recréé : relance Continuum_SHO (S, H, O sont déjà fermées : refais la phase 3)
 
 #### Opt_NXT_H — NoiseXTerminator
    ml_version=0 ; denoise=0.60 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
@@ -499,32 +548,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - NXT par canal voulu (NXT_H, NXT_O_S) -> après ce conteneur, sur les vues extraites
 > - BXT, SXT ou NXT à changer -> double-clic sur le conteneur linéaire du chemin principal (c'est lui qui est lancé)
 > - pas de RGB ouverte -> l'étape C_RGB_lineaire s'arrête : fais-la au chemin principal
-
-#### R_C_Lineaire_continuum_rapide — ProcessContainer
-   1. Script
-      script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
-      paramètres : `etapes=Opt_Combinaison_SHO_continuum>RGB`, `dialogue=false`
-   2. Script
-      script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
-      paramètres : `views=S, H, O, HaNB, OIIINB, SIINB`, `dialogue=false`
-   3. Script
-      script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
-      paramètres : `etapes=C_SHO_lineaire>SHO ; C_Extraction_SHO>SHO ; C_RGB_lineaire>RGB`, `dialogue=false`
-   4. Script
-      script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
-      paramètres : `views=SHO, SHO_stars`, `dialogue=false`
-
-> MODE RAPIDE AVEC CONTINUUM, à la place de R_C_Lineaire_rapide : après R_Gradient_auto_rapide, fais d'abord Continuum_SHO à la main (fenêtre), puis double-clic sur ce conteneur et Apply Global ; ensuite GHS_1_premier sur H.
-> 
-> LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).
-> 
-> PRÉRÉGLÉ : conteneur de scripts : Lineaire_auto lance Opt_Combinaison_SHO_continuum (crée SHO) ; Fermer_vues ferme S, H, O, HaNB, OIIINB, SIINB ; Lineaire_auto lance C_SHO_lineaire sur SHO, C_Extraction_SHO sur SHO (crée S, H, O sans étoiles) et C_RGB_lineaire sur RGB ; Fermer_vues ferme SHO et SHO_stars.
-> 
-> À RÉGLER : après R_Gradient_auto_rapide ET Continuum_SHO (à la main : fenêtre, Ha = H, OIII = O, SII = S, Red (or RGB) = RGB) ; double-clic puis Apply Global (pas en glissant) ; Conteneurs-RGB-SHO chargé ; masters fermés sans enregistrer ; ensuite GHS_1_premier sur H.
-> 
-> SI :
-> - HaNB, OIIINB ou SIINB absente -> la console le dit : relance Continuum_SHO
-> - sans continuum -> R_C_Lineaire_rapide
 
 ## P4_Etirement
 
