@@ -161,7 +161,7 @@ def shorten(xml, prefix, base):
     drag = md5 = None
     if xml.lstrip().startswith('<instance class="ProcessContainer"'):
         # conteneur (retour de l'utilisateur) : rien ne disait de le GLISSER ; le rond Apply Global échoue avec des process natifs
-        drag = 'cont_global' if '/GC_Solver_auto.js' in xml else 'cont_scripts' if base in ('C_Lineaire_rapide', 'C_Continuum_prep', 'C_Continuum_fin') else 'cont'
+        drag = 'cont_global' if '/GC_Solver_auto.js' in xml else 'cont_scripts' if base in ('C_Lineaire_rapide', 'C_Continuum_prep', 'C_Continuum_fin', 'C_RGB_etoiles_rapide') else 'cont'
         if '<description>' not in xml:
             xml = re.sub(r'(<instance class="ProcessContainer" id="[^"]*">)', r'\1\n      <description></description>', xml, count=1)
     elif base in SCRIPTS and 'class="Script"' in xml:
@@ -212,7 +212,7 @@ def layout(entries, naming):
     return insts, icons
 
 TURBO = {'Turbo_debut'}   # ancien mode Turbo supprimé ; Turbo_debut ajouté ensuite (demande de l'utilisateur, 5 octobre 2026)
-RAPIDE = {'C_Lineaire_rapide', 'Main_continuum', 'Lineaire_rapide', 'C_P3_rapide', 'C_RGB_etire_rapide', 'C_Fin_rapide', 'C_Etoiles_fond_rapide', 'C_Preparation_rapide', 'Gradient_auto_rapide', 'C_RGB_rapide', 'C_L_rapide', 'C_RGB_fin_rapide', 'C_LRGB_rapide'}
+RAPIDE = {'C_Lineaire_rapide', 'C_RGB_etoiles_rapide', 'Main_continuum', 'Lineaire_rapide', 'C_P3_rapide', 'C_RGB_etire_rapide', 'C_Fin_rapide', 'C_Etoiles_fond_rapide', 'C_Preparation_rapide', 'Gradient_auto_rapide', 'C_RGB_rapide', 'C_L_rapide', 'C_RGB_fin_rapide', 'C_LRGB_rapide'}
 RAPIDE_NOTE = {
     'LRGB': {1: "MODE RAPIDE (galaxies) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre (étoiles gardées jusqu'à LRGB) : R_C_Preparation_rapide ; R_Gradient_auto_rapide ; R_Lineaire_rapide (RGB et L) ; GHS_1_premier, GHS_2_contraste, GHS_3_fond sur L ; R_C_RGB_etire_rapide sur RGB ; R_C_LRGB_rapide (LRGB sans étoiles) ; finition. Phase 1 : R_C_Preparation_rapide (double-clic puis Apply Global) à la place de LinearPatternSubtraction, Renommer_auto, Combinaison_RGB et Solver_auto",
              2: "R_Gradient_auto_rapide à la place de toute la phase 2 : GradientCorrection sur toutes les images ouvertes (l'astrométrie est déjà faite par R_C_Preparation_rapide)",
@@ -241,7 +241,7 @@ for _p, _x in (('RSHO', ", Combinaison_RGB comprise (RGB des étoiles)"), ('SHO'
         'C_HOO_lineaire (BXT, SXT, NXT)' if _p == 'HOO' else 'C_SHO_lineaire (BXT, SXT, NXT)', 'H, O' if _p == 'HOO' else 'S, H, O',
         ' ; aussi C_RGB_lineaire sur RGB (BXT Correct Only, SPCC, BXT, NXT : RGB reste linéaire avec ses étoiles)' if _p == 'RSHO' else ' ; étoiles S_stars, H_stars, O_stars extraites de SHO_stars' if _p == 'SHO' else ' ; HOO_stars gardée')
 RAPIDE_NOTE['RSHO'][3] += " ; AVEC CONTINUUM (option) : ensuite Opt_C_Continuum_prep, Opt_Continuum_SHO (fenêtre, Starless), Opt_C_Continuum_fin, avant GHS_1_premier"
-RAPIDE_NOTE['RSHO'][4] = "pas encore de rapide narrowband : chemin principal ; canaux S, H, O par les GHS, RGB par MAS, SXT_RGB_etire (crée RGB_stars), SCNR_etoiles_vert, Fermer_RGB"
+RAPIDE_NOTE['RSHO'][4] = "GHS_1_premier, GHS_2_contraste, GHS_3_fond sur S, H, O (chemin principal, à régler) ; R_C_RGB_etoiles_rapide (double-clic puis Apply Global) à la place de MAS, SXT_RGB_etire, SCNR_etoiles_vert et Fermer_RGB : crée RGB_stars, ferme le RGB sans étoiles"
 
 def layout_all(main, opts, rapide=None, notes=None, turbo=None):
     """Une colonne par phase : icône-titre, étapes du chemin principal (E01…), puis icône « options » et options (Opt_…)."""
@@ -1229,6 +1229,9 @@ def lineaire_rapide_nb(prefix):
 insert_before(rgbsho, 'MGC_MARS', [pick(lrgb, 'SPFC_RGB_filtres')])
 insert_after(rgbsho, 'Extraire_O', [pick(lrgb, b) for b in ('BXT_CorrectOnly', 'Find_Background', 'SPCC', 'BXT_RGB', 'NXT_RGB')])
 insert_after(rgbsho, 'GHS_3_fond', [pick(lrgb, b) for b in ('MAS', 'SXT_RGB_etire', 'SCNR_etoiles_vert', 'SCNR_etoiles_violet', 'Saturation_grosses')] + [(fermer('Fermer_RGB', 'RGB'), '')])
+# P4 rapide RGB + SHO (demande de l'utilisateur, 8 octobre 2026 : « un P4 comme pour LRGB qui travaille sur le RGB et fait le RGB_stars a la fin ») :
+# conteneur de scripts en Apply Global (rien à glisser) : Lineaire_auto lance MAS et SXT_RGB_etire du chemin principal sur RGB, SCNR_etoiles_vert sur RGB_stars, Fermer_RGB
+insert_after(rgbsho, 'Fermer_RGB', [(cont('C_RGB_etoiles_rapide', [lineaire_rapide('MAS>RGB ; SXT_RGB_etire>RGB'), script('SCNR_etoiles_vert', ''), fermer('Fermer_RGB', 'RGB')]), '')])
 # RGB + SHO, continuum (demande de l'utilisateur, 8 octobre 2026 : « il faut pouvoir gerer le continuum aussi » ; choix : nettoyer H, O, S par le RGB,
 # RGB + SHO seulement) : options P3 avant Combinaison_SHO ; ContinuumSubtraction.js (SetiAstro, code 1.3.5 lu) accepte Ha, OIII, SII et un RGB
 # (Red (or RGB) : il en extrait R et G) et crée HaNB, SIINB (avec R), OIIINB (avec G)

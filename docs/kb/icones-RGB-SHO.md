@@ -746,6 +746,30 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 ### P4_rapide
 
+#### R_C_RGB_etoiles_rapide — ProcessContainer
+   1. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
+      paramètres : `etapes=MAS>RGB ; SXT_RGB_etire>RGB`, `dialogue=false`
+   2. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js`
+      paramètres : `vue=RGB_stars`, `amount=0`, `satAmount=0`, `scnr=true`, `violet=false`, `dialogue=false`
+   3. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
+      paramètres : `views=RGB`, `dialogue=false`
+
+> MODE RAPIDE, à la place de MAS, SXT_RGB_etire, SCNR_etoiles_vert et Fermer_RGB : RGB linéaire avec étoiles ouvert (après C_RGB_lineaire, R_C_Lineaire_rapide ou T_Turbo_debut), double-clic puis Apply Global (pas en glissant) ; options SCNR_etoiles_violet et Saturation_grosses ensuite, sur RGB_stars, à la main si besoin.
+> 
+> LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).
+> 
+> PRÉRÉGLÉ : conteneur de scripts : Lineaire_auto lance MAS (fond 0,15, tes réglages) puis SXT_RGB_etire (Unscreen : crée RGB_stars) sur RGB ; Etoiles_auto : SCNR vert 1,0 sur RGB_stars ; Fermer_vues ferme RGB (sans étoiles, inutile) ; résultat : RGB_stars étirée, prête pour la phase 7.
+> 
+> À RÉGLER : RGB linéaire avec ses étoiles ouvert, Conteneurs-RGB-SHO chargé (icônes MAS et SXT_RGB_etire du chemin principal) ; double-clic puis Apply Global (pas en glissant) ; à faire avant ou après les GHS de S, H, O.
+> 
+> SI :
+> - étoiles violettes ou grosses étoiles blanches -> SCNR_etoiles_violet ou Saturation_grosses (options P4) sur RGB_stars ensuite
+> - MAS à changer -> double-clic sur E##_MAS du chemin principal (c'est elle qui est lancée)
+> - une étape échoue -> la console dit laquelle ; fais la suite au chemin principal
+
 ## P5_Couleur
 
 #### E22_NBN_SHO — NarrowbandNormalization

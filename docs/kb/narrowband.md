@@ -340,7 +340,8 @@ Demande de l'utilisateur (« Commence faire le premier rapide pour SHO, SHO RGB 
 - **P3 : R_C_Lineaire_rapide** (double-clic puis Apply Global, après R_Gradient_auto_rapide ; Conteneurs du workflow chargé) = conteneur de scripts : Lineaire_auto (E09_Combinaison_SHO ou _HOO sur H) ; Fermer_vues (masters S, H, O ou H, O : l'extraction recrée ces noms) ; Lineaire_auto (C_SHO_lineaire ou C_HOO_lineaire, C_Extraction_SHO ou _HOO ; SHO sans RGB : C_Extraction_etoiles sur SHO_stars ; RGB + SHO : C_RGB_lineaire sur RGB, qui reste linéaire avec ses étoiles) ; Fermer_vues (SHO ou HOO linéaire sans étoiles ; RGB + SHO : aussi SHO_stars). Gardées : SHO_stars (SHO), HOO_stars (HOO), RGB linéaire (RGB + SHO, pour MAS en P4). Les réglages sont ceux des icônes du chemin principal (Lineaire_auto les lance). Pas en glissant : mode de lancement `cont_scripts` du générateur.
 - Masters fermés sans enregistrement (préférence : images inutiles fermées) ; les enregistrer avant pour les garder.
 - **Turbo : T_Turbo_debut** (colonne P1, groupe P1_turbo ; masters seuls ouverts, Conteneurs du workflow chargé, double-clic puis Apply Global) = R_C_Preparation_rapide + R_Gradient_auto_rapide + R_C_Lineaire_rapide en un seul conteneur de scripts (mêmes étapes, pas de conteneur imbriqué). Résultat : S, H, O (ou H, O) sans étoiles, linéaires ; SHO_stars (SHO), HOO_stars (HOO) ; RGB linéaire avec étoiles (RGB + SHO). Pas de continuum dans le turbo.
-- À venir : P4, P5…
+- **P4 (RGB + SHO seul) : R_C_RGB_etoiles_rapide** (double-clic puis Apply Global, rien à glisser) = Lineaire_auto (MAS puis SXT_RGB_etire du chemin principal sur RGB), Etoiles_auto (SCNR vert 1,0 sur RGB_stars), Fermer_vues (RGB) ; équivalent du R_C_RGB_etire_rapide du LRGB, sans GHS fond (le RGB sans étoiles est fermé). Les GHS de S, H, O restent à la main.
+- À venir : P5…
 
 ## BXT et NXT en SHO : réglages comparés au LRGB (analyse du 8 octobre 2026)
 
