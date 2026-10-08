@@ -86,7 +86,8 @@ function etoilesAuto( id, amount, sat, scnr, violet )
       console.warningln( EA_TITLE + " : vue " + id + " introuvable, rien n'est fait." );
       return;
    }
-   eaProcess( w.mainView, id, amount, sat, scnr, violet );
+   // sur copie puis recopie, pour le Ctrl+Z sur la vue d'étoiles (8 octobre 2026)
+   cwApplyOnCopy( w.mainView, function( c ) { eaProcess( c, id, amount, sat, scnr, violet ); } );
 }
 
 function eaScnrVert( view )

@@ -144,7 +144,8 @@ function main()
    let view = Parameters.isViewTarget ? Parameters.targetView : ImageWindow.activeWindow.mainView;
    if ( view.isNull )
       throw new Error( TITLE + " : aucune image." );
-   faProcess( view, p, view.id );
+   // glissé ou dans un conteneur : aussi sur copie puis recopie, pour le Ctrl+Z (8 octobre 2026)
+   cwApplyOnCopy( view, function( c ) { faProcess( c, p, view.id ); } );
 }
 
 main();

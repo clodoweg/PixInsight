@@ -260,7 +260,8 @@ function main()
    let view = Parameters.isViewTarget ? Parameters.targetView : ImageWindow.activeWindow.mainView;
    if ( view.isNull )
       throw new Error( TITLE + " : aucune image." );
-   ntProcess( view, p, view.id );
+   // glissé : aussi sur copie puis recopie, pour le Ctrl+Z (8 octobre 2026)
+   cwApplyOnCopy( view, function( c ) { ntProcess( c, p, view.id ); } );
 }
 
 // p.apercu = true : calcule et affiche seulement le masque.

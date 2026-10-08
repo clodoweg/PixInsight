@@ -28,7 +28,7 @@ function gaGradient( view )
       throw new Error( "échec (voir la console)" );
 }
 
-// onCopy = true (lancé par la fenêtre) : calcul sur une copie puis recopie (étape Ctrl+Z, affichage).
+// onCopy = true (toujours depuis le 8 octobre 2026) : calcul sur une copie puis recopie (étape Ctrl+Z, affichage).
 function gaRun( wins, onCopy )
 {
    if ( wins.length == 0 )
@@ -81,7 +81,8 @@ function main()
          cwRun( GA_TITLE, function() { gaRun( wins, true ); } );
       return;
    }
-   gaRun( ImageWindow.windows.filter( function( w ) { return !w.mainView.id.endsWith( "_stars" ); } ), false );
+   // toujours sur copie puis recopie : étape Ctrl+Z même sans fenêtre (retour de l'utilisateur sur Sharp_MMT, 8 octobre 2026)
+   gaRun( ImageWindow.windows.filter( function( w ) { return !w.mainView.id.endsWith( "_stars" ); } ), true );
 }
 
 main();
