@@ -58,6 +58,9 @@ Recombine en mode _screen_. S'il reste des étoiles magenta ou des halos, passe 
 
 `~((~starless_SHO) * (~stars_RGB))`
 
+### L en plus du RGB + SHO ? (8 octobre 2026)
+Pas pour la nébuleuse en émission : le détail est dans les canaux narrowband, L (large bande) le dilue avec le fond de ciel et les étoiles ; H sert déjà de luminance (Lightness Ha dans NBN_SHO). Utile seulement pour des structures large bande (poussière, nébuleuse par réflexion, IFN, galaxies du champ), sous un ciel noir ; les étoiles viennent déjà du RGB. Sources : forum AstroBin, xiulong.it (résumés).
+
 ### Couleurs RGB + SHO : deux standards superposés
 Nébuleuse au standard SHO, étoiles au standard LRGB (jamais vertes ni magenta). Il reste à vérifier que les deux s'accordent.
 

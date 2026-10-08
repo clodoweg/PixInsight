@@ -1028,3 +1028,10 @@ Fait : CLAUDE.md mis à jour (état des workflows narrowband, décisions BXT/NXT
 - P6 et P7 rapides narrowband (demande de l'utilisateur : « fais un P6 et un P7 rapide aussi ») : R_C_Fin_rapide et R_C_Etoiles_fond_rapide des galaxies (mêmes étapes et réglages, déjà sourcés), avec les étoiles du workflow ; aucune nouvelle valeur. Non testés en narrowband.
 - Question de l'utilisateur : « est ce que tu penses qu'il faut changer les carac de fond saturé et fond auto en SHO ? » puis « 2 Fond_auto reste au chemin principal » : aide de Fond_auto (narrowband) et de R_C_Etoiles_fond_rapide complétée (fond AVANT au-dessus d'environ 0,20 -> sauter l'étape). Analyse du code des scripts de la fiche, aucune source externe ; seuil 0,20 au jugé (non vérifié).
 - Fond_desature en narrowband (choix de l'utilisateur : « plus doux ») : paramètre fin 0,08 au lieu de 0,15 (désaturation limitée à fond + 0,03 à + 0,08 ; zone anti-violet à plein sous fond + 0,08, code du script lu) ; valeur au jugé, non vérifiée.
+
+### L en plus du RGB + SHO ? (8 octobre 2026)
+
+- Question de l'utilisateur : « est ce qu'il y a de l'interet a avoir du L en plus de SHO RGB ? ».
+- Forum — [AstroBin, Luminosity channel in light polluted skies](https://app.astrobin.com/forum/topic/10919/narrowband/luminosity-channel-in-light-poluted-skies) *(résumé)* : « You do not add luminance to a narrowband image » (détail dans les canaux narrowband, L le dilue) ; luminance synthétique tirée de Ha (meilleur SNR) ou d'un mélange Ha/S/O.
+- Tutoriel — [xiulong.it, NGC 281 L(Ha)SHO](https://xiulong.it/journal/?m=202411) *(résumé)* : Ha sans étoiles en luminance (méthode de Nik Szymanek).
+- Bilan : pas d'intérêt pour la nébuleuse en émission (H joue déjà la luminance : Lightness Ha de NBN, option H_en_luminance en HOO) ; intérêt possible seulement pour des structures large bande (poussière, réflexion, IFN, galaxies du champ), avec un ciel noir. Non testé sur les données de l'utilisateur.
