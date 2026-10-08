@@ -740,7 +740,7 @@ GRATUIT
 - **O3 / S2 boost** : 1 (neutre), puis monte au-dessus de 1 peu à peu ; 0 = canal supprimé (image noire si tout est à 0)
 - **Shadow point** : 1 (normalisation à partir de la médiane) ; vers 0 = les zones faibles aussi, plus de bruit
 - **Brightness, Highlight reduction** : 1 (neutres)
-- **SCNR** : 0, partiel si besoin
+- **SCNR** : 0,7 dans NBN_SHO (demande de l'utilisateur) ; 0 dans NBN_HOO, partiel si besoin
 
   * Trop vert → SCNR partiel.
   * O trop discret → O3 boost.

@@ -533,9 +533,9 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - palette Foraxx voulue -> pas besoin : Foraxx_SHO lit S, H, O directement
 
 #### E16_NBN_SHO — NarrowbandNormalization
-   palette=Palette_SHO ; lightness=Lightness_Ha ; blendMode=Blend_Mode1 ; haBlend=0.000 ; scnr=0.000 ; o3Boost=1.000 ; s2Boost=1.000 ; shadowpoint=1.000 ; highlightReduction=1.000 ; brightness=1.000
+   palette=Palette_SHO ; lightness=Lightness_Ha ; blendMode=Blend_Mode1 ; haBlend=0.000 ; scnr=0.700 ; o3Boost=1.000 ; s2Boost=1.000 ; shadowpoint=1.000 ; highlightReduction=1.000 ; brightness=1.000
 
-> PRÉRÉGLÉ : palette SHO, Lightness = Ha (H porte le détail ; demande de l'utilisateur) ; O3 boost, S2 boost, Brightness, Highlight reduction à 1 (neutres : ce sont des multiplicateurs, 0 rend l'image noire) ; Shadow point 1 (normalisation à partir de la médiane).
+> PRÉRÉGLÉ : palette SHO, Lightness = Ha (H porte le détail), SCNR 0,7 (vert retiré en partie) (demandes de l'utilisateur) ; O3 boost, S2 boost, Brightness, Highlight reduction à 1 (neutres : ce sont des multiplicateurs, 0 rend l'image noire) ; Shadow point 1 (normalisation à partir de la médiane).
 > 
 > À RÉGLER : glisse sur SHO_etire (SHO_simple) ; O3 puis S2 boost au-dessus de 1, peu à peu ; Shadow point : 1 = normalisation à partir de la médiane, vers 0 = zones faibles aussi (plus de bruit).
 > 
@@ -587,6 +587,27 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - trop magenta -> 0,50
 
 ### P5_rapide
+
+#### R_C_Palette_rapide — ProcessContainer
+   1. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
+      paramètres : `etapes=SHO_simple>H ; NBN_SHO>SHO_etire`, `dialogue=false`
+   2. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
+      paramètres : `views=S, H, O`, `dialogue=false`
+
+> MODE RAPIDE, à la place de SHO_simple et NBN_SHO : S, H, O étirés (après les GHS, même fond), double-clic puis Apply Global (pas en glissant) ; ensuite la finition sur SHO_etire.
+> 
+> LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).
+> 
+> PRÉRÉGLÉ : conteneur de scripts : Lineaire_auto lance SHO_simple (S, H, O étirés -> SHO_etire) puis NBN_SHO sur SHO_etire (palette SHO, Lightness Ha, SCNR 0,7, boosts à 1) ; Fermer_vues ferme S, H, O.
+> 
+> À RÉGLER : S, H, O étirés, sans étoiles, même fond (après les GHS) ; Conteneurs du workflow chargé (icônes SHO_simple et NBN_SHO du chemin principal) ; double-clic puis Apply Global (pas en glissant) ; ensuite la finition (phase 6) sur SHO_etire.
+> 
+> SI :
+> - couleurs à affiner (O3, S2 boost, SCNR) -> Ctrl+Z sur SHO_etire, double-clic sur NBN_SHO, aperçu, puis glisse-la sur SHO_etire
+> - Foraxx voulu -> pas ce rapide : Foraxx_SHO a besoin de S, H, O
+> - une image SHO_etire existe déjà -> ferme-la avant
 
 ## P6_Finition
 

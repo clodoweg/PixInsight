@@ -2690,12 +2690,12 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <table id="outputData" rows="0"/>
    </instance>
    <instance class="NarrowbandNormalization" version="256" id="E23_NBN_SHO_instance">
-      <description>PRÉRÉGLÉ : palette SHO, Lightness = Ha (H porte le détail ; demande de l'utilisateur) ; O3 boost, S2 boost, Brightness, Highlight reduction à 1 (neutres : ce sont des multiplicateurs, 0 rend l'image noire) ; Shadow point 1 (normalisation à partir de la médiane).&#10;&#10;À RÉGLER : glisse sur SHO_etire (SHO_simple) ; O3 puis S2 boost au-dessus de 1, peu à peu ; Shadow point : 1 = normalisation à partir de la médiane, vers 0 = zones faibles aussi (plus de bruit).&#10;&#10;SI :&#10;- trop vert -&gt; SCNR partiel&#10;- O discret -&gt; O3 boost</description>
+      <description>PRÉRÉGLÉ : palette SHO, Lightness = Ha (H porte le détail), SCNR 0,7 (vert retiré en partie) (demandes de l'utilisateur) ; O3 boost, S2 boost, Brightness, Highlight reduction à 1 (neutres : ce sont des multiplicateurs, 0 rend l'image noire) ; Shadow point 1 (normalisation à partir de la médiane).&#10;&#10;À RÉGLER : glisse sur SHO_etire (SHO_simple) ; O3 puis S2 boost au-dessus de 1, peu à peu ; Shadow point : 1 = normalisation à partir de la médiane, vers 0 = zones faibles aussi (plus de bruit).&#10;&#10;SI :&#10;- trop vert -&gt; SCNR partiel&#10;- O discret -&gt; O3 boost</description>
       <parameter id="palette" value="Palette_SHO"/>
       <parameter id="lightness" value="Lightness_Ha"/>
       <parameter id="blendMode" value="Blend_Mode1"/>
       <parameter id="haBlend" value="0.000"/>
-      <parameter id="scnr" value="0.000"/>
+      <parameter id="scnr" value="0.700"/>
       <parameter id="o3Boost" value="1.000"/>
       <parameter id="s2Boost" value="1.000"/>
       <parameter id="shadowpoint" value="1.000"/>
@@ -2753,7 +2753,40 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="preserveLightness" value="true"/>
    </instance>
    <instance class="NoOperation" version="256" id="P5_rapide_instance">
-      <description>MODE RAPIDE, phase 5 — Couleur : pas encore de rapide narrowband : chemin principal. Icône de repère, sans effet.</description>
+      <description>MODE RAPIDE, phase 5 — Couleur : R_C_Palette_rapide (double-clic puis Apply Global) à la place de SHO_simple et NBN_SHO : S, H, O étirés combinés en SHO_etire, NarrowbandNormalization (palette SHO, Lightness Ha, SCNR 0,7), puis S, H, O fermés. Icône de repère, sans effet.</description>
+   </instance>
+   <instance class="ProcessContainer" id="R_C_Palette_rapide_instance">
+      <description>MODE RAPIDE, à la place de SHO_simple et NBN_SHO : S, H, O étirés (après les GHS, même fond), double-clic puis Apply Global (pas en glissant) ; ensuite la finition sur SHO_etire.&#10;&#10;LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).&#10;&#10;PRÉRÉGLÉ : conteneur de scripts : Lineaire_auto lance SHO_simple (S, H, O étirés -&gt; SHO_etire) puis NBN_SHO sur SHO_etire (palette SHO, Lightness Ha, SCNR 0,7, boosts à 1) ; Fermer_vues ferme S, H, O.&#10;&#10;À RÉGLER : S, H, O étirés, sans étoiles, même fond (après les GHS) ; Conteneurs du workflow chargé (icônes SHO_simple et NBN_SHO du chemin principal) ; double-clic puis Apply Global (pas en glissant) ; ensuite la finition (phase 6) sur SHO_etire.&#10;&#10;SI :&#10;- couleurs à affiner (O3, S2 boost, SCNR) -&gt; Ctrl+Z sur SHO_etire, double-clic sur NBN_SHO, aperçu, puis glisse-la sur SHO_etire&#10;- Foraxx voulu -&gt; pas ce rapide : Foraxx_SHO a besoin de S, H, O&#10;- une image SHO_etire existe déjà -&gt; ferme-la avant</description>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="2">
+            <tr>
+               <td id="id">etapes</td>
+               <td id="value">SHO_simple&gt;H ; NBN_SHO&gt;SHO_etire</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="2">
+            <tr>
+               <td id="id">views</td>
+               <td id="value">S, H, O</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
    </instance>
    <instance class="NoOperation" version="256" id="P6_Finition_instance">
       <description>PHASE 6 — Finition : contraste et saturation sur l'image sans étoiles. Colonne de repère, sans effet.</description>
@@ -4737,6 +4770,7 @@ max($T,f1)</parameter>
    <icon id="Opt_NBColourMapper" instance="Opt_NBColourMapper_instance" xpos="812" ypos="234" workspace="Workspace01"/>
    <icon id="Opt_SCNR_SHO" instance="Opt_SCNR_SHO_instance" xpos="812" ypos="264" workspace="Workspace01"/>
    <icon id="P5_rapide" instance="P5_rapide_instance" xpos="812" ypos="310" workspace="Workspace01"/>
+   <icon id="R_C_Palette_rapide" instance="R_C_Palette_rapide_instance" xpos="812" ypos="344" workspace="Workspace01"/>
    <icon id="P6_Finition" instance="P6_Finition_instance" xpos="1016" ypos="20" workspace="Workspace01"/>
    <icon id="E24_HDRMT_30" instance="E24_HDRMT_30_instance" xpos="1016" ypos="64" workspace="Workspace01"/>
    <icon id="E25_C_Finition" instance="E25_C_Finition_instance" xpos="1016" ypos="94" workspace="Workspace01"/>
