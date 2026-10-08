@@ -377,6 +377,53 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 ### P3_options
 
+#### Opt_Continuum_SHO — Script
+   script `$PXI_SRCDIR/scripts/ContinuumSubtraction.js`
+   paramètres : `applyNoiseReduction=false`, `noiseReductionMethod=NoiseXterminator`, `starrySelected=true`, `outputLinearImageOnly=true`, `aiModel=2.0.0`
+
+> OPTION — continuum retiré de H, O, S par le RGB (étoiles et lumière d'étoiles hors des canaux, émission pure) : étape 1 de 3, avant Combinaison_SHO, après le gradient
+> Double-clic puis Apply Global, fenêtre : Ha = H, OIII = O, SII = S, Red (or RGB) = RGB
+> Crée HaNB, OIIINB, SIINB.
+> 
+> LANCEMENT : double-clic sur l'icône, puis Apply Global. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
+> 
+> PRÉRÉGLÉ : script SetiAstro ContinuumSubtraction.js : Starry (coefficient 0,9), sortie linéaire seule, pas de réduction de bruit ; continuum calculé seul : H et S avec le rouge du RGB, O avec le vert ; crée HaNB, SIINB, OIIINB (gris, linéaires).
+> 
+> À RÉGLER : après le gradient (phase 2), avant Combinaison_SHO : double-clic puis Apply Global ; dans la fenêtre : Ha = H, OIII = O, SII = S, Red (or RGB) = RGB, Green vide ; Execute ; ensuite Combinaison_SHO_continuum.
+> 
+> SI :
+> - vue créée HaNB1 (ou OIIINB1…) -> ferme les anciennes *NB avant, ou renomme
+> - étoiles encore visibles dans les *NB -> relance en Starless (coefficient 1,0)
+> - SIINB ou OIIINB nettement plus faibles que S ou O sur la nébuleuse -> le rouge contient aussi la raie H, le vert un peu d'OIII : dans Combinaison_SHO_continuum, remplace SIINB par S (ou OIIINB par O)
+> - tailles différentes -> masters et RGB doivent avoir le même cadrage (Crop_appliquer)
+
+#### Opt_Combinaison_SHO_continuum — PixelMath
+   expression = `SIINB` ; expression1 = `HaNB` ; expression2 = `OIIINB` ; useSingleExpression=false ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=true ; showNewImage=true ; newImageId=SHO ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=RGB ; newImageSampleFormat=SameAsTarget
+
+> OPTION — étape 2 de 3, à la place de Combinaison_SHO, après Continuum_SHO : R = SIINB, G = HaNB, B = OIIINB, crée SHO
+> Ensuite Fermer_NB.
+> 
+> PRÉRÉGLÉ : R = SIINB, G = HaNB, B = OIIINB, image 'SHO' (comme Combinaison_SHO, avec les canaux sans continuum).
+> 
+> À RÉGLER : après Continuum_SHO, à la place de Combinaison_SHO : double-clic puis Apply Global (ou glisse sur une image) ; ensuite Fermer_NB, puis C_SHO_lineaire sur SHO.
+> 
+> SI :
+> - une image 'SHO' existe déjà -> ferme-la avant
+
+#### Opt_Fermer_NB — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
+   paramètres : `views=S, H, O, HaNB, OIIINB, SIINB`
+
+> OPTION — étape 3 de 3, après Combinaison_SHO_continuum : ferme S, H, O, HaNB, OIIINB, SIINB (l'extraction recrée S, H, O)
+> Ensuite C_SHO_lineaire sur SHO.
+> 
+> PRÉRÉGLÉ : script Fermer_vues : ferme S, H, O, HaNB, OIIINB, SIINB (SHO les contient ; l'extraction recrée S, H, O).
+> 
+> À RÉGLER : double-clic puis Apply Global, juste après Combinaison_SHO_continuum ; enregistre avant les masters à garder.
+> 
+> SI :
+> - une vue absente est ignorée ; la console dit combien de vues sont fermées
+
 #### Opt_Find_Background — Script
    script `$PXI_SRCDIR/scripts/FindBackground.js`
    paramètres : `filterAvg=true`, `filterSdev=true`, `filterPoisonIndex=false`, `filterMAAD=false`, `filterObjects=false`, `printInformation=true`, `generatePreview=true`, `previewName=Background`, `slowSearch=false`, `fastSearch=true`, `size=50`, `spacingRate=2`, `searchGridSize=100`, `startingPoints=40`
@@ -457,6 +504,32 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - NXT par canal voulu (NXT_H, NXT_O_S) -> après ce conteneur, sur les vues extraites
 > - BXT, SXT ou NXT à changer -> double-clic sur le conteneur linéaire du chemin principal (c'est lui qui est lancé)
 > - pas de RGB ouverte -> l'étape C_RGB_lineaire s'arrête : fais-la au chemin principal
+
+#### R_C_Lineaire_continuum_rapide — ProcessContainer
+   1. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
+      paramètres : `etapes=Opt_Combinaison_SHO_continuum>RGB`, `dialogue=false`
+   2. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
+      paramètres : `views=S, H, O, HaNB, OIIINB, SIINB`, `dialogue=false`
+   3. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
+      paramètres : `etapes=C_SHO_lineaire>SHO ; C_Extraction_SHO>SHO ; C_RGB_lineaire>RGB`, `dialogue=false`
+   4. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
+      paramètres : `views=SHO, SHO_stars`, `dialogue=false`
+
+> MODE RAPIDE AVEC CONTINUUM, à la place de R_C_Lineaire_rapide : après R_Gradient_auto_rapide, fais d'abord Continuum_SHO à la main (fenêtre), puis double-clic sur ce conteneur et Apply Global ; ensuite GHS_1_premier sur H.
+> 
+> LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).
+> 
+> PRÉRÉGLÉ : conteneur de scripts : Lineaire_auto lance Opt_Combinaison_SHO_continuum (crée SHO) ; Fermer_vues ferme S, H, O, HaNB, OIIINB, SIINB ; Lineaire_auto lance C_SHO_lineaire sur SHO, C_Extraction_SHO sur SHO (crée S, H, O sans étoiles) et C_RGB_lineaire sur RGB ; Fermer_vues ferme SHO et SHO_stars.
+> 
+> À RÉGLER : après R_Gradient_auto_rapide ET Continuum_SHO (à la main : fenêtre, Ha = H, OIII = O, SII = S, Red (or RGB) = RGB) ; double-clic puis Apply Global (pas en glissant) ; Conteneurs-RGB-SHO chargé ; masters fermés sans enregistrer ; ensuite GHS_1_premier sur H.
+> 
+> SI :
+> - HaNB, OIIINB ou SIINB absente -> la console le dit : relance Continuum_SHO
+> - sans continuum -> R_C_Lineaire_rapide
 
 ## P4_Etirement
 

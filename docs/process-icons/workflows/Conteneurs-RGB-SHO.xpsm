@@ -1505,6 +1505,76 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
    <instance class="NoOperation" version="256" id="P3_options_instance">
       <description>OPTIONS de la phase 3 — Linéaire : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
    </instance>
+   <instance class="Script" version="256" id="Opt_Continuum_SHO_instance">
+      <description>OPTION — continuum retiré de H, O, S par le RGB (étoiles et lumière d'étoiles hors des canaux, émission pure) : étape 1 de 3, avant Combinaison_SHO, après le gradient&#10;Double-clic puis Apply Global, fenêtre : Ha = H, OIII = O, SII = S, Red (or RGB) = RGB&#10;Crée HaNB, OIIINB, SIINB.&#10;&#10;LANCEMENT : double-clic sur l'icône, puis Apply Global. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.&#10;&#10;PRÉRÉGLÉ : script SetiAstro ContinuumSubtraction.js : Starry (coefficient 0,9), sortie linéaire seule, pas de réduction de bruit ; continuum calculé seul : H et S avec le rouge du RGB, O avec le vert ; crée HaNB, SIINB, OIIINB (gris, linéaires).&#10;&#10;À RÉGLER : après le gradient (phase 2), avant Combinaison_SHO : double-clic puis Apply Global ; dans la fenêtre : Ha = H, OIII = O, SII = S, Red (or RGB) = RGB, Green vide ; Execute ; ensuite Combinaison_SHO_continuum.&#10;&#10;SI :&#10;- vue créée HaNB1 (ou OIIINB1…) -&gt; ferme les anciennes *NB avant, ou renomme&#10;- étoiles encore visibles dans les *NB -&gt; relance en Starless (coefficient 1,0)&#10;- SIINB ou OIIINB nettement plus faibles que S ou O sur la nébuleuse -&gt; le rouge contient aussi la raie H, le vert un peu d'OIII : dans Combinaison_SHO_continuum, remplace SIINB par S (ou OIIINB par O)&#10;- tailles différentes -&gt; masters et RGB doivent avoir le même cadrage (Crop_appliquer)</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/ContinuumSubtraction.js</parameter>
+      <parameter id="md5sum">e795144823fb111101f269c22eaaf8cf</parameter>
+      <table id="parameters" rows="5">
+         <tr>
+            <td id="id">applyNoiseReduction</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">noiseReductionMethod</td>
+            <td id="value">NoiseXterminator</td>
+         </tr>
+         <tr>
+            <td id="id">starrySelected</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">outputLinearImageOnly</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">aiModel</td>
+            <td id="value">2.0.0</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
+   </instance>
+   <instance class="PixelMath" version="256" id="Opt_Combinaison_SHO_continuum_instance">
+      <description>OPTION — étape 2 de 3, à la place de Combinaison_SHO, après Continuum_SHO : R = SIINB, G = HaNB, B = OIIINB, crée SHO&#10;Ensuite Fermer_NB.&#10;&#10;PRÉRÉGLÉ : R = SIINB, G = HaNB, B = OIIINB, image 'SHO' (comme Combinaison_SHO, avec les canaux sans continuum).&#10;&#10;À RÉGLER : après Continuum_SHO, à la place de Combinaison_SHO : double-clic puis Apply Global (ou glisse sur une image) ; ensuite Fermer_NB, puis C_SHO_lineaire sur SHO.&#10;&#10;SI :&#10;- une image 'SHO' existe déjà -&gt; ferme-la avant</description>
+      <parameter id="expression">SIINB</parameter>
+      <parameter id="expression1">HaNB</parameter>
+      <parameter id="expression2">OIIINB</parameter>
+      <parameter id="expression3"></parameter>
+      <parameter id="useSingleExpression" value="false"/>
+      <parameter id="symbols"></parameter>
+      <parameter id="clearImageCacheAndExit" value="false"/>
+      <parameter id="cacheGeneratedImages" value="false"/>
+      <parameter id="generateOutput" value="true"/>
+      <parameter id="singleThreaded" value="false"/>
+      <parameter id="optimization" value="true"/>
+      <parameter id="use64BitWorkingImage" value="false"/>
+      <parameter id="rescale" value="false"/>
+      <parameter id="rescaleLower" value="0"/>
+      <parameter id="rescaleUpper" value="1"/>
+      <parameter id="truncate" value="true"/>
+      <parameter id="truncateLower" value="0"/>
+      <parameter id="truncateUpper" value="1"/>
+      <parameter id="createNewImage" value="true"/>
+      <parameter id="showNewImage" value="true"/>
+      <parameter id="newImageId">SHO</parameter>
+      <parameter id="newImageWidth" value="0"/>
+      <parameter id="newImageHeight" value="0"/>
+      <parameter id="newImageAlpha" value="false"/>
+      <parameter id="newImageColorSpace" value="RGB"/>
+      <parameter id="newImageSampleFormat" value="SameAsTarget"/>
+      <table id="outputData" rows="0"/>
+   </instance>
+   <instance class="Script" version="256" id="Opt_Fermer_NB_instance">
+      <description>OPTION — étape 3 de 3, après Combinaison_SHO_continuum : ferme S, H, O, HaNB, OIIINB, SIINB (l'extraction recrée S, H, O)&#10;Ensuite C_SHO_lineaire sur SHO.&#10;&#10;PRÉRÉGLÉ : script Fermer_vues : ferme S, H, O, HaNB, OIIINB, SIINB (SHO les contient ; l'extraction recrée S, H, O).&#10;&#10;À RÉGLER : double-clic puis Apply Global, juste après Combinaison_SHO_continuum ; enregistre avant les masters à garder.&#10;&#10;SI :&#10;- une vue absente est ignorée ; la console dit combien de vues sont fermées</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="1">
+         <tr>
+            <td id="id">views</td>
+            <td id="value">S, H, O, HaNB, OIIINB, SIINB</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
+   </instance>
    <instance class="Script" version="256" id="Opt_Find_Background_instance">
       <description>OPTION — champ rempli de nébuleuse : fond de référence pour SPCC.&#10;&#10;LANCEMENT : double-clic sur l'icône, puis Apply Global. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.&#10;&#10;PRÉRÉGLÉ : rien.&#10;&#10;À RÉGLER : glisse sur l'image : crée l'aperçu Background ; dans SPCC, Region of Interest › From Preview.</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/FindBackground.js</parameter>
@@ -1642,7 +1712,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="interaction" value="SeparateChannels"/>
    </instance>
    <instance class="NoOperation" version="256" id="P3_rapide_instance">
-      <description>MODE RAPIDE, phase 3 — Linéaire : R_C_Lineaire_rapide (double-clic puis Apply Global) à la place de toute la phase 3 : combinaison, C_SHO_lineaire (BXT, SXT, NXT), extraction des canaux (vues S, H, O linéaires sans étoiles) ; masters et images linéaires inutiles fermés ; aussi C_RGB_lineaire sur RGB (BXT Correct Only, SPCC, BXT, NXT : RGB reste linéaire avec ses étoiles). Icône de repère, sans effet.</description>
+      <description>MODE RAPIDE, phase 3 — Linéaire : R_C_Lineaire_rapide (double-clic puis Apply Global) à la place de toute la phase 3 : combinaison, C_SHO_lineaire (BXT, SXT, NXT), extraction des canaux (vues S, H, O linéaires sans étoiles) ; masters et images linéaires inutiles fermés ; aussi C_RGB_lineaire sur RGB (BXT Correct Only, SPCC, BXT, NXT : RGB reste linéaire avec ses étoiles) ; AVEC CONTINUUM : Continuum_SHO à la main (fenêtre), puis R_C_Lineaire_continuum_rapide à la place de R_C_Lineaire_rapide. Icône de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="R_C_Lineaire_rapide_instance">
       <description>MODE RAPIDE, à la place de toute la phase 3 (combinaison, conteneur linéaire, extraction) : après R_Gradient_auto_rapide, double-clic puis Apply Global (pas en glissant) ; Conteneurs du workflow chargé ; ensuite GHS_1_premier sur H.&#10;&#10;LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).&#10;&#10;PRÉRÉGLÉ : conteneur de scripts : Lineaire_auto lance E09_Combinaison_SHO (crée SHO) ; Fermer_vues ferme les masters S, H, O ; Lineaire_auto lance C_SHO_lineaire sur SHO (BXT_NB, SXT_lineaire, NXT_NB 0,75), C_Extraction_SHO sur SHO (crée S, H, O sans étoiles) et C_RGB_lineaire sur RGB (BXT Correct Only, SPCC, BXT, NXT 0,80 : RGB reste linéaire avec ses étoiles) ; Fermer_vues ferme SHO et SHO_stars.&#10;&#10;À RÉGLER : après R_Gradient_auto_rapide (ou la phase 2), double-clic puis Apply Global (pas en glissant) ; le fichier Conteneurs du workflow doit être chargé (icônes E## lancées par Lineaire_auto) ; les masters sont FERMÉS sans enregistrer : enregistre-les avant si tu veux les garder ; ensuite GHS_1_premier sur H ; RGB doit être combinée et résolue (R_C_Preparation_rapide ou phase 1-2) ; en phase 4 : GHS sur S, H, O, puis MAS, SXT_RGB_etire, SCNR_etoiles_vert, Fermer_RGB sur RGB.&#10;&#10;SI :&#10;- une étape en erreur -&gt; la console dit laquelle ; fais la suite au chemin principal à partir de cette icône&#10;- NXT par canal voulu (NXT_H, NXT_O_S) -&gt; après ce conteneur, sur les vues extraites&#10;- BXT, SXT ou NXT à changer -&gt; double-clic sur le conteneur linéaire du chemin principal (c'est lui qui est lancé)&#10;- pas de RGB ouverte -&gt; l'étape C_RGB_lineaire s'arrête : fais-la au chemin principal</description>
@@ -1668,6 +1738,69 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
             <tr>
                <td id="id">views</td>
                <td id="value">S, H, O</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="2">
+            <tr>
+               <td id="id">etapes</td>
+               <td id="value">C_SHO_lineaire&gt;SHO ; C_Extraction_SHO&gt;SHO ; C_RGB_lineaire&gt;RGB</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="2">
+            <tr>
+               <td id="id">views</td>
+               <td id="value">SHO, SHO_stars</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+   </instance>
+   <instance class="ProcessContainer" id="R_C_Lineaire_continuum_rapide_instance">
+      <description>MODE RAPIDE AVEC CONTINUUM, à la place de R_C_Lineaire_rapide : après R_Gradient_auto_rapide, fais d'abord Continuum_SHO à la main (fenêtre), puis double-clic sur ce conteneur et Apply Global ; ensuite GHS_1_premier sur H.&#10;&#10;LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).&#10;&#10;PRÉRÉGLÉ : conteneur de scripts : Lineaire_auto lance Opt_Combinaison_SHO_continuum (crée SHO) ; Fermer_vues ferme S, H, O, HaNB, OIIINB, SIINB ; Lineaire_auto lance C_SHO_lineaire sur SHO, C_Extraction_SHO sur SHO (crée S, H, O sans étoiles) et C_RGB_lineaire sur RGB ; Fermer_vues ferme SHO et SHO_stars.&#10;&#10;À RÉGLER : après R_Gradient_auto_rapide ET Continuum_SHO (à la main : fenêtre, Ha = H, OIII = O, SII = S, Red (or RGB) = RGB) ; double-clic puis Apply Global (pas en glissant) ; Conteneurs-RGB-SHO chargé ; masters fermés sans enregistrer ; ensuite GHS_1_premier sur H.&#10;&#10;SI :&#10;- HaNB, OIIINB ou SIINB absente -&gt; la console le dit : relance Continuum_SHO&#10;- sans continuum -&gt; R_C_Lineaire_rapide</description>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="2">
+            <tr>
+               <td id="id">etapes</td>
+               <td id="value">Opt_Combinaison_SHO_continuum&gt;RGB</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="2">
+            <tr>
+               <td id="id">views</td>
+               <td id="value">S, H, O, HaNB, OIIINB, SIINB</td>
             </tr>
             <tr>
                <td id="id">dialogue</td>
@@ -3979,67 +4112,71 @@ max($T,f1)</parameter>
    <icon id="E14_C_Extraction_SHO" instance="E14_C_Extraction_SHO_instance" xpos="430" ypos="124" workspace="Workspace01"/>
    <icon id="E15_C_RGB_lineaire" instance="E15_C_RGB_lineaire_instance" xpos="430" ypos="154" workspace="Workspace01"/>
    <icon id="P3_options" instance="P3_options_instance" xpos="430" ypos="200" workspace="Workspace01"/>
-   <icon id="Opt_Find_Background" instance="Opt_Find_Background_instance" xpos="430" ypos="234" workspace="Workspace01"/>
-   <icon id="Opt_NXT_H" instance="Opt_NXT_H_instance" xpos="430" ypos="264" workspace="Workspace01"/>
-   <icon id="Opt_NXT_O_S" instance="Opt_NXT_O_S_instance" xpos="430" ypos="294" workspace="Workspace01"/>
-   <icon id="Opt_STF" instance="Opt_STF_instance" xpos="430" ypos="324" workspace="Workspace01"/>
-   <icon id="P3_rapide" instance="P3_rapide_instance" xpos="430" ypos="370" workspace="Workspace01"/>
-   <icon id="R_C_Lineaire_rapide" instance="R_C_Lineaire_rapide_instance" xpos="430" ypos="404" workspace="Workspace01"/>
-   <icon id="P4_Etirement" instance="P4_Etirement_instance" xpos="608" ypos="20" workspace="Workspace01"/>
-   <icon id="E16_GHS_1_premier" instance="E16_GHS_1_premier_instance" xpos="608" ypos="64" workspace="Workspace01"/>
-   <icon id="E17_GHS_2_contraste" instance="E17_GHS_2_contraste_instance" xpos="608" ypos="94" workspace="Workspace01"/>
-   <icon id="E18_GHS_3_fond" instance="E18_GHS_3_fond_instance" xpos="608" ypos="124" workspace="Workspace01"/>
-   <icon id="E19_MAS" instance="E19_MAS_instance" xpos="608" ypos="154" workspace="Workspace01"/>
-   <icon id="E20_SXT_RGB_etire" instance="E20_SXT_RGB_etire_instance" xpos="608" ypos="184" workspace="Workspace01"/>
-   <icon id="E21_SCNR_etoiles_vert" instance="E21_SCNR_etoiles_vert_instance" xpos="608" ypos="214" workspace="Workspace01"/>
-   <icon id="E22_Fermer_RGB" instance="E22_Fermer_RGB_instance" xpos="608" ypos="244" workspace="Workspace01"/>
-   <icon id="P4_options" instance="P4_options_instance" xpos="608" ypos="290" workspace="Workspace01"/>
-   <icon id="Opt_Statistical_Stretch" instance="Opt_Statistical_Stretch_instance" xpos="608" ypos="324" workspace="Workspace01"/>
-   <icon id="Opt_EZ_Soft_Stretch" instance="Opt_EZ_Soft_Stretch_instance" xpos="608" ypos="354" workspace="Workspace01"/>
-   <icon id="Opt_SCNR_etoiles_violet" instance="Opt_SCNR_etoiles_violet_instance" xpos="608" ypos="384" workspace="Workspace01"/>
-   <icon id="Opt_Saturation_grosses" instance="Opt_Saturation_grosses_instance" xpos="608" ypos="414" workspace="Workspace01"/>
-   <icon id="P4_rapide" instance="P4_rapide_instance" xpos="608" ypos="460" workspace="Workspace01"/>
-   <icon id="P5_Couleur" instance="P5_Couleur_instance" xpos="799" ypos="20" workspace="Workspace01"/>
-   <icon id="E23_NBN_SHO" instance="E23_NBN_SHO_instance" xpos="799" ypos="64" workspace="Workspace01"/>
-   <icon id="P5_options" instance="P5_options_instance" xpos="799" ypos="110" workspace="Workspace01"/>
-   <icon id="Opt_Foraxx_SHO" instance="Opt_Foraxx_SHO_instance" xpos="799" ypos="144" workspace="Workspace01"/>
-   <icon id="Opt_Perfect_Palette_Picker" instance="Opt_Perfect_Palette_Picker_instance" xpos="799" ypos="174" workspace="Workspace01"/>
-   <icon id="Opt_NBColourMapper" instance="Opt_NBColourMapper_instance" xpos="799" ypos="204" workspace="Workspace01"/>
-   <icon id="Opt_SCNR_SHO" instance="Opt_SCNR_SHO_instance" xpos="799" ypos="234" workspace="Workspace01"/>
-   <icon id="P5_rapide" instance="P5_rapide_instance" xpos="799" ypos="280" workspace="Workspace01"/>
-   <icon id="P6_Finition" instance="P6_Finition_instance" xpos="1003" ypos="20" workspace="Workspace01"/>
-   <icon id="E24_HDRMT_30" instance="E24_HDRMT_30_instance" xpos="1003" ypos="64" workspace="Workspace01"/>
-   <icon id="E25_C_Finition" instance="E25_C_Finition_instance" xpos="1003" ypos="94" workspace="Workspace01"/>
-   <icon id="E26_C_Sharp_MMT" instance="E26_C_Sharp_MMT_instance" xpos="1003" ypos="124" workspace="Workspace01"/>
-   <icon id="E27_NXT_final" instance="E27_NXT_final_instance" xpos="1003" ypos="154" workspace="Workspace01"/>
-   <icon id="P6_options" instance="P6_options_instance" xpos="1003" ypos="200" workspace="Workspace01"/>
-   <icon id="Opt_Nettoyage_sans_etoiles" instance="Opt_Nettoyage_sans_etoiles_instance" xpos="1003" ypos="234" workspace="Workspace01"/>
-   <icon id="Opt_HDRMT_40" instance="Opt_HDRMT_40_instance" xpos="1003" ypos="264" workspace="Workspace01"/>
-   <icon id="Opt_HDRMT_50" instance="Opt_HDRMT_50_instance" xpos="1003" ypos="294" workspace="Workspace01"/>
-   <icon id="Opt_HDRMT_eclat" instance="Opt_HDRMT_eclat_instance" xpos="1003" ypos="324" workspace="Workspace01"/>
-   <icon id="Opt_DarkStructureEnhance" instance="Opt_DarkStructureEnhance_instance" xpos="1003" ypos="354" workspace="Workspace01"/>
-   <icon id="Opt_Finition_saturee" instance="Opt_Finition_saturee_instance" xpos="1003" ypos="384" workspace="Workspace01"/>
-   <icon id="Opt_Boost_finition_light" instance="Opt_Boost_finition_light_instance" xpos="1003" ypos="414" workspace="Workspace01"/>
-   <icon id="Opt_Boost_finition" instance="Opt_Boost_finition_instance" xpos="1003" ypos="444" workspace="Workspace01"/>
-   <icon id="Opt_Sharp_USM" instance="Opt_Sharp_USM_instance" xpos="1003" ypos="474" workspace="Workspace01"/>
-   <icon id="Opt_NXT_final_doux" instance="Opt_NXT_final_doux_instance" xpos="1003" ypos="504" workspace="Workspace01"/>
-   <icon id="Opt_NXT_final_fort" instance="Opt_NXT_final_fort_instance" xpos="1003" ypos="534" workspace="Workspace01"/>
-   <icon id="P6_rapide" instance="P6_rapide_instance" xpos="1003" ypos="580" workspace="Workspace01"/>
-   <icon id="P7_Etoiles" instance="P7_Etoiles_instance" xpos="1207" ypos="20" workspace="Workspace01"/>
-   <icon id="E28_Fond_desature" instance="E28_Fond_desature_instance" xpos="1207" ypos="64" workspace="Workspace01"/>
-   <icon id="E29_Fond_auto" instance="E29_Fond_auto_instance" xpos="1207" ypos="94" workspace="Workspace01"/>
-   <icon id="E30_Etoiles_reduites" instance="E30_Etoiles_reduites_instance" xpos="1207" ypos="124" workspace="Workspace01"/>
-   <icon id="E31_NXT_dernier" instance="E31_NXT_dernier_instance" xpos="1207" ypos="154" workspace="Workspace01"/>
-   <icon id="P7_options" instance="P7_options_instance" xpos="1207" ypos="200" workspace="Workspace01"/>
-   <icon id="Opt_MT_etoiles" instance="Opt_MT_etoiles_instance" xpos="1207" ypos="234" workspace="Workspace01"/>
-   <icon id="Opt_Halo_B_Gon" instance="Opt_Halo_B_Gon_instance" xpos="1207" ypos="264" workspace="Workspace01"/>
-   <icon id="Opt_Etoiles_grosses" instance="Opt_Etoiles_grosses_instance" xpos="1207" ypos="294" workspace="Workspace01"/>
-   <icon id="Opt_Fond_auto_clair" instance="Opt_Fond_auto_clair_instance" xpos="1207" ypos="324" workspace="Workspace01"/>
-   <icon id="Opt_Etoiles_screen" instance="Opt_Etoiles_screen_instance" xpos="1207" ypos="354" workspace="Workspace01"/>
-   <icon id="Opt_CorrectMagentaStars" instance="Opt_CorrectMagentaStars_instance" xpos="1207" ypos="384" workspace="Workspace01"/>
-   <icon id="Opt_Agrandir_x2" instance="Opt_Agrandir_x2_instance" xpos="1207" ypos="414" workspace="Workspace01"/>
-   <icon id="Opt_ICC_sRGB" instance="Opt_ICC_sRGB_instance" xpos="1207" ypos="444" workspace="Workspace01"/>
-   <icon id="Opt_Export_TIFF" instance="Opt_Export_TIFF_instance" xpos="1207" ypos="474" workspace="Workspace01"/>
-   <icon id="Opt_Fermer_tout" instance="Opt_Fermer_tout_instance" xpos="1207" ypos="504" workspace="Workspace01"/>
-   <icon id="P7_rapide" instance="P7_rapide_instance" xpos="1207" ypos="550" workspace="Workspace01"/>
+   <icon id="Opt_Continuum_SHO" instance="Opt_Continuum_SHO_instance" xpos="430" ypos="234" workspace="Workspace01"/>
+   <icon id="Opt_Combinaison_SHO_continuum" instance="Opt_Combinaison_SHO_continuum_instance" xpos="430" ypos="264" workspace="Workspace01"/>
+   <icon id="Opt_Fermer_NB" instance="Opt_Fermer_NB_instance" xpos="430" ypos="294" workspace="Workspace01"/>
+   <icon id="Opt_Find_Background" instance="Opt_Find_Background_instance" xpos="430" ypos="324" workspace="Workspace01"/>
+   <icon id="Opt_NXT_H" instance="Opt_NXT_H_instance" xpos="430" ypos="354" workspace="Workspace01"/>
+   <icon id="Opt_NXT_O_S" instance="Opt_NXT_O_S_instance" xpos="430" ypos="384" workspace="Workspace01"/>
+   <icon id="Opt_STF" instance="Opt_STF_instance" xpos="430" ypos="414" workspace="Workspace01"/>
+   <icon id="P3_rapide" instance="P3_rapide_instance" xpos="430" ypos="460" workspace="Workspace01"/>
+   <icon id="R_C_Lineaire_rapide" instance="R_C_Lineaire_rapide_instance" xpos="430" ypos="494" workspace="Workspace01"/>
+   <icon id="R_C_Lineaire_continuum_rapide" instance="R_C_Lineaire_continuum_rapide_instance" xpos="430" ypos="524" workspace="Workspace01"/>
+   <icon id="P4_Etirement" instance="P4_Etirement_instance" xpos="648" ypos="20" workspace="Workspace01"/>
+   <icon id="E16_GHS_1_premier" instance="E16_GHS_1_premier_instance" xpos="648" ypos="64" workspace="Workspace01"/>
+   <icon id="E17_GHS_2_contraste" instance="E17_GHS_2_contraste_instance" xpos="648" ypos="94" workspace="Workspace01"/>
+   <icon id="E18_GHS_3_fond" instance="E18_GHS_3_fond_instance" xpos="648" ypos="124" workspace="Workspace01"/>
+   <icon id="E19_MAS" instance="E19_MAS_instance" xpos="648" ypos="154" workspace="Workspace01"/>
+   <icon id="E20_SXT_RGB_etire" instance="E20_SXT_RGB_etire_instance" xpos="648" ypos="184" workspace="Workspace01"/>
+   <icon id="E21_SCNR_etoiles_vert" instance="E21_SCNR_etoiles_vert_instance" xpos="648" ypos="214" workspace="Workspace01"/>
+   <icon id="E22_Fermer_RGB" instance="E22_Fermer_RGB_instance" xpos="648" ypos="244" workspace="Workspace01"/>
+   <icon id="P4_options" instance="P4_options_instance" xpos="648" ypos="290" workspace="Workspace01"/>
+   <icon id="Opt_Statistical_Stretch" instance="Opt_Statistical_Stretch_instance" xpos="648" ypos="324" workspace="Workspace01"/>
+   <icon id="Opt_EZ_Soft_Stretch" instance="Opt_EZ_Soft_Stretch_instance" xpos="648" ypos="354" workspace="Workspace01"/>
+   <icon id="Opt_SCNR_etoiles_violet" instance="Opt_SCNR_etoiles_violet_instance" xpos="648" ypos="384" workspace="Workspace01"/>
+   <icon id="Opt_Saturation_grosses" instance="Opt_Saturation_grosses_instance" xpos="648" ypos="414" workspace="Workspace01"/>
+   <icon id="P4_rapide" instance="P4_rapide_instance" xpos="648" ypos="460" workspace="Workspace01"/>
+   <icon id="P5_Couleur" instance="P5_Couleur_instance" xpos="839" ypos="20" workspace="Workspace01"/>
+   <icon id="E23_NBN_SHO" instance="E23_NBN_SHO_instance" xpos="839" ypos="64" workspace="Workspace01"/>
+   <icon id="P5_options" instance="P5_options_instance" xpos="839" ypos="110" workspace="Workspace01"/>
+   <icon id="Opt_Foraxx_SHO" instance="Opt_Foraxx_SHO_instance" xpos="839" ypos="144" workspace="Workspace01"/>
+   <icon id="Opt_Perfect_Palette_Picker" instance="Opt_Perfect_Palette_Picker_instance" xpos="839" ypos="174" workspace="Workspace01"/>
+   <icon id="Opt_NBColourMapper" instance="Opt_NBColourMapper_instance" xpos="839" ypos="204" workspace="Workspace01"/>
+   <icon id="Opt_SCNR_SHO" instance="Opt_SCNR_SHO_instance" xpos="839" ypos="234" workspace="Workspace01"/>
+   <icon id="P5_rapide" instance="P5_rapide_instance" xpos="839" ypos="280" workspace="Workspace01"/>
+   <icon id="P6_Finition" instance="P6_Finition_instance" xpos="1043" ypos="20" workspace="Workspace01"/>
+   <icon id="E24_HDRMT_30" instance="E24_HDRMT_30_instance" xpos="1043" ypos="64" workspace="Workspace01"/>
+   <icon id="E25_C_Finition" instance="E25_C_Finition_instance" xpos="1043" ypos="94" workspace="Workspace01"/>
+   <icon id="E26_C_Sharp_MMT" instance="E26_C_Sharp_MMT_instance" xpos="1043" ypos="124" workspace="Workspace01"/>
+   <icon id="E27_NXT_final" instance="E27_NXT_final_instance" xpos="1043" ypos="154" workspace="Workspace01"/>
+   <icon id="P6_options" instance="P6_options_instance" xpos="1043" ypos="200" workspace="Workspace01"/>
+   <icon id="Opt_Nettoyage_sans_etoiles" instance="Opt_Nettoyage_sans_etoiles_instance" xpos="1043" ypos="234" workspace="Workspace01"/>
+   <icon id="Opt_HDRMT_40" instance="Opt_HDRMT_40_instance" xpos="1043" ypos="264" workspace="Workspace01"/>
+   <icon id="Opt_HDRMT_50" instance="Opt_HDRMT_50_instance" xpos="1043" ypos="294" workspace="Workspace01"/>
+   <icon id="Opt_HDRMT_eclat" instance="Opt_HDRMT_eclat_instance" xpos="1043" ypos="324" workspace="Workspace01"/>
+   <icon id="Opt_DarkStructureEnhance" instance="Opt_DarkStructureEnhance_instance" xpos="1043" ypos="354" workspace="Workspace01"/>
+   <icon id="Opt_Finition_saturee" instance="Opt_Finition_saturee_instance" xpos="1043" ypos="384" workspace="Workspace01"/>
+   <icon id="Opt_Boost_finition_light" instance="Opt_Boost_finition_light_instance" xpos="1043" ypos="414" workspace="Workspace01"/>
+   <icon id="Opt_Boost_finition" instance="Opt_Boost_finition_instance" xpos="1043" ypos="444" workspace="Workspace01"/>
+   <icon id="Opt_Sharp_USM" instance="Opt_Sharp_USM_instance" xpos="1043" ypos="474" workspace="Workspace01"/>
+   <icon id="Opt_NXT_final_doux" instance="Opt_NXT_final_doux_instance" xpos="1043" ypos="504" workspace="Workspace01"/>
+   <icon id="Opt_NXT_final_fort" instance="Opt_NXT_final_fort_instance" xpos="1043" ypos="534" workspace="Workspace01"/>
+   <icon id="P6_rapide" instance="P6_rapide_instance" xpos="1043" ypos="580" workspace="Workspace01"/>
+   <icon id="P7_Etoiles" instance="P7_Etoiles_instance" xpos="1247" ypos="20" workspace="Workspace01"/>
+   <icon id="E28_Fond_desature" instance="E28_Fond_desature_instance" xpos="1247" ypos="64" workspace="Workspace01"/>
+   <icon id="E29_Fond_auto" instance="E29_Fond_auto_instance" xpos="1247" ypos="94" workspace="Workspace01"/>
+   <icon id="E30_Etoiles_reduites" instance="E30_Etoiles_reduites_instance" xpos="1247" ypos="124" workspace="Workspace01"/>
+   <icon id="E31_NXT_dernier" instance="E31_NXT_dernier_instance" xpos="1247" ypos="154" workspace="Workspace01"/>
+   <icon id="P7_options" instance="P7_options_instance" xpos="1247" ypos="200" workspace="Workspace01"/>
+   <icon id="Opt_MT_etoiles" instance="Opt_MT_etoiles_instance" xpos="1247" ypos="234" workspace="Workspace01"/>
+   <icon id="Opt_Halo_B_Gon" instance="Opt_Halo_B_Gon_instance" xpos="1247" ypos="264" workspace="Workspace01"/>
+   <icon id="Opt_Etoiles_grosses" instance="Opt_Etoiles_grosses_instance" xpos="1247" ypos="294" workspace="Workspace01"/>
+   <icon id="Opt_Fond_auto_clair" instance="Opt_Fond_auto_clair_instance" xpos="1247" ypos="324" workspace="Workspace01"/>
+   <icon id="Opt_Etoiles_screen" instance="Opt_Etoiles_screen_instance" xpos="1247" ypos="354" workspace="Workspace01"/>
+   <icon id="Opt_CorrectMagentaStars" instance="Opt_CorrectMagentaStars_instance" xpos="1247" ypos="384" workspace="Workspace01"/>
+   <icon id="Opt_Agrandir_x2" instance="Opt_Agrandir_x2_instance" xpos="1247" ypos="414" workspace="Workspace01"/>
+   <icon id="Opt_ICC_sRGB" instance="Opt_ICC_sRGB_instance" xpos="1247" ypos="444" workspace="Workspace01"/>
+   <icon id="Opt_Export_TIFF" instance="Opt_Export_TIFF_instance" xpos="1247" ypos="474" workspace="Workspace01"/>
+   <icon id="Opt_Fermer_tout" instance="Opt_Fermer_tout_instance" xpos="1247" ypos="504" workspace="Workspace01"/>
+   <icon id="P7_rapide" instance="P7_rapide_instance" xpos="1247" ypos="550" workspace="Workspace01"/>
 </xpsm>
