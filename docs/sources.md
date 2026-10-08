@@ -998,3 +998,4 @@ Fait : CLAUDE.md mis à jour (état des workflows narrowband, décisions BXT/NXT
 - Tutoriel — [Antlia LRGB-V Pro (fiche revendeur)](https://telescopescanada.ca/products/antlia-lrgb-v-pro-series-filters) *(résumé)* : OIII transmis à plus de 95 % par B et G, Ha et SII par R.
 - Forum/exemple — [SH2-170, simg.de](https://www.simg.de/nebulae1/cas-03.html) *(résumé)* : SHO avec étoiles partiellement retirées par des images de continuum.
 - Non vérifié : part de l'émission retirée avec le continuum (raies H et S dans R, OIII dans G) ; estimation par raisonnement seulement.
+- Icône-note Masters_S_H_O / Masters_H_O supprimée des trois workflows narrowband (question « pourquoi E03_Masters_S_H_O est en NOP ? » puis « Oui supprime la. ») : Renommer_auto renomme, Crop_reference / Crop_appliquer recadrent. Combinaison_RGB ferme toujours R, G, B : Continuum_SHO prend le RGB combiné (« Red (or RGB) », code lu).

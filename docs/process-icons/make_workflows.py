@@ -918,9 +918,8 @@ lhargb = pre_block() + [rgb_comb_item(False), (solver_container(), ''), (solver_
 
 # ---------------------------------------------------------------- narrowband communs
 def nb_masters(chans):
-    names = ' et '.join(chans)
-    return [(note('Masters_' + '_'.join(chans), "Masters %s : retrait du gradient sur CHAQUE master séparément (icônes suivantes). O est le plus sensible à la Lune : contrôle bien son modèle. "
-                  "Nomme les vues exactement 'S', 'H' et 'O' : les formules en dépendent." % names), ''), (solver_container(), ''), (solver_seul(), '')] + gradient_block('sho' if 'S' in chans else 'hoo') + [
+    # icône-note Masters_S_H_O / Masters_H_O supprimée (demande de l'utilisateur, 8 octobre 2026) : Renommer_auto renomme, Crop_reference / Crop_appliquer recadrent
+    return [(solver_container(), ''), (solver_seul(), '')] + gradient_block('sho' if 'S' in chans else 'hoo') + [
         (M.instance('LinearFit', 'LinearFit_ref_H', {'rejectLow': '0.000000', 'rejectHigh': '0.920000'}, {'referenceViewId': 'H'}),
          "Option — LinearFit avec H comme référence : applique sur O (et S). Rapproche fonds et niveaux, ce qu'exige Foraxx (theAstroShed, Galactic Hunter). Référence : vue nommée 'H'.")]
 
