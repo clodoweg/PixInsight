@@ -429,9 +429,14 @@ def solver_container():
     assert n == 1
     return 'ImageSolver', x.replace('id="ImageSolver_Date_instance"', 'id="ImageSolver_instance"', 1)
 
-def gc_solver(base='Solver_auto'):
-    """Mode rapide (demande de l'utilisateur) : ImageSolver sur les images ouvertes (base Solver_auto), avec les réglages d'ImageSolver du matériel, comme solver_container."""
+def gc_solver(base='Solver_auto', tout=True):
+    """Mode rapide (demande de l'utilisateur) : ImageSolver sur les images ouvertes (base Solver_auto), avec les réglages d'ImageSolver du matériel, comme solver_container.
+    tout = False : images couleur (RGB) seulement (rapides et turbos, demande de l'utilisateur, 8 octobre 2026 : seule SPCC en a besoin, pas de SPFC dans les rapides)."""
     name, x = script(base, '')
+    if not tout:
+        a = '<td id="id">solveTout</td>\n            <td id="value">true</td>'
+        assert a in x
+        x = x.replace(a, a.replace('true', 'false'))
     extra = SCRIPTS['ImageSolver'][2]
     rows = ''.join('\n         <tr>\n            <td id="id">%s</td>\n            <td id="value">%s</td>\n         </tr>' % (escape(k), escape(v)) for k, v in extra)
     x, n = re.subn(r'<table id="parameters" rows="(\d+)">(.*?)\n      </table>',
@@ -1134,7 +1139,7 @@ def rgb_etire_rapide(steps):
 def prep_rapide(steps):
     """E00 : renommage, LinearPatternSubtraction (masters mono ouverts), combinaison RGB, en un conteneur."""
     # Solver_auto en dernier (demande de l'utilisateur) : ImageSolver sur toutes les images ; conteneur lancé en Apply Global
-    return (1, cont('C_Preparation_rapide', [pick(steps, b)[0] for b in ('Renommer_auto', 'LinearPatternSubtraction', 'Combinaison_RGB')] + [gc_solver('Solver_auto')]), '')
+    return (1, cont('C_Preparation_rapide', [pick(steps, b)[0] for b in ('Renommer_auto', 'LinearPatternSubtraction', 'Combinaison_RGB')] + [gc_solver('Solver_auto', tout=False)]), '')
 
 # Mode rapide rangé dans les colonnes d'options du workflow normal (demande de l'utilisateur) : plus de section R_ en bas.
 # Les icônes identiques au normal (ImageSolver, GradientCorrection, Continuum_auto, H_dans_RGB, GHS, Etoiles_LRGB…) ne sont pas doublées.
@@ -1201,7 +1206,7 @@ for _b in ('NXT_L', 'SXT_L_lineaire'):
 
 def turbo_debut(steps, extra=()):
     """Turbo (demande de l'utilisateur) : en une fois R_C_Preparation_rapide, R_Gradient_auto_rapide, R_Lineaire_rapide (leurs étapes à la suite, un seul conteneur, Apply Global)"""
-    return cont('Turbo_debut', [pick(steps, b)[0] for b in ('Renommer_auto', 'LinearPatternSubtraction', 'Combinaison_RGB')] + [gc_solver('Solver_auto'),
+    return cont('Turbo_debut', [pick(steps, b)[0] for b in ('Renommer_auto', 'LinearPatternSubtraction', 'Combinaison_RGB')] + [gc_solver('Solver_auto', tout=False),
                 script('Gradient_auto_rapide', ''), pick(steps, 'Lineaire_rapide')[0]] + list(extra))
 insert_after(lrgb, 'C_Preparation_rapide', [(turbo_debut(lrgb), '')])   # colonne P1, à côté de R_C_Preparation_rapide
 insert_after(lhargb, 'C_Preparation_rapide', [(turbo_debut(lhargb), '')])   # turbo LHaRGB laissé tel quel (Lineaire_auto), à revoir (demande de l'utilisateur)
@@ -1291,13 +1296,13 @@ for _st in (sho, hoo):
     insert_after(_st, 'Renommer_auto', [(gc_solver('Solver_auto'), '')])
 for _st, _rgb in ((rgbsho, True), (sho, False), (hoo, False)):
     insert_after(_st, 'Renommer_auto', [(cont('C_Preparation_rapide', [pick(_st, b)[0] for b in ('Renommer_auto', 'LinearPatternSubtraction')]
-                                              + ([rgb_comb_item()[0]] if _rgb else []) + [gc_solver('Solver_auto')]), '')])
+                                              + ([rgb_comb_item()[0]] if _rgb else []) + [gc_solver('Solver_auto', tout=False)]), '')])
     insert_after(_st, 'ImageSolver', [(script('Gradient_auto_rapide', ''), '')])   # P2 rapide (demande de l'utilisateur) : GradientCorrection sur toutes les images, comme en galaxies
     insert_before(_st, 'STF', [(lineaire_rapide_nb({id(rgbsho): 'RSHO', id(sho): 'SHO', id(hoo): 'HOO'}[id(_st)]), '')])   # P3 rapide
     # Turbo narrowband (demande de l'utilisateur, 8 octobre 2026) : R_C_Preparation_rapide + R_Gradient_auto_rapide + R_C_Lineaire_rapide en un seul conteneur, Apply Global
     _p = {id(rgbsho): 'RSHO', id(sho): 'SHO', id(hoo): 'HOO'}[id(_st)]
     insert_after(_st, 'C_Preparation_rapide', [(cont('Turbo_debut', [pick(_st, b)[0] for b in ('Renommer_auto', 'LinearPatternSubtraction')]
-                                                    + ([rgb_comb_item()[0]] if _rgb else []) + [gc_solver('Solver_auto'), script('Gradient_auto_rapide', '')]
+                                                    + ([rgb_comb_item()[0]] if _rgb else []) + [gc_solver('Solver_auto', tout=False), script('Gradient_auto_rapide', '')]
                                                     + lineaire_nb_items(_p)), '')])
 # P6 et P7 rapides narrowband (demande de l'utilisateur, 8 octobre 2026 : « fais un P6 et un P7 rapide aussi ») : mêmes conteneurs que les galaxies
 # (fin_rapide : finition identique, P7 avec les étoiles du workflow dans Etoiles_screen), à GLISSER sur l'image sans étoiles

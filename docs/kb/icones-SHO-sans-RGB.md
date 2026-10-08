@@ -124,15 +124,15 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
       paramètres : `correctColumns=false`, `correctEntireImage=true`, `defectTableFilePath=`, `layersToRemove=9`, `rejectionLimit=3`, `globalRejection=true`, `globalRejectionLimit=5`, `autoBackground=true`, `backgroundReferenceLeft=0`, `backgroundReferenceTop=0`, `backgroundReferenceWidth=512`, `backgroundReferenceHeight=512`, `allOpenImages=true`, `closeWorkingImages=true`, `dialogue=false`
    3. Script
       script `$PXI_SRCDIR/scripts/clodoweg/GC_Solver_auto.js`
-      paramètres : `gradient=false`, `solve=true`, `solveTout=true`, `defaultDate=2020-01-01T00:00:00`, `dialogue=false`, `metadata_focal=2939`, `metadata_xpixsz=3.76`, `solver_catalogMode=2`, `solver_distortionCorrection=true`, `(+ 42 autres réglages ImageSolver)`
+      paramètres : `gradient=false`, `solve=true`, `solveTout=false`, `defaultDate=2020-01-01T00:00:00`, `dialogue=false`, `metadata_focal=2939`, `metadata_xpixsz=3.76`, `solver_catalogMode=2`, `solver_distortionCorrection=true`, `(+ 42 autres réglages ImageSolver)`
 
-> MODE RAPIDE, à la place de LinearPatternSubtraction, Renommer_auto (Combinaison_RGB en RGB + SHO) et Solver_auto : masters seuls ouverts, double-clic puis Apply Global (pas en glissant : ImageSolver échoue sur une image en cours de traitement) ; ensuite la phase 2 sans ImageSolver.
+> MODE RAPIDE, à la place de LinearPatternSubtraction, Renommer_auto (Combinaison_RGB en RGB + SHO) et Solver_auto : masters seuls ouverts, double-clic puis Apply Global (pas en glissant : ImageSolver échoue sur une image en cours de traitement) ; ImageSolver sur le RGB seulement ; ensuite R_Gradient_auto_rapide (ou la phase 2 avec ImageSolver sur S, H, O : SPFC en a besoin).
 > 
 > LANCEMENT : masters seuls ouverts, double-clic puis Apply Global (rond bleu) ; pas en glissant (ImageSolver échoue sur une image en cours de traitement).
 > 
-> PRÉRÉGLÉ : conteneur : Renommer_auto (S, H, O d'après FILTER), LinearPatternSubtraction sur tous les masters ouverts, Solver_auto (ImageSolver sur toutes les images) ; pas de combinaison (SHO combinée en phase 3, après le gradient).
+> PRÉRÉGLÉ : conteneur : Renommer_auto (S, H, O d'après FILTER), LinearPatternSubtraction sur tous les masters ouverts, Solver_auto (ImageSolver sur les images couleur seulement : aucune ici, rien n'en a besoin dans les rapides) ; pas de combinaison (SHO combinée en phase 3, après le gradient).
 > 
-> À RÉGLER : masters S, H, O seuls ouverts ; double-clic puis Apply Global (pas en glissant) ; remplace LinearPatternSubtraction, Renommer_auto et Solver_auto ; ensuite R_Gradient_auto_rapide, ou la phase 2 du chemin principal sans ImageSolver.
+> À RÉGLER : masters S, H, O seuls ouverts ; double-clic puis Apply Global (pas en glissant) ; remplace LinearPatternSubtraction, Renommer_auto et Solver_auto ; ensuite R_Gradient_auto_rapide, ou la phase 2 du chemin principal (ImageSolver d'abord sur les masters mono : SPFC en a besoin, le rapide ne résout que le RGB).
 > 
 > SI :
 > - une étape en erreur -> lis la console, puis fais les icônes du chemin principal une par une
@@ -149,7 +149,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
       paramètres : `correctColumns=false`, `correctEntireImage=true`, `defectTableFilePath=`, `layersToRemove=9`, `rejectionLimit=3`, `globalRejection=true`, `globalRejectionLimit=5`, `autoBackground=true`, `backgroundReferenceLeft=0`, `backgroundReferenceTop=0`, `backgroundReferenceWidth=512`, `backgroundReferenceHeight=512`, `allOpenImages=true`, `closeWorkingImages=true`, `dialogue=false`
    3. Script
       script `$PXI_SRCDIR/scripts/clodoweg/GC_Solver_auto.js`
-      paramètres : `gradient=false`, `solve=true`, `solveTout=true`, `defaultDate=2020-01-01T00:00:00`, `dialogue=false`, `metadata_focal=2939`, `metadata_xpixsz=3.76`, `solver_catalogMode=2`, `solver_distortionCorrection=true`, `(+ 42 autres réglages ImageSolver)`
+      paramètres : `gradient=false`, `solve=true`, `solveTout=false`, `defaultDate=2020-01-01T00:00:00`, `dialogue=false`, `metadata_focal=2939`, `metadata_xpixsz=3.76`, `solver_catalogMode=2`, `solver_distortionCorrection=true`, `(+ 42 autres réglages ImageSolver)`
    4. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Gradient_auto.js`
       paramètres : `dialogue=false`
@@ -170,7 +170,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > LANCEMENT : masters seuls ouverts, double-clic puis Apply Global (rond bleu) ; pas en glissant (ImageSolver échoue sur une image en cours de traitement).
 > 
-> PRÉRÉGLÉ : conteneur, en une fois : Renommer_auto, LinearPatternSubtraction, Solver_auto (= R_C_Preparation_rapide) ; Gradient_auto (GradientCorrection sur toutes les images, = R_Gradient_auto_rapide) ; Lineaire_auto Combinaison_SHO, masters S, H, O fermés, Lineaire_auto C_SHO_lineaire (BXT, SXT, NXT_NB), C_Extraction_SHO et C_Extraction_etoiles, SHO fermée (= R_C_Lineaire_rapide) ; résultat : S, H, O sans étoiles, linéaires, S_stars, H_stars, O_stars et SHO_stars.
+> PRÉRÉGLÉ : conteneur, en une fois : Renommer_auto, LinearPatternSubtraction, Solver_auto (images couleur seulement : aucune ici, = R_C_Preparation_rapide) ; Gradient_auto (GradientCorrection sur toutes les images, = R_Gradient_auto_rapide) ; Lineaire_auto Combinaison_SHO, masters S, H, O fermés, Lineaire_auto C_SHO_lineaire (BXT, SXT, NXT_NB), C_Extraction_SHO et C_Extraction_etoiles, SHO fermée (= R_C_Lineaire_rapide) ; résultat : S, H, O sans étoiles, linéaires, S_stars, H_stars, O_stars et SHO_stars.
 > 
 > À RÉGLER : masters S, H, O seuls ouverts ; Conteneurs-SHO-sans-RGB chargé ; double-clic puis Apply Global (pas en glissant : ImageSolver échoue sur une image en cours de traitement) ; ensuite GHS_1_premier sur H.
 > 
