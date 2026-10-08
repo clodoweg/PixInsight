@@ -3747,198 +3747,6 @@ max($T,f1)</parameter>
    <instance class="NoOperation" version="256" id="P7_options_instance">
       <description>OPTIONS de la phase 7 — Étoiles : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
    </instance>
-   <instance class="Script" version="256" id="Opt_ImageSolver_seul_instance">
-      <description>OPTION — secours : ImageSolver seul, si l'icône ImageSolver (date + ImageSolver) s'arrête après la date.&#10;&#10;PRÉRÉGLÉ : ImageSolver 6.4.2 seul (mêmes réglages que l'icône ImageSolver, sans l'ajout de date).&#10;&#10;À RÉGLER : secours : glisse sur l'image si l'icône ImageSolver s'arrête après la date.&#10;&#10;SI :&#10;- icône bloquée après une mise à jour d'ImageSolver -&gt; efface son champ MD5</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/ImageSolver/ImageSolver.js</parameter>
-      <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="46">
-         <tr>
-            <td id="id">metadata_focal</td>
-            <td id="value">2939</td>
-         </tr>
-         <tr>
-            <td id="id">metadata_useFocal</td>
-            <td id="value">true</td>
-         </tr>
-         <tr>
-            <td id="id">metadata_xpixsz</td>
-            <td id="value">3.76</td>
-         </tr>
-         <tr>
-            <td id="id">metadata_resolution</td>
-            <td id="value">0.00007330116739335556</td>
-         </tr>
-         <tr>
-            <td id="id">metadata_referenceSystem</td>
-            <td id="value">ICRS</td>
-         </tr>
-         <tr>
-            <td id="id">metadata_topocentric</td>
-            <td id="value">false</td>
-         </tr>
-         <tr>
-            <td id="id">solver_version</td>
-            <td id="value">6.4.2</td>
-         </tr>
-         <tr>
-            <td id="id">solver_magnitude</td>
-            <td id="value">12</td>
-         </tr>
-         <tr>
-            <td id="id">solver_autoMagnitude</td>
-            <td id="value">true</td>
-         </tr>
-         <tr>
-            <td id="id">solver_databasePath</td>
-            <td id="value">undefined</td>
-         </tr>
-         <tr>
-            <td id="id">solver_generateErrorImg</td>
-            <td id="value">false</td>
-         </tr>
-         <tr>
-            <td id="id">solver_structureLayers</td>
-            <td id="value">5</td>
-         </tr>
-         <tr>
-            <td id="id">solver_minStructureSize</td>
-            <td id="value">0</td>
-         </tr>
-         <tr>
-            <td id="id">solver_hotPixelFilterRadius</td>
-            <td id="value">1</td>
-         </tr>
-         <tr>
-            <td id="id">solver_noiseReductionFilterRadius</td>
-            <td id="value">0</td>
-         </tr>
-         <tr>
-            <td id="id">solver_sensitivity</td>
-            <td id="value">0.5</td>
-         </tr>
-         <tr>
-            <td id="id">solver_peakResponse</td>
-            <td id="value">0.5</td>
-         </tr>
-         <tr>
-            <td id="id">solver_brightThreshold</td>
-            <td id="value">3</td>
-         </tr>
-         <tr>
-            <td id="id">solver_maxStarDistortion</td>
-            <td id="value">0.6</td>
-         </tr>
-         <tr>
-            <td id="id">solver_autoPSF</td>
-            <td id="value">false</td>
-         </tr>
-         <tr>
-            <td id="id">solver_catalogMode</td>
-            <td id="value">2</td>
-         </tr>
-         <tr>
-            <td id="id">solver_vizierServer</td>
-            <td id="value">https://vizier.cds.unistra.fr/</td>
-         </tr>
-         <tr>
-            <td id="id">solver_showStars</td>
-            <td id="value">false</td>
-         </tr>
-         <tr>
-            <td id="id">solver_showStarMatches</td>
-            <td id="value">false</td>
-         </tr>
-         <tr>
-            <td id="id">solver_showSimplifiedSurfaces</td>
-            <td id="value">false</td>
-         </tr>
-         <tr>
-            <td id="id">solver_showDistortion</td>
-            <td id="value">false</td>
-         </tr>
-         <tr>
-            <td id="id">solver_generateDistortModel</td>
-            <td id="value">false</td>
-         </tr>
-         <tr>
-            <td id="id">solver_catalog</td>
-            <td id="value">PPMXL</td>
-         </tr>
-         <tr>
-            <td id="id">solver_distortionCorrection</td>
-            <td id="value">true</td>
-         </tr>
-         <tr>
-            <td id="id">solver_rbfType</td>
-            <td id="value">101</td>
-         </tr>
-         <tr>
-            <td id="id">solver_maxSplinePoints</td>
-            <td id="value">4000</td>
-         </tr>
-         <tr>
-            <td id="id">solver_splineOrder</td>
-            <td id="value">2</td>
-         </tr>
-         <tr>
-            <td id="id">solver_splineSmoothing</td>
-            <td id="value">0.005</td>
-         </tr>
-         <tr>
-            <td id="id">solver_enableSimplifier</td>
-            <td id="value">true</td>
-         </tr>
-         <tr>
-            <td id="id">solver_simplifierRejectFraction</td>
-            <td id="value">0.1</td>
-         </tr>
-         <tr>
-            <td id="id">solver_outlierDetectionRadius</td>
-            <td id="value">160</td>
-         </tr>
-         <tr>
-            <td id="id">solver_outlierDetectionMinThreshold</td>
-            <td id="value">4</td>
-         </tr>
-         <tr>
-            <td id="id">solver_outlierDetectionSigma</td>
-            <td id="value">5</td>
-         </tr>
-         <tr>
-            <td id="id">solver_useActive</td>
-            <td id="value">true</td>
-         </tr>
-         <tr>
-            <td id="id">solver_outSuffix</td>
-            <td id="value">_ast</td>
-         </tr>
-         <tr>
-            <td id="id">solver_projection</td>
-            <td id="value">0</td>
-         </tr>
-         <tr>
-            <td id="id">solver_projectionOriginMode</td>
-            <td id="value">0</td>
-         </tr>
-         <tr>
-            <td id="id">solver_restrictToHQStars</td>
-            <td id="value">false</td>
-         </tr>
-         <tr>
-            <td id="id">solver_intersectionMode</td>
-            <td id="value">1</td>
-         </tr>
-         <tr>
-            <td id="id">solver_tryApparentCoordinates</td>
-            <td id="value">true</td>
-         </tr>
-         <tr>
-            <td id="id">solver_tryExhaustiveInitialAlignment</td>
-            <td id="value">false</td>
-         </tr>
-      </table>
-      <parameter id="information"></parameter>
-   </instance>
    <instance class="Script" version="256" id="Opt_Find_Background_instance">
       <description>OPTION — champ rempli de nébuleuse : fond de référence pour SPCC.&#10;&#10;LANCEMENT : double-clic sur l'icône, puis Apply Global. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.&#10;&#10;PRÉRÉGLÉ : rien.&#10;&#10;À RÉGLER : glisse sur l'image : crée l'aperçu Background ; dans SPCC, Region of Interest › From Preview.</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/FindBackground.js</parameter>
@@ -4261,17 +4069,16 @@ max($T,f1)</parameter>
    <icon id="E27_Etoiles_reduites" instance="E27_Etoiles_reduites_instance" xpos="1207" ypos="274" workspace="Workspace01"/>
    <icon id="E28_NXT_dernier" instance="E28_NXT_dernier_instance" xpos="1207" ypos="304" workspace="Workspace01"/>
    <icon id="P7_options" instance="P7_options_instance" xpos="1207" ypos="350" workspace="Workspace01"/>
-   <icon id="Opt_ImageSolver_seul" instance="Opt_ImageSolver_seul_instance" xpos="1207" ypos="384" workspace="Workspace01"/>
-   <icon id="Opt_Find_Background" instance="Opt_Find_Background_instance" xpos="1207" ypos="414" workspace="Workspace01"/>
-   <icon id="Opt_MT_etoiles" instance="Opt_MT_etoiles_instance" xpos="1207" ypos="444" workspace="Workspace01"/>
-   <icon id="Opt_Halo_B_Gon" instance="Opt_Halo_B_Gon_instance" xpos="1207" ypos="474" workspace="Workspace01"/>
-   <icon id="Opt_Etoiles_grosses" instance="Opt_Etoiles_grosses_instance" xpos="1207" ypos="504" workspace="Workspace01"/>
-   <icon id="Opt_Fond_auto_clair" instance="Opt_Fond_auto_clair_instance" xpos="1207" ypos="534" workspace="Workspace01"/>
-   <icon id="Opt_Etoiles_screen" instance="Opt_Etoiles_screen_instance" xpos="1207" ypos="564" workspace="Workspace01"/>
-   <icon id="Opt_CorrectMagentaStars" instance="Opt_CorrectMagentaStars_instance" xpos="1207" ypos="594" workspace="Workspace01"/>
-   <icon id="Opt_Agrandir_x2" instance="Opt_Agrandir_x2_instance" xpos="1207" ypos="624" workspace="Workspace01"/>
-   <icon id="Opt_ICC_sRGB" instance="Opt_ICC_sRGB_instance" xpos="1207" ypos="654" workspace="Workspace01"/>
-   <icon id="Opt_Export_TIFF" instance="Opt_Export_TIFF_instance" xpos="1207" ypos="684" workspace="Workspace01"/>
-   <icon id="Opt_Fermer_tout" instance="Opt_Fermer_tout_instance" xpos="1207" ypos="714" workspace="Workspace01"/>
-   <icon id="P7_rapide" instance="P7_rapide_instance" xpos="1207" ypos="760" workspace="Workspace01"/>
+   <icon id="Opt_Find_Background" instance="Opt_Find_Background_instance" xpos="1207" ypos="384" workspace="Workspace01"/>
+   <icon id="Opt_MT_etoiles" instance="Opt_MT_etoiles_instance" xpos="1207" ypos="414" workspace="Workspace01"/>
+   <icon id="Opt_Halo_B_Gon" instance="Opt_Halo_B_Gon_instance" xpos="1207" ypos="444" workspace="Workspace01"/>
+   <icon id="Opt_Etoiles_grosses" instance="Opt_Etoiles_grosses_instance" xpos="1207" ypos="474" workspace="Workspace01"/>
+   <icon id="Opt_Fond_auto_clair" instance="Opt_Fond_auto_clair_instance" xpos="1207" ypos="504" workspace="Workspace01"/>
+   <icon id="Opt_Etoiles_screen" instance="Opt_Etoiles_screen_instance" xpos="1207" ypos="534" workspace="Workspace01"/>
+   <icon id="Opt_CorrectMagentaStars" instance="Opt_CorrectMagentaStars_instance" xpos="1207" ypos="564" workspace="Workspace01"/>
+   <icon id="Opt_Agrandir_x2" instance="Opt_Agrandir_x2_instance" xpos="1207" ypos="594" workspace="Workspace01"/>
+   <icon id="Opt_ICC_sRGB" instance="Opt_ICC_sRGB_instance" xpos="1207" ypos="624" workspace="Workspace01"/>
+   <icon id="Opt_Export_TIFF" instance="Opt_Export_TIFF_instance" xpos="1207" ypos="654" workspace="Workspace01"/>
+   <icon id="Opt_Fermer_tout" instance="Opt_Fermer_tout_instance" xpos="1207" ypos="684" workspace="Workspace01"/>
+   <icon id="P7_rapide" instance="P7_rapide_instance" xpos="1207" ypos="730" workspace="Workspace01"/>
 </xpsm>

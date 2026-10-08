@@ -977,19 +977,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 ### P7_options
 
-#### Opt_ImageSolver_seul — Script
-   script `$PXI_SRCDIR/scripts/ImageSolver/ImageSolver.js`
-   paramètres : `metadata_focal=2939`, `metadata_xpixsz=3.76`, `solver_catalogMode=2`, `solver_distortionCorrection=true`, `(+ 42 autres réglages ImageSolver)`
-
-> OPTION — secours : ImageSolver seul, si l'icône ImageSolver (date + ImageSolver) s'arrête après la date.
-> 
-> PRÉRÉGLÉ : ImageSolver 6.4.2 seul (mêmes réglages que l'icône ImageSolver, sans l'ajout de date).
-> 
-> À RÉGLER : secours : glisse sur l'image si l'icône ImageSolver s'arrête après la date.
-> 
-> SI :
-> - icône bloquée après une mise à jour d'ImageSolver -> efface son champ MD5
-
 #### Opt_Find_Background — Script
    script `$PXI_SRCDIR/scripts/FindBackground.js`
    paramètres : `filterAvg=true`, `filterSdev=true`, `filterPoisonIndex=false`, `filterMAAD=false`, `filterObjects=false`, `printInformation=true`, `generatePreview=true`, `previewName=Background`, `slowSearch=false`, `fastSearch=true`, `size=50`, `spacingRate=2`, `searchGridSize=100`, `startingPoints=40`

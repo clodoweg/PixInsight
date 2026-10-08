@@ -58,6 +58,7 @@ Règle : chaque script a une fenêtre, mise à jour à chaque changement du scri
 
 - Conteneur fait de scripts qui choisissent leurs vues (narrowband R_C_Lineaire_rapide : Lineaire_auto + Fermer_vues) : texte de lancement `LAUNCH['cont_scripts']` (Apply Global), choisi par `shorten()` sur le nom de base. Ne pas généraliser à « tout conteneur de scripts » : C_Sharp_MMT et C_P3_rapide (LHaRGB) se glissent.
 - `layout.when()` : texte `WHEN_NB` en narrowband, sinon `WHEN` ; les icônes R_ et T_ l'utilisent aussi (`WHEN` peut ne pas avoir l'entrée d'un rapide narrowband).
+- Deux icônes du même nom dans un fichier : PixInsight refuse (« Duplicate instance identifier », RGB + SHO, Opt_ImageSolver_seul en P2 et en P7, retour de l'utilisateur, 8 octobre 2026). `build.sh` s'arrête maintenant sur un identifiant en double ; une option déjà placée ne se remet pas dans un autre bloc.
 - Un script ne peut pas lancer une instance Script ; un ProcessContainer peut enchaîner des scripts. `ProcessInstance.fromIcon(id)` exécute une icône de process natif.
 - `#engine v8` (ImageSolver) casse l'ancien code (`PixelMath.prototype.RGB`, LinearPatternSubtraction.jsh).
 - ImageSolver échoue sur l'image glissée dans un conteneur : conteneurs avec Solver_auto en Apply Global.

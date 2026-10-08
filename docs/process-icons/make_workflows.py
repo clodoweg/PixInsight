@@ -983,7 +983,7 @@ def rgb_stars_block():
     return [
         (note('Etoiles_RGB', "ÉTOILES RGB — masters R, G, B : même recadrage, puis les icônes suivantes dans l'ordre (combinaison, gradient via l'icône GradientCorrection ou les notes, BXT Correct Only, SPCC, BXT, SXT)." + STARS_RGBSHO), ''),
         rgb_comb_item(),
-        (solver_container(), ''), (solver_seul(), ''),
+        (solver_container(), ''),   # ImageSolver_seul déjà en option P2 (nb_masters) : deux icônes du même nom refusées par PixInsight
         (M.bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50), D_BXT_CO + BXT_C),
         (note('Find_Background', T_FINDBG), ''),
         spcc(),
