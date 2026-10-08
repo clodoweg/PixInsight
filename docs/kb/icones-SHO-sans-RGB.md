@@ -1086,33 +1086,29 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 ## P7_Etoiles
 
-#### E22_NB_to_RGB_Stars — Script
+#### E22_LinearFit_etoiles — LinearFit
+   referenceViewId=H_stars ; rejectLow=0.000000 ; rejectHigh=0.920000
+
+> PRÉRÉGLÉ : LinearFit, référence H_stars (Reject low 0, Reject high 0,92).
+> 
+> À RÉGLER : glisse sur S_stars puis sur O_stars (HOO : O_stars seule), linéaires, avant NB_to_RGB_Stars : niveaux des étoiles égalisés sur H.
+> 
+> SI :
+> - étoiles encore bleues -> vérifie à la sonde que O_stars est au niveau de H_stars
+> - étoiles toutes blanches -> normal : NB_to_RGB garde les écarts de couleur, Color Boost un peu plus haut
+
+#### E23_NB_to_RGB_Stars — Script
    script `$PXI_SRCDIR/scripts/NBtoRGBStars.js`
 
 > LANCEMENT : glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
 > 
 > PRÉRÉGLÉ : rien (le script ne relit pas l'icône).
 > 
-> À RÉGLER : étoiles H et O (S en option), linéaires ; Apply Star Stretch 5 / 1,0.
+> À RÉGLER : double-clic puis Apply Global ; fenêtre : Ha Stars = H_stars, OIII Stars = O_stars, SII Stars = S_stars (après LinearFit_etoiles) ; Apply Star Stretch coché, Stretch Factor 5, Color Boost 1,0 ; crée NBtoRGB_stars, déjà étirée.
 > 
 > SI :
-> - étoiles bleues verdâtres -> active le ratio et monte-le
-
-#### E23_Star_Stretch — Script
-   script `$PXI_SRCDIR/scripts/star_stretch.js`
-   paramètres : `amount=6`, `satAmount=1.3`, `removeGreen=true`, `showPreview=false`
-
-> LANCEMENT : glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
-> 
-> PRÉRÉGLÉ : Stretch Amount 6, Color Boost 1,3, Remove Green (SCNR) coché.
-> 
-> À RÉGLER : rien ; sur l'image d'étoiles linéaire.
-> 
-> SI :
-> - cœurs d'étoiles blancs (R = G = B = 1) -> 5,5
-> - étoiles trop grosses -> 5 ou 4
-> - étoiles grisées par le SCNR -> décoche Remove Green
-> - étoiles criardes -> Color Boost 1,0
+> - étoiles bleues verdâtres -> coche Green Channel Blend Ratio (0,3)
+> - étoiles encore toutes bleues -> LinearFit_etoiles oublié sur O_stars
 
 #### E24_Fond_desature — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js`
@@ -1180,6 +1176,24 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > SI :
 > - étoiles bleues verdâtres -> 0,3·H + 0,7·O
+
+#### Opt_Star_Stretch — Script
+   script `$PXI_SRCDIR/scripts/star_stretch.js`
+   paramètres : `amount=6`, `satAmount=1.3`, `removeGreen=true`, `showPreview=false`
+
+> OPTION — seulement si NB_to_RGB_Stars a été lancé sans Apply Star Stretch (ou pour HOO_stars, Stars_HOO) : sur l'image d'étoiles LINÉAIRE.
+> 
+> LANCEMENT : glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
+> 
+> PRÉRÉGLÉ : Stretch Amount 6, Color Boost 1,3, Remove Green (SCNR) coché.
+> 
+> À RÉGLER : rien ; sur l'image d'étoiles linéaire.
+> 
+> SI :
+> - cœurs d'étoiles blancs (R = G = B = 1) -> 5,5
+> - étoiles trop grosses -> 5 ou 4
+> - étoiles grisées par le SCNR -> décoche Remove Green
+> - étoiles criardes -> Color Boost 1,0
 
 #### Opt_SCNR_etoiles_vert — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js`
@@ -1454,7 +1468,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > PRÉRÉGLÉ : conteneur : Fond_desature (teinte du fond retirée), Fond_auto (fond amené à 0,12, neutre), Etoiles_screen (~((~$T) * (~NBtoRGB_stars))), NXT_dernier (Denoise 0,25, image avec étoiles), Export_TIFF (copie TIFF 16 bits sRGB nommée d'après le dossier des masters).
 > 
-> À RÉGLER : glisse sur l'image sans étoiles finie ; NBtoRGB_stars (NB_to_RGB_Stars puis Star_Stretch) ouverte ; l'image est finie et exportée.
+> À RÉGLER : glisse sur l'image sans étoiles finie ; NBtoRGB_stars (LinearFit_etoiles puis NB_to_RGB_Stars, étirée par le script) ouverte ; l'image est finie et exportée.
 > 
 > SI :
 > - étoiles trop présentes -> fais les étapes à la main avec Etoiles_reduites (à la place d'Etoiles_screen)

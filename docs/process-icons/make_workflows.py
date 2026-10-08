@@ -244,9 +244,9 @@ for _p, _x in (('RSHO', ", Combinaison_RGB comprise (RGB des étoiles)"), ('SHO'
     RAPIDE_NOTE[_p][2] = "R_Gradient_auto_rapide (double-clic puis Apply Global) à la place de toute la phase 2 (ImageSolver, SPFC, MGC + MARS, GradientCorrection) : GradientCorrection sur toutes les images ouvertes (%s) ; l'astrométrie est déjà faite par R_C_Preparation_rapide" % ('S, H, O et RGB' if _p == 'RSHO' else 'S, H, O' if _p == 'SHO' else 'H, O')
     RAPIDE_NOTE[_p][3] = "R_C_Lineaire_rapide (double-clic puis Apply Global) à la place de toute la phase 3 : combinaison, %s, extraction des canaux (vues %s linéaires sans étoiles) ; masters et images linéaires inutiles fermés%s" % (
         'C_HOO_lineaire (BXT, SXT, NXT)' if _p == 'HOO' else 'C_SHO_lineaire (BXT, SXT, NXT)', 'H, O' if _p == 'HOO' else 'S, H, O',
-        ' ; aussi C_RGB_lineaire sur RGB (BXT Correct Only, SPCC, BXT, NXT : RGB reste linéaire avec ses étoiles)' if _p == 'RSHO' else ' ; étoiles S_stars, H_stars, O_stars extraites de SHO_stars' if _p == 'SHO' else ' ; HOO_stars gardée')
+        ' ; aussi C_RGB_lineaire sur RGB (BXT Correct Only, SPCC, BXT, NXT : RGB reste linéaire avec ses étoiles)' if _p == 'RSHO' else ' ; étoiles S_stars, H_stars, O_stars extraites de SHO_stars' if _p == 'SHO' else ' ; étoiles H_stars, O_stars extraites de HOO_stars')
 RAPIDE_NOTE['RSHO'][3] += " ; AVEC CONTINUUM (option) : ensuite Opt_C_Continuum_prep, Opt_Continuum_SHO (fenêtre, Starless), Opt_C_Continuum_fin, avant GHS_1_premier"
-for _p, _et in (('RSHO', 'RGB_stars'), ('SHO', 'NBtoRGB_stars'), ('HOO', 'HOO_stars')):
+for _p, _et in (('RSHO', 'RGB_stars'), ('SHO', 'NBtoRGB_stars'), ('HOO', 'NBtoRGB_stars')):
     RAPIDE_NOTE[_p][6] = "R_C_Fin_rapide GLISSÉ sur l'image sans étoiles après la palette : HDRMT à 30 %, masque, Courbes, LHE, LHE_fin, Sharp_MMT, masque retiré, NXT_final 0,40 (= HDRMT_30, C_Finition, C_Sharp_MMT et NXT_final)"
     RAPIDE_NOTE[_p][7] = "R_C_Etoiles_fond_rapide GLISSÉ sur l'image sans étoiles finie : Fond_desature, Fond_auto (0,12), étoiles remises (Etoiles_screen avec %s), NXT_dernier (0,25), Export_TIFF" % _et
 for _p in ('RSHO', 'SHO'):
@@ -1029,14 +1029,16 @@ sho = pre_block() + nb_masters(['S', 'H', 'O']) + [
     (M.sxt('SXT_lineaire', False), D_SXT_LIN + " Sur l'image SHO : GARDE LES DEUX images (fond et étoiles), les étoiles viennent ici du narrowband."),
     NXT_NB,
 ] + extract([(0, 'S'), (1, 'H'), (2, 'O')], "l'image SHO sans étoiles") + extract([(0, 'S_stars'), (1, 'H_stars'), (2, 'O_stars')], "l'image d'étoiles SHO (linéaire)") + nb_noise + ghs_block(GHS_NB, STAT_NB) + sho_palette + finish_block(sho_finish, galaxie=True) + [
-    (note('NB_to_RGB_Stars', "ÉTOILES — chemin principal (choix de l'utilisateur, 8 octobre 2026) : NB to RGB Star Combination (SetiAstro, script) sur S_stars, H_stars, O_stars (extraites de SHO_stars en P3) ; crée NBtoRGB_stars, l'image d'étoiles d'Etoiles_screen. Ha Stars et OIII Stars (linéaires, obligatoires), S optionnel. "
-          "Green Channel Blend Ratio décoché par défaut (Ha to OIII ratio 0,3 si activé). Apply Star Stretch recommandé par l'auteur : Stretch Factor 5, Color Boost 1,0. "
+    (M.instance('LinearFit', 'LinearFit_etoiles', {'rejectLow': '0.000000', 'rejectHigh': '0.920000'}, {'referenceViewId': 'H_stars'}),
+     "LinearFit, référence H_stars (étoiles linéaires) : glisse sur S_stars, puis sur O_stars. Égalise les niveaux des étoiles des canaux avant NB_to_RGB_Stars : sans cela O_stars, plus brillante (capteur plus sensible vers 500 nm), donne des étoiles toutes bleues (retour de l'utilisateur, 8 octobre 2026)."),
+    (note('NB_to_RGB_Stars', "ÉTOILES — chemin principal (choix de l'utilisateur, 8 octobre 2026) : NB to RGB Star Combination (SetiAstro, script) sur S_stars, H_stars, O_stars (extraites de SHO_stars en P3, égalisées par LinearFit_etoiles) ; crée NBtoRGB_stars, l'image d'étoiles d'Etoiles_screen. Ha Stars et OIII Stars (linéaires, obligatoires), S optionnel. "
+          "Green Channel Blend Ratio décoché par défaut (Ha to OIII ratio 0,3 si activé). Apply Star Stretch coché : Stretch Factor 5, Color Boost 1,0 (réglages de l'utilisateur et de l'auteur ; le script ne relit pas l'icône : à régler dans sa fenêtre) ; pas de Star_Stretch ensuite. "
           "Mélange du script (code v1.6) : R = 0,5·H + 0,5·S (H seul sans S), G = ratio·H + (1 − ratio)·O (0,3·H + 0,7·O par défaut), B = O ; monte le ratio si les étoiles bleues sont verdâtres ou les rouges trop rouges, baisse-le si les étoiles chaudes tirent vers le jaune-vert." + STARS_NB + STARS_NB_FIX), ''),
     (pm('Etoiles_HOO_synth', 'H_stars', '0.2*H_stars + 0.8*O_stars', 'O_stars', new_image=True, new_id='Stars_HOO', space='RGB'),
      "ÉTOILES — méthode 2 : étoiles HOO synthétiques (AIASTRO) sur les images d'étoiles linéaires 'H_stars' et 'O_stars' : R = H, G = 20 % H + 80 % O, B = O. "
      "Calibre ensuite la couleur, puis étire avec Star Stretch. Crée 'Stars_HOO' : mets ce nom dans l'icône Etoiles_screen à la place de NBtoRGB_stars. Rapport choisi par l'auteur en comparant à des étoiles RGB, propre à son matériel ; "
      "une légère teinte verte peut rester sur les étoiles bleues (passe à 0,3·H + 0,7·O)." + STARS_NB),
-    (note('Star_Stretch', T_STARSTRETCH + " SHO sans RGB : sur NBtoRGB_stars (créée par NB_to_RGB_Stars, linéaire), ou sur Stars_HOO (méthode 2). Étoiles narrowband : Color Boost plus bas si criardes, Stretch Amount plus bas si toutes blanches."), ''),
+    (note('Star_Stretch', T_STARSTRETCH + " SHO sans RGB : OPTION, seulement si NB_to_RGB_Stars a été lancé sans Apply Star Stretch, ou pour Stars_HOO (méthode 2). Étoiles narrowband : Color Boost plus bas si criardes, Stretch Amount plus bas si toutes blanches."), ''),
 ] + stars_end('NBtoRGB_stars', cms=True, cms_extra=' ' + STARS_NB + STARS_NB_FIX, alt=" Étoiles HOO synthétiques (méthode 2) : remplace NBtoRGB_stars par Stars_HOO dans l'icône ; SHO_stars directe (couleurs de la palette) : par SHO_stars.")
 
 # ---------------------------------------------------------------- HOO
@@ -1052,7 +1054,7 @@ hoo = pre_block() + [
     (M.bxt('BXT_NB', False, 0.25, 0.0, 0.60), D_BXT_NB + BXT_C),
     (M.sxt('SXT_lineaire', False), D_SXT_LIN + " Sur l'image HOO : garde l'image d'étoiles si tu n'as pas d'étoiles RGB."),
     NXT_NB,
-] + extract([(0, 'H'), (1, 'O')], "l'image HOO sans étoiles") + nb_noise + ghs_block(GHS_NB, STAT_NB) + [
+] + extract([(0, 'H'), (1, 'O')], "l'image HOO sans étoiles") + extract([(0, 'H_stars'), (1, 'O_stars')], "l'image d'étoiles HOO (linéaire)") + nb_noise + ghs_block(GHS_NB, STAT_NB) + [
     (pm('HOO_simple', 'H', 'O', 'O', new_image=True, new_id='HOO_etire', space='RGB'),
      "PALETTE — combinaison simple sur 'H' et 'O' étirés sans étoiles, à équilibrer ensuite avec NarrowbandNormalization (icône suivante)."),
     (M.instance('NarrowbandNormalization', 'NBN_HOO', {'palette': 'Palette_HOO', 'o3Boost': '1.000', 's2Boost': '1.000', 'highlightReduction': '1.000', 'brightness': '1.000'}),
@@ -1071,7 +1073,7 @@ hoo = pre_block() + [
     (M.instance('LRGBCombination', 'H_en_luminance', {'mL': '0.500', 'mc': '0.400', 'noiseReduction': True}, post=M.lrgb_post),
      "Option — H en luminance : fais une copie de H étiré nommée 'L' (même fond et médiane proche que l'image HOO, sinon couleurs délavées), puis applique sur l'image HOO. Seul L activé, Lightness 0,5, Saturation 0,40."),
 ] + finish_block(galaxie=True) + [
-    (note('Etoiles_HOO', "ÉTOILES — avec RGB : suis le bloc étoiles RGB du workflow RGB + SHO. Sans RGB : utilise l'image d'étoiles de SXT sur HOO (ou NB to RGB Star Combination), étire-la avec Star Stretch ; son nom ('HOO_stars' après SXT, 'NBtoRGB_stars' après NB to RGB, 'RGB_stars' avec RGB) doit être celui de l'icône Etoiles_screen. "
+    (note('Etoiles_HOO', "ÉTOILES — avec RGB : suis le bloc étoiles RGB du workflow RGB + SHO. Sans RGB (chemin principal, 8 octobre 2026) : LinearFit_etoiles sur O_stars, puis NB_to_RGB_Stars (H_stars, O_stars ; Apply Star Stretch 5, Color Boost 1,0) qui crée NBtoRGB_stars, l'image d'Etoiles_screen ; HOO_stars directe ou RGB_stars : change le nom dans Etoiles_screen. "
           "Les étoiles HOO tirent vers le rouge et le cyan : désature-les légèrement si besoin. "
           "STANDARD : étoiles plausibles, du bleu-blanc au jaune-orange, peu saturées, une gamme de couleurs, jamais vertes. En HOO classique (G = B = O), le magenta est impossible "
           "mais les étoiles chaudes sortent rouges ou saumon (jamais jaunes) et les froides cyan ; cœur rouge / halo cyan fréquent (étoiles O plus grosses). "
@@ -1079,8 +1081,15 @@ hoo = pre_block() + [
           "Caméra couleur dual-band : NB to RGB accepte l'image couleur directement (H = canal rouge, O = canal vert seul). "
           "CONTRÔLE à la sonde 15x15 sur le halo : chaude R >= G >= B (G = B exactement = HOO classique, pas de jaune possible), froide B >= G >= R, pas de G au-dessus de R et B ; une dizaine d'étoiles pas toutes identiques. "
           "AJUSTER : bleues verdâtres ou chaudes trop rouges -> plus de H dans le vert ; chaudes jaune-vert -> moins ; cyan saturé -> désature ou Color Boost plus bas ; anneau rouge/cyan -> réduction d'étoiles ; toutes blanches -> étirement plus doux."), ''),
-    (note('Star_Stretch', T_STARSTRETCH + " Étoiles HOO : Color Boost plus bas si le cyan ou le rouge est criard, Stretch Amount plus bas si toutes blanches."), ''),
-] + stars_end('HOO_stars', alt=" Avec étoiles RGB : remplace HOO_stars par RGB_stars ; avec NB to RGB Star Combination : par NBtoRGB_stars ; étoiles synthétiques : par Stars_HOO.")
+    # HOO sans RGB (demande de l'utilisateur, 8 octobre 2026 : « linear fit du H_stars vers les autres, puis NBtoRGBStars avec strech 5 et color boost 1 ») :
+    # H_stars et O_stars extraites de HOO_stars en P3 ; LinearFit_etoiles sur O_stars, NB_to_RGB_Stars (sans S) -> NBtoRGB_stars
+    (M.instance('LinearFit', 'LinearFit_etoiles', {'rejectLow': '0.000000', 'rejectHigh': '0.920000'}, {'referenceViewId': 'H_stars'}),
+     "LinearFit, référence H_stars (étoiles linéaires) : glisse sur O_stars. Égalise les niveaux des étoiles des canaux avant NB_to_RGB_Stars : sans cela O_stars, plus brillante (capteur plus sensible vers 500 nm), donne des étoiles toutes bleues (retour de l'utilisateur, 8 octobre 2026)."),
+    (note('NB_to_RGB_Stars', "ÉTOILES — chemin principal (choix de l'utilisateur, 8 octobre 2026) : NB to RGB Star Combination (SetiAstro, script) sur H_stars et O_stars (extraites de HOO_stars en P3, égalisées par LinearFit_etoiles), pas de S ; crée NBtoRGB_stars, l'image d'étoiles d'Etoiles_screen. "
+          "Mélange du script sans S : R = H, G = 0,3·H + 0,7·O si Green Channel Blend Ratio coché (sinon G = O), B = O : coche-le, sinon étoiles chaudes rouges et froides cyan. "
+          "Apply Star Stretch coché : Stretch Factor 5, Color Boost 1,0 (réglages de l'utilisateur et de l'auteur ; le script ne relit pas l'icône : à régler dans sa fenêtre) ; pas de Star_Stretch ensuite."), ''),
+    (note('Star_Stretch', T_STARSTRETCH + " HOO : OPTION, seulement si NB_to_RGB_Stars a été lancé sans Apply Star Stretch, ou pour HOO_stars / Stars_HOO. Color Boost plus bas si le cyan ou le rouge est criard."), ''),
+] + stars_end('NBtoRGB_stars', alt=" HOO_stars directe (étoiles HOO classiques, rouges et cyan) : remplace NBtoRGB_stars par HOO_stars ; avec étoiles RGB : par RGB_stars ; étoiles synthétiques : par Stars_HOO.")
 
 os.makedirs(OUT, exist_ok=True)
 mat = [(spcc_perso('SPCC_QHY600_Antlia'), T_SPCC)] + [(M.spfc(n + '_QHY600_Antlia' if n != 'SPFC_RGB_filtres' else 'SPFC_RGB_QHY600_Antlia', **o), D_SPFC[n] + D_SPFC_COMMUN) for n, o in [
@@ -1253,7 +1262,7 @@ for _st in (rgbsho, sho, hoo):
 _P3_NB = {
     'RSHO': ('Combinaison_SHO>H', 'S, H, O', 'C_SHO_lineaire>SHO ; C_Extraction_SHO>SHO ; C_RGB_lineaire>RGB', 'SHO, SHO_stars'),
     'SHO': ('Combinaison_SHO>H', 'S, H, O', 'C_SHO_lineaire>SHO ; C_Extraction_SHO>SHO ; C_Extraction_etoiles>SHO_stars', 'SHO'),
-    'HOO': ('Combinaison_HOO>H', 'H, O', 'C_HOO_lineaire>HOO ; C_Extraction_HOO>HOO', 'HOO'),
+    'HOO': ('Combinaison_HOO>H', 'H, O', 'C_HOO_lineaire>HOO ; C_Extraction_HOO>HOO ; C_Extraction_etoiles>HOO_stars', 'HOO'),
 }
 def lineaire_nb_items(prefix):
     comb, masters, suite, fin = _P3_NB[prefix]
@@ -1324,7 +1333,7 @@ for _st in (rgbsho, sho, hoo):
     _c6, _c7 = fin_rapide(_st)
     insert_after(_st, 'NXT_final_fort', [(_c6, '')])
     _st.append((_c7, ''))
-for _st, _et in ((rgbsho, 'RGB_stars'), (sho, 'NBtoRGB_stars'), (hoo, 'HOO_stars')):
+for _st, _et in ((rgbsho, 'RGB_stars'), (sho, 'NBtoRGB_stars'), (hoo, 'NBtoRGB_stars')):
     # Nettoyage_sans_etoiles : image d'étoiles du workflow
     _k = next(k for k, (it, d) in enumerate(_st) if it[0] == 'Nettoyage_sans_etoiles')
     (_n, _x), _d = _st[_k]

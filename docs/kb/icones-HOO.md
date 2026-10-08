@@ -180,7 +180,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
       paramètres : `views=H, O`, `dialogue=false`
    7. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
-      paramètres : `etapes=C_HOO_lineaire>HOO ; C_Extraction_HOO>HOO`, `dialogue=false`
+      paramètres : `etapes=C_HOO_lineaire>HOO ; C_Extraction_HOO>HOO ; C_Extraction_etoiles>HOO_stars`, `dialogue=false`
    8. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
       paramètres : `views=HOO`, `dialogue=false`
@@ -392,6 +392,20 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > Double-clic sur le conteneur pour voir ou changer les réglages de chaque étape.
 
+#### E12_C_Extraction_etoiles — ProcessContainer
+   1. PixelMath
+      expression = `$T[0]` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=true ; showNewImage=true ; newImageId=H_stars ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=Gray ; newImageSampleFormat=SameAsTarget
+   2. PixelMath
+      expression = `$T[1]` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=true ; showNewImage=true ; newImageId=O_stars ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=Gray ; newImageSampleFormat=SameAsTarget
+
+> LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
+> 
+> CONTENEUR : Extraire_H_stars, Extraire_O_stars.
+> 
+> SUR : l'image d'étoiles HOO, linéaire.
+> 
+> Double-clic sur le conteneur pour voir ou changer les réglages de chaque étape.
+
 ### P3_options
 
 #### Opt_NXT_H — NoiseXTerminator
@@ -444,7 +458,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
       paramètres : `views=H, O`, `dialogue=false`
    3. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
-      paramètres : `etapes=C_HOO_lineaire>HOO ; C_Extraction_HOO>HOO`, `dialogue=false`
+      paramètres : `etapes=C_HOO_lineaire>HOO ; C_Extraction_HOO>HOO ; C_Extraction_etoiles>HOO_stars`, `dialogue=false`
    4. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
       paramètres : `views=HOO`, `dialogue=false`
@@ -453,7 +467,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).
 > 
-> PRÉRÉGLÉ : conteneur de scripts : Lineaire_auto lance Combinaison_HOO (crée HOO) ; Fermer_vues ferme les masters H, O ; Lineaire_auto lance C_HOO_lineaire sur HOO (BXT_NB, SXT_lineaire qui crée HOO_stars, NXT_NB 0,75) et C_Extraction_HOO sur HOO (crée H, O sans étoiles) ; Fermer_vues ferme HOO ; HOO_stars gardée (étoiles du HOO sans RGB).
+> PRÉRÉGLÉ : conteneur de scripts : Lineaire_auto lance Combinaison_HOO (crée HOO) ; Fermer_vues ferme les masters H, O ; Lineaire_auto lance C_HOO_lineaire sur HOO (BXT_NB, SXT_lineaire qui crée HOO_stars, NXT_NB 0,75) , C_Extraction_HOO sur HOO (crée H, O sans étoiles) et C_Extraction_etoiles sur HOO_stars (crée H_stars, O_stars) ; Fermer_vues ferme HOO ; HOO_stars gardée.
 > 
 > À RÉGLER : après R_Gradient_auto_rapide (ou la phase 2), double-clic puis Apply Global (pas en glissant) ; le fichier Conteneurs du workflow doit être chargé (icônes E## lancées par Lineaire_auto) ; les masters sont FERMÉS sans enregistrer : enregistre-les avant si tu veux les garder ; ensuite GHS_1_premier sur H ; caméra couleur dual-band : pas ce conteneur.
 > 
@@ -464,7 +478,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 ## P4_Etirement
 
-#### E12_GHS_1_premier — GeneralizedHyperbolicStretch
+#### E13_GHS_1_premier — GeneralizedHyperbolicStretch
    stretchType=ST_GeneralisedHyperbolic ; stretchChannel=SC_RGB ; inverse=false ; stretchFactor=0.000 ; localIntensity=10.000 ; symmetryPoint=0.000000 ; highlightProtection=1.000000 ; shadowProtection=0.000000 ; blackPoint=0.000000 ; whitePoint=1.000000 ; colourBlend=1.000 ; clipType=CT_RGBBlend ; useRGBWorkingSpace=false
 
 > PRÉRÉGLÉ : b = 10, Stretch factor 0.
@@ -474,7 +488,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > SI :
 > - bruit de O ou S qui ressort -> SP trop bas, remonte-le
 
-#### E13_GHS_2_contraste — GeneralizedHyperbolicStretch
+#### E14_GHS_2_contraste — GeneralizedHyperbolicStretch
    stretchType=ST_GeneralisedHyperbolic ; stretchChannel=SC_RGB ; inverse=false ; stretchFactor=1.000 ; localIntensity=4.000 ; symmetryPoint=0.350000 ; highlightProtection=0.900000 ; shadowProtection=0.000000 ; blackPoint=0.000000 ; whitePoint=1.000000 ; colourBlend=1.000 ; clipType=CT_RGBBlend ; useRGBWorkingSpace=false
 
 > PRÉRÉGLÉ : b = 4, HP 0,9, Stretch factor 1, SP 0,35.
@@ -486,7 +500,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - fond trop sombre -> monte LP vers sa valeur (pas au-dessus de SP)
 > - fond bruité qui ressort -> SP trop bas
 
-#### E14_GHS_3_fond — GeneralizedHyperbolicStretch
+#### E15_GHS_3_fond — GeneralizedHyperbolicStretch
    stretchType=ST_GeneralisedHyperbolic ; stretchChannel=SC_RGB ; inverse=false ; stretchFactor=1.000 ; localIntensity=10.000 ; symmetryPoint=0.200000 ; highlightProtection=0.200000 ; shadowProtection=0.000000 ; blackPoint=0.000000 ; whitePoint=1.000000 ; colourBlend=1.000 ; clipType=CT_RGBBlend ; useRGBWorkingSpace=false
 
 > PRÉRÉGLÉ : b = 10, SP = HP = 0,20, Stretch factor 1 (fond à 0,23 après GHS_2).
@@ -576,14 +590,14 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 ## P5_Couleur
 
-#### E15_HOO_simple — PixelMath
+#### E16_HOO_simple — PixelMath
    expression = `H` ; expression1 = `O` ; expression2 = `O` ; useSingleExpression=false ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=true ; showNewImage=true ; newImageId=HOO_etire ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=RGB ; newImageSampleFormat=SameAsTarget
 
 > PRÉRÉGLÉ : R = H, G = O, B = O.
 > 
 > À RÉGLER : vues H et O étirées.
 
-#### E16_NBN_HOO — NarrowbandNormalization
+#### E17_NBN_HOO — NarrowbandNormalization
    palette=Palette_HOO ; lightness=Lightness_Off ; blendMode=Blend_Mode1 ; haBlend=0.000 ; scnr=0.000 ; o3Boost=1.000 ; s2Boost=1.000 ; shadowpoint=1.000 ; highlightReduction=1.000 ; brightness=1.000
 
 > PRÉRÉGLÉ : palette HOO ; O3 boost, Brightness, Highlight reduction à 1 (neutres : multiplicateurs, 0 rend l'image noire) ; Shadow point 1.
@@ -645,7 +659,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 ## P6_Finition
 
-#### E17_HDRMT_30 — ProcessContainer
+#### E18_HDRMT_30 — ProcessContainer
    1. PixelMath
       expression = `$T` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=true ; showNewImage=true ; newImageId=HDR_avant ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
    2. HDRMultiscaleTransform
@@ -666,7 +680,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - cœur encore trop clair -> HDRMT_40 ou HDRMT_50
 > - aucun effet visible -> saute la partie 1
 
-#### E18_C_Finition — ProcessContainer
+#### E19_C_Finition — ProcessContainer
    1. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
       paramètres : `mode=creer`, `s=0.14`, `flou=2`, `nom=masque_L`, `dialogue=false`
@@ -695,7 +709,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > Double-clic sur le conteneur pour voir ou changer les réglages de chaque étape.
 
-#### E19_C_Sharp_MMT — ProcessContainer
+#### E20_C_Sharp_MMT — ProcessContainer
    1. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
       paramètres : `mode=attacher`, `s=0.14`, `flou=2`, `nom=masque_L`, `dialogue=false`
@@ -718,7 +732,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - bruit accentué -> première couche 3
 > - autre rendu -> Sharp_USM (P6 options) à la place
 
-#### E20_NXT_final — NoiseXTerminator
+#### E21_NXT_final — NoiseXTerminator
    ml_version=0 ; denoise=0.40 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
 
 > PRÉRÉGLÉ : Denoise 0,40, 1 itération.
@@ -733,15 +747,15 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 #### Opt_Nettoyage_sans_etoiles — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Nettoyage_sans_etoiles.js`
-   paramètres : `etoiles=HOO_stars`, `seuilBas=0.05`, `seuilHaut=0.12`, `etendue=25`, `passes=3`, `protege=0.08`, `structure=0.15`, `compact=0.05`, `tresBrillant=0.05`, `etendue2=80`, `gain=3`, `gain2=8`, `afficherMasque=false`
+   paramètres : `etoiles=NBtoRGB_stars`, `seuilBas=0.05`, `seuilHaut=0.12`, `etendue=25`, `passes=3`, `protege=0.08`, `structure=0.15`, `compact=0.05`, `tresBrillant=0.05`, `etendue2=80`, `gain=3`, `gain2=8`, `afficherMasque=false`
 
 > OPTION — avant la partie 1, sur l'image sans étoiles après la palette (image d'étoiles ouverte) : taches rondes floues ou halo coloré laissés par SXT autour des étoiles.
 > 
 > LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
 > 
-> PRÉRÉGLÉ : script Nettoyage_sans_etoiles (calcul sur une copie à 2000 px) : seules les étoiles BRILLANTES de HOO_stars comptent (luminance floutée 20 px au-dessus de 0,05 à 0,12), zone étendue au halo ; fond LOCAL par ouverture morphologique (disque 25 px, 3 passes : taches de moins de 75 px retirées, halo de la galaxie gardé) ; galaxie et structures claires protégées ; excès au-dessus du fond local retiré, bruit fin gardé ; TRÈS grandes étoiles (luminance floutée 50 px au-dessus de 0,05) : zone d'environ 170 px et fond local à grande échelle (environ 300 px).
+> PRÉRÉGLÉ : script Nettoyage_sans_etoiles (calcul sur une copie à 2000 px) : seules les étoiles BRILLANTES de NBtoRGB_stars comptent (luminance floutée 20 px au-dessus de 0,05 à 0,12), zone étendue au halo ; fond LOCAL par ouverture morphologique (disque 25 px, 3 passes : taches de moins de 75 px retirées, halo de la galaxie gardé) ; galaxie et structures claires protégées ; excès au-dessus du fond local retiré, bruit fin gardé ; TRÈS grandes étoiles (luminance floutée 50 px au-dessus de 0,05) : zone d'environ 170 px et fond local à grande échelle (environ 300 px).
 > 
-> À RÉGLER : glisse sur l'image sans étoiles après la palette, AVANT HDRMT_30 ; HOO_stars doit être ouverte (étirée) ; vérifie à 1:1, Ctrl+Z pour annuler.
+> À RÉGLER : glisse sur l'image sans étoiles après la palette, AVANT HDRMT_30 ; NBtoRGB_stars doit être ouverte (étirée) ; vérifie à 1:1, Ctrl+Z pour annuler.
 > 
 > SI :
 > - voir ce qui est touché -> afficherMasque true (vue masque_nettoyage : seulement les grandes étoiles)
@@ -1061,29 +1075,37 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 ## P7_Etoiles
 
-#### E21_Etoiles_HOO — NoOperation
+#### E22_Etoiles_HOO — NoOperation
 
 > PRÉRÉGLÉ : rien (icône-note).
 > 
 > À RÉGLER : avec RGB : étoiles RGB ; sans RGB : étoiles de SXT, NB to RGB ou étoiles synthétiques.
 
-#### E22_Star_Stretch — Script
-   script `$PXI_SRCDIR/scripts/star_stretch.js`
-   paramètres : `amount=6`, `satAmount=1.3`, `removeGreen=true`, `showPreview=false`
+#### E23_LinearFit_etoiles — LinearFit
+   referenceViewId=H_stars ; rejectLow=0.000000 ; rejectHigh=0.920000
+
+> PRÉRÉGLÉ : LinearFit, référence H_stars (Reject low 0, Reject high 0,92).
+> 
+> À RÉGLER : glisse sur O_stars (linéaire), avant NB_to_RGB_Stars : niveaux des étoiles égalisés sur H.
+> 
+> SI :
+> - étoiles encore bleues -> vérifie à la sonde que O_stars est au niveau de H_stars
+> - étoiles toutes blanches -> normal : NB_to_RGB garde les écarts de couleur, Color Boost un peu plus haut
+
+#### E24_NB_to_RGB_Stars — Script
+   script `$PXI_SRCDIR/scripts/NBtoRGBStars.js`
 
 > LANCEMENT : glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
 > 
-> PRÉRÉGLÉ : Stretch Amount 6, Color Boost 1,3, Remove Green (SCNR) coché.
+> PRÉRÉGLÉ : rien (le script ne relit pas l'icône).
 > 
-> À RÉGLER : rien ; sur l'image d'étoiles linéaire.
+> À RÉGLER : double-clic puis Apply Global ; fenêtre : Ha Stars = H_stars, OIII Stars = O_stars (après LinearFit_etoiles), SII vide ; Green Channel Blend Ratio coché (0,3) ; Apply Star Stretch coché, Stretch Factor 5, Color Boost 1,0 ; crée NBtoRGB_stars, déjà étirée.
 > 
 > SI :
-> - cœurs d'étoiles blancs (R = G = B = 1) -> 5,5
-> - étoiles trop grosses -> 5 ou 4
-> - étoiles grisées par le SCNR -> décoche Remove Green
-> - étoiles criardes -> Color Boost 1,0
+> - étoiles chaudes trop rouges ou froides vertes -> monte ou baisse le ratio
+> - étoiles encore toutes bleues -> LinearFit_etoiles oublié sur O_stars
 
-#### E23_Fond_desature — Script
+#### E25_Fond_desature — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js`
    paramètres : `debut=0.03`, `fin=0.08`, `violetFin=0.30`, `flou=3`
 
@@ -1098,7 +1120,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - fond encore coloré -> fin 0,12
 > - voiles faibles grisés -> fin 0,05, ou saute cette étape
 
-#### E24_Fond_auto — Script
+#### E26_Fond_auto — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js`
    paramètres : `cible=0.12`, `tolerance=0.005`, `grille=8`
 
@@ -1113,19 +1135,19 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - données très propres -> 0,10 à 0,11
 > - nébuleuse qui remplit le champ : regarde le fond AVANT dans la console ; au-dessus d'environ 0,20 (seuil au jugé), ce n'est pas du vrai ciel -> Ctrl+Z et saute cette étape
 
-#### E25_Etoiles_screen — PixelMath
-   expression = `~((~$T) * (~HOO_stars))` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
+#### E27_Etoiles_screen — PixelMath
+   expression = `~((~$T) * (~NBtoRGB_stars))` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
 
-> PRÉRÉGLÉ : ~((~$T) * (~HOO_stars)), sur l'image elle-même.
+> PRÉRÉGLÉ : ~((~$T) * (~NBtoRGB_stars)), sur l'image elle-même.
 > 
-> À RÉGLER : glisse sur l'image HOO sans étoiles finale ; étoiles de SXT sur HOO (HOO_stars), étirées.
+> À RÉGLER : glisse sur l'image HOO sans étoiles finale ; étoiles de NB to RGB (NBtoRGB_stars), étirées par le script.
 > 
 > SI :
 > - étoiles RGB -> RGB_stars
-> - NB to RGB -> NBtoRGB_stars
+> - étoiles HOO classiques -> HOO_stars (étirée)
 > - synthétiques -> Stars_HOO
 
-#### E26_NXT_dernier — NoiseXTerminator
+#### E28_NXT_dernier — NoiseXTerminator
    ml_version=0 ; denoise=0.25 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
 
 > PRÉRÉGLÉ : NoiseXTerminator Denoise 0,25, 1 itération.
@@ -1138,6 +1160,24 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - étoiles adoucies -> 0,15, ou saute cette étape
 
 ### P7_options
+
+#### Opt_Star_Stretch — Script
+   script `$PXI_SRCDIR/scripts/star_stretch.js`
+   paramètres : `amount=6`, `satAmount=1.3`, `removeGreen=true`, `showPreview=false`
+
+> OPTION — seulement si NB_to_RGB_Stars a été lancé sans Apply Star Stretch (ou pour HOO_stars, Stars_HOO) : sur l'image d'étoiles LINÉAIRE.
+> 
+> LANCEMENT : glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
+> 
+> PRÉRÉGLÉ : Stretch Amount 6, Color Boost 1,3, Remove Green (SCNR) coché.
+> 
+> À RÉGLER : rien ; sur l'image d'étoiles linéaire.
+> 
+> SI :
+> - cœurs d'étoiles blancs (R = G = B = 1) -> 5,5
+> - étoiles trop grosses -> 5 ou 4
+> - étoiles grisées par le SCNR -> décoche Remove Green
+> - étoiles criardes -> Color Boost 1,0
 
 #### Opt_MT_etoiles — MorphologicalTransformation
    operator=Selection ; interlacingDistance=1 ; lowThreshold=0.000000 ; highThreshold=0.000000 ; numberOfIterations=1 ; amount=0.60 ; selectionPoint=0.25 ; structureName= ; structureSize=5 ; table structureWayTable (1 lignes)
@@ -1161,7 +1201,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > PRÉRÉGLÉ : rien (réglages dans le dialogue).
 > 
-> À RÉGLER : Select stars-only image = l'image d'étoiles étirée (RGB_stars ; NBtoRGB_stars en SHO ; HOO_stars en HOO), AVANT Etoiles_screen ; Reduction Amount Low ; Linear Data décoché.
+> À RÉGLER : Select stars-only image = l'image d'étoiles étirée (NBtoRGB_stars), AVANT Etoiles_screen ; Reduction Amount Low ; Linear Data décoché.
 > 
 > SI :
 > - petites étoiles réduites ou effacées aussi (son masque ne protège que les cœurs) -> Etoiles_grosses à la place
@@ -1263,16 +1303,16 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - fond encore trop sombre -> double-clic, cible 0,15
 
 #### Opt_Etoiles_reduites — PixelMath
-   expression = `S=0.20; W=~((~$T)*(~HOO_stars)); f1= ~((~mtf(~S,W)/~mtf(~S,$T))*~$T); max($T,f1)` ; useSingleExpression=true ; symbols = `S, W, f1` ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
+   expression = `S=0.20; W=~((~$T)*(~NBtoRGB_stars)); f1= ~((~mtf(~S,W)/~mtf(~S,$T))*~$T); max($T,f1)` ; useSingleExpression=true ; symbols = `S, W, f1` ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
 
 > ALTERNATIVE — Recombinaison + réduction Blanshan.
 > 
-> PRÉRÉGLÉ : S = 0,20 ; screen + réduction Blanshan avec HOO_stars, sur l'image elle-même.
+> PRÉRÉGLÉ : S = 0,20 ; screen + réduction Blanshan avec NBtoRGB_stars, sur l'image elle-même.
 > 
 > À RÉGLER : à la place d'Etoiles_screen : glisse sur l'image HOO sans étoiles finale.
 > 
 > SI :
-> - étoiles RGB -> RGB_stars ; NB to RGB -> NBtoRGB_stars
+> - étoiles RGB -> RGB_stars ; HOO classiques -> HOO_stars
 > - pour recommencer -> Ctrl+Z
 
 #### Opt_Agrandir_x2 — Resample
@@ -1343,7 +1383,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
       script `$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js`
       paramètres : `cible=0.12`, `tolerance=0.005`, `grille=8`, `dialogue=false`
    3. PixelMath
-      expression = `~((~$T) * (~HOO_stars))` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
+      expression = `~((~$T) * (~NBtoRGB_stars))` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
    4. NoiseXTerminator
       ml_version=0 ; denoise=0.25 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
    5. Script
@@ -1354,9 +1394,9 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
 > 
-> PRÉRÉGLÉ : conteneur : Fond_desature (teinte du fond retirée), Fond_auto (fond amené à 0,12, neutre), Etoiles_screen (~((~$T) * (~HOO_stars))), NXT_dernier (Denoise 0,25, image avec étoiles), Export_TIFF (copie TIFF 16 bits sRGB nommée d'après le dossier des masters).
+> PRÉRÉGLÉ : conteneur : Fond_desature (teinte du fond retirée), Fond_auto (fond amené à 0,12, neutre), Etoiles_screen (~((~$T) * (~NBtoRGB_stars))), NXT_dernier (Denoise 0,25, image avec étoiles), Export_TIFF (copie TIFF 16 bits sRGB nommée d'après le dossier des masters).
 > 
-> À RÉGLER : glisse sur l'image sans étoiles finie ; HOO_stars étirée (Star_Stretch) ouverte ; l'image est finie et exportée.
+> À RÉGLER : glisse sur l'image sans étoiles finie ; NBtoRGB_stars (LinearFit_etoiles puis NB_to_RGB_Stars) ouverte ; l'image est finie et exportée.
 > 
 > SI :
 > - étoiles trop présentes -> fais les étapes à la main avec Etoiles_reduites (à la place d'Etoiles_screen)
