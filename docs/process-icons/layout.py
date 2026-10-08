@@ -100,7 +100,7 @@ WHEN = {
     'C_Preparation_rapide': "MODE RAPIDE, à la place d'E00 à E03 : masters seuls ouverts, double-clic puis Apply Global (pas en glissant : ImageSolver échoue sur une image en cours de traitement) : Renommer_auto, LinearPatternSubtraction, Combinaison_RGB, Solver_auto (ImageSolver sur le RGB seulement) en un seul conteneur",
     'C_RGB_etire_rapide': "MODE RAPIDE, à la place de MAS, SXT_RGB_etire, SCNR_etoiles_vert et GHS_3_fond sur le RGB (options SCNR_etoiles_violet et Saturation_grosses à passer à part si besoin) : glisse sur RGB linéaire avec étoiles ; MAS, SXT Unscreen (RGB_stars créée), SCNR vert sur RGB_stars, GHS fond (SP = HP = 0,12)",
     'Statistical_Stretch': "à la place de MAS sur le RGB avec étoiles (étirement statistique, étoiles plus grosses) ; puis SXT_RGB_etire",
-    'Sharp_USM': "à la place de C_Sharp_MMT : accentuation finale par UnsharpMask, avant NXT_final, sur l'image sans étoiles ; masque de luminance attaché puis retiré automatiquement",
+    'Sharp_USM': "à la place de C_Sharp_MMT : accentuation finale par UnsharpMask, avant NXT_final, sur l'image sans étoiles ; masque de luminance appliqué par mélange PixelMath, fermé automatiquement",
     'Fond_auto': "après Fond_desature, sur l'image sans étoiles, avant Etoiles_screen : fond amené à 0,12 et neutre (grille 8 × 8)",
     'Lineaire_rapide': "MODE RAPIDE, à la place de la phase 3 du chemin principal : double-clic puis Apply Global ; lance les icônes du chemin principal sur RGB et L (LRGB : C_RGB_lineaire et C_L_lineaire ; LHaRGB : C_RGB_couleur, BXT_L_H sur L et H, NXT_L) ; RGB et L restent linéaires, avec leurs étoiles",
     'C_RGB_rapide': "MODE RAPIDE, à la place de C_RGB_lineaire, Statistical_Stretch et GHS_3_fond (sur RGB) : sur RGB après Gradient_auto_rapide ; BXT Correct Only, SPCC, BXT, NXT, Statistical Stretch sans dialogue, GHS fond ; étoiles gardées (SXT après LRGB)",
@@ -169,9 +169,9 @@ def is_default(r, prefix=None):
 
 # Conteneurs (ProcessContainer) : suites d'étapes sans réglage intermédiaire, appliquées à la même image.
 # nom -> (image cible, étapes). Un conteneur n'est utilisé que si toutes ses étapes sont dans la sélection.
-_FIN = ('C_Finition', "l'image sans étoiles étirée (masque créé, attaché puis retiré automatiquement)", ['Masque_L', 'Courbes', 'LHE', 'LHE_fin', 'Masque_retirer'])
+_FIN = ('C_Finition', "l'image sans étoiles étirée (masque_L créé, Courbes, LHE et LHE_fin, mélange par masque_L, copie et masque fermés automatiquement)", ['Masque_L', 'Courbes', 'LHE', 'LHE_fin', 'Masque_retirer'])
 # galaxies : Courbes à saturation 0,58 (demande de l'utilisateur : l'ancienne, 0,65, saturait trop ; elle reste en option Finition_saturee)
-_FIN_G = ('C_Finition', "l'image sans étoiles étirée (masque créé, attaché puis retiré automatiquement) ; courbe en S, saturation 0,5 -> 0,58 (couleurs trop ternes : Finition_saturee, 0,65, à la place)", _FIN[2])
+_FIN_G = ('C_Finition', "l'image sans étoiles étirée (masque_L créé, Courbes, LHE et LHE_fin sur une copie, mélange par masque_L, copie et masque fermés automatiquement) ; courbe en S, saturation 0,5 -> 0,58 (couleurs trop ternes : Finition_saturee, 0,65, à la place)", _FIN[2])
 CONTAINERS = {
     # LRGB (demande de l'utilisateur, 5 octobre 2026) : L sans étoiles (C_L_lineaire finit par SXT), RGB étiré par MAS avec étoiles puis SXT ; fond final = Fond_desature seul
     'LRGB': [('C_RGB_lineaire', "l'image RGB combinée, linéaire, gradient retiré (étoiles gardées) : BXT Correct Only, SPCC, BXT, NXT", ['BXT_CorrectOnly', 'SPCC', 'BXT_RGB', 'NXT_RGB']),

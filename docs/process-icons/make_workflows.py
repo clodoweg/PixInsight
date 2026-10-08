@@ -42,6 +42,10 @@ SCRIPTS = {
     'Combinaison_RGB': ('$PXI_SRCDIR/scripts/clodoweg/Combiner_RGB.js', '',
              [('red', 'R'), ('green', 'G'), ('blue', 'B'), ('newId', 'RGB'), ('closeSources', 'true'), ('copyKeywords', 'true'), ('garder', '')], L_GLOBAL),
     'Masque_L': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'attacher'), ('s', '0.14'), ('flou', '2'), ('nom', 'masque_L')], L_DRAG),
+    # mode creer (demande de l'utilisateur, 8 octobre 2026) : masque créé SANS être attaché ; les conteneurs mélangent eux-mêmes (sous_masque)
+    'Masque_L_creer': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'creer'), ('s', '0.14'), ('flou', '2'), ('nom', 'masque_L')], L_DRAG),
+    'Masque_L_source_creer': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'creer'), ('s', '0.20'), ('gamma', '2'), ('flou', '2'), ('nom', 'masque_L'), ('source', 'L'), ('exclure', 'RGB_stars'), ('exclureGain', '4')], L_DRAG),
+    'Masque_L_boost_nb_creer': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'creer'), ('s', '0.20'), ('gamma', '2'), ('flou', '2'), ('nom', 'masque_L')], L_DRAG),
     'Masque_L_boost_nb': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'attacher'), ('s', '0.20'), ('gamma', '2'), ('flou', '2'), ('nom', 'masque_L')], L_DRAG),   # narrowband : masque tiré de l'image sans étoiles elle-même
     'Masque_L_source': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'attacher'), ('s', '0.20'), ('gamma', '2'), ('flou', '2'), ('nom', 'masque_L'), ('source', 'L'), ('exclure', 'RGB_stars'), ('exclureGain', '4')], L_DRAG),
     'Masque_retirer': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'retirer'), ('nom', 'masque_L')], L_DRAG),
@@ -376,8 +380,7 @@ def boost_final_items(doux=False, nb=False):
     doux (demande de l'utilisateur) : même masque, montée des courbes divisée par deux (c -> 0,49870, S -> 0,50261)."""
     c, s = ((0.46094, 0.49870), (0.46354, 0.50261)) if doux else ((0.46094, 0.53646), (0.46354, 0.54167))
     # nb (demande de l'utilisateur, 8 octobre 2026) : pas de L en narrowband ; sur l'image SANS étoiles avant Etoiles_screen, masque tiré d'elle-même
-    return [script('Masque_L_boost_nb' if nb else 'Masque_L_source', ''), curves_cs('Courbes_boost_final', [(0, 0), c, (1, 1)], [(0, 0), s, (1, 1)]),
-            script('Masque_retirer', '')]
+    return sous_masque([curves_cs('Courbes_boost_final', [(0, 0), c, (1, 1)], [(0, 0), s, (1, 1)])], 'Masque_L_boost_nb_creer' if nb else 'Masque_L_source_creer')
 
 def boost_final(doux=False, nb=False):
     items = boost_final_items(doux, nb)
@@ -390,6 +393,14 @@ def hdrmt_items(a):
             M.instance('HDRMultiscaleTransform', 'HDRMT', {'numberOfLayers': 6, 'numberOfIterations': 1, 'toLightness': True, 'preserveHue': True, 'lightnessMask': True}),
             pm('HDR_melange', 'a = %s;\na*$T + (1 - a)*HDR_avant' % a, symbols='a'), fermer('Fermer_HDR_avant', 'HDR_avant'))
 
+def sous_masque(inner, masque='Masque_L_creer'):
+    """Étapes natives « sous masque » dans un conteneur (demande de l'utilisateur, 8 octobre 2026 : C_Finition d'un coup différent de un par un).
+    Doc PixInsight (Masking Facts) : un process d'un ProcessContainer garde SON lien de masque ; le masque attaché par un script pendant le
+    conteneur n'est donc pas utilisé (Courbes et LHE appliqués au fond). Ici : masque_L créé sans être attaché, copie de l'image, étapes sur
+    l'image entière, puis mélange PixelMath masque_L × résultat + (1 − masque_L) × copie, copie fermée, masque_L fermé."""
+    return ([script(masque, ''), pm('Masque_copie', '$T', new_image=True, new_id='Masque_avant')] + list(inner)
+            + [pm('Masque_melange', 'masque_L*$T + (1 - masque_L)*Masque_avant'), fermer('Fermer_Masque_avant', 'Masque_avant'), script('Masque_retirer', '')])
+
 def _cont(name, items):
     return name, container(name, [x.replace('id="%s_instance"' % n, 'id="__ID___instance"', 1) for n, x in items])
 
@@ -399,9 +410,8 @@ def hdrmt_50():
 
 def hdrmt_eclat_items():
     """HDRMT à 40 % (détail du cœur) puis Boost_finition_light (éclat et chaleur rendus au cœur, que HDRMT assombrit et ternit)."""
-    boost = [script('Masque_L', ''), curves('Courbes_boost', k=((0, 0), (0.25, 0.24), (0.75, 0.76), (1, 1)), sat=0.57),
-             M.instance('LocalHistogramEqualization', 'LHE_moyen', {'radius': 80, 'histogramBins': 'Bit10', 'slopeLimit': '2.0', 'amount': '0.120', 'circularKernel': True}),
-             script('Masque_retirer', '')]
+    boost = sous_masque([curves('Courbes_boost', k=((0, 0), (0.25, 0.24), (0.75, 0.76), (1, 1)), sat=0.57),
+             M.instance('LocalHistogramEqualization', 'LHE_moyen', {'radius': 80, 'histogramBins': 'Bit10', 'slopeLimit': '2.0', 'amount': '0.120', 'circularKernel': True})])
     return list(hdrmt_items('0.4')) + boost
 
 def hdrmt_eclat():
@@ -410,9 +420,8 @@ def hdrmt_eclat():
 def boost_container(name='Boost_finition', k=((0, 0), (0.25, 0.23), (0.75, 0.77), (1, 1)), sat=0.60, amount='0.200'):
     """Option de finition en un glisser : petite courbe (contraste + saturation) puis LHE à rayon moyen. Rejouable."""
     parts = []
-    for item in (script('Masque_L', ''), curves('Courbes_boost', k=k, sat=sat),
-                 M.instance('LocalHistogramEqualization', 'LHE_moyen', {'radius': 80, 'histogramBins': 'Bit10', 'slopeLimit': '2.0', 'amount': amount, 'circularKernel': True}),
-                 script('Masque_retirer', '')):
+    for item in sous_masque([curves('Courbes_boost', k=k, sat=sat),
+                 M.instance('LocalHistogramEqualization', 'LHE_moyen', {'radius': 80, 'histogramBins': 'Bit10', 'slopeLimit': '2.0', 'amount': amount, 'circularKernel': True})]):
         n, x = item
         parts.append(x.replace('id="%s_instance"' % n, 'id="__ID___instance"', 1))
     return name, container(name, parts)
@@ -491,8 +500,14 @@ def write(filename, prefix, title, steps):
         for cn, target, members in used:
             if cn not in done and members[0] == b:
                 done.add(cn)
-                cx = container('__ID__', [byb[m] for m in members])
-                cd = SD.LAUNCH['cont'] + "\n\nCONTENEUR : " + ", ".join(members) + ".\n\nSUR : " + target + ".\n\nDouble-clic sur le conteneur pour voir ou changer les réglages de chaque étape."
+                xs, noms = [byb[m] for m in members], list(members)
+                if cn == 'C_Finition':
+                    # Courbes, LHE, LHE_fin mélangés par masque_L créé sans être attaché (sous_masque, demande de l'utilisateur, 8 octobre 2026)
+                    xs = [flat(i) for i in sous_masque([])]
+                    xs = xs[:2] + [byb[m] for m in members[1:-1]] + xs[2:]
+                    noms = ['Masque_L_creer', 'Masque_copie'] + members[1:-1] + ['Masque_melange', 'Fermer_Masque_avant', 'Masque_retirer']
+                cx = container('__ID__', xs)
+                cd = SD.LAUNCH['cont'] + "\n\nCONTENEUR : " + ", ".join(noms) + ".\n\nSUR : " + target + ".\n\nDouble-clic sur le conteneur pour voir ou changer les réglages de chaque étape."
                 cx = cx.replace('<instance class="ProcessContainer" id="__ID___instance">', '<instance class="ProcessContainer" id="__ID___instance">\n      <description>%s</description>' % escape(cd).replace('\n', '&#10;'), 1)
                 cmain.append((cn, ph, cx))
     cfn, ctitle = filename.replace('Workflow-', 'Conteneurs-'), title + ' — chemin principal avec conteneurs, options dans leur phase'
@@ -715,7 +730,7 @@ def sharp_mmt():
 
 def sharp_usm():
     """Option P6 (demande de l'utilisateur) : accentuation finale par UnsharpMask, sous masque de luminance, sur l'image sans étoiles."""
-    return _cont('Sharp_USM', [script('Masque_L', ''), usm(), script('Masque_retirer', '')])
+    return _cont('Sharp_USM', sous_masque([usm()]))
 
 D_CURVES_G = D_CURVES.replace("milieu monté de 0,5 à 0,65", "milieu monté de 0,5 à 0,58").replace(
     "saturation modérée (0,72 jugé trop saturé sur NGC 1532). Trop saturé -> milieu S à 0,60 ; couleurs ternes -> 0,72",
@@ -724,10 +739,9 @@ assert D_CURVES_G != D_CURVES
 
 def finition_saturee():
     """Option P6 (demande de l'utilisateur) : l'ancienne C_Finition, saturation 0,65 (la principale passe à 0,58)."""
-    return _cont('Finition_saturee', [script('Masque_L', ''), curves('Courbes_saturees', sat=0.65),
+    return _cont('Finition_saturee', sous_masque([curves('Courbes_saturees', sat=0.65),
         M.instance('LocalHistogramEqualization', 'LHE', {'radius': 150, 'histogramBins': 'Bit12', 'slopeLimit': '2.0', 'amount': '0.300', 'circularKernel': True}),
-        M.instance('LocalHistogramEqualization', 'LHE_fin', {'radius': 40, 'histogramBins': 'Bit10', 'slopeLimit': '2.0', 'amount': '0.250', 'circularKernel': True}),
-        script('Masque_retirer', '')])
+        M.instance('LocalHistogramEqualization', 'LHE_fin', {'radius': 40, 'histogramBins': 'Bit10', 'slopeLimit': '2.0', 'amount': '0.250', 'circularKernel': True})]))
 
 def finish_block(extra=None, galaxie=False):
     if galaxie:
@@ -1166,8 +1180,9 @@ for _st in (lrgb, lhargb):
 
 def fin_rapide(steps):
     """P6_rapide et P7_rapide (demande de l'utilisateur) : un conteneur par phase avec les étapes de la finition."""
-    c6 = cont('C_Fin_rapide', list(hdrmt_items('0.3')) + [pick(steps, b)[0] for b in ('Masque_L', 'Courbes', 'LHE', 'LHE_fin')]
-               + [script('Sharp_MMT', '')] + [pick(steps, b)[0] for b in ('Masque_retirer', 'NXT_final')])   # Sharp_MMT sous le masque (demande de l'utilisateur)
+    # Courbes, LHE, LHE_fin mélangés par masque_L (sous_masque) ; puis masque attaché pour Sharp_MMT (le script lit le masque attaché), retiré
+    c6 = cont('C_Fin_rapide', list(hdrmt_items('0.3')) + sous_masque([pick(steps, b)[0] for b in ('Courbes', 'LHE', 'LHE_fin')])
+               + [pick(steps, 'Masque_L')[0], script('Sharp_MMT', '')] + [pick(steps, b)[0] for b in ('Masque_retirer', 'NXT_final')])   # Sharp_MMT sous le masque (demande de l'utilisateur)
     c7 = cont('C_Etoiles_fond_rapide', [pick(steps, b)[0] for b in ('Fond_desature', 'Fond_auto', 'Etoiles_screen', 'NXT_dernier', 'Export_TIFF')])   # Export_TIFF en dernier (demande de l'utilisateur)
     return c6, c7
 

@@ -19,6 +19,10 @@
 //   étoiles lissées de 3 px)), exclureGain 4). Sert au Boost_final : sans
 //   cela, les étoiles posées sur la galaxie, là où L sans étoiles est clair,
 //   seraient boostées aussi.
+// mode = creer : crée masque_L de la même façon SANS l'attacher (conteneurs
+//   de finition : un process natif d'un conteneur n'utilise pas le masque
+//   attaché pendant le conteneur ; le conteneur mélange lui-même par PixelMath
+//   masque_L*$T + (1-masque_L)*copie ; demande de l'utilisateur, 8 octobre 2026).
 // mode = retirer : détache le masque de l'image et ferme masque_L.
 //
 // Sert dans les conteneurs de finition de la fiche (C_Finition, Boost,
@@ -61,7 +65,8 @@ function maDialog( p, view )
                          "Fond (sous s) protégé ; contrôle à la sonde sur le masque : fond 0 à 0,05.", "Gain d'exclusion :" );
    let sel = { view: view };
    d.viewList( "Image :", view, "Image sans étoiles étirée (ou image finie pour le Boost_final).", function( v ) { sel.view = v; } );
-   d.combo( "Action :", [ "créer et attacher le masque", "retirer le masque" ], p.mode == "retirer" ? 1 : 0, "", function( k ) { p.mode = k == 1 ? "retirer" : "attacher"; } );
+   d.combo( "Action :", [ "créer et attacher le masque", "retirer le masque", "créer le masque sans l'attacher" ], p.mode == "retirer" ? 1 : p.mode == "creer" ? 2 : 0,
+            "Sans l'attacher : pour un mélange par PixelMath (conteneurs de finition).", function( k ) { p.mode = k == 1 ? "retirer" : k == 2 ? "creer" : "attacher"; } );
    d.edit( "Nom du masque :", p.nom, "Vue créée (masque_L par défaut).", function( t ) { p.nom = t.trim(); } );
    d.group( "Masque" );
    d.numeric( "Seuil s :", 0.00, 0.50, 2, p.s, "Tout ce qui est sous s passe à 0 (protégé). Règle : fond mesuré + 0,01.", function( v ) { p.s = v; } );
@@ -202,6 +207,11 @@ function maRun( view, p )
       C.executeOn( mask.mainView );
    }
 
+   if ( mode == "creer" )
+   {
+      console.noteln( TITLE + " : " + name + " (tiré de " + src.id + ", s = " + s + ", gamma " + gamma + (exclId.length > 0 ? ", sans les étoiles de " + exclId : "") + ", flou " + flou + " px) créé, non attaché." );
+      return;
+   }
    window.mask = mask;
    window.maskEnabled = true;
    window.maskInverted = false;

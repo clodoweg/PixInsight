@@ -351,6 +351,8 @@ Les schémas ne reprennent que des faits déjà sourcés plus haut ; ils n'ajout
 
 ## Non vérifié
 
+- Conteneurs de finition par mélange PixelMath (sous_masque, 8 octobre 2026, choix de l'utilisateur : « tous les workflow ») : résultat identique au un par un non testé dans PixInsight.
+
 - Lineaire_auto, étapes « * » sur copie (8 octobre 2026, retour de l'utilisateur : « R_C_MAS_canaux_rapide ne permet pas de faire CTRL Z ») : Ctrl+Z et résultat identique (MAS, NBN sur une copie) non testés.
 
 - MAS_canaux à Target background 0,25 puis GHS_3_fond (8 octobre 2026, demande de l'utilisateur : « le MAS doit avoir taget median 0.25 comme ca apres je fais le GH3 ») : non testé sur des canaux narrowband.

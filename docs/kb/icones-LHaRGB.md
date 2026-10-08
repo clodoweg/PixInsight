@@ -796,22 +796,29 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 #### E26_C_Finition — ProcessContainer
    1. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
-      paramètres : `mode=attacher`, `s=0.14`, `flou=2`, `nom=masque_L`, `dialogue=false`
-   2. CurvesTransformation
+      paramètres : `mode=creer`, `s=0.14`, `flou=2`, `nom=masque_L`, `dialogue=false`
+   2. PixelMath
+      expression = `$T` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=true ; showNewImage=true ; newImageId=Masque_avant ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
+   3. CurvesTransformation
       Rt=AkimaSubsplines ; Gt=AkimaSubsplines ; Bt=AkimaSubsplines ; Kt=AkimaSubsplines ; At=AkimaSubsplines ; Lt=AkimaSubsplines ; at=AkimaSubsplines ; bt=AkimaSubsplines ; ct=AkimaSubsplines ; Ht=AkimaSubsplines ; St=AkimaSubsplines ; table R (2 lignes) ; table G (2 lignes) ; table B (2 lignes) ; table K (4 lignes) ; table A (2 lignes) ; table L (2 lignes) ; table a (2 lignes) ; table b (2 lignes) ; table c (2 lignes) ; table H (2 lignes) ; table S (3 lignes)
-   3. LocalHistogramEqualization
-      radius=150 ; histogramBins=Bit12 ; slopeLimit=2.0 ; amount=0.300 ; circularKernel=true
    4. LocalHistogramEqualization
+      radius=150 ; histogramBins=Bit12 ; slopeLimit=2.0 ; amount=0.300 ; circularKernel=true
+   5. LocalHistogramEqualization
       radius=40 ; histogramBins=Bit10 ; slopeLimit=2.0 ; amount=0.250 ; circularKernel=true
-   5. Script
+   6. PixelMath
+      expression = `masque_L*$T + (1 - masque_L)*Masque_avant` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
+   7. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
+      paramètres : `views=Masque_avant`, `dialogue=false`
+   8. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
       paramètres : `mode=retirer`, `nom=masque_L`, `dialogue=false`
 
 > LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
 > 
-> CONTENEUR : Masque_L, Courbes, LHE, LHE_fin, Masque_retirer.
+> CONTENEUR : Masque_L_creer, Masque_copie, Courbes, LHE, LHE_fin, Masque_melange, Fermer_Masque_avant, Masque_retirer.
 > 
-> SUR : l'image sans étoiles étirée (masque créé, attaché puis retiré automatiquement) ; courbe en S, saturation 0,5 -> 0,58 (couleurs trop ternes : Finition_saturee, 0,65, à la place).
+> SUR : l'image sans étoiles étirée (masque_L créé, Courbes, LHE et LHE_fin sur une copie, mélange par masque_L, copie et masque fermés automatiquement) ; courbe en S, saturation 0,5 -> 0,58 (couleurs trop ternes : Finition_saturee, 0,65, à la place).
 > 
 > Double-clic sur le conteneur pour voir ou changer les réglages de chaque étape.
 
@@ -932,12 +939,19 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
       paramètres : `views=HDR_avant`, `dialogue=false`
    5. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
-      paramètres : `mode=attacher`, `s=0.14`, `flou=2`, `nom=masque_L`, `dialogue=false`
-   6. CurvesTransformation
+      paramètres : `mode=creer`, `s=0.14`, `flou=2`, `nom=masque_L`, `dialogue=false`
+   6. PixelMath
+      expression = `$T` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=true ; showNewImage=true ; newImageId=Masque_avant ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
+   7. CurvesTransformation
       Rt=AkimaSubsplines ; Gt=AkimaSubsplines ; Bt=AkimaSubsplines ; Kt=AkimaSubsplines ; At=AkimaSubsplines ; Lt=AkimaSubsplines ; at=AkimaSubsplines ; bt=AkimaSubsplines ; ct=AkimaSubsplines ; Ht=AkimaSubsplines ; St=AkimaSubsplines ; table R (2 lignes) ; table G (2 lignes) ; table B (2 lignes) ; table K (4 lignes) ; table A (2 lignes) ; table L (2 lignes) ; table a (2 lignes) ; table b (2 lignes) ; table c (2 lignes) ; table H (2 lignes) ; table S (3 lignes)
-   7. LocalHistogramEqualization
+   8. LocalHistogramEqualization
       radius=80 ; histogramBins=Bit10 ; slopeLimit=2.0 ; amount=0.120 ; circularKernel=true
-   8. Script
+   9. PixelMath
+      expression = `masque_L*$T + (1 - masque_L)*Masque_avant` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
+   10. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
+      paramètres : `views=Masque_avant`, `dialogue=false`
+   11. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
       paramètres : `mode=retirer`, `nom=masque_L`, `dialogue=false`
 
@@ -945,7 +959,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
 > 
-> PRÉRÉGLÉ : conteneur : HDRMT à 40 % (copie HDR_avant, HDRMT 6 couches, mélange 0,4 × résultat + 0,6 × copie, copie fermée), puis Boost_finition_light (masque, courbe très légère, saturation 0,57, LHE rayon 80 Amount 0,12, masque retiré).
+> PRÉRÉGLÉ : conteneur : HDRMT à 40 % (copie HDR_avant, HDRMT 6 couches, mélange 0,4 × résultat + 0,6 × copie, copie fermée), puis Boost_finition_light (masque_L créé, copie, courbe très légère, saturation 0,57, LHE rayon 80 Amount 0,12, mélange par masque_L).
 > 
 > À RÉGLER : glisse sur l'image sans étoiles étirée, à la place de HDRMT_50 ; HDRMT rend le détail du cœur, le Boost lui rend son éclat.
 > 
@@ -971,14 +985,21 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 #### Opt_Finition_saturee — ProcessContainer
    1. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
-      paramètres : `mode=attacher`, `s=0.14`, `flou=2`, `nom=masque_L`, `dialogue=false`
-   2. CurvesTransformation
+      paramètres : `mode=creer`, `s=0.14`, `flou=2`, `nom=masque_L`, `dialogue=false`
+   2. PixelMath
+      expression = `$T` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=true ; showNewImage=true ; newImageId=Masque_avant ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
+   3. CurvesTransformation
       Rt=AkimaSubsplines ; Gt=AkimaSubsplines ; Bt=AkimaSubsplines ; Kt=AkimaSubsplines ; At=AkimaSubsplines ; Lt=AkimaSubsplines ; at=AkimaSubsplines ; bt=AkimaSubsplines ; ct=AkimaSubsplines ; Ht=AkimaSubsplines ; St=AkimaSubsplines ; table R (2 lignes) ; table G (2 lignes) ; table B (2 lignes) ; table K (4 lignes) ; table A (2 lignes) ; table L (2 lignes) ; table a (2 lignes) ; table b (2 lignes) ; table c (2 lignes) ; table H (2 lignes) ; table S (3 lignes)
-   3. LocalHistogramEqualization
-      radius=150 ; histogramBins=Bit12 ; slopeLimit=2.0 ; amount=0.300 ; circularKernel=true
    4. LocalHistogramEqualization
+      radius=150 ; histogramBins=Bit12 ; slopeLimit=2.0 ; amount=0.300 ; circularKernel=true
+   5. LocalHistogramEqualization
       radius=40 ; histogramBins=Bit10 ; slopeLimit=2.0 ; amount=0.250 ; circularKernel=true
-   5. Script
+   6. PixelMath
+      expression = `masque_L*$T + (1 - masque_L)*Masque_avant` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
+   7. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
+      paramètres : `views=Masque_avant`, `dialogue=false`
+   8. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
       paramètres : `mode=retirer`, `nom=masque_L`, `dialogue=false`
 
@@ -986,7 +1007,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
 > 
-> PRÉRÉGLÉ : conteneur : masque de luminance attaché (Masque_L), courbe en S (0,25 -> 0,19 ; 0,75 -> 0,81) avec saturation 0,5 -> 0,65, LHE (rayon 150, 0,30), LHE_fin (rayon 40, 0,25), masque retiré = l'ancienne C_Finition.
+> PRÉRÉGLÉ : conteneur : masque_L créé sans être attaché, copie de l'image, courbe en S (0,25 -> 0,19 ; 0,75 -> 0,81) avec saturation 0,5 -> 0,65, LHE (rayon 150, 0,30), LHE_fin (rayon 40, 0,25), puis mélange masque_L × résultat + (1 − masque_L) × copie, copie et masque fermés = l'ancienne C_Finition.
 > 
 > À RÉGLER : à la place de C_Finition, si les couleurs restent ternes : glisse sur l'image sans étoiles étirée, après HDRMT_30.
 > 
@@ -996,12 +1017,19 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 #### Opt_Boost_finition_light — ProcessContainer
    1. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
-      paramètres : `mode=attacher`, `s=0.14`, `flou=2`, `nom=masque_L`, `dialogue=false`
-   2. CurvesTransformation
+      paramètres : `mode=creer`, `s=0.14`, `flou=2`, `nom=masque_L`, `dialogue=false`
+   2. PixelMath
+      expression = `$T` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=true ; showNewImage=true ; newImageId=Masque_avant ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
+   3. CurvesTransformation
       Rt=AkimaSubsplines ; Gt=AkimaSubsplines ; Bt=AkimaSubsplines ; Kt=AkimaSubsplines ; At=AkimaSubsplines ; Lt=AkimaSubsplines ; at=AkimaSubsplines ; bt=AkimaSubsplines ; ct=AkimaSubsplines ; Ht=AkimaSubsplines ; St=AkimaSubsplines ; table R (2 lignes) ; table G (2 lignes) ; table B (2 lignes) ; table K (4 lignes) ; table A (2 lignes) ; table L (2 lignes) ; table a (2 lignes) ; table b (2 lignes) ; table c (2 lignes) ; table H (2 lignes) ; table S (3 lignes)
-   3. LocalHistogramEqualization
+   4. LocalHistogramEqualization
       radius=80 ; histogramBins=Bit10 ; slopeLimit=2.0 ; amount=0.120 ; circularKernel=true
-   4. Script
+   5. PixelMath
+      expression = `masque_L*$T + (1 - masque_L)*Masque_avant` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
+   6. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
+      paramètres : `views=Masque_avant`, `dialogue=false`
+   7. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
       paramètres : `mode=retirer`, `nom=masque_L`, `dialogue=false`
 
@@ -1009,7 +1037,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
 > 
-> PRÉRÉGLÉ : conteneur : courbe très légère (0,25 -> 0,24 ; 0,75 -> 0,76, saturation 0,5 -> 0,57) puis LHE rayon 80, Amount 0,12.
+> PRÉRÉGLÉ : conteneur : masque_L créé sans être attaché, copie de l'image, courbe très légère (0,25 -> 0,24 ; 0,75 -> 0,76, saturation 0,5 -> 0,57) puis LHE rayon 80, Amount 0,12, puis mélange masque_L × résultat + (1 − masque_L) × copie, copie et masque fermés.
 > 
 > À RÉGLER : sous Masque_L, après LHE_fin ; un glisser = un petit cran.
 > 
@@ -1019,12 +1047,19 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 #### Opt_Boost_finition — ProcessContainer
    1. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
-      paramètres : `mode=attacher`, `s=0.14`, `flou=2`, `nom=masque_L`, `dialogue=false`
-   2. CurvesTransformation
+      paramètres : `mode=creer`, `s=0.14`, `flou=2`, `nom=masque_L`, `dialogue=false`
+   2. PixelMath
+      expression = `$T` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=true ; showNewImage=true ; newImageId=Masque_avant ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
+   3. CurvesTransformation
       Rt=AkimaSubsplines ; Gt=AkimaSubsplines ; Bt=AkimaSubsplines ; Kt=AkimaSubsplines ; At=AkimaSubsplines ; Lt=AkimaSubsplines ; at=AkimaSubsplines ; bt=AkimaSubsplines ; ct=AkimaSubsplines ; Ht=AkimaSubsplines ; St=AkimaSubsplines ; table R (2 lignes) ; table G (2 lignes) ; table B (2 lignes) ; table K (4 lignes) ; table A (2 lignes) ; table L (2 lignes) ; table a (2 lignes) ; table b (2 lignes) ; table c (2 lignes) ; table H (2 lignes) ; table S (3 lignes)
-   3. LocalHistogramEqualization
+   4. LocalHistogramEqualization
       radius=80 ; histogramBins=Bit10 ; slopeLimit=2.0 ; amount=0.200 ; circularKernel=true
-   4. Script
+   5. PixelMath
+      expression = `masque_L*$T + (1 - masque_L)*Masque_avant` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
+   6. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
+      paramètres : `views=Masque_avant`, `dialogue=false`
+   7. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
       paramètres : `mode=retirer`, `nom=masque_L`, `dialogue=false`
 
@@ -1032,7 +1067,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
 > 
-> PRÉRÉGLÉ : conteneur : petite courbe (0,25 -> 0,23 ; 0,75 -> 0,77, saturation 0,5 -> 0,60) puis LHE rayon 80, Amount 0,20.
+> PRÉRÉGLÉ : conteneur : masque_L créé sans être attaché, copie de l'image, petite courbe (0,25 -> 0,23 ; 0,75 -> 0,77, saturation 0,5 -> 0,60) puis LHE rayon 80, Amount 0,20, puis mélange masque_L × résultat + (1 − masque_L) × copie, copie et masque fermés.
 > 
 > À RÉGLER : sous Masque_L, après LHE_fin ; un glisser = un petit cran, rejoue-le pour pousser encore.
 > 
@@ -1043,19 +1078,26 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 #### Opt_Sharp_USM — ProcessContainer
    1. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
-      paramètres : `mode=attacher`, `s=0.14`, `flou=2`, `nom=masque_L`, `dialogue=false`
-   2. UnsharpMask
+      paramètres : `mode=creer`, `s=0.14`, `flou=2`, `nom=masque_L`, `dialogue=false`
+   2. PixelMath
+      expression = `$T` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=true ; showNewImage=true ; newImageId=Masque_avant ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
+   3. UnsharpMask
       sigma=2.00 ; amount=0.30 ; useLuminance=true ; linear=false ; deringing=true ; deringingDark=0.1000 ; deringingBright=0.0000 ; outputDeringingMaps=false ; rangeLow=0.0000000 ; rangeHigh=0.0000000
-   3. Script
+   4. PixelMath
+      expression = `masque_L*$T + (1 - masque_L)*Masque_avant` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
+   5. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
+      paramètres : `views=Masque_avant`, `dialogue=false`
+   6. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
       paramètres : `mode=retirer`, `nom=masque_L`, `dialogue=false`
 
 > OPTION — à la place de C_Sharp_MMT : accentuation finale par UnsharpMask, avant NXT_final, sur l'image sans étoiles
-> Masque de luminance attaché puis retiré automatiquement.
+> Masque de luminance appliqué par mélange PixelMath, fermé automatiquement.
 > 
 > LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
 > 
-> PRÉRÉGLÉ : conteneur : masque de luminance attaché (Masque_L, s = 0,14), UnsharpMask (écart type 2,0 px, amount 0,30, luminance seule, anti-halo sombre 0,10), masque retiré.
+> PRÉRÉGLÉ : conteneur : masque_L créé sans être attaché, copie de l'image, UnsharpMask (écart type 2,0 px, amount 0,30, luminance seule, anti-halo sombre 0,10), puis mélange masque_L × résultat + (1 − masque_L) × copie, copie et masque fermés.
 > 
 > À RÉGLER : glisse sur l'image SANS étoiles étirée, après C_Finition, avant NXT_final ; regarde à 100 % sur la galaxie.
 > 
@@ -1102,27 +1144,40 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
       paramètres : `views=HDR_avant`, `dialogue=false`
    5. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
-      paramètres : `mode=attacher`, `s=0.14`, `flou=2`, `nom=masque_L`, `dialogue=false`
-   6. CurvesTransformation
+      paramètres : `mode=creer`, `s=0.14`, `flou=2`, `nom=masque_L`, `dialogue=false`
+   6. PixelMath
+      expression = `$T` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=true ; showNewImage=true ; newImageId=Masque_avant ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
+   7. CurvesTransformation
       Rt=AkimaSubsplines ; Gt=AkimaSubsplines ; Bt=AkimaSubsplines ; Kt=AkimaSubsplines ; At=AkimaSubsplines ; Lt=AkimaSubsplines ; at=AkimaSubsplines ; bt=AkimaSubsplines ; ct=AkimaSubsplines ; Ht=AkimaSubsplines ; St=AkimaSubsplines ; table R (2 lignes) ; table G (2 lignes) ; table B (2 lignes) ; table K (4 lignes) ; table A (2 lignes) ; table L (2 lignes) ; table a (2 lignes) ; table b (2 lignes) ; table c (2 lignes) ; table H (2 lignes) ; table S (3 lignes)
-   7. LocalHistogramEqualization
-      radius=150 ; histogramBins=Bit12 ; slopeLimit=2.0 ; amount=0.300 ; circularKernel=true
    8. LocalHistogramEqualization
+      radius=150 ; histogramBins=Bit12 ; slopeLimit=2.0 ; amount=0.300 ; circularKernel=true
+   9. LocalHistogramEqualization
       radius=40 ; histogramBins=Bit10 ; slopeLimit=2.0 ; amount=0.250 ; circularKernel=true
-   9. Script
-      script `$PXI_SRCDIR/scripts/clodoweg/Sharp_MMT.js`
-      paramètres : `biais=0.04`, `premiere=2`, `derniere=4`, `couches=5`, `dialogue=false`
-   10. Script
+   10. PixelMath
+      expression = `masque_L*$T + (1 - masque_L)*Masque_avant` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
+   11. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
+      paramètres : `views=Masque_avant`, `dialogue=false`
+   12. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
       paramètres : `mode=retirer`, `nom=masque_L`, `dialogue=false`
-   11. NoiseXTerminator
+   13. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
+      paramètres : `mode=attacher`, `s=0.14`, `flou=2`, `nom=masque_L`, `dialogue=false`
+   14. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Sharp_MMT.js`
+      paramètres : `biais=0.04`, `premiere=2`, `derniere=4`, `couches=5`, `dialogue=false`
+   15. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
+      paramètres : `mode=retirer`, `nom=masque_L`, `dialogue=false`
+   16. NoiseXTerminator
       ml_version=0 ; denoise=0.40 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
 
 > MODE RAPIDE, à la place de HDRMT_30, C_Finition, C_Sharp_MMT et NXT_final : sur l'image sans étoiles après LRGB_ajout_L (ou R_C_LRGB_rapide).
 > 
 > LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
 > 
-> PRÉRÉGLÉ : conteneur : HDRMT à 30 % (copie HDR_avant, HDRMT 6 couches, mélange 0,3 × résultat + 0,7 × copie, copie fermée), masque de luminance attaché, Courbes, LHE (rayon 150), LHE_fin (rayon 40), Sharp_MMT (MMT couches 2 à 4 biais +0,04), masque retiré, NXT_final (Denoise 0,40).
+> PRÉRÉGLÉ : conteneur : HDRMT à 30 % (copie HDR_avant, HDRMT 6 couches, mélange 0,3 × résultat + 0,7 × copie, copie fermée), masque_L créé sans être attaché, copie de l'image, Courbes, LHE (rayon 150), LHE_fin (rayon 40), mélange par masque_L ; masque attaché, Sharp_MMT (MMT couches 2 à 4 biais +0,04), masque retiré ; NXT_final (Denoise 0,40).
 > 
 > À RÉGLER : glisse sur l'image sans étoiles après LRGB_ajout_L (ou R_C_LRGB_rapide) ; ensuite R_C_Etoiles_fond_rapide.
 > 
@@ -1266,10 +1321,17 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 #### Opt_Boost_final_doux — ProcessContainer
    1. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
-      paramètres : `mode=attacher`, `s=0.20`, `gamma=2`, `flou=2`, `nom=masque_L`, `source=L`, `exclure=RGB_stars`, `exclureGain=4`, `dialogue=false`
-   2. CurvesTransformation
+      paramètres : `mode=creer`, `s=0.20`, `gamma=2`, `flou=2`, `nom=masque_L`, `source=L`, `exclure=RGB_stars`, `exclureGain=4`, `dialogue=false`
+   2. PixelMath
+      expression = `$T` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=true ; showNewImage=true ; newImageId=Masque_avant ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
+   3. CurvesTransformation
       Rt=AkimaSubsplines ; Gt=AkimaSubsplines ; Bt=AkimaSubsplines ; Kt=AkimaSubsplines ; At=AkimaSubsplines ; Lt=AkimaSubsplines ; at=AkimaSubsplines ; bt=AkimaSubsplines ; ct=AkimaSubsplines ; Ht=AkimaSubsplines ; St=AkimaSubsplines ; table R (2 lignes) ; table G (2 lignes) ; table B (2 lignes) ; table K (2 lignes) ; table A (2 lignes) ; table L (2 lignes) ; table a (2 lignes) ; table b (2 lignes) ; table c (3 lignes) ; table H (2 lignes) ; table S (3 lignes)
-   3. Script
+   4. PixelMath
+      expression = `masque_L*$T + (1 - masque_L)*Masque_avant` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
+   5. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
+      paramètres : `views=Masque_avant`, `dialogue=false`
+   6. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
       paramètres : `mode=retirer`, `nom=masque_L`, `dialogue=false`
 
@@ -1278,7 +1340,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
 > 
-> PRÉRÉGLÉ : conteneur : masque de luminance tiré de L sans étoiles (script Masque_auto, source = L, s = 0,20, gamma 2 : fort sur le cœur et les bras brillants, faible sur le halo et les bras faibles ; étoiles de RGB_stars retirées du masque) attaché, CurvesTransformation c 0,46094 -> 0,49870 et S 0,46354 -> 0,50261, masque retiré.
+> PRÉRÉGLÉ : conteneur : masque de luminance tiré de L sans étoiles (script Masque_auto, source = L, s = 0,20, gamma 2 : fort sur le cœur et les bras brillants, faible sur le halo et les bras faibles ; étoiles de RGB_stars retirées du masque) créé sans être attaché, copie, CurvesTransformation c 0,46094 -> 0,49870 et S 0,46354 -> 0,50261, mélange par masque_L, copie et masque fermés.
 > 
 > À RÉGLER : glisse sur l'image finie avec étoiles ; L (sans étoiles, étirée) doit être ouverte.
 > 
@@ -1290,10 +1352,17 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 #### Opt_Boost_final — ProcessContainer
    1. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
-      paramètres : `mode=attacher`, `s=0.20`, `gamma=2`, `flou=2`, `nom=masque_L`, `source=L`, `exclure=RGB_stars`, `exclureGain=4`, `dialogue=false`
-   2. CurvesTransformation
+      paramètres : `mode=creer`, `s=0.20`, `gamma=2`, `flou=2`, `nom=masque_L`, `source=L`, `exclure=RGB_stars`, `exclureGain=4`, `dialogue=false`
+   2. PixelMath
+      expression = `$T` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=true ; showNewImage=true ; newImageId=Masque_avant ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
+   3. CurvesTransformation
       Rt=AkimaSubsplines ; Gt=AkimaSubsplines ; Bt=AkimaSubsplines ; Kt=AkimaSubsplines ; At=AkimaSubsplines ; Lt=AkimaSubsplines ; at=AkimaSubsplines ; bt=AkimaSubsplines ; ct=AkimaSubsplines ; Ht=AkimaSubsplines ; St=AkimaSubsplines ; table R (2 lignes) ; table G (2 lignes) ; table B (2 lignes) ; table K (2 lignes) ; table A (2 lignes) ; table L (2 lignes) ; table a (2 lignes) ; table b (2 lignes) ; table c (3 lignes) ; table H (2 lignes) ; table S (3 lignes)
-   3. Script
+   4. PixelMath
+      expression = `masque_L*$T + (1 - masque_L)*Masque_avant` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
+   5. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
+      paramètres : `views=Masque_avant`, `dialogue=false`
+   6. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
       paramètres : `mode=retirer`, `nom=masque_L`, `dialogue=false`
 
@@ -1301,7 +1370,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
 > 
-> PRÉRÉGLÉ : conteneur : masque de luminance tiré de L sans étoiles (script Masque_auto, source = L, s = 0,20, gamma 2 : fort sur le cœur et les bras brillants, faible sur le halo et les bras faibles ; étoiles de RGB_stars retirées du masque) attaché, CurvesTransformation c 0,46094 -> 0,53646 et S 0,46354 -> 0,54167, masque retiré.
+> PRÉRÉGLÉ : conteneur : masque de luminance tiré de L sans étoiles (script Masque_auto, source = L, s = 0,20, gamma 2 : fort sur le cœur et les bras brillants, faible sur le halo et les bras faibles ; étoiles de RGB_stars retirées du masque) créé sans être attaché, copie, CurvesTransformation c 0,46094 -> 0,53646 et S 0,46354 -> 0,54167, mélange par masque_L, copie et masque fermés.
 > 
 > À RÉGLER : glisse sur l'image finie avec étoiles ; L (sans étoiles, étirée) doit être ouverte.
 > 
