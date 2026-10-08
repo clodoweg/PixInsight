@@ -320,6 +320,15 @@ Anneau cœur rouge / halo cyan| Réduction d'étoiles, ou désaturation des halo
 Toutes blanches| Étirement trop fort : Stretch Factor plus bas, ou GHS avec HP  
 Étoiles trop présentes| Réduction d'étoiles après recombinaison
 
+## Mode rapide narrowband (en cours, 8 octobre 2026)
+
+Demande de l'utilisateur (« Commence faire le premier rapide pour SHO, SHO RGB et HOO ») : les rapides se font phase par phase ; les colonnes ont un groupe P#_rapide, « pas encore de rapide » sauf en P1.
+- **P1 : R_C_Preparation_rapide** (double-clic puis Apply Global, masters seuls ouverts) = Renommer_auto, LinearPatternSubtraction, Solver_auto (ImageSolver sur toutes les images). Remplace E00, E01 et l'ImageSolver de P2. Pas de combinaison SHO ou HOO : elle se fait après le gradient (P3), qui se retire par master.
+- **RGB + SHO** : Combinaison_RGB en plus, avant Solver_auto (comme en LRGB) : RGB des étoiles créée et résolue dès P1 ; en P7, sauter Combinaison_RGB et ImageSolver du bloc Etoiles_RGB ; en P2, GradientCorrection aussi sur RGB.
+- HOO caméra couleur dual-band : pas ce rapide (DualBand_H / DualBand_O au chemin principal).
+- Mêmes scripts et réglages qu'en galaxies (Renommer_auto reconnaît Ha, OIII, SII) : aucune nouvelle valeur technique.
+- À venir : P2 (gradient), P3, P4…, puis turbo.
+
 ## BXT et NXT en SHO : réglages comparés au LRGB (analyse du 8 octobre 2026)
 
 Question de l'utilisateur : faut-il les mêmes BXT et NXT qu'en LRGB ? Décision de l'utilisateur : BXT gardé à 0,60 ; NXT choix B (NXT_NB 0,75 sur la combinaison sans étoiles, dans C_SHO_lineaire / C_HOO_lineaire après SXT ; NXT_H et NXT_O_S en options P3).

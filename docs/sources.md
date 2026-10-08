@@ -362,6 +362,8 @@ Points toujours sans source directe (contrôle du 30 septembre 2026) :
 
 - Pas encore confirmés dans PixInsight par l'utilisateur (5 octobre 2026) : Sharp_MMT depuis sa fenêtre et cwApplyOnCopy nouvelle version (résultat recalculé sur la vue) ; Saturation_grosses après la correction de l'« Unknown error » ; Etoiles_grosses sans anneau (vérifié seulement en simulation) ; T_Turbo_debut ; SCNR_etoiles_violet (Invert en script). Réglages choisis sans source chiffrée : Courbes de C_Finition saturation 0,58 (au jugé de l'utilisateur : 0,65 trop saturé), NXT_dernier Denoise 0,25.
 
+- Mode rapide narrowband P1 (8 octobre 2026) : R_C_Preparation_rapide de SHO sans RGB, RGB + SHO et HOO pas encore lancé dans PixInsight (ImageSolver par Solver_auto sur des masters 3 nm non testé).
+
 Points clos au dernier contrôle (30 septembre 2026) :
 
 - Part du Ha à ajouter au bleu en LHaRGB : rapport intrinsèque Hα/Hβ = 2,86 (cas B, 10⁴ K, 10² cm⁻³, Osterbrock 1989), relu dans [Momcheva et al. 2013, arXiv 1207.5479](https://arxiv.org/abs/1207.5479) ; Hβ ≈ 0,35 × Hα, plafond physique indiqué sur la page ; les « 80 % / 20 % » des tutoriels en sont une approximation (tutoriel d'origine, arciereceleste.it, désormais en 404).
@@ -975,3 +977,8 @@ Non vérifié : aucune valeur officielle pour le HOO ; pas testé sur les donné
 
 Demande : « ecrit la mémoire alors pour que je puisse lancer une autre conversation pour travailler sur le SHO »
 Fait : CLAUDE.md mis à jour (état des workflows narrowband, décisions BXT/NXT, à faire, règle de prudence LRGB étendue au LHaRGB, contraintes PixInsight apprises, .bat) ; docs/kb/README.md mis à jour.
+
+### Mode rapide narrowband, phase 1 (8 octobre 2026)
+
+- Demande de l'utilisateur : « Commence faire le premier rapide pour SHO, SHO RGB et HOO (en fait je vais travailler sur les 3 a la fois dans cette conversation) ».
+- Aucune nouvelle valeur : R_C_Preparation_rapide reprend les scripts déjà validés en galaxies (Renommer_auto, LPS_UnClic, Combiner_RGB, GC_Solver_auto). Ordre combinaison après gradient : manuel RC Astro et rubrique « Combinaison et narrowband » (déjà sourcés). Non testé dans PixInsight sur des masters narrowband (ImageSolver sur masters 3 nm).

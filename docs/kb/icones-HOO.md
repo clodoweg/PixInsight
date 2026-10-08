@@ -123,6 +123,32 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > À RÉGLER : glisse sur l'image dual-band (caméra couleur seulement).
 
+### P1_rapide
+
+#### R_C_Preparation_rapide — ProcessContainer
+   1. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Renommer_auto.js`
+      paramètres : `dialogue=false`
+   2. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/LPS_UnClic.js`
+      paramètres : `correctColumns=false`, `correctEntireImage=true`, `defectTableFilePath=`, `layersToRemove=9`, `rejectionLimit=3`, `globalRejection=true`, `globalRejectionLimit=5`, `autoBackground=true`, `backgroundReferenceLeft=0`, `backgroundReferenceTop=0`, `backgroundReferenceWidth=512`, `backgroundReferenceHeight=512`, `allOpenImages=true`, `closeWorkingImages=true`, `dialogue=false`
+   3. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/GC_Solver_auto.js`
+      paramètres : `gradient=false`, `solve=true`, `solveTout=true`, `defaultDate=2020-01-01T00:00:00`, `dialogue=false`, `metadata_focal=2939`, `metadata_xpixsz=3.76`, `solver_catalogMode=2`, `solver_distortionCorrection=true`, `(+ 42 autres réglages ImageSolver)`
+
+> MODE RAPIDE, à la place de LinearPatternSubtraction, Renommer_auto et ImageSolver (phase 2) : masters seuls ouverts, double-clic puis Apply Global (pas en glissant : ImageSolver échoue sur une image en cours de traitement) ; ensuite la phase 2 sans ImageSolver.
+> 
+> LANCEMENT : masters seuls ouverts, double-clic puis Apply Global (rond bleu) ; pas en glissant (ImageSolver échoue sur une image en cours de traitement).
+> 
+> PRÉRÉGLÉ : conteneur : Renommer_auto (H, O d'après FILTER), LinearPatternSubtraction sur tous les masters ouverts, Solver_auto (ImageSolver sur toutes les images) ; pas de combinaison (HOO combinée en phase 3, après le gradient).
+> 
+> À RÉGLER : masters H et O seuls ouverts (caméra mono) ; double-clic puis Apply Global (pas en glissant) ; remplace E00, E01 et l'ImageSolver de la phase 2 ; ensuite la phase 2 sans ImageSolver.
+> 
+> SI :
+> - une étape en erreur -> lis la console, puis fais les icônes une par une
+> - caméra couleur dual-band -> pas ce conteneur : chemin principal (DualBand_H, DualBand_O)
+> - masters décalés, bandes noires -> Crop_reference et Crop_appliquer AVANT ce conteneur
+
 ## P2_Gradient
 
 #### E03_ImageSolver — Script
@@ -194,14 +220,14 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
    paramètres : `facteur=2`
 
 > OPTION — traitement 4 fois plus rapide et moins de bruit (0,528″/px au lieu de 0,264″/px, l'image du CDK17 est suréchantillonnée
-> FWHM sous le plafond de 8 px de BXT) : double-clic puis Apply Global juste après ImageSolver (phase 2), toutes les images divisées par 2
+> FWHM sous le plafond de 8 px de BXT) : double-clic puis Apply Global juste après ImageSolver (phase 2) ou après R_C_Preparation_rapide, toutes les images divisées par 2
 > Pour un grand tirage, Agrandir_x2 avant l'export.
 > 
 > LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
 > 
 > PRÉRÉGLÉ : script Binning_x2 : IntegerResample −2, moyenne (binning 2×2 logiciel) sur TOUTES les images ouvertes (sauf *_stars) ; solution astrométrique gardée ; mots-clés XPIXSZ et XBINNING mis à jour.
 > 
-> À RÉGLER : double-clic puis Apply Global, juste APRÈS ImageSolver (phase 2), avant SPFC et MGC ; copie Binning_x2.js dans src/scripts/clodoweg.
+> À RÉGLER : double-clic puis Apply Global, juste APRÈS ImageSolver (phase 2) ou R_C_Preparation_rapide, avant SPFC et MGC ; copie Binning_x2.js dans src/scripts/clodoweg.
 > 
 > SI :
 > - grand tirage voulu -> Agrandir_x2 (P7 options) avant Export_TIFF, ou ne bine pas
@@ -258,6 +284,8 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > PRÉRÉGLÉ : référence = vue H.
 > 
 > À RÉGLER : applique sur O puis sur S.
+
+### P2_rapide
 
 ## P3_Lineaire
 
@@ -339,6 +367,8 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - revenir à l'image brute -> Reset de la fenêtre STF (ou F12)
 > - dominante de couleur à l'écran -> décoche le lien R/G/B (chaîne), puis A
 
+### P3_rapide
+
 ## P4_Etirement
 
 #### E12_GHS_1_premier — GeneralizedHyperbolicStretch
@@ -400,6 +430,8 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - fond trop sombre ou nébuleuse faible -> Target Median 0,20 (défaut) ou Expand Low 0,08
 > - fond délavé, gris -> Target Median 0,12
 > - fond coupé à noir -> Aggressiveness plus bas (2 à 3)
+
+### P4_rapide
 
 ## P5_Couleur
 
@@ -467,6 +499,8 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > PRÉRÉGLÉ : seul L coché, Lightness 0,5, Saturation 0,40.
 > 
 > À RÉGLER : copie de H étiré nommée 'L' ; glisse sur l'image HOO.
+
+### P5_rapide
 
 ## P6_Finition
 
@@ -786,6 +820,8 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > SI :
 > - aspect plastique -> NXT_final (0,40)
 
+### P6_rapide
+
 ## P7_Etoiles
 
 #### E21_Etoiles_HOO — NoOperation
@@ -999,3 +1035,5 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > SI :
 > - une vue à garder -> décoche-la dans la fenêtre
 > - rien n'est enregistré : exporte ou sauve AVANT
+
+### P7_rapide
