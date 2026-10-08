@@ -754,7 +754,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
    script `$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js`
    paramètres : `vue=RGB_stars`, `amount=0`, `satAmount=0`, `scnr=false`, `violet=true`
 
-> OPTION — étoiles violettes (R et B nettement au-dessus de G à la sonde, surtout en LHaRGB) : après SCNR_etoiles_vert, glisse sur n'importe quelle image (traite RGB_stars)
+> OPTION — étoiles violettes (R et B nettement au-dessus de G à la sonde) : après SCNR_etoiles_vert, glisse sur n'importe quelle image
 > Invert, SCNR vert 1,0, Invert
 > Pas dans le rapide.
 > 
@@ -772,9 +772,9 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
    script `$PXI_SRCDIR/scripts/clodoweg/Saturation_grosses.js`
    paramètres : `vue=RGB_stars`, `taille=7`, `seuil=0.15`, `etendue=12`, `passes=1`
 
-> OPTION — grosses étoiles presque blanches, petites assez colorées : glisse sur n'importe quelle image (traite RGB_stars) après SCNR_etoiles_vert
+> OPTION — grosses étoiles presque blanches, petites assez colorées : glisse sur n'importe quelle image après les SCNR
 > Seules les grosses étoiles et leur halo sont saturés
-> Pas dans le rapide (à la main après R_C_RGB_etire_rapide si besoin).
+> Pas dans le rapide.
 > 
 > LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
 > 
