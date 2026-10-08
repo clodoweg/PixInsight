@@ -970,3 +970,8 @@ Sources :
 - https://www.cloudynights.com/forums/topic/898771-what-is-the-best-way-to-process-osc-data-with-dual-banddual-band/
 - https://stargazerslounge.com/topic/419872-ways-of-dealing-with-oiii-noise-in-narrowband-mono-recomposition/ (page non lue : 403 ; contenu d'après le résumé de recherche)
 Non vérifié : aucune valeur officielle pour le HOO ; pas testé sur les données de l'utilisateur.
+
+### Mémoire pour une nouvelle conversation SHO (8 octobre 2026)
+
+Demande : « ecrit la mémoire alors pour que je puisse lancer une autre conversation pour travailler sur le SHO »
+Fait : CLAUDE.md mis à jour (état des workflows narrowband, décisions BXT/NXT, à faire, règle de prudence LRGB étendue au LHaRGB, contraintes PixInsight apprises, .bat) ; docs/kb/README.md mis à jour.
