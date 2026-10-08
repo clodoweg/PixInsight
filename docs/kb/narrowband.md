@@ -32,7 +32,7 @@ NXT_NB (0,75) une fois sur l'image SHO sans étoiles, linéaire, avant l'extract
      * **Contrôle** : combinaison simple, fond gris neutre ; sinon, le canal de la teinte est trop étiré.
 6. #### Palette
 
-     * **NarrowbandNormalization** : la référence, sur l'image SHO étirée et sans étoiles.
+     * **NarrowbandNormalization** : la référence, sur l'image SHO étirée et sans étoiles : icône SHO_simple (R = S, G = H, B = O étirés -> SHO_etire), puis NBN_SHO dessus (comme HOO_simple + NBN_HOO). Palettes en non linéaire : annonce officielle de NBN (forum PixInsight) et nrStellar ; Foraxx sur canaux étirés ; Perfect Palette Picker accepte du linéaire (il étire lui-même).
      * **Foraxx** (PixelMath) : or et bleu (formules) ; **NBColourMapper** : palettes créatives ; **Perfect Palette Picker** : comparer 16 palettes.
      * Contrôle : couleurs SHO.
 7. #### Finition du fond SHO

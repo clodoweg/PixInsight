@@ -951,9 +951,12 @@ STAT_NB = (" En narrowband : même Target Median (0,25) pour tous les masters na
 sho_combine = (pm('Combinaison_SHO', 'S', 'H', 'O', new_image=True, new_id='SHO', space='RGB'),
                "Combinaison SHO SIMPLE (équivalent de ChannelCombination) : R = S, G = H, B = O, sans boost ni mélange. Sert à BXT et SXT. Crée l'image 'SHO'.")
 sho_palette = [
+    # combinaison des canaux ÉTIRÉS avant NBN (demande de l'utilisateur, 8 octobre 2026 : « il ne manque pas un process pour combiner les canaux ? »), comme HOO_simple
+    (pm('SHO_simple', 'S', 'H', 'O', new_image=True, new_id='SHO_etire', space='RGB'),
+     "PALETTE — combinaison simple sur 'S', 'H' et 'O' étirés sans étoiles (R = S, G = H, B = O), à équilibrer ensuite avec NarrowbandNormalization (icône suivante). Crée 'SHO_etire'."),
     (M.instance('NarrowbandNormalization', 'NBN_SHO', {'palette': 'Palette_SHO'}),
      "PALETTE — NarrowbandNormalization, palette SHO (valeurs par défaut ; nom interne Palette_SHO vérifié dans le module 1.1). Sur l'image SHO combinée (R = S, G = H, B = O), "
-     "ÉTIRÉE et sans étoiles, canaux étirés avec le même fond et la même médiane (recombine-les avec l'icône Combinaison_SHO). Active l'aperçu. "
+     "ÉTIRÉE et sans étoiles, canaux étirés avec le même fond et la même médiane (recombinés par l'icône SHO_simple : image 'SHO_etire'). Active l'aperçu. "
      "Ordre de réglage conseillé (suggestion de la fiche, pas une consigne de l'auteur) : Lightness (Off, Preserve, Ha, OIII ou SII ; souvent Ha) ; Shadowpoint pour le fond, sans l'écrêter ; "
      "O3 boost puis S2 boost, progressivement (S, le plus bruité, avec prudence) ; Highlight reduction ; Brightness ; SCNR partiel en dernier, si besoin. "
      "Pour comprendre un curseur, pousse-le à fond (0 ou maximum) puis reviens à une valeur raisonnable (astuce theAstroShed). Garde ton réglage en glissant le triangle du process sur le bureau. "
