@@ -118,12 +118,9 @@ function main()
    let view = Parameters.isViewTarget ? Parameters.targetView : ImageWindow.activeWindow.mainView;
    if ( view.isNull )
       throw new Error( SM_TITLE + " : aucune image." );
-   // glissée sur l'image : exécution directe (historique géré par PixInsight) ; sinon (conteneur
-   // lancé en Apply Global) même chemin que la fenêtre, pour l'affichage et le Ctrl+Z
-   if ( Parameters.isViewTarget )
-      smProcess( view, p );
-   else
-      smApply( view, p );
+   // toujours calcul sur copie cachée puis recopie (beginProcess / endProcess) : étape Ctrl+Z, même glissée
+   // ou dans C_Sharp_MMT / R_C_Fin_rapide (retour de l'utilisateur, 8 octobre 2026 : pas de Ctrl+Z en exécution directe)
+   smApply( view, p );
    console.noteln( SM_TITLE + " : " + view.id + " accentuée (couches " + p.premiere + " à " + p.derniere + ", biais +" + p.biais + ")." );
 }
 
