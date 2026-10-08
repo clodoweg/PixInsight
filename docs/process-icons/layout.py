@@ -72,6 +72,7 @@ def role(prefix, base):
 
 DEFAULT = {'grad': 'mgc', 'str': 'ghs', 'pal': 'nbn', 'et': 'reduit'}
 WF_DEFAULT = {p: {'str': 'mix', 'et': 'screen'} for p in LUM}   # galaxies : pas de réduction d'étoiles par défaut
+WF_DEFAULT.update({p: {'et': 'screen'} for p in NB})   # narrowband aussi : Etoiles_screen par défaut, Etoiles_reduites en alternative (demande de l'utilisateur, 8 octobre 2026)
 CHOICES = {
     'grad': ('Gradient', [('mgc', 'MGC + MARS (défaut)'), ('gc', 'GradientCorrection (sans MARS)'), ('dbe', 'DBE (nébuleuse qui remplit le champ)')]),
     'str': ('Étirement', [('mix', 'Statistical Stretch sur RGB + GHS sur L (défaut LRGB)'), ('ghs', 'GHS sur tout (défaut sans L)'), ('stat', 'Statistical Stretch sur tout (automatique ; jamais avec L : halos d\'étoiles)')]),

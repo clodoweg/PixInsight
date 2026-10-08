@@ -987,16 +987,17 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - données très propres -> 0,10 à 0,11
 > - nébuleuse qui remplit le champ (pas de vrai fond) -> saute cette étape
 
-#### E24_Etoiles_reduites — PixelMath
-   expression = `S=0.20; W=~((~$T)*(~HOO_stars)); f1= ~((~mtf(~S,W)/~mtf(~S,$T))*~$T); max($T,f1)` ; useSingleExpression=true ; symbols = `S, W, f1` ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
+#### E24_Etoiles_screen — PixelMath
+   expression = `~((~$T) * (~HOO_stars))` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
 
-> PRÉRÉGLÉ : S = 0,20 ; screen + réduction Blanshan avec HOO_stars, sur l'image elle-même.
+> PRÉRÉGLÉ : ~((~$T) * (~HOO_stars)), sur l'image elle-même.
 > 
-> À RÉGLER : à la place d'Etoiles_screen : glisse sur l'image HOO sans étoiles finale.
+> À RÉGLER : glisse sur l'image HOO sans étoiles finale ; étoiles de SXT sur HOO (HOO_stars), étirées.
 > 
 > SI :
-> - étoiles RGB -> RGB_stars ; NB to RGB -> NBtoRGB_stars
-> - pour recommencer -> Ctrl+Z
+> - étoiles RGB -> RGB_stars
+> - NB to RGB -> NBtoRGB_stars
+> - synthétiques -> Stars_HOO
 
 #### E25_NXT_dernier — NoiseXTerminator
    ml_version=0 ; denoise=0.25 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
@@ -1076,19 +1077,18 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > SI :
 > - fond encore trop sombre -> double-clic, cible 0,15
 
-#### Opt_Etoiles_screen — PixelMath
-   expression = `~((~$T) * (~HOO_stars))` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
+#### Opt_Etoiles_reduites — PixelMath
+   expression = `S=0.20; W=~((~$T)*(~HOO_stars)); f1= ~((~mtf(~S,W)/~mtf(~S,$T))*~$T); max($T,f1)` ; useSingleExpression=true ; symbols = `S, W, f1` ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
 
-> ALTERNATIVE — Recombinaison simple.
+> ALTERNATIVE — Recombinaison + réduction Blanshan.
 > 
-> PRÉRÉGLÉ : ~((~$T) * (~HOO_stars)), sur l'image elle-même.
+> PRÉRÉGLÉ : S = 0,20 ; screen + réduction Blanshan avec HOO_stars, sur l'image elle-même.
 > 
-> À RÉGLER : glisse sur l'image HOO sans étoiles finale ; étoiles de SXT sur HOO (HOO_stars), étirées.
+> À RÉGLER : à la place d'Etoiles_screen : glisse sur l'image HOO sans étoiles finale.
 > 
 > SI :
-> - étoiles RGB -> RGB_stars
-> - NB to RGB -> NBtoRGB_stars
-> - synthétiques -> Stars_HOO
+> - étoiles RGB -> RGB_stars ; NB to RGB -> NBtoRGB_stars
+> - pour recommencer -> Ctrl+Z
 
 #### Opt_Agrandir_x2 — Resample
    xSize=2.000000 ; ySize=2.000000 ; mode=RelativeDimensions ; absoluteMode=ForceWidthAndHeight ; interpolation=Lanczos3 ; clampingThreshold=0.30 ; smoothness=1.50 ; noGUIMessages=true

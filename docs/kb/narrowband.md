@@ -1,6 +1,6 @@
 # Narrowband : RGB + SHO, SHO sans RGB, HOO (peu utilisés)
 
-Workflows narrowband, palettes, Foraxx, standards de couleur et d'étoiles narrowband. L'utilisateur a beaucoup de cibles SHO et RGB + SHO : prochain chantier (octobre 2026). Mise à jour du 8 octobre 2026 (demande de l'utilisateur) : mêmes ajouts que les galaxies, sauf MAS et SCNR des étoiles (propres au RGB) et les rapides et turbo (plus tard). NXT_NB 0,75 sur la combinaison sans étoiles (NXT par canal en option), BXT 0,60 ; finition des galaxies (HDRMT_30, C_Finition 0,58 avec Finition_saturee 0,65 en option, C_Sharp_MMT, NXT_final ; options Nettoyage_sans_etoiles, HDRMT_40, DarkStructureEnhance, NXT_final_doux, NXT_final_fort) ; P7 : Fond_desature et Fond_auto sur l'image sans étoiles, recombinaison (Etoiles_reduites par défaut, Etoiles_screen en alternative), NXT_dernier 0,25 ; options STF, EZ_Soft_Stretch (chaque canal), Binning_x2 (après ImageSolver), Fond_auto_clair, Agrandir_x2 ; Etoiles_plafond retiré ; pas de Boost_final (masque tiré de L). Etoiles_grosses reste en option.
+Workflows narrowband, palettes, Foraxx, standards de couleur et d'étoiles narrowband. L'utilisateur a beaucoup de cibles SHO et RGB + SHO : prochain chantier (octobre 2026). Mise à jour du 8 octobre 2026 (demande de l'utilisateur) : mêmes ajouts que les galaxies, sauf MAS et SCNR des étoiles (propres au RGB) et les rapides et turbo (plus tard). NXT_NB 0,75 sur la combinaison sans étoiles (NXT par canal en option), BXT 0,60 ; finition des galaxies (HDRMT_30, C_Finition 0,58 avec Finition_saturee 0,65 en option, C_Sharp_MMT, NXT_final ; options Nettoyage_sans_etoiles, HDRMT_40, DarkStructureEnhance, NXT_final_doux, NXT_final_fort) ; P7 : Fond_desature et Fond_auto sur l'image sans étoiles, recombinaison (Etoiles_screen par défaut depuis le 8 octobre 2026, Etoiles_reduites en alternative), NXT_dernier 0,25 ; options STF, EZ_Soft_Stretch (chaque canal), Binning_x2 (après ImageSolver), Fond_auto_clair, Agrandir_x2 ; Etoiles_plafond retiré ; pas de Boost_final (masque tiré de L). Etoiles_grosses reste en option.
 
 Issu de l'ancienne fiche HTML `docs/pixinsight-workflow.html` (octobre 2026) ; sources dans `docs/sources.md`.
 
@@ -192,7 +192,7 @@ Recombine en mode _screen_ , puis réduis les étoiles si besoin avec les formul
 
 `~((~$T) * (~NBtoRGB_stars))`
 
-Sur l'image SHO sans étoiles finale ; étoiles synthétiques : `Stars_HOO` à la place de `NBtoRGB_stars`. Par défaut en nébuleuse : `Etoiles_reduites`.
+Sur l'image SHO sans étoiles finale ; étoiles synthétiques : `Stars_HOO` à la place de `NBtoRGB_stars`. Par défaut : `Etoiles_screen` (choix de l'utilisateur, 8 octobre 2026) ; `Etoiles_reduites` en alternative.
 
 ### Étoiles sans RGB : le standard et comment le vérifier
 Couleur non calibrée : on vise des étoiles **plausibles** (bleu-blanc à jaune-orange, peu saturées, variées), **ni magenta ni vertes** , sans anneau coloré. Pour des étoiles calibrées, quelques poses RGB courtes suffisent (RGB + SHO).
@@ -282,7 +282,7 @@ Recombine en mode _screen_ , puis réduis les étoiles si besoin avec les formul
 
 `~((~$T) * (~HOO_stars))`
 
-Selon les étoiles : `HOO_stars`, `RGB_stars`, `NBtoRGB_stars` ou `Stars_HOO`. Par défaut en nébuleuse : `Etoiles_reduites`.
+Selon les étoiles : `HOO_stars`, `RGB_stars`, `NBtoRGB_stars` ou `Stars_HOO`. Par défaut : `Etoiles_screen` (choix de l'utilisateur, 8 octobre 2026) ; `Etoiles_reduites` en alternative.
 
 ### Couleurs HOO : le rendu de référence et comment le vérifier
 Rendu de référence : **rouge et cyan**.

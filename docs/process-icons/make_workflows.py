@@ -1204,7 +1204,7 @@ insert_after(lhargb, 'C_Preparation_rapide', [(turbo_debut(lhargb), '')])   # tu
 # fin P7 : Fond_desature, Fond_auto (options Fond_auto_clair) sur l'image SANS étoiles avant la recombinaison, NXT_dernier juste après ;
 # la recombinaison par défaut reste Etoiles_reduites en nébuleuse (Etoiles_screen en alternative). Options STF, EZ_Soft_Stretch, Binning_x2,
 # DarkStructureEnhance, Agrandir_x2 ; Etoiles_plafond retiré. Pas de Boost_final (masque tiré de L).
-D_NXT_DERNIER_NB = D_NXT_DERNIER.replace("juste après Etoiles_screen", "juste après la recombinaison des étoiles (Etoiles_reduites ou Etoiles_screen)")
+D_NXT_DERNIER_NB = D_NXT_DERNIER.replace("juste après Etoiles_screen", "juste après la recombinaison des étoiles (Etoiles_screen, ou Etoiles_reduites en alternative)")
 for _st in (rgbsho, sho, hoo):
     _st.insert(next(k for k, (it, d) in enumerate(_st) if it[0] == 'GHS_1_premier'), (stf_icon(), ''))
     insert_after(_st, 'Statistical_Stretch', [(script('EZ_Soft_Stretch', ''), '')])

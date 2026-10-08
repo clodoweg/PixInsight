@@ -1244,17 +1244,15 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - données très propres -> 0,10 à 0,11
 > - nébuleuse qui remplit le champ (pas de vrai fond) -> saute cette étape
 
-#### E30_Etoiles_reduites — PixelMath
-   expression = `S=0.20; W=~((~$T)*(~RGB_stars)); f1= ~((~mtf(~S,W)/~mtf(~S,$T))*~$T); max($T,f1)` ; useSingleExpression=true ; symbols = `S, W, f1` ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
+#### E30_Etoiles_screen — PixelMath
+   expression = `~((~$T) * (~RGB_stars))` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
 
-> PRÉRÉGLÉ : S = 0,20 (Bill : 0,15) ; recombinaison screen + réduction Blanshan en une formule, sur l'image elle-même.
+> PRÉRÉGLÉ : ~((~$T) * (~RGB_stars)), sur l'image elle-même.
 > 
-> À RÉGLER : À LA PLACE d'Etoiles_screen : glisse sur l'image sans étoiles finale ; étoiles étirées nommées RGB_stars.
+> À RÉGLER : glisse sur l'image sans étoiles finale : elle reçoit les étoiles ; étoiles étirées nommées RGB_stars (nom donné par SXT, s minuscule).
 > 
 > SI :
-> - étoiles encore grosses -> S 0,15
-> - trop petites -> S 0,25, ou Etoiles_screen
-> - pour recommencer -> Ctrl+Z
+> - autre nom d'étoiles -> corrige-le dans la formule
 
 #### E31_NXT_dernier — NoiseXTerminator
    ml_version=0 ; denoise=0.25 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
@@ -1334,17 +1332,19 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > SI :
 > - fond encore trop sombre -> double-clic, cible 0,15
 
-#### Opt_Etoiles_screen — PixelMath
-   expression = `~((~$T) * (~RGB_stars))` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
+#### Opt_Etoiles_reduites — PixelMath
+   expression = `S=0.20; W=~((~$T)*(~RGB_stars)); f1= ~((~mtf(~S,W)/~mtf(~S,$T))*~$T); max($T,f1)` ; useSingleExpression=true ; symbols = `S, W, f1` ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
 
-> ALTERNATIVE — Recombinaison simple.
+> ALTERNATIVE — Recombinaison + réduction Blanshan.
 > 
-> PRÉRÉGLÉ : ~((~$T) * (~RGB_stars)), sur l'image elle-même.
+> PRÉRÉGLÉ : S = 0,20 (Bill : 0,15) ; recombinaison screen + réduction Blanshan en une formule, sur l'image elle-même.
 > 
-> À RÉGLER : glisse sur l'image sans étoiles finale : elle reçoit les étoiles ; étoiles étirées nommées RGB_stars (nom donné par SXT, s minuscule).
+> À RÉGLER : À LA PLACE d'Etoiles_screen : glisse sur l'image sans étoiles finale ; étoiles étirées nommées RGB_stars.
 > 
 > SI :
-> - autre nom d'étoiles -> corrige-le dans la formule
+> - étoiles encore grosses -> S 0,15
+> - trop petites -> S 0,25, ou Etoiles_screen
+> - pour recommencer -> Ctrl+Z
 
 #### Opt_CorrectMagentaStars — Script
    script `$PXI_SRCDIR/scripts/CorrectMagentaStars/CorrectMagentaStars.js`
