@@ -356,6 +356,8 @@ Les schémas ne reprennent que des faits déjà sourcés plus haut ; ils n'ajout
 
 Question : « Est-ce que tu penses qu'il est possible de rajouter à la fin une option qui ferait l'équivalent suivant de lightroom : haute lumière- 50, blanc + 50, balance des blancs couleur + 10, teinte + 20 ». Algorithmes d'Adobe non publiés : équivalent PixInsight seulement approché.
 
+- Officiel — [Adobe, Adjust lighting (Lightroom web)](https://helpx.adobe.com/lightroom/web/edit-photos/apply-effects/adjust-light.html) et [Adjust photo brightness](https://helpx.adobe.com/ee/lightroom-cc/how-to/adjust-photo-brightness.html) *(résumé)* : Highlights = luminosité des zones claires (gauche = assombrir, récupérer le détail) ; Whites = point blanc (droite = plus de couleurs deviennent blanc pur). Vérification demandée par l'utilisateur le 9 octobre 2026 (« je me demande si ton confond pas les deux ») : sens corrects dans Look_Lightroom ; Blancs y est plus faible que dans Lightroom (le blanc pur n'est pas atteint, 1 reste fixe).
+
 - [How to Adjust the Highlights in Photos Using Lightroom Classic (Envato Tuts+)](https://photography.tutsplus.com/tutorials/how-to-adjust-highlights-in-lightroom--cms-40036) — Tutoriel *(résumé)* : Hautes lumières négatives = détail récupéré dans les zones claires ; Blancs = point blanc, positif = plage tonale étendue (peut écrêter à +100).
 - [Basic adjustments (Loupedeck)](https://support.loupedeck.com/basic-adjustments.html) — Tutoriel *(résumé)* : Temp. vers la droite = jaune (plus chaud), Teinte vers la droite = magenta.
 - [Lightroom Basic Panel 101 (YSU)](https://www.schalmers.people.ysu.edu/2674-bwphoto/HANDOUT%20-%20Lightroom%20Basic%20Panel%20101.pdf) — Tutoriel *(résumé)* : mêmes définitions.
