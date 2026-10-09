@@ -4922,7 +4922,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <description>PHASE 7 — Étoiles : étoiles : étirement, recombinaison, réduction. Colonne de repère, sans effet.</description>
    </instance>
    <instance class="Script" version="256" id="E22_Etoiles_NB_auto_instance">
-      <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Etoiles_NB_auto : LinearFit d'O_stars et S_stars sur H_stars ; mélange NB to RGB (R = 0,5·H + 0,5·S, G = 0,3·H + 0,7·O, B = O) dans NBtoRGB_stars ; étirement Star Stretch 5 ; Color Boost 1,0 ; H_stars, O_stars, S_stars fermées.&#10;&#10;À RÉGLER : double-clic puis Apply Global (fenêtre : vues et réglages), ou glisse l'icône sur n'importe quelle image (réglages de l'icône) ; étoiles linéaires extraites en phase 3 ; ensuite Etoiles_screen (NBtoRGB_stars) ; copie Etoiles_NB_auto.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- étoiles encore trop bleues -&gt; ratio 0,4 à 0,5&#10;- étoiles criardes -&gt; Color Boost 0,7&#10;- étoiles trop grosses ou blanches -&gt; étirement 4&#10;- reste de vert -&gt; SCNR vert coché ou SCNR_etoiles_vert</description>
+      <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Etoiles_NB_auto : LinearFit d'O_stars et S_stars sur H_stars ; mélange NB to RGB (R = 0,5·H + 0,5·S, G = 0,3·H + 0,7·O, B = O) dans NBtoRGB_stars ; étirement Star Stretch 6 ; Color Boost 1,3 ; H_stars, O_stars, S_stars fermées.&#10;&#10;À RÉGLER : double-clic puis Apply Global (fenêtre : vues et réglages), ou glisse l'icône sur n'importe quelle image (réglages de l'icône) ; étoiles linéaires extraites en phase 3 ; ensuite Etoiles_screen (NBtoRGB_stars) ; copie Etoiles_NB_auto.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- étoiles trop saturées ou criardes -&gt; Color Boost 1,0&#10;- étoiles trop grosses ou cœurs blancs -&gt; étirement 5&#10;- étoiles encore trop bleues -&gt; ratio 0,4 à 0,5&#10;- reste de vert -&gt; SCNR vert coché ou SCNR_etoiles_vert</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Etoiles_NB_auto.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="10">
@@ -4948,11 +4948,11 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          </tr>
          <tr>
             <td id="id">stretch</td>
-            <td id="value">5.0</td>
+            <td id="value">6.0</td>
          </tr>
          <tr>
             <td id="id">boost</td>
-            <td id="value">1.00</td>
+            <td id="value">1.30</td>
          </tr>
          <tr>
             <td id="id">scnr</td>

@@ -792,6 +792,12 @@ def etoiles_nb_item(s_stars=True):
     """Étoiles du SHO sans RGB et du HOO au chemin principal (demande de l'utilisateur, 8 octobre 2026 : NB_to_RGB_Stars « avec les parametres
     directement et le faire agir tout seul », LinearFit « comme le reste ») : script Etoiles_NB_auto (LinearFit sur H_stars, mélange NB to RGB, Star Stretch 5, boost 1)."""
     n, x = script('Etoiles_NB_auto', '')
+    if s_stars:
+        # SHO sans RGB : étirement 6 et Color Boost 1,3 (demande de l'utilisateur, 9 octobre 2026) ; HOO garde 5 / 1,0
+        for k, v0, v1 in (('stretch', '5.0', '6.0'), ('boost', '1.00', '1.30')):
+            a = '<td id="id">%s</td>\n            <td id="value">%s</td>' % (k, v0)
+            assert a in x
+            x = x.replace(a, a.replace(v0, v1))
     if not s_stars:
         a = '<td id="id">s</td>\n            <td id="value">S_stars</td>'
         assert a in x

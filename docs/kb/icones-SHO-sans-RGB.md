@@ -1088,18 +1088,18 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 #### E22_Etoiles_NB_auto — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Etoiles_NB_auto.js`
-   paramètres : `h=H_stars`, `o=O_stars`, `s=S_stars`, `ratio=0.30`, `linearfit=true`, `stretch=5.0`, `boost=1.00`, `scnr=false`, `nom=NBtoRGB_stars`, `fermer=true`
+   paramètres : `h=H_stars`, `o=O_stars`, `s=S_stars`, `ratio=0.30`, `linearfit=true`, `stretch=6.0`, `boost=1.30`, `scnr=false`, `nom=NBtoRGB_stars`, `fermer=true`
 
 > LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
 > 
-> PRÉRÉGLÉ : script Etoiles_NB_auto : LinearFit d'O_stars et S_stars sur H_stars ; mélange NB to RGB (R = 0,5·H + 0,5·S, G = 0,3·H + 0,7·O, B = O) dans NBtoRGB_stars ; étirement Star Stretch 5 ; Color Boost 1,0 ; H_stars, O_stars, S_stars fermées.
+> PRÉRÉGLÉ : script Etoiles_NB_auto : LinearFit d'O_stars et S_stars sur H_stars ; mélange NB to RGB (R = 0,5·H + 0,5·S, G = 0,3·H + 0,7·O, B = O) dans NBtoRGB_stars ; étirement Star Stretch 6 ; Color Boost 1,3 ; H_stars, O_stars, S_stars fermées.
 > 
 > À RÉGLER : double-clic puis Apply Global (fenêtre : vues et réglages), ou glisse l'icône sur n'importe quelle image (réglages de l'icône) ; étoiles linéaires extraites en phase 3 ; ensuite Etoiles_screen (NBtoRGB_stars) ; copie Etoiles_NB_auto.js dans src/scripts/clodoweg.
 > 
 > SI :
+> - étoiles trop saturées ou criardes -> Color Boost 1,0
+> - étoiles trop grosses ou cœurs blancs -> étirement 5
 > - étoiles encore trop bleues -> ratio 0,4 à 0,5
-> - étoiles criardes -> Color Boost 0,7
-> - étoiles trop grosses ou blanches -> étirement 4
 > - reste de vert -> SCNR vert coché ou SCNR_etoiles_vert
 
 #### E23_Fond_desature — Script
