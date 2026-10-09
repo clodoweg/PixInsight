@@ -6251,17 +6251,33 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="information"></parameter>
    </instance>
    <instance class="Script" version="256" id="Opt_Look_Lightroom_instance">
-      <description>OPTION — retouche finale façon Lightroom (Hautes lumières -50, Blancs +50, Température +10, Teinte +20) : glisse sur l'image SANS étoiles finie (après Fond_desature et Fond_auto), juste avant Etoiles_screen&#10;Toute l'image par défaut (masque de luminance en option dans la fenêtre).&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Look_Lightroom, équivalents approchés de Lightroom : Hautes lumières -50 (courbe de luminosité : 0,75 -&gt; 0,71, 0,90 -&gt; 0,90), Blancs +50 (0,97 -&gt; 0,98), Température +10 (R × 1,03, B × 0,97), Teinte +20 (G × 0,97, vers le magenta) ; sur TOUTE l'image (masque de luminance en option dans la fenêtre : s = 0,14, flou 2 px) ; Ctrl+Z possible.&#10;&#10;À RÉGLER : glisse sur l'image SANS étoiles finie (après Fond_desature et Fond_auto), juste avant Etoiles_screen ; pour changer une valeur ou enlever le masque : double-clic puis Apply Global (fenêtre) ; copie Look_Lightroom.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- trop chaud ou trop magenta -&gt; Température ou Teinte plus bas&#10;- zones claires trop éteintes -&gt; Hautes lumières -25&#10;- fond devenu coloré -&gt; coche le masque dans la fenêtre (zones claires seulement)&#10;- dans un conteneur : le masque n'est pas appliqué, glisse l'icône seule</description>
+      <description>OPTION — retouche finale façon Camera Raw / Lightroom (tes réglages : Exposition +0,25, Tons clairs -100, Blancs +50, Température +10) : glisse sur l'image SANS étoiles finie (après Fond_desature et Fond_auto), juste avant Etoiles_screen&#10;Toute l'image par défaut (masque de luminance en option dans la fenêtre).&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Look_Lightroom, tes réglages Camera Raw (équivalents approchés) : Exposition +0,25, Contraste 0, Tons clairs -100, Tons foncés 0, Blancs +50, Noirs 0, Température +10 (R × 1,03, B × 0,97), Teinte 0 ; toute l'image (masque de luminance en option) ; Ctrl+Z possible.&#10;&#10;À RÉGLER : glisse sur l'image SANS étoiles finie (après Fond_desature et Fond_auto), juste avant Etoiles_screen ; pour changer une valeur ou mettre le masque : double-clic puis Apply Global (fenêtre, mêmes curseurs que Camera Raw) ; copie Look_Lightroom.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- trop clair -&gt; Exposition +0,10&#10;- zones claires trop éteintes -&gt; Tons clairs -50&#10;- trop chaud -&gt; Température +5&#10;- fond devenu coloré -&gt; coche le masque dans la fenêtre&#10;- dans un conteneur : le masque n'est pas appliqué, glisse l'icône seule</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Look_Lightroom.js</parameter>
       <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="7">
+      <table id="parameters" rows="11">
+         <tr>
+            <td id="id">exposition</td>
+            <td id="value">0.25</td>
+         </tr>
+         <tr>
+            <td id="id">contraste</td>
+            <td id="value">0</td>
+         </tr>
          <tr>
             <td id="id">hautes</td>
-            <td id="value">-50</td>
+            <td id="value">-100</td>
+         </tr>
+         <tr>
+            <td id="id">foncees</td>
+            <td id="value">0</td>
          </tr>
          <tr>
             <td id="id">blancs</td>
             <td id="value">50</td>
+         </tr>
+         <tr>
+            <td id="id">noirs</td>
+            <td id="value">0</td>
          </tr>
          <tr>
             <td id="id">temperature</td>
@@ -6269,7 +6285,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          </tr>
          <tr>
             <td id="id">teinte</td>
-            <td id="value">20</td>
+            <td id="value">0</td>
          </tr>
          <tr>
             <td id="id">masque</td>

@@ -1384,21 +1384,22 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 #### Opt_Look_Lightroom — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Look_Lightroom.js`
-   paramètres : `hautes=-50`, `blancs=50`, `temperature=10`, `teinte=20`, `masque=false`, `s=0.14`, `flou=2.0`
+   paramètres : `exposition=0.25`, `contraste=0`, `hautes=-100`, `foncees=0`, `blancs=50`, `noirs=0`, `temperature=10`, `teinte=0`, `masque=false`, `s=0.14`, `flou=2.0`
 
-> OPTION — retouche finale façon Lightroom (Hautes lumières -50, Blancs +50, Température +10, Teinte +20) : glisse sur l'image SANS étoiles finie (après Fond_desature et Fond_auto), juste avant Etoiles_screen
+> OPTION — retouche finale façon Camera Raw / Lightroom (tes réglages : Exposition +0,25, Tons clairs -100, Blancs +50, Température +10) : glisse sur l'image SANS étoiles finie (après Fond_desature et Fond_auto), juste avant Etoiles_screen
 > Toute l'image par défaut (masque de luminance en option dans la fenêtre).
 > 
 > LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
 > 
-> PRÉRÉGLÉ : script Look_Lightroom, équivalents approchés de Lightroom : Hautes lumières -50 (courbe de luminosité : 0,75 -> 0,71, 0,90 -> 0,90), Blancs +50 (0,97 -> 0,98), Température +10 (R × 1,03, B × 0,97), Teinte +20 (G × 0,97, vers le magenta) ; sur TOUTE l'image (masque de luminance en option dans la fenêtre : s = 0,14, flou 2 px) ; Ctrl+Z possible.
+> PRÉRÉGLÉ : script Look_Lightroom, tes réglages Camera Raw (équivalents approchés) : Exposition +0,25, Contraste 0, Tons clairs -100, Tons foncés 0, Blancs +50, Noirs 0, Température +10 (R × 1,03, B × 0,97), Teinte 0 ; toute l'image (masque de luminance en option) ; Ctrl+Z possible.
 > 
-> À RÉGLER : glisse sur l'image SANS étoiles finie (après Fond_desature et Fond_auto), juste avant Etoiles_screen ; pour changer une valeur ou enlever le masque : double-clic puis Apply Global (fenêtre) ; copie Look_Lightroom.js dans src/scripts/clodoweg.
+> À RÉGLER : glisse sur l'image SANS étoiles finie (après Fond_desature et Fond_auto), juste avant Etoiles_screen ; pour changer une valeur ou mettre le masque : double-clic puis Apply Global (fenêtre, mêmes curseurs que Camera Raw) ; copie Look_Lightroom.js dans src/scripts/clodoweg.
 > 
 > SI :
-> - trop chaud ou trop magenta -> Température ou Teinte plus bas
-> - zones claires trop éteintes -> Hautes lumières -25
-> - fond devenu coloré -> coche le masque dans la fenêtre (zones claires seulement)
+> - trop clair -> Exposition +0,10
+> - zones claires trop éteintes -> Tons clairs -50
+> - trop chaud -> Température +5
+> - fond devenu coloré -> coche le masque dans la fenêtre
 > - dans un conteneur : le masque n'est pas appliqué, glisse l'icône seule
 
 #### Opt_Etoiles_reduites — PixelMath

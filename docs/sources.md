@@ -364,7 +364,7 @@ Question : « Est-ce que tu penses qu'il est possible de rajouter à la fin une 
 
 ## Non vérifié
 
-- Look_Lightroom.js (8 octobre 2026) : correspondances curseurs Lightroom -> courbe / coefficients choisies au jugé, à régler en comparant avec Lightroom ; script non testé dans PixInsight.
+- Look_Lightroom.js (8 et 9 octobre 2026, réglages Camera Raw de l'utilisateur : Exposition +0,25, Tons clairs -100, Blancs +50, Température +10) : correspondances curseurs Camera Raw / Lightroom -> exposition, courbe, coefficients choisies au jugé, à régler en comparant avec Lightroom ; script non testé dans PixInsight.
 
 - Etoiles_NB_auto.js (8 octobre 2026) : Color Boost de l'option Apply Star Stretch de NBtoRGBStars.js supposé identique à celui de star_stretch.js (non relu) ; script non testé dans PixInsight.
 
