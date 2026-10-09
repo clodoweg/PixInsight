@@ -86,7 +86,7 @@ CHOICES = {
 
 # pour les options : quand les ajouter
 WHEN = {
-    'Look_Lightroom': "retouche finale façon Lightroom (Hautes lumières -50, Blancs +50, Température +10, Teinte +20) : glisse sur l'image finie, après NXT_dernier, avant Export_TIFF ; sous masque de luminance par défaut (fond neutre)",
+    'Look_Lightroom': "retouche finale façon Lightroom (Hautes lumières -50, Blancs +50, Température +10, Teinte +20) : glisse sur l'image SANS étoiles finie (après Fond_desature et Fond_auto), juste avant Etoiles_screen ; sous masque de luminance par défaut (fond neutre)",
     'C_Fin_rapide': "MODE RAPIDE, à la place de HDRMT_30, C_Finition, C_Sharp_MMT et NXT_final : sur l'image sans étoiles après LRGB_ajout_L (ou R_C_LRGB_rapide)",
     'C_Etoiles_fond_rapide': "MODE RAPIDE, à la place de Fond_desature, Fond_auto, Etoiles_screen, NXT_dernier et Export_TIFF : sur l'image sans étoiles finie, RGB_stars et L ouvertes",
     'SXT_non_lineaire': "double-clic : ouvre StarXTerminator réglé pour une image ÉTIRÉE (Unscreen coché, Generate star image coché) ; à glisser sur une image non linéaire qui a encore des étoiles",

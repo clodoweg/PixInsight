@@ -785,7 +785,7 @@ def icc_srgb():
                         '      <parameter id="useFloatingPointTransformation" value="true"/>\n'
                         '   </instance>')
 
-EXPORT = [(script('Look_Lightroom', ''), ''), (icc_srgb(), ''), (script('Export_TIFF', ''), '')]   # Look_Lightroom : option avant l'export, tous les workflows (demande de l'utilisateur, 8 octobre 2026)   # options, tout à la fin : finition hors PixInsight (demande de l'utilisateur)
+EXPORT = [(icc_srgb(), ''), (script('Export_TIFF', ''), '')]   # options, tout à la fin : finition hors PixInsight (demande de l'utilisateur)
 EXPORT.append((fermer('Fermer_tout', '*'), ''))   # option après Export_TIFF : fermer toutes les vues (demande de l'utilisateur)
 
 def etoiles_nb_item(s_stars=True):
@@ -1386,6 +1386,11 @@ lhargb[_i] = (cont('C_P3_rapide', [pick(lhargb, b)[0] for b in ('BXT_CorrectOnly
                    ), '')   # CombineHaWithRGB, NXT et fermeture retirés du rapide (demande de l'utilisateur) : à faire au chemin principal (E14, E15)
 # repère NoOperation juste après R_C_P3_rapide (demande de l'utilisateur) : la suite du continuum se fait à la main
 insert_after(lhargb, 'C_P3_rapide', [(note('Main_continuum', "À FAIRE À LA MAIN (pas de rapide pour cette partie) : E14_Continuum_auto (fenêtre), E15_CombineHaWithRGB et E16_C_RGB_bruit glissés sur RGB, E17_Fermer_continuum (double-clic puis Apply Global) ; ensuite GHS_1_premier sur L."), '')])
+
+# Look_Lightroom (option, tous les workflows) sur l'image SANS étoiles, juste avant la recombinaison des étoiles
+# (demande de l'utilisateur, 9 octobre 2026 : « Je vais faire ce process avant de mettre les étoiles »)
+for _st in (lrgb, lhargb, rgbsho, sho, hoo):
+    insert_before(_st, 'Etoiles_screen', [(script('Look_Lightroom', ''), '')])
 
 for fn, pre, title, steps in [
     ('Workflow-LRGB.xpsm', 'LRGB', 'Workflow LRGB', lrgb),

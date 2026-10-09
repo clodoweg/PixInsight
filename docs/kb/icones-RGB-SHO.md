@@ -1514,6 +1514,25 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > SI :
 > - fond encore trop sombre -> double-clic, cible 0,15
 
+#### Opt_Look_Lightroom — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Look_Lightroom.js`
+   paramètres : `hautes=-50`, `blancs=50`, `temperature=10`, `teinte=20`, `masque=true`, `s=0.14`, `flou=2.0`
+
+> OPTION — retouche finale façon Lightroom (Hautes lumières -50, Blancs +50, Température +10, Teinte +20) : glisse sur l'image SANS étoiles finie (après Fond_desature et Fond_auto), juste avant Etoiles_screen
+> Sous masque de luminance par défaut (fond neutre).
+> 
+> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
+> 
+> PRÉRÉGLÉ : script Look_Lightroom, équivalents approchés de Lightroom : Hautes lumières -50 (courbe de luminosité : 0,75 -> 0,71, 0,90 -> 0,90), Blancs +50 (0,97 -> 0,98), Température +10 (R × 1,03, B × 0,97), Teinte +20 (G × 0,97, vers le magenta) ; sous masque de luminance (s = 0,14, flou 2 px) : fond neutre gardé ; Ctrl+Z possible.
+> 
+> À RÉGLER : glisse sur l'image SANS étoiles finie (après Fond_desature et Fond_auto), juste avant Etoiles_screen ; pour changer une valeur ou enlever le masque : double-clic puis Apply Global (fenêtre) ; copie Look_Lightroom.js dans src/scripts/clodoweg.
+> 
+> SI :
+> - trop chaud ou trop magenta -> Température ou Teinte plus bas
+> - zones claires trop éteintes -> Hautes lumières -25
+> - fond devenu coloré -> coche le masque, ou s plus haut
+> - dans un conteneur : le masque n'est pas appliqué, glisse l'icône seule
+
 #### Opt_Etoiles_reduites — PixelMath
    expression = `S=0.20; W=~((~$T)*(~RGB_stars)); f1= ~((~mtf(~S,W)/~mtf(~S,$T))*~$T); max($T,f1)` ; useSingleExpression=true ; symbols = `S, W, f1` ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
 
@@ -1527,25 +1546,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - étoiles encore grosses -> S 0,15
 > - trop petites -> S 0,25, ou Etoiles_screen
 > - pour recommencer -> Ctrl+Z
-
-#### Opt_Look_Lightroom — Script
-   script `$PXI_SRCDIR/scripts/clodoweg/Look_Lightroom.js`
-   paramètres : `hautes=-50`, `blancs=50`, `temperature=10`, `teinte=20`, `masque=true`, `s=0.14`, `flou=2.0`
-
-> OPTION — retouche finale façon Lightroom (Hautes lumières -50, Blancs +50, Température +10, Teinte +20) : glisse sur l'image finie, après NXT_dernier, avant Export_TIFF
-> Sous masque de luminance par défaut (fond neutre).
-> 
-> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
-> 
-> PRÉRÉGLÉ : script Look_Lightroom, équivalents approchés de Lightroom : Hautes lumières -50 (courbe de luminosité : 0,75 -> 0,71, 0,90 -> 0,90), Blancs +50 (0,97 -> 0,98), Température +10 (R × 1,03, B × 0,97), Teinte +20 (G × 0,97, vers le magenta) ; sous masque de luminance (s = 0,14, flou 2 px) : fond neutre gardé ; Ctrl+Z possible.
-> 
-> À RÉGLER : glisse sur l'image finie (après NXT_dernier, avant Export_TIFF) ; pour changer une valeur ou enlever le masque : double-clic puis Apply Global (fenêtre) ; copie Look_Lightroom.js dans src/scripts/clodoweg.
-> 
-> SI :
-> - trop chaud ou trop magenta -> Température ou Teinte plus bas
-> - zones claires trop éteintes -> Hautes lumières -25
-> - fond devenu coloré -> coche le masque, ou s plus haut
-> - dans un conteneur : le masque n'est pas appliqué, glisse l'icône seule
 
 #### Opt_Agrandir_x2 — Resample
    xSize=2.000000 ; ySize=2.000000 ; mode=RelativeDimensions ; absoluteMode=ForceWidthAndHeight ; interpolation=Lanczos3 ; clampingThreshold=0.30 ; smoothness=1.50 ; noGUIMessages=true

@@ -20,7 +20,9 @@
 // Calcul sur une copie cachée puis recopie (cwApplyOnCopy) : Ctrl+Z.
 // Dans un conteneur glissé (image verrouillée), traitement direct, sans masque.
 //
-// Lancement : glisser l'icône sur l'image finie = réglages de l'icône ;
+// Place : sur l'image SANS étoiles finie, juste avant la recombinaison des
+// étoiles (choix de l'utilisateur, 9 octobre 2026).
+// Lancement : glisser l'icône sur l'image = réglages de l'icône ;
 // double-clic puis Apply Global = fenêtre de réglages.
 // Installation (Mac et PC) : dans src/scripts/clodoweg de PixInsight.
 // ----------------------------------------------------------------------------
@@ -56,7 +58,7 @@ function lrDialog( p, view )
    let d = new CWDialog( LR_TITLE, "<b>Retouche finale façon Lightroom</b> (équivalents approchés, -100 à +100). " +
                          "Masque de luminance : le fond du ciel reste neutre.", "Seuil du masque (s) :" );
    let sel = { view: view };
-   d.viewList( "Image :", view, "L'image finie (avec étoiles).", function( v ) { sel.view = v; } );
+   d.viewList( "Image :", view, "L'image sans étoiles finie, avant Etoiles_screen.", function( v ) { sel.view = v; } );
    d.group( "Réglages" );
    d.numeric( "Hautes lumières :", -100, 100, 0, p.hautes, "-50 par défaut : zones claires assombries (détail récupéré).", function( v ) { p.hautes = v; } );
    d.numeric( "Blancs :", -100, 100, 0, p.blancs, "+50 par défaut : tons les plus clairs remontés vers 1.", function( v ) { p.blancs = v; } );
