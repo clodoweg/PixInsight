@@ -2273,32 +2273,6 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          <parameter id="information"></parameter>
       </instance>
    </instance>
-   <instance class="ProcessContainer" id="R_C_Stat_canaux_rapide_instance">
-      <description>MODE RAPIDE, à la place de GHS_1 et GHS_2 sur les canaux (Statistical Stretch, médiane 0,25) : S, H, O linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut), double-clic puis Apply Global (pas en glissant) ; ensuite GHS_3_fond sur chaque canal, puis la palette.&#10;&#10;LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).&#10;&#10;PRÉRÉGLÉ : conteneur de scripts : Stat_canaux (calcul de Statistical Stretch de SetiAstro) sur S, H et O : point noir médiane − 5 × 1,4826 × MAD, médiane amenée à 0,25 pour les trois ; un Ctrl+Z par canal.&#10;&#10;À RÉGLER : S, H, O linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut) ; double-clic puis Apply Global (pas en glissant) ; ensuite GHS_3_fond sur S, H et O (même fond, vers 0,12–0,14), puis R_C_Palette_rapide ou la palette ; copie Stat_canaux.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- fond trop sombre, signal faible perdu -&gt; double-clic sur Stat_canaux dans le conteneur : Blackpoint Sigma 3&#10;- fond trop clair -&gt; Target Median 0,20&#10;- un canal mal étiré -&gt; Ctrl+Z sur ce canal, puis GHS à la main</description>
-      <instance class="Script" version="256" enabled="true">
-         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Stat_canaux.js</parameter>
-         <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="4">
-            <tr>
-               <td id="id">vues</td>
-               <td id="value">S,H,O</td>
-            </tr>
-            <tr>
-               <td id="id">cible</td>
-               <td id="value">0.25</td>
-            </tr>
-            <tr>
-               <td id="id">sigma</td>
-               <td id="value">5.0</td>
-            </tr>
-            <tr>
-               <td id="id">dialogue</td>
-               <td id="value">false</td>
-            </tr>
-         </table>
-         <parameter id="information"></parameter>
-      </instance>
-   </instance>
    <instance class="NoOperation" version="256" id="P5_Couleur_instance">
       <description>PHASE 5 — Couleur : combinaison finale et palette. Colonne de repère, sans effet.</description>
    </instance>
@@ -6143,7 +6117,6 @@ max($T,f1)</parameter>
    <icon id="Opt_EZ_Soft_Stretch" instance="Opt_EZ_Soft_Stretch_instance" xpos="626" ypos="294" workspace="Workspace01"/>
    <icon id="P4_rapide" instance="P4_rapide_instance" xpos="626" ypos="340" workspace="Workspace01"/>
    <icon id="R_C_MAS_canaux_rapide" instance="R_C_MAS_canaux_rapide_instance" xpos="626" ypos="374" workspace="Workspace01"/>
-   <icon id="R_C_Stat_canaux_rapide" instance="R_C_Stat_canaux_rapide_instance" xpos="626" ypos="404" workspace="Workspace01"/>
    <icon id="P5_Couleur" instance="P5_Couleur_instance" xpos="817" ypos="20" workspace="Workspace01"/>
    <icon id="E16_SHO_simple" instance="E16_SHO_simple_instance" xpos="817" ypos="64" workspace="Workspace01"/>
    <icon id="E17_NBN_SHO" instance="E17_NBN_SHO_instance" xpos="817" ypos="94" workspace="Workspace01"/>
