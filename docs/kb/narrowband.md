@@ -400,4 +400,8 @@ Mise à jour (8 octobre 2026, demande de l'utilisateur : « E23_NB_to_RGB_Stars 
 
 SHO sans RGB (9 octobre 2026, demande de l'utilisateur : « dans sho sans rgb met E22_Etoiles_NB_auto le strech a 6 et la sat a 1,3 par defaut ») : icône Etoiles_NB_auto du SHO à stretch 6,0 et boost 1,30 ; HOO inchangé (5 et 1,0) ; défauts du script inchangés.
 
-R_C_Stat_canaux_rapide (script Stat_canaux.js, refaisant le calcul de Statistical Stretch sur S, H, O) ajouté puis supprimé le 9 octobre 2026 (l'utilisateur : « non bah supprime le alors ») : statisticalstretch.js ne s'applique qu'à la vue glissée, pas de rapide Statistical Stretch sur les canaux.
+## R_C_Stat_canaux_rapide (9 octobre 2026)
+
+Demande de l'utilisateur : « fais aussi R_C_MAS_canaux_rapide avec StatStrech pour SHO sans et avec RGB ». statisticalstretch.js (SetiAstro) ne traite que la vue glissée et un script ne peut pas lancer une icône Script : nouveau script de la fiche `Stat_canaux.js`, qui refait le calcul de statisticalstretch.js v2.3 (code relu) en une passe sur chaque vue de `vues` (S,H,O) : bp = max(min, médiane − sigma × 1,4826 × MAD), x' = (x − bp)/(1 − bp), MTF qui place la médiane sur la cible 0,25 ; copie puis recopie (Ctrl+Z par canal). Conteneur R_C_Stat_canaux_rapide (Apply Global), SHO sans RGB et RGB + SHO, P4 rapide à côté de R_C_MAS_canaux_rapide ; GHS_3_fond ensuite à la main. Options de statisticalstretch.js non reprises (plusieurs passes, Normalize, Curves Boost, HDR) ; écart possible avec le script d'origine non testé.
+
+R_C_Stat_canaux_rapide : supprimé puis remis le même jour (l'utilisateur : « si remet le quand meme au cas ou j'en ai besoin »), en option rapide P4 (SHO sans RGB et RGB + SHO).
