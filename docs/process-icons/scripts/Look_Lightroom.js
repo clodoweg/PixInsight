@@ -14,9 +14,10 @@
 //      plus chaud (+10 : R × 1,03, B × 0,97) ;
 //   4. teinte (défaut +20) : G × (1 − 0,0015·n) : vers le magenta (+20 :
 //      G × 0,97) ;
-//   5. masque = true (défaut) : tout est mélangé par un masque de luminance
-//      tiré de l'image (fond coupé sous s = 0,14, flou 2 px) : le fond du
-//      ciel reste neutre ; masque = false : image entière.
+//   5. masque = false (défaut, demande de l'utilisateur du 9 octobre 2026 :
+//      toute l'image) ; masque = true : tout est mélangé par un masque de
+//      luminance tiré de l'image (fond coupé sous s = 0,14, flou 2 px) : le
+//      fond du ciel reste neutre.
 // Calcul sur une copie cachée puis recopie (cwApplyOnCopy) : Ctrl+Z.
 // Dans un conteneur glissé (image verrouillée), traitement direct, sans masque.
 //
@@ -39,7 +40,7 @@ function lrParams()
 {
    return { hautes: parseFloat( cwParam( "hautes", "-50" ) ), blancs: parseFloat( cwParam( "blancs", "50" ) ),
             temperature: parseFloat( cwParam( "temperature", "10" ) ), teinte: parseFloat( cwParam( "teinte", "20" ) ),
-            masque: cwBool( "masque", true ), s: parseFloat( cwParam( "s", "0.14" ) ), flou: parseFloat( cwParam( "flou", "2" ) ) };
+            masque: cwBool( "masque", false ), s: parseFloat( cwParam( "s", "0.14" ) ), flou: parseFloat( cwParam( "flou", "2" ) ) };
 }
 
 function lrExport( p )
@@ -56,7 +57,7 @@ function lrExport( p )
 function lrDialog( p, view )
 {
    let d = new CWDialog( LR_TITLE, "<b>Retouche finale façon Lightroom</b> (équivalents approchés, -100 à +100). " +
-                         "Masque de luminance : le fond du ciel reste neutre.", "Seuil du masque (s) :" );
+                         "Toute l'image par défaut ; masque de luminance en option (zones claires seulement, fond neutre).", "Seuil du masque (s) :" );
    let sel = { view: view };
    d.viewList( "Image :", view, "L'image sans étoiles finie, avant Etoiles_screen.", function( v ) { sel.view = v; } );
    d.group( "Réglages" );
@@ -66,7 +67,7 @@ function lrDialog( p, view )
    d.numeric( "Teinte :", -100, 100, 0, p.teinte, "+20 par défaut : vers le magenta (G plus bas) ; négatif = vers le vert.", function( v ) { p.teinte = v; } );
    d.endGroup();
    d.group( "Masque de luminance" );
-   d.check( "Appliquer sous masque de luminance", p.masque, "Coché par défaut : le fond du ciel n'est pas touché.", function( c ) { p.masque = c; } );
+   d.check( "Appliquer sous masque de luminance", p.masque, "Décoché par défaut : toute l'image. Coché : seules les zones claires, le fond du ciel n'est pas touché.", function( c ) { p.masque = c; } );
    d.numeric( "Seuil du masque (s) :", 0, 0.5, 2, p.s, "Tout ce qui est sous s est protégé : fond mesuré + 0,01.", function( v ) { p.s = v; } );
    d.numeric( "Flou du masque (px) :", 0, 10, 1, p.flou, "Lissage du masque.", function( v ) { p.flou = v; } );
    d.endGroup();

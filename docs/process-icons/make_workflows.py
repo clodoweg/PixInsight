@@ -46,7 +46,7 @@ SCRIPTS = {
     # étoiles RGB plausibles depuis les étoiles narrowband, en un clic (demande de l'utilisateur, 8 octobre 2026) : LinearFit sur H, mélange NB to RGB, Star Stretch 5, boost 1
     'Etoiles_NB_auto': ('$PXI_SRCDIR/scripts/clodoweg/Etoiles_NB_auto.js', '', [('h', 'H_stars'), ('o', 'O_stars'), ('s', 'S_stars'), ('ratio', '0.30'), ('linearfit', 'true'), ('stretch', '5.0'), ('boost', '1.00'), ('scnr', 'false'), ('nom', 'NBtoRGB_stars'), ('fermer', 'true')], L_GLOBAL),
     # retouche finale façon Lightroom (demande de l'utilisateur, 8 octobre 2026) : Hautes lumières -50, Blancs +50, Température +10, Teinte +20, masque de luminance en option
-    'Look_Lightroom': ('$PXI_SRCDIR/scripts/clodoweg/Look_Lightroom.js', '', [('hautes', '-50'), ('blancs', '50'), ('temperature', '10'), ('teinte', '20'), ('masque', 'true'), ('s', '0.14'), ('flou', '2.0')], L_DRAG),
+    'Look_Lightroom': ('$PXI_SRCDIR/scripts/clodoweg/Look_Lightroom.js', '', [('hautes', '-50'), ('blancs', '50'), ('temperature', '10'), ('teinte', '20'), ('masque', 'false'), ('s', '0.14'), ('flou', '2.0')], L_DRAG),
     'Masque_L_creer': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'creer'), ('s', '0.14'), ('flou', '2'), ('nom', 'masque_L')], L_DRAG),
     'Masque_L_source_creer': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'creer'), ('s', '0.20'), ('gamma', '2'), ('flou', '2'), ('nom', 'masque_L'), ('source', 'L'), ('exclure', 'RGB_stars'), ('exclureGain', '4')], L_DRAG),
     'Masque_L_boost_nb_creer': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'creer'), ('s', '0.20'), ('gamma', '2'), ('flou', '2'), ('nom', 'masque_L')], L_DRAG),
