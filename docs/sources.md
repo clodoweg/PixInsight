@@ -362,7 +362,22 @@ Question : « Est-ce que tu penses qu'il est possible de rajouter à la fin une 
 - [Basic adjustments (Loupedeck)](https://support.loupedeck.com/basic-adjustments.html) — Tutoriel *(résumé)* : Temp. vers la droite = jaune (plus chaud), Teinte vers la droite = magenta.
 - [Lightroom Basic Panel 101 (YSU)](https://www.schalmers.people.ysu.edu/2674-bwphoto/HANDOUT%20-%20Lightroom%20Basic%20Panel%20101.pdf) — Tutoriel *(résumé)* : mêmes définitions.
 
+## Piloter PixInsight (MCP) (question de l'utilisateur, 10 octobre 2026)
+
+Question : « Je veux que tu cherches s'il est possible de controler pixinsight en MCP ou pas script pour que tu puisses intervenir dessus. Fait un recherche elargie en particulier sur les forums ».
+
+- Forum — [Is there a way to automate WBP (forum PixInsight, janvier 2021)](https://pixinsight.com/forum/index.php?threads/is-there-a-way-to-automate-wbp-e-g-run-from-command-line-or-python-script.15888/) : Juan Conejero (staff) : `--automation-mode [-n=slot]` depuis 1.8.8-6, `--start-process`, `--stop-process`, `--set-process-parameters`, `--get-process-status` ; conseille une instance ouverte pilotée par IPC ou surveillance de dossier ; `-r=` donné par un membre.
+- Forum — [PixInsight External Scripting (forum PixInsight, 2021)](https://pixinsight.com/forum/index.php?threads/pixinsight-external-scripting.17073/) : `--automation-mode` + `--new-instance=slot` ; certaines boîtes d'erreur restent bloquantes ; pas de réponse.
+- Officiel — [pcl::Console (PCL)](https://pixinsight.com/developer/pcl/doc/html/classpcl_1_1Console.html) *(résumé)* : scripts exécutés seulement dans le thread principal.
+- Tutoriel — [pardovot/pixinsight-mcp (GitHub)](https://github.com/pardovot/pixinsight-mcp) : pont par fichiers (« PixInsight has no socket or HTTP API »), module natif MCPWatcher, Windows, PI 1.9.4+, 24 outils.
+- Tutoriel — [iftahs/pixinsight-mcp (GitHub)](https://github.com/iftahs/pixinsight-mcp) : démon PJSR, Windows 11 testé, PI 1.9.4, 97 outils.
+- Tutoriel — [mxcoppell/pixinsight-mcp (Glama)](https://glama.ai/mcp/servers/mxcoppell/pixinsight-mcp) : PI 1.9.5+, ~78 outils ; dépôt GitHub en 404 le 10 octobre 2026.
+- Tutoriel — [aescaffre/pixinsight-mcp (GitHub)](https://github.com/aescaffre/pixinsight-mcp) : pipeline autonome, macOS seulement testé.
+- Forum — [Using Claude to drive PixInsight with an MCP Server (AstroBin)](https://app.astrobin.com/forum/topic/219718) *(résumé, page non lisible)* : annonce d'aescaffre.
+
 ## Non vérifié
+
+- Serveurs MCP PixInsight (10 octobre 2026) : aucun testé sur le PC de l'utilisateur ni avec ses icônes.
 
 - Stat_canaux.js (9 octobre 2026) : résultat identique à statisticalstretch.js (une passe, Target Median 0,25, Blackpoint Sigma 5) non vérifié dans PixInsight.
 

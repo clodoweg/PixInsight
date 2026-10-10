@@ -108,3 +108,16 @@ En général inutile (Autocrop de WBPP). Sinon, même recadrage sur tous les mas
      * **MGC** avec MARS en priorité. Il demande une image résolue (ImageSolver) et calibrée en flux (SPFC) : pour le RGB, fais-le après ChannelCombination, juste avant SPCC.
      * Sinon **GradientCorrection** , ou **DBE** pour les grandes nébulosités.
      * GraXpert en alternative.
+
+## Piloter PixInsight depuis Claude (MCP), recherche du 10 octobre 2026
+
+Question de l'utilisateur. Sources : `../sources.md`, rubrique « Piloter PixInsight (MCP) ».
+
+- PixInsight n'a ni API HTTP ni socket. Officiel : ligne de commande (`-r="script.js,arg"` au démarrage ; `--automation-mode -n=<slot>` depuis 1.8.8-6 ; `--start-process`, `--get-process-status`… pour des modules C++). Juan Conejero conseille une instance ouverte pilotée par surveillance d'un dossier.
+- Tous les serveurs MCP trouvés (non officiels, 2026) font ainsi : le serveur écrit des commandes JSON dans un dossier, un watcher dans PixInsight les exécute (PJSR) et écrit le résultat.
+  - pardovot/pixinsight-mcp (MIT) : module natif `MCPWatcher` (pas de blocage de l'interface), dépôt de mise à jour PixInsight, Windows prévu, PI 1.9.4+, 24 outils dont `run_process` (tout process par son nom, BXT/NXT/SXT compris).
+  - iftahs/pixinsight-mcp (MIT) : démon PJSR, testé sous Windows 11, PI 1.9.4, 97 outils (WBPP, post-traitement, aperçus), checkpoints ; projet jeune (15 commits).
+  - mxcoppell/pixinsight-mcp : PI 1.9.5+, ~78 outils, Windows déclaré « non vérifié » ; page GitHub en 404 le 10 octobre 2026.
+  - aescaffre/pixinsight-mcp : pipeline autonome (Claude Max), testé seulement sous macOS.
+- Condition : le serveur MCP tourne sur le PC Windows (Claude Code ou Claude Desktop installés sur le PC). Une session Claude Code dans le cloud ne voit pas PixInsight.
+- Sécurité : tout ce qui écrit dans le dossier de commandes exécute du code dans PixInsight. Non testé avec les icônes de l'utilisateur (non vérifié).

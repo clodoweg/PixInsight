@@ -10,7 +10,7 @@ Source de référence pour répondre aux questions de l'utilisateur et modifier 
 | Ordre des étapes, pourquoi, mode rapide, images fermées, finition, standards couleur et étoiles | `workflows.md` |
 | Réglages d'un outil, symptôme → correction, méthode | `outils.md` |
 | GHS en détail, réduction d'étoiles Blanshan, masques, règles d'or | `techniques.md` |
-| Outils et dépôts à installer, WBPP, phase linéaire commune | `preparation.md` (dépôts : `../depots-pixinsight.txt`) |
+| Outils et dépôts à installer, WBPP, phase linéaire commune, piloter PixInsight depuis Claude (MCP) | `preparation.md` (dépôts : `../depots-pixinsight.txt`) |
 | Narrowband (RGB + SHO, SHO, HOO) : chantier en cours (8 octobre 2026), analyses BXT et NXT, état des workflows | `narrowband.md` |
 | Modifier ou ajouter une icône : fichiers, fonctions, check-list, contraintes PixInsight | `generateur.md` |
 | D'où vient une valeur, ce qui n'est pas vérifié | `../sources.md` |
