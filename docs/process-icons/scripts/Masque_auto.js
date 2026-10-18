@@ -108,6 +108,46 @@ function main()
    maRun( view, p );
 }
 
+// Nouvelle image cachée id = expr (une expression par canal), exécutée sur view ; null si échec.
+function maNew( view, expr, id, space )
+{
+   cwCloseWindow( id );
+   let P = new PixelMath;
+   P.expression = expr;
+   P.expression1 = expr;
+   P.expression2 = expr;
+   P.useSingleExpression = false;
+   P.createNewImage = true;
+   P.showNewImage = false;
+   P.newImageId = id;
+   P.newImageColorSpace = space;
+   P.newImageSampleFormat = PixelMath.prototype.SameAsTarget;
+   P.rescale = false;
+   P.truncate = true;
+   let ok = false;
+   try
+   {
+      ok = P.executeOn( view );
+   }
+   catch ( e )
+   {
+      console.warningln( TITLE + " : " + e.message );
+   }
+   let w = ImageWindow.windowById( id );
+   if ( !ok || w.isNull )
+   {
+      if ( !w.isNull )
+         w.forceClose();
+      return null;
+   }
+   return w;
+}
+
+function maMelange( view, masque, copie )
+{
+   return maNew( view, masque + "*$T + (1 - " + masque + ")*" + copie, "ma_melange", PixelMath.prototype.SameAsTarget );
+}
+
 function maRun( view, p )
 {
    let window = view.window;
@@ -119,7 +159,25 @@ function maRun( view, p )
       let m = ImageWindow.windowById( name ), c = ImageWindow.windowById( p.copie );
       if ( m.isNull || c.isNull )
          throw new Error( TITLE + " : " + (m.isNull ? name : p.copie) + " introuvable : lance d'abord le masque (creer) et la copie." );
-      let r = cwPixelMathNew( view, name + "*$T + (1 - " + name + ")*" + p.copie, "ma_melange" );
+      // Expression unique (« combined RGB/K ») avec un masque gris : « Unknown error » dans un conteneur glissé
+      // (retour de l'utilisateur, 18 octobre 2026). Expressions séparées par canal ; second essai avec une copie RGB du masque.
+      let r = maMelange( view, name, p.copie );
+      if ( r == null )
+      {
+         console.warningln( TITLE + " : nouvel essai avec une copie couleur du masque." );
+         let mrgb = maNew( view, name, "ma_masque_rgb", PixelMath.prototype.RGB );
+         try
+         {
+            r = maMelange( view, "ma_masque_rgb", p.copie );
+         }
+         finally
+         {
+            if ( mrgb != null )
+               mrgb.forceClose();
+         }
+      }
+      if ( r == null )
+         throw new Error( TITLE + " : le mélange a échoué (voir la console) ; l'image n'est pas modifiée." );
       try
       {
          cwAssign( view, r.mainView.image );

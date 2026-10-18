@@ -1152,3 +1152,8 @@ Fait : commit annulé (git revert) : R_C_RGB_etire_rapide = MAS, SXT_RGB_etire, 
 Demande : console de l'utilisateur, Opt_Boost_finition_light glissé sur RGB : « PixelMath … masque_L*$T + (1 - masque_L)*Masque_avant … *** Error: Unknown error ».
 Fait : mélange fait par Masque_auto.js mode melanger (image cachée puis recopie, cwAssign avec repli en recopie directe), à la place du PixelMath natif et de Fermer_Masque_avant, dans tous les conteneurs sous_masque de tous les workflows (correction d'un défaut commun, LRGB compris). Même famille d'erreur que Saturation_grosses et Fond_desature.
 Non vérifié : test dans PixInsight.
+
+### Masque_auto melanger : expressions par canal (18 octobre 2026)
+
+Demande : console de l'utilisateur, Opt_Boost_final : mode melanger, « masque_L*$T + (1 - masque_L)*Masque_avant … combined RGB/K channels … *** Error: Unknown error … image de travail ma_melange non créée ».
+Fait : mélange avec une expression par canal (useSingleExpression = false) au lieu de l'expression unique ; si échec, second essai avec une copie RGB du masque ; sinon erreur claire sans modifier l'image. Hypothèse (expression unique + référence grise dans un conteneur) tirée des cas qui marchent et qui échouent ; non vérifiée.
