@@ -341,6 +341,9 @@ for _p, _et in _ET_NB.items():
 # galaxies : Sharp_USM retiré (demande de l'utilisateur, 18 octobre 2026), plus cité dans C_Sharp_MMT
 for _p in ('LRGB', 'LHA'):
     V[(_p, 'C_Sharp_MMT')] = (S['C_Sharp_MMT'][0], S['C_Sharp_MMT'][1], [x for x in S['C_Sharp_MMT'][2] if 'Sharp_USM' not in x])
+    # Fond_auto_clair retiré des galaxies (demande de l'utilisateur, 18 octobre 2026)
+    V[(_p, 'C_Etoiles_fond_rapide')] = (S['C_Etoiles_fond_rapide'][0], S['C_Etoiles_fond_rapide'][1],
+                                        [("image trop sombre -> Fond_auto du chemin principal, double-clic, cible 0,14" if 'Fond_auto_clair' in x else x) for x in S['C_Etoiles_fond_rapide'][2]])
 
 LAUNCH = {True: "LANCEMENT : glisse l'icône sur l'image.", False: "LANCEMENT : double-clic sur l'icône, puis Apply Global.",
           'cont': "LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).",

@@ -1117,3 +1117,8 @@ Fait : Renommer_auto.js ferme d'abord, sans demander, les vues dont le nom finit
 
 Demande : « et quand la nom est "V" mets "G" »
 Fait : Renommer_auto.js : filtre V (vert) -> G, dans FILTER, le nom du fichier et, nouveau, le nom de la vue elle-même (vue nommée V sans FILTER ni fichier). Description de l'icône mise à jour (5 workflows).
+
+### LRGB et LHaRGB : cinq options supprimées (18 octobre 2026)
+
+Demande : « supprime: Opt_Look_Lightroom Opt_Fond_auto_clair Opt_Etoiles_grosses Opt_Halo_B_Gon Opt_MT_etoiles »
+Fait : retirées des workflows galaxies (SUPPR_GALAXIES_2, appliqué juste avant l'écriture des xpsm) ; aide de R_C_Etoiles_fond_rapide corrigée (image trop sombre -> Fond_auto à 0,14). Narrowband non touché : elles y restent en option.

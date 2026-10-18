@@ -5284,130 +5284,6 @@ max($T, HaNB*a)</parameter>
    <instance class="NoOperation" version="256" id="P7_options_instance">
       <description>OPTIONS de la phase 7 — Étoiles : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
    </instance>
-   <instance class="MorphologicalTransformation" version="256" id="Opt_MT_etoiles_instance">
-      <description>OPTION — réduction d'étoiles supplémentaire.&#10;&#10;PRÉRÉGLÉ : Selection 0,25, Amount 0,60, 1 itération, 5×5 circulaire.&#10;&#10;À RÉGLER : sur l'image d'étoiles seule, avant Etoiles_screen.&#10;&#10;SI :&#10;- trop fort -&gt; Amount 0,50</description>
-      <parameter id="operator" value="Selection"/>
-      <parameter id="interlacingDistance" value="1"/>
-      <parameter id="lowThreshold" value="0.000000"/>
-      <parameter id="highThreshold" value="0.000000"/>
-      <parameter id="numberOfIterations" value="1"/>
-      <parameter id="amount" value="0.60"/>
-      <parameter id="selectionPoint" value="0.25"/>
-      <parameter id="structureName"></parameter>
-      <parameter id="structureSize" value="5"/>
-      <table id="structureWayTable" rows="1">
-         <tr>
-            <td id="mask">0x00,0x01,0x01,0x01,0x00,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x00,0x01,0x01,0x01,0x00</td>
-         </tr>
-      </table>
-   </instance>
-   <instance class="Script" version="256" id="Opt_Halo_B_Gon_instance">
-      <description>OPTION — halos autour des étoiles brillantes&#10;Attention, réduit aussi les petites étoiles (pour les grosses seulement : Etoiles_grosses).&#10;&#10;LANCEMENT : double-clic sur l'icône, puis Apply Global. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.&#10;&#10;PRÉRÉGLÉ : rien (réglages dans le dialogue).&#10;&#10;À RÉGLER : Select stars-only image = l'image d'étoiles étirée (RGB_stars ; NBtoRGB_stars en SHO ; HOO_stars en HOO), AVANT Etoiles_screen ; Reduction Amount Low ; Linear Data décoché.&#10;&#10;SI :&#10;- petites étoiles réduites ou effacées aussi (son masque ne protège que les cœurs) -&gt; Etoiles_grosses à la place&#10;- pas assez -&gt; relance en Low (Med = 4 courbes, High = 9)</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/Halo-B-Gon.js</parameter>
-      <parameter id="md5sum">b9427e718e2b9760704c8c738e0893b7</parameter>
-      <table id="parameters" rows="0"/>
-      <parameter id="information"></parameter>
-   </instance>
-   <instance class="Script" version="256" id="Opt_Etoiles_grosses_instance">
-      <description>OPTION — grosses étoiles trop présentes, mais Etoiles_reduites réduirait toutes les étoiles : glisse sur l'image d'étoiles (RGB_stars) AVANT Etoiles_screen&#10;En rapide, avant R_C_Etoiles_fond_rapide.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Etoiles_grosses : masque des grosses étoiles (ouverture morphologique, disque de 7 px sur une copie à 2000 px, au-dessus de 0,15, étendu au halo, flou 12 px) ; sous le masque, luminance -&gt; mtf(0,80, Y) avec un poids qui monte de 0 (Y = 0,10) à 1 (Y = 0,80) : halo faible jamais touché, pas d'anneau sombre ; même facteur sur R, G, B : couleur gardée, petites étoiles intactes.&#10;&#10;À RÉGLER : sur RGB_stars juste AVANT Etoiles_screen (Etoiles_screen ensuite, pas Etoiles_reduites) ; en rapide, avant R_C_Etoiles_fond_rapide ; pour régler à l'œil : double-clic puis Apply Global, « Voir le masque », puis Appliquer ; copie Etoiles_grosses.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- anneau sombre autour des grosses étoiles -&gt; etendue 16 à 20, ou force plus basse (0,70)&#10;- halo large pas entièrement réduit -&gt; etendue 16&#10;- moyennes étoiles touchées aussi -&gt; taille 9 ou 11&#10;- certaines grosses pas réduites -&gt; taille 5, ou seuil 0,10&#10;- pas assez réduites -&gt; force 0,85 (au plus ; 0,5 = rien)&#10;- voir ce qui est réduit -&gt; fenêtre (double-clic puis Apply Global), « Voir le masque » (vue masque_grosses)</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Etoiles_grosses.js</parameter>
-      <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="5">
-         <tr>
-            <td id="id">taille</td>
-            <td id="value">7</td>
-         </tr>
-         <tr>
-            <td id="id">seuil</td>
-            <td id="value">0.15</td>
-         </tr>
-         <tr>
-            <td id="id">etendue</td>
-            <td id="value">12</td>
-         </tr>
-         <tr>
-            <td id="id">force</td>
-            <td id="value">0.80</td>
-         </tr>
-         <tr>
-            <td id="id">afficherMasque</td>
-            <td id="value">false</td>
-         </tr>
-      </table>
-      <parameter id="information"></parameter>
-   </instance>
-   <instance class="Script" version="256" id="Opt_Fond_auto_clair_instance">
-      <description>OPTION — à la place de Fond_auto : image trop sombre, fond amené à 0,14, après Fond_desature, avant Etoiles_screen.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Fond_auto, cible 0,14 : fond de chaque canal mesuré (grille 8 × 8), amené à 0,14 par mtf, sans écrêtage ; fond neutre.&#10;&#10;À RÉGLER : à la place de Fond_auto, image trop sombre : glisse sur l'image sans étoiles, après Fond_desature, avant Etoiles_screen.&#10;&#10;SI :&#10;- fond encore trop sombre -&gt; double-clic, cible 0,15</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js</parameter>
-      <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="3">
-         <tr>
-            <td id="id">cible</td>
-            <td id="value">0.14</td>
-         </tr>
-         <tr>
-            <td id="id">tolerance</td>
-            <td id="value">0.005</td>
-         </tr>
-         <tr>
-            <td id="id">grille</td>
-            <td id="value">8</td>
-         </tr>
-      </table>
-      <parameter id="information"></parameter>
-   </instance>
-   <instance class="Script" version="256" id="Opt_Look_Lightroom_instance">
-      <description>OPTION — retouche finale façon Camera Raw / Lightroom (tes réglages : Exposition +0,25, Tons clairs -100, Blancs +50, Température +10) : glisse sur l'image SANS étoiles finie (après Fond_desature et Fond_auto), juste avant Etoiles_screen&#10;Toute l'image par défaut (masque de luminance en option dans la fenêtre).&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Look_Lightroom, tes réglages Camera Raw (équivalents approchés) : Exposition +0,25, Contraste 0, Tons clairs -100, Tons foncés 0, Blancs +50, Noirs 0, Température +10 (R × 1,03, B × 0,97), Teinte 0 ; toute l'image (masque de luminance en option) ; Ctrl+Z possible.&#10;&#10;À RÉGLER : glisse sur l'image SANS étoiles finie (après Fond_desature et Fond_auto), juste avant Etoiles_screen ; pour changer une valeur ou mettre le masque : double-clic puis Apply Global (fenêtre, mêmes curseurs que Camera Raw) ; copie Look_Lightroom.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- trop clair -&gt; Exposition +0,10&#10;- zones claires trop éteintes -&gt; Tons clairs -50&#10;- trop chaud -&gt; Température +5&#10;- fond devenu coloré -&gt; coche le masque dans la fenêtre&#10;- dans un conteneur : le masque n'est pas appliqué, glisse l'icône seule</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Look_Lightroom.js</parameter>
-      <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="11">
-         <tr>
-            <td id="id">exposition</td>
-            <td id="value">0.25</td>
-         </tr>
-         <tr>
-            <td id="id">contraste</td>
-            <td id="value">0</td>
-         </tr>
-         <tr>
-            <td id="id">hautes</td>
-            <td id="value">-100</td>
-         </tr>
-         <tr>
-            <td id="id">foncees</td>
-            <td id="value">0</td>
-         </tr>
-         <tr>
-            <td id="id">blancs</td>
-            <td id="value">50</td>
-         </tr>
-         <tr>
-            <td id="id">noirs</td>
-            <td id="value">0</td>
-         </tr>
-         <tr>
-            <td id="id">temperature</td>
-            <td id="value">10</td>
-         </tr>
-         <tr>
-            <td id="id">teinte</td>
-            <td id="value">0</td>
-         </tr>
-         <tr>
-            <td id="id">masque</td>
-            <td id="value">false</td>
-         </tr>
-         <tr>
-            <td id="id">s</td>
-            <td id="value">0.14</td>
-         </tr>
-         <tr>
-            <td id="id">flou</td>
-            <td id="value">2.0</td>
-         </tr>
-      </table>
-      <parameter id="information"></parameter>
-   </instance>
    <instance class="PixelMath" version="256" id="Opt_Etoiles_reduites_instance">
       <description>ALTERNATIVE — Recombinaison + réduction Blanshan.&#10;&#10;PRÉRÉGLÉ : S = 0,20 (Bill : 0,15) ; recombinaison screen + réduction Blanshan en une formule, sur l'image elle-même.&#10;&#10;À RÉGLER : À LA PLACE d'Etoiles_screen : glisse sur l'image sans étoiles finale ; étoiles étirées nommées RGB_stars.&#10;&#10;SI :&#10;- étoiles encore grosses -&gt; S 0,15&#10;- trop petites -&gt; S 0,25, ou Etoiles_screen&#10;- pour recommencer -&gt; Ctrl+Z</description>
       <parameter id="expression">S=0.20;
@@ -6038,7 +5914,7 @@ max($T,f1)</parameter>
       <description>MODE RAPIDE, phase 7 — Étoiles : R_C_Etoiles_fond_rapide sur l'image sans étoiles finie : Fond_desature, Fond_auto (0,12) sur l'image sans étoiles, étoiles remises (Etoiles_screen), NXT_dernier (0,25), puis Export_TIFF en un seul conteneur. Icône de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="R_C_Etoiles_fond_rapide_instance">
-      <description>MODE RAPIDE, à la place de Fond_desature, Fond_auto, Etoiles_screen, NXT_dernier et Export_TIFF : sur l'image sans étoiles finie, RGB_stars et L ouvertes.&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : Fond_desature (teinte et violet du fond retirés), Fond_auto (fond amené à 0,12, neutre), Etoiles_screen (~((~$T) * (~RGB_stars))), NXT_dernier (Denoise 0,25, image avec étoiles), Export_TIFF (copie TIFF 16 bits sRGB nommée d'après le dossier des masters).&#10;&#10;À RÉGLER : glisse sur l'image sans étoiles finie ; RGB_stars et L ouvertes ; l'image est finie et exportée.&#10;&#10;SI :&#10;- étoiles trop présentes -&gt; Etoiles_reduites (à la place d'Etoiles_screen)&#10;- grosses étoiles presque blanches -&gt; Saturation_grosses (option P4, sur RGB_stars, avant ce conteneur)&#10;- image trop sombre -&gt; Fond_auto_clair à la place de Fond_auto, puis Etoiles_screen</description>
+      <description>MODE RAPIDE, à la place de Fond_desature, Fond_auto, Etoiles_screen, NXT_dernier et Export_TIFF : sur l'image sans étoiles finie, RGB_stars et L ouvertes.&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : Fond_desature (teinte et violet du fond retirés), Fond_auto (fond amené à 0,12, neutre), Etoiles_screen (~((~$T) * (~RGB_stars))), NXT_dernier (Denoise 0,25, image avec étoiles), Export_TIFF (copie TIFF 16 bits sRGB nommée d'après le dossier des masters).&#10;&#10;À RÉGLER : glisse sur l'image sans étoiles finie ; RGB_stars et L ouvertes ; l'image est finie et exportée.&#10;&#10;SI :&#10;- étoiles trop présentes -&gt; Etoiles_reduites (à la place d'Etoiles_screen)&#10;- grosses étoiles presque blanches -&gt; Saturation_grosses (option P4, sur RGB_stars, avant ce conteneur)&#10;- image trop sombre -&gt; Fond_auto du chemin principal, double-clic, cible 0,14</description>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js</parameter>
          <parameter id="md5sum"></parameter>
@@ -6257,18 +6133,13 @@ max($T,f1)</parameter>
    <icon id="E31_Etoiles_screen" instance="E31_Etoiles_screen_instance" xpos="1163" ypos="124" workspace="Workspace01"/>
    <icon id="E32_NXT_dernier" instance="E32_NXT_dernier_instance" xpos="1163" ypos="154" workspace="Workspace01"/>
    <icon id="P7_options" instance="P7_options_instance" xpos="1163" ypos="200" workspace="Workspace01"/>
-   <icon id="Opt_MT_etoiles" instance="Opt_MT_etoiles_instance" xpos="1163" ypos="234" workspace="Workspace01"/>
-   <icon id="Opt_Halo_B_Gon" instance="Opt_Halo_B_Gon_instance" xpos="1163" ypos="264" workspace="Workspace01"/>
-   <icon id="Opt_Etoiles_grosses" instance="Opt_Etoiles_grosses_instance" xpos="1163" ypos="294" workspace="Workspace01"/>
-   <icon id="Opt_Fond_auto_clair" instance="Opt_Fond_auto_clair_instance" xpos="1163" ypos="324" workspace="Workspace01"/>
-   <icon id="Opt_Look_Lightroom" instance="Opt_Look_Lightroom_instance" xpos="1163" ypos="354" workspace="Workspace01"/>
-   <icon id="Opt_Etoiles_reduites" instance="Opt_Etoiles_reduites_instance" xpos="1163" ypos="384" workspace="Workspace01"/>
-   <icon id="Opt_Boost_final_doux" instance="Opt_Boost_final_doux_instance" xpos="1163" ypos="414" workspace="Workspace01"/>
-   <icon id="Opt_Boost_final" instance="Opt_Boost_final_instance" xpos="1163" ypos="444" workspace="Workspace01"/>
-   <icon id="Opt_Agrandir_x2" instance="Opt_Agrandir_x2_instance" xpos="1163" ypos="474" workspace="Workspace01"/>
-   <icon id="Opt_ICC_sRGB" instance="Opt_ICC_sRGB_instance" xpos="1163" ypos="504" workspace="Workspace01"/>
-   <icon id="Opt_Export_TIFF" instance="Opt_Export_TIFF_instance" xpos="1163" ypos="534" workspace="Workspace01"/>
-   <icon id="Opt_Fermer_tout" instance="Opt_Fermer_tout_instance" xpos="1163" ypos="564" workspace="Workspace01"/>
-   <icon id="P7_rapide" instance="P7_rapide_instance" xpos="1163" ypos="610" workspace="Workspace01"/>
-   <icon id="R_C_Etoiles_fond_rapide" instance="R_C_Etoiles_fond_rapide_instance" xpos="1163" ypos="644" workspace="Workspace01"/>
+   <icon id="Opt_Etoiles_reduites" instance="Opt_Etoiles_reduites_instance" xpos="1163" ypos="234" workspace="Workspace01"/>
+   <icon id="Opt_Boost_final_doux" instance="Opt_Boost_final_doux_instance" xpos="1163" ypos="264" workspace="Workspace01"/>
+   <icon id="Opt_Boost_final" instance="Opt_Boost_final_instance" xpos="1163" ypos="294" workspace="Workspace01"/>
+   <icon id="Opt_Agrandir_x2" instance="Opt_Agrandir_x2_instance" xpos="1163" ypos="324" workspace="Workspace01"/>
+   <icon id="Opt_ICC_sRGB" instance="Opt_ICC_sRGB_instance" xpos="1163" ypos="354" workspace="Workspace01"/>
+   <icon id="Opt_Export_TIFF" instance="Opt_Export_TIFF_instance" xpos="1163" ypos="384" workspace="Workspace01"/>
+   <icon id="Opt_Fermer_tout" instance="Opt_Fermer_tout_instance" xpos="1163" ypos="414" workspace="Workspace01"/>
+   <icon id="P7_rapide" instance="P7_rapide_instance" xpos="1163" ypos="460" workspace="Workspace01"/>
+   <icon id="R_C_Etoiles_fond_rapide" instance="R_C_Etoiles_fond_rapide_instance" xpos="1163" ypos="494" workspace="Workspace01"/>
 </xpsm>

@@ -1243,90 +1243,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 ### P7_options
 
-#### Opt_MT_etoiles — MorphologicalTransformation
-   operator=Selection ; interlacingDistance=1 ; lowThreshold=0.000000 ; highThreshold=0.000000 ; numberOfIterations=1 ; amount=0.60 ; selectionPoint=0.25 ; structureName= ; structureSize=5 ; table structureWayTable (1 lignes)
-
-> OPTION — réduction d'étoiles supplémentaire.
-> 
-> PRÉRÉGLÉ : Selection 0,25, Amount 0,60, 1 itération, 5×5 circulaire.
-> 
-> À RÉGLER : sur l'image d'étoiles seule, avant Etoiles_screen.
-> 
-> SI :
-> - trop fort -> Amount 0,50
-
-#### Opt_Halo_B_Gon — Script
-   script `$PXI_SRCDIR/scripts/Halo-B-Gon.js`
-
-> OPTION — halos autour des étoiles brillantes
-> Attention, réduit aussi les petites étoiles (pour les grosses seulement : Etoiles_grosses).
-> 
-> LANCEMENT : double-clic sur l'icône, puis Apply Global. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
-> 
-> PRÉRÉGLÉ : rien (réglages dans le dialogue).
-> 
-> À RÉGLER : Select stars-only image = l'image d'étoiles étirée (RGB_stars ; NBtoRGB_stars en SHO ; HOO_stars en HOO), AVANT Etoiles_screen ; Reduction Amount Low ; Linear Data décoché.
-> 
-> SI :
-> - petites étoiles réduites ou effacées aussi (son masque ne protège que les cœurs) -> Etoiles_grosses à la place
-> - pas assez -> relance en Low (Med = 4 courbes, High = 9)
-
-#### Opt_Etoiles_grosses — Script
-   script `$PXI_SRCDIR/scripts/clodoweg/Etoiles_grosses.js`
-   paramètres : `taille=7`, `seuil=0.15`, `etendue=12`, `force=0.80`, `afficherMasque=false`
-
-> OPTION — grosses étoiles trop présentes, mais Etoiles_reduites réduirait toutes les étoiles : glisse sur l'image d'étoiles (RGB_stars) AVANT Etoiles_screen
-> En rapide, avant R_C_Etoiles_fond_rapide.
-> 
-> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
-> 
-> PRÉRÉGLÉ : script Etoiles_grosses : masque des grosses étoiles (ouverture morphologique, disque de 7 px sur une copie à 2000 px, au-dessus de 0,15, étendu au halo, flou 12 px) ; sous le masque, luminance -> mtf(0,80, Y) avec un poids qui monte de 0 (Y = 0,10) à 1 (Y = 0,80) : halo faible jamais touché, pas d'anneau sombre ; même facteur sur R, G, B : couleur gardée, petites étoiles intactes.
-> 
-> À RÉGLER : sur RGB_stars juste AVANT Etoiles_screen (Etoiles_screen ensuite, pas Etoiles_reduites) ; en rapide, avant R_C_Etoiles_fond_rapide ; pour régler à l'œil : double-clic puis Apply Global, « Voir le masque », puis Appliquer ; copie Etoiles_grosses.js dans src/scripts/clodoweg.
-> 
-> SI :
-> - anneau sombre autour des grosses étoiles -> etendue 16 à 20, ou force plus basse (0,70)
-> - halo large pas entièrement réduit -> etendue 16
-> - moyennes étoiles touchées aussi -> taille 9 ou 11
-> - certaines grosses pas réduites -> taille 5, ou seuil 0,10
-> - pas assez réduites -> force 0,85 (au plus ; 0,5 = rien)
-> - voir ce qui est réduit -> fenêtre (double-clic puis Apply Global), « Voir le masque » (vue masque_grosses)
-
-#### Opt_Fond_auto_clair — Script
-   script `$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js`
-   paramètres : `cible=0.14`, `tolerance=0.005`, `grille=8`
-
-> OPTION — à la place de Fond_auto : image trop sombre, fond amené à 0,14, après Fond_desature, avant Etoiles_screen.
-> 
-> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
-> 
-> PRÉRÉGLÉ : script Fond_auto, cible 0,14 : fond de chaque canal mesuré (grille 8 × 8), amené à 0,14 par mtf, sans écrêtage ; fond neutre.
-> 
-> À RÉGLER : à la place de Fond_auto, image trop sombre : glisse sur l'image sans étoiles, après Fond_desature, avant Etoiles_screen.
-> 
-> SI :
-> - fond encore trop sombre -> double-clic, cible 0,15
-
-#### Opt_Look_Lightroom — Script
-   script `$PXI_SRCDIR/scripts/clodoweg/Look_Lightroom.js`
-   paramètres : `exposition=0.25`, `contraste=0`, `hautes=-100`, `foncees=0`, `blancs=50`, `noirs=0`, `temperature=10`, `teinte=0`, `masque=false`, `s=0.14`, `flou=2.0`
-
-> OPTION — retouche finale façon Camera Raw / Lightroom (tes réglages : Exposition +0,25, Tons clairs -100, Blancs +50, Température +10) : glisse sur l'image SANS étoiles finie (après Fond_desature et Fond_auto), juste avant Etoiles_screen
-> Toute l'image par défaut (masque de luminance en option dans la fenêtre).
-> 
-> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
-> 
-> PRÉRÉGLÉ : script Look_Lightroom, tes réglages Camera Raw (équivalents approchés) : Exposition +0,25, Contraste 0, Tons clairs -100, Tons foncés 0, Blancs +50, Noirs 0, Température +10 (R × 1,03, B × 0,97), Teinte 0 ; toute l'image (masque de luminance en option) ; Ctrl+Z possible.
-> 
-> À RÉGLER : glisse sur l'image SANS étoiles finie (après Fond_desature et Fond_auto), juste avant Etoiles_screen ; pour changer une valeur ou mettre le masque : double-clic puis Apply Global (fenêtre, mêmes curseurs que Camera Raw) ; copie Look_Lightroom.js dans src/scripts/clodoweg.
-> 
-> SI :
-> - trop clair -> Exposition +0,10
-> - zones claires trop éteintes -> Tons clairs -50
-> - trop chaud -> Température +5
-> - fond devenu coloré -> coche le masque dans la fenêtre
-> - dans un conteneur : le masque n'est pas appliqué, glisse l'icône seule
-
 #### Opt_Etoiles_reduites — PixelMath
    expression = `S=0.20; W=~((~$T)*(~RGB_stars)); f1= ~((~mtf(~S,W)/~mtf(~S,$T))*~$T); max($T,f1)` ; useSingleExpression=true ; symbols = `S, W, f1` ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
 
@@ -1488,4 +1404,4 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > SI :
 > - étoiles trop présentes -> Etoiles_reduites (à la place d'Etoiles_screen)
 > - grosses étoiles presque blanches -> Saturation_grosses (option P4, sur RGB_stars, avant ce conteneur)
-> - image trop sombre -> Fond_auto_clair à la place de Fond_auto, puis Etoiles_screen
+> - image trop sombre -> Fond_auto du chemin principal, double-clic, cible 0,14
