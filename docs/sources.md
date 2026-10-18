@@ -1112,3 +1112,8 @@ Fait : retirés des workflows galaxies (SUPPR_GALAXIES), textes qui les citaient
 
 Demande : « dans le Renommer Auto (pour tous les process icones), referme automatiquement les vue dont l'identifier finit par "autocrop_c" »
 Fait : Renommer_auto.js ferme d'abord, sans demander, les vues dont le nom finit par autocrop_c (paramètre fermerAutocrop, true par défaut ; case dans la fenêtre ; la vue glissée n'est jamais fermée ; ces vues ne sont plus proposées au renommage). Icône Renommer_auto (et conteneurs qui la reprennent : R_C_Preparation_rapide, T_Turbo_debut) avec fermerAutocrop = true dans les 5 workflows (LRGB compris, demandé par l'utilisateur).
+
+### Renommer_auto : V -> G (18 octobre 2026)
+
+Demande : « et quand la nom est "V" mets "G" »
+Fait : Renommer_auto.js : filtre V (vert) -> G, dans FILTER, le nom du fichier et, nouveau, le nom de la vue elle-même (vue nommée V sans FILTER ni fichier). Description de l'icône mise à jour (5 workflows).

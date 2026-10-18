@@ -4,7 +4,8 @@
 // Les formules et les icônes de la fiche attendent des vues nommées L, R, G,
 // B, H, O, S. Ce script lit le mot-clé FILTER de l'en-tête de chaque image
 // mono ouverte (Lum, Red, Ha, OIII, SII...) et renomme la vue. Sans mot-clé
-// FILTER, il cherche le filtre dans le nom du fichier (FILTER-L, _Ha_...).
+// FILTER, il cherche le filtre dans le nom du fichier (FILTER-L, _Ha_...), puis
+// dans le nom de la vue. V (vert) devient G.
 // Les images couleur et les vues déjà bien nommées ne sont pas touchées ;
 // si deux images ont le même filtre, seule la première est renommée.
 // Ferme d'abord, sans demander, les vues dont le nom finit par autocrop_c
@@ -38,7 +39,7 @@ function filterToId( text )
       return "";
    let exact = { l: "L", lum: "L", luminance: "L", lumi: "L", clear: "L",
                  r: "R", red: "R", rouge: "R",
-                 g: "G", green: "G", vert: "G",
+                 g: "G", green: "G", vert: "G", v: "G",   // V (vert) -> G (demande de l'utilisateur)
                  b: "B", blue: "B", bleu: "B",
                  h: "H", ha: "H", halpha: "H", hydrogenalpha: "H",
                  o: "O", o3: "O", oiii: "O",
@@ -122,6 +123,12 @@ function renProposals( fermer )
       {
          id = fromFileName( w );
          source = "nom du fichier";
+      }
+      if ( id.length == 0 )
+      {
+         // nom de vue seul (sans FILTER ni fichier) : V, L, R... (demande de l'utilisateur : V -> G)
+         id = filterToId( view.id );
+         source = "nom de la vue";
       }
       if ( id.length == 0 )
       {
