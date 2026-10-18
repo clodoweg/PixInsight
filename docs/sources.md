@@ -1084,3 +1084,8 @@ Fait : CLAUDE.md mis à jour (état des workflows narrowband, décisions BXT/NXT
 - Option MAS_light dans les 5 workflows (demande de l'utilisateur : « rajoute une option MAS Light a tous les process » avec son code PJSR) : MultiscaleAdaptiveStretch Aggressiveness 0,15, Target background 0,150, Dynamic range compression 0,40, Contrast recovery (1024, 1,000), saturation 0,50 / boost 0,50 / masque de luminosité, sans ROI ; réglages de l'utilisateur, P4 options.
 - Retour de l'utilisateur : « E19_C_Sharp_MMT ne permet pas de faire CTRL Z » (LRGB) : Sharp_MMT.js glissé lançait MMT directement sur la vue ; maintenant toujours cwApplyOnCopy (beginProcess / assign / endProcess), comme Fond_desature glissé. Tous les workflows (script commun). Non testé dans PixInsight.
 - Demande de l'utilisateur : « vérfiie s'il y'en a d'autres comme ca dans tous les process » : Fond_auto, Etoiles_auto, Nettoyage_sans_etoiles et Gradient_auto passent aussi par cwApplyOnCopy hors fenêtre (tous les workflows, scripts communs) ; non testé dans PixInsight.
+
+### LHaRGB : second rapide P3 R_C_Ha_RGB_rapide (18 octobre 2026)
+
+Demande : « dans LHARGB j'aimerais que: on crée un deuxieme rapide en dessous de R_Main_continuum avec: E15_CombineHaWithRGB, E16_C_RGB_bruit, E17_Fermer_continuum »
+Fait : conteneur R_C_Ha_RGB_rapide (P3 rapide, sous R_Main_continuum) : CombineHaWithRGB (HaNB, Amount 2, Beta 0,2, Background 0,05), NXT_RGB 0,80, Fermer_continuum (H, HaNB) ; glissé sur le RGB linéaire après Continuum_auto. Textes de R_Main_continuum, R_C_P3_rapide et du mode rapide mis à jour. LRGB non touché.

@@ -739,7 +739,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <description>MODE TURBO, phase 1 — Préparation : une icône T_ enchaîne en un clic les étapes de plusieurs icônes rapides (R_) ; elle les contient, les icônes R_ ne sont pas nécessaires. Icône de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="T_Turbo_debut_instance">
-      <description>MODE TURBO, à la place de R_C_Preparation_rapide, R_Gradient_auto_rapide et R_Lineaire_rapide (phases 1 à 3) : masters seuls ouverts, double-clic puis Apply Global (pas en glissant) ; ensuite GHS_1_premier sur L.&#10;&#10;LANCEMENT : masters seuls ouverts, double-clic puis Apply Global (rond bleu) ; pas en glissant (ImageSolver échoue sur une image en cours de traitement).&#10;&#10;PRÉRÉGLÉ : conteneur, en une fois : Renommer_auto, LinearPatternSubtraction, Combinaison_RGB, Solver_auto (ImageSolver sur le RGB seulement, = R_C_Preparation_rapide), Gradient_auto (= R_Gradient_auto_rapide), Lineaire_auto (C_RGB_couleur sur RGB, BXT_L_H sur L et H, NXT_L et SXT_L_lineaire sur L = R_C_P3_rapide, ici en Apply Global).&#10;&#10;À RÉGLER : masters seuls ouverts (L, R, G, B, H) ; double-clic puis Apply Global (pas en glissant : ImageSolver échoue sur une image en cours de traitement) ; Conteneurs-LHaRGB chargé ; ensuite E14_Continuum_auto (fenêtre), E15_CombineHaWithRGB et E16_C_RGB_bruit glissés sur RGB, E17_Fermer_continuum, puis GHS_1_premier sur L.&#10;&#10;SI :&#10;- une étape échoue -&gt; lance les icônes R_ une par une pour voir laquelle</description>
+      <description>MODE TURBO, à la place de R_C_Preparation_rapide, R_Gradient_auto_rapide et R_Lineaire_rapide (phases 1 à 3) : masters seuls ouverts, double-clic puis Apply Global (pas en glissant) ; ensuite GHS_1_premier sur L.&#10;&#10;LANCEMENT : masters seuls ouverts, double-clic puis Apply Global (rond bleu) ; pas en glissant (ImageSolver échoue sur une image en cours de traitement).&#10;&#10;PRÉRÉGLÉ : conteneur, en une fois : Renommer_auto, LinearPatternSubtraction, Combinaison_RGB, Solver_auto (ImageSolver sur le RGB seulement, = R_C_Preparation_rapide), Gradient_auto (= R_Gradient_auto_rapide), Lineaire_auto (C_RGB_couleur sur RGB, BXT_L_H sur L et H, NXT_L et SXT_L_lineaire sur L = R_C_P3_rapide, ici en Apply Global).&#10;&#10;À RÉGLER : masters seuls ouverts (L, R, G, B, H) ; double-clic puis Apply Global (pas en glissant : ImageSolver échoue sur une image en cours de traitement) ; Conteneurs-LHaRGB chargé ; ensuite E14_Continuum_auto (fenêtre), R_C_Ha_RGB_rapide glissé sur RGB (ou E15 à E17), puis GHS_1_premier sur L.&#10;&#10;SI :&#10;- une étape échoue -&gt; lance les icônes R_ une par une pour voir laquelle</description>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Renommer_auto.js</parameter>
          <parameter id="md5sum"></parameter>
@@ -2156,10 +2156,10 @@ max($T, HaNB*a)</parameter>
       <parameter id="interaction" value="SeparateChannels"/>
    </instance>
    <instance class="NoOperation" version="256" id="P3_rapide_instance">
-      <description>MODE RAPIDE, phase 3 — Linéaire : R_C_P3_rapide glissé sur RGB à la place de E10 à E13 : BXT Correct Only, SPCC, BXT sur RGB ; BXT_L_H sur L et H, NXT_L et SXT_L_lineaire sur L ; puis chemin principal : E14_Continuum_auto (fenêtre), E15_CombineHaWithRGB et E16_C_RGB_bruit glissés sur RGB, E17_Fermer_continuum ; T_Turbo_debut fait P1 à P3 jusqu'à E13. Icône de repère, sans effet.</description>
+      <description>MODE RAPIDE, phase 3 — Linéaire : R_C_P3_rapide glissé sur RGB à la place de E10 à E13 : BXT Correct Only, SPCC, BXT sur RGB ; BXT_L_H sur L et H, NXT_L et SXT_L_lineaire sur L ; puis chemin principal : E14_Continuum_auto (fenêtre), R_C_Ha_RGB_rapide glissé sur RGB (ou E15 à E17) ; T_Turbo_debut fait P1 à P3 jusqu'à E13. Icône de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="R_C_P3_rapide_instance">
-      <description>MODE RAPIDE, à la place de E10 à E13 : après R_Gradient_auto_rapide, GLISSE sur RGB (L et H ouvertes, Conteneurs-LHaRGB chargé) ; ensuite E14_Continuum_auto, E15_CombineHaWithRGB, E16_C_RGB_bruit et E17_Fermer_continuum.&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : BXT Correct Only, SPCC, BXT sur RGB ; Lineaire_auto : BXT_L_H sur L et H, NXT_L et SXT_L_lineaire sur L (= E10 à E13).&#10;&#10;À RÉGLER : après R_Gradient_auto_rapide : glisse sur le RGB linéaire (L et H ouvertes ; Conteneurs-LHaRGB chargé pour BXT_L_H, NXT_L, SXT_L_lineaire) ; ensuite E14_Continuum_auto (fenêtre), E15_CombineHaWithRGB et E16_C_RGB_bruit glissés sur RGB, E17_Fermer_continuum, puis GHS_1_premier sur L.&#10;&#10;SI :&#10;- une étape échoue -&gt; la console dit laquelle</description>
+      <description>MODE RAPIDE, à la place de E10 à E13 : après R_Gradient_auto_rapide, GLISSE sur RGB (L et H ouvertes, Conteneurs-LHaRGB chargé) ; ensuite E14_Continuum_auto, R_C_Ha_RGB_rapide (ou E15 à E17).&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : BXT Correct Only, SPCC, BXT sur RGB ; Lineaire_auto : BXT_L_H sur L et H, NXT_L et SXT_L_lineaire sur L (= E10 à E13).&#10;&#10;À RÉGLER : après R_Gradient_auto_rapide : glisse sur le RGB linéaire (L et H ouvertes ; Conteneurs-LHaRGB chargé pour BXT_L_H, NXT_L, SXT_L_lineaire) ; ensuite E14_Continuum_auto (fenêtre), R_C_Ha_RGB_rapide glissé sur RGB (ou E15 à E17), puis GHS_1_premier sur L.&#10;&#10;SI :&#10;- une étape échoue -&gt; la console dit laquelle</description>
       <instance class="BlurXTerminator" version="256" enabled="true">
          <parameter id="ml_version" value="4"/>
          <parameter id="correct_only" value="true"/>
@@ -2254,7 +2254,82 @@ max($T, HaNB*a)</parameter>
       </instance>
    </instance>
    <instance class="NoOperation" version="256" id="R_Main_continuum_instance">
-      <description>MODE RAPIDE, repère sans effet, après R_C_P3_rapide : la suite du continuum se fait À LA MAIN au chemin principal (E14 à E17).&#10;&#10;PRÉRÉGLÉ : repère NoOperation, sans effet : la suite du continuum n'a pas de rapide, elle se fait À LA MAIN.&#10;&#10;À RÉGLER : après R_C_P3_rapide : E14_Continuum_auto (fenêtre), E15_CombineHaWithRGB et E16_C_RGB_bruit glissés sur RGB, E17_Fermer_continuum (double-clic puis Apply Global), puis GHS_1_premier sur L ; rien à lancer sur cette icône.</description>
+      <description>MODE RAPIDE, repère sans effet, après R_C_P3_rapide : E14_Continuum_auto se fait À LA MAIN (fenêtre), puis R_C_Ha_RGB_rapide.&#10;&#10;PRÉRÉGLÉ : repère NoOperation, sans effet : Continuum_auto n'a pas de rapide (fenêtre obligatoire).&#10;&#10;À RÉGLER : après R_C_P3_rapide : E14_Continuum_auto par sa fenêtre (crée HaNB), puis R_C_Ha_RGB_rapide glissé sur RGB (ou E15 à E17), puis GHS_1_premier sur L ; rien à lancer sur cette icône.</description>
+   </instance>
+   <instance class="ProcessContainer" id="R_C_Ha_RGB_rapide_instance">
+      <description>MODE RAPIDE, à la place de E15 à E17 : après E14_Continuum_auto (HaNB créée), GLISSE sur le RGB linéaire ; CombineHaWithRGB, NXT 0,80, puis H et HaNB fermées.&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : CombineHaWithRGB (HaNB, Amount 2, Beta 0,2, Background 0,05), NXT 0,80 (= C_RGB_bruit), Fermer_continuum (ferme H et HaNB) = E15 à E17.&#10;&#10;À RÉGLER : après E14_Continuum_auto (HaNB ouverte) : glisse sur le RGB linéaire ; ensuite GHS_1_premier sur L.&#10;&#10;SI :&#10;- « already being processed » sur CombineHaToRGB -&gt; mets à jour la Toolbox, ou E15 à E17 un par un&#10;- H_dans_L voulu -&gt; fais-le AVANT (H et HaNB sont fermées à la fin)</description>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/Toolbox/CombineHaToRGB.js</parameter>
+         <parameter id="md5sum">140cbb0fc118263dc1d71b8e9e39f0e1</parameter>
+         <table id="parameters" rows="8">
+            <tr>
+               <td id="id">alphaView</td>
+               <td id="value">HaNB</td>
+            </tr>
+            <tr>
+               <td id="id">amount</td>
+               <td id="value">2</td>
+            </tr>
+            <tr>
+               <td id="id">beta</td>
+               <td id="value">0.2</td>
+            </tr>
+            <tr>
+               <td id="id">linear</td>
+               <td id="value">true</td>
+            </tr>
+            <tr>
+               <td id="id">rgbLinked</td>
+               <td id="value">true</td>
+            </tr>
+            <tr>
+               <td id="id">bg</td>
+               <td id="value">0.05</td>
+            </tr>
+            <tr>
+               <td id="id">invertMask</td>
+               <td id="value">true</td>
+            </tr>
+            <tr>
+               <td id="id">sigma</td>
+               <td id="value">0</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+      <instance class="NoiseXTerminator" version="256" enabled="true">
+         <parameter id="ml_version" value="0"/>
+         <parameter id="denoise" value="0.80"/>
+         <parameter id="enable_color_separation" value="false"/>
+         <parameter id="enable_frequency_separation" value="false"/>
+         <parameter id="denoise_intensity" value="0.90"/>
+         <parameter id="denoise_color" value="0.90"/>
+         <parameter id="denoise_high_freq" value="0.90"/>
+         <parameter id="denoise_low_freq" value="0.90"/>
+         <parameter id="denoise_intensity_high_freq" value="0.90"/>
+         <parameter id="denoise_intensity_low_freq" value="0.90"/>
+         <parameter id="denoise_color_high_freq" value="0.90"/>
+         <parameter id="denoise_color_low_freq" value="0.90"/>
+         <parameter id="frequency_scale" value="5.0"/>
+         <parameter id="iterations" value="1"/>
+         <parameter id="detail" value="0.15"/>
+         <parameter id="overlap" value="0.20"/>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="2">
+            <tr>
+               <td id="id">views</td>
+               <td id="value">H, HaNB</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
    </instance>
    <instance class="NoOperation" version="256" id="P4_Etirement_instance">
       <description>PHASE 4 — Étirement : passage en non linéaire, même fond pour toutes les images. Colonne de repère, sans effet.</description>
@@ -6248,6 +6323,7 @@ max($T,f1)</parameter>
    <icon id="P3_rapide" instance="P3_rapide_instance" xpos="430" ypos="550" workspace="Workspace01"/>
    <icon id="R_C_P3_rapide" instance="R_C_P3_rapide_instance" xpos="430" ypos="584" workspace="Workspace01"/>
    <icon id="R_Main_continuum" instance="R_Main_continuum_instance" xpos="430" ypos="614" workspace="Workspace01"/>
+   <icon id="R_C_Ha_RGB_rapide" instance="R_C_Ha_RGB_rapide_instance" xpos="430" ypos="644" workspace="Workspace01"/>
    <icon id="P4_Etirement" instance="P4_Etirement_instance" xpos="608" ypos="20" workspace="Workspace01"/>
    <icon id="E18_GHS_1_premier" instance="E18_GHS_1_premier_instance" xpos="608" ypos="64" workspace="Workspace01"/>
    <icon id="E19_GHS_2_contraste" instance="E19_GHS_2_contraste_instance" xpos="608" ypos="94" workspace="Workspace01"/>

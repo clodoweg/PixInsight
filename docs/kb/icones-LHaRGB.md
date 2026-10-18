@@ -201,7 +201,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > PRÉRÉGLÉ : conteneur, en une fois : Renommer_auto, LinearPatternSubtraction, Combinaison_RGB, Solver_auto (ImageSolver sur le RGB seulement, = R_C_Preparation_rapide), Gradient_auto (= R_Gradient_auto_rapide), Lineaire_auto (C_RGB_couleur sur RGB, BXT_L_H sur L et H, NXT_L et SXT_L_lineaire sur L = R_C_P3_rapide, ici en Apply Global).
 > 
-> À RÉGLER : masters seuls ouverts (L, R, G, B, H) ; double-clic puis Apply Global (pas en glissant : ImageSolver échoue sur une image en cours de traitement) ; Conteneurs-LHaRGB chargé ; ensuite E14_Continuum_auto (fenêtre), E15_CombineHaWithRGB et E16_C_RGB_bruit glissés sur RGB, E17_Fermer_continuum, puis GHS_1_premier sur L.
+> À RÉGLER : masters seuls ouverts (L, R, G, B, H) ; double-clic puis Apply Global (pas en glissant : ImageSolver échoue sur une image en cours de traitement) ; Conteneurs-LHaRGB chargé ; ensuite E14_Continuum_auto (fenêtre), R_C_Ha_RGB_rapide glissé sur RGB (ou E15 à E17), puis GHS_1_premier sur L.
 > 
 > SI :
 > - une étape échoue -> lance les icônes R_ une par une pour voir laquelle
@@ -518,24 +518,46 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
       script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
       paramètres : `etapes=BXT_L_H>L,H ; NXT_L>L ; SXT_L_lineaire>L`, `dialogue=false`
 
-> MODE RAPIDE, à la place de E10 à E13 : après R_Gradient_auto_rapide, GLISSE sur RGB (L et H ouvertes, Conteneurs-LHaRGB chargé) ; ensuite E14_Continuum_auto, E15_CombineHaWithRGB, E16_C_RGB_bruit et E17_Fermer_continuum.
+> MODE RAPIDE, à la place de E10 à E13 : après R_Gradient_auto_rapide, GLISSE sur RGB (L et H ouvertes, Conteneurs-LHaRGB chargé) ; ensuite E14_Continuum_auto, R_C_Ha_RGB_rapide (ou E15 à E17).
 > 
 > LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
 > 
 > PRÉRÉGLÉ : conteneur : BXT Correct Only, SPCC, BXT sur RGB ; Lineaire_auto : BXT_L_H sur L et H, NXT_L et SXT_L_lineaire sur L (= E10 à E13).
 > 
-> À RÉGLER : après R_Gradient_auto_rapide : glisse sur le RGB linéaire (L et H ouvertes ; Conteneurs-LHaRGB chargé pour BXT_L_H, NXT_L, SXT_L_lineaire) ; ensuite E14_Continuum_auto (fenêtre), E15_CombineHaWithRGB et E16_C_RGB_bruit glissés sur RGB, E17_Fermer_continuum, puis GHS_1_premier sur L.
+> À RÉGLER : après R_Gradient_auto_rapide : glisse sur le RGB linéaire (L et H ouvertes ; Conteneurs-LHaRGB chargé pour BXT_L_H, NXT_L, SXT_L_lineaire) ; ensuite E14_Continuum_auto (fenêtre), R_C_Ha_RGB_rapide glissé sur RGB (ou E15 à E17), puis GHS_1_premier sur L.
 > 
 > SI :
 > - une étape échoue -> la console dit laquelle
 
 #### R_Main_continuum — NoOperation
 
-> MODE RAPIDE, repère sans effet, après R_C_P3_rapide : la suite du continuum se fait À LA MAIN au chemin principal (E14 à E17).
+> MODE RAPIDE, repère sans effet, après R_C_P3_rapide : E14_Continuum_auto se fait À LA MAIN (fenêtre), puis R_C_Ha_RGB_rapide.
 > 
-> PRÉRÉGLÉ : repère NoOperation, sans effet : la suite du continuum n'a pas de rapide, elle se fait À LA MAIN.
+> PRÉRÉGLÉ : repère NoOperation, sans effet : Continuum_auto n'a pas de rapide (fenêtre obligatoire).
 > 
-> À RÉGLER : après R_C_P3_rapide : E14_Continuum_auto (fenêtre), E15_CombineHaWithRGB et E16_C_RGB_bruit glissés sur RGB, E17_Fermer_continuum (double-clic puis Apply Global), puis GHS_1_premier sur L ; rien à lancer sur cette icône.
+> À RÉGLER : après R_C_P3_rapide : E14_Continuum_auto par sa fenêtre (crée HaNB), puis R_C_Ha_RGB_rapide glissé sur RGB (ou E15 à E17), puis GHS_1_premier sur L ; rien à lancer sur cette icône.
+
+#### R_C_Ha_RGB_rapide — ProcessContainer
+   1. Script
+      script `$PXI_SRCDIR/scripts/Toolbox/CombineHaToRGB.js`
+      paramètres : `alphaView=HaNB`, `amount=2`, `beta=0.2`, `linear=true`, `rgbLinked=true`, `bg=0.05`, `invertMask=true`, `sigma=0`
+   2. NoiseXTerminator
+      ml_version=0 ; denoise=0.80 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
+   3. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
+      paramètres : `views=H, HaNB`, `dialogue=false`
+
+> MODE RAPIDE, à la place de E15 à E17 : après E14_Continuum_auto (HaNB créée), GLISSE sur le RGB linéaire ; CombineHaWithRGB, NXT 0,80, puis H et HaNB fermées.
+> 
+> LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
+> 
+> PRÉRÉGLÉ : conteneur : CombineHaWithRGB (HaNB, Amount 2, Beta 0,2, Background 0,05), NXT 0,80 (= C_RGB_bruit), Fermer_continuum (ferme H et HaNB) = E15 à E17.
+> 
+> À RÉGLER : après E14_Continuum_auto (HaNB ouverte) : glisse sur le RGB linéaire ; ensuite GHS_1_premier sur L.
+> 
+> SI :
+> - « already being processed » sur CombineHaToRGB -> mets à jour la Toolbox, ou E15 à E17 un par un
+> - H_dans_L voulu -> fais-le AVANT (H et HaNB sont fermées à la fin)
 
 ## P4_Etirement
 
