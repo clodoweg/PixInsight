@@ -1413,7 +1413,8 @@ for _st in (lrgb, lhargb, rgbsho, sho, hoo):
     insert_before(_st, 'Etoiles_screen', [(script('Look_Lightroom', ''), '')])
 
 # options supprimées des galaxies (demande de l'utilisateur, 18 octobre 2026) : restent en narrowband
-SUPPR_GALAXIES_2 = {'Look_Lightroom', 'Fond_auto_clair', 'Etoiles_grosses', 'Halo_B_Gon', 'MT_etoiles'}
+SUPPR_GALAXIES_2 = {'Look_Lightroom', 'Fond_auto_clair', 'Etoiles_grosses', 'Halo_B_Gon', 'MT_etoiles',
+                    'WBPP', 'CC_auto', 'Binning_x2', 'Agrandir_x2'}   # WBPP, CC_auto, Binning_x2, Agrandir_x2 : demande de l'utilisateur, 18 octobre 2026
 for _st in (lrgb, lhargb):
     _st[:] = [x for x in _st if x[0][0] not in SUPPR_GALAXIES_2]
 

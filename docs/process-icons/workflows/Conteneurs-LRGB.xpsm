@@ -363,49 +363,6 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </table>
       <parameter id="information"></parameter>
    </instance>
-   <instance class="Script" version="256" id="Opt_WBPP_instance">
-      <description>OPTION — seulement si tu repars des brutes (masters pas encore empilés).&#10;&#10;LANCEMENT : double-clic sur l'icône, puis Apply Global.&#10;&#10;PRÉRÉGLÉ : rien (WBPP garde ses propres réglages).&#10;&#10;À RÉGLER : Maximum quality ; CosmeticCorrection = icône CC_auto ; PSF Signal Weight ; Local normalization activée ; Rejection Auto ; Large-scale rejection High ; pas de drizzle (sauf FWHM &lt; 2 px).&#10;&#10;SI :&#10;- un groupe de lights sans dark ou flat (onglet Calibration) -&gt; corrige avant Run&#10;- plusieurs nuits -&gt; Grouping keywords = SESSION</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/BatchPreprocessing/BPP-Main.js</parameter>
-      <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="0"/>
-      <parameter id="information"></parameter>
-   </instance>
-   <instance class="CosmeticCorrection" version="256" id="Opt_CC_auto_instance">
-      <description>OPTION — avec WBPP, si tu repars des brutes.&#10;&#10;PRÉRÉGLÉ : Auto detect, Hot sigma 2,5, Cold désactivé.&#10;&#10;À RÉGLER : rien ; choisis cette icône comme modèle Cosmetic correction dans WBPP ; coche CFA seulement en caméra couleur.&#10;&#10;SI :&#10;- petites étoiles modifiées -&gt; Hot sigma 3,0&#10;- S, H, O en poses longues -&gt; 2,2</description>
-      <table id="targetFrames" rows="0"/>
-      <parameter id="masterDarkPath"></parameter>
-      <parameter id="outputDir"></parameter>
-      <parameter id="outputExtension">.xisf</parameter>
-      <parameter id="prefix"></parameter>
-      <parameter id="postfix">_cc</parameter>
-      <parameter id="overwrite" value="false"/>
-      <parameter id="amount" value="1.00"/>
-      <parameter id="cfa" value="false"/>
-      <parameter id="useMasterDark" value="false"/>
-      <parameter id="hotDarkCheck" value="false"/>
-      <parameter id="hotDarkLevel" value="1.0000000"/>
-      <parameter id="coldDarkCheck" value="false"/>
-      <parameter id="coldDarkLevel" value="0.0000000"/>
-      <parameter id="useAutoDetect" value="true"/>
-      <parameter id="hotAutoCheck" value="true"/>
-      <parameter id="hotAutoValue" value="2.5"/>
-      <parameter id="coldAutoCheck" value="false"/>
-      <parameter id="coldAutoValue" value="3.0"/>
-      <parameter id="useDefectList" value="false"/>
-      <table id="defects" rows="0"/>
-   </instance>
-   <instance class="Script" version="256" id="Opt_Binning_x2_instance">
-      <description>OPTION — traitement 4 fois plus rapide et moins de bruit (0,528″/px au lieu de 0,264″/px, l'image du CDK17 est suréchantillonnée) : double-clic puis Apply Global juste après Solver_auto, toutes les images divisées par 2&#10;Pour un grand tirage, Agrandir_x2 avant l'export.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Binning_x2 : IntegerResample −2, moyenne (binning 2×2 logiciel) sur TOUTES les images ouvertes (sauf *_stars) ; solution astrométrique gardée ; mots-clés XPIXSZ et XBINNING mis à jour.&#10;&#10;À RÉGLER : double-clic puis Apply Global, juste APRÈS Solver_auto (phase 1) ; copie Binning_x2.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- grand tirage voulu -&gt; Agrandir_x2 (P7 options) avant Export_TIFF, ou ne bine pas&#10;- binning 3×3 -&gt; facteur 3&#10;- ImageSolver refait ensuite et en échec -&gt; metadata_xpixsz = 7.52 dans l'icône ImageSolver</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Binning_x2.js</parameter>
-      <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="1">
-         <tr>
-            <td id="id">facteur</td>
-            <td id="value">2</td>
-         </tr>
-      </table>
-      <parameter id="information"></parameter>
-   </instance>
    <instance class="NoOperation" version="256" id="P1_rapide_instance">
       <description>MODE RAPIDE, phase 1 — Préparation : MODE RAPIDE (galaxies) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre (étoiles gardées jusqu'à LRGB) : R_C_Preparation_rapide ; R_Gradient_auto_rapide ; R_Lineaire_rapide (RGB et L) ; GHS_1_premier, GHS_2_contraste, GHS_3_fond sur L ; R_C_RGB_etire_rapide sur RGB ; R_C_LRGB_rapide (LRGB sans étoiles) ; finition. Phase 1 : R_C_Preparation_rapide (double-clic puis Apply Global) à la place de LinearPatternSubtraction, Renommer_auto, Combinaison_RGB et Solver_auto. Icône de repère, sans effet.</description>
    </instance>
@@ -5449,17 +5406,6 @@ max($T,f1)</parameter>
          <parameter id="information"></parameter>
       </instance>
    </instance>
-   <instance class="Resample" version="256" id="Opt_Agrandir_x2_instance">
-      <description>OPTION — après Binning_x2, pour un grand tirage : image agrandie 2 fois (Lanczos 3) juste avant Export_TIFF&#10;Ne recrée pas le détail perdu.&#10;&#10;PRÉRÉGLÉ : Resample : × 2 en largeur et hauteur, Lanczos 3, seuil d'écrêtage 0,30.&#10;&#10;À RÉGLER : glisse sur l'image finie, juste avant ICC_sRGB et Export_TIFF ; seulement après Binning_x2, pour un grand tirage.&#10;&#10;SI :&#10;- anneaux noirs autour des étoiles -&gt; interpolation Auto ou Bicubic spline</description>
-      <parameter id="xSize" value="2.000000"/>
-      <parameter id="ySize" value="2.000000"/>
-      <parameter id="mode" value="RelativeDimensions"/>
-      <parameter id="absoluteMode" value="ForceWidthAndHeight"/>
-      <parameter id="interpolation" value="Lanczos3"/>
-      <parameter id="clampingThreshold" value="0.30"/>
-      <parameter id="smoothness" value="1.50"/>
-      <parameter id="noGUIMessages" value="true"/>
-   </instance>
    <instance class="ICCProfileTransformation" version="256" id="Opt_ICC_sRGB_instance">
       <description>OPTION — tout à la fin, avant une finition dans Photoshop, Lightroom ou Affinity : image convertie en sRGB IEC61966-2.1 (couleurs identiques dans l'autre logiciel).&#10;&#10;PRÉRÉGLÉ : ICCProfileTransformation : vers sRGB IEC61966-2.1, Convert to the specified profile, rendu Perceptual, compensation du point noir.&#10;&#10;À RÉGLER : glisse sur l'image finie avant l'export (Export_TIFF le fait aussi sur sa copie : cette icône sert si tu enregistres toi-même).&#10;&#10;SI :&#10;- impression ou Adobe RGB voulu -&gt; change le profil cible dans l'icône</description>
       <parameter id="targetProfile">sRGB IEC61966-2.1</parameter>
@@ -5642,13 +5588,10 @@ max($T,f1)</parameter>
    <icon id="P1_options" instance="P1_options_instance" xpos="30" ypos="200" workspace="Workspace01"/>
    <icon id="Opt_Crop_reference" instance="Opt_Crop_reference_instance" xpos="30" ypos="234" workspace="Workspace01"/>
    <icon id="Opt_Crop_appliquer" instance="Opt_Crop_appliquer_instance" xpos="30" ypos="264" workspace="Workspace01"/>
-   <icon id="Opt_WBPP" instance="Opt_WBPP_instance" xpos="30" ypos="294" workspace="Workspace01"/>
-   <icon id="Opt_CC_auto" instance="Opt_CC_auto_instance" xpos="30" ypos="324" workspace="Workspace01"/>
-   <icon id="Opt_Binning_x2" instance="Opt_Binning_x2_instance" xpos="30" ypos="354" workspace="Workspace01"/>
-   <icon id="P1_rapide" instance="P1_rapide_instance" xpos="30" ypos="400" workspace="Workspace01"/>
-   <icon id="R_C_Preparation_rapide" instance="R_C_Preparation_rapide_instance" xpos="30" ypos="434" workspace="Workspace01"/>
-   <icon id="P1_turbo" instance="P1_turbo_instance" xpos="30" ypos="480" workspace="Workspace01"/>
-   <icon id="T_Turbo_debut" instance="T_Turbo_debut_instance" xpos="30" ypos="514" workspace="Workspace01"/>
+   <icon id="P1_rapide" instance="P1_rapide_instance" xpos="30" ypos="310" workspace="Workspace01"/>
+   <icon id="R_C_Preparation_rapide" instance="R_C_Preparation_rapide_instance" xpos="30" ypos="344" workspace="Workspace01"/>
+   <icon id="P1_turbo" instance="P1_turbo_instance" xpos="30" ypos="390" workspace="Workspace01"/>
+   <icon id="T_Turbo_debut" instance="T_Turbo_debut_instance" xpos="30" ypos="424" workspace="Workspace01"/>
    <icon id="P2_Gradient" instance="P2_Gradient_instance" xpos="243" ypos="20" workspace="Workspace01"/>
    <icon id="E04_ImageSolver" instance="E04_ImageSolver_instance" xpos="243" ypos="64" workspace="Workspace01"/>
    <icon id="E05_SPFC_RGB_filtres" instance="E05_SPFC_RGB_filtres_instance" xpos="243" ypos="94" workspace="Workspace01"/>
@@ -5716,10 +5659,9 @@ max($T,f1)</parameter>
    <icon id="Opt_Etoiles_reduites" instance="Opt_Etoiles_reduites_instance" xpos="1159" ypos="234" workspace="Workspace01"/>
    <icon id="Opt_Boost_final_doux" instance="Opt_Boost_final_doux_instance" xpos="1159" ypos="264" workspace="Workspace01"/>
    <icon id="Opt_Boost_final" instance="Opt_Boost_final_instance" xpos="1159" ypos="294" workspace="Workspace01"/>
-   <icon id="Opt_Agrandir_x2" instance="Opt_Agrandir_x2_instance" xpos="1159" ypos="324" workspace="Workspace01"/>
-   <icon id="Opt_ICC_sRGB" instance="Opt_ICC_sRGB_instance" xpos="1159" ypos="354" workspace="Workspace01"/>
-   <icon id="Opt_Export_TIFF" instance="Opt_Export_TIFF_instance" xpos="1159" ypos="384" workspace="Workspace01"/>
-   <icon id="Opt_Fermer_tout" instance="Opt_Fermer_tout_instance" xpos="1159" ypos="414" workspace="Workspace01"/>
-   <icon id="P7_rapide" instance="P7_rapide_instance" xpos="1159" ypos="460" workspace="Workspace01"/>
-   <icon id="R_C_Etoiles_fond_rapide" instance="R_C_Etoiles_fond_rapide_instance" xpos="1159" ypos="494" workspace="Workspace01"/>
+   <icon id="Opt_ICC_sRGB" instance="Opt_ICC_sRGB_instance" xpos="1159" ypos="324" workspace="Workspace01"/>
+   <icon id="Opt_Export_TIFF" instance="Opt_Export_TIFF_instance" xpos="1159" ypos="354" workspace="Workspace01"/>
+   <icon id="Opt_Fermer_tout" instance="Opt_Fermer_tout_instance" xpos="1159" ypos="384" workspace="Workspace01"/>
+   <icon id="P7_rapide" instance="P7_rapide_instance" xpos="1159" ypos="430" workspace="Workspace01"/>
+   <icon id="R_C_Etoiles_fond_rapide" instance="R_C_Etoiles_fond_rapide_instance" xpos="1159" ypos="464" workspace="Workspace01"/>
 </xpsm>

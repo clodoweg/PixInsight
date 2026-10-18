@@ -101,52 +101,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - cadre à refaire -> Ctrl+Z sur Crop_ref, nouveau cadre, coche verte, puis relance
 > - une image n'est pas recadrée -> taille différente, la console la nomme
 
-#### Opt_WBPP — Script
-   script `$PXI_SRCDIR/scripts/BatchPreprocessing/BPP-Main.js`
-
-> OPTION — seulement si tu repars des brutes (masters pas encore empilés).
-> 
-> LANCEMENT : double-clic sur l'icône, puis Apply Global.
-> 
-> PRÉRÉGLÉ : rien (WBPP garde ses propres réglages).
-> 
-> À RÉGLER : Maximum quality ; CosmeticCorrection = icône CC_auto ; PSF Signal Weight ; Local normalization activée ; Rejection Auto ; Large-scale rejection High ; pas de drizzle (sauf FWHM < 2 px).
-> 
-> SI :
-> - un groupe de lights sans dark ou flat (onglet Calibration) -> corrige avant Run
-> - plusieurs nuits -> Grouping keywords = SESSION
-
-#### Opt_CC_auto — CosmeticCorrection
-   masterDarkPath= ; outputDir= ; outputExtension=.xisf ; prefix= ; postfix=_cc ; overwrite=false ; amount=1.00 ; cfa=false ; useMasterDark=false ; hotDarkCheck=false ; hotDarkLevel=1.0000000 ; coldDarkCheck=false ; coldDarkLevel=0.0000000 ; useAutoDetect=true ; hotAutoCheck=true ; hotAutoValue=2.5 ; coldAutoCheck=false ; coldAutoValue=3.0 ; useDefectList=false
-
-> OPTION — avec WBPP, si tu repars des brutes.
-> 
-> PRÉRÉGLÉ : Auto detect, Hot sigma 2,5, Cold désactivé.
-> 
-> À RÉGLER : rien ; choisis cette icône comme modèle Cosmetic correction dans WBPP ; coche CFA seulement en caméra couleur.
-> 
-> SI :
-> - petites étoiles modifiées -> Hot sigma 3,0
-> - S, H, O en poses longues -> 2,2
-
-#### Opt_Binning_x2 — Script
-   script `$PXI_SRCDIR/scripts/clodoweg/Binning_x2.js`
-   paramètres : `facteur=2`
-
-> OPTION — traitement 4 fois plus rapide et moins de bruit (0,528″/px au lieu de 0,264″/px, l'image du CDK17 est suréchantillonnée) : double-clic puis Apply Global juste après Solver_auto, toutes les images divisées par 2
-> Pour un grand tirage, Agrandir_x2 avant l'export.
-> 
-> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
-> 
-> PRÉRÉGLÉ : script Binning_x2 : IntegerResample −2, moyenne (binning 2×2 logiciel) sur TOUTES les images ouvertes (sauf *_stars) ; solution astrométrique gardée ; mots-clés XPIXSZ et XBINNING mis à jour.
-> 
-> À RÉGLER : double-clic puis Apply Global, juste APRÈS Solver_auto (phase 1) ; copie Binning_x2.js dans src/scripts/clodoweg.
-> 
-> SI :
-> - grand tirage voulu -> Agrandir_x2 (P7 options) avant Export_TIFF, ou ne bine pas
-> - binning 3×3 -> facteur 3
-> - ImageSolver refait ensuite et en échec -> metadata_xpixsz = 7.52 dans l'icône ImageSolver
-
 ### P1_rapide
 
 #### R_C_Preparation_rapide — ProcessContainer
@@ -1145,19 +1099,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - masque encore trop large -> gamma 3 dans Masque_L_source
 > - trop fort -> rapproche les points de la diagonale
 > - étoiles touchées -> vérifie que L est bien la version sans étoiles
-
-#### Opt_Agrandir_x2 — Resample
-   xSize=2.000000 ; ySize=2.000000 ; mode=RelativeDimensions ; absoluteMode=ForceWidthAndHeight ; interpolation=Lanczos3 ; clampingThreshold=0.30 ; smoothness=1.50 ; noGUIMessages=true
-
-> OPTION — après Binning_x2, pour un grand tirage : image agrandie 2 fois (Lanczos 3) juste avant Export_TIFF
-> Ne recrée pas le détail perdu.
-> 
-> PRÉRÉGLÉ : Resample : × 2 en largeur et hauteur, Lanczos 3, seuil d'écrêtage 0,30.
-> 
-> À RÉGLER : glisse sur l'image finie, juste avant ICC_sRGB et Export_TIFF ; seulement après Binning_x2, pour un grand tirage.
-> 
-> SI :
-> - anneaux noirs autour des étoiles -> interpolation Auto ou Bicubic spline
 
 #### Opt_ICC_sRGB — ICCProfileTransformation
    targetProfile=sRGB IEC61966-2.1 ; toDefaultProfile=false ; renderingIntent=Perceptual ; useBlackPointCompensation=true ; useFloatingPointTransformation=true

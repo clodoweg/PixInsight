@@ -1122,3 +1122,8 @@ Fait : Renommer_auto.js : filtre V (vert) -> G, dans FILTER, le nom du fichier e
 
 Demande : « supprime: Opt_Look_Lightroom Opt_Fond_auto_clair Opt_Etoiles_grosses Opt_Halo_B_Gon Opt_MT_etoiles »
 Fait : retirées des workflows galaxies (SUPPR_GALAXIES_2, appliqué juste avant l'écriture des xpsm) ; aide de R_C_Etoiles_fond_rapide corrigée (image trop sombre -> Fond_auto à 0,14). Narrowband non touché : elles y restent en option.
+
+### LRGB et LHaRGB : WBPP, CC_auto, Binning_x2, Agrandir_x2 supprimés (18 octobre 2026)
+
+Demande : « supprime Opt_WBPP Opt_CC_auto Opt_Binning_x2 Opt_Agrandir_x2 »
+Fait : ajoutés à SUPPR_GALAXIES_2 (LRGB et LHaRGB). Narrowband non touché.
