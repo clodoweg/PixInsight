@@ -404,13 +404,18 @@ def hdrmt_items(a):
             M.instance('HDRMultiscaleTransform', 'HDRMT', {'numberOfLayers': 6, 'numberOfIterations': 1, 'toLightness': True, 'preserveHue': True, 'lightnessMask': True}),
             pm('HDR_melange', 'a = %s;\na*$T + (1 - a)*HDR_avant' % a, symbols='a'), fermer('Fermer_HDR_avant', 'HDR_avant'))
 
+_MEL = 'masque_L*$T + (1 - masque_L)*Masque_avant'
+
 def sous_masque(inner, masque='Masque_L_creer'):
     """Étapes natives « sous masque » dans un conteneur (demande de l'utilisateur, 8 octobre 2026 : C_Finition d'un coup différent de un par un).
     Doc PixInsight (Masking Facts) : un process d'un ProcessContainer garde SON lien de masque ; le masque attaché par un script pendant le
     conteneur n'est donc pas utilisé (Courbes et LHE appliqués au fond). Ici : masque_L créé sans être attaché, copie de l'image, étapes sur
-    l'image entière, puis mélange masque_L × résultat + (1 − masque_L) × copie par le script Masque_auto (mode melanger : image cachée puis recopie), copie fermée, masque_L fermé."""
+    l'image entière, puis mélange PixelMath masque_L × résultat + (1 − masque_L) × copie (une expression par canal), copie fermée, masque_L fermé."""
     return ([script(masque, ''), pm('Masque_copie', '$T', new_image=True, new_id='Masque_avant')] + list(inner)
-            + [script('Masque_melanger', ''), script('Masque_retirer', '')])
+            # mélange PixelMath NATIF (un script ne peut pas écrire de façon fiable dans la vue d'un conteneur glissé : recopie
+            # directe puis « Reading swap files … failed », retour de l'utilisateur, 18 octobre 2026), avec UNE EXPRESSION PAR CANAL
+            # (l'expression unique « combined RGB/K » avec masque_L gris donnait « Unknown error » ; par canal, elle passe)
+            + [pm('Masque_melange', _MEL, _MEL, _MEL), fermer('Fermer_Masque_avant', 'Masque_avant'), script('Masque_retirer', '')])
 
 def _cont(name, items):
     return name, container(name, [x.replace('id="%s_instance"' % n, 'id="__ID___instance"', 1) for n, x in items])
@@ -516,7 +521,7 @@ def write(filename, prefix, title, steps):
                     # Courbes, LHE, LHE_fin mélangés par masque_L créé sans être attaché (sous_masque, demande de l'utilisateur, 8 octobre 2026)
                     xs = [flat(i) for i in sous_masque([])]
                     xs = xs[:2] + [byb[m] for m in members[1:-1]] + xs[2:]
-                    noms = ['Masque_L_creer', 'Masque_copie'] + members[1:-1] + ['Masque_melanger', 'Masque_retirer']
+                    noms = ['Masque_L_creer', 'Masque_copie'] + members[1:-1] + ['Masque_melange', 'Fermer_Masque_avant', 'Masque_retirer']
                 cx = container('__ID__', xs)
                 cd = SD.LAUNCH['cont'] + "\n\nCONTENEUR : " + ", ".join(noms) + ".\n\nSUR : " + target + ".\n\nDouble-clic sur le conteneur pour voir ou changer les réglages de chaque étape."
                 cx = cx.replace('<instance class="ProcessContainer" id="__ID___instance">', '<instance class="ProcessContainer" id="__ID___instance">\n      <description>%s</description>' % escape(cd).replace('\n', '&#10;'), 1)

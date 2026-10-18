@@ -1157,3 +1157,8 @@ Non vérifié : test dans PixInsight.
 
 Demande : console de l'utilisateur, Opt_Boost_final : mode melanger, « masque_L*$T + (1 - masque_L)*Masque_avant … combined RGB/K channels … *** Error: Unknown error … image de travail ma_melange non créée ».
 Fait : mélange avec une expression par canal (useSingleExpression = false) au lieu de l'expression unique ; si échec, second essai avec une copie RGB du masque ; sinon erreur claire sans modifier l'image. Hypothèse (expression unique + référence grise dans un conteneur) tirée des cas qui marchent et qui échouent ; non vérifiée.
+
+### Conteneurs sous masque : PixelMath natif par canal (18 octobre 2026)
+
+Demande : console de l'utilisateur, Opt_Finition_saturee : mélange par canal du script réussi, « Recopie directe dans RGB (vue déjà en cours de traitement) », puis « Reading swap files … <* failed *> ».
+Fait : conteneurs sous_masque (tous les workflows) : retour au PixelMath natif Masque_melange, une expression par canal (useSingleExpression = false), puis Fermer_Masque_avant et Masque_retirer. Règle ajoutée dans CLAUDE.md et kb/generateur.md. Non vérifié dans PixInsight.
