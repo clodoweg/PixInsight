@@ -73,10 +73,15 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="information"></parameter>
    </instance>
    <instance class="Script" version="256" id="E01_Renommer_auto_instance">
-      <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Renommer_auto : renomme les masters mono ouverts L, R, G, B, H, O, S d'après le mot-clé FILTER (Lum, Red, Ha, OIII...), sinon d'après le nom du fichier ; retient aussi le dossier des masters pour Export_TIFF.&#10;&#10;À RÉGLER : une seule fois par ordinateur : copie Renommer_auto.js et clodoweg_objet.jsh dans src/scripts/clodoweg ; ouvre tes masters, puis lance l'icône.&#10;&#10;SI :&#10;- filtre inconnu ou nom déjà pris -&gt; message dans la console, renomme cette vue à la main</description>
+      <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Renommer_auto : renomme les masters mono ouverts L, R, G, B, H, O, S d'après le mot-clé FILTER (Lum, Red, Ha, OIII...), sinon d'après le nom du fichier ; ferme d'abord, sans demander, les vues dont le nom finit par autocrop_c (fermerAutocrop = true) ; retient aussi le dossier des masters pour Export_TIFF.&#10;&#10;À RÉGLER : une seule fois par ordinateur : copie Renommer_auto.js et clodoweg_objet.jsh dans src/scripts/clodoweg ; ouvre tes masters, puis lance l'icône.&#10;&#10;SI :&#10;- filtre inconnu ou nom déjà pris -&gt; message dans la console, renomme cette vue à la main&#10;- vue autocrop_c à garder -&gt; décoche la case dans la fenêtre (ou fermerAutocrop = false)</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Renommer_auto.js</parameter>
       <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="0"/>
+      <table id="parameters" rows="1">
+         <tr>
+            <td id="id">fermerAutocrop</td>
+            <td id="value">true</td>
+         </tr>
+      </table>
       <parameter id="information"></parameter>
    </instance>
    <instance class="Script" version="256" id="E02_Combinaison_RGB_instance">
@@ -397,7 +402,11 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Renommer_auto.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="1">
+         <table id="parameters" rows="2">
+            <tr>
+               <td id="id">fermerAutocrop</td>
+               <td id="value">true</td>
+            </tr>
             <tr>
                <td id="id">dialogue</td>
                <td id="value">false</td>
@@ -731,7 +740,11 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Renommer_auto.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="1">
+         <table id="parameters" rows="2">
+            <tr>
+               <td id="id">fermerAutocrop</td>
+               <td id="value">true</td>
+            </tr>
             <tr>
                <td id="id">dialogue</td>
                <td id="value">false</td>

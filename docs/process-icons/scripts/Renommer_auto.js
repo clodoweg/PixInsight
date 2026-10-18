@@ -7,6 +7,8 @@
 // FILTER, il cherche le filtre dans le nom du fichier (FILTER-L, _Ha_...).
 // Les images couleur et les vues déjà bien nommées ne sont pas touchées ;
 // si deux images ont le même filtre, seule la première est renommée.
+// Ferme d'abord, sans demander, les vues dont le nom finit par autocrop_c
+// (paramètre fermerAutocrop, coché par défaut ; demande de l'utilisateur).
 // Retient aussi le dossier de l'objet (dossier des masters, clodoweg_objet.jsh)
 // pour Export_TIFF, utile quand les masters sont fermés avant l'export.
 //
@@ -88,10 +90,22 @@ function fromFileName( window )
    return "";
 }
 
-// Renommages prévus : [{ view, old, id, source, note }] (note non vide = pas renommée).
-function renProposals()
+// Vues à fermer : nom finissant par autocrop_c (demande de l'utilisateur)
+function renIsAutocrop( id )
 {
-   let windows = ImageWindow.windows;
+   return /autocrop_c$/i.test( id );
+}
+
+function renAutocropWindows()
+{
+   return ImageWindow.windows.filter( function( w ) { return renIsAutocrop( w.mainView.id ); } );
+}
+
+// Renommages prévus : [{ view, old, id, source, note }] (note non vide = pas renommée).
+// fermer : les vues autocrop_c (fermées avant) sont ignorées.
+function renProposals( fermer )
+{
+   let windows = ImageWindow.windows.filter( function( w ) { return !( fermer && renIsAutocrop( w.mainView.id ) ); } );
    let used = {};
    for ( let k = 0; k < windows.length; ++k )
       used[ windows[ k ].mainView.id ] = true;
@@ -131,9 +145,24 @@ function renProposals()
    return list;
 }
 
-function renApply( list )
+function renApply( list, fermer )
 {
    console.show();
+   if ( fermer )
+   {
+      let target = Parameters.isViewTarget ? Parameters.targetView.id : "";
+      let wins = renAutocropWindows(), closed = [];
+      for ( let k = 0; k < wins.length; ++k )
+      {
+         let id = wins[ k ].mainView.id;
+         if ( id == target )
+            continue;   // la vue glissée ne peut pas être fermée
+         wins[ k ].forceClose();
+         closed.push( id );
+      }
+      if ( closed.length > 0 )
+         console.noteln( REN_TITLE + " : " + closed.length + " vue(s) autocrop_c fermée(s) : " + closed.join( ", " ) + "." );
+   }
    let done = 0, skipped = 0;
    for ( let k = 0; k < list.length; ++k )
    {
@@ -159,7 +188,7 @@ function renApply( list )
       console.noteln( REN_TITLE + " : dossier de l'objet retenu pour Export_TIFF : " + dir );
 }
 
-function renDialog( list )
+function renDialog( list, p )
 {
    let d = new CWDialog( REN_TITLE, "<b>Renommer les masters</b> mono ouverts en L, R, G, B, H, O, S, d'après le mot-clé FILTER (sinon le nom du fichier). " +
                          "Voici ce qui sera fait :", "Image :" );
@@ -173,20 +202,25 @@ function renDialog( list )
    }
    let dir = cwObjectDirFromWindows();
    d.info( html + "</table><p>Dossier de l'objet retenu pour Export_TIFF : <b>" + (dir.length > 0 ? dir : "aucun (images sans fichier)") + "</b></p>" );
+   let ac = renAutocropWindows().map( function( w ) { return w.mainView.id; } );
+   d.check( "Fermer les vues *autocrop_c" + (ac.length > 0 ? " (" + ac.join( ", " ) + ")" : " (aucune ouverte)"), p.fermer,
+            "Ferme sans demander, avant le renommage, les vues dont le nom finit par autocrop_c.", function( c ) { p.fermer = c; } );
+   d.onExport = function() { Parameters.set( "fermerAutocrop", p.fermer ? "true" : "false" ); };
    d.finish( "Renommer" );
    return d.execute();
 }
 
 function renommerAuto()
 {
-   let list = renProposals();
+   let p = { fermer: cwBool( "fermerAutocrop", true ) };
    if ( cwWantsDialog() )
    {
-      if ( renDialog( list ) )
-         cwRun( REN_TITLE, function() { renApply( list ); } );
+      let list = renProposals( true );   // vues autocrop_c hors liste (case cochée par défaut)
+      if ( renDialog( list, p ) )
+         cwRun( REN_TITLE, function() { renApply( p.fermer ? list : renProposals( false ), p.fermer ); } );
       return;
    }
-   renApply( list );
+   renApply( renProposals( p.fermer ), p.fermer );
 }
 
 renommerAuto();

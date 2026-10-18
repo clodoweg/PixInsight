@@ -1107,3 +1107,8 @@ Non vérifié : chargement de l'icône dans PixInsight 1.9.5 (à confirmer par l
 
 Demande : « supprime Opt_Sharp_USM Opt_EZ_Soft_Stretch »
 Fait : retirés des workflows galaxies (SUPPR_GALAXIES), textes qui les citaient corrigés (Star_Stretch, C_Sharp_MMT). Narrowband (SHO, RGB + SHO, HOO) non touché : ils y restent en option.
+
+### Renommer_auto : fermeture des vues *autocrop_c (18 octobre 2026)
+
+Demande : « dans le Renommer Auto (pour tous les process icones), referme automatiquement les vue dont l'identifier finit par "autocrop_c" »
+Fait : Renommer_auto.js ferme d'abord, sans demander, les vues dont le nom finit par autocrop_c (paramètre fermerAutocrop, true par défaut ; case dans la fenêtre ; la vue glissée n'est jamais fermée ; ces vues ne sont plus proposées au renommage). Icône Renommer_auto (et conteneurs qui la reprennent : R_C_Preparation_rapide, T_Turbo_debut) avec fermerAutocrop = true dans les 5 workflows (LRGB compris, demandé par l'utilisateur).
