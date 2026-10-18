@@ -1,5 +1,5 @@
 @echo off
-rem Copie tous les .tiff de Fits\<annee>\<cible>\ vers Works\Astro\<annee>\ (en ecrasant), puis affiche un recap.
+rem Copie tous les .tiff de Fits\<annee>\<cible>\ vers Works\Astro\<annee>\ (seulement si la source est plus recente : les .tiff inchanges ne sont pas recopies), puis affiche un recap.
 chcp 65001 >nul
 setlocal
 
@@ -9,6 +9,7 @@ set "LOG=%TEMP%\copie_tiff_recap.txt"
 
 set /a NOUVEAUX=0
 set /a REMPLACES=0
+set /a INCHANGES=0
 set /a ERREURS=0
 if exist "%LOG%" del "%LOG%"
 
@@ -25,10 +26,11 @@ rem Chaque sous-dossier de Fits (annee) ; les .tiff sont cherches dans tous ses 
 for /d %%Y in ("%SRC%\*") do call :annee "%%Y"
 
 echo ============ RECAP ============
-if exist "%LOG%" (type "%LOG%") else (echo Aucun fichier .tiff trouve.)
+if exist "%LOG%" (type "%LOG%") else (echo Aucun fichier copié : tout est à jour.)
 echo -------------------------------
 echo Nouveaux : %NOUVEAUX%
 echo Remplacés : %REMPLACES%
+echo Inchangés (non recopiés) : %INCHANGES%
 echo Erreurs : %ERREURS%
 echo ===============================
 exit /b 0
@@ -44,10 +46,16 @@ if /i not "%~x1"==".tiff" exit /b 0
 if not exist "%DST%\%~2\" mkdir "%DST%\%~2"
 set "ETAT=nouveau"
 if exist "%DST%\%~2\%~nx1" set "ETAT=remplacé"
-copy /y "%~1" "%DST%\%~2\" >nul 2>&1
-if errorlevel 1 (
+rem robocopy /XO : source plus ancienne sautée ; même date et même taille : sautée aussi.
+rem Code retour : 0 = rien copié, 1 = copié, 8 ou plus = erreur.
+robocopy "%~dp1." "%DST%\%~2" "%~nx1" /XO /R:1 /W:1 /NJH /NJS /NFL /NDL /NP >nul 2>&1
+if errorlevel 8 (
   set /a ERREURS+=1
   echo [ERREUR]   %~2\%~nx1 >> "%LOG%"
+  exit /b 0
+)
+if not errorlevel 1 (
+  set /a INCHANGES+=1
   exit /b 0
 )
 if "%ETAT%"=="nouveau" (set /a NOUVEAUX+=1) else (set /a REMPLACES+=1)
