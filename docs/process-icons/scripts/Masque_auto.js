@@ -23,6 +23,10 @@
 //   de finition : un process natif d'un conteneur n'utilise pas le masque
 //   attaché pendant le conteneur ; le conteneur mélange lui-même par PixelMath
 //   masque_L*$T + (1-masque_L)*copie ; demande de l'utilisateur, 8 octobre 2026).
+// mode = melanger : nom*$T + (1-nom)*copie (copie = Masque_avant par défaut)
+//   calculé dans une image cachée puis recopié dans l'image en une fois, copie
+//   fermée (demande de l'utilisateur, 18 octobre 2026 : le PixelMath natif écrit
+//   directement dans l'image glissée donnait « Unknown error »).
 // mode = retirer : détache le masque de l'image et ferme masque_L.
 //
 // Sert dans les conteneurs de finition de la fiche (C_Finition, Boost,
@@ -44,7 +48,8 @@ function maParams()
 {
    return { mode: cwParam( "mode", "attacher" ).toLowerCase(), s: parseFloat( cwParam( "s", "0.14" ) ), gamma: parseFloat( cwParam( "gamma", "1" ) ),
             flou: parseFloat( cwParam( "flou", "2" ) ), nom: cwParam( "nom", "masque_L" ), source: cwParam( "source", "" ),
-            exclure: cwParam( "exclure", "" ), exclureGain: parseFloat( cwParam( "exclureGain", "4" ) ) };
+            exclure: cwParam( "exclure", "" ), exclureGain: parseFloat( cwParam( "exclureGain", "4" ) ),
+            copie: cwParam( "copie", "Masque_avant" ) };
 }
 
 function maExport( p )
@@ -57,6 +62,7 @@ function maExport( p )
    Parameters.set( "source", p.source );
    Parameters.set( "exclure", p.exclure );
    Parameters.set( "exclureGain", p.exclureGain.toFixed( 1 ) );
+   Parameters.set( "copie", p.copie );
 }
 
 function maDialog( p, view )
@@ -65,14 +71,18 @@ function maDialog( p, view )
                          "Fond (sous s) protégé ; contrôle à la sonde sur le masque : fond 0 à 0,05.", "Gain d'exclusion :" );
    let sel = { view: view };
    d.viewList( "Image :", view, "Image sans étoiles étirée (ou image finie pour le Boost_final).", function( v ) { sel.view = v; } );
-   d.combo( "Action :", [ "créer et attacher le masque", "retirer le masque", "créer le masque sans l'attacher" ], p.mode == "retirer" ? 1 : p.mode == "creer" ? 2 : 0,
-            "Sans l'attacher : pour un mélange par PixelMath (conteneurs de finition).", function( k ) { p.mode = k == 1 ? "retirer" : k == 2 ? "creer" : "attacher"; } );
+   const modes = [ "attacher", "retirer", "creer", "melanger" ];
+   d.combo( "Action :", [ "créer et attacher le masque", "retirer le masque", "créer le masque sans l'attacher", "mélanger : masque × image + (1 − masque) × copie" ],
+            Math.max( 0, modes.indexOf( p.mode ) ),
+            "Sans l'attacher : pour un mélange ensuite (conteneurs de finition). Mélanger : image = masque × image + (1 − masque) × copie, copie fermée.",
+            function( k ) { p.mode = modes[ k ]; } );
    d.edit( "Nom du masque :", p.nom, "Vue créée (masque_L par défaut).", function( t ) { p.nom = t.trim(); } );
    d.group( "Masque" );
    d.numeric( "Seuil s :", 0.00, 0.50, 2, p.s, "Tout ce qui est sous s passe à 0 (protégé). Règle : fond mesuré + 0,01.", function( v ) { p.s = v; } );
    d.numeric( "Gamma :", 0.5, 4, 1, p.gamma, "1 = linéaire ; 2 = masque fort seulement sur le très lumineux (Boost_final).", function( v ) { p.gamma = v; } );
    d.numeric( "Flou (px) :", 0, 10, 1, p.flou, "Lissage du masque.", function( v ) { p.flou = v; } );
    d.edit( "Source :", p.source, "Autre vue d'où tirer la luminance (L sans étoiles pour Boost_final) ; vide = l'image.", function( t ) { p.source = t.trim(); } );
+   d.edit( "Copie (mélanger) :", p.copie, "Mode mélanger : copie de l'image faite avant les retouches (Masque_avant).", function( t ) { p.copie = t.trim(); } );
    d.edit( "Étoiles à exclure :", p.exclure, "Image d'étoiles (RGB_stars) retirée du masque ; vide = rien.", function( t ) { p.exclure = t.trim(); } );
    d.numeric( "Gain d'exclusion :", 1, 10, 1, p.exclureGain, "Force du retrait des étoiles du masque (4 par défaut).", function( v ) { p.exclureGain = v; } );
    d.endGroup();
@@ -103,6 +113,25 @@ function maRun( view, p )
    let window = view.window;
    let name = p.nom;
    let mode = p.mode;
+
+   if ( mode == "melanger" )
+   {
+      let m = ImageWindow.windowById( name ), c = ImageWindow.windowById( p.copie );
+      if ( m.isNull || c.isNull )
+         throw new Error( TITLE + " : " + (m.isNull ? name : p.copie) + " introuvable : lance d'abord le masque (creer) et la copie." );
+      let r = cwPixelMathNew( view, name + "*$T + (1 - " + name + ")*" + p.copie, "ma_melange" );
+      try
+      {
+         cwAssign( view, r.mainView.image );
+      }
+      finally
+      {
+         r.forceClose();
+      }
+      cwCloseWindow( p.copie );
+      console.noteln( TITLE + " : " + view.id + " = " + name + " × retouche + (1 − " + name + ") × " + p.copie + " ; " + p.copie + " fermée." );
+      return;
+   }
 
    if ( mode == "retirer" )
    {

@@ -2532,7 +2532,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </instance>
    </instance>
    <instance class="ProcessContainer" id="E19_C_Finition_instance">
-      <description>LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;CONTENEUR : Masque_L_creer, Masque_copie, Courbes, LHE, LHE_fin, Masque_melange, Fermer_Masque_avant, Masque_retirer.&#10;&#10;SUR : l'image sans étoiles étirée (masque_L créé, Courbes, LHE et LHE_fin sur une copie, mélange par masque_L, copie et masque fermés automatiquement) ; courbe en S, saturation 0,5 -&gt; 0,58 (couleurs trop ternes : Finition_saturee, 0,65, à la place).&#10;&#10;Double-clic sur le conteneur pour voir ou changer les réglages de chaque étape.</description>
+      <description>LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;CONTENEUR : Masque_L_creer, Masque_copie, Courbes, LHE, LHE_fin, Masque_melanger, Masque_retirer.&#10;&#10;SUR : l'image sans étoiles étirée (masque_L créé, Courbes, LHE et LHE_fin sur une copie, mélange par masque_L, copie et masque fermés automatiquement) ; courbe en S, saturation 0,5 -&gt; 0,58 (couleurs trop ternes : Finition_saturee, 0,65, à la place).&#10;&#10;Double-clic sur le conteneur pour voir ou changer les réglages de chaque étape.</description>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
@@ -2738,41 +2738,20 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          <parameter id="amount" value="0.250"/>
          <parameter id="circularKernel" value="true"/>
       </instance>
-      <instance class="PixelMath" version="256" enabled="true">
-         <parameter id="expression">masque_L*$T + (1 - masque_L)*Masque_avant</parameter>
-         <parameter id="expression1"></parameter>
-         <parameter id="expression2"></parameter>
-         <parameter id="expression3"></parameter>
-         <parameter id="useSingleExpression" value="true"/>
-         <parameter id="symbols"></parameter>
-         <parameter id="clearImageCacheAndExit" value="false"/>
-         <parameter id="cacheGeneratedImages" value="false"/>
-         <parameter id="generateOutput" value="true"/>
-         <parameter id="singleThreaded" value="false"/>
-         <parameter id="optimization" value="true"/>
-         <parameter id="use64BitWorkingImage" value="false"/>
-         <parameter id="rescale" value="false"/>
-         <parameter id="rescaleLower" value="0"/>
-         <parameter id="rescaleUpper" value="1"/>
-         <parameter id="truncate" value="true"/>
-         <parameter id="truncateLower" value="0"/>
-         <parameter id="truncateUpper" value="1"/>
-         <parameter id="createNewImage" value="false"/>
-         <parameter id="showNewImage" value="true"/>
-         <parameter id="newImageId"></parameter>
-         <parameter id="newImageWidth" value="0"/>
-         <parameter id="newImageHeight" value="0"/>
-         <parameter id="newImageAlpha" value="false"/>
-         <parameter id="newImageColorSpace" value="SameAsTarget"/>
-         <parameter id="newImageSampleFormat" value="SameAsTarget"/>
-         <table id="outputData" rows="0"/>
-      </instance>
       <instance class="Script" version="256" enabled="true">
-         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="2">
+         <table id="parameters" rows="4">
             <tr>
-               <td id="id">views</td>
+               <td id="id">mode</td>
+               <td id="value">melanger</td>
+            </tr>
+            <tr>
+               <td id="id">nom</td>
+               <td id="value">masque_L</td>
+            </tr>
+            <tr>
+               <td id="id">copie</td>
                <td id="value">Masque_avant</td>
             </tr>
             <tr>
@@ -3454,41 +3433,20 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          <parameter id="amount" value="0.120"/>
          <parameter id="circularKernel" value="true"/>
       </instance>
-      <instance class="PixelMath" version="256" enabled="true">
-         <parameter id="expression">masque_L*$T + (1 - masque_L)*Masque_avant</parameter>
-         <parameter id="expression1"></parameter>
-         <parameter id="expression2"></parameter>
-         <parameter id="expression3"></parameter>
-         <parameter id="useSingleExpression" value="true"/>
-         <parameter id="symbols"></parameter>
-         <parameter id="clearImageCacheAndExit" value="false"/>
-         <parameter id="cacheGeneratedImages" value="false"/>
-         <parameter id="generateOutput" value="true"/>
-         <parameter id="singleThreaded" value="false"/>
-         <parameter id="optimization" value="true"/>
-         <parameter id="use64BitWorkingImage" value="false"/>
-         <parameter id="rescale" value="false"/>
-         <parameter id="rescaleLower" value="0"/>
-         <parameter id="rescaleUpper" value="1"/>
-         <parameter id="truncate" value="true"/>
-         <parameter id="truncateLower" value="0"/>
-         <parameter id="truncateUpper" value="1"/>
-         <parameter id="createNewImage" value="false"/>
-         <parameter id="showNewImage" value="true"/>
-         <parameter id="newImageId"></parameter>
-         <parameter id="newImageWidth" value="0"/>
-         <parameter id="newImageHeight" value="0"/>
-         <parameter id="newImageAlpha" value="false"/>
-         <parameter id="newImageColorSpace" value="SameAsTarget"/>
-         <parameter id="newImageSampleFormat" value="SameAsTarget"/>
-         <table id="outputData" rows="0"/>
-      </instance>
       <instance class="Script" version="256" enabled="true">
-         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="2">
+         <table id="parameters" rows="4">
             <tr>
-               <td id="id">views</td>
+               <td id="id">mode</td>
+               <td id="value">melanger</td>
+            </tr>
+            <tr>
+               <td id="id">nom</td>
+               <td id="value">masque_L</td>
+            </tr>
+            <tr>
+               <td id="id">copie</td>
                <td id="value">Masque_avant</td>
             </tr>
             <tr>
@@ -3732,41 +3690,20 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          <parameter id="amount" value="0.250"/>
          <parameter id="circularKernel" value="true"/>
       </instance>
-      <instance class="PixelMath" version="256" enabled="true">
-         <parameter id="expression">masque_L*$T + (1 - masque_L)*Masque_avant</parameter>
-         <parameter id="expression1"></parameter>
-         <parameter id="expression2"></parameter>
-         <parameter id="expression3"></parameter>
-         <parameter id="useSingleExpression" value="true"/>
-         <parameter id="symbols"></parameter>
-         <parameter id="clearImageCacheAndExit" value="false"/>
-         <parameter id="cacheGeneratedImages" value="false"/>
-         <parameter id="generateOutput" value="true"/>
-         <parameter id="singleThreaded" value="false"/>
-         <parameter id="optimization" value="true"/>
-         <parameter id="use64BitWorkingImage" value="false"/>
-         <parameter id="rescale" value="false"/>
-         <parameter id="rescaleLower" value="0"/>
-         <parameter id="rescaleUpper" value="1"/>
-         <parameter id="truncate" value="true"/>
-         <parameter id="truncateLower" value="0"/>
-         <parameter id="truncateUpper" value="1"/>
-         <parameter id="createNewImage" value="false"/>
-         <parameter id="showNewImage" value="true"/>
-         <parameter id="newImageId"></parameter>
-         <parameter id="newImageWidth" value="0"/>
-         <parameter id="newImageHeight" value="0"/>
-         <parameter id="newImageAlpha" value="false"/>
-         <parameter id="newImageColorSpace" value="SameAsTarget"/>
-         <parameter id="newImageSampleFormat" value="SameAsTarget"/>
-         <table id="outputData" rows="0"/>
-      </instance>
       <instance class="Script" version="256" enabled="true">
-         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="2">
+         <table id="parameters" rows="4">
             <tr>
-               <td id="id">views</td>
+               <td id="id">mode</td>
+               <td id="value">melanger</td>
+            </tr>
+            <tr>
+               <td id="id">nom</td>
+               <td id="value">masque_L</td>
+            </tr>
+            <tr>
+               <td id="id">copie</td>
                <td id="value">Masque_avant</td>
             </tr>
             <tr>
@@ -3996,41 +3933,20 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          <parameter id="amount" value="0.120"/>
          <parameter id="circularKernel" value="true"/>
       </instance>
-      <instance class="PixelMath" version="256" enabled="true">
-         <parameter id="expression">masque_L*$T + (1 - masque_L)*Masque_avant</parameter>
-         <parameter id="expression1"></parameter>
-         <parameter id="expression2"></parameter>
-         <parameter id="expression3"></parameter>
-         <parameter id="useSingleExpression" value="true"/>
-         <parameter id="symbols"></parameter>
-         <parameter id="clearImageCacheAndExit" value="false"/>
-         <parameter id="cacheGeneratedImages" value="false"/>
-         <parameter id="generateOutput" value="true"/>
-         <parameter id="singleThreaded" value="false"/>
-         <parameter id="optimization" value="true"/>
-         <parameter id="use64BitWorkingImage" value="false"/>
-         <parameter id="rescale" value="false"/>
-         <parameter id="rescaleLower" value="0"/>
-         <parameter id="rescaleUpper" value="1"/>
-         <parameter id="truncate" value="true"/>
-         <parameter id="truncateLower" value="0"/>
-         <parameter id="truncateUpper" value="1"/>
-         <parameter id="createNewImage" value="false"/>
-         <parameter id="showNewImage" value="true"/>
-         <parameter id="newImageId"></parameter>
-         <parameter id="newImageWidth" value="0"/>
-         <parameter id="newImageHeight" value="0"/>
-         <parameter id="newImageAlpha" value="false"/>
-         <parameter id="newImageColorSpace" value="SameAsTarget"/>
-         <parameter id="newImageSampleFormat" value="SameAsTarget"/>
-         <table id="outputData" rows="0"/>
-      </instance>
       <instance class="Script" version="256" enabled="true">
-         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="2">
+         <table id="parameters" rows="4">
             <tr>
-               <td id="id">views</td>
+               <td id="id">mode</td>
+               <td id="value">melanger</td>
+            </tr>
+            <tr>
+               <td id="id">nom</td>
+               <td id="value">masque_L</td>
+            </tr>
+            <tr>
+               <td id="id">copie</td>
                <td id="value">Masque_avant</td>
             </tr>
             <tr>
@@ -4260,41 +4176,20 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          <parameter id="amount" value="0.200"/>
          <parameter id="circularKernel" value="true"/>
       </instance>
-      <instance class="PixelMath" version="256" enabled="true">
-         <parameter id="expression">masque_L*$T + (1 - masque_L)*Masque_avant</parameter>
-         <parameter id="expression1"></parameter>
-         <parameter id="expression2"></parameter>
-         <parameter id="expression3"></parameter>
-         <parameter id="useSingleExpression" value="true"/>
-         <parameter id="symbols"></parameter>
-         <parameter id="clearImageCacheAndExit" value="false"/>
-         <parameter id="cacheGeneratedImages" value="false"/>
-         <parameter id="generateOutput" value="true"/>
-         <parameter id="singleThreaded" value="false"/>
-         <parameter id="optimization" value="true"/>
-         <parameter id="use64BitWorkingImage" value="false"/>
-         <parameter id="rescale" value="false"/>
-         <parameter id="rescaleLower" value="0"/>
-         <parameter id="rescaleUpper" value="1"/>
-         <parameter id="truncate" value="true"/>
-         <parameter id="truncateLower" value="0"/>
-         <parameter id="truncateUpper" value="1"/>
-         <parameter id="createNewImage" value="false"/>
-         <parameter id="showNewImage" value="true"/>
-         <parameter id="newImageId"></parameter>
-         <parameter id="newImageWidth" value="0"/>
-         <parameter id="newImageHeight" value="0"/>
-         <parameter id="newImageAlpha" value="false"/>
-         <parameter id="newImageColorSpace" value="SameAsTarget"/>
-         <parameter id="newImageSampleFormat" value="SameAsTarget"/>
-         <table id="outputData" rows="0"/>
-      </instance>
       <instance class="Script" version="256" enabled="true">
-         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="2">
+         <table id="parameters" rows="4">
             <tr>
-               <td id="id">views</td>
+               <td id="id">mode</td>
+               <td id="value">melanger</td>
+            </tr>
+            <tr>
+               <td id="id">nom</td>
+               <td id="value">masque_L</td>
+            </tr>
+            <tr>
+               <td id="id">copie</td>
                <td id="value">Masque_avant</td>
             </tr>
             <tr>
@@ -4394,41 +4289,20 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          <parameter id="rangeLow" value="0.0000000"/>
          <parameter id="rangeHigh" value="0.0000000"/>
       </instance>
-      <instance class="PixelMath" version="256" enabled="true">
-         <parameter id="expression">masque_L*$T + (1 - masque_L)*Masque_avant</parameter>
-         <parameter id="expression1"></parameter>
-         <parameter id="expression2"></parameter>
-         <parameter id="expression3"></parameter>
-         <parameter id="useSingleExpression" value="true"/>
-         <parameter id="symbols"></parameter>
-         <parameter id="clearImageCacheAndExit" value="false"/>
-         <parameter id="cacheGeneratedImages" value="false"/>
-         <parameter id="generateOutput" value="true"/>
-         <parameter id="singleThreaded" value="false"/>
-         <parameter id="optimization" value="true"/>
-         <parameter id="use64BitWorkingImage" value="false"/>
-         <parameter id="rescale" value="false"/>
-         <parameter id="rescaleLower" value="0"/>
-         <parameter id="rescaleUpper" value="1"/>
-         <parameter id="truncate" value="true"/>
-         <parameter id="truncateLower" value="0"/>
-         <parameter id="truncateUpper" value="1"/>
-         <parameter id="createNewImage" value="false"/>
-         <parameter id="showNewImage" value="true"/>
-         <parameter id="newImageId"></parameter>
-         <parameter id="newImageWidth" value="0"/>
-         <parameter id="newImageHeight" value="0"/>
-         <parameter id="newImageAlpha" value="false"/>
-         <parameter id="newImageColorSpace" value="SameAsTarget"/>
-         <parameter id="newImageSampleFormat" value="SameAsTarget"/>
-         <table id="outputData" rows="0"/>
-      </instance>
       <instance class="Script" version="256" enabled="true">
-         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="2">
+         <table id="parameters" rows="4">
             <tr>
-               <td id="id">views</td>
+               <td id="id">mode</td>
+               <td id="value">melanger</td>
+            </tr>
+            <tr>
+               <td id="id">nom</td>
+               <td id="value">masque_L</td>
+            </tr>
+            <tr>
+               <td id="id">copie</td>
                <td id="value">Masque_avant</td>
             </tr>
             <tr>
@@ -4802,41 +4676,20 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          <parameter id="amount" value="0.250"/>
          <parameter id="circularKernel" value="true"/>
       </instance>
-      <instance class="PixelMath" version="256" enabled="true">
-         <parameter id="expression">masque_L*$T + (1 - masque_L)*Masque_avant</parameter>
-         <parameter id="expression1"></parameter>
-         <parameter id="expression2"></parameter>
-         <parameter id="expression3"></parameter>
-         <parameter id="useSingleExpression" value="true"/>
-         <parameter id="symbols"></parameter>
-         <parameter id="clearImageCacheAndExit" value="false"/>
-         <parameter id="cacheGeneratedImages" value="false"/>
-         <parameter id="generateOutput" value="true"/>
-         <parameter id="singleThreaded" value="false"/>
-         <parameter id="optimization" value="true"/>
-         <parameter id="use64BitWorkingImage" value="false"/>
-         <parameter id="rescale" value="false"/>
-         <parameter id="rescaleLower" value="0"/>
-         <parameter id="rescaleUpper" value="1"/>
-         <parameter id="truncate" value="true"/>
-         <parameter id="truncateLower" value="0"/>
-         <parameter id="truncateUpper" value="1"/>
-         <parameter id="createNewImage" value="false"/>
-         <parameter id="showNewImage" value="true"/>
-         <parameter id="newImageId"></parameter>
-         <parameter id="newImageWidth" value="0"/>
-         <parameter id="newImageHeight" value="0"/>
-         <parameter id="newImageAlpha" value="false"/>
-         <parameter id="newImageColorSpace" value="SameAsTarget"/>
-         <parameter id="newImageSampleFormat" value="SameAsTarget"/>
-         <table id="outputData" rows="0"/>
-      </instance>
       <instance class="Script" version="256" enabled="true">
-         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="2">
+         <table id="parameters" rows="4">
             <tr>
-               <td id="id">views</td>
+               <td id="id">mode</td>
+               <td id="value">melanger</td>
+            </tr>
+            <tr>
+               <td id="id">nom</td>
+               <td id="value">masque_L</td>
+            </tr>
+            <tr>
+               <td id="id">copie</td>
                <td id="value">Masque_avant</td>
             </tr>
             <tr>
@@ -5494,41 +5347,20 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          </table>
          <parameter id="St" value="AkimaSubsplines"/>
       </instance>
-      <instance class="PixelMath" version="256" enabled="true">
-         <parameter id="expression">masque_L*$T + (1 - masque_L)*Masque_avant</parameter>
-         <parameter id="expression1"></parameter>
-         <parameter id="expression2"></parameter>
-         <parameter id="expression3"></parameter>
-         <parameter id="useSingleExpression" value="true"/>
-         <parameter id="symbols"></parameter>
-         <parameter id="clearImageCacheAndExit" value="false"/>
-         <parameter id="cacheGeneratedImages" value="false"/>
-         <parameter id="generateOutput" value="true"/>
-         <parameter id="singleThreaded" value="false"/>
-         <parameter id="optimization" value="true"/>
-         <parameter id="use64BitWorkingImage" value="false"/>
-         <parameter id="rescale" value="false"/>
-         <parameter id="rescaleLower" value="0"/>
-         <parameter id="rescaleUpper" value="1"/>
-         <parameter id="truncate" value="true"/>
-         <parameter id="truncateLower" value="0"/>
-         <parameter id="truncateUpper" value="1"/>
-         <parameter id="createNewImage" value="false"/>
-         <parameter id="showNewImage" value="true"/>
-         <parameter id="newImageId"></parameter>
-         <parameter id="newImageWidth" value="0"/>
-         <parameter id="newImageHeight" value="0"/>
-         <parameter id="newImageAlpha" value="false"/>
-         <parameter id="newImageColorSpace" value="SameAsTarget"/>
-         <parameter id="newImageSampleFormat" value="SameAsTarget"/>
-         <table id="outputData" rows="0"/>
-      </instance>
       <instance class="Script" version="256" enabled="true">
-         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="2">
+         <table id="parameters" rows="4">
             <tr>
-               <td id="id">views</td>
+               <td id="id">mode</td>
+               <td id="value">melanger</td>
+            </tr>
+            <tr>
+               <td id="id">nom</td>
+               <td id="value">masque_L</td>
+            </tr>
+            <tr>
+               <td id="id">copie</td>
                <td id="value">Masque_avant</td>
             </tr>
             <tr>
@@ -5751,41 +5583,20 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          </table>
          <parameter id="St" value="AkimaSubsplines"/>
       </instance>
-      <instance class="PixelMath" version="256" enabled="true">
-         <parameter id="expression">masque_L*$T + (1 - masque_L)*Masque_avant</parameter>
-         <parameter id="expression1"></parameter>
-         <parameter id="expression2"></parameter>
-         <parameter id="expression3"></parameter>
-         <parameter id="useSingleExpression" value="true"/>
-         <parameter id="symbols"></parameter>
-         <parameter id="clearImageCacheAndExit" value="false"/>
-         <parameter id="cacheGeneratedImages" value="false"/>
-         <parameter id="generateOutput" value="true"/>
-         <parameter id="singleThreaded" value="false"/>
-         <parameter id="optimization" value="true"/>
-         <parameter id="use64BitWorkingImage" value="false"/>
-         <parameter id="rescale" value="false"/>
-         <parameter id="rescaleLower" value="0"/>
-         <parameter id="rescaleUpper" value="1"/>
-         <parameter id="truncate" value="true"/>
-         <parameter id="truncateLower" value="0"/>
-         <parameter id="truncateUpper" value="1"/>
-         <parameter id="createNewImage" value="false"/>
-         <parameter id="showNewImage" value="true"/>
-         <parameter id="newImageId"></parameter>
-         <parameter id="newImageWidth" value="0"/>
-         <parameter id="newImageHeight" value="0"/>
-         <parameter id="newImageAlpha" value="false"/>
-         <parameter id="newImageColorSpace" value="SameAsTarget"/>
-         <parameter id="newImageSampleFormat" value="SameAsTarget"/>
-         <table id="outputData" rows="0"/>
-      </instance>
       <instance class="Script" version="256" enabled="true">
-         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="2">
+         <table id="parameters" rows="4">
             <tr>
-               <td id="id">views</td>
+               <td id="id">mode</td>
+               <td id="value">melanger</td>
+            </tr>
+            <tr>
+               <td id="id">nom</td>
+               <td id="value">masque_L</td>
+            </tr>
+            <tr>
+               <td id="id">copie</td>
                <td id="value">Masque_avant</td>
             </tr>
             <tr>

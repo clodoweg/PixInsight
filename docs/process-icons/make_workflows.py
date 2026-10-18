@@ -57,6 +57,9 @@ SCRIPTS = {
     'Masque_L_boost_nb': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'attacher'), ('s', '0.20'), ('gamma', '2'), ('flou', '2'), ('nom', 'masque_L')], L_DRAG),   # narrowband : masque tiré de l'image sans étoiles elle-même
     'Masque_L_source': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'attacher'), ('s', '0.20'), ('gamma', '2'), ('flou', '2'), ('nom', 'masque_L'), ('source', 'L'), ('exclure', 'RGB_stars'), ('exclureGain', '4')], L_DRAG),
     'Masque_retirer': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'retirer'), ('nom', 'masque_L')], L_DRAG),
+    # mélange masque_L × retouche + (1 − masque_L) × Masque_avant par script (demande de l'utilisateur, 18 octobre 2026 : le PixelMath natif
+    # en place dans le conteneur glissé donnait « Unknown error ») ; ferme Masque_avant
+    'Masque_melanger': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'melanger'), ('nom', 'masque_L'), ('copie', 'Masque_avant')], L_DRAG),
     'Fermer_vues': ('$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js', '', [('views', '')], L_GLOBAL),
     'Renommer_auto': ('$PXI_SRCDIR/scripts/clodoweg/Renommer_auto.js', '', [('fermerAutocrop', 'true')], L_GLOBAL),   # ferme les vues *autocrop_c (demande de l'utilisateur)
     'SCNR_etoiles_vert': ('$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js', '', [('vue', 'RGB_stars'), ('amount', '0'), ('satAmount', '0'), ('scnr', 'true'), ('violet', 'false')], L_DRAG),
@@ -405,9 +408,9 @@ def sous_masque(inner, masque='Masque_L_creer'):
     """Étapes natives « sous masque » dans un conteneur (demande de l'utilisateur, 8 octobre 2026 : C_Finition d'un coup différent de un par un).
     Doc PixInsight (Masking Facts) : un process d'un ProcessContainer garde SON lien de masque ; le masque attaché par un script pendant le
     conteneur n'est donc pas utilisé (Courbes et LHE appliqués au fond). Ici : masque_L créé sans être attaché, copie de l'image, étapes sur
-    l'image entière, puis mélange PixelMath masque_L × résultat + (1 − masque_L) × copie, copie fermée, masque_L fermé."""
+    l'image entière, puis mélange masque_L × résultat + (1 − masque_L) × copie par le script Masque_auto (mode melanger : image cachée puis recopie), copie fermée, masque_L fermé."""
     return ([script(masque, ''), pm('Masque_copie', '$T', new_image=True, new_id='Masque_avant')] + list(inner)
-            + [pm('Masque_melange', 'masque_L*$T + (1 - masque_L)*Masque_avant'), fermer('Fermer_Masque_avant', 'Masque_avant'), script('Masque_retirer', '')])
+            + [script('Masque_melanger', ''), script('Masque_retirer', '')])
 
 def _cont(name, items):
     return name, container(name, [x.replace('id="%s_instance"' % n, 'id="__ID___instance"', 1) for n, x in items])
@@ -513,7 +516,7 @@ def write(filename, prefix, title, steps):
                     # Courbes, LHE, LHE_fin mélangés par masque_L créé sans être attaché (sous_masque, demande de l'utilisateur, 8 octobre 2026)
                     xs = [flat(i) for i in sous_masque([])]
                     xs = xs[:2] + [byb[m] for m in members[1:-1]] + xs[2:]
-                    noms = ['Masque_L_creer', 'Masque_copie'] + members[1:-1] + ['Masque_melange', 'Fermer_Masque_avant', 'Masque_retirer']
+                    noms = ['Masque_L_creer', 'Masque_copie'] + members[1:-1] + ['Masque_melanger', 'Masque_retirer']
                 cx = container('__ID__', xs)
                 cd = SD.LAUNCH['cont'] + "\n\nCONTENEUR : " + ", ".join(noms) + ".\n\nSUR : " + target + ".\n\nDouble-clic sur le conteneur pour voir ou changer les réglages de chaque étape."
                 cx = cx.replace('<instance class="ProcessContainer" id="__ID___instance">', '<instance class="ProcessContainer" id="__ID___instance">\n      <description>%s</description>' % escape(cd).replace('\n', '&#10;'), 1)

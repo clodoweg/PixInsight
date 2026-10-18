@@ -115,6 +115,26 @@ function cwTargetLocked( view )
 // C'est le schéma validé par l'utilisateur sur Etoiles_grosses (le schéma
 // précédent, recopie directe de la copie, ne s'affichait pas et n'avait pas
 // de Ctrl+Z sur Sharp_MMT).
+// Recopie img dans view entre beginProcess et endProcess (affichage, Ctrl+Z) ;
+// si la vue est déjà « en cours de traitement » (vue cible d'un conteneur
+// glissé), recopie directe : l'étape d'historique est celle du conteneur.
+function cwAssign( view, img )
+{
+   let begun = false;
+   try
+   {
+      view.beginProcess();
+      begun = true;
+   }
+   catch ( e )
+   {
+      console.warningln( "Recopie directe dans " + view.id + " (vue déjà en cours de traitement)." );
+   }
+   view.image.assign( img );
+   if ( begun )
+      view.endProcess();
+}
+
 function cwApplyOnCopy( view, fn, blend )
 {
    // vue verrouillée par le conteneur glissé : ni beginProcess (« already being
@@ -137,9 +157,7 @@ function cwApplyOnCopy( view, fn, blend )
       let r = cwPixelMathNew( view, blend ? blend( cid ) : cid, rid );
       try
       {
-         view.beginProcess();
-         view.image.assign( r.mainView.image );
-         view.endProcess();
+         cwAssign( view, r.mainView.image );
       }
       finally
       {

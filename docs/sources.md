@@ -1146,3 +1146,9 @@ Non vérifié : contenu de la base Gaia DR3 locale de l'utilisateur (fichiers in
 
 Demande : « rajoute Opt_SCNR_RGB dans le rapide », puis « non en fait retire le, remet comme avant »
 Fait : commit annulé (git revert) : R_C_RGB_etire_rapide = MAS, SXT_RGB_etire, SCNR_etoiles_vert, GHS fond ; Opt_SCNR_RGB reste une option P4 hors rapide.
+
+### Conteneurs sous masque : « Unknown error » au mélange (18 octobre 2026)
+
+Demande : console de l'utilisateur, Opt_Boost_finition_light glissé sur RGB : « PixelMath … masque_L*$T + (1 - masque_L)*Masque_avant … *** Error: Unknown error ».
+Fait : mélange fait par Masque_auto.js mode melanger (image cachée puis recopie, cwAssign avec repli en recopie directe), à la place du PixelMath natif et de Fermer_Masque_avant, dans tous les conteneurs sous_masque de tous les workflows (correction d'un défaut commun, LRGB compris). Même famille d'erreur que Saturation_grosses et Fond_desature.
+Non vérifié : test dans PixInsight.
