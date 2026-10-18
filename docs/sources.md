@@ -1162,3 +1162,8 @@ Fait : mélange avec une expression par canal (useSingleExpression = false) au l
 
 Demande : console de l'utilisateur, Opt_Finition_saturee : mélange par canal du script réussi, « Recopie directe dans RGB (vue déjà en cours de traitement) », puis « Reading swap files … <* failed *> ».
 Fait : conteneurs sous_masque (tous les workflows) : retour au PixelMath natif Masque_melange, une expression par canal (useSingleExpression = false), puis Fermer_Masque_avant et Masque_retirer. Règle ajoutée dans CLAUDE.md et kb/generateur.md. Non vérifié dans PixInsight.
+
+### Diagrammes des workflows (18 octobre 2026)
+
+Demande : « fait moi un diagramme par process qui m'explique chaque étape avec les différentes options possibles »
+Fait : générateur docs/process-icons/build/diagrammes/diagrammes.py (+ modele.html) : page HTML, un onglet par workflow (LRGB, LHaRGB, RGB + SHO, SHO sans RGB, HOO), phases P1 à P7, chemin principal numéroté, options, rapide et turbo de chaque phase ; textes tirés des fiches docs/kb/icones-*.md (clic : préréglé, à régler, contenu, lancement).

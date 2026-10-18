@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Diagrammes des workflows</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--ink:#1d2330;--mute:#5b6475;--line:#d5dae3;--main:#2f6fd6;--main-bg:#eaf1fd;--opt:#7a5af5;--opt-bg:#f1edff;--rap:#c2410c;--rap-bg:#fff1e8;--tur:#0f766e;--tur-bg:#e6f6f4}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12151b;--card:#1b2029;--ink:#e6e9ef;--mute:#9aa3b5;--line:#313949;--main:#6aa0ff;--main-bg:#1c2a44;--opt:#a78bfa;--opt-bg:#272143;--rap:#fb923c;--rap-bg:#3a2516;--tur:#2dd4bf;--tur-bg:#123532}}
+:root[data-theme="dark"]{--bg:#12151b;--card:#1b2029;--ink:#e6e9ef;--mute:#9aa3b5;--line:#313949;--main:#6aa0ff;--main-bg:#1c2a44;--opt:#a78bfa;--opt-bg:#272143;--rap:#fb923c;--rap-bg:#3a2516;--tur:#2dd4bf;--tur-bg:#123532}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+header{padding:16px;max-width:1200px;margin:auto}h1{font-size:20px;margin:0 0 6px}header p{margin:0;color:var(--mute)}
+.legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;font-size:12px}.legend span{padding:2px 8px;border-radius:6px;border:1px solid}
+.l-main{color:var(--main);background:var(--main-bg)}.l-opt{color:var(--opt);background:var(--opt-bg);border-style:dashed!important}.l-rap{color:var(--rap);background:var(--rap-bg)}.l-tur{color:var(--tur);background:var(--tur-bg)}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;max-width:1200px;margin:0 auto;padding:0 16px}
+.tab{border:1px solid var(--line);background:var(--card);color:var(--ink);padding:7px 12px;border-radius:8px;cursor:pointer;font:inherit}
+.tab[aria-selected="true"]{border-color:var(--main);color:var(--main);font-weight:600}
+main{max-width:1200px;margin:auto;padding:12px 16px 40px}.wf{display:none}.wf.on{display:block}h2{font-size:17px;margin:8px 0 12px}
+.phase{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px}
+.ph-title{font-weight:700;margin-bottom:10px}.ph-title span{display:inline-block;background:var(--ink);color:var(--card);border-radius:6px;padding:0 7px;margin-right:4px}
+.ph-arrow{text-align:center;color:var(--mute);margin:4px 0;font-size:18px}
+.ph-body{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:14px}@media (max-width:760px){.ph-body{grid-template-columns:1fr}}
+.col-h{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--mute);margin:2px 0 6px}.side .col-h:not(:first-child){margin-top:12px}
+.arrow{text-align:center;color:var(--main);line-height:1;margin:2px 0}
+.node{border:1px solid;border-radius:9px;margin:0 0 6px;overflow:hidden}
+.node summary{list-style:none;cursor:pointer;padding:7px 10px;display:block}.node summary::-webkit-details-marker{display:none}
+.nm{font-weight:600}.sub{display:block;color:var(--mute);font-size:12.5px;margin-top:2px}
+.num{display:inline-block;min-width:24px;text-align:center;border-radius:5px;margin-right:6px;font-size:12px;font-weight:700;color:#fff;background:var(--main)}
+.n-main{border-color:var(--main);background:var(--main-bg)}.n-opt{border-color:var(--opt);border-style:dashed;background:var(--opt-bg)}
+.n-rap{border-color:var(--rap);background:var(--rap-bg)}.n-tur{border-color:var(--tur);background:var(--tur-bg)}
+.more{padding:0 10px 9px;font-size:12.5px;border-top:1px solid var(--line);background:var(--card)}.more p{margin:6px 0}.more code{display:block;margin-top:7px;color:var(--mute);font-size:11.5px;word-break:break-all}
+.empty{color:var(--mute)}
+</style></head><body>
+<header><h1>Diagrammes des workflows</h1>
+<p>Une page par workflow, de P1 à P7. Au centre : le chemin principal dans l'ordre. À droite : les options, le mode rapide et le turbo de la même phase. Clique sur une étape pour voir ses réglages et quand l'utiliser.</p>
+<div class="legend"><span class="l-main">Chemin principal (E##)</span><span class="l-opt">Option (Opt_)</span><span class="l-rap">Mode rapide (R_)</span><span class="l-tur">Turbo (T_)</span></div></header>
+<nav class="tabs" role="tablist">{{TABS}}</nav>
+<main>{{SECS}}</main>
+<script>
+(function(){var tabs=[].slice.call(document.querySelectorAll('.tab'));function show(k){tabs.forEach(function(t){t.setAttribute('aria-selected',t.dataset.k===k)});
+[].forEach.call(document.querySelectorAll('.wf'),function(s){s.classList.toggle('on',s.id==='wf-'+k)});try{localStorage.setItem('wf',k)}catch(e){}}
+tabs.forEach(function(t){t.addEventListener('click',function(){show(t.dataset.k)})});var k='LRGB';try{k=localStorage.getItem('wf')||k}catch(e){}if(!document.getElementById('wf-'+k))k='LRGB';show(k)})();
+</script></body></html>
