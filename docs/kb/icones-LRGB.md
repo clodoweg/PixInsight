@@ -496,6 +496,20 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - halo pas saturé jusqu'au bord -> etendue 16
 > - pour recommencer -> Ctrl+Z sur RGB_stars
 
+#### Opt_SCNR_RGB — SCNR
+   amount=1.00 ; protectionMethod=AverageNeutral ; colorToRemove=Green ; preserveLightness=true
+
+> OPTION — dominante verte sur la galaxie ou le fond (sonde : G au-dessus de R et B) : SCNR vert sur le RGB SANS étoiles, après SXT_RGB_etire, avant GHS_3_fond et LRGB
+> Pas dans le rapide.
+> 
+> PRÉRÉGLÉ : SCNR : vert, Average Neutral, Amount 1,0 (valeurs par défaut).
+> 
+> À RÉGLER : glisse sur le RGB SANS étoiles (après SXT_RGB_etire), avant GHS_3_fond et LRGB_ajout_L ; seulement si du vert reste (sonde 15x15 : G au-dessus de R et de B).
+> 
+> SI :
+> - cœur jaune terni, régions roses virées au violet -> Amount 0,50 à 0,70
+> - vert encore visible -> vérifie SPCC avant de pousser
+
 #### Opt_Statistical_Stretch — Script
    script `$PXI_SRCDIR/scripts/statisticalstretch.js`
    paramètres : `targetMedian=0.25`, `curvesBoost=0`, `numIterations=1`, `normalizeImageRange=false`, `linkedStretch=true`, `openDialogbox=true`, `autoConvergence=false`, `blackpointSigma=5`, `noBlackClip=false`, `hdrCompress=false`, `hdrAmount=0.25`, `hdrKnee=0.35`, `lumaOnly=false`, `lumaMode=rec709`, `lumaBlend=0.6`

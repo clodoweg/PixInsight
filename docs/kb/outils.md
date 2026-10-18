@@ -1122,7 +1122,7 @@ Paramètres
 
 Méthode
 
-1. Retire un excès de vert. Rarement utile en LRGB après SPCC, souvent utile en SHO.
+1. Retire un excès de vert. Rarement utile en LRGB après SPCC, souvent utile en SHO. Galaxies (LRGB, LHaRGB) : option Opt_SCNR_RGB (P4, demande de l'utilisateur, 18 octobre 2026) sur le RGB SANS étoiles, après SXT_RGB_etire, avant GHS_3_fond et LRGB ; les étoiles ont leur propre SCNR (SCNR_etoiles_vert sur RGB_stars).
 
 Paramètres
 

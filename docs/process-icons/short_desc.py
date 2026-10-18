@@ -166,6 +166,7 @@ S = {
     'HOO_Hubble': ("G = 0,6·H + 0,4·O", "vues H et O étirées ; ajuste les coefficients", []),
     'Perfect_Palette_Picker': ("rien (le script ne lit pas l'icône)", "choisis H, O, S ; Linear Input Data selon tes images ; compare les 16 vignettes", []),
     'NBColourMapper': ("rien (icône-note)", "H rouge-orangé, O cyan-bleu, S rouge profond ou or", []),
+    'SCNR_RGB': ("SCNR : vert, Average Neutral, Amount 1,0 (valeurs par défaut)", "glisse sur le RGB SANS étoiles (après SXT_RGB_etire), avant GHS_3_fond et LRGB_ajout_L ; seulement si du vert reste (sonde 15x15 : G au-dessus de R et de B)", ["cœur jaune terni, régions roses virées au violet -> Amount 0,50 à 0,70", "vert encore visible -> vérifie SPCC avant de pousser"]),
     'SCNR_SHO': ("vert, Average Neutral, Amount 0,70", "rien", ["encore vert -> 0,80", "trop magenta -> 0,50"]),
     'Etoiles_RGB': ("rien (icône-note)", "suis les icônes suivantes : étoiles RGB calibrées pour l'image SHO", []),
     'Etoiles_HOO': ("rien (icône-note)", "avec RGB : étoiles RGB ; sans RGB : étoiles de SXT, NB to RGB ou étoiles synthétiques", []),

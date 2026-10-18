@@ -2093,6 +2093,13 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </table>
       <parameter id="information"></parameter>
    </instance>
+   <instance class="SCNR" version="256" id="Opt_SCNR_RGB_instance">
+      <description>OPTION — dominante verte sur la galaxie ou le fond (sonde : G au-dessus de R et B) : SCNR vert sur le RGB SANS étoiles, après SXT_RGB_etire, avant GHS_3_fond et LRGB&#10;Pas dans le rapide.&#10;&#10;PRÉRÉGLÉ : SCNR : vert, Average Neutral, Amount 1,0 (valeurs par défaut).&#10;&#10;À RÉGLER : glisse sur le RGB SANS étoiles (après SXT_RGB_etire), avant GHS_3_fond et LRGB_ajout_L ; seulement si du vert reste (sonde 15x15 : G au-dessus de R et de B).&#10;&#10;SI :&#10;- cœur jaune terni, régions roses virées au violet -&gt; Amount 0,50 à 0,70&#10;- vert encore visible -&gt; vérifie SPCC avant de pousser</description>
+      <parameter id="amount" value="1.00"/>
+      <parameter id="protectionMethod" value="AverageNeutral"/>
+      <parameter id="colorToRemove" value="Green"/>
+      <parameter id="preserveLightness" value="true"/>
+   </instance>
    <instance class="Script" version="256" id="Opt_Statistical_Stretch_instance">
       <description>OPTION — à la place de MAS sur le RGB avec étoiles (étirement statistique, étoiles plus grosses)&#10;Puis SXT_RGB_etire.&#10;&#10;LANCEMENT : glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.&#10;&#10;PRÉRÉGLÉ : Target Median 0,25, Blackpoint Sigma 5, Linked coché, reste par défaut.&#10;&#10;À RÉGLER : OPTION, à la place de MAS : sur le RGB linéaire AVEC ses étoiles ; puis SXT_RGB_etire et GHS_3_fond sur le RGB (SP = HP = 0,22).&#10;&#10;SI :&#10;- étoiles grossies ou cœurs blancs -&gt; MAS (chemin principal)</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/statisticalstretch.js</parameter>
@@ -5914,12 +5921,13 @@ max($T,f1)</parameter>
    <icon id="P4_options" instance="P4_options_instance" xpos="604" ypos="260" workspace="Workspace01"/>
    <icon id="Opt_SCNR_etoiles_violet" instance="Opt_SCNR_etoiles_violet_instance" xpos="604" ypos="294" workspace="Workspace01"/>
    <icon id="Opt_Saturation_grosses" instance="Opt_Saturation_grosses_instance" xpos="604" ypos="324" workspace="Workspace01"/>
-   <icon id="Opt_Statistical_Stretch" instance="Opt_Statistical_Stretch_instance" xpos="604" ypos="354" workspace="Workspace01"/>
-   <icon id="Opt_MAS_light" instance="Opt_MAS_light_instance" xpos="604" ypos="384" workspace="Workspace01"/>
-   <icon id="Opt_EZ_Soft_Stretch" instance="Opt_EZ_Soft_Stretch_instance" xpos="604" ypos="414" workspace="Workspace01"/>
-   <icon id="Opt_Star_Stretch" instance="Opt_Star_Stretch_instance" xpos="604" ypos="444" workspace="Workspace01"/>
-   <icon id="P4_rapide" instance="P4_rapide_instance" xpos="604" ypos="490" workspace="Workspace01"/>
-   <icon id="R_C_RGB_etire_rapide" instance="R_C_RGB_etire_rapide_instance" xpos="604" ypos="524" workspace="Workspace01"/>
+   <icon id="Opt_SCNR_RGB" instance="Opt_SCNR_RGB_instance" xpos="604" ypos="354" workspace="Workspace01"/>
+   <icon id="Opt_Statistical_Stretch" instance="Opt_Statistical_Stretch_instance" xpos="604" ypos="384" workspace="Workspace01"/>
+   <icon id="Opt_MAS_light" instance="Opt_MAS_light_instance" xpos="604" ypos="414" workspace="Workspace01"/>
+   <icon id="Opt_EZ_Soft_Stretch" instance="Opt_EZ_Soft_Stretch_instance" xpos="604" ypos="444" workspace="Workspace01"/>
+   <icon id="Opt_Star_Stretch" instance="Opt_Star_Stretch_instance" xpos="604" ypos="474" workspace="Workspace01"/>
+   <icon id="P4_rapide" instance="P4_rapide_instance" xpos="604" ypos="520" workspace="Workspace01"/>
+   <icon id="R_C_RGB_etire_rapide" instance="R_C_RGB_etire_rapide_instance" xpos="604" ypos="554" workspace="Workspace01"/>
    <icon id="P5_Couleur" instance="P5_Couleur_instance" xpos="795" ypos="20" workspace="Workspace01"/>
    <icon id="E16_LRGB_ajout_L" instance="E16_LRGB_ajout_L_instance" xpos="795" ypos="64" workspace="Workspace01"/>
    <icon id="P5_rapide" instance="P5_rapide_instance" xpos="795" ypos="110" workspace="Workspace01"/>

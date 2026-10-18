@@ -1200,6 +1200,8 @@ insert_after(lrgb, 'ImageSolver', [(script('Gradient_auto_rapide', ''), '')])
 for _st in (lrgb, lhargb):
     insert_after(_st, 'Etoiles_screen', [(M.nxt('NXT_dernier', 0.25, 1), D_NXT_DERNIER)])   # toute dernière réduction de bruit, image finie avec étoiles (demande de l'utilisateur)
     insert_after(_st, 'SXT_RGB_etire', [(script('SCNR_etoiles_vert', ''), ''), (script('SCNR_etoiles_violet', ''), ''), (script('Saturation_grosses', ''), '')])   # vert au chemin principal ; violet et Saturation_grosses en options P4, pas dans le rapide (demande de l'utilisateur)
+    # option P4 (demande de l'utilisateur, 18 octobre 2026) : SCNR vert sur le RGB SANS étoiles, après SXT_RGB_etire, avant GHS_3_fond et LRGB
+    insert_after(_st, 'Saturation_grosses', [(M.instance('SCNR', 'SCNR_RGB', {'amount': '1.00', 'protectionMethod': 'AverageNeutral', 'colorToRemove': 'Green'}), '')])
     # P7 (demande de l'utilisateur) : Fond_desature, Fond_auto (et Fond_auto_clair) sur l'image SANS étoiles, puis Etoiles_screen
     for _b in ('Fond_desature', 'Fond_auto', 'Fond_auto_clair'):
         _it = pick(_st, _b)

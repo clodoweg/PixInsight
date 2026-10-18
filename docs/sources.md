@@ -1089,3 +1089,8 @@ Fait : CLAUDE.md mis à jour (état des workflows narrowband, décisions BXT/NXT
 
 Demande : « dans LHARGB j'aimerais que: on crée un deuxieme rapide en dessous de R_Main_continuum avec: E15_CombineHaWithRGB, E16_C_RGB_bruit, E17_Fermer_continuum »
 Fait : conteneur R_C_Ha_RGB_rapide (P3 rapide, sous R_Main_continuum) : CombineHaWithRGB (HaNB, Amount 2, Beta 0,2, Background 0,05), NXT_RGB 0,80, Fermer_continuum (H, HaNB) ; glissé sur le RGB linéaire après Continuum_auto. Textes de R_Main_continuum, R_C_P3_rapide et du mode rapide mis à jour. LRGB non touché.
+
+### LRGB et LHaRGB : option SCNR_RGB (18 octobre 2026)
+
+Demande : « dans HaLRGB et LRGB rajoute une option SCNR sur le RGB pour enlever le vert »
+Fait : option Opt_SCNR_RGB (P4, LRGB et LHaRGB, pas dans le rapide) : SCNR Green, Average Neutral, Amount 1,0 (valeurs par défaut du process, déjà dans kb/outils.md), sur le RGB sans étoiles après SXT_RGB_etire, avant GHS_3_fond et LRGB. LRGB modifié à la demande explicite de l'utilisateur.
