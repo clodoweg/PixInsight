@@ -354,6 +354,9 @@ Paramètres
 - **Reject low / high** : Valeurs par défaut
 
 #### ImageSolver
+
+> Catalogue des icônes ImageSolver, Solver_auto, ImageSolver_seul (demande de l'utilisateur, 18 octobre 2026) : EN LIGNE Gaia DR2 (VizieR), magnitude limite FIXE 15 (solver_catalogMode = 1, solver_catalog = GaiaDR2, solver_autoMagnitude = false, solver_magnitude = 15). Raison : échec avec le catalogue automatique sur la base Gaia DR3 locale (10 étoiles de catalogue dans le champ contre plus de 500 détectées) ; réussite avec le catalogue en ligne. Code ImageSolverEngine.js : en mode « Automatic catalog », la magnitude est TOUJOURS recalculée (la case Automatic limit magnitude ne compte pas) et la base locale XPSD est prise si elle existe. La base locale Gaia DR3 (XPSD) de l'utilisateur est probablement incomplète (non vérifié : liste des fichiers dans Process › Gaia). Le local reste utile : rapide, sans internet, sans dépendre de VizieR ; SPFC et SPCC utilisent de toute façon la base locale Gaia DR3/SP (autre base).
+
 **À régler :**
 
 - **Icônes** : E03 `Solver_auto` (toutes les images ouvertes, Apply Global) ou `ImageSolver` (glissée sur une image)

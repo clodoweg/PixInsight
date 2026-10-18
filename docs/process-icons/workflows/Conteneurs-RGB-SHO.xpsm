@@ -171,11 +171,11 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          </tr>
          <tr>
             <td id="id">solver_magnitude</td>
-            <td id="value">12</td>
+            <td id="value">15</td>
          </tr>
          <tr>
             <td id="id">solver_autoMagnitude</td>
-            <td id="value">true</td>
+            <td id="value">false</td>
          </tr>
          <tr>
             <td id="id">solver_databasePath</td>
@@ -223,7 +223,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          </tr>
          <tr>
             <td id="id">solver_catalogMode</td>
-            <td id="value">2</td>
+            <td id="value">1</td>
          </tr>
          <tr>
             <td id="id">solver_vizierServer</td>
@@ -251,7 +251,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          </tr>
          <tr>
             <td id="id">solver_catalog</td>
-            <td id="value">PPMXL</td>
+            <td id="value">GaiaDR2</td>
          </tr>
          <tr>
             <td id="id">solver_distortionCorrection</td>
@@ -570,11 +570,11 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
             </tr>
             <tr>
                <td id="id">solver_magnitude</td>
-               <td id="value">12</td>
+               <td id="value">15</td>
             </tr>
             <tr>
                <td id="id">solver_autoMagnitude</td>
-               <td id="value">true</td>
+               <td id="value">false</td>
             </tr>
             <tr>
                <td id="id">solver_databasePath</td>
@@ -622,7 +622,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
             </tr>
             <tr>
                <td id="id">solver_catalogMode</td>
-               <td id="value">2</td>
+               <td id="value">1</td>
             </tr>
             <tr>
                <td id="id">solver_vizierServer</td>
@@ -650,7 +650,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
             </tr>
             <tr>
                <td id="id">solver_catalog</td>
-               <td id="value">PPMXL</td>
+               <td id="value">GaiaDR2</td>
             </tr>
             <tr>
                <td id="id">solver_distortionCorrection</td>
@@ -908,11 +908,11 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
             </tr>
             <tr>
                <td id="id">solver_magnitude</td>
-               <td id="value">12</td>
+               <td id="value">15</td>
             </tr>
             <tr>
                <td id="id">solver_autoMagnitude</td>
-               <td id="value">true</td>
+               <td id="value">false</td>
             </tr>
             <tr>
                <td id="id">solver_databasePath</td>
@@ -960,7 +960,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
             </tr>
             <tr>
                <td id="id">solver_catalogMode</td>
-               <td id="value">2</td>
+               <td id="value">1</td>
             </tr>
             <tr>
                <td id="id">solver_vizierServer</td>
@@ -988,7 +988,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
             </tr>
             <tr>
                <td id="id">solver_catalog</td>
-               <td id="value">PPMXL</td>
+               <td id="value">GaiaDR2</td>
             </tr>
             <tr>
                <td id="id">solver_distortionCorrection</td>
@@ -1145,7 +1145,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <description>PHASE 2 — Gradient : image linéaire : retrait du gradient. Colonne de repère, sans effet.</description>
    </instance>
    <instance class="Script" version="256" id="E04_ImageSolver_instance">
-      <description>LANCEMENT : glisse l'icône sur l'image.&#10;&#10;PRÉRÉGLÉ : script ImageSolver_Date.js en une seule icône (pas de conteneur) : date d'observation 2020-01-01 ajoutée seulement si l'image n'en a pas, puis ImageSolver 6.4.2 lancé avec focale 2 939 mm, pixel 3,76 µm (0,264″/px), catalogue automatique (Gaia DR3 local), correction de distorsion ; coordonnées et vraie date lues dans l'image.&#10;&#10;À RÉGLER : seulement si Solver_auto (phase 1) a échoué sur une image (bilan de la console) : glisse l'icône sur cette image, avant SPFC ou SPCC (RGB).&#10;&#10;SI :&#10;- la date est ajoutée mais ImageSolver ne se lance pas -&gt; glisse l'icône ImageSolver_seul (options) sur la même image&#10;- échec sans coordonnées dans l'en-tête -&gt; lance ImageSolver depuis le menu Script et utilise Search (nom de l'objet)&#10;- master en bin 2 -&gt; metadata_xpixsz = 7.52 et metadata_resolution = 0.0001466 dans solverParams</description>
+      <description>LANCEMENT : glisse l'icône sur l'image.&#10;&#10;PRÉRÉGLÉ : script ImageSolver_Date.js en une seule icône (pas de conteneur) : date d'observation 2020-01-01 ajoutée seulement si l'image n'en a pas, puis ImageSolver 6.4.2 lancé avec focale 2 939 mm, pixel 3,76 µm (0,264″/px), catalogue EN LIGNE Gaia DR2 (VizieR, connexion internet), magnitude limite fixe 15, correction de distorsion ; coordonnées et vraie date lues dans l'image.&#10;&#10;À RÉGLER : seulement si Solver_auto (phase 1) a échoué sur une image (bilan de la console) : glisse l'icône sur cette image, avant SPFC ou SPCC (RGB).&#10;&#10;SI :&#10;- la date est ajoutée mais ImageSolver ne se lance pas -&gt; glisse l'icône ImageSolver_seul (options) sur la même image&#10;- échec sans coordonnées dans l'en-tête -&gt; lance ImageSolver depuis le menu Script et utilise Search (nom de l'objet)&#10;- master en bin 2 -&gt; metadata_xpixsz = 7.52 et metadata_resolution = 0.0001466 dans solverParams&#10;- trop peu d'étoiles (log : Catalog ... objects sous 300) -&gt; solver_magnitude = 16&#10;- pas d'internet ou VizieR en panne -&gt; catalogue local Gaia DR3 (XPSD) dans la fenêtre, seulement si la base locale est complète</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/ImageSolver_Date.js</parameter>
       <parameter id="md5sum"></parameter>
       <table id="parameters" rows="47">
@@ -1183,11 +1183,11 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          </tr>
          <tr>
             <td id="id">solver_magnitude</td>
-            <td id="value">12</td>
+            <td id="value">15</td>
          </tr>
          <tr>
             <td id="id">solver_autoMagnitude</td>
-            <td id="value">true</td>
+            <td id="value">false</td>
          </tr>
          <tr>
             <td id="id">solver_databasePath</td>
@@ -1235,7 +1235,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          </tr>
          <tr>
             <td id="id">solver_catalogMode</td>
-            <td id="value">2</td>
+            <td id="value">1</td>
          </tr>
          <tr>
             <td id="id">solver_vizierServer</td>
@@ -1263,7 +1263,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          </tr>
          <tr>
             <td id="id">solver_catalog</td>
-            <td id="value">PPMXL</td>
+            <td id="value">GaiaDR2</td>
          </tr>
          <tr>
             <td id="id">solver_distortionCorrection</td>
@@ -1615,11 +1615,11 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          </tr>
          <tr>
             <td id="id">solver_magnitude</td>
-            <td id="value">12</td>
+            <td id="value">15</td>
          </tr>
          <tr>
             <td id="id">solver_autoMagnitude</td>
-            <td id="value">true</td>
+            <td id="value">false</td>
          </tr>
          <tr>
             <td id="id">solver_databasePath</td>
@@ -1667,7 +1667,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          </tr>
          <tr>
             <td id="id">solver_catalogMode</td>
-            <td id="value">2</td>
+            <td id="value">1</td>
          </tr>
          <tr>
             <td id="id">solver_vizierServer</td>
@@ -1695,7 +1695,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          </tr>
          <tr>
             <td id="id">solver_catalog</td>
-            <td id="value">PPMXL</td>
+            <td id="value">GaiaDR2</td>
          </tr>
          <tr>
             <td id="id">solver_distortionCorrection</td>

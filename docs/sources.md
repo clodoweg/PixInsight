@@ -1132,3 +1132,12 @@ Fait : ajoutés à SUPPR_GALAXIES_2 (LRGB et LHaRGB). Narrowband non touché.
 
 Demande : « dans l'ordre inverse E01_Renommer_auto et E00_LinearPatternSubtraction. Met aussi a jour les rapide »
 Fait : galaxies : E00 Renommer_auto, E01 LinearPatternSubtraction (numérotation : Renommer_auto en tête compte comme E00). Rapides déjà dans cet ordre (R_C_Preparation_rapide et T_Turbo_debut : Renommer_auto, LinearPatternSubtraction, Combinaison_RGB, Solver_auto) : rien à changer. Narrowband non touché (E00 LinearPatternSubtraction, E01 Renommer_auto).
+
+### ImageSolver : catalogue en ligne Gaia DR2, magnitude 15 (18 octobre 2026)
+
+Demande : log ImageSolver de l'utilisateur (10 étoiles de catalogue contre 571 puis 746 détectées, « 0 star pair matches »), puis « ca marcge avec le catalog online. tu veux pas du coup mettre a jour les process icones pour toujours utiliser le online ? (a quoi sert de l'avoir en local ?) »
+Fait : icônes ImageSolver, ImageSolver_seul, Solver_auto (et les conteneurs qui les reprennent), 5 workflows : solver_catalogMode 1 (Online), solver_catalog GaiaDR2, solver_autoMagnitude false, solver_magnitude 15.
+Sources :
+- Officiel (code) — https://gitlab.com/pixinsight/PJSR/-/raw/master/src/scripts/ImageSolver/ImageSolverEngine.js : CatalogMode LocalText 0, Online 1, Automatic 2, LocalXPSDServer 3 ; en Automatic la magnitude est recalculée (formule 14,5 × fov^-0,179, ou recherche adaptative sur la base XPSD locale) ; sans base locale et champ ≤ 3°, ImageSolver choisit lui-même Gaia DR2 en ligne.
+- Officiel (code) — https://gitlab.com/pixinsight/PJSR/-/raw/master/src/scripts/AdP/AstronomicalCatalogs.jsh : identifiant « GaiaDR2 » (VizieR).
+Non vérifié : contenu de la base Gaia DR3 locale de l'utilisateur (fichiers installés).
