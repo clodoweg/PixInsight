@@ -13,4 +13,6 @@ for f in workflows/*.xpsm; do
   python3 -c "import sys,re,collections; t=open(sys.argv[1]).read(); d=[k for k,n in collections.Counter(re.findall(r'<(?:instance|icon) [^>]*?id=\"([^\"]+)\"', t)).items() if n > 1]; d and sys.exit('identifiants en double : ' + ', '.join(d))" "$f" || { echo "Doublon : $f"; exit 1; }
 done
 python3 $B/kb_icons.py workflows ../kb
-echo "OK : icônes et docs/kb/icones-*.md régénérés."
+# diagrammes des workflows (demande de l'utilisateur, 18 octobre 2026), page gardée dans le dépôt
+python3 $B/diagrammes/diagrammes.py ../Diagrammes-workflows.html >/dev/null
+echo "OK : icônes, docs/kb/icones-*.md et docs/Diagrammes-workflows.html régénérés."

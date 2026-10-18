@@ -1,5 +1,5 @@
 # Diagrammes des workflows (demande de l'utilisateur, 18 octobre 2026) : une page HTML, un onglet par workflow, construite depuis docs/kb/icones-*.md.
-# Usage : python3 diagrammes.py sortie.html (la page n'est pas gardée dans le dépôt).
+# Usage : python3 diagrammes.py sortie.html (build.sh l'écrit dans docs/Diagrammes-workflows.html).
 import re, html, sys, os
 KB = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..', 'kb')
 WF = [('LRGB','icones-LRGB.md','Galaxies LRGB'),('LHaRGB','icones-LHaRGB.md','Galaxies LHaRGB'),

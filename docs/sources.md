@@ -1167,3 +1167,4 @@ Fait : conteneurs sous_masque (tous les workflows) : retour au PixelMath natif M
 
 Demande : « fait moi un diagramme par process qui m'explique chaque étape avec les différentes options possibles »
 Fait : générateur docs/process-icons/build/diagrammes/diagrammes.py (+ modele.html) : page HTML, un onglet par workflow (LRGB, LHaRGB, RGB + SHO, SHO sans RGB, HOO), phases P1 à P7, chemin principal numéroté, options, rapide et turbo de chaque phase ; textes tirés des fiches docs/kb/icones-*.md (clic : préréglé, à régler, contenu, lancement).
+- Puis « met la page des diagrammes dans le depot » : docs/Diagrammes-workflows.html, régénérée par build.sh à chaque build.
