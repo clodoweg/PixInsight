@@ -263,7 +263,7 @@ def layout_all(main, opts, rapide=None, notes=None, turbo=None):
     """Une colonne par phase : icône-titre, étapes du chemin principal (E01…), puis icône « options » et options (Opt_…)."""
     insts, icons = [], []
     phases = sorted({e[1] for e in main} | {e[1] for e in opts})
-    numbered, k = [], -1 if main and main[0][0] in ('LinearPatternSubtraction', 'C_Preparation_rapide') else 0   # LPS (ou la préparation rapide) = E00
+    numbered, k = [], -1 if main and main[0][0] in ('LinearPatternSubtraction', 'Renommer_auto', 'C_Preparation_rapide') else 0   # LPS, Renommer_auto (galaxies) ou la préparation rapide = E00
     for ph in phases:
         for b, p, xml in main:
             if p == ph:
@@ -1411,6 +1411,13 @@ insert_after(lhargb, 'Main_continuum', [(cont('C_Ha_RGB_rapide', [pick(lhargb, b
 # (demande de l'utilisateur, 9 octobre 2026 : « Je vais faire ce process avant de mettre les étoiles »)
 for _st in (lrgb, lhargb, rgbsho, sho, hoo):
     insert_before(_st, 'Etoiles_screen', [(script('Look_Lightroom', ''), '')])
+
+# galaxies : Renommer_auto avant LinearPatternSubtraction (E00, E01 inversés, demande de l'utilisateur, 18 octobre 2026 ;
+# R_C_Preparation_rapide et T_Turbo_debut font déjà Renommer_auto en premier)
+for _st in (lrgb, lhargb):
+    _it = pick(_st, 'Renommer_auto')
+    _st.remove(_it)
+    insert_before(_st, 'LinearPatternSubtraction', [_it])
 
 # options supprimées des galaxies (demande de l'utilisateur, 18 octobre 2026) : restent en narrowband
 SUPPR_GALAXIES_2 = {'Look_Lightroom', 'Fond_auto_clair', 'Etoiles_grosses', 'Halo_B_Gon', 'MT_etoiles',
