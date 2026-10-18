@@ -1142,7 +1142,7 @@ Sources :
 - Officiel (code) — https://gitlab.com/pixinsight/PJSR/-/raw/master/src/scripts/AdP/AstronomicalCatalogs.jsh : identifiant « GaiaDR2 » (VizieR).
 Non vérifié : contenu de la base Gaia DR3 locale de l'utilisateur (fichiers installés).
 
-### R_C_RGB_etire_rapide : SCNR_RGB ajouté (18 octobre 2026)
+### R_C_RGB_etire_rapide : SCNR_RGB ajouté puis retiré (18 octobre 2026)
 
-Demande : « rajoute Opt_SCNR_RGB dans le rapide »
-Fait : R_C_RGB_etire_rapide (LRGB et LHaRGB) = MAS, SXT_RGB_etire, SCNR_etoiles_vert (sur RGB_stars), SCNR_RGB (vert, Average Neutral, 1,0, sur le RGB sans étoiles), GHS fond. Textes de l'option et du rapide mis à jour.
+Demande : « rajoute Opt_SCNR_RGB dans le rapide », puis « non en fait retire le, remet comme avant »
+Fait : commit annulé (git revert) : R_C_RGB_etire_rapide = MAS, SXT_RGB_etire, SCNR_etoiles_vert, GHS fond ; Opt_SCNR_RGB reste une option P4 hors rapide.

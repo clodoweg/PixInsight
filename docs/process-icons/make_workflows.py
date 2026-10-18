@@ -1177,8 +1177,8 @@ def lrgb_rapide(steps):
     return cont('C_LRGB_rapide', [pick(steps, 'LRGB_ajout_L')[0]])   # Etoiles_auto_etire retiré puis supprimé (demande de l'utilisateur)
 
 def rgb_etire_rapide(steps):
-    """P4_rapide galaxies (demande de l'utilisateur) : MAS avec étoiles, SXT Unscreen (RGB_stars), SCNR vert sur RGB_stars, SCNR vert sur le RGB sans étoiles, GHS fond (SP = HP = 0,12, fond MAS 0,15)."""
-    return cont('C_RGB_etire_rapide', [pick(steps, 'MAS')[0], pick(steps, 'SXT_RGB_etire')[0], pick(steps, 'SCNR_etoiles_vert')[0], pick(steps, 'SCNR_RGB')[0], ghs('GHS_fond', 10, hp=0.12, sf=1.0, sp=0.12)])   # SCNR_RGB ajouté (demande de l'utilisateur, 18 octobre 2026)
+    """P4_rapide galaxies (demande de l'utilisateur) : MAS avec étoiles, SXT Unscreen (RGB_stars), SCNR vert sur RGB_stars, GHS fond (SP = HP = 0,12, fond MAS 0,15)."""
+    return cont('C_RGB_etire_rapide', [pick(steps, 'MAS')[0], pick(steps, 'SXT_RGB_etire')[0], pick(steps, 'SCNR_etoiles_vert')[0], ghs('GHS_fond', 10, hp=0.12, sf=1.0, sp=0.12)])
 
 def prep_rapide(steps):
     """E00 : renommage, LinearPatternSubtraction (masters mono ouverts), combinaison RGB, en un conteneur."""

@@ -2064,7 +2064,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="information"></parameter>
    </instance>
    <instance class="SCNR" version="256" id="Opt_SCNR_RGB_instance">
-      <description>OPTION — dominante verte sur la galaxie ou le fond (sonde : G au-dessus de R et B) : SCNR vert sur le RGB SANS étoiles, après SXT_RGB_etire, avant GHS_3_fond et LRGB&#10;Aussi dans R_C_RGB_etire_rapide.&#10;&#10;PRÉRÉGLÉ : SCNR : vert, Average Neutral, Amount 1,0 (valeurs par défaut).&#10;&#10;À RÉGLER : glisse sur le RGB SANS étoiles (après SXT_RGB_etire), avant GHS_3_fond et LRGB_ajout_L ; seulement si du vert reste (sonde 15x15 : G au-dessus de R et de B).&#10;&#10;SI :&#10;- cœur jaune terni, régions roses virées au violet -&gt; Amount 0,50 à 0,70&#10;- vert encore visible -&gt; vérifie SPCC avant de pousser</description>
+      <description>OPTION — dominante verte sur la galaxie ou le fond (sonde : G au-dessus de R et B) : SCNR vert sur le RGB SANS étoiles, après SXT_RGB_etire, avant GHS_3_fond et LRGB&#10;Pas dans le rapide.&#10;&#10;PRÉRÉGLÉ : SCNR : vert, Average Neutral, Amount 1,0 (valeurs par défaut).&#10;&#10;À RÉGLER : glisse sur le RGB SANS étoiles (après SXT_RGB_etire), avant GHS_3_fond et LRGB_ajout_L ; seulement si du vert reste (sonde 15x15 : G au-dessus de R et de B).&#10;&#10;SI :&#10;- cœur jaune terni, régions roses virées au violet -&gt; Amount 0,50 à 0,70&#10;- vert encore visible -&gt; vérifie SPCC avant de pousser</description>
       <parameter id="amount" value="1.00"/>
       <parameter id="protectionMethod" value="AverageNeutral"/>
       <parameter id="colorToRemove" value="Green"/>
@@ -2194,7 +2194,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <description>MODE RAPIDE, phase 4 — Étirement : GHS_1_premier sur L sans étoiles (chemin principal, à régler), puis GHS_2_contraste et GHS_3_fond (chemin principal) sur L ; R_C_RGB_etire_rapide sur RGB (MAS avec étoiles, SXT Unscreen qui crée RGB_stars, SCNR vert sur RGB_stars, GHS fond). Icône de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="R_C_RGB_etire_rapide_instance">
-      <description>MODE RAPIDE, à la place de MAS, SXT_RGB_etire, SCNR_etoiles_vert, SCNR_RGB et GHS_3_fond sur le RGB (options SCNR_etoiles_violet et Saturation_grosses à passer à part si besoin) : glisse sur RGB linéaire avec étoiles ; MAS, SXT Unscreen (RGB_stars créée), SCNR vert sur RGB_stars, SCNR vert sur le RGB sans étoiles (SCNR_RGB), GHS fond (SP = HP = 0,12).&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : MAS (tes réglages, fond 0,15), SXT Unscreen (RGB_stars créée), SCNR vert 1,0 sur RGB_stars (script Etoiles_auto), SCNR vert 1,0 sur le RGB sans étoiles (SCNR_RGB, Average Neutral), GHS fond (b = 10, SP = HP = 0,12, Stretch factor 1).&#10;&#10;À RÉGLER : glisse sur le RGB linéaire avec étoiles (après R_Lineaire_rapide) ; RGB sort étiré sans étoiles, RGB_stars étirée ; ensuite R_C_LRGB_rapide.&#10;&#10;SI :&#10;- fond pas au même niveau que L -&gt; GHS_3_fond du chemin principal, réglé à la main&#10;- cœur jaune terni ou pas de vert à retirer -&gt; double-clic sur le conteneur : décoche l'étape SCNR (4) ou Amount 0,50</description>
+      <description>MODE RAPIDE, à la place de MAS, SXT_RGB_etire, SCNR_etoiles_vert et GHS_3_fond sur le RGB (options SCNR_etoiles_violet et Saturation_grosses à passer à part si besoin) : glisse sur RGB linéaire avec étoiles ; MAS, SXT Unscreen (RGB_stars créée), SCNR vert sur RGB_stars, GHS fond (SP = HP = 0,12).&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : MAS (tes réglages, fond 0,15), SXT Unscreen (RGB_stars créée), SCNR vert 1,0 sur RGB_stars (script Etoiles_auto), GHS fond (b = 10, SP = HP = 0,12, Stretch factor 1).&#10;&#10;À RÉGLER : glisse sur le RGB linéaire avec étoiles (après R_Lineaire_rapide) ; RGB sort étiré sans étoiles, RGB_stars étirée ; ensuite R_C_LRGB_rapide.&#10;&#10;SI :&#10;- fond pas au même niveau que L -&gt; GHS_3_fond du chemin principal, réglé à la main</description>
       <instance class="MultiscaleAdaptiveStretch" version="256" enabled="true">
          <parameter id="aggressiveness" value="0.70"/>
          <parameter id="targetBackground" value="0.150"/>
@@ -2253,12 +2253,6 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
             </tr>
          </table>
          <parameter id="information"></parameter>
-      </instance>
-      <instance class="SCNR" version="256" enabled="true">
-         <parameter id="amount" value="1.00"/>
-         <parameter id="protectionMethod" value="AverageNeutral"/>
-         <parameter id="colorToRemove" value="Green"/>
-         <parameter id="preserveLightness" value="true"/>
       </instance>
       <instance class="GeneralizedHyperbolicStretch" version="256" enabled="true">
          <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
