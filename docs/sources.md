@@ -1141,3 +1141,8 @@ Sources :
 - Officiel (code) — https://gitlab.com/pixinsight/PJSR/-/raw/master/src/scripts/ImageSolver/ImageSolverEngine.js : CatalogMode LocalText 0, Online 1, Automatic 2, LocalXPSDServer 3 ; en Automatic la magnitude est recalculée (formule 14,5 × fov^-0,179, ou recherche adaptative sur la base XPSD locale) ; sans base locale et champ ≤ 3°, ImageSolver choisit lui-même Gaia DR2 en ligne.
 - Officiel (code) — https://gitlab.com/pixinsight/PJSR/-/raw/master/src/scripts/AdP/AstronomicalCatalogs.jsh : identifiant « GaiaDR2 » (VizieR).
 Non vérifié : contenu de la base Gaia DR3 locale de l'utilisateur (fichiers installés).
+
+### R_C_RGB_etire_rapide : SCNR_RGB ajouté (18 octobre 2026)
+
+Demande : « rajoute Opt_SCNR_RGB dans le rapide »
+Fait : R_C_RGB_etire_rapide (LRGB et LHaRGB) = MAS, SXT_RGB_etire, SCNR_etoiles_vert (sur RGB_stars), SCNR_RGB (vert, Average Neutral, 1,0, sur le RGB sans étoiles), GHS fond. Textes de l'option et du rapide mis à jour.

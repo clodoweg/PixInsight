@@ -458,7 +458,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
    amount=1.00 ; protectionMethod=AverageNeutral ; colorToRemove=Green ; preserveLightness=true
 
 > OPTION — dominante verte sur la galaxie ou le fond (sonde : G au-dessus de R et B) : SCNR vert sur le RGB SANS étoiles, après SXT_RGB_etire, avant GHS_3_fond et LRGB
-> Pas dans le rapide.
+> Aussi dans R_C_RGB_etire_rapide.
 > 
 > PRÉRÉGLÉ : SCNR : vert, Average Neutral, Amount 1,0 (valeurs par défaut).
 > 
@@ -545,19 +545,22 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
    3. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js`
       paramètres : `vue=RGB_stars`, `amount=0`, `satAmount=0`, `scnr=true`, `violet=false`, `dialogue=false`
-   4. GeneralizedHyperbolicStretch
+   4. SCNR
+      amount=1.00 ; protectionMethod=AverageNeutral ; colorToRemove=Green ; preserveLightness=true
+   5. GeneralizedHyperbolicStretch
       stretchType=ST_GeneralisedHyperbolic ; stretchChannel=SC_RGB ; inverse=false ; stretchFactor=1.000 ; localIntensity=10.000 ; symmetryPoint=0.120000 ; highlightProtection=0.120000 ; shadowProtection=0.000000 ; blackPoint=0.000000 ; whitePoint=1.000000 ; colourBlend=1.000 ; clipType=CT_RGBBlend ; useRGBWorkingSpace=false
 
-> MODE RAPIDE, à la place de MAS, SXT_RGB_etire, SCNR_etoiles_vert et GHS_3_fond sur le RGB (options SCNR_etoiles_violet et Saturation_grosses à passer à part si besoin) : glisse sur RGB linéaire avec étoiles ; MAS, SXT Unscreen (RGB_stars créée), SCNR vert sur RGB_stars, GHS fond (SP = HP = 0,12).
+> MODE RAPIDE, à la place de MAS, SXT_RGB_etire, SCNR_etoiles_vert, SCNR_RGB et GHS_3_fond sur le RGB (options SCNR_etoiles_violet et Saturation_grosses à passer à part si besoin) : glisse sur RGB linéaire avec étoiles ; MAS, SXT Unscreen (RGB_stars créée), SCNR vert sur RGB_stars, SCNR vert sur le RGB sans étoiles (SCNR_RGB), GHS fond (SP = HP = 0,12).
 > 
 > LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
 > 
-> PRÉRÉGLÉ : conteneur : MAS (tes réglages, fond 0,15), SXT Unscreen (RGB_stars créée), SCNR vert 1,0 sur RGB_stars (script Etoiles_auto), GHS fond (b = 10, SP = HP = 0,12, Stretch factor 1).
+> PRÉRÉGLÉ : conteneur : MAS (tes réglages, fond 0,15), SXT Unscreen (RGB_stars créée), SCNR vert 1,0 sur RGB_stars (script Etoiles_auto), SCNR vert 1,0 sur le RGB sans étoiles (SCNR_RGB, Average Neutral), GHS fond (b = 10, SP = HP = 0,12, Stretch factor 1).
 > 
 > À RÉGLER : glisse sur le RGB linéaire avec étoiles (après R_Lineaire_rapide) ; RGB sort étiré sans étoiles, RGB_stars étirée ; ensuite R_C_LRGB_rapide.
 > 
 > SI :
 > - fond pas au même niveau que L -> GHS_3_fond du chemin principal, réglé à la main
+> - cœur jaune terni ou pas de vert à retirer -> double-clic sur le conteneur : décoche l'étape SCNR (4) ou Amount 0,50
 
 ## P5_Couleur
 
