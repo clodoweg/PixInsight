@@ -338,6 +338,10 @@ for _p, _et in _ET_NB.items():
     V[(_p, 'Fond_auto_clair')] = (S['Fond_auto_clair'][0], "à la place de Fond_auto, image trop sombre : glisse sur l'image sans étoiles, après Fond_desature, avant la recombinaison des étoiles", S['Fond_auto_clair'][2])
     V[(_p, 'NXT_dernier')] = (S['NXT_dernier'][0], "toute dernière étape avant l'export : glisse sur l'image finie AVEC ses étoiles, juste après la recombinaison (Etoiles_reduites ou Etoiles_screen)", S['NXT_dernier'][2])
 
+# galaxies : Sharp_USM retiré (demande de l'utilisateur, 18 octobre 2026), plus cité dans C_Sharp_MMT
+for _p in ('LRGB', 'LHA'):
+    V[(_p, 'C_Sharp_MMT')] = (S['C_Sharp_MMT'][0], S['C_Sharp_MMT'][1], [x for x in S['C_Sharp_MMT'][2] if 'Sharp_USM' not in x])
+
 LAUNCH = {True: "LANCEMENT : glisse l'icône sur l'image.", False: "LANCEMENT : double-clic sur l'icône, puis Apply Global.",
           'cont': "LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).",
           'cont_global': "LANCEMENT : masters seuls ouverts, double-clic puis Apply Global (rond bleu) ; pas en glissant (ImageSolver échoue sur une image en cours de traitement).",

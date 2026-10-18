@@ -1102,3 +1102,8 @@ Fait : option Opt_CloneStamp (P4, LRGB et LHaRGB, pas dans le rapide) : instance
 Sources :
 - Officiel (code) — https://gitlab.com/pixinsight/PCL/-/tree/master/src/modules/processes/CloneStamp : module CloneStamp 1.0.2, version 0x100 ; paramètres cloner (table), actions (table), width, height, clonerColor et boundsColor (défaut 0xffe0e0e0) ; CloneStampInterface.cpp : Ctrl+clic = choix de la source, Ctrl+Z / Ctrl+Y = annuler / refaire, Execute = valide les clonages sur l'image.
 Non vérifié : chargement de l'icône dans PixInsight 1.9.5 (à confirmer par l'utilisateur).
+
+### LRGB et LHaRGB : Opt_Sharp_USM et Opt_EZ_Soft_Stretch supprimés (18 octobre 2026)
+
+Demande : « supprime Opt_Sharp_USM Opt_EZ_Soft_Stretch »
+Fait : retirés des workflows galaxies (SUPPR_GALAXIES), textes qui les citaient corrigés (Star_Stretch, C_Sharp_MMT). Narrowband (SHO, RGB + SHO, HOO) non touché : ils y restent en option.

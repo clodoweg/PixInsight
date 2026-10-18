@@ -1391,7 +1391,8 @@ for _st in (lrgb, lhargb, rgbsho, sho, hoo):
     insert_after(_st, 'Statistical_Stretch', [(mas_light(), '')])
 
 # options supprimées des workflows galaxies (demande de l'utilisateur, 5 octobre 2026) ; Etoiles_grosses reste en narrowband
-SUPPR_GALAXIES = {'Etoiles_plafond'}   # Etoiles_grosses remise en option P7 (demande de l'utilisateur) ; Etoiles_auto_etire, GraXpert, VeraLux_HMS, MKStarReduction, Coeurs_etoiles, RepairedHSV, Etoiles_couleur : retirés du code
+SUPPR_GALAXIES = {'Etoiles_plafond', 'Sharp_USM', 'EZ_Soft_Stretch'}   # Sharp_USM et EZ_Soft_Stretch retirés (demande de l'utilisateur, 18 octobre 2026)
+#   # Etoiles_grosses remise en option P7 (demande de l'utilisateur) ; Etoiles_auto_etire, GraXpert, VeraLux_HMS, MKStarReduction, Coeurs_etoiles, RepairedHSV, Etoiles_couleur : retirés du code
 for _st in (lrgb, lhargb):
     _st[:] = [x for x in _st if x[0][0] not in SUPPR_GALAXIES]
 # LHaRGB, phase 3 en un seul rapide glissé sur RGB (demande de l'utilisateur ; CombineHaWithRGB se glisse maintenant) : BXT Correct Only, SPCC, BXT sur RGB

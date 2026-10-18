@@ -728,31 +728,13 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - trop sombre ou plat -> Aggressiveness 0,30, ou MAS
 > - couleurs trop fades -> saturation 0,60
 
-#### Opt_EZ_Soft_Stretch — Script
-   script `$PXI_SRCDIR/scripts/EZProcessingSuite/EZ_SoftStretch.js`
-
-> OPTION — à la place de MAS sur le RGB (ou des GHS sur L) : étirement automatique doux (HistogramTransformation, point noir et médiane calculés)
-> Puis SXT_RGB_etire et GHS_3_fond comme après MAS.
-> 
-> LANCEMENT : double-clic sur l'icône, puis Apply Global.
-> 
-> PRÉRÉGLÉ : script EZ Soft Stretch (EZ Processing Suite, Elveteek / darkarchon) : HistogramTransformation avec point noir trouvé dans l'histogramme et fonction de transfert vers une médiane cible ; réglages dans sa fenêtre.
-> 
-> À RÉGLER : clique sur le RGB linéaire avec étoiles (après C_RGB_lineaire / E10 à E16 en LHaRGB), double-clic puis Apply Global ; dans la fenêtre : Target Median 0,15, Expand Low 0,05, Aggressiveness 5, Zero in White Point décoché ; onglet Stretch Preview pour contrôler, puis OK ; ensuite SXT_RGB_etire, SCNR_etoiles_vert, GHS_3_fond comme après MAS ; dépôt https://elveteek.ch/pixinsight-updates/ez-processing-suite/.
-> 
-> SI :
-> - fond trop sombre ou galaxie faible -> Target Median 0,20 (défaut) ou Expand Low 0,08
-> - fond délavé, gris -> Target Median 0,12
-> - fond coupé à noir -> Aggressiveness plus bas (2 à 3)
-> - étoiles grossies, cœurs blancs -> c'est le défaut d'un étirement par fonction de transfert : MAS à la place
-
 #### Opt_Star_Stretch — Script
    script `$PXI_SRCDIR/scripts/star_stretch.js`
    paramètres : `amount=6`, `satAmount=1.3`, `removeGreen=true`, `showPreview=false`
 
 > OPTION — étoiles étirées à part : SXT sur le RGB LINÉAIRE (Unscreen décoché, Generate star image coché) donne RGB_stars linéaire
 > Glisse Star_Stretch sur RGB_stars (Stretch Amount 6, SCNR)
-> Le RGB sans étoiles s'étire par MAS ou EZ_Soft_Stretch
+> Le RGB sans étoiles s'étire par MAS
 > À la place de SXT_RGB_etire et SCNR_etoiles_vert.
 > 
 > LANCEMENT : glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
@@ -894,7 +876,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - pas assez net -> double-clic sur le conteneur, Sharp_MMT : biais 0.06
 > - halos ou aspect dur -> biais 0.02
 > - bruit accentué -> première couche 3
-> - autre rendu -> Sharp_USM (P6 options) à la place
 
 #### E28_NXT_final — NoiseXTerminator
    ml_version=0 ; denoise=0.40 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
@@ -1125,37 +1106,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > SI :
 > - fond qui se colore ou bruit -> arrête, ou NXT final
 > - halo sombre autour de la galaxie -> une passe de moins
-
-#### Opt_Sharp_USM — ProcessContainer
-   1. Script
-      script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
-      paramètres : `mode=creer`, `s=0.14`, `flou=2`, `nom=masque_L`, `dialogue=false`
-   2. PixelMath
-      expression = `$T` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=true ; showNewImage=true ; newImageId=Masque_avant ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
-   3. UnsharpMask
-      sigma=2.00 ; amount=0.30 ; useLuminance=true ; linear=false ; deringing=true ; deringingDark=0.1000 ; deringingBright=0.0000 ; outputDeringingMaps=false ; rangeLow=0.0000000 ; rangeHigh=0.0000000
-   4. PixelMath
-      expression = `masque_L*$T + (1 - masque_L)*Masque_avant` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
-   5. Script
-      script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
-      paramètres : `views=Masque_avant`, `dialogue=false`
-   6. Script
-      script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
-      paramètres : `mode=retirer`, `nom=masque_L`, `dialogue=false`
-
-> OPTION — à la place de C_Sharp_MMT : accentuation finale par UnsharpMask, avant NXT_final, sur l'image sans étoiles
-> Masque de luminance appliqué par mélange PixelMath, fermé automatiquement.
-> 
-> LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
-> 
-> PRÉRÉGLÉ : conteneur : masque_L créé sans être attaché, copie de l'image, UnsharpMask (écart type 2,0 px, amount 0,30, luminance seule, anti-halo sombre 0,10), puis mélange masque_L × résultat + (1 − masque_L) × copie, copie et masque fermés.
-> 
-> À RÉGLER : glisse sur l'image SANS étoiles étirée, après C_Finition, avant NXT_final ; regarde à 100 % sur la galaxie.
-> 
-> SI :
-> - halos sombres autour des détails -> double-clic sur le conteneur, UnsharpMask : amount 0,20 ou anti-halo 0,15
-> - pas assez net -> amount 0,40
-> - fond qui devient granuleux -> seuil s du masque plus haut (Masque_L)
 
 #### Opt_NXT_final_doux — NoiseXTerminator
    ml_version=0 ; denoise=0.25 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
