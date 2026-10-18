@@ -1131,3 +1131,10 @@ Paramètres
 - **Protection method** : Average Neutral
 
 - **Amount** : 1,0 (défaut) convient dans la plupart des cas ; 0,50 à 0,80 pour garder un peu de vert en SHO
+
+#### CloneStamp
+Option Opt_CloneStamp (P4, LRGB et LHaRGB, demande de l'utilisateur, 18 octobre 2026) : instance vide, double-clic pour ouvrir la fenêtre. Sur l'image étirée SANS étoiles (L après les GHS, RGB après SXT_RGB_etire), avant LRGB : restes d'étoiles, traces de satellite, poussières, pixels chauds.
+- Ctrl+clic sur une zone propre = source ; clic ou glisser sur le défaut = clonage ; Ctrl+Z / Ctrl+Y dans la fenêtre = annuler / refaire ; Execute (coche verte) = valider (code PCL CloneStampInterface.cpp).
+- Radius, Softness, Opacity : bord visible -> Softness plus haut ; motif répété -> changer souvent de source.
+- Instance : version 256, tables cloner et actions vides, width 0, height 0, couleurs 0xffe0e0e0 (défaut du module). Chargement dans PixInsight non vérifié.
+

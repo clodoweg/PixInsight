@@ -166,6 +166,7 @@ S = {
     'HOO_Hubble': ("G = 0,6·H + 0,4·O", "vues H et O étirées ; ajuste les coefficients", []),
     'Perfect_Palette_Picker': ("rien (le script ne lit pas l'icône)", "choisis H, O, S ; Linear Input Data selon tes images ; compare les 16 vignettes", []),
     'NBColourMapper': ("rien (icône-note)", "H rouge-orangé, O cyan-bleu, S rouge profond ou or", []),
+    'CloneStamp': ("process CloneStamp vide (aucun clonage enregistré)", "double-clic : la fenêtre CloneStamp s'ouvre ; règle Radius, Softness, Opacity ; Ctrl+clic sur une zone propre (source), puis clic ou glisser sur le défaut ; coche verte (Execute) pour valider ; sur l'image étirée SANS étoiles (L ou RGB), avant LRGB", ["bord visible -> Softness plus haut, Radius plus grand", "motif répété -> change souvent de source (Ctrl+clic)", "erreur -> Ctrl+Z dans la fenêtre CloneStamp avant de valider"]),
     'SCNR_RGB': ("SCNR : vert, Average Neutral, Amount 1,0 (valeurs par défaut)", "glisse sur le RGB SANS étoiles (après SXT_RGB_etire), avant GHS_3_fond et LRGB_ajout_L ; seulement si du vert reste (sonde 15x15 : G au-dessus de R et de B)", ["cœur jaune terni, régions roses virées au violet -> Amount 0,50 à 0,70", "vert encore visible -> vérifie SPCC avant de pousser"]),
     'SCNR_SHO': ("vert, Average Neutral, Amount 0,70", "rien", ["encore vert -> 0,80", "trop magenta -> 0,50"]),
     'Etoiles_RGB': ("rien (icône-note)", "suis les icônes suivantes : étoiles RGB calibrées pour l'image SHO", []),

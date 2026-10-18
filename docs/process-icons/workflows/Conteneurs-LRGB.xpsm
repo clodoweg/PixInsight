@@ -2100,6 +2100,15 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="colorToRemove" value="Green"/>
       <parameter id="preserveLightness" value="true"/>
    </instance>
+   <instance class="CloneStamp" version="256" id="Opt_CloneStamp_instance">
+      <description>OPTION — défaut local sur une image étirée SANS étoiles (reste d'étoile, trace de satellite, poussière, pixel chaud) : à la main, sur L après les GHS ou sur le RGB après SXT_RGB_etire, avant LRGB&#10;Pas dans le rapide.&#10;&#10;PRÉRÉGLÉ : process CloneStamp vide (aucun clonage enregistré).&#10;&#10;À RÉGLER : double-clic : la fenêtre CloneStamp s'ouvre ; règle Radius, Softness, Opacity ; Ctrl+clic sur une zone propre (source), puis clic ou glisser sur le défaut ; coche verte (Execute) pour valider ; sur l'image étirée SANS étoiles (L ou RGB), avant LRGB.&#10;&#10;SI :&#10;- bord visible -&gt; Softness plus haut, Radius plus grand&#10;- motif répété -&gt; change souvent de source (Ctrl+clic)&#10;- erreur -&gt; Ctrl+Z dans la fenêtre CloneStamp avant de valider</description>
+      <table id="cloner" rows="0"/>
+      <table id="actions" rows="0"/>
+      <parameter id="width" value="0"/>
+      <parameter id="height" value="0"/>
+      <parameter id="clonerColor" value="4292927712"/>
+      <parameter id="boundsColor" value="4292927712"/>
+   </instance>
    <instance class="Script" version="256" id="Opt_Statistical_Stretch_instance">
       <description>OPTION — à la place de MAS sur le RGB avec étoiles (étirement statistique, étoiles plus grosses)&#10;Puis SXT_RGB_etire.&#10;&#10;LANCEMENT : glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.&#10;&#10;PRÉRÉGLÉ : Target Median 0,25, Blackpoint Sigma 5, Linked coché, reste par défaut.&#10;&#10;À RÉGLER : OPTION, à la place de MAS : sur le RGB linéaire AVEC ses étoiles ; puis SXT_RGB_etire et GHS_3_fond sur le RGB (SP = HP = 0,22).&#10;&#10;SI :&#10;- étoiles grossies ou cœurs blancs -&gt; MAS (chemin principal)</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/statisticalstretch.js</parameter>
@@ -5922,12 +5931,13 @@ max($T,f1)</parameter>
    <icon id="Opt_SCNR_etoiles_violet" instance="Opt_SCNR_etoiles_violet_instance" xpos="604" ypos="294" workspace="Workspace01"/>
    <icon id="Opt_Saturation_grosses" instance="Opt_Saturation_grosses_instance" xpos="604" ypos="324" workspace="Workspace01"/>
    <icon id="Opt_SCNR_RGB" instance="Opt_SCNR_RGB_instance" xpos="604" ypos="354" workspace="Workspace01"/>
-   <icon id="Opt_Statistical_Stretch" instance="Opt_Statistical_Stretch_instance" xpos="604" ypos="384" workspace="Workspace01"/>
-   <icon id="Opt_MAS_light" instance="Opt_MAS_light_instance" xpos="604" ypos="414" workspace="Workspace01"/>
-   <icon id="Opt_EZ_Soft_Stretch" instance="Opt_EZ_Soft_Stretch_instance" xpos="604" ypos="444" workspace="Workspace01"/>
-   <icon id="Opt_Star_Stretch" instance="Opt_Star_Stretch_instance" xpos="604" ypos="474" workspace="Workspace01"/>
-   <icon id="P4_rapide" instance="P4_rapide_instance" xpos="604" ypos="520" workspace="Workspace01"/>
-   <icon id="R_C_RGB_etire_rapide" instance="R_C_RGB_etire_rapide_instance" xpos="604" ypos="554" workspace="Workspace01"/>
+   <icon id="Opt_CloneStamp" instance="Opt_CloneStamp_instance" xpos="604" ypos="384" workspace="Workspace01"/>
+   <icon id="Opt_Statistical_Stretch" instance="Opt_Statistical_Stretch_instance" xpos="604" ypos="414" workspace="Workspace01"/>
+   <icon id="Opt_MAS_light" instance="Opt_MAS_light_instance" xpos="604" ypos="444" workspace="Workspace01"/>
+   <icon id="Opt_EZ_Soft_Stretch" instance="Opt_EZ_Soft_Stretch_instance" xpos="604" ypos="474" workspace="Workspace01"/>
+   <icon id="Opt_Star_Stretch" instance="Opt_Star_Stretch_instance" xpos="604" ypos="504" workspace="Workspace01"/>
+   <icon id="P4_rapide" instance="P4_rapide_instance" xpos="604" ypos="550" workspace="Workspace01"/>
+   <icon id="R_C_RGB_etire_rapide" instance="R_C_RGB_etire_rapide_instance" xpos="604" ypos="584" workspace="Workspace01"/>
    <icon id="P5_Couleur" instance="P5_Couleur_instance" xpos="795" ypos="20" workspace="Workspace01"/>
    <icon id="E16_LRGB_ajout_L" instance="E16_LRGB_ajout_L_instance" xpos="795" ypos="64" workspace="Workspace01"/>
    <icon id="P5_rapide" instance="P5_rapide_instance" xpos="795" ypos="110" workspace="Workspace01"/>

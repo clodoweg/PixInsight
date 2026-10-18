@@ -510,6 +510,21 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - cœur jaune terni, régions roses virées au violet -> Amount 0,50 à 0,70
 > - vert encore visible -> vérifie SPCC avant de pousser
 
+#### Opt_CloneStamp — CloneStamp
+   width=0 ; height=0 ; clonerColor=4292927712 ; boundsColor=4292927712
+
+> OPTION — défaut local sur une image étirée SANS étoiles (reste d'étoile, trace de satellite, poussière, pixel chaud) : à la main, sur L après les GHS ou sur le RGB après SXT_RGB_etire, avant LRGB
+> Pas dans le rapide.
+> 
+> PRÉRÉGLÉ : process CloneStamp vide (aucun clonage enregistré).
+> 
+> À RÉGLER : double-clic : la fenêtre CloneStamp s'ouvre ; règle Radius, Softness, Opacity ; Ctrl+clic sur une zone propre (source), puis clic ou glisser sur le défaut ; coche verte (Execute) pour valider ; sur l'image étirée SANS étoiles (L ou RGB), avant LRGB.
+> 
+> SI :
+> - bord visible -> Softness plus haut, Radius plus grand
+> - motif répété -> change souvent de source (Ctrl+clic)
+> - erreur -> Ctrl+Z dans la fenêtre CloneStamp avant de valider
+
 #### Opt_Statistical_Stretch — Script
    script `$PXI_SRCDIR/scripts/statisticalstretch.js`
    paramètres : `targetMedian=0.25`, `curvesBoost=0`, `numIterations=1`, `normalizeImageRange=false`, `linkedStretch=true`, `openDialogbox=true`, `autoConvergence=false`, `blackpointSigma=5`, `noBlackClip=false`, `hdrCompress=false`, `hdrAmount=0.25`, `hdrKnee=0.35`, `lumaOnly=false`, `lumaMode=rec709`, `lumaBlend=0.6`

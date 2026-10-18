@@ -1094,3 +1094,11 @@ Fait : conteneur R_C_Ha_RGB_rapide (P3 rapide, sous R_Main_continuum) : CombineH
 
 Demande : « dans HaLRGB et LRGB rajoute une option SCNR sur le RGB pour enlever le vert »
 Fait : option Opt_SCNR_RGB (P4, LRGB et LHaRGB, pas dans le rapide) : SCNR Green, Average Neutral, Amount 1,0 (valeurs par défaut du process, déjà dans kb/outils.md), sur le RGB sans étoiles après SXT_RGB_etire, avant GHS_3_fond et LRGB. LRGB modifié à la demande explicite de l'utilisateur.
+
+### LRGB et LHaRGB : option CloneStamp en P4 (18 octobre 2026)
+
+Demande : « rajoute aussi une option clonestamp dans etirement pour ces deux la »
+Fait : option Opt_CloneStamp (P4, LRGB et LHaRGB, pas dans le rapide) : instance CloneStamp vide, à ouvrir par double-clic, sur l'image étirée sans étoiles (L après les GHS, RGB après SXT_RGB_etire), avant LRGB. LRGB modifié à la demande explicite de l'utilisateur.
+Sources :
+- Officiel (code) — https://gitlab.com/pixinsight/PCL/-/tree/master/src/modules/processes/CloneStamp : module CloneStamp 1.0.2, version 0x100 ; paramètres cloner (table), actions (table), width, height, clonerColor et boundsColor (défaut 0xffe0e0e0) ; CloneStampInterface.cpp : Ctrl+clic = choix de la source, Ctrl+Z / Ctrl+Y = annuler / refaire, Execute = valide les clonages sur l'image.
+Non vérifié : chargement de l'icône dans PixInsight 1.9.5 (à confirmer par l'utilisateur).
