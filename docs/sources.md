@@ -1168,3 +1168,8 @@ Fait : conteneurs sous_masque (tous les workflows) : retour au PixelMath natif M
 Demande : « fait moi un diagramme par process qui m'explique chaque étape avec les différentes options possibles »
 Fait : générateur docs/process-icons/build/diagrammes/diagrammes.py (+ modele.html) : page HTML, un onglet par workflow (LRGB, LHaRGB, RGB + SHO, SHO sans RGB, HOO), phases P1 à P7, chemin principal numéroté, options, rapide et turbo de chaque phase ; textes tirés des fiches docs/kb/icones-*.md (clic : préréglé, à régler, contenu, lancement).
 - Puis « met la page des diagrammes dans le depot » : docs/Diagrammes-workflows.html, régénérée par build.sh à chaque build.
+
+### SCNR_RGB au chemin principal et dans le rapide (19 octobre 2026)
+
+Demande : « ajoute Opt_SCNR_RGB dans R_C_RGB_etire_rapide et rajoute le après E15_SCNR_etoiles_vert (ce n'est plus une option) dans les workflows concernés »
+Fait : LRGB (E16_SCNR_RGB) et LHaRGB (E24_SCNR_RGB) : SCNR vert 1,0, Average Neutral, sur le RGB sans étoiles, juste après SCNR_etoiles_vert ; R_C_RGB_etire_rapide = MAS, SXT_RGB_etire, SCNR_etoiles_vert, SCNR_RGB, GHS fond (annulation du retrait du 18 octobre). Numéros suivants décalés d'un cran.

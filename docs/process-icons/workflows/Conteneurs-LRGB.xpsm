@@ -2004,8 +2004,24 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </table>
       <parameter id="information"></parameter>
    </instance>
+   <instance class="SCNR" version="256" id="E16_SCNR_RGB_instance">
+      <description>PRÉRÉGLÉ : SCNR : vert, Average Neutral, Amount 1,0 (valeurs par défaut).&#10;&#10;À RÉGLER : glisse sur le RGB SANS étoiles, juste après SCNR_etoiles_vert (RGB_stars), avant GHS_3_fond et LRGB_ajout_L ; aussi dans R_C_RGB_etire_rapide.&#10;&#10;SI :&#10;- cœur jaune terni, régions roses virées au violet -&gt; Amount 0,50 à 0,70&#10;- pas de vert à retirer (sonde 15x15 : G pas au-dessus de R et B) -&gt; saute cette étape&#10;- vert encore visible -&gt; vérifie SPCC avant de pousser</description>
+      <parameter id="amount" value="1.00"/>
+      <parameter id="protectionMethod" value="AverageNeutral"/>
+      <parameter id="colorToRemove" value="Green"/>
+      <parameter id="preserveLightness" value="true"/>
+   </instance>
    <instance class="NoOperation" version="256" id="P4_options_instance">
       <description>OPTIONS de la phase 4 — Étirement : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
+   </instance>
+   <instance class="CloneStamp" version="256" id="Opt_CloneStamp_instance">
+      <description>OPTION — défaut local sur une image étirée SANS étoiles (reste d'étoile, trace de satellite, poussière, pixel chaud) : à la main, sur L après les GHS ou sur le RGB après SXT_RGB_etire, avant LRGB&#10;Pas dans le rapide.&#10;&#10;PRÉRÉGLÉ : process CloneStamp vide (aucun clonage enregistré).&#10;&#10;À RÉGLER : double-clic : la fenêtre CloneStamp s'ouvre ; règle Radius, Softness, Opacity ; Ctrl+clic sur une zone propre (source), puis clic ou glisser sur le défaut ; coche verte (Execute) pour valider ; sur l'image étirée SANS étoiles (L ou RGB), avant LRGB.&#10;&#10;SI :&#10;- bord visible -&gt; Softness plus haut, Radius plus grand&#10;- motif répété -&gt; change souvent de source (Ctrl+clic)&#10;- erreur -&gt; Ctrl+Z dans la fenêtre CloneStamp avant de valider</description>
+      <table id="cloner" rows="0"/>
+      <table id="actions" rows="0"/>
+      <parameter id="width" value="0"/>
+      <parameter id="height" value="0"/>
+      <parameter id="clonerColor" value="4292927712"/>
+      <parameter id="boundsColor" value="4292927712"/>
    </instance>
    <instance class="Script" version="256" id="Opt_SCNR_etoiles_violet_instance">
       <description>OPTION — étoiles violettes (R et B nettement au-dessus de G à la sonde, surtout en LHaRGB) : après SCNR_etoiles_vert, glisse sur n'importe quelle image (traite RGB_stars)&#10;Invert, SCNR vert 1,0, Invert&#10;Pas dans le rapide.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Etoiles_auto réglé violet seul : Invert, SCNR vert (Amount 1,0, Average Neutral, Preserve lightness), Invert sur RGB_stars : le magenta (violet) des étoiles retiré.&#10;&#10;À RÉGLER : option, après SCNR_etoiles_vert : glisse sur n'importe quelle image (traite toujours la vue RGB_stars) ; le RGB sans étoiles n'est pas touché ; pas dans le rapide : à la main après R_C_RGB_etire_rapide si besoin ; à vérifier à la sonde : utile si R et B nettement au-dessus de G sur les étoiles bleues.&#10;&#10;SI :&#10;- étoiles bleues devenues trop vertes ou ternes -&gt; double-clic : décoche « Violet retiré », ou CorrectMagentaStars (moins fort)&#10;- autre nom d'étoiles -&gt; vue = ce nom dans l'icône</description>
@@ -2062,22 +2078,6 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          </tr>
       </table>
       <parameter id="information"></parameter>
-   </instance>
-   <instance class="SCNR" version="256" id="Opt_SCNR_RGB_instance">
-      <description>OPTION — dominante verte sur la galaxie ou le fond (sonde : G au-dessus de R et B) : SCNR vert sur le RGB SANS étoiles, après SXT_RGB_etire, avant GHS_3_fond et LRGB&#10;Pas dans le rapide.&#10;&#10;PRÉRÉGLÉ : SCNR : vert, Average Neutral, Amount 1,0 (valeurs par défaut).&#10;&#10;À RÉGLER : glisse sur le RGB SANS étoiles (après SXT_RGB_etire), avant GHS_3_fond et LRGB_ajout_L ; seulement si du vert reste (sonde 15x15 : G au-dessus de R et de B).&#10;&#10;SI :&#10;- cœur jaune terni, régions roses virées au violet -&gt; Amount 0,50 à 0,70&#10;- vert encore visible -&gt; vérifie SPCC avant de pousser</description>
-      <parameter id="amount" value="1.00"/>
-      <parameter id="protectionMethod" value="AverageNeutral"/>
-      <parameter id="colorToRemove" value="Green"/>
-      <parameter id="preserveLightness" value="true"/>
-   </instance>
-   <instance class="CloneStamp" version="256" id="Opt_CloneStamp_instance">
-      <description>OPTION — défaut local sur une image étirée SANS étoiles (reste d'étoile, trace de satellite, poussière, pixel chaud) : à la main, sur L après les GHS ou sur le RGB après SXT_RGB_etire, avant LRGB&#10;Pas dans le rapide.&#10;&#10;PRÉRÉGLÉ : process CloneStamp vide (aucun clonage enregistré).&#10;&#10;À RÉGLER : double-clic : la fenêtre CloneStamp s'ouvre ; règle Radius, Softness, Opacity ; Ctrl+clic sur une zone propre (source), puis clic ou glisser sur le défaut ; coche verte (Execute) pour valider ; sur l'image étirée SANS étoiles (L ou RGB), avant LRGB.&#10;&#10;SI :&#10;- bord visible -&gt; Softness plus haut, Radius plus grand&#10;- motif répété -&gt; change souvent de source (Ctrl+clic)&#10;- erreur -&gt; Ctrl+Z dans la fenêtre CloneStamp avant de valider</description>
-      <table id="cloner" rows="0"/>
-      <table id="actions" rows="0"/>
-      <parameter id="width" value="0"/>
-      <parameter id="height" value="0"/>
-      <parameter id="clonerColor" value="4292927712"/>
-      <parameter id="boundsColor" value="4292927712"/>
    </instance>
    <instance class="Script" version="256" id="Opt_Statistical_Stretch_instance">
       <description>OPTION — à la place de MAS sur le RGB avec étoiles (étirement statistique, étoiles plus grosses)&#10;Puis SXT_RGB_etire.&#10;&#10;LANCEMENT : glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.&#10;&#10;PRÉRÉGLÉ : Target Median 0,25, Blackpoint Sigma 5, Linked coché, reste par défaut.&#10;&#10;À RÉGLER : OPTION, à la place de MAS : sur le RGB linéaire AVEC ses étoiles ; puis SXT_RGB_etire et GHS_3_fond sur le RGB (SP = HP = 0,22).&#10;&#10;SI :&#10;- étoiles grossies ou cœurs blancs -&gt; MAS (chemin principal)</description>
@@ -2194,7 +2194,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <description>MODE RAPIDE, phase 4 — Étirement : GHS_1_premier sur L sans étoiles (chemin principal, à régler), puis GHS_2_contraste et GHS_3_fond (chemin principal) sur L ; R_C_RGB_etire_rapide sur RGB (MAS avec étoiles, SXT Unscreen qui crée RGB_stars, SCNR vert sur RGB_stars, GHS fond). Icône de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="R_C_RGB_etire_rapide_instance">
-      <description>MODE RAPIDE, à la place de MAS, SXT_RGB_etire, SCNR_etoiles_vert et GHS_3_fond sur le RGB (options SCNR_etoiles_violet et Saturation_grosses à passer à part si besoin) : glisse sur RGB linéaire avec étoiles ; MAS, SXT Unscreen (RGB_stars créée), SCNR vert sur RGB_stars, GHS fond (SP = HP = 0,12).&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : MAS (tes réglages, fond 0,15), SXT Unscreen (RGB_stars créée), SCNR vert 1,0 sur RGB_stars (script Etoiles_auto), GHS fond (b = 10, SP = HP = 0,12, Stretch factor 1).&#10;&#10;À RÉGLER : glisse sur le RGB linéaire avec étoiles (après R_Lineaire_rapide) ; RGB sort étiré sans étoiles, RGB_stars étirée ; ensuite R_C_LRGB_rapide.&#10;&#10;SI :&#10;- fond pas au même niveau que L -&gt; GHS_3_fond du chemin principal, réglé à la main</description>
+      <description>MODE RAPIDE, à la place de MAS, SXT_RGB_etire, SCNR_etoiles_vert, SCNR_RGB et GHS_3_fond sur le RGB (options SCNR_etoiles_violet et Saturation_grosses à passer à part si besoin) : glisse sur RGB linéaire avec étoiles ; MAS, SXT Unscreen (RGB_stars créée), SCNR vert sur RGB_stars, SCNR vert sur le RGB sans étoiles (SCNR_RGB), GHS fond (SP = HP = 0,12).&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : MAS (tes réglages, fond 0,15), SXT Unscreen (RGB_stars créée), SCNR vert 1,0 sur RGB_stars (script Etoiles_auto), SCNR vert 1,0 sur le RGB sans étoiles (SCNR_RGB, Average Neutral), GHS fond (b = 10, SP = HP = 0,12, Stretch factor 1).&#10;&#10;À RÉGLER : glisse sur le RGB linéaire avec étoiles (après R_Lineaire_rapide) ; RGB sort étiré sans étoiles, RGB_stars étirée ; ensuite R_C_LRGB_rapide.&#10;&#10;SI :&#10;- fond pas au même niveau que L -&gt; GHS_3_fond du chemin principal, réglé à la main&#10;- cœur jaune terni ou pas de vert à retirer -&gt; double-clic sur le conteneur : décoche l'étape SCNR (4) ou Amount 0,50</description>
       <instance class="MultiscaleAdaptiveStretch" version="256" enabled="true">
          <parameter id="aggressiveness" value="0.70"/>
          <parameter id="targetBackground" value="0.150"/>
@@ -2254,6 +2254,12 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          </table>
          <parameter id="information"></parameter>
       </instance>
+      <instance class="SCNR" version="256" enabled="true">
+         <parameter id="amount" value="1.00"/>
+         <parameter id="protectionMethod" value="AverageNeutral"/>
+         <parameter id="colorToRemove" value="Green"/>
+         <parameter id="preserveLightness" value="true"/>
+      </instance>
       <instance class="GeneralizedHyperbolicStretch" version="256" enabled="true">
          <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
          <parameter id="stretchChannel" value="SC_RGB"/>
@@ -2273,7 +2279,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
    <instance class="NoOperation" version="256" id="P5_Couleur_instance">
       <description>PHASE 5 — Couleur : combinaison finale et palette. Colonne de repère, sans effet.</description>
    </instance>
-   <instance class="LRGBCombination" version="256" id="E16_LRGB_ajout_L_instance">
+   <instance class="LRGBCombination" version="256" id="E17_LRGB_ajout_L_instance">
       <description>PRÉRÉGLÉ : seul L coché, Lightness 0,5, Saturation 0,5, réduction du bruit de chrominance.&#10;&#10;À RÉGLER : vue L nommée 'L' (sans étoiles, GHS faits) ; glisse sur le RGB SANS étoiles (après MAS, SXT_RGB_etire, GHS_3_fond) ; les étoiles reviennent en phase 7 (Etoiles_screen).&#10;&#10;SI :&#10;- couleurs délavées -&gt; étire L moins fort&#10;- couleurs trop vives -&gt; Saturation plus haute (0,6)</description>
       <table id="channels" rows="4">
          <tr>
@@ -2345,7 +2351,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
    <instance class="NoOperation" version="256" id="P6_Finition_instance">
       <description>PHASE 6 — Finition : contraste et saturation sur l'image sans étoiles. Colonne de repère, sans effet.</description>
    </instance>
-   <instance class="ProcessContainer" id="E17_HDRMT_30_instance">
+   <instance class="ProcessContainer" id="E18_HDRMT_30_instance">
       <description>LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : copie de l'image (vue HDR_avant), HDRMT 6 couches To lightness / Preserve hue / Lightness mask, mélange 0,3 × résultat + 0,7 × copie, puis fermeture de la copie.&#10;&#10;À RÉGLER : PARTIE 1 de la finition (cœur), par défaut : glisse sur l'image sans étoiles étirée, AVANT C_Finition ; la copie HDR_avant est fermée automatiquement.&#10;&#10;SI :&#10;- cœur encore trop clair -&gt; HDRMT_40 ou HDRMT_50&#10;- aucun effet visible -&gt; saute la partie 1</description>
       <instance class="PixelMath" version="256" enabled="true">
          <parameter id="expression">$T</parameter>
@@ -2444,7 +2450,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          <parameter id="information"></parameter>
       </instance>
    </instance>
-   <instance class="ProcessContainer" id="E18_C_Finition_instance">
+   <instance class="ProcessContainer" id="E19_C_Finition_instance">
       <description>LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;CONTENEUR : Masque_L_creer, Masque_copie, Courbes, LHE, LHE_fin, Masque_melange, Fermer_Masque_avant, Masque_retirer.&#10;&#10;SUR : l'image sans étoiles étirée (masque_L créé, Courbes, LHE et LHE_fin sur une copie, mélange par masque_L, copie et masque fermés automatiquement) ; courbe en S, saturation 0,5 -&gt; 0,58 (couleurs trop ternes : Finition_saturee, 0,65, à la place).&#10;&#10;Double-clic sur le conteneur pour voir ou changer les réglages de chaque étape.</description>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
@@ -2715,7 +2721,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          <parameter id="information"></parameter>
       </instance>
    </instance>
-   <instance class="ProcessContainer" id="E19_C_Sharp_MMT_instance">
+   <instance class="ProcessContainer" id="E20_C_Sharp_MMT_instance">
       <description>LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : masque de luminance attaché (Masque_L, s = 0,14), script Sharp_MMT (MultiscaleMedianTransform 5 couches, couches 2 à 4 biais +0,04, couche 1 inchangée), masque retiré.&#10;&#10;À RÉGLER : glisse sur l'image SANS étoiles étirée, après C_Finition, avant NXT_final ; regarde à 100 % sur la galaxie ; copie Sharp_MMT.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- pas assez net -&gt; double-clic sur le conteneur, Sharp_MMT : biais 0.06&#10;- halos ou aspect dur -&gt; biais 0.02&#10;- bruit accentué -&gt; première couche 3</description>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
@@ -2791,7 +2797,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          <parameter id="information"></parameter>
       </instance>
    </instance>
-   <instance class="NoiseXTerminator" version="256" id="E20_NXT_final_instance">
+   <instance class="NoiseXTerminator" version="256" id="E21_NXT_final_instance">
       <description>PRÉRÉGLÉ : Denoise 0,40, 1 itération.&#10;&#10;À RÉGLER : PARTIE 3 de la finition (bruit) : glisse sur l'image sans étoiles après C_Finition (et le Boost éventuel) ; options à la place : NXT_final_doux (0,25), NXT_final_fort (0,60).&#10;&#10;SI :&#10;- aspect plastique -&gt; NXT_final_doux&#10;- bruit encore visible -&gt; NXT_final_fort</description>
       <parameter id="ml_version" value="0"/>
       <parameter id="denoise" value="0.40"/>
@@ -4739,7 +4745,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
    <instance class="NoOperation" version="256" id="P7_Etoiles_instance">
       <description>PHASE 7 — Étoiles : étoiles : étirement, recombinaison, réduction. Colonne de repère, sans effet.</description>
    </instance>
-   <instance class="Script" version="256" id="E21_Fond_desature_instance">
+   <instance class="Script" version="256" id="E22_Fond_desature_instance">
       <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Fond_desature : fond mesuré ; zones faibles (luminance lissée sous fond + 0,15, décroissant jusqu'à + 0,30) : violet neutralisé (G remonté jusqu'à min(R, B), magenta seulement) ; fond (sous + 0,03, rampe jusqu'à + 0,15) : couleur retirée.&#10;&#10;À RÉGLER : glisse sur l'image SANS étoiles finie (après NXT_final), avant Fond_auto et Etoiles_screen.&#10;&#10;SI :&#10;- violet encore visible dans le halo -&gt; violetFin 0,40&#10;- extensions faibles de la galaxie grisées -&gt; fin 0,10</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js</parameter>
       <parameter id="md5sum"></parameter>
@@ -4763,7 +4769,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </table>
       <parameter id="information"></parameter>
    </instance>
-   <instance class="Script" version="256" id="E22_Fond_auto_instance">
+   <instance class="Script" version="256" id="E23_Fond_auto_instance">
       <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Fond_auto : fond de chaque canal mesuré (grille 8 × 8, quart le plus sombre des cases), puis mtf canal par canal pour l'amener à 0,12, sans écrêtage ; fond neutre.&#10;&#10;À RÉGLER : glisse sur l'image SANS étoiles, après Fond_desature, avant Etoiles_screen ; console : fond avant et après.&#10;&#10;SI :&#10;- image trop sombre -&gt; cible 0,13 ou 0,14&#10;- données très propres -&gt; 0,10 à 0,11</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js</parameter>
       <parameter id="md5sum"></parameter>
@@ -4783,7 +4789,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </table>
       <parameter id="information"></parameter>
    </instance>
-   <instance class="PixelMath" version="256" id="E23_Etoiles_screen_instance">
+   <instance class="PixelMath" version="256" id="E24_Etoiles_screen_instance">
       <description>PRÉRÉGLÉ : ~((~$T) * (~RGB_stars)), sur l'image elle-même.&#10;&#10;À RÉGLER : glisse sur l'image sans étoiles finale : elle reçoit les étoiles ; étoiles étirées nommées RGB_stars (nom donné par SXT, s minuscule).&#10;&#10;SI :&#10;- autre nom d'étoiles -&gt; corrige-le dans la formule</description>
       <parameter id="expression">~((~$T) * (~RGB_stars))</parameter>
       <parameter id="expression1"></parameter>
@@ -4813,7 +4819,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
-   <instance class="NoiseXTerminator" version="256" id="E24_NXT_dernier_instance">
+   <instance class="NoiseXTerminator" version="256" id="E25_NXT_dernier_instance">
       <description>PRÉRÉGLÉ : NoiseXTerminator Denoise 0,25, 1 itération.&#10;&#10;À RÉGLER : toute dernière étape avant l'export : glisse sur l'image finie AVEC ses étoiles, juste après Etoiles_screen.&#10;&#10;SI :&#10;- aspect plastique -&gt; Denoise 0,15&#10;- bruit encore visible -&gt; 0,35&#10;- étoiles adoucies -&gt; 0,15, ou saute cette étape</description>
       <parameter id="ml_version" value="0"/>
       <parameter id="denoise" value="0.25"/>
@@ -5618,25 +5624,25 @@ max($T,f1)</parameter>
    <icon id="E13_MAS" instance="E13_MAS_instance" xpos="604" ypos="154" workspace="Workspace01"/>
    <icon id="E14_SXT_RGB_etire" instance="E14_SXT_RGB_etire_instance" xpos="604" ypos="184" workspace="Workspace01"/>
    <icon id="E15_SCNR_etoiles_vert" instance="E15_SCNR_etoiles_vert_instance" xpos="604" ypos="214" workspace="Workspace01"/>
-   <icon id="P4_options" instance="P4_options_instance" xpos="604" ypos="260" workspace="Workspace01"/>
-   <icon id="Opt_SCNR_etoiles_violet" instance="Opt_SCNR_etoiles_violet_instance" xpos="604" ypos="294" workspace="Workspace01"/>
-   <icon id="Opt_Saturation_grosses" instance="Opt_Saturation_grosses_instance" xpos="604" ypos="324" workspace="Workspace01"/>
-   <icon id="Opt_SCNR_RGB" instance="Opt_SCNR_RGB_instance" xpos="604" ypos="354" workspace="Workspace01"/>
-   <icon id="Opt_CloneStamp" instance="Opt_CloneStamp_instance" xpos="604" ypos="384" workspace="Workspace01"/>
+   <icon id="E16_SCNR_RGB" instance="E16_SCNR_RGB_instance" xpos="604" ypos="244" workspace="Workspace01"/>
+   <icon id="P4_options" instance="P4_options_instance" xpos="604" ypos="290" workspace="Workspace01"/>
+   <icon id="Opt_CloneStamp" instance="Opt_CloneStamp_instance" xpos="604" ypos="324" workspace="Workspace01"/>
+   <icon id="Opt_SCNR_etoiles_violet" instance="Opt_SCNR_etoiles_violet_instance" xpos="604" ypos="354" workspace="Workspace01"/>
+   <icon id="Opt_Saturation_grosses" instance="Opt_Saturation_grosses_instance" xpos="604" ypos="384" workspace="Workspace01"/>
    <icon id="Opt_Statistical_Stretch" instance="Opt_Statistical_Stretch_instance" xpos="604" ypos="414" workspace="Workspace01"/>
    <icon id="Opt_MAS_light" instance="Opt_MAS_light_instance" xpos="604" ypos="444" workspace="Workspace01"/>
    <icon id="Opt_Star_Stretch" instance="Opt_Star_Stretch_instance" xpos="604" ypos="474" workspace="Workspace01"/>
    <icon id="P4_rapide" instance="P4_rapide_instance" xpos="604" ypos="520" workspace="Workspace01"/>
    <icon id="R_C_RGB_etire_rapide" instance="R_C_RGB_etire_rapide_instance" xpos="604" ypos="554" workspace="Workspace01"/>
    <icon id="P5_Couleur" instance="P5_Couleur_instance" xpos="795" ypos="20" workspace="Workspace01"/>
-   <icon id="E16_LRGB_ajout_L" instance="E16_LRGB_ajout_L_instance" xpos="795" ypos="64" workspace="Workspace01"/>
+   <icon id="E17_LRGB_ajout_L" instance="E17_LRGB_ajout_L_instance" xpos="795" ypos="64" workspace="Workspace01"/>
    <icon id="P5_rapide" instance="P5_rapide_instance" xpos="795" ypos="110" workspace="Workspace01"/>
    <icon id="R_C_LRGB_rapide" instance="R_C_LRGB_rapide_instance" xpos="795" ypos="144" workspace="Workspace01"/>
    <icon id="P6_Finition" instance="P6_Finition_instance" xpos="955" ypos="20" workspace="Workspace01"/>
-   <icon id="E17_HDRMT_30" instance="E17_HDRMT_30_instance" xpos="955" ypos="64" workspace="Workspace01"/>
-   <icon id="E18_C_Finition" instance="E18_C_Finition_instance" xpos="955" ypos="94" workspace="Workspace01"/>
-   <icon id="E19_C_Sharp_MMT" instance="E19_C_Sharp_MMT_instance" xpos="955" ypos="124" workspace="Workspace01"/>
-   <icon id="E20_NXT_final" instance="E20_NXT_final_instance" xpos="955" ypos="154" workspace="Workspace01"/>
+   <icon id="E18_HDRMT_30" instance="E18_HDRMT_30_instance" xpos="955" ypos="64" workspace="Workspace01"/>
+   <icon id="E19_C_Finition" instance="E19_C_Finition_instance" xpos="955" ypos="94" workspace="Workspace01"/>
+   <icon id="E20_C_Sharp_MMT" instance="E20_C_Sharp_MMT_instance" xpos="955" ypos="124" workspace="Workspace01"/>
+   <icon id="E21_NXT_final" instance="E21_NXT_final_instance" xpos="955" ypos="154" workspace="Workspace01"/>
    <icon id="P6_options" instance="P6_options_instance" xpos="955" ypos="200" workspace="Workspace01"/>
    <icon id="Opt_Nettoyage_sans_etoiles" instance="Opt_Nettoyage_sans_etoiles_instance" xpos="955" ypos="234" workspace="Workspace01"/>
    <icon id="Opt_HDRMT_40" instance="Opt_HDRMT_40_instance" xpos="955" ypos="264" workspace="Workspace01"/>
@@ -5651,10 +5657,10 @@ max($T,f1)</parameter>
    <icon id="P6_rapide" instance="P6_rapide_instance" xpos="955" ypos="550" workspace="Workspace01"/>
    <icon id="R_C_Fin_rapide" instance="R_C_Fin_rapide_instance" xpos="955" ypos="584" workspace="Workspace01"/>
    <icon id="P7_Etoiles" instance="P7_Etoiles_instance" xpos="1159" ypos="20" workspace="Workspace01"/>
-   <icon id="E21_Fond_desature" instance="E21_Fond_desature_instance" xpos="1159" ypos="64" workspace="Workspace01"/>
-   <icon id="E22_Fond_auto" instance="E22_Fond_auto_instance" xpos="1159" ypos="94" workspace="Workspace01"/>
-   <icon id="E23_Etoiles_screen" instance="E23_Etoiles_screen_instance" xpos="1159" ypos="124" workspace="Workspace01"/>
-   <icon id="E24_NXT_dernier" instance="E24_NXT_dernier_instance" xpos="1159" ypos="154" workspace="Workspace01"/>
+   <icon id="E22_Fond_desature" instance="E22_Fond_desature_instance" xpos="1159" ypos="64" workspace="Workspace01"/>
+   <icon id="E23_Fond_auto" instance="E23_Fond_auto_instance" xpos="1159" ypos="94" workspace="Workspace01"/>
+   <icon id="E24_Etoiles_screen" instance="E24_Etoiles_screen_instance" xpos="1159" ypos="124" workspace="Workspace01"/>
+   <icon id="E25_NXT_dernier" instance="E25_NXT_dernier_instance" xpos="1159" ypos="154" workspace="Workspace01"/>
    <icon id="P7_options" instance="P7_options_instance" xpos="1159" ypos="200" workspace="Workspace01"/>
    <icon id="Opt_Etoiles_reduites" instance="Opt_Etoiles_reduites_instance" xpos="1159" ypos="234" workspace="Workspace01"/>
    <icon id="Opt_Boost_final_doux" instance="Opt_Boost_final_doux_instance" xpos="1159" ypos="264" workspace="Workspace01"/>

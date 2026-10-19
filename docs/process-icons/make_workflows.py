@@ -1185,8 +1185,8 @@ def lrgb_rapide(steps):
     return cont('C_LRGB_rapide', [pick(steps, 'LRGB_ajout_L')[0]])   # Etoiles_auto_etire retiré puis supprimé (demande de l'utilisateur)
 
 def rgb_etire_rapide(steps):
-    """P4_rapide galaxies (demande de l'utilisateur) : MAS avec étoiles, SXT Unscreen (RGB_stars), SCNR vert sur RGB_stars, GHS fond (SP = HP = 0,12, fond MAS 0,15)."""
-    return cont('C_RGB_etire_rapide', [pick(steps, 'MAS')[0], pick(steps, 'SXT_RGB_etire')[0], pick(steps, 'SCNR_etoiles_vert')[0], ghs('GHS_fond', 10, hp=0.12, sf=1.0, sp=0.12)])
+    """P4_rapide galaxies (demande de l'utilisateur) : MAS avec étoiles, SXT Unscreen (RGB_stars), SCNR vert sur RGB_stars, SCNR vert sur le RGB sans étoiles, GHS fond (SP = HP = 0,12, fond MAS 0,15)."""
+    return cont('C_RGB_etire_rapide', [pick(steps, 'MAS')[0], pick(steps, 'SXT_RGB_etire')[0], pick(steps, 'SCNR_etoiles_vert')[0], pick(steps, 'SCNR_RGB')[0], ghs('GHS_fond', 10, hp=0.12, sf=1.0, sp=0.12)])   # SCNR_RGB ajouté (demande de l'utilisateur, 18 octobre 2026)
 
 def prep_rapide(steps):
     """E00 : renommage, LinearPatternSubtraction (masters mono ouverts), combinaison RGB, en un conteneur."""
@@ -1210,8 +1210,8 @@ insert_after(lrgb, 'ImageSolver', [(script('Gradient_auto_rapide', ''), '')])
 for _st in (lrgb, lhargb):
     insert_after(_st, 'Etoiles_screen', [(M.nxt('NXT_dernier', 0.25, 1), D_NXT_DERNIER)])   # toute dernière réduction de bruit, image finie avec étoiles (demande de l'utilisateur)
     insert_after(_st, 'SXT_RGB_etire', [(script('SCNR_etoiles_vert', ''), ''), (script('SCNR_etoiles_violet', ''), ''), (script('Saturation_grosses', ''), '')])   # vert au chemin principal ; violet et Saturation_grosses en options P4, pas dans le rapide (demande de l'utilisateur)
-    # option P4 (demande de l'utilisateur, 18 octobre 2026) : SCNR vert sur le RGB SANS étoiles, après SXT_RGB_etire, avant GHS_3_fond et LRGB
-    insert_after(_st, 'Saturation_grosses', [(M.instance('SCNR', 'SCNR_RGB', {'amount': '1.00', 'protectionMethod': 'AverageNeutral', 'colorToRemove': 'Green'}), '')])
+    # P4 (demande de l'utilisateur) : SCNR vert sur le RGB SANS étoiles ; option le 18 octobre, chemin principal juste après SCNR_etoiles_vert le 19 octobre 2026
+    insert_after(_st, 'SCNR_etoiles_vert', [(M.instance('SCNR', 'SCNR_RGB', {'amount': '1.00', 'protectionMethod': 'AverageNeutral', 'colorToRemove': 'Green'}), '')])
     # option P4 (demande de l'utilisateur, 18 octobre 2026) : CloneStamp vide (identifiants du module PCL CloneStamp 1.0.2, version 0x100 :
     # tables cloner et actions vides, width, height, clonerColor et boundsColor par défaut 0xffe0e0e0) ; s'ouvre au double-clic
     insert_after(_st, 'SCNR_RGB', [(M.build('CloneStamp', 256, 'CloneStamp', [('cloner', '', 'table0'), ('actions', '', 'table0'), ('width', '0', 'v'), ('height', '0', 'v'),
