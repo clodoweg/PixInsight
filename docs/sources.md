@@ -1173,3 +1173,8 @@ Fait : générateur docs/process-icons/build/diagrammes/diagrammes.py (+ modele.
 
 Demande : « ajoute Opt_SCNR_RGB dans R_C_RGB_etire_rapide et rajoute le après E15_SCNR_etoiles_vert (ce n'est plus une option) dans les workflows concernés »
 Fait : LRGB (E16_SCNR_RGB) et LHaRGB (E24_SCNR_RGB) : SCNR vert 1,0, Average Neutral, sur le RGB sans étoiles, juste après SCNR_etoiles_vert ; R_C_RGB_etire_rapide = MAS, SXT_RGB_etire, SCNR_etoiles_vert, SCNR_RGB, GHS fond (annulation du retrait du 18 octobre). Numéros suivants décalés d'un cran.
+
+### Renommer_auto : H en autocrop_c fermé à tort (19 octobre 2026)
+
+Demande : « E00_Renommer_auto ne fonctionne pas bien sur le H qui a un autocrop_c »
+Fait : une vue *autocrop_c n'est fermée que si une autre vue (sans autocrop_c) du même filtre est ouverte (doublon) ; seule pour son filtre (le H recadré par exemple), elle est gardée et renommée. Filtre lu comme pour le renommage (FILTER, nom du fichier, nom de la vue sans _autocrop_c). Description de l'icône mise à jour (5 workflows). Non vérifié dans PixInsight.
