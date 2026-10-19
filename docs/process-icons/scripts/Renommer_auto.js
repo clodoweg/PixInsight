@@ -8,7 +8,7 @@
 // dans le nom de la vue. V (vert) devient G.
 // Les images couleur et les vues déjà bien nommées ne sont pas touchées ;
 // si deux images ont le même filtre, seule la première est renommée.
-// Ferme d'abord, sans demander, les vues dont le nom finit par autocrop_c quand
+// Ferme d'abord, sans demander, les vues dont le nom finit par autocrop ou autocrop_c quand
 // une autre vue du même filtre est ouverte (doublon) ; seule pour son filtre, elle
 // est gardée et renommée (paramètre fermerAutocrop, coché par défaut).
 // Retient aussi le dossier de l'objet (dossier des masters, clodoweg_objet.jsh)
@@ -92,10 +92,10 @@ function fromFileName( window )
    return "";
 }
 
-// Vues à fermer : nom finissant par autocrop_c (demande de l'utilisateur)
+// Vues à fermer : nom finissant par autocrop ou autocrop_c (demande de l'utilisateur)
 function renIsAutocrop( id )
 {
-   return /autocrop_c$/i.test( id );
+   return /autocrop(_c)?$/i.test( id );   // …_autocrop et …_autocrop_c (WBPP) ; retour de l'utilisateur, 19 octobre 2026
 }
 
 // Filtre d'une vue mono (FILTER, nom du fichier, nom de la vue) ; "" si inconnu ou couleur.
@@ -107,7 +107,7 @@ function renFilterOf( w )
    if ( id.length == 0 )
       id = fromFileName( w );
    if ( id.length == 0 )
-      id = filterToId( w.mainView.id.replace( /_?autocrop_c$/i, "" ) );
+      id = filterToId( w.mainView.id.replace( /_?autocrop(_c)?$/i, "" ) );
    return id;
 }
 
@@ -202,7 +202,7 @@ function renApply( list, fermer )
          closed.push( id );
       }
       if ( closed.length > 0 )
-         console.noteln( REN_TITLE + " : " + closed.length + " vue(s) autocrop_c fermée(s) : " + closed.join( ", " ) + "." );
+         console.noteln( REN_TITLE + " : " + closed.length + " vue(s) autocrop fermée(s) : " + closed.join( ", " ) + "." );
    }
    let done = 0, skipped = 0;
    for ( let k = 0; k < list.length; ++k )
@@ -244,8 +244,8 @@ function renDialog( list, p )
    let dir = cwObjectDirFromWindows();
    d.info( html + "</table><p>Dossier de l'objet retenu pour Export_TIFF : <b>" + (dir.length > 0 ? dir : "aucun (images sans fichier)") + "</b></p>" );
    let ac = renAutocropWindows().map( function( w ) { return w.mainView.id; } );
-   d.check( "Fermer les vues *autocrop_c" + (ac.length > 0 ? " (" + ac.join( ", " ) + ")" : " (aucune ouverte)"), p.fermer,
-            "Ferme sans demander, avant le renommage, les vues dont le nom finit par autocrop_c QUAND une autre vue du même filtre est ouverte ; une vue autocrop_c seule pour son filtre est gardée et renommée.", function( c ) { p.fermer = c; } );
+   d.check( "Fermer les vues *autocrop / *autocrop_c" + (ac.length > 0 ? " (" + ac.join( ", " ) + ")" : " (aucune ouverte)"), p.fermer,
+            "Ferme sans demander, avant le renommage, les vues dont le nom finit par autocrop ou autocrop_c QUAND une autre vue du même filtre est ouverte ; une vue autocrop_c seule pour son filtre est gardée et renommée.", function( c ) { p.fermer = c; } );
    d.onExport = function() { Parameters.set( "fermerAutocrop", p.fermer ? "true" : "false" ); };
    d.finish( "Renommer" );
    return d.execute();

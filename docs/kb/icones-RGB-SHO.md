@@ -28,13 +28,13 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 > LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
 > 
-> PRÉRÉGLÉ : script Renommer_auto : renomme les masters mono ouverts L, R, G, B, H, O, S d'après le mot-clé FILTER (Lum, Red, Ha, OIII... ; V ou Vert -> G), sinon d'après le nom du fichier, puis le nom de la vue ; ferme d'abord, sans demander, les vues dont le nom finit par autocrop_c QUAND une autre vue du même filtre est ouverte (doublon) ; une vue autocrop_c seule pour son filtre est gardée et renommée (fermerAutocrop = true) ; retient aussi le dossier des masters pour Export_TIFF.
+> PRÉRÉGLÉ : script Renommer_auto : renomme les masters mono ouverts L, R, G, B, H, O, S d'après le mot-clé FILTER (Lum, Red, Ha, OIII... ; V ou Vert -> G), sinon d'après le nom du fichier, puis le nom de la vue ; ferme d'abord, sans demander, les vues dont le nom finit par autocrop ou autocrop_c QUAND une autre vue du même filtre est ouverte (doublon) ; une vue autocrop seule pour son filtre est gardée et renommée (fermerAutocrop = true) ; retient aussi le dossier des masters pour Export_TIFF.
 > 
 > À RÉGLER : une seule fois par ordinateur : copie Renommer_auto.js et clodoweg_objet.jsh dans src/scripts/clodoweg ; ouvre tes masters, puis lance l'icône.
 > 
 > SI :
 > - filtre inconnu ou nom déjà pris -> message dans la console, renomme cette vue à la main
-> - vue autocrop_c à garder -> décoche la case dans la fenêtre (ou fermerAutocrop = false)
+> - vue autocrop à garder -> décoche la case dans la fenêtre (ou fermerAutocrop = false)
 
 #### E02_Combinaison_RGB — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Combiner_RGB.js`

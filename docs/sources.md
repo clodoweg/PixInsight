@@ -1178,3 +1178,4 @@ Fait : LRGB (E16_SCNR_RGB) et LHaRGB (E24_SCNR_RGB) : SCNR vert 1,0, Average Neu
 
 Demande : « E00_Renommer_auto ne fonctionne pas bien sur le H qui a un autocrop_c »
 Fait : une vue *autocrop_c n'est fermée que si une autre vue (sans autocrop_c) du même filtre est ouverte (doublon) ; seule pour son filtre (le H recadré par exemple), elle est gardée et renommée. Filtre lu comme pour le renommage (FILTER, nom du fichier, nom de la vue sans _autocrop_c). Description de l'icône mise à jour (5 workflows). Non vérifié dans PixInsight.
+- Puis « celui la n'a pas été fermé : Ha_masterLight_BIN_1_9576x6388_EXPOSURE_300_00s_FILTER_Ha_mono_drizzle_1x_autocrop » : le nom finit par « autocrop » sans « _c » ; règle étendue aux noms finissant par autocrop ou autocrop_c (toujours seulement si une autre vue du même filtre est ouverte).
