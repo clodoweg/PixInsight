@@ -496,26 +496,27 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > À RÉGLER : après R_C_P3_rapide : E14_Continuum_auto par sa fenêtre (crée HaNB), puis R_C_Ha_RGB_rapide glissé sur RGB (ou E15 à E17), puis GHS_1_premier sur L ; rien à lancer sur cette icône.
 
 #### R_C_Ha_RGB_rapide — ProcessContainer
-   1. Script
-      script `$PXI_SRCDIR/scripts/Toolbox/CombineHaToRGB.js`
-      paramètres : `alphaView=HaNB`, `amount=2`, `beta=0.2`, `linear=true`, `rgbLinked=true`, `bg=0.05`, `invertMask=true`, `sigma=0`
+   1. PixelMath
+      expression = `Q = 2.0;    BETA = 0.2;    1 - (1 - $T)*(1 - min(1, Q*max(0, HaNB - med(HaNB))))` ; expression1 = `$T` ; expression2 = `Q = 2.0;    BETA = 0.2;    $T + BETA*Q*max(0, HaNB - med(HaNB))` ; useSingleExpression=false ; symbols = `Q, BETA` ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
    2. NoiseXTerminator
       ml_version=0 ; denoise=0.80 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
    3. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
       paramètres : `views=H, HaNB`, `dialogue=false`
 
-> MODE RAPIDE, à la place de E15 à E17 : après E14_Continuum_auto (HaNB créée), GLISSE sur le RGB linéaire ; CombineHaWithRGB, NXT 0,80, puis H et HaNB fermées.
+> MODE RAPIDE, à la place de E15 à E17 : après E14_Continuum_auto (HaNB créée), GLISSE sur le RGB linéaire ; même calcul que CombineHaWithRGB en PixelMath natif (le script échoue dans un conteneur), NXT 0,80, puis H et HaNB fermées.
 > 
 > LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
 > 
-> PRÉRÉGLÉ : conteneur : CombineHaWithRGB (HaNB, Amount 2, Beta 0,2, Background 0,05), NXT 0,80 (= C_RGB_bruit), Fermer_continuum (ferme H et HaNB) = E15 à E17.
+> PRÉRÉGLÉ : conteneur : Ha_dans_RGB_rapide (PixelMath natif, même calcul que CombineHaWithRGB : R = screen de 2 × (HaNB − médiane) au-dessus de la médiane, B + 0,2 × 2 × (HaNB − médiane) ; Amount Q = 2, Beta 0,2), NXT 0,80 (= C_RGB_bruit), Fermer_continuum (ferme H et HaNB) = E15 à E17.
 > 
 > À RÉGLER : après E14_Continuum_auto (HaNB ouverte) : glisse sur le RGB linéaire ; ensuite GHS_1_premier sur L.
 > 
 > SI :
-> - « already being processed » sur CombineHaToRGB -> mets à jour la Toolbox, ou E15 à E17 un par un
+> - régions HII trop rouges -> Q = 1,5 dans l'étape 1 (double-clic sur le conteneur)
+> - trop roses ou violettes -> BETA = 0,1
 > - H_dans_L voulu -> fais-le AVANT (H et HaNB sont fermées à la fin)
+> - rendu différent de E15 dans le fond -> la courbe Background de CombineHaWithRGB n'est pas reproduite : fais E15 à E17 un par un
 
 ## P4_Etirement
 

@@ -1415,7 +1415,14 @@ lhargb[_i] = (cont('C_P3_rapide', [pick(lhargb, b)[0] for b in ('BXT_CorrectOnly
 insert_after(lhargb, 'C_P3_rapide', [(note('Main_continuum', "À FAIRE À LA MAIN (pas de script possible) : E14_Continuum_auto par sa fenêtre (crée HaNB) ; ensuite R_C_Ha_RGB_rapide glissé sur RGB (ou E15 à E17 du chemin principal), puis GHS_1_premier sur L."), '')])
 # second rapide P3 sous R_Main_continuum (demande de l'utilisateur, 18 octobre 2026) : CombineHaWithRGB, C_RGB_bruit (NXT), Fermer_continuum,
 # glissé sur RGB après Continuum_auto (Fermer_vues ne ferme que H et HaNB, jamais la vue glissée)
-insert_after(lhargb, 'Main_continuum', [(cont('C_Ha_RGB_rapide', [pick(lhargb, b)[0] for b in ('CombineHaWithRGB', 'NXT_RGB', 'Fermer_continuum')]), '')])
+# CombineHaToRGB échoue DANS un conteneur glissé (ligne 518 finalView.beginProcess : « already being processed », puis
+# « MainView::EndUpdate(): Invalid view update termination », retour de l'utilisateur, 19 octobre 2026) : dans le rapide, même calcul
+# en PixelMath natif (code du script : R en screen avec Q·(HaNB − méd) au-dessus de la médiane, B + Beta·Q·(HaNB − méd)),
+# une expression par canal (référence grise HaNB) ; courbe Background du script non reproduite (pixels sous la médiane seulement)
+_HA_R = 'Q = 2.0;\nBETA = 0.2;\n1 - (1 - $T)*(1 - min(1, Q*max(0, HaNB - med(HaNB))))'
+_HA_B = 'Q = 2.0;\nBETA = 0.2;\n$T + BETA*Q*max(0, HaNB - med(HaNB))'
+insert_after(lhargb, 'Main_continuum', [(cont('C_Ha_RGB_rapide', [pm('Ha_dans_RGB_rapide', _HA_R, '$T', _HA_B, symbols='Q, BETA')]
+                                              + [pick(lhargb, b)[0] for b in ('NXT_RGB', 'Fermer_continuum')]), '')])
 
 # Look_Lightroom (option, tous les workflows) sur l'image SANS étoiles, juste avant la recombinaison des étoiles
 # (demande de l'utilisateur, 9 octobre 2026 : « Je vais faire ce process avant de mettre les étoiles »)

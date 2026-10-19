@@ -96,7 +96,7 @@ WHEN = {
     'NXT_H': "ancien réglage par canal, à la place de NXT_NB : NXT 0,60 sur H sans étoiles après l'extraction",
     'NXT_O_S': "ancien réglage par canal : NXT 0,75 sur O et S sans étoiles après l'extraction, à la place de NXT_NB ou en plus si O ou S reste granuleux",
     'Main_continuum': "MODE RAPIDE, repère sans effet, après R_C_P3_rapide : E14_Continuum_auto se fait À LA MAIN (fenêtre), puis R_C_Ha_RGB_rapide",
-    'C_Ha_RGB_rapide': "MODE RAPIDE, à la place de E15 à E17 : après E14_Continuum_auto (HaNB créée), GLISSE sur le RGB linéaire ; CombineHaWithRGB, NXT 0,80, puis H et HaNB fermées",
+    'C_Ha_RGB_rapide': "MODE RAPIDE, à la place de E15 à E17 : après E14_Continuum_auto (HaNB créée), GLISSE sur le RGB linéaire ; même calcul que CombineHaWithRGB en PixelMath natif (le script échoue dans un conteneur), NXT 0,80, puis H et HaNB fermées",
     'C_P3_rapide': "MODE RAPIDE, à la place de E10 à E13 : après R_Gradient_auto_rapide, GLISSE sur RGB (L et H ouvertes, Conteneurs-LHaRGB chargé) ; ensuite E14_Continuum_auto, R_C_Ha_RGB_rapide (ou E15 à E17)",
     'Star_Stretch': "étoiles étirées à part : SXT sur le RGB LINÉAIRE (Unscreen décoché, Generate star image coché) donne RGB_stars linéaire ; glisse Star_Stretch sur RGB_stars (Stretch Amount 6, SCNR) ; le RGB sans étoiles s'étire par MAS ; à la place de SXT_RGB_etire et SCNR_etoiles_vert",
     'EZ_Soft_Stretch': "à la place de MAS sur le RGB (ou des GHS sur L) : étirement automatique doux (HistogramTransformation, point noir et médiane calculés) ; puis SXT_RGB_etire et GHS_3_fond comme après MAS",
