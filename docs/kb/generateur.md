@@ -104,3 +104,7 @@ Troisième retour (Finition_saturee, même jour) : le mélange par canal dans le
 ## Etoiles_NB_auto.js (8 octobre 2026)
 
 Script de la fiche, convention habituelle (clodoweg_ui.jsh : fenêtre par double-clic puis Apply Global, exécution directe glissée ou en conteneur). Paramètres : h, o, s (vide en HOO), ratio, linearfit, stretch, boost, scnr, nom, fermer. Crée une nouvelle image (pas de cwApplyOnCopy nécessaire) ; LinearFit modifie O_stars et S_stars, fermées ensuite.
+
+## maj_mac.command (20 octobre 2026)
+
+Demande de l'utilisateur : « je veux l'équivalent de maj_pc avec maj_mac qui met au bon endroit sur mac ». Script bash à la racine (exécutable, LF imposé par .gitattributes), double-clic dans le Finder : git pull dans le dossier du fichier, test d'écriture dans /Applications/PixInsight/src/scripts/clodoweg, sinon une seule fois `sudo mkdir -p` + `sudo chown -R` au compte, puis `cp -R` des scripts. Chemin d'installation Mac : /Applications/PixInsight/src/scripts (relevé dans un message d'erreur d'utilisateur, forum AstroBin ; pas de doc officielle trouvée). Non testé sur Mac.

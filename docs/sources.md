@@ -362,7 +362,13 @@ Question : « Est-ce que tu penses qu'il est possible de rajouter à la fin une 
 - [Basic adjustments (Loupedeck)](https://support.loupedeck.com/basic-adjustments.html) — Tutoriel *(résumé)* : Temp. vers la droite = jaune (plus chaud), Teinte vers la droite = magenta.
 - [Lightroom Basic Panel 101 (YSU)](https://www.schalmers.people.ysu.edu/2674-bwphoto/HANDOUT%20-%20Lightroom%20Basic%20Panel%20101.pdf) — Tutoriel *(résumé)* : mêmes définitions.
 
+## PixInsight sur Mac (maj_mac.command, 20 octobre 2026)
+
+- [GraXpert 3.0.2 and PixInsight script on Mac (AstroBin)](https://app.astrobin.com/forum/topic/125008/graxpert-302-and-pixinsight-script-on-mac-intel-macos-sonoma-145) — Forum *(résumé)* : scripts sous /Applications/PixInsight/src/scripts (chemin d'un message d'erreur).
+
 ## Non vérifié
+
+- maj_mac.command (20 octobre 2026) : chemin /Applications/PixInsight/src/scripts relevé sur un forum, sans doc officielle ; script non testé sur Mac.
 
 - Stat_canaux.js (9 octobre 2026) : résultat identique à statisticalstretch.js (une passe, Target Median 0,25, Blackpoint Sigma 5) non vérifié dans PixInsight.
 

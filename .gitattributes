@@ -2,3 +2,4 @@
 *.xpsm text eol=lf
 *.js text eol=lf
 *.bat text eol=crlf
+*.command text eol=lf
