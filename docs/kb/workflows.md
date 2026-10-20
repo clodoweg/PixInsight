@@ -47,10 +47,10 @@ Partie| Icône par défaut| Options
 0\. Nettoyage| (option) Opt_Nettoyage_sans_etoiles : restes de halos des étoiles brillantes après SXT, RGB_stars ouverte| réglages et cas dans la description de l'icône  
 1\. Cœur| E17 (E24) HDRMT_30| HDRMT_40 (cœur encore trop clair), HDRMT_50 (cœur brûlé), HDRMT_eclat (cœur terne) ; rien si le cœur est bien  
 2\. Contraste| E18 (E25) C_Finition : masque, Courbes (saturation 0,58), LHE 150, LHE_fin 40, masque retiré| à la place : Finition_saturee (même chose, saturation 0,65 : l'ancienne C_Finition) ; après : Boost_finition_light ou Boost_finition  
-2b. Accentuation| E19 (E26) C_Sharp_MMT (MMT sous masque)| à la place : Sharp_USM (UnsharpMask) ; en rapide : Sharp_MMT dans R_C_Fin_rapide  
+2b. Accentuation| E19 (E26) C_Sharp_MMT (MMT sous masque)| en rapide : Sharp_MMT dans R_C_Fin_rapide (Sharp_USM supprimé le 18 octobre 2026)  
 3\. Bruit| E20 (E27) NXT_final 0,40| NXT_final_doux (0,25) ou NXT_final_fort (0,60)  
 4\. Fond, puis étoiles| E21 (E28) Fond_desature, E22 (E29) Fond_auto (0,12), puis E23 (E30) Etoiles_screen (SCNR des étoiles déjà fait en P4, SCNR_etoiles_vert), puis E24 (E31) NXT_dernier (Denoise 0,25, toute dernière réduction de bruit)| avant, sur RGB_stars : Etoiles_grosses (réduit seulement les grosses étoiles et leur halo) ; (Saturation_grosses : option P4, sur RGB_stars) ; Halo_B_Gon et MT_etoiles réduisent aussi les petites étoiles ; à la place : Etoiles_reduites (réduit toutes les étoiles)  
-5\. Après les étoiles| Boost_final_doux ou Boost_final (L ouverte), en option| à la place de Fond_auto : Fond_auto_clair (0,14)  
+5\. Après les étoiles| Boost_final_doux ou Boost_final (L ouverte), en option| (Fond_auto_clair supprimé le 18 octobre 2026)  
   
 ### Finition hors PixInsight
 `E##_Export_TIFF` (dernier élément du chemin principal, après NXT_dernier, tous les workflows depuis le 20 octobre 2026, demande de l'utilisateur : « Opt_Export_TIFF ne doit pas etre une option mais le dernier element avec le NXT final ») enregistre une copie en TIFF 16 bits sRGB, profil ICC intégré, sous le nom du dossier des masters (/Astro/NGC1532/master/… donne /Astro/NGC1532/NGC1532.tiff, sans espace). `Opt_ICC_sRGB` ne sert que si tu enregistres toi-même. Après l'export, `Opt_Fermer_tout` (tous les workflows) ferme toutes les vues sans demander (script Fermer_vues, `views = *` ; double-clic puis Apply Global = fenêtre, toutes cochées). Ensuite, des retouches légères seulement, pas de nouvel étirement.
@@ -113,7 +113,7 @@ Couleurs ternes : Saturation plus basse dans LRGBCombination.
 
 8. #### Combinaison L + RGB
 
-Sur les deux images étirées **sans étoiles** : LRGBCombination (LRGB_ajout_L), Lightness 0,5, Saturation 0,5 (réglage de l'utilisateur), _Chrominance noise reduction_ activée. Contrôle : couleurs LRGB.
+Sur les deux images étirées **sans étoiles** : LRGBCombination (LRGB_ajout_L), Lightness 0,5, Saturation 0,5 (valeurs par défaut du process), _Chrominance noise reduction_ activée (décochée par défaut). Contrôle : couleurs LRGB.
 
 9. #### Les étoiles : déjà séparées en phase 4
 

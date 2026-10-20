@@ -1,7 +1,7 @@
 # Sources de la fiche PixInsight
 
 Sources consultées pour construire et vérifier `docs/pixinsight-workflow.html`, classées par sujet.
-Dernière mise à jour : 20 octobre 2026 (revue par le skill maj-kb).
+Dernière mise à jour : 20 octobre 2026 (deux passages du skill maj-kb).
 
 Légende :
 - **Officiel** : documentation de l'éditeur ou de l'auteur de l'outil.
@@ -411,6 +411,15 @@ Liens morts ou injoignables (gardés pour mémoire, contenu déjà résumé dans
 - [infocusastro, ColourMask](https://infocusastro.com/colormask-script/), [Wolf Creek, étoiles saturées](https://wolfcreek.space/index.php/2022/07/25/fixing-saturated-stars-in-pixinsight/), [The Coldest Nights](https://thecoldestnights.com/2020/06/pixinsight-dynamic-narrowband-combinations-with-pixelmath/) (injoignables) ;
 - [junruiye, HOO](https://www.junruiye.com/hoo-processing-pixinsight-pencil-nebula/) (503, peut-être passager).
 
+## Revue du 20 octobre 2026, deuxième passage (skill maj-kb : gradient, couleur, étirement, finition)
+
+- Officiel — [Vicent Peris, The MultiscaleAdaptiveStretch tool](https://pixinsight.net/dev/index.php?ams/the-multiscaleadaptivestretch-tool.6/) (30 décembre 2025) ; [doc GHS 3.0.4](https://www.ghsastro.co.uk/doc/tools/GeneralizedHyperbolicStretch/GeneralizedHyperbolicStretch.html) (revue, confirmée) ; [doc SPCC](https://pixinsight.com/doc/docs/SPCC/SPCC.html) (jeux Gaia DR3/SP, mode narrowband) ; [doc MARS](https://pixinsight.com/doc/docs/MARS/MARS.html) ; [build 1705](https://pixinsight.net/dev/index.php?articles/pixinsight-1-9-5-build-1705-released.23/) (PSF Auto, bases Gaia XPSD).
+- Officiel (code) — statisticalstretch.js v2.3 et star_stretch.js v2.6 (archive SetiAstro du 6 octobre 2026) : point noir = médiane − k × 1,4826 × MAD, médiane ramenée sur la cible ; [PCL, LRGBCombination](https://gitlab.com/pixinsight/PCL) (Lightness et Saturation 0,5 par défaut, MTF sur la chroma, réduction de chrominance décochée par défaut, 4 / 2 couches) ; AutoIntegrate (`AutoIntegrateEngine.js` pour MGC, SPFC, SPCC ; formules Blanshan désormais dans `AutoIntegrateEnhancementsEngine.js`).
+- Tutoriel — [Stirling Astrophoto, MGC](https://stirlingastrophoto.com/posts/multiscale-gradient-correction/) (1er août 2025) ; [Jon Rista, DBE](https://jonrista.com/the-astrophotographers-guide/pixinsights/dynamicbackgroundextraction/) ; [Chaotic Nebula, GradientCorrection](https://chaoticnebula.com/how-to-use-pixinsight-gradient-correction/) et [SCNR](https://chaoticnebula.com/pixinsight-scnr/) ; [Martin Kaessler, MAS](https://www.martinkaessler.com/multiscale-adaptive-stretch-in-pixinsight/) (janvier 2026) ; [Ron Brecher, M51](https://astrodoc.ca/m51/) (7 juin 2026) et NGC 2903 (2023) ; [Starlust, LHE](https://astroguide.starlust.de/html/LocalHistogramEqualization.html) et [HDRMT](https://astroguide.starlust.de/html/HDRMultiscaleTransform.html) ; [PixInsight, MMT sharpening](https://pixinsight.com/tutorials/mmt-sharpening/).
+- Forum — AstroBin (MGC et MARS DR2 sur L, sujet 245953) *(résumé)* ; Cloudy Nights (MARS DR2, filtres Antlia dans SPCC, février 2026) *(résumé)* ; Agena Astro (SII Antlia 3 nm à 671,6 nm) *(résumé)*.
+- Corrigé dans la base : Blackpoint Sigma (sens inversé : plus haut = ombres plus claires, le fond suit Target Median), Generate graphs SPCC (décoché), Saturation LRGB (= défaut), réduction de chrominance (décochée par défaut), LHE Kernel Radius (doc 32-128), Remove Green de Star_Stretch (coché dans l'icône), options supprimées encore citées (Sharp_USM, Fond_auto_clair, Etoiles_grosses, Look_Lightroom), ordre SXT en galaxies, DBE Normalize (divergence).
+- GHS 3.1.0 : le paquet du 9 mai 2026 (recompilé pour 1.9.4) n'existe que pour macOS ; Windows garde le 3.1.0 du 18 décembre 2024.
+
 ## Revue du 20 octobre 2026 (skill maj-kb)
 
 Versions et nouveautés :
@@ -436,6 +445,8 @@ Narrowband, sources récentes :
 - Tutoriel — [Warren Keller, masterclass d'étirement 2026](https://app.telescope.live/en/tutorials/217/2026-pixinsight-stretching-masterclass) et [NBN](https://app.telescope.live/en/tutorials/98/exploring-pixinsight-narrowband-normalization-techniques) : sans réglages chiffrés lisibles.
 
 ## Non vérifié
+
+- Revue du 20 octobre 2026 (2e passage) : défauts et plages d'Aggressiveness et de DRC de MAS ; couverture MARS DR2 à 2 939 mm ; Reject high 0,92 de LinearFit (Siril seulement) ; textes officiels LHE, HDRMT, MMT, CurvesTransformation (pages doc en 404/406) ; valeurs Light Vortex et Chaotic Nebula non relues (sites injoignables).
 
 - BXT ML5 (20 octobre 2026) : aucune valeur conseillée par RC Astro ; force relative ML5 / ML4 non chiffrée ; comportement en narrowband et sur données suréchantillonnées (CDK17, FWHM 5-8 px) sans source ; baisse de Sharpen Nonstellar (L 0,80 -> 0,60-0,70) seulement déduite de « plus net à réglage égal ».
 

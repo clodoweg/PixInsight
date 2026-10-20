@@ -152,7 +152,7 @@ Variante proposée par l'utilisateur (5 octobre 2026), ADOPTÉE : c'est le proce
 
 ## Accentuation finale (« boost de sharp ») : outils
 
-Question de l'utilisateur (5 octobre 2026). Fait : option Opt_Sharp_USM (UnsharpMask sous masque, P6, tous les workflows). Chemin principal (tous les workflows ; en galaxies aussi en rapide, Sharp_MMT dans R_C_Fin_rapide sous le masque) : C_Sharp_MMT = Masque_L, script Sharp_MMT.js (instance MMT donnée par l'utilisateur : 5 couches, couches 2 à 4 biais +0,04), Masque_retirer, juste avant NXT_final.
+Question de l'utilisateur (5 octobre 2026). Option Opt_Sharp_USM (UnsharpMask sous masque, P6) : supprimée de tous les workflows (galaxies le 18 octobre, narrowband le 20 octobre 2026). Chemin principal (tous les workflows ; en galaxies aussi en rapide, Sharp_MMT dans R_C_Fin_rapide sous le masque) : C_Sharp_MMT = Masque_L, script Sharp_MMT.js (instance MMT donnée par l'utilisateur : 5 couches, couches 2 à 4 biais +0,04), Masque_retirer, juste avant NXT_final.
 - Sur l'image SANS étoiles, étirée, sous masque de luminance (masque_L), en fin de P6 (après C_Finition, avant NXT_final) ; jamais sur RGB_stars.
 - MultiscaleMedianTransform (MMT) : petites couches (2 à 4) avec un léger biais (+0,03 à +0,05), couche 1 laissée (bruit) ; peu d'anneaux. Brecher l'utilise à la place d'une seconde passe de BXT (critique LRGB, sources 22 et 31).
 - MultiscaleLinearTransform (MLT) : même principe, biais un peu plus forts possibles, plus d'anneaux qu'MMT.
@@ -226,7 +226,7 @@ Gradient, BXT _Correct Only_ , SPCC, BXT complet, NXT. En narrowband, BXT sur la
 BXT avant toute réduction de bruit et avant le retrait des étoiles, jamais sur une image déjà étirée, et sans autre déconvolution en plus.
 
 #### Quand retirer les étoiles
-Galaxies : après LRGB, sur l'image étirée, _Unscreen_ coché. Narrowband : en linéaire, _Unscreen_ décoché. La finition se fait sans étoiles.
+Galaxies : sur le RGB étiré juste après MAS (SXT_RGB_etire, avant LRGB), _Unscreen_ coché ; L : en linéaire (SXT_L_lineaire). Narrowband : en linéaire, _Unscreen_ décoché. La finition se fait sans étoiles.
 
 #### Reproductibilité
 Garde tes paramètres dans des ProcessIcons ou l'History Explorer pour pouvoir refaire le traitement.
@@ -251,6 +251,8 @@ Icônes Opt_Coeurs_etoiles, Opt_Etoiles_couleur, Opt_RepairedHSV et script Etoil
 - **Opt_RepairedHSV** (P4, avant MAS, pas en rapide) : icône Script du script officiel, `$PXI_SRCDIR/scripts/misc/RepairedHSVSeparation.js` (dépôt PJSR, src/scripts/misc ; Bob Andersson, v1.0.3). Toujours avec sa fenêtre, sur l'image ACTIVE, sans paramètres d'icône (réglages gardés dans Settings). Réglages : Clip Shadows 0, Repair level 0,5 (WhiteClips, défaut ; seuil au-dessus duquel les pixels sont « non linéaires » et réparés), Max Repair Radius 16. Case « Repaired RGB » : le script fait lui-même ChannelCombination HSV et crée `<image>_Repaired_RGB` (pas besoin de recombiner à la main).
 
 ## Réduction des grosses étoiles sans anneau sombre (Etoiles_grosses)
+
+État au 20 octobre 2026 : Opt_Etoiles_grosses n'existe plus dans aucun workflow (galaxies le 18 octobre, narrowband le 20 octobre 2026) ; le script reste dans le dépôt, inutilisé. Historique ci-dessous.
 
 Opt_Etoiles_grosses supprimée des galaxies puis remise en option P7 (LRGB et LHaRGB, demande de l'utilisateur, 5 octobre 2026).
 

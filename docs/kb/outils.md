@@ -176,7 +176,7 @@ Paramètres
 - **Structure separation** : 3
 - **Model smoothness** : 1,0
 - **Filtre MARS** : L : Gray = L ; couleur : R, G, B ; H : Ha ; O : OIII
-- **Show gradient model** : coché
+- **Show gradient model** : coché (exception à la règle « sorties de contrôle désactivées » : à décider par l'utilisateur, revue du 20 octobre 2026)
 
   * Gradient restant dans les coins → Gradient scale 512, puis 256.
   * Modèle qui ondule → Model smoothness 3 à 5.
@@ -201,7 +201,7 @@ Paramètres
 
 - **Scale factors R/G/B** : 1,0
 
-- **Show gradient model** : Coché
+- **Show gradient model** : coché (exception à la règle « sorties de contrôle désactivées », à décider)
 
 - **Use MARS database / filtres MARS** : Coché ; bandes MARS : Gray = L (image mono), Red = R, Green = G, Blue = B (image couleur) ; masters narrowband : Gray = Ha ou OIII (MARS DR2, icônes MGC_MARS_H et MGC_MARS_O)
 
@@ -216,7 +216,7 @@ Paramètres
 
   * Gradient dans les coins → baisse Gradient scale.
   * Nébuleuse assombrie → monte Protection amount.
-  * Zones claires autour des structures sombres → monte Low threshold.
+  * Zones claires autour des structures sombres → monte Low threshold (Chaotic Nebula ; la même page conseille aussi de monter Low tolerance : source contradictoire, pas de doc officielle).
 
 **Détails, explications et sources**
 
@@ -235,7 +235,7 @@ Paramètres
 
 - **Protection amount** : Monter si la nébuleuse est assombrie
 
-- **Low threshold** : Monter si des zones claires apparaissent autour des structures sombres
+- **Low threshold** : monter si des zones claires apparaissent autour des structures sombres (Chaotic Nebula, page contradictoire : essayer aussi Low tolerance)
 
 - **Bords nets dans le modèle** : Désactive temporairement la protection, baisse Scale et Smoothness, puis réactive
 
@@ -275,7 +275,7 @@ Paramètres
 
 - **Correction** : Subtraction pour la pollution lumineuse ; Division pour le vignettage
 
-- **Normalize** : Coché (conseillé par nrStellar)
+- **Normalize** : nrStellar le coche ; Jon Rista le décoche au début du workflow (avant la calibration couleur), cas de l'option DBE en P2 : divergence, préférer décoché avant SPCC
 
 - **Discard background model** : Coché
 
@@ -415,7 +415,7 @@ Paramètres
 
 - **Background neutralization** : Activé ; référence = image entière (défaut de l'icône) ou aperçu de fond (script Find Background ou preview manuelle) ; limites basse et haute −2,80 et +2,00 en écarts-types (valeurs par défaut)
 
-- **Generate graphs** : Coché
+- **Generate graphs** : décoché dans l'icône (préférence de l'utilisateur) ; coché seulement pour contrôler
 
 #### SPFC (SpectrophotometricFluxCalibration)
 **À régler :**
@@ -600,7 +600,7 @@ GRATUIT
 
   * Ensuite, avec 0,25 : passe GHS_3_fond (étape Fond de GHS) pour ramener le fond vers 0,12–0,14. Avec 0,10 : rien à faire.
   * Galaxies : option seulement, à la place de MAS sur le RGB (L est étirée par les GHS) ; puis GHS_3_fond, avant LRGBCombination.
-  * Fond trop clair → monte Blackpoint Sigma.
+  * Fond trop clair → baisse Target Median (le fond suit la médiane cible). Ombres trop dures ou pixels coupés → monte Blackpoint Sigma (code v2.3 relu le 20 octobre 2026).
   * Images à combiner → même Target Median pour toutes.
 
 **Détails, explications et sources**
@@ -614,7 +614,7 @@ Paramètres
 
 - **Target Median** : 0,25 (0,10 pour une cible compacte) ; même valeur pour toutes les images à combiner.
 
-- **Blackpoint Sigma** : 5 ; plus haut : fond plus sombre, plus bas : plus de signal faible.
+- **Blackpoint Sigma** : 5 ; point noir = médiane − sigma × 1,4826 × MAD, puis la médiane est ramenée sur Target Median : plus haut = point noir plus bas, moins de pixels coupés, ombres plus claires ; plus bas = ombres plus sombres (code statisticalstretch.js v2.3 relu le 20 octobre 2026 ; l'ancienne phrase « plus haut = fond plus sombre » était fausse).
 
 - **Linked Stretch** : Coché : garde l'équilibre de SPCC. Décoché : canal par canal (narrowband).
 
@@ -626,7 +626,7 @@ Paramètres
 
 - **Canaux** : seul L coché
 - **Lightness** : 0,5
-- **Saturation** : 0,5 dans les galaxies (réglage de l'utilisateur ; plus bas = plus saturé)
+- **Saturation** : 0,5 dans les galaxies (= valeur par défaut, chroma inchangée ; plus bas = plus saturé, MTF sur la chroma CIE Lch, code PCL)
 - **Chrominance noise reduction** : coché
 
   * Couleurs délavées → L trop claire : étire-la moins.
@@ -645,9 +645,9 @@ Paramètres
 
 - **Lightness** : 0,5 (défaut)
 
-- **Saturation** : 0,5 dans les icônes LRGB_ajout_L (réglage de l'utilisateur ; plus bas = plus saturé, ex. 0,40 si couleurs ternes)
+- **Saturation** : 0,5 dans les icônes LRGB_ajout_L (= valeur par défaut, chroma inchangée ; plus bas = plus saturé, ex. 0,40 si couleurs ternes)
 
-- **Chrominance noise reduction** : Coché (valeurs par défaut)
+- **Chrominance noise reduction** : coché dans l'icône (décoché par défaut dans le process) ; 4 couches retirées, 2 protégées (valeurs par défaut, code PCL relu le 20 octobre 2026)
 
 #### NBRGBCombination (script)
 **À régler :**
@@ -866,7 +866,7 @@ GRATUIT
 
 - **Stretch Amount** : 6 (défaut du script : 5)
 - **Color Boost** : 1,3 (défaut du script : 1,0 ; criard → 1,0, pâle → 1,5)
-- **Remove Green** : décoché
+- **Remove Green** : décoché par défaut dans le script ; COCHÉ dans l'icône Star_Stretch (voir plus bas)
 
   * Cœurs d'étoiles blancs (R = G = B = 1 à la sonde) → 5,5.
   * Étoiles trop grosses → 5 ou 4.
@@ -1071,7 +1071,7 @@ Méthode
 
 Paramètres
 
-- **Kernel Radius** : Taille des structures renforcées ; 100 à 300 en ciel profond, plus grand à fort échantillonnage.
+- **Kernel Radius** : taille des structures renforcées ; doc officielle : 32 à 128 conviennent [résumé] ; Ron Brecher monte à 150 (M51 2026, NGC 2903), comme l'icône LHE ; plus grand à fort échantillonnage.
 
 - **Contrast Limit** : 1,5 à 2,0 ; reste sous 3.
 
@@ -1164,3 +1164,13 @@ Option Opt_CloneStamp (P4, LRGB et LHaRGB, demande de l'utilisateur, 18 octobre 
 - Réglages actuels des icônes : Sharpen Stars 0,25, Halos 0 partout ; Nonstellar 0,50 (RGB galaxies), 0,50 (L galaxies et H du LHaRGB, 0,80 avant le 20 octobre 2026), 0,60 (narrowband) ; PSF auto.
 - L passé à 0,50 après le benchmark (accord de l'utilisateur) ; contrôler les coins après Correct Only.
 
+## Revue du 20 octobre 2026, deuxième passage (gradient, couleur, étirement, finition)
+
+- MAS : article officiel de Vicent Peris (30 décembre 2025) : Target background 0,10-0,20 en général, 0,25-0,40 pour les grands objets étendus (soutient MAS_canaux 0,25) ; Dynamic range compression 0,4 dans l'exemple (= icône) ; Contrast recovery « dans la plupart des cas » ; pas de saturation sur les objets à très grande dynamique (MAS sans saturation, puis HDRMT, puis courbes). Kaessler (janvier 2026) : galaxies fond 0,12-0,14, DRC 0,8-1,0 (diverge de l'éditeur) ; fond jamais sous 0,12.
+- Statistical Stretch v2.3 : options absentes de la fiche : No Black Clip, Luma Mode, Luma Blend 0,60, Calculate Clipped Pixels, itérations (sans effet sur l'icône, réglages par défaut).
+- MGC : Stirling Astrophoto (août 2025) confirme ImageSolver -> SPFC -> MGC -> SPCC et les réglages des icônes ; erreurs « ratio between target and reference fields exceeds the acceptable range » avec MARS DR2 sur L (forums) : changer Gradient scale ou la séparation. Ranger la base MARS hors du dossier PixInsight (une réinstallation l'efface). Galaxies brillantes dans le modèle : monter Scale factor. Couverture MARS à 2 939 mm non vérifiée.
+- Build 1705 : corrige aussi la lecture des bases Gaia locales XPSD (étoiles faibles manquantes) : retester ImageSolver en local avant de conclure à une base incomplète. Gaia DR3/SP : petit jeu (11 Go) pour les champs larges à moyens, jeu complet (63 Go) probablement préférable au CDK17 (champ d'environ 0,7° × 0,47°).
+- SII Antlia 3 nm : 671,6 nm chez Agena et Rother Valley, 672,4 nm (icônes) chez Deep Space Astronomy ; écart faible pour 3 nm de bande.
+- LinearFit : Reject high 0,92 confirmé seulement pour Siril ; référence H d'après theAstroShed ; AutoLinearFit conseille « Lowest mean » (non vérifié).
+- Finition : Brecher, M51 (7 juin 2026) : LHE 150 / 0,25 puis 40 / 0,35, Contrast limit 1,5 (icônes : 150 / 0,30 puis 40 / 0,25, limite 2,0) ; NGC 2903 (2023) : LHE 40 / 100 / 150, MMT couches 1 à 5 biais 0,03-0,05 (proche de Sharp_MMT +0,04). Contrast limit : 1,5 (Brecher), 1,7 (tutoriel officiel NGC 7023), 2,0 (icônes) : tous dans la plage 1,5-3.
+- Formules Blanshan : identiques au code d'AutoIntegrate, désormais dans `AutoIntegrateEnhancementsEngine.js` ; S = 0,15 par défaut, 0,20 dans l'icône Etoiles_reduites (choix).
