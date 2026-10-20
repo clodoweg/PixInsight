@@ -44,10 +44,10 @@ OPT = {'C_Ha_RGB_rapide', 'Look_Lightroom', 'C_Stat_canaux_rapide', 'MAS_light',
 
 
 def role(prefix, base):
-    if prefix in ('SHO', 'RSHO') and base in ('GHS_1_premier', 'GHS_2_contraste', 'GHS_3_fond'):
+    if prefix in ('SHO', 'RSHO') and base in ('GHS_1_premier', 'GHS_3_fond'):
         return 'opt'    # SHO et RGB + SHO : GHS en option, Statistical_Stretch au chemin principal (demande de l'utilisateur, 20 octobre 2026)
-    if prefix in ('SHO', 'RSHO') and base == 'Statistical_Stretch':
-        return 'core'
+    if prefix in ('SHO', 'RSHO') and base in ('Statistical_Stretch', 'GHS_2_contraste'):
+        return 'core'   # GHS_2_contraste au chemin principal après Statistical_Stretch (demande de l'utilisateur, 20 octobre 2026)
     if prefix in LUM and base == 'Star_Stretch':
         return 'opt'    # galaxies (demande de l'utilisateur) : option d'étirement des étoiles linéaires
     if (prefix in LUM or prefix in NB) and base in ('NXT_final', 'Fond_desature', 'HDRMT_30'):
@@ -247,8 +247,8 @@ WHEN_PREFIX = {('SHO', 'MAS_canaux'): WHEN_NB['MAS_canaux'].replace(" (ou R_C_MA
 
 # SHO et RGB + SHO : Statistical_Stretch au chemin principal, GHS en option (demande de l'utilisateur, 20 octobre 2026)
 _STAT_SUBS = [("ensuite GHS_1_premier sur H", "ensuite Statistical_Stretch sur S, H et O"),
-              ("ensuite GHS_3_fond sur chaque canal", "GHS_3_fond (option) seulement si le fond est trop clair"),
-              ("puis GHS_3_fond sur chaque canal", "puis GHS_3_fond (option) seulement si le fond est trop clair"),
+              ("ensuite GHS_3_fond sur chaque canal", "ensuite GHS_2_contraste ; GHS_3_fond (option) seulement si le fond est trop clair"),
+              ("puis GHS_3_fond sur chaque canal", "puis GHS_2_contraste ; GHS_3_fond (option) seulement si le fond est trop clair"),
               ("à la place de GHS_1 et GHS_2", "à la place de Statistical_Stretch"), ("après les GHS", "après Statistical_Stretch"),
               ("à la place des GHS", "à la place de Statistical_Stretch"), ("des GHS sur chaque canal", "de Statistical_Stretch sur chaque canal")]
 for _p in ('SHO', 'RSHO'):

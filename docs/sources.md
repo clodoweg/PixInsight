@@ -214,6 +214,7 @@ Légende :
 - Demande de l'utilisateur (20 octobre 2026) : « deplace les option SCRN etoiles vertes voilettes et saturation grosses dans P3 Options pour SHO avec RGB, HOO et SHO sans RGB » ; choix : HOO comme SHO (Etoiles_NB_auto en P3), RGB + SHO avec toute la chaîne RGB_stars en P3. Réorganisation seule, aucun réglage changé.
 - Demande de l'utilisateur (20 octobre 2026) : « pour SHO avec et sans RGB, HOO: supprime » 14 options (NXT_H, NXT_O_S, WBPP, CC_auto, Binning_x2, EZ_Soft_Stretch, Sharp_USM, Halo_B_Gon, MT_etoiles, Star_Stretch, Etoiles_grosses, Fond_auto_clair, Look_Lightroom, Agrandir_x2).
 - Demande de l'utilisateur (20 octobre 2026) : « pourtous les porocess icones, Opt_Export_TIFF ne doit pas etre une option mais le dernier element avec le NXT final » : Export_TIFF au chemin principal, après NXT_dernier, dans les 5 workflows (LRGB et LHaRGB compris, demandé explicitement).
+- Demande de l'utilisateur (20 octobre 2026) : « pour les 2 SHO et HOO, Opt_GHS_2_contraste ne doit pas etre une option mais un normal » : GHS_2_contraste au chemin principal après Statistical_Stretch (SHO, RGB + SHO ; déjà fait en HOO).
 - Ordre de réglage de NarrowbandNormalization (Lightness, Shadowpoint, boosts, hautes lumières, Brightness, SCNR) : suggestion de la fiche, signalée comme telle sur la page ; aucune source ne fixe d'ordre.
 
 ## Neutralisation du fond dans SPCC

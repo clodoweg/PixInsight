@@ -662,12 +662,24 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > PRÉRÉGLÉ : Target Median 0,25, Blackpoint Sigma 5, Linked coché, reste par défaut.
 > 
-> À RÉGLER : CHEMIN PRINCIPAL (à la place des GHS) : glisse sur S, puis H, puis O, linéaires SANS étoiles ; même Target Median pour les trois (médianes identiques) ; ensuite la palette (SHO_simple, NBN_SHO).
+> À RÉGLER : CHEMIN PRINCIPAL (à la place des GHS) : glisse sur S, puis H, puis O, linéaires SANS étoiles ; même Target Median pour les trois (médianes identiques) ; ensuite GHS_2_contraste sur chaque canal, puis la palette (SHO_simple, NBN_SHO).
 > 
 > SI :
 > - fond trop clair après la palette -> GHS_3_fond (option) sur chaque canal avant SHO_simple (SP = HP = 0,22)
 > - fond trop sombre, signal faible perdu -> Blackpoint Sigma plus bas (3)
-> - étirement à la main voulu -> options GHS_1_premier, GHS_2_contraste
+> - étirement à la main voulu -> option GHS_1_premier à la place
+
+#### E21_GHS_2_contraste — GeneralizedHyperbolicStretch
+   stretchType=ST_GeneralisedHyperbolic ; stretchChannel=SC_RGB ; inverse=false ; stretchFactor=1.000 ; localIntensity=4.000 ; symmetryPoint=0.350000 ; highlightProtection=0.900000 ; shadowProtection=0.000000 ; blackPoint=0.000000 ; whitePoint=1.000000 ; colourBlend=1.000 ; clipType=CT_RGBBlend ; useRGBWorkingSpace=false
+
+> PRÉRÉGLÉ : b = 4, HP 0,9, Stretch factor 1, SP 0,35.
+> 
+> À RÉGLER : glisse sur S, puis H, puis O, après Statistical_Stretch (ou GHS_1_premier) : SP = valeur de ta zone plate, au-dessus du fond (souvent 0,30–0,45 ; jamais 0,25 = le fond) ; Stretch factor 1 à 2 ; même réglage pour les trois ; puis la palette (GHS_3_fond en option si le fond est trop clair).
+> 
+> SI :
+> - cœur brillant qui sature -> baisse HP vers sa valeur
+> - fond trop sombre -> monte LP vers sa valeur (pas au-dessus de SP)
+> - fond bruité qui ressort -> SP trop bas
 
 ### P4_options
 
@@ -683,21 +695,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > SI :
 > - bruit de O ou S qui ressort -> SP trop bas, remonte-le
-
-#### Opt_GHS_2_contraste — GeneralizedHyperbolicStretch
-   stretchType=ST_GeneralisedHyperbolic ; stretchChannel=SC_RGB ; inverse=false ; stretchFactor=1.000 ; localIntensity=4.000 ; symmetryPoint=0.350000 ; highlightProtection=0.900000 ; shadowProtection=0.000000 ; blackPoint=0.000000 ; whitePoint=1.000000 ; colourBlend=1.000 ; clipType=CT_RGBBlend ; useRGBWorkingSpace=false
-
-> OPTION — après GHS_1_premier (à la place de Statistical_Stretch) : contraste de chaque canal
-> Ensuite GHS_3_fond.
-> 
-> PRÉRÉGLÉ : b = 4, HP 0,9, Stretch factor 1, SP 0,35.
-> 
-> À RÉGLER : après GHS_1_premier : SP = valeur de ta zone plate, au-dessus du fond (souvent 0,30–0,45 ; jamais 0,25 = le fond) ; Stretch factor 1 à 2 ; puis GHS_3_fond.
-> 
-> SI :
-> - cœur brillant qui sature -> baisse HP vers sa valeur
-> - fond trop sombre -> monte LP vers sa valeur (pas au-dessus de SP)
-> - fond bruité qui ressort -> SP trop bas
 
 #### Opt_MAS_light — MultiscaleAdaptiveStretch
    aggressiveness=0.15 ; targetBackground=0.150 ; dynamicRangeCompression=0.40 ; contrastRecovery=true ; scaleSeparation=1024 ; contrastRecoveryIntensity=1.000 ; previewLargeScale=false ; saturationEnabled=true ; saturationAmount=0.50 ; saturationBoost=0.50 ; saturationLightnessMask=true ; backgroundROIEnabled=false ; backgroundROIX0=0 ; backgroundROIY0=0 ; backgroundROIWidth=0 ; backgroundROIHeight=0
@@ -717,13 +714,14 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 #### Opt_MAS_canaux — MultiscaleAdaptiveStretch
    aggressiveness=0.70 ; targetBackground=0.250 ; dynamicRangeCompression=0.40 ; contrastRecovery=true ; scaleSeparation=1024 ; contrastRecoveryIntensity=1.000 ; previewLargeScale=false ; saturationEnabled=false ; saturationAmount=0.75 ; saturationBoost=0.50 ; saturationLightnessMask=true ; backgroundROIEnabled=false ; backgroundROIX0=0 ; backgroundROIY0=0 ; backgroundROIWidth=0 ; backgroundROIHeight=0
 
-> OPTION — à la place de Statistical_Stretch : MultiscaleAdaptiveStretch sur chaque canal sans étoiles, même fond cible 0,25 pour tous (règle du même fond), puis GHS_3_fond (option) seulement si le fond est trop clair
+> OPTION — à la place de Statistical_Stretch : MultiscaleAdaptiveStretch sur chaque canal sans étoiles, même fond cible 0,25 pour tous (règle du même fond), puis GHS_2_contraste
+> GHS_3_fond (option) seulement si le fond est trop clair
 > Glisse sur S, puis H, puis O (ou R_C_MAS_canaux_rapide)
 > Non testé en narrowband.
 > 
 > PRÉRÉGLÉ : MultiscaleAdaptiveStretch, tes réglages MAS (Aggressiveness 0,70, Target background 0,250 comme le Target Median 0,25 de Statistical Stretch, Dynamic range compression 0,40, Contrast recovery) ; saturation décochée (canaux en gris).
 > 
-> À RÉGLER : glisse sur chaque canal SANS étoiles, linéaire (S, H, O ; HOO : H, O), à la place de Statistical_Stretch ; même fond cible pour tous ; GHS_3_fond (option) seulement si le fond est trop clair ; puis la palette.
+> À RÉGLER : glisse sur chaque canal SANS étoiles, linéaire (S, H, O ; HOO : H, O), à la place de Statistical_Stretch ; même fond cible pour tous ; ensuite GHS_2_contraste ; GHS_3_fond (option) seulement si le fond est trop clair ; puis la palette.
 > 
 > SI :
 > - fond d'un canal différent des autres -> GHS_3_fond sur ce canal
@@ -746,13 +744,13 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
       script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
       paramètres : `etapes=Opt_MAS_canaux*>S,H,O`, `dialogue=false`
 
-> MODE RAPIDE, à la place de Statistical_Stretch sur les canaux (MAS fond 0,25) : S, H, O (HOO : H, O) linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut), double-clic puis Apply Global (pas en glissant) ; GHS_3_fond (option) seulement si le fond est trop clair, puis la palette.
+> MODE RAPIDE, à la place de Statistical_Stretch sur les canaux (MAS fond 0,25) : S, H, O (HOO : H, O) linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut), double-clic puis Apply Global (pas en glissant) ; ensuite GHS_2_contraste ; GHS_3_fond (option) seulement si le fond est trop clair, puis la palette.
 > 
 > LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).
 > 
 > PRÉRÉGLÉ : conteneur de scripts : Lineaire_auto lance Opt_MAS_canaux sur S, H et O (fond cible 0,25 pour les trois), chaque canal sur une copie puis recopié : un Ctrl+Z par canal.
 > 
-> À RÉGLER : S, H, O linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut) ; Conteneurs du workflow chargé ; double-clic puis Apply Global (pas en glissant) ; GHS_3_fond (option) sur S, H et O seulement si le fond est trop clair ; puis R_C_Palette_rapide ou la palette.
+> À RÉGLER : S, H, O linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut) ; Conteneurs du workflow chargé ; double-clic puis Apply Global (pas en glissant) ; ensuite GHS_2_contraste sur S, H et O ; GHS_3_fond (option) seulement si le fond est trop clair ; puis R_C_Palette_rapide ou la palette.
 > 
 > SI :
 > - un canal mal étiré -> Ctrl+Z sur ce canal, puis Statistical_Stretch à la main
@@ -763,13 +761,13 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
       script `$PXI_SRCDIR/scripts/clodoweg/Stat_canaux.js`
       paramètres : `vues=S,H,O`, `cible=0.25`, `sigma=5.0`, `dialogue=false`
 
-> MODE RAPIDE, à la place de Statistical_Stretch sur les canaux (Statistical Stretch, médiane 0,25) : S, H, O linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut), double-clic puis Apply Global (pas en glissant) ; GHS_3_fond (option) seulement si le fond est trop clair, puis la palette.
+> MODE RAPIDE, à la place de Statistical_Stretch sur les canaux (Statistical Stretch, médiane 0,25) : S, H, O linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut), double-clic puis Apply Global (pas en glissant) ; ensuite GHS_2_contraste ; GHS_3_fond (option) seulement si le fond est trop clair, puis la palette.
 > 
 > LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).
 > 
 > PRÉRÉGLÉ : conteneur de scripts : Stat_canaux (calcul de Statistical Stretch de SetiAstro) sur S, H et O : point noir médiane − 5 × 1,4826 × MAD, médiane amenée à 0,25 pour les trois ; un Ctrl+Z par canal.
 > 
-> À RÉGLER : S, H, O linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut) ; double-clic puis Apply Global (pas en glissant) ; GHS_3_fond (option) sur S, H et O seulement si le fond est trop clair ; puis R_C_Palette_rapide ou la palette ; copie Stat_canaux.js dans src/scripts/clodoweg.
+> À RÉGLER : S, H, O linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut) ; double-clic puis Apply Global (pas en glissant) ; ensuite GHS_2_contraste sur S, H et O ; GHS_3_fond (option) seulement si le fond est trop clair ; puis R_C_Palette_rapide ou la palette ; copie Stat_canaux.js dans src/scripts/clodoweg.
 > 
 > SI :
 > - fond trop sombre, signal faible perdu -> double-clic sur Stat_canaux dans le conteneur : Blackpoint Sigma 3
@@ -778,7 +776,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 ## P5_Couleur
 
-#### E21_SHO_simple — PixelMath
+#### E22_SHO_simple — PixelMath
    expression = `S` ; expression1 = `H` ; expression2 = `O` ; useSingleExpression=false ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=true ; showNewImage=true ; newImageId=SHO_etire ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=RGB ; newImageSampleFormat=SameAsTarget
 
 > PRÉRÉGLÉ : R = S, G = H, B = O, nouvelle image SHO_etire.
@@ -789,7 +787,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - une image SHO_etire existe déjà -> ferme-la avant
 > - palette Foraxx voulue -> pas besoin : Foraxx_SHO lit S, H, O directement
 
-#### E22_NBN_SHO — NarrowbandNormalization
+#### E23_NBN_SHO — NarrowbandNormalization
    palette=Palette_SHO ; lightness=Lightness_Ha ; blendMode=Blend_Mode1 ; haBlend=0.000 ; scnr=0.700 ; o3Boost=1.000 ; s2Boost=1.200 ; shadowpoint=1.000 ; highlightReduction=1.000 ; brightness=1.000
 
 > PRÉRÉGLÉ : palette SHO, Lightness = Ha (H porte le détail), SCNR 0,7 (vert retiré en partie) (demandes de l'utilisateur) ; S2 boost 1,2 (demande de l'utilisateur, 20 octobre 2026) ; O3 boost, Brightness, Highlight reduction à 1 (neutres : ce sont des multiplicateurs, 0 rend l'image noire) ; Shadow point 1 (normalisation à partir de la médiane).
@@ -865,7 +863,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 ## P6_Finition
 
-#### E23_HDRMT_30 — ProcessContainer
+#### E24_HDRMT_30 — ProcessContainer
    1. PixelMath
       expression = `$T` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=true ; showNewImage=true ; newImageId=HDR_avant ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
    2. HDRMultiscaleTransform
@@ -886,7 +884,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - cœur encore trop clair -> HDRMT_40 ou HDRMT_50
 > - aucun effet visible -> saute la partie 1
 
-#### E24_C_Finition — ProcessContainer
+#### E25_C_Finition — ProcessContainer
    1. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
       paramètres : `mode=creer`, `s=0.14`, `flou=2`, `nom=masque_L`, `dialogue=false`
@@ -915,7 +913,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > Double-clic sur le conteneur pour voir ou changer les réglages de chaque étape.
 
-#### E25_C_Sharp_MMT — ProcessContainer
+#### E26_C_Sharp_MMT — ProcessContainer
    1. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
       paramètres : `mode=attacher`, `s=0.14`, `flou=2`, `nom=masque_L`, `dialogue=false`
@@ -937,7 +935,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - halos ou aspect dur -> biais 0.02
 > - bruit accentué -> première couche 3
 
-#### E26_NXT_final — NoiseXTerminator
+#### E27_NXT_final — NoiseXTerminator
    ml_version=0 ; denoise=0.40 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
 
 > PRÉRÉGLÉ : Denoise 0,40, 1 itération.
@@ -1249,7 +1247,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 ## P7_Etoiles
 
-#### E27_Fond_desature — Script
+#### E28_Fond_desature — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js`
    paramètres : `debut=0.03`, `fin=0.08`, `violetFin=0.30`, `flou=3`
 
@@ -1264,7 +1262,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - fond encore coloré -> fin 0,12
 > - voiles faibles grisés -> fin 0,05, ou saute cette étape
 
-#### E28_Fond_auto — Script
+#### E29_Fond_auto — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js`
    paramètres : `cible=0.12`, `tolerance=0.005`, `grille=8`
 
@@ -1279,7 +1277,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - données très propres -> 0,10 à 0,11
 > - nébuleuse qui remplit le champ : regarde le fond AVANT dans la console ; au-dessus d'environ 0,20 (seuil au jugé), ce n'est pas du vrai ciel -> Ctrl+Z et saute cette étape
 
-#### E29_Etoiles_screen — PixelMath
+#### E30_Etoiles_screen — PixelMath
    expression = `~((~$T) * (~RGB_stars))` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
 
 > PRÉRÉGLÉ : ~((~$T) * (~RGB_stars)), sur l'image elle-même.
@@ -1289,7 +1287,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > SI :
 > - autre nom d'étoiles -> corrige-le dans la formule
 
-#### E30_NXT_dernier — NoiseXTerminator
+#### E31_NXT_dernier — NoiseXTerminator
    ml_version=0 ; denoise=0.25 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
 
 > PRÉRÉGLÉ : NoiseXTerminator Denoise 0,25, 1 itération.
@@ -1301,7 +1299,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - bruit encore visible -> 0,35
 > - étoiles adoucies -> 0,15, ou saute cette étape
 
-#### E31_Export_TIFF — Script
+#### E32_Export_TIFF — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js`
    paramètres : `nom=`, `suffixe=`, `dossier=`, `icc=true`
 

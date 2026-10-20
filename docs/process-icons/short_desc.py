@@ -377,10 +377,10 @@ for _p in NB:
 # SHO et RGB + SHO : Statistical_Stretch au chemin principal, GHS_1, GHS_2 et GHS_3_fond en option (demande de l'utilisateur, 20 octobre 2026 :
 # « pour les SHO avec et sans RGB, mets le Stat Streh a la place du GHS (qui passe en option). Passe aussi le GHS 3 en option ») ; HOO inchangé
 STAT_SUBS = [("ensuite GHS_1_premier sur H", "ensuite Statistical_Stretch sur S, H et O"),
-             ("ensuite GHS_3_fond sur S, H et O (même fond, vers 0,12–0,14), puis", "GHS_3_fond (option) sur S, H et O seulement si le fond est trop clair ; puis"),
-             ("ensuite GHS_3_fond sur chaque canal (SP = HP = fond lu - 0,03, vers 0,22), puis", "GHS_3_fond (option) seulement si le fond est trop clair ; puis"),
-             ("ensuite GHS_3_fond sur chaque canal", "GHS_3_fond (option) seulement si le fond est trop clair"),
-             ("puis GHS_3_fond sur chaque canal", "puis GHS_3_fond (option) seulement si le fond est trop clair"),
+             ("ensuite GHS_3_fond sur S, H et O (même fond, vers 0,12–0,14), puis", "ensuite GHS_2_contraste sur S, H et O ; GHS_3_fond (option) seulement si le fond est trop clair ; puis"),
+             ("ensuite GHS_3_fond sur chaque canal (SP = HP = fond lu - 0,03, vers 0,22), puis", "ensuite GHS_2_contraste ; GHS_3_fond (option) seulement si le fond est trop clair ; puis"),
+             ("ensuite GHS_3_fond sur chaque canal", "ensuite GHS_2_contraste ; GHS_3_fond (option) seulement si le fond est trop clair"),
+             ("puis GHS_3_fond sur chaque canal", "puis GHS_2_contraste ; GHS_3_fond (option) seulement si le fond est trop clair"),
              ("à la place de GHS_1 et GHS_2", "à la place de Statistical_Stretch"),
              ("après les GHS", "après Statistical_Stretch"), ("en phase 4 : GHS sur S, H, O", "en phase 4 : Statistical_Stretch sur S, H, O"),
              ("les GHS de S, H, O", "Statistical_Stretch de S, H, O"), ("puis GHS à la main", "puis Statistical_Stretch à la main"),
@@ -397,10 +397,10 @@ for _p in ('SHO', 'RSHO'):
         if _n != tuple(_t[:2]) + (list(_t[2]),):
             V[(_p, _b)] = _n
     V[(_p, 'Statistical_Stretch')] = ("Target Median 0,25, Blackpoint Sigma 5, Linked coché, reste par défaut",
-                                      "CHEMIN PRINCIPAL (à la place des GHS) : glisse sur S, puis H, puis O, linéaires SANS étoiles ; même Target Median pour les trois (médianes identiques) ; ensuite la palette (SHO_simple, NBN_SHO)",
-                                      ["fond trop clair après la palette -> GHS_3_fond (option) sur chaque canal avant SHO_simple (SP = HP = 0,22)", "fond trop sombre, signal faible perdu -> Blackpoint Sigma plus bas (3)", "étirement à la main voulu -> options GHS_1_premier, GHS_2_contraste"])
+                                      "CHEMIN PRINCIPAL (à la place des GHS) : glisse sur S, puis H, puis O, linéaires SANS étoiles ; même Target Median pour les trois (médianes identiques) ; ensuite GHS_2_contraste sur chaque canal, puis la palette (SHO_simple, NBN_SHO)",
+                                      ["fond trop clair après la palette -> GHS_3_fond (option) sur chaque canal avant SHO_simple (SP = HP = 0,22)", "fond trop sombre, signal faible perdu -> Blackpoint Sigma plus bas (3)", "étirement à la main voulu -> option GHS_1_premier à la place"])
     V[(_p, 'GHS_1_premier')] = (S['GHS_1_premier'][0], "à la place de Statistical_Stretch : " + V[('NB', 'GHS_1_premier')][1] + " ; puis GHS_2_contraste", V[('NB', 'GHS_1_premier')][2])
-    V[(_p, 'GHS_2_contraste')] = (S['GHS_2_contraste'][0], "après GHS_1_premier : " + S['GHS_2_contraste'][1] + " ; puis GHS_3_fond", S['GHS_2_contraste'][2])
+    V[(_p, 'GHS_2_contraste')] = (S['GHS_2_contraste'][0], "glisse sur S, puis H, puis O, après Statistical_Stretch (ou GHS_1_premier) : " + S['GHS_2_contraste'][1] + " ; même réglage pour les trois ; puis la palette (GHS_3_fond en option si le fond est trop clair)", S['GHS_2_contraste'][2])   # chemin principal (demande de l'utilisateur, 20 octobre 2026)
     V[(_p, 'GHS_3_fond')] = (S['GHS_3_fond'][0], "glisse sur chaque canal, avant la palette ; " + S['GHS_3_fond'][1], S['GHS_3_fond'][2])
 
 
