@@ -1276,3 +1276,8 @@ Fait : une vue *autocrop_c n'est fermée que si une autre vue (sans autocrop_c) 
 
 Demande : capture de l'utilisateur, R_C_Ha_RGB_rapide glissé sur RGB : « CombineHaToRGB.js:518: Invalid view update request: The image is already being processed: RGB … finalView.beginProcess() » puis « Internal Error: MainView::EndUpdate(): Invalid view update termination: RGB ».
 Fait : dans le rapide seulement, CombineHaWithRGB remplacé par Ha_dans_RGB_rapide (PixelMath natif, une expression par canal, même calcul : screen sur R avec Q = 2 au-dessus de la médiane de HaNB, B + 0,2 × Q × (HaNB − méd)), puis NXT_RGB et Fermer_continuum. E15_CombineHaWithRGB (seul, glissé) inchangé au chemin principal. Courbe Background du script non reproduite. Non vérifié dans PixInsight.
+
+### Conteneurs sous masque : masque_L en couleur (20 octobre 2026)
+
+Demande : log de l'utilisateur (R_C_Fin_rapide / C_Finition) : « masque_L*$T + (1 - masque_L)*Masque_avant … channel #0: done … *** Error: Unknown error ».
+Fait : cause = référence à une image grise (masque_L, 1 canal) dans un PixelMath sur une image RGB : échec au canal 1. Masque_auto.js : paramètre couleur (masque converti en RGB par ConvertToRGBColor, sur la fenêtre du masque) ; icônes Masque_L_creer, Masque_L_source_creer, Masque_L_boost_nb_creer avec couleur = true ; Masque_melange revient à une expression unique (comme HDR_melange). Tous les workflows. Non vérifié dans PixInsight.

@@ -3120,7 +3120,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="5">
+         <table id="parameters" rows="6">
             <tr>
                <td id="id">mode</td>
                <td id="value">creer</td>
@@ -3136,6 +3136,10 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
             <tr>
                <td id="id">nom</td>
                <td id="value">masque_L</td>
+            </tr>
+            <tr>
+               <td id="id">couleur</td>
+               <td id="value">true</td>
             </tr>
             <tr>
                <td id="id">dialogue</td>
@@ -3324,10 +3328,10 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </instance>
       <instance class="PixelMath" version="256" enabled="true">
          <parameter id="expression">masque_L*$T + (1 - masque_L)*Masque_avant</parameter>
-         <parameter id="expression1">masque_L*$T + (1 - masque_L)*Masque_avant</parameter>
-         <parameter id="expression2">masque_L*$T + (1 - masque_L)*Masque_avant</parameter>
+         <parameter id="expression1"></parameter>
+         <parameter id="expression2"></parameter>
          <parameter id="expression3"></parameter>
-         <parameter id="useSingleExpression" value="false"/>
+         <parameter id="useSingleExpression" value="true"/>
          <parameter id="symbols"></parameter>
          <parameter id="clearImageCacheAndExit" value="false"/>
          <parameter id="cacheGeneratedImages" value="false"/>
@@ -3843,7 +3847,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="5">
+         <table id="parameters" rows="6">
             <tr>
                <td id="id">mode</td>
                <td id="value">creer</td>
@@ -3859,6 +3863,10 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
             <tr>
                <td id="id">nom</td>
                <td id="value">masque_L</td>
+            </tr>
+            <tr>
+               <td id="id">couleur</td>
+               <td id="value">true</td>
             </tr>
             <tr>
                <td id="id">dialogue</td>
@@ -4040,10 +4048,10 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </instance>
       <instance class="PixelMath" version="256" enabled="true">
          <parameter id="expression">masque_L*$T + (1 - masque_L)*Masque_avant</parameter>
-         <parameter id="expression1">masque_L*$T + (1 - masque_L)*Masque_avant</parameter>
-         <parameter id="expression2">masque_L*$T + (1 - masque_L)*Masque_avant</parameter>
+         <parameter id="expression1"></parameter>
+         <parameter id="expression2"></parameter>
          <parameter id="expression3"></parameter>
-         <parameter id="useSingleExpression" value="false"/>
+         <parameter id="useSingleExpression" value="true"/>
          <parameter id="symbols"></parameter>
          <parameter id="clearImageCacheAndExit" value="false"/>
          <parameter id="cacheGeneratedImages" value="false"/>
@@ -4114,7 +4122,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="5">
+         <table id="parameters" rows="6">
             <tr>
                <td id="id">mode</td>
                <td id="value">creer</td>
@@ -4130,6 +4138,10 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
             <tr>
                <td id="id">nom</td>
                <td id="value">masque_L</td>
+            </tr>
+            <tr>
+               <td id="id">couleur</td>
+               <td id="value">true</td>
             </tr>
             <tr>
                <td id="id">dialogue</td>
@@ -4318,10 +4330,10 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </instance>
       <instance class="PixelMath" version="256" enabled="true">
          <parameter id="expression">masque_L*$T + (1 - masque_L)*Masque_avant</parameter>
-         <parameter id="expression1">masque_L*$T + (1 - masque_L)*Masque_avant</parameter>
-         <parameter id="expression2">masque_L*$T + (1 - masque_L)*Masque_avant</parameter>
+         <parameter id="expression1"></parameter>
+         <parameter id="expression2"></parameter>
          <parameter id="expression3"></parameter>
-         <parameter id="useSingleExpression" value="false"/>
+         <parameter id="useSingleExpression" value="true"/>
          <parameter id="symbols"></parameter>
          <parameter id="clearImageCacheAndExit" value="false"/>
          <parameter id="cacheGeneratedImages" value="false"/>
@@ -4385,7 +4397,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="5">
+         <table id="parameters" rows="6">
             <tr>
                <td id="id">mode</td>
                <td id="value">creer</td>
@@ -4401,6 +4413,10 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
             <tr>
                <td id="id">nom</td>
                <td id="value">masque_L</td>
+            </tr>
+            <tr>
+               <td id="id">couleur</td>
+               <td id="value">true</td>
             </tr>
             <tr>
                <td id="id">dialogue</td>
@@ -4582,10 +4598,10 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </instance>
       <instance class="PixelMath" version="256" enabled="true">
          <parameter id="expression">masque_L*$T + (1 - masque_L)*Masque_avant</parameter>
-         <parameter id="expression1">masque_L*$T + (1 - masque_L)*Masque_avant</parameter>
-         <parameter id="expression2">masque_L*$T + (1 - masque_L)*Masque_avant</parameter>
+         <parameter id="expression1"></parameter>
+         <parameter id="expression2"></parameter>
          <parameter id="expression3"></parameter>
-         <parameter id="useSingleExpression" value="false"/>
+         <parameter id="useSingleExpression" value="true"/>
          <parameter id="symbols"></parameter>
          <parameter id="clearImageCacheAndExit" value="false"/>
          <parameter id="cacheGeneratedImages" value="false"/>
@@ -4649,7 +4665,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="5">
+         <table id="parameters" rows="6">
             <tr>
                <td id="id">mode</td>
                <td id="value">creer</td>
@@ -4665,6 +4681,10 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
             <tr>
                <td id="id">nom</td>
                <td id="value">masque_L</td>
+            </tr>
+            <tr>
+               <td id="id">couleur</td>
+               <td id="value">true</td>
             </tr>
             <tr>
                <td id="id">dialogue</td>
@@ -4846,10 +4866,10 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </instance>
       <instance class="PixelMath" version="256" enabled="true">
          <parameter id="expression">masque_L*$T + (1 - masque_L)*Masque_avant</parameter>
-         <parameter id="expression1">masque_L*$T + (1 - masque_L)*Masque_avant</parameter>
-         <parameter id="expression2">masque_L*$T + (1 - masque_L)*Masque_avant</parameter>
+         <parameter id="expression1"></parameter>
+         <parameter id="expression2"></parameter>
          <parameter id="expression3"></parameter>
-         <parameter id="useSingleExpression" value="false"/>
+         <parameter id="useSingleExpression" value="true"/>
          <parameter id="symbols"></parameter>
          <parameter id="clearImageCacheAndExit" value="false"/>
          <parameter id="cacheGeneratedImages" value="false"/>
@@ -5050,7 +5070,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="5">
+         <table id="parameters" rows="6">
             <tr>
                <td id="id">mode</td>
                <td id="value">creer</td>
@@ -5066,6 +5086,10 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
             <tr>
                <td id="id">nom</td>
                <td id="value">masque_L</td>
+            </tr>
+            <tr>
+               <td id="id">couleur</td>
+               <td id="value">true</td>
             </tr>
             <tr>
                <td id="id">dialogue</td>
@@ -5254,10 +5278,10 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </instance>
       <instance class="PixelMath" version="256" enabled="true">
          <parameter id="expression">masque_L*$T + (1 - masque_L)*Masque_avant</parameter>
-         <parameter id="expression1">masque_L*$T + (1 - masque_L)*Masque_avant</parameter>
-         <parameter id="expression2">masque_L*$T + (1 - masque_L)*Masque_avant</parameter>
+         <parameter id="expression1"></parameter>
+         <parameter id="expression2"></parameter>
          <parameter id="expression3"></parameter>
-         <parameter id="useSingleExpression" value="false"/>
+         <parameter id="useSingleExpression" value="true"/>
          <parameter id="symbols"></parameter>
          <parameter id="clearImageCacheAndExit" value="false"/>
          <parameter id="cacheGeneratedImages" value="false"/>
@@ -5535,7 +5559,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="6">
+         <table id="parameters" rows="7">
             <tr>
                <td id="id">mode</td>
                <td id="value">creer</td>
@@ -5555,6 +5579,10 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
             <tr>
                <td id="id">nom</td>
                <td id="value">masque_L</td>
+            </tr>
+            <tr>
+               <td id="id">couleur</td>
+               <td id="value">true</td>
             </tr>
             <tr>
                <td id="id">dialogue</td>
@@ -5725,10 +5753,10 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </instance>
       <instance class="PixelMath" version="256" enabled="true">
          <parameter id="expression">masque_L*$T + (1 - masque_L)*Masque_avant</parameter>
-         <parameter id="expression1">masque_L*$T + (1 - masque_L)*Masque_avant</parameter>
-         <parameter id="expression2">masque_L*$T + (1 - masque_L)*Masque_avant</parameter>
+         <parameter id="expression1"></parameter>
+         <parameter id="expression2"></parameter>
          <parameter id="expression3"></parameter>
-         <parameter id="useSingleExpression" value="false"/>
+         <parameter id="useSingleExpression" value="true"/>
          <parameter id="symbols"></parameter>
          <parameter id="clearImageCacheAndExit" value="false"/>
          <parameter id="cacheGeneratedImages" value="false"/>
@@ -5792,7 +5820,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="6">
+         <table id="parameters" rows="7">
             <tr>
                <td id="id">mode</td>
                <td id="value">creer</td>
@@ -5812,6 +5840,10 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
             <tr>
                <td id="id">nom</td>
                <td id="value">masque_L</td>
+            </tr>
+            <tr>
+               <td id="id">couleur</td>
+               <td id="value">true</td>
             </tr>
             <tr>
                <td id="id">dialogue</td>
@@ -5982,10 +6014,10 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </instance>
       <instance class="PixelMath" version="256" enabled="true">
          <parameter id="expression">masque_L*$T + (1 - masque_L)*Masque_avant</parameter>
-         <parameter id="expression1">masque_L*$T + (1 - masque_L)*Masque_avant</parameter>
-         <parameter id="expression2">masque_L*$T + (1 - masque_L)*Masque_avant</parameter>
+         <parameter id="expression1"></parameter>
+         <parameter id="expression2"></parameter>
          <parameter id="expression3"></parameter>
-         <parameter id="useSingleExpression" value="false"/>
+         <parameter id="useSingleExpression" value="true"/>
          <parameter id="symbols"></parameter>
          <parameter id="clearImageCacheAndExit" value="false"/>
          <parameter id="cacheGeneratedImages" value="false"/>

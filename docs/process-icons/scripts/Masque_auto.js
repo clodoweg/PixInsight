@@ -23,6 +23,7 @@
 //   de finition : un process natif d'un conteneur n'utilise pas le masque
 //   attaché pendant le conteneur ; le conteneur mélange lui-même par PixelMath
 //   masque_L*$T + (1-masque_L)*copie ; demande de l'utilisateur, 8 octobre 2026).
+// couleur = true : masque converti en RGB (conteneurs de finition, mélange PixelMath).
 // mode = melanger : nom*$T + (1-nom)*copie (copie = Masque_avant par défaut)
 //   calculé dans une image cachée puis recopié dans l'image en une fois, copie
 //   fermée (demande de l'utilisateur, 18 octobre 2026 : le PixelMath natif écrit
@@ -49,7 +50,7 @@ function maParams()
    return { mode: cwParam( "mode", "attacher" ).toLowerCase(), s: parseFloat( cwParam( "s", "0.14" ) ), gamma: parseFloat( cwParam( "gamma", "1" ) ),
             flou: parseFloat( cwParam( "flou", "2" ) ), nom: cwParam( "nom", "masque_L" ), source: cwParam( "source", "" ),
             exclure: cwParam( "exclure", "" ), exclureGain: parseFloat( cwParam( "exclureGain", "4" ) ),
-            copie: cwParam( "copie", "Masque_avant" ) };
+            copie: cwParam( "copie", "Masque_avant" ), couleur: cwBool( "couleur", false ) };
 }
 
 function maExport( p )
@@ -63,6 +64,7 @@ function maExport( p )
    Parameters.set( "exclure", p.exclure );
    Parameters.set( "exclureGain", p.exclureGain.toFixed( 1 ) );
    Parameters.set( "copie", p.copie );
+   Parameters.set( "couleur", p.couleur ? "true" : "false" );
 }
 
 function maDialog( p, view )
@@ -82,6 +84,7 @@ function maDialog( p, view )
    d.numeric( "Gamma :", 0.5, 4, 1, p.gamma, "1 = linéaire ; 2 = masque fort seulement sur le très lumineux (Boost_final).", function( v ) { p.gamma = v; } );
    d.numeric( "Flou (px) :", 0, 10, 1, p.flou, "Lissage du masque.", function( v ) { p.flou = v; } );
    d.edit( "Source :", p.source, "Autre vue d'où tirer la luminance (L sans étoiles pour Boost_final) ; vide = l'image.", function( t ) { p.source = t.trim(); } );
+   d.check( "Masque en couleur (RGB)", p.couleur, "Masque converti en RGB (3 canaux identiques) : obligatoire pour un mélange PixelMath dans un conteneur sur une image couleur.", function( c ) { p.couleur = c; } );
    d.edit( "Copie (mélanger) :", p.copie, "Mode mélanger : copie de l'image faite avant les retouches (Masque_avant).", function( t ) { p.copie = t.trim(); } );
    d.edit( "Étoiles à exclure :", p.exclure, "Image d'étoiles (RGB_stars) retirée du masque ; vide = rien.", function( t ) { p.exclure = t.trim(); } );
    d.numeric( "Gain d'exclusion :", 1, 10, 1, p.exclureGain, "Force du retrait des étoiles du masque (4 par défaut).", function( v ) { p.exclureGain = v; } );
@@ -292,6 +295,15 @@ function maRun( view, p )
       C.aspectRatio = 1;
       C.rotationAngle = 0;
       C.executeOn( mask.mainView );
+   }
+
+   // couleur = true : masque converti en RGB (3 canaux identiques). Dans un conteneur, le mélange PixelMath
+   // masque_L*$T + (1-masque_L)*copie sur une image RGB échoue au canal 1 avec un masque GRIS (un seul canal :
+   // « Unknown error », retour de l'utilisateur, 20 octobre 2026) ; en RGB il passe, comme HDR_melange.
+   if ( p.couleur && !mask.mainView.image.isColor )
+   {
+      let K = new ConvertToRGBColor;
+      K.executeOn( mask.mainView );
    }
 
    if ( mode == "creer" )

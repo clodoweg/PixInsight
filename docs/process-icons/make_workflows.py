@@ -51,9 +51,9 @@ SCRIPTS = {
     'Look_Lightroom': ('$PXI_SRCDIR/scripts/clodoweg/Look_Lightroom.js', '', [('exposition', '0.25'), ('contraste', '0'), ('hautes', '-100'), ('foncees', '0'), ('blancs', '50'), ('noirs', '0'), ('temperature', '10'), ('teinte', '0'), ('masque', 'false'), ('s', '0.14'), ('flou', '2.0')], L_DRAG),
     # Statistical Stretch (calcul de SetiAstro) sur S, H, O en un clic (demande de l'utilisateur, 9 octobre 2026) : R_C_Stat_canaux_rapide
     'Stat_canaux': ('$PXI_SRCDIR/scripts/clodoweg/Stat_canaux.js', '', [('vues', 'S,H,O'), ('cible', '0.25'), ('sigma', '5.0')], L_GLOBAL),
-    'Masque_L_creer': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'creer'), ('s', '0.14'), ('flou', '2'), ('nom', 'masque_L')], L_DRAG),
-    'Masque_L_source_creer': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'creer'), ('s', '0.20'), ('gamma', '2'), ('flou', '2'), ('nom', 'masque_L'), ('source', 'L'), ('exclure', 'RGB_stars'), ('exclureGain', '4')], L_DRAG),
-    'Masque_L_boost_nb_creer': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'creer'), ('s', '0.20'), ('gamma', '2'), ('flou', '2'), ('nom', 'masque_L')], L_DRAG),
+    'Masque_L_creer': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'creer'), ('s', '0.14'), ('flou', '2'), ('nom', 'masque_L'), ('couleur', 'true')], L_DRAG),
+    'Masque_L_source_creer': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'creer'), ('s', '0.20'), ('gamma', '2'), ('flou', '2'), ('nom', 'masque_L'), ('source', 'L'), ('exclure', 'RGB_stars'), ('exclureGain', '4'), ('couleur', 'true')], L_DRAG),
+    'Masque_L_boost_nb_creer': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'creer'), ('s', '0.20'), ('gamma', '2'), ('flou', '2'), ('nom', 'masque_L'), ('couleur', 'true')], L_DRAG),
     'Masque_L_boost_nb': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'attacher'), ('s', '0.20'), ('gamma', '2'), ('flou', '2'), ('nom', 'masque_L')], L_DRAG),   # narrowband : masque tiré de l'image sans étoiles elle-même
     'Masque_L_source': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'attacher'), ('s', '0.20'), ('gamma', '2'), ('flou', '2'), ('nom', 'masque_L'), ('source', 'L'), ('exclure', 'RGB_stars'), ('exclureGain', '4')], L_DRAG),
     'Masque_retirer': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'retirer'), ('nom', 'masque_L')], L_DRAG),
@@ -413,10 +413,9 @@ def sous_masque(inner, masque='Masque_L_creer'):
     conteneur n'est donc pas utilisé (Courbes et LHE appliqués au fond). Ici : masque_L créé sans être attaché, copie de l'image, étapes sur
     l'image entière, puis mélange PixelMath masque_L × résultat + (1 − masque_L) × copie (une expression par canal), copie fermée, masque_L fermé."""
     return ([script(masque, ''), pm('Masque_copie', '$T', new_image=True, new_id='Masque_avant')] + list(inner)
-            # mélange PixelMath NATIF (un script ne peut pas écrire de façon fiable dans la vue d'un conteneur glissé : recopie
-            # directe puis « Reading swap files … failed », retour de l'utilisateur, 18 octobre 2026), avec UNE EXPRESSION PAR CANAL
-            # (l'expression unique « combined RGB/K » avec masque_L gris donnait « Unknown error » ; par canal, elle passe)
-            + [pm('Masque_melange', _MEL, _MEL, _MEL), fermer('Fermer_Masque_avant', 'Masque_avant'), script('Masque_retirer', '')])
+            # mélange PixelMath NATIF (un script ne peut pas écrire de façon fiable dans la vue d'un conteneur glissé, 18 octobre 2026) ;
+            # masque_L créé en RGB (couleur = true) : un masque GRIS échoue au canal 1 (« Unknown error », 20 octobre 2026), comme HDR_melange en RGB
+            + [pm('Masque_melange', _MEL), fermer('Fermer_Masque_avant', 'Masque_avant'), script('Masque_retirer', '')])
 
 def _cont(name, items):
     return name, container(name, [x.replace('id="%s_instance"' % n, 'id="__ID___instance"', 1) for n, x in items])
