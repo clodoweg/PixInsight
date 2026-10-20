@@ -367,6 +367,13 @@ V[('HOO', 'Etoiles_NB_auto')] = (S['Etoiles_NB_auto'][0].replace("O_stars et S_s
 V[('HOO', 'C_Lineaire_rapide')] = (V[('HOO', 'C_Lineaire_rapide')][0].replace(" ; HOO_stars gardée", " ; Etoiles_NB_auto (LinearFit sur H_stars, mélange NB to RGB sans S, étirement 5, Color Boost 1,0) crée NBtoRGB_stars et ferme H_stars, O_stars ; HOO_stars gardée"),) + V[('HOO', 'C_Lineaire_rapide')][1:]
 V[('HOO', 'Turbo_debut')] = (V[('HOO', 'Turbo_debut')][0].replace("C_Extraction_HOO, HOO fermée (= R_C_Lineaire_rapide) ; résultat : H, O sans étoiles, linéaires, et HOO_stars", "C_Extraction_HOO et C_Extraction_etoiles, HOO fermée, Etoiles_NB_auto (= R_C_Lineaire_rapide) ; résultat : H, O sans étoiles, linéaires, NBtoRGB_stars (étirée) et HOO_stars"),) + V[('HOO', 'Turbo_debut')][1:]
 
+# narrowband : options supprimées (demande de l'utilisateur, 20 octobre 2026), plus citées dans les descriptions
+_LR_SI[:] = [x for x in _LR_SI if 'NXT_H' not in x]
+V[('RSHO', 'C_Lineaire_rapide')] = V[('RSHO', 'C_Lineaire_rapide')][:2] + ([x for x in V[('RSHO', 'C_Lineaire_rapide')][2] if 'NXT_H' not in x],)
+for _p in NB:
+    V[(_p, 'C_Sharp_MMT')] = (S['C_Sharp_MMT'][0], S['C_Sharp_MMT'][1], [x for x in S['C_Sharp_MMT'][2] if 'Sharp_USM' not in x])
+    V[(_p, 'C_Etoiles_fond_rapide')] = V[(_p, 'C_Etoiles_fond_rapide')][:2] + ([x for x in V[(_p, 'C_Etoiles_fond_rapide')][2] if 'Fond_auto_clair' not in x],)
+
 # SHO et RGB + SHO : Statistical_Stretch au chemin principal, GHS_1, GHS_2 et GHS_3_fond en option (demande de l'utilisateur, 20 octobre 2026 :
 # « pour les SHO avec et sans RGB, mets le Stat Streh a la place du GHS (qui passe en option). Passe aussi le GHS 3 en option ») ; HOO inchangé
 STAT_SUBS = [("ensuite GHS_1_premier sur H", "ensuite Statistical_Stretch sur S, H et O"),

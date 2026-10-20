@@ -88,34 +88,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - cadre à refaire -> Ctrl+Z sur Crop_ref, nouveau cadre, coche verte, puis relance
 > - une image n'est pas recadrée -> taille différente, la console la nomme
 
-#### Opt_WBPP — Script
-   script `$PXI_SRCDIR/scripts/BatchPreprocessing/BPP-Main.js`
-
-> OPTION — seulement si tu repars des brutes (masters pas encore empilés).
-> 
-> LANCEMENT : double-clic sur l'icône, puis Apply Global.
-> 
-> PRÉRÉGLÉ : rien (WBPP garde ses propres réglages).
-> 
-> À RÉGLER : Maximum quality ; CosmeticCorrection = icône CC_auto ; PSF Signal Weight ; Local normalization activée ; Rejection Auto ; Large-scale rejection High ; pas de drizzle (sauf FWHM < 2 px).
-> 
-> SI :
-> - un groupe de lights sans dark ou flat (onglet Calibration) -> corrige avant Run
-> - plusieurs nuits -> Grouping keywords = SESSION
-
-#### Opt_CC_auto — CosmeticCorrection
-   masterDarkPath= ; outputDir= ; outputExtension=.xisf ; prefix= ; postfix=_cc ; overwrite=false ; amount=1.00 ; cfa=false ; useMasterDark=false ; hotDarkCheck=false ; hotDarkLevel=1.0000000 ; coldDarkCheck=false ; coldDarkLevel=0.0000000 ; useAutoDetect=true ; hotAutoCheck=true ; hotAutoValue=2.5 ; coldAutoCheck=false ; coldAutoValue=3.0 ; useDefectList=false
-
-> OPTION — avec WBPP, si tu repars des brutes.
-> 
-> PRÉRÉGLÉ : Auto detect, Hot sigma 2,5, Cold désactivé.
-> 
-> À RÉGLER : rien ; choisis cette icône comme modèle Cosmetic correction dans WBPP ; coche CFA seulement en caméra couleur.
-> 
-> SI :
-> - petites étoiles modifiées -> Hot sigma 3,0
-> - S, H, O en poses longues -> 2,2
-
 ### P1_rapide
 
 #### R_C_Preparation_rapide — ProcessContainer
@@ -252,25 +224,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - nébuleuse assombrie -> monte Protection amount
 
 ### P2_options
-
-#### Opt_Binning_x2 — Script
-   script `$PXI_SRCDIR/scripts/clodoweg/Binning_x2.js`
-   paramètres : `facteur=2`
-
-> OPTION — traitement 4 fois plus rapide et moins de bruit (0,528″/px au lieu de 0,264″/px, l'image du CDK17 est suréchantillonnée
-> FWHM sous le plafond de 8 px de BXT) : double-clic puis Apply Global juste après Solver_auto (phase 1) ou R_C_Preparation_rapide, toutes les images divisées par 2
-> Pour un grand tirage, Agrandir_x2 avant l'export.
-> 
-> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
-> 
-> PRÉRÉGLÉ : script Binning_x2 : IntegerResample −2, moyenne (binning 2×2 logiciel) sur TOUTES les images ouvertes (sauf *_stars) ; solution astrométrique gardée ; mots-clés XPIXSZ et XBINNING mis à jour.
-> 
-> À RÉGLER : double-clic puis Apply Global, juste APRÈS Solver_auto (phase 1) ou R_C_Preparation_rapide, avant SPFC et MGC ; copie Binning_x2.js dans src/scripts/clodoweg.
-> 
-> SI :
-> - grand tirage voulu -> Agrandir_x2 (P7 options) avant Export_TIFF, ou ne bine pas
-> - binning 3×3 -> facteur 3
-> - ImageSolver refait ensuite et en échec -> metadata_xpixsz = 7.52 dans l'icône ImageSolver
 
 #### Opt_ImageSolver_seul — Script
    script `$PXI_SRCDIR/scripts/ImageSolver/ImageSolver.js`
@@ -481,32 +434,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - halo pas saturé jusqu'au bord -> etendue 16
 > - pour recommencer -> Ctrl+Z sur RGB_stars
 
-#### Opt_NXT_H — NoiseXTerminator
-   ml_version=0 ; denoise=0.60 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
-
-> OPTION — ancien réglage par canal, à la place de NXT_NB : NXT 0,60 sur H sans étoiles après l'extraction.
-> 
-> PRÉRÉGLÉ : option, ancien réglage par canal : Denoise 0,60, 1 itération.
-> 
-> À RÉGLER : glisse sur H sans étoiles après l'extraction, à la place de NXT_NB (enlève-le du conteneur).
-> 
-> SI :
-> - encore bruité -> 0,70
-> - aspect plastique -> 0,50
-
-#### Opt_NXT_O_S — NoiseXTerminator
-   ml_version=0 ; denoise=0.75 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
-
-> OPTION — ancien réglage par canal : NXT 0,75 sur O et S sans étoiles après l'extraction, à la place de NXT_NB ou en plus si O ou S reste granuleux.
-> 
-> PRÉRÉGLÉ : option, ancien réglage par canal : Denoise 0,75, 1 itération.
-> 
-> À RÉGLER : glisse sur O (et S) sans étoiles après l'extraction : à la place de NXT_NB, ou en plus si O ou S reste granuleux.
-> 
-> SI :
-> - très bruité -> 2 itérations
-> - aspect plastique -> 0,60
-
 #### Opt_STF — ScreenTransferFunction
    interaction=SeparateChannels ; table STF (4 lignes)
 
@@ -549,7 +476,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > SI :
 > - une étape en erreur -> la console dit laquelle ; fais la suite au chemin principal à partir de cette icône
-> - NXT par canal voulu (NXT_H, NXT_O_S) -> après ce conteneur, sur les vues extraites
 > - BXT, SXT ou NXT à changer -> double-clic sur le conteneur linéaire du chemin principal (c'est lui qui est lancé)
 
 ## P4_Etirement
@@ -629,23 +555,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - fond d'un canal différent des autres -> GHS_3_fond sur ce canal
 > - O ou S trop faible -> Aggressiveness plus haut sur ce canal, ou GHS
 > - cœur brûlé -> Dynamic range compression plus haut
-
-#### Opt_EZ_Soft_Stretch — Script
-   script `$PXI_SRCDIR/scripts/EZProcessingSuite/EZ_SoftStretch.js`
-
-> OPTION — à la place de Statistical_Stretch : étirement automatique doux de chaque canal sans étoiles (HistogramTransformation, point noir et médiane calculés)
-> Même médiane cible pour tous les canaux.
-> 
-> LANCEMENT : double-clic sur l'icône, puis Apply Global.
-> 
-> PRÉRÉGLÉ : script EZ Soft Stretch (EZ Processing Suite, Elveteek / darkarchon) : HistogramTransformation avec point noir trouvé dans l'histogramme et fonction de transfert vers une médiane cible ; réglages dans sa fenêtre.
-> 
-> À RÉGLER : à la place de Statistical_Stretch : clique sur chaque canal SANS étoiles (S, H, O après extraction et NXT), double-clic puis Apply Global ; dans la fenêtre : Target Median 0,15 pour tous les canaux, Expand Low 0,05, Aggressiveness 5, Zero in White Point décoché ; ensuite la palette (même fond sur tous les canaux) ; dépôt https://elveteek.ch/pixinsight-updates/ez-processing-suite/.
-> 
-> SI :
-> - fond trop sombre ou nébuleuse faible -> Target Median 0,20 (défaut) ou Expand Low 0,08
-> - fond délavé, gris -> Target Median 0,12
-> - fond coupé à noir -> Aggressiveness plus bas (2 à 3)
 
 #### Opt_GHS_3_fond — GeneralizedHyperbolicStretch
    stretchType=ST_GeneralisedHyperbolic ; stretchChannel=SC_RGB ; inverse=false ; stretchFactor=1.000 ; localIntensity=10.000 ; symmetryPoint=0.200000 ; highlightProtection=0.200000 ; shadowProtection=0.000000 ; blackPoint=0.000000 ; whitePoint=1.000000 ; colourBlend=1.000 ; clipType=CT_RGBBlend ; useRGBWorkingSpace=false
@@ -818,7 +727,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - pas assez net -> double-clic sur le conteneur, Sharp_MMT : biais 0.06
 > - halos ou aspect dur -> biais 0.02
 > - bruit accentué -> première couche 3
-> - autre rendu -> Sharp_USM (P6 options) à la place
 
 #### E20_NXT_final — NoiseXTerminator
    ml_version=0 ; denoise=0.40 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
@@ -1050,37 +958,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - fond qui se colore ou bruit -> arrête, ou NXT final
 > - halo sombre autour de la galaxie -> une passe de moins
 
-#### Opt_Sharp_USM — ProcessContainer
-   1. Script
-      script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
-      paramètres : `mode=creer`, `s=0.14`, `flou=2`, `nom=masque_L`, `dialogue=false`
-   2. PixelMath
-      expression = `$T` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=true ; showNewImage=true ; newImageId=Masque_avant ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
-   3. UnsharpMask
-      sigma=2.00 ; amount=0.30 ; useLuminance=true ; linear=false ; deringing=true ; deringingDark=0.1000 ; deringingBright=0.0000 ; outputDeringingMaps=false ; rangeLow=0.0000000 ; rangeHigh=0.0000000
-   4. PixelMath
-      expression = `masque_L*$T + (1 - masque_L)*Masque_avant` ; expression1 = `masque_L*$T + (1 - masque_L)*Masque_avant` ; expression2 = `masque_L*$T + (1 - masque_L)*Masque_avant` ; useSingleExpression=false ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
-   5. Script
-      script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
-      paramètres : `views=Masque_avant`, `dialogue=false`
-   6. Script
-      script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
-      paramètres : `mode=retirer`, `nom=masque_L`, `dialogue=false`
-
-> OPTION — à la place de C_Sharp_MMT : accentuation finale par UnsharpMask, avant NXT_final, sur l'image sans étoiles
-> Masque de luminance appliqué par mélange PixelMath, fermé automatiquement.
-> 
-> LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
-> 
-> PRÉRÉGLÉ : conteneur : masque_L créé sans être attaché, copie de l'image, UnsharpMask (écart type 2,0 px, amount 0,30, luminance seule, anti-halo sombre 0,10), puis mélange masque_L × résultat + (1 − masque_L) × copie, copie et masque fermés.
-> 
-> À RÉGLER : glisse sur l'image SANS étoiles étirée, après C_Finition, avant NXT_final ; regarde à 100 % sur la galaxie.
-> 
-> SI :
-> - halos sombres autour des détails -> double-clic sur le conteneur, UnsharpMask : amount 0,20 ou anti-halo 0,15
-> - pas assez net -> amount 0,40
-> - fond qui devient granuleux -> seuil s du masque plus haut (Masque_L)
-
 #### Opt_NXT_final_doux — NoiseXTerminator
    ml_version=0 ; denoise=0.25 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
 
@@ -1246,73 +1123,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > SI :
 > - étoiles bleues verdâtres -> 0,3·H + 0,7·O
 
-#### Opt_Star_Stretch — Script
-   script `$PXI_SRCDIR/scripts/star_stretch.js`
-   paramètres : `amount=6`, `satAmount=1.3`, `removeGreen=true`, `showPreview=false`
-
-> OPTION — seulement si NB_to_RGB_Stars a été lancé sans Apply Star Stretch (ou pour HOO_stars, Stars_HOO) : sur l'image d'étoiles LINÉAIRE.
-> 
-> LANCEMENT : glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
-> 
-> PRÉRÉGLÉ : Stretch Amount 6, Color Boost 1,3, Remove Green (SCNR) coché.
-> 
-> À RÉGLER : rien ; sur l'image d'étoiles linéaire.
-> 
-> SI :
-> - cœurs d'étoiles blancs (R = G = B = 1) -> 5,5
-> - étoiles trop grosses -> 5 ou 4
-> - étoiles grisées par le SCNR -> décoche Remove Green
-> - étoiles criardes -> Color Boost 1,0
-
-#### Opt_MT_etoiles — MorphologicalTransformation
-   operator=Selection ; interlacingDistance=1 ; lowThreshold=0.000000 ; highThreshold=0.000000 ; numberOfIterations=1 ; amount=0.60 ; selectionPoint=0.25 ; structureName= ; structureSize=5 ; table structureWayTable (1 lignes)
-
-> OPTION — réduction d'étoiles supplémentaire.
-> 
-> PRÉRÉGLÉ : Selection 0,25, Amount 0,60, 1 itération, 5×5 circulaire.
-> 
-> À RÉGLER : sur l'image d'étoiles seule, avant Etoiles_screen.
-> 
-> SI :
-> - trop fort -> Amount 0,50
-
-#### Opt_Halo_B_Gon — Script
-   script `$PXI_SRCDIR/scripts/Halo-B-Gon.js`
-
-> OPTION — halos autour des étoiles brillantes
-> Attention, réduit aussi les petites étoiles (pour les grosses seulement : Etoiles_grosses).
-> 
-> LANCEMENT : double-clic sur l'icône, puis Apply Global. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.
-> 
-> PRÉRÉGLÉ : rien (réglages dans le dialogue).
-> 
-> À RÉGLER : Select stars-only image = l'image d'étoiles étirée (NBtoRGB_stars), AVANT Etoiles_screen ; Reduction Amount Low ; Linear Data décoché.
-> 
-> SI :
-> - petites étoiles réduites ou effacées aussi (son masque ne protège que les cœurs) -> Etoiles_grosses à la place
-> - pas assez -> relance en Low (Med = 4 courbes, High = 9)
-
-#### Opt_Etoiles_grosses — Script
-   script `$PXI_SRCDIR/scripts/clodoweg/Etoiles_grosses.js`
-   paramètres : `taille=7`, `seuil=0.15`, `etendue=12`, `force=0.80`, `afficherMasque=false`
-
-> OPTION — grosses étoiles trop présentes, mais Etoiles_reduites réduirait toutes les étoiles : glisse sur l'image d'étoiles (RGB_stars) AVANT Etoiles_screen
-> En rapide, avant R_C_Etoiles_fond_rapide.
-> 
-> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
-> 
-> PRÉRÉGLÉ : script Etoiles_grosses : masque des grosses étoiles (ouverture morphologique, disque de 7 px sur une copie à 2000 px, au-dessus de 0,15, étendu au halo, flou 12 px) ; sous le masque, luminance -> mtf(0,80, Y) avec un poids qui monte de 0 (Y = 0,10) à 1 (Y = 0,80) : halo faible jamais touché, pas d'anneau sombre ; même facteur sur R, G, B : couleur gardée, petites étoiles intactes.
-> 
-> À RÉGLER : sur RGB_stars juste AVANT Etoiles_screen (Etoiles_screen ensuite, pas Etoiles_reduites) ; en rapide, avant R_C_Etoiles_fond_rapide ; pour régler à l'œil : double-clic puis Apply Global, « Voir le masque », puis Appliquer ; copie Etoiles_grosses.js dans src/scripts/clodoweg.
-> 
-> SI :
-> - anneau sombre autour des grosses étoiles -> etendue 16 à 20, ou force plus basse (0,70)
-> - halo large pas entièrement réduit -> etendue 16
-> - moyennes étoiles touchées aussi -> taille 9 ou 11
-> - certaines grosses pas réduites -> taille 5, ou seuil 0,10
-> - pas assez réduites -> force 0,85 (au plus ; 0,5 = rien)
-> - voir ce qui est réduit -> fenêtre (double-clic puis Apply Global), « Voir le masque » (vue masque_grosses)
-
 #### Opt_Boost_final_doux — ProcessContainer
    1. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
@@ -1372,41 +1182,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - trop fort -> Boost_final_doux
 > - fond teinté -> Fond_desature ensuite le retire
 
-#### Opt_Fond_auto_clair — Script
-   script `$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js`
-   paramètres : `cible=0.14`, `tolerance=0.005`, `grille=8`
-
-> OPTION — à la place de Fond_auto : image trop sombre, fond amené à 0,14, après Fond_desature, avant la recombinaison des étoiles.
-> 
-> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
-> 
-> PRÉRÉGLÉ : script Fond_auto, cible 0,14 : fond de chaque canal mesuré (grille 8 × 8), amené à 0,14 par mtf, sans écrêtage ; fond neutre.
-> 
-> À RÉGLER : à la place de Fond_auto, image trop sombre : glisse sur l'image sans étoiles, après Fond_desature, avant la recombinaison des étoiles.
-> 
-> SI :
-> - fond encore trop sombre -> double-clic, cible 0,15
-
-#### Opt_Look_Lightroom — Script
-   script `$PXI_SRCDIR/scripts/clodoweg/Look_Lightroom.js`
-   paramètres : `exposition=0.25`, `contraste=0`, `hautes=-100`, `foncees=0`, `blancs=50`, `noirs=0`, `temperature=10`, `teinte=0`, `masque=false`, `s=0.14`, `flou=2.0`
-
-> OPTION — retouche finale façon Camera Raw / Lightroom (tes réglages : Exposition +0,25, Tons clairs -100, Blancs +50, Température +10) : glisse sur l'image SANS étoiles finie (après Fond_desature et Fond_auto), juste avant Etoiles_screen
-> Toute l'image par défaut (masque de luminance en option dans la fenêtre).
-> 
-> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
-> 
-> PRÉRÉGLÉ : script Look_Lightroom, tes réglages Camera Raw (équivalents approchés) : Exposition +0,25, Contraste 0, Tons clairs -100, Tons foncés 0, Blancs +50, Noirs 0, Température +10 (R × 1,03, B × 0,97), Teinte 0 ; toute l'image (masque de luminance en option) ; Ctrl+Z possible.
-> 
-> À RÉGLER : glisse sur l'image SANS étoiles finie (après Fond_desature et Fond_auto), juste avant Etoiles_screen ; pour changer une valeur ou mettre le masque : double-clic puis Apply Global (fenêtre, mêmes curseurs que Camera Raw) ; copie Look_Lightroom.js dans src/scripts/clodoweg.
-> 
-> SI :
-> - trop clair -> Exposition +0,10
-> - zones claires trop éteintes -> Tons clairs -50
-> - trop chaud -> Température +5
-> - fond devenu coloré -> coche le masque dans la fenêtre
-> - dans un conteneur : le masque n'est pas appliqué, glisse l'icône seule
-
 #### Opt_Etoiles_reduites — PixelMath
    expression = `S=0.20; W=~((~$T)*(~NBtoRGB_stars)); f1= ~((~mtf(~S,W)/~mtf(~S,$T))*~$T); max($T,f1)` ; useSingleExpression=true ; symbols = `S, W, f1` ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
 
@@ -1419,19 +1194,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > SI :
 > - étoiles synthétiques -> remplace NBtoRGB_stars par Stars_HOO
 > - pour recommencer -> Ctrl+Z
-
-#### Opt_Agrandir_x2 — Resample
-   xSize=2.000000 ; ySize=2.000000 ; mode=RelativeDimensions ; absoluteMode=ForceWidthAndHeight ; interpolation=Lanczos3 ; clampingThreshold=0.30 ; smoothness=1.50 ; noGUIMessages=true
-
-> OPTION — après Binning_x2, pour un grand tirage : image agrandie 2 fois (Lanczos 3) juste avant Export_TIFF
-> Ne recrée pas le détail perdu.
-> 
-> PRÉRÉGLÉ : Resample : × 2 en largeur et hauteur, Lanczos 3, seuil d'écrêtage 0,30.
-> 
-> À RÉGLER : glisse sur l'image finie, juste avant ICC_sRGB et Export_TIFF ; seulement après Binning_x2, pour un grand tirage.
-> 
-> SI :
-> - anneaux noirs autour des étoiles -> interpolation Auto ou Bicubic spline
 
 #### Opt_ICC_sRGB — ICCProfileTransformation
    targetProfile=sRGB IEC61966-2.1 ; toDefaultProfile=false ; renderingIntent=Perceptual ; useBlackPointCompensation=true ; useFloatingPointTransformation=true
@@ -1506,5 +1268,4 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > SI :
 > - étoiles trop présentes -> fais les étapes à la main avec Etoiles_reduites (à la place d'Etoiles_screen)
 > - étoiles d'un autre nom (Stars_HOO, RGB_stars…) -> double-clic sur le conteneur, change le nom dans Etoiles_screen
-> - fond trop sombre -> Fond_auto_clair à la main à la place
 > - nébuleuse qui remplit le champ (fond AVANT lu par Fond_auto au-dessus d'environ 0,20 dans la console) -> Ctrl+Z, puis les étapes à la main sans Fond_auto

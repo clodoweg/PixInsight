@@ -1000,7 +1000,7 @@ nb_noise = [(M.nxt('NXT_H', 0.60, 1), "OPTION, à la place de NXT_NB (ancien ré
 # conseil RC Astro, réseau entraîné aux écarts de bruit entre canaux ; NXT_H et NXT_O_S passent en options)
 NXT_NB = (M.nxt('NXT_NB', 0.75, 1), "NoiseXTerminator sur la combinaison narrowband SANS étoiles, linéaire (juste après SXT_lineaire, avant l'extraction des canaux) : Denoise 0,75. "
           "RC Astro conseille NXT après la combinaison des canaux : le réseau gère lui-même un S ou un O plus bruité que H. "
-          "H trop lissé (aspect plastique) -> 0,65 ; O ou S encore granuleux -> 2 itérations, ou NXT_O_S en plus sur ce canal après extraction." + NXT_C)
+          "H trop lissé (aspect plastique) -> 0,65 ; O ou S encore granuleux -> 2 itérations." + NXT_C)
 GHS_NB = (" En narrowband, étire chaque canal séparément. Règle : même niveau de fond et médiane proche pour tous les canaux (on n'égalise pas la nébuleuse : l'écart de signal, c'est la couleur). "
           "Étire H en premier (pic d'histogramme vers 0,20-0,25) et note ce niveau : c'est la référence. Puis O et S jusqu'au MÊME fond et à la même médiane ; ils demandent un Stretch factor plus élevé, monte LP pour ne pas faire ressortir leur bruit. "
           "Vérifie le fond avec Statistics ou la lecture de pixel. CONTRÔLE : combinaison simple des canaux étirés ; le fond doit être gris neutre, sinon le fond du canal dominant est trop clair : reprends son étirement. "
@@ -1481,6 +1481,12 @@ SUPPR_GALAXIES_2 = {'Look_Lightroom', 'Fond_auto_clair', 'Etoiles_grosses', 'Hal
                     'WBPP', 'CC_auto', 'Binning_x2', 'Agrandir_x2'}   # WBPP, CC_auto, Binning_x2, Agrandir_x2 : demande de l'utilisateur, 18 octobre 2026
 for _st in (lrgb, lhargb):
     _st[:] = [x for x in _st if x[0][0] not in SUPPR_GALAXIES_2]
+
+# options supprimées du narrowband (demande de l'utilisateur, 20 octobre 2026 : « pour SHO avec et sans RGB, HOO: supprime » cette liste)
+SUPPR_NB = {'NXT_H', 'NXT_O_S', 'WBPP', 'CC_auto', 'Binning_x2', 'EZ_Soft_Stretch', 'Sharp_USM', 'Halo_B_Gon', 'MT_etoiles',
+            'Star_Stretch', 'Etoiles_grosses', 'Fond_auto_clair', 'Look_Lightroom', 'Agrandir_x2'}
+for _st in (rgbsho, sho, hoo):
+    _st[:] = [x for x in _st if x[0][0] not in SUPPR_NB]
 
 for fn, pre, title, steps in [
     ('Workflow-LRGB.xpsm', 'LRGB', 'Workflow LRGB', lrgb),

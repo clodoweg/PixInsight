@@ -331,37 +331,6 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </table>
       <parameter id="information"></parameter>
    </instance>
-   <instance class="Script" version="256" id="Opt_WBPP_instance">
-      <description>OPTION — seulement si tu repars des brutes (masters pas encore empilés).&#10;&#10;LANCEMENT : double-clic sur l'icône, puis Apply Global.&#10;&#10;PRÉRÉGLÉ : rien (WBPP garde ses propres réglages).&#10;&#10;À RÉGLER : Maximum quality ; CosmeticCorrection = icône CC_auto ; PSF Signal Weight ; Local normalization activée ; Rejection Auto ; Large-scale rejection High ; pas de drizzle (sauf FWHM &lt; 2 px).&#10;&#10;SI :&#10;- un groupe de lights sans dark ou flat (onglet Calibration) -&gt; corrige avant Run&#10;- plusieurs nuits -&gt; Grouping keywords = SESSION</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/BatchPreprocessing/BPP-Main.js</parameter>
-      <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="0"/>
-      <parameter id="information"></parameter>
-   </instance>
-   <instance class="CosmeticCorrection" version="256" id="Opt_CC_auto_instance">
-      <description>OPTION — avec WBPP, si tu repars des brutes.&#10;&#10;PRÉRÉGLÉ : Auto detect, Hot sigma 2,5, Cold désactivé.&#10;&#10;À RÉGLER : rien ; choisis cette icône comme modèle Cosmetic correction dans WBPP ; coche CFA seulement en caméra couleur.&#10;&#10;SI :&#10;- petites étoiles modifiées -&gt; Hot sigma 3,0&#10;- S, H, O en poses longues -&gt; 2,2</description>
-      <table id="targetFrames" rows="0"/>
-      <parameter id="masterDarkPath"></parameter>
-      <parameter id="outputDir"></parameter>
-      <parameter id="outputExtension">.xisf</parameter>
-      <parameter id="prefix"></parameter>
-      <parameter id="postfix">_cc</parameter>
-      <parameter id="overwrite" value="false"/>
-      <parameter id="amount" value="1.00"/>
-      <parameter id="cfa" value="false"/>
-      <parameter id="useMasterDark" value="false"/>
-      <parameter id="hotDarkCheck" value="false"/>
-      <parameter id="hotDarkLevel" value="1.0000000"/>
-      <parameter id="coldDarkCheck" value="false"/>
-      <parameter id="coldDarkLevel" value="0.0000000"/>
-      <parameter id="useAutoDetect" value="true"/>
-      <parameter id="hotAutoCheck" value="true"/>
-      <parameter id="hotAutoValue" value="2.5"/>
-      <parameter id="coldAutoCheck" value="false"/>
-      <parameter id="coldAutoValue" value="3.0"/>
-      <parameter id="useDefectList" value="false"/>
-      <table id="defects" rows="0"/>
-   </instance>
    <instance class="NoOperation" version="256" id="P1_rapide_instance">
       <description>MODE RAPIDE, phase 1 — Préparation : MODE RAPIDE (nébuleuses, en cours) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre : R_C_Preparation_rapide, R_Gradient_auto_rapide, R_C_Lineaire_rapide (ou les trois en un : T_Turbo_debut), puis chemin principal à partir de la phase 4. Phase 1 : R_C_Preparation_rapide (masters seuls ouverts, double-clic puis Apply Global) à la place de LinearPatternSubtraction, Renommer_auto et Solver_auto. Icône de repère, sans effet.</description>
    </instance>
@@ -1451,18 +1420,6 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
    <instance class="NoOperation" version="256" id="P2_options_instance">
       <description>OPTIONS de la phase 2 — Gradient : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
    </instance>
-   <instance class="Script" version="256" id="Opt_Binning_x2_instance">
-      <description>OPTION — traitement 4 fois plus rapide et moins de bruit (0,528″/px au lieu de 0,264″/px, l'image du CDK17 est suréchantillonnée&#10;FWHM sous le plafond de 8 px de BXT) : double-clic puis Apply Global juste après Solver_auto (phase 1) ou R_C_Preparation_rapide, toutes les images divisées par 2&#10;Pour un grand tirage, Agrandir_x2 avant l'export.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Binning_x2 : IntegerResample −2, moyenne (binning 2×2 logiciel) sur TOUTES les images ouvertes (sauf *_stars) ; solution astrométrique gardée ; mots-clés XPIXSZ et XBINNING mis à jour.&#10;&#10;À RÉGLER : double-clic puis Apply Global, juste APRÈS Solver_auto (phase 1) ou R_C_Preparation_rapide, avant SPFC et MGC ; copie Binning_x2.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- grand tirage voulu -&gt; Agrandir_x2 (P7 options) avant Export_TIFF, ou ne bine pas&#10;- binning 3×3 -&gt; facteur 3&#10;- ImageSolver refait ensuite et en échec -&gt; metadata_xpixsz = 7.52 dans l'icône ImageSolver</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Binning_x2.js</parameter>
-      <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="1">
-         <tr>
-            <td id="id">facteur</td>
-            <td id="value">2</td>
-         </tr>
-      </table>
-      <parameter id="information"></parameter>
-   </instance>
    <instance class="Script" version="256" id="Opt_ImageSolver_seul_instance">
       <description>OPTION — secours : ImageSolver seul, si l'icône ImageSolver (date + ImageSolver) s'arrête après la date.&#10;&#10;PRÉRÉGLÉ : ImageSolver 6.4.2 seul (mêmes réglages que l'icône ImageSolver, sans l'ajout de date).&#10;&#10;À RÉGLER : secours : glisse sur l'image si l'icône ImageSolver s'arrête après la date.&#10;&#10;SI :&#10;- icône bloquée après une mise à jour d'ImageSolver -&gt; efface son champ MD5</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/ImageSolver/ImageSolver.js</parameter>
@@ -2155,44 +2112,6 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </table>
       <parameter id="information"></parameter>
    </instance>
-   <instance class="NoiseXTerminator" version="256" id="Opt_NXT_H_instance">
-      <description>OPTION — ancien réglage par canal, à la place de NXT_NB : NXT 0,60 sur H sans étoiles après l'extraction.&#10;&#10;PRÉRÉGLÉ : option, ancien réglage par canal : Denoise 0,60, 1 itération.&#10;&#10;À RÉGLER : glisse sur H sans étoiles après l'extraction, à la place de NXT_NB (enlève-le du conteneur).&#10;&#10;SI :&#10;- encore bruité -&gt; 0,70&#10;- aspect plastique -&gt; 0,50</description>
-      <parameter id="ml_version" value="0"/>
-      <parameter id="denoise" value="0.60"/>
-      <parameter id="enable_color_separation" value="false"/>
-      <parameter id="enable_frequency_separation" value="false"/>
-      <parameter id="denoise_intensity" value="0.90"/>
-      <parameter id="denoise_color" value="0.90"/>
-      <parameter id="denoise_high_freq" value="0.90"/>
-      <parameter id="denoise_low_freq" value="0.90"/>
-      <parameter id="denoise_intensity_high_freq" value="0.90"/>
-      <parameter id="denoise_intensity_low_freq" value="0.90"/>
-      <parameter id="denoise_color_high_freq" value="0.90"/>
-      <parameter id="denoise_color_low_freq" value="0.90"/>
-      <parameter id="frequency_scale" value="5.0"/>
-      <parameter id="iterations" value="1"/>
-      <parameter id="detail" value="0.15"/>
-      <parameter id="overlap" value="0.20"/>
-   </instance>
-   <instance class="NoiseXTerminator" version="256" id="Opt_NXT_O_S_instance">
-      <description>OPTION — ancien réglage par canal : NXT 0,75 sur O et S sans étoiles après l'extraction, à la place de NXT_NB ou en plus si O ou S reste granuleux.&#10;&#10;PRÉRÉGLÉ : option, ancien réglage par canal : Denoise 0,75, 1 itération.&#10;&#10;À RÉGLER : glisse sur O (et S) sans étoiles après l'extraction : à la place de NXT_NB, ou en plus si O ou S reste granuleux.&#10;&#10;SI :&#10;- très bruité -&gt; 2 itérations&#10;- aspect plastique -&gt; 0,60</description>
-      <parameter id="ml_version" value="0"/>
-      <parameter id="denoise" value="0.75"/>
-      <parameter id="enable_color_separation" value="false"/>
-      <parameter id="enable_frequency_separation" value="false"/>
-      <parameter id="denoise_intensity" value="0.90"/>
-      <parameter id="denoise_color" value="0.90"/>
-      <parameter id="denoise_high_freq" value="0.90"/>
-      <parameter id="denoise_low_freq" value="0.90"/>
-      <parameter id="denoise_intensity_high_freq" value="0.90"/>
-      <parameter id="denoise_intensity_low_freq" value="0.90"/>
-      <parameter id="denoise_color_high_freq" value="0.90"/>
-      <parameter id="denoise_color_low_freq" value="0.90"/>
-      <parameter id="frequency_scale" value="5.0"/>
-      <parameter id="iterations" value="1"/>
-      <parameter id="detail" value="0.15"/>
-      <parameter id="overlap" value="0.20"/>
-   </instance>
    <instance class="ScreenTransferFunction" version="256" id="Opt_STF_instance">
       <description>OPTION — n'importe quand : double-clic pour ouvrir la fenêtre ScreenTransferFunction (bouton A = auto-étirement de l'affichage, Reset pour revenir), pixels inchangés.&#10;&#10;PRÉRÉGLÉ : process ScreenTransferFunction (STF), réglage neutre ; affichage seulement, les pixels ne changent pas.&#10;&#10;À RÉGLER : double-clic sur l'icône : la fenêtre STF s'ouvre ; choisis l'image, puis A (Auto Stretch) ; lien R/G/B : bouton chaîne.&#10;&#10;SI :&#10;- revenir à l'image brute -&gt; Reset de la fenêtre STF (ou F12)&#10;- dominante de couleur à l'écran -&gt; décoche le lien R/G/B (chaîne), puis A</description>
       <table id="STF" rows="4">
@@ -2231,7 +2150,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <description>MODE RAPIDE, phase 3 — Linéaire : R_C_Lineaire_rapide (double-clic puis Apply Global) à la place de toute la phase 3 : combinaison, C_SHO_lineaire (BXT, SXT, NXT), extraction des canaux (vues S, H, O linéaires sans étoiles) ; masters et images linéaires inutiles fermés ; étoiles S_stars, H_stars, O_stars extraites de SHO_stars. Icône de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="R_C_Lineaire_rapide_instance">
-      <description>MODE RAPIDE, à la place de toute la phase 3 (combinaison, conteneur linéaire, extraction) : après R_Gradient_auto_rapide, double-clic puis Apply Global (pas en glissant) ; Conteneurs du workflow chargé ; ensuite Statistical_Stretch sur S, H et O.&#10;&#10;LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).&#10;&#10;PRÉRÉGLÉ : conteneur de scripts : Lineaire_auto lance Combinaison_SHO (crée SHO) ; Fermer_vues ferme les masters S, H, O ; Lineaire_auto lance C_SHO_lineaire sur SHO (BXT_NB, SXT_lineaire qui crée SHO_stars, NXT_NB 0,75), C_Extraction_SHO sur SHO (crée S, H, O sans étoiles) et C_Extraction_etoiles sur SHO_stars (crée S_stars, H_stars, O_stars) ; Fermer_vues ferme SHO ; Etoiles_NB_auto (LinearFit sur H_stars, mélange NB to RGB, étirement 6, Color Boost 1,3) crée NBtoRGB_stars et ferme S_stars, H_stars, O_stars ; SHO_stars gardée.&#10;&#10;À RÉGLER : après R_Gradient_auto_rapide (ou la phase 2), double-clic puis Apply Global (pas en glissant) ; le fichier Conteneurs du workflow doit être chargé (icônes E## lancées par Lineaire_auto) ; les masters sont FERMÉS sans enregistrer : enregistre-les avant si tu veux les garder ; ensuite Statistical_Stretch sur S, H et O.&#10;&#10;SI :&#10;- une étape en erreur -&gt; la console dit laquelle ; fais la suite au chemin principal à partir de cette icône&#10;- NXT par canal voulu (NXT_H, NXT_O_S) -&gt; après ce conteneur, sur les vues extraites&#10;- BXT, SXT ou NXT à changer -&gt; double-clic sur le conteneur linéaire du chemin principal (c'est lui qui est lancé)</description>
+      <description>MODE RAPIDE, à la place de toute la phase 3 (combinaison, conteneur linéaire, extraction) : après R_Gradient_auto_rapide, double-clic puis Apply Global (pas en glissant) ; Conteneurs du workflow chargé ; ensuite Statistical_Stretch sur S, H et O.&#10;&#10;LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).&#10;&#10;PRÉRÉGLÉ : conteneur de scripts : Lineaire_auto lance Combinaison_SHO (crée SHO) ; Fermer_vues ferme les masters S, H, O ; Lineaire_auto lance C_SHO_lineaire sur SHO (BXT_NB, SXT_lineaire qui crée SHO_stars, NXT_NB 0,75), C_Extraction_SHO sur SHO (crée S, H, O sans étoiles) et C_Extraction_etoiles sur SHO_stars (crée S_stars, H_stars, O_stars) ; Fermer_vues ferme SHO ; Etoiles_NB_auto (LinearFit sur H_stars, mélange NB to RGB, étirement 6, Color Boost 1,3) crée NBtoRGB_stars et ferme S_stars, H_stars, O_stars ; SHO_stars gardée.&#10;&#10;À RÉGLER : après R_Gradient_auto_rapide (ou la phase 2), double-clic puis Apply Global (pas en glissant) ; le fichier Conteneurs du workflow doit être chargé (icônes E## lancées par Lineaire_auto) ; les masters sont FERMÉS sans enregistrer : enregistre-les avant si tu veux les garder ; ensuite Statistical_Stretch sur S, H et O.&#10;&#10;SI :&#10;- une étape en erreur -&gt; la console dit laquelle ; fais la suite au chemin principal à partir de cette icône&#10;- BXT, SXT ou NXT à changer -&gt; double-clic sur le conteneur linéaire du chemin principal (c'est lui qui est lancé)</description>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js</parameter>
          <parameter id="md5sum"></parameter>
@@ -2487,13 +2406,6 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="backgroundROIY0" value="0"/>
       <parameter id="backgroundROIWidth" value="0"/>
       <parameter id="backgroundROIHeight" value="0"/>
-   </instance>
-   <instance class="Script" version="256" id="Opt_EZ_Soft_Stretch_instance">
-      <description>OPTION — à la place de Statistical_Stretch : étirement automatique doux de chaque canal sans étoiles (HistogramTransformation, point noir et médiane calculés)&#10;Même médiane cible pour tous les canaux.&#10;&#10;LANCEMENT : double-clic sur l'icône, puis Apply Global.&#10;&#10;PRÉRÉGLÉ : script EZ Soft Stretch (EZ Processing Suite, Elveteek / darkarchon) : HistogramTransformation avec point noir trouvé dans l'histogramme et fonction de transfert vers une médiane cible ; réglages dans sa fenêtre.&#10;&#10;À RÉGLER : à la place de Statistical_Stretch : clique sur chaque canal SANS étoiles (S, H, O après extraction et NXT), double-clic puis Apply Global ; dans la fenêtre : Target Median 0,15 pour tous les canaux, Expand Low 0,05, Aggressiveness 5, Zero in White Point décoché ; ensuite la palette (même fond sur tous les canaux) ; dépôt https://elveteek.ch/pixinsight-updates/ez-processing-suite/.&#10;&#10;SI :&#10;- fond trop sombre ou nébuleuse faible -&gt; Target Median 0,20 (défaut) ou Expand Low 0,08&#10;- fond délavé, gris -&gt; Target Median 0,12&#10;- fond coupé à noir -&gt; Aggressiveness plus bas (2 à 3)</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/EZProcessingSuite/EZ_SoftStretch.js</parameter>
-      <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="0"/>
-      <parameter id="information"></parameter>
    </instance>
    <instance class="GeneralizedHyperbolicStretch" version="256" id="Opt_GHS_3_fond_instance">
       <description>OPTION — fond trop clair après Statistical_Stretch (0,25) ou les GHS : sur chaque canal, même SP = HP pour tous (0,22 après Statistical Stretch), fond vers 0,12–0,14, avant la palette.&#10;&#10;PRÉRÉGLÉ : b = 10, SP = HP = 0,20, Stretch factor 1 (fond à 0,23 après GHS_2).&#10;&#10;À RÉGLER : glisse sur chaque canal, avant la palette ; SP = HP = fond lu - 0,03 (0,22 après Statistical Stretch à 0,25) ; Stretch factor 0,8 à 1,2 jusqu'au fond vers 0,12–0,14.</description>
@@ -3005,7 +2917,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </instance>
    </instance>
    <instance class="ProcessContainer" id="E19_C_Sharp_MMT_instance">
-      <description>LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : masque de luminance attaché (Masque_L, s = 0,14), script Sharp_MMT (MultiscaleMedianTransform 5 couches, couches 2 à 4 biais +0,04, couche 1 inchangée), masque retiré.&#10;&#10;À RÉGLER : glisse sur l'image SANS étoiles étirée, après C_Finition, avant NXT_final ; regarde à 100 % sur la galaxie ; copie Sharp_MMT.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- pas assez net -&gt; double-clic sur le conteneur, Sharp_MMT : biais 0.06&#10;- halos ou aspect dur -&gt; biais 0.02&#10;- bruit accentué -&gt; première couche 3&#10;- autre rendu -&gt; Sharp_USM (P6 options) à la place</description>
+      <description>LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : masque de luminance attaché (Masque_L, s = 0,14), script Sharp_MMT (MultiscaleMedianTransform 5 couches, couches 2 à 4 biais +0,04, couche 1 inchangée), masque retiré.&#10;&#10;À RÉGLER : glisse sur l'image SANS étoiles étirée, après C_Finition, avant NXT_final ; regarde à 100 % sur la galaxie ; copie Sharp_MMT.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- pas assez net -&gt; double-clic sur le conteneur, Sharp_MMT : biais 0.06&#10;- halos ou aspect dur -&gt; biais 0.02&#10;- bruit accentué -&gt; première couche 3</description>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
@@ -4526,140 +4438,6 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          <parameter id="information"></parameter>
       </instance>
    </instance>
-   <instance class="ProcessContainer" id="Opt_Sharp_USM_instance">
-      <description>OPTION — à la place de C_Sharp_MMT : accentuation finale par UnsharpMask, avant NXT_final, sur l'image sans étoiles&#10;Masque de luminance appliqué par mélange PixelMath, fermé automatiquement.&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : masque_L créé sans être attaché, copie de l'image, UnsharpMask (écart type 2,0 px, amount 0,30, luminance seule, anti-halo sombre 0,10), puis mélange masque_L × résultat + (1 − masque_L) × copie, copie et masque fermés.&#10;&#10;À RÉGLER : glisse sur l'image SANS étoiles étirée, après C_Finition, avant NXT_final ; regarde à 100 % sur la galaxie.&#10;&#10;SI :&#10;- halos sombres autour des détails -&gt; double-clic sur le conteneur, UnsharpMask : amount 0,20 ou anti-halo 0,15&#10;- pas assez net -&gt; amount 0,40&#10;- fond qui devient granuleux -&gt; seuil s du masque plus haut (Masque_L)</description>
-      <instance class="Script" version="256" enabled="true">
-         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
-         <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="5">
-            <tr>
-               <td id="id">mode</td>
-               <td id="value">creer</td>
-            </tr>
-            <tr>
-               <td id="id">s</td>
-               <td id="value">0.14</td>
-            </tr>
-            <tr>
-               <td id="id">flou</td>
-               <td id="value">2</td>
-            </tr>
-            <tr>
-               <td id="id">nom</td>
-               <td id="value">masque_L</td>
-            </tr>
-            <tr>
-               <td id="id">dialogue</td>
-               <td id="value">false</td>
-            </tr>
-         </table>
-         <parameter id="information"></parameter>
-      </instance>
-      <instance class="PixelMath" version="256" enabled="true">
-         <parameter id="expression">$T</parameter>
-         <parameter id="expression1"></parameter>
-         <parameter id="expression2"></parameter>
-         <parameter id="expression3"></parameter>
-         <parameter id="useSingleExpression" value="true"/>
-         <parameter id="symbols"></parameter>
-         <parameter id="clearImageCacheAndExit" value="false"/>
-         <parameter id="cacheGeneratedImages" value="false"/>
-         <parameter id="generateOutput" value="true"/>
-         <parameter id="singleThreaded" value="false"/>
-         <parameter id="optimization" value="true"/>
-         <parameter id="use64BitWorkingImage" value="false"/>
-         <parameter id="rescale" value="false"/>
-         <parameter id="rescaleLower" value="0"/>
-         <parameter id="rescaleUpper" value="1"/>
-         <parameter id="truncate" value="true"/>
-         <parameter id="truncateLower" value="0"/>
-         <parameter id="truncateUpper" value="1"/>
-         <parameter id="createNewImage" value="true"/>
-         <parameter id="showNewImage" value="true"/>
-         <parameter id="newImageId">Masque_avant</parameter>
-         <parameter id="newImageWidth" value="0"/>
-         <parameter id="newImageHeight" value="0"/>
-         <parameter id="newImageAlpha" value="false"/>
-         <parameter id="newImageColorSpace" value="SameAsTarget"/>
-         <parameter id="newImageSampleFormat" value="SameAsTarget"/>
-         <table id="outputData" rows="0"/>
-      </instance>
-      <instance class="UnsharpMask" version="256" enabled="true">
-         <parameter id="sigma" value="2.00"/>
-         <parameter id="amount" value="0.30"/>
-         <parameter id="useLuminance" value="true"/>
-         <parameter id="linear" value="false"/>
-         <parameter id="deringing" value="true"/>
-         <parameter id="deringingDark" value="0.1000"/>
-         <parameter id="deringingBright" value="0.0000"/>
-         <parameter id="outputDeringingMaps" value="false"/>
-         <parameter id="rangeLow" value="0.0000000"/>
-         <parameter id="rangeHigh" value="0.0000000"/>
-      </instance>
-      <instance class="PixelMath" version="256" enabled="true">
-         <parameter id="expression">masque_L*$T + (1 - masque_L)*Masque_avant</parameter>
-         <parameter id="expression1">masque_L*$T + (1 - masque_L)*Masque_avant</parameter>
-         <parameter id="expression2">masque_L*$T + (1 - masque_L)*Masque_avant</parameter>
-         <parameter id="expression3"></parameter>
-         <parameter id="useSingleExpression" value="false"/>
-         <parameter id="symbols"></parameter>
-         <parameter id="clearImageCacheAndExit" value="false"/>
-         <parameter id="cacheGeneratedImages" value="false"/>
-         <parameter id="generateOutput" value="true"/>
-         <parameter id="singleThreaded" value="false"/>
-         <parameter id="optimization" value="true"/>
-         <parameter id="use64BitWorkingImage" value="false"/>
-         <parameter id="rescale" value="false"/>
-         <parameter id="rescaleLower" value="0"/>
-         <parameter id="rescaleUpper" value="1"/>
-         <parameter id="truncate" value="true"/>
-         <parameter id="truncateLower" value="0"/>
-         <parameter id="truncateUpper" value="1"/>
-         <parameter id="createNewImage" value="false"/>
-         <parameter id="showNewImage" value="true"/>
-         <parameter id="newImageId"></parameter>
-         <parameter id="newImageWidth" value="0"/>
-         <parameter id="newImageHeight" value="0"/>
-         <parameter id="newImageAlpha" value="false"/>
-         <parameter id="newImageColorSpace" value="SameAsTarget"/>
-         <parameter id="newImageSampleFormat" value="SameAsTarget"/>
-         <table id="outputData" rows="0"/>
-      </instance>
-      <instance class="Script" version="256" enabled="true">
-         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
-         <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="2">
-            <tr>
-               <td id="id">views</td>
-               <td id="value">Masque_avant</td>
-            </tr>
-            <tr>
-               <td id="id">dialogue</td>
-               <td id="value">false</td>
-            </tr>
-         </table>
-         <parameter id="information"></parameter>
-      </instance>
-      <instance class="Script" version="256" enabled="true">
-         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
-         <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="3">
-            <tr>
-               <td id="id">mode</td>
-               <td id="value">retirer</td>
-            </tr>
-            <tr>
-               <td id="id">nom</td>
-               <td id="value">masque_L</td>
-            </tr>
-            <tr>
-               <td id="id">dialogue</td>
-               <td id="value">false</td>
-            </tr>
-         </table>
-         <parameter id="information"></parameter>
-      </instance>
-   </instance>
    <instance class="NoiseXTerminator" version="256" id="Opt_NXT_final_doux_instance">
       <description>OPTION — partie 3, à la place de NXT_final : données très propres, ou aspect plastique avec 0,40 (Denoise 0,25).&#10;&#10;PRÉRÉGLÉ : Denoise 0,25, 1 itération.&#10;&#10;À RÉGLER : PARTIE 3 (bruit), à la place de NXT_final : glisse sur l'image sans étoiles finie.&#10;&#10;SI :&#10;- encore trop lissé -&gt; saute la partie 3</description>
       <parameter id="ml_version" value="0"/>
@@ -5295,82 +5073,6 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
-   <instance class="Script" version="256" id="Opt_Star_Stretch_instance">
-      <description>OPTION — seulement si NB_to_RGB_Stars a été lancé sans Apply Star Stretch (ou pour HOO_stars, Stars_HOO) : sur l'image d'étoiles LINÉAIRE.&#10;&#10;LANCEMENT : glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.&#10;&#10;PRÉRÉGLÉ : Stretch Amount 6, Color Boost 1,3, Remove Green (SCNR) coché.&#10;&#10;À RÉGLER : rien ; sur l'image d'étoiles linéaire.&#10;&#10;SI :&#10;- cœurs d'étoiles blancs (R = G = B = 1) -&gt; 5,5&#10;- étoiles trop grosses -&gt; 5 ou 4&#10;- étoiles grisées par le SCNR -&gt; décoche Remove Green&#10;- étoiles criardes -&gt; Color Boost 1,0</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/star_stretch.js</parameter>
-      <parameter id="md5sum">69a1ee6db4e9f5374c2cddb1e5a7f4ae</parameter>
-      <table id="parameters" rows="4">
-         <tr>
-            <td id="id">amount</td>
-            <td id="value">6</td>
-         </tr>
-         <tr>
-            <td id="id">satAmount</td>
-            <td id="value">1.3</td>
-         </tr>
-         <tr>
-            <td id="id">removeGreen</td>
-            <td id="value">true</td>
-         </tr>
-         <tr>
-            <td id="id">showPreview</td>
-            <td id="value">false</td>
-         </tr>
-      </table>
-      <parameter id="information"></parameter>
-   </instance>
-   <instance class="MorphologicalTransformation" version="256" id="Opt_MT_etoiles_instance">
-      <description>OPTION — réduction d'étoiles supplémentaire.&#10;&#10;PRÉRÉGLÉ : Selection 0,25, Amount 0,60, 1 itération, 5×5 circulaire.&#10;&#10;À RÉGLER : sur l'image d'étoiles seule, avant Etoiles_screen.&#10;&#10;SI :&#10;- trop fort -&gt; Amount 0,50</description>
-      <parameter id="operator" value="Selection"/>
-      <parameter id="interlacingDistance" value="1"/>
-      <parameter id="lowThreshold" value="0.000000"/>
-      <parameter id="highThreshold" value="0.000000"/>
-      <parameter id="numberOfIterations" value="1"/>
-      <parameter id="amount" value="0.60"/>
-      <parameter id="selectionPoint" value="0.25"/>
-      <parameter id="structureName"></parameter>
-      <parameter id="structureSize" value="5"/>
-      <table id="structureWayTable" rows="1">
-         <tr>
-            <td id="mask">0x00,0x01,0x01,0x01,0x00,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x00,0x01,0x01,0x01,0x00</td>
-         </tr>
-      </table>
-   </instance>
-   <instance class="Script" version="256" id="Opt_Halo_B_Gon_instance">
-      <description>OPTION — halos autour des étoiles brillantes&#10;Attention, réduit aussi les petites étoiles (pour les grosses seulement : Etoiles_grosses).&#10;&#10;LANCEMENT : double-clic sur l'icône, puis Apply Global. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.&#10;&#10;PRÉRÉGLÉ : rien (réglages dans le dialogue).&#10;&#10;À RÉGLER : Select stars-only image = l'image d'étoiles étirée (NBtoRGB_stars), AVANT Etoiles_screen ; Reduction Amount Low ; Linear Data décoché.&#10;&#10;SI :&#10;- petites étoiles réduites ou effacées aussi (son masque ne protège que les cœurs) -&gt; Etoiles_grosses à la place&#10;- pas assez -&gt; relance en Low (Med = 4 courbes, High = 9)</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/Halo-B-Gon.js</parameter>
-      <parameter id="md5sum">b9427e718e2b9760704c8c738e0893b7</parameter>
-      <table id="parameters" rows="0"/>
-      <parameter id="information"></parameter>
-   </instance>
-   <instance class="Script" version="256" id="Opt_Etoiles_grosses_instance">
-      <description>OPTION — grosses étoiles trop présentes, mais Etoiles_reduites réduirait toutes les étoiles : glisse sur l'image d'étoiles (RGB_stars) AVANT Etoiles_screen&#10;En rapide, avant R_C_Etoiles_fond_rapide.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Etoiles_grosses : masque des grosses étoiles (ouverture morphologique, disque de 7 px sur une copie à 2000 px, au-dessus de 0,15, étendu au halo, flou 12 px) ; sous le masque, luminance -&gt; mtf(0,80, Y) avec un poids qui monte de 0 (Y = 0,10) à 1 (Y = 0,80) : halo faible jamais touché, pas d'anneau sombre ; même facteur sur R, G, B : couleur gardée, petites étoiles intactes.&#10;&#10;À RÉGLER : sur RGB_stars juste AVANT Etoiles_screen (Etoiles_screen ensuite, pas Etoiles_reduites) ; en rapide, avant R_C_Etoiles_fond_rapide ; pour régler à l'œil : double-clic puis Apply Global, « Voir le masque », puis Appliquer ; copie Etoiles_grosses.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- anneau sombre autour des grosses étoiles -&gt; etendue 16 à 20, ou force plus basse (0,70)&#10;- halo large pas entièrement réduit -&gt; etendue 16&#10;- moyennes étoiles touchées aussi -&gt; taille 9 ou 11&#10;- certaines grosses pas réduites -&gt; taille 5, ou seuil 0,10&#10;- pas assez réduites -&gt; force 0,85 (au plus ; 0,5 = rien)&#10;- voir ce qui est réduit -&gt; fenêtre (double-clic puis Apply Global), « Voir le masque » (vue masque_grosses)</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Etoiles_grosses.js</parameter>
-      <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="5">
-         <tr>
-            <td id="id">taille</td>
-            <td id="value">7</td>
-         </tr>
-         <tr>
-            <td id="id">seuil</td>
-            <td id="value">0.15</td>
-         </tr>
-         <tr>
-            <td id="id">etendue</td>
-            <td id="value">12</td>
-         </tr>
-         <tr>
-            <td id="id">force</td>
-            <td id="value">0.80</td>
-         </tr>
-         <tr>
-            <td id="id">afficherMasque</td>
-            <td id="value">false</td>
-         </tr>
-      </table>
-      <parameter id="information"></parameter>
-   </instance>
    <instance class="ProcessContainer" id="Opt_Boost_final_doux_instance">
       <description>OPTION — comme Boost_final mais moitié moins fort : un petit cran de couleur, sur l'image SANS étoiles, avant Fond_desature et Etoiles_screen.&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : comme Boost_final, courbes montées de moitié (c 0,46094 -&gt; 0,49870, S 0,46354 -&gt; 0,50261).&#10;&#10;À RÉGLER : glisse sur l'image SANS étoiles finie, avant Fond_desature et Etoiles_screen ; un glisser = un petit cran.&#10;&#10;SI :&#10;- pas assez -&gt; un deuxième passage, ou Boost_final&#10;- masque trop large -&gt; gamma 3 dans Masque_L_boost_nb</description>
       <instance class="Script" version="256" enabled="true">
@@ -5885,78 +5587,6 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          <parameter id="information"></parameter>
       </instance>
    </instance>
-   <instance class="Script" version="256" id="Opt_Fond_auto_clair_instance">
-      <description>OPTION — à la place de Fond_auto : image trop sombre, fond amené à 0,14, après Fond_desature, avant la recombinaison des étoiles.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Fond_auto, cible 0,14 : fond de chaque canal mesuré (grille 8 × 8), amené à 0,14 par mtf, sans écrêtage ; fond neutre.&#10;&#10;À RÉGLER : à la place de Fond_auto, image trop sombre : glisse sur l'image sans étoiles, après Fond_desature, avant la recombinaison des étoiles.&#10;&#10;SI :&#10;- fond encore trop sombre -&gt; double-clic, cible 0,15</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js</parameter>
-      <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="3">
-         <tr>
-            <td id="id">cible</td>
-            <td id="value">0.14</td>
-         </tr>
-         <tr>
-            <td id="id">tolerance</td>
-            <td id="value">0.005</td>
-         </tr>
-         <tr>
-            <td id="id">grille</td>
-            <td id="value">8</td>
-         </tr>
-      </table>
-      <parameter id="information"></parameter>
-   </instance>
-   <instance class="Script" version="256" id="Opt_Look_Lightroom_instance">
-      <description>OPTION — retouche finale façon Camera Raw / Lightroom (tes réglages : Exposition +0,25, Tons clairs -100, Blancs +50, Température +10) : glisse sur l'image SANS étoiles finie (après Fond_desature et Fond_auto), juste avant Etoiles_screen&#10;Toute l'image par défaut (masque de luminance en option dans la fenêtre).&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Look_Lightroom, tes réglages Camera Raw (équivalents approchés) : Exposition +0,25, Contraste 0, Tons clairs -100, Tons foncés 0, Blancs +50, Noirs 0, Température +10 (R × 1,03, B × 0,97), Teinte 0 ; toute l'image (masque de luminance en option) ; Ctrl+Z possible.&#10;&#10;À RÉGLER : glisse sur l'image SANS étoiles finie (après Fond_desature et Fond_auto), juste avant Etoiles_screen ; pour changer une valeur ou mettre le masque : double-clic puis Apply Global (fenêtre, mêmes curseurs que Camera Raw) ; copie Look_Lightroom.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- trop clair -&gt; Exposition +0,10&#10;- zones claires trop éteintes -&gt; Tons clairs -50&#10;- trop chaud -&gt; Température +5&#10;- fond devenu coloré -&gt; coche le masque dans la fenêtre&#10;- dans un conteneur : le masque n'est pas appliqué, glisse l'icône seule</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Look_Lightroom.js</parameter>
-      <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="11">
-         <tr>
-            <td id="id">exposition</td>
-            <td id="value">0.25</td>
-         </tr>
-         <tr>
-            <td id="id">contraste</td>
-            <td id="value">0</td>
-         </tr>
-         <tr>
-            <td id="id">hautes</td>
-            <td id="value">-100</td>
-         </tr>
-         <tr>
-            <td id="id">foncees</td>
-            <td id="value">0</td>
-         </tr>
-         <tr>
-            <td id="id">blancs</td>
-            <td id="value">50</td>
-         </tr>
-         <tr>
-            <td id="id">noirs</td>
-            <td id="value">0</td>
-         </tr>
-         <tr>
-            <td id="id">temperature</td>
-            <td id="value">10</td>
-         </tr>
-         <tr>
-            <td id="id">teinte</td>
-            <td id="value">0</td>
-         </tr>
-         <tr>
-            <td id="id">masque</td>
-            <td id="value">false</td>
-         </tr>
-         <tr>
-            <td id="id">s</td>
-            <td id="value">0.14</td>
-         </tr>
-         <tr>
-            <td id="id">flou</td>
-            <td id="value">2.0</td>
-         </tr>
-      </table>
-      <parameter id="information"></parameter>
-   </instance>
    <instance class="PixelMath" version="256" id="Opt_Etoiles_reduites_instance">
       <description>ALTERNATIVE — Recombinaison + réduction Blanshan.&#10;&#10;PRÉRÉGLÉ : S = 0,20 ; screen + réduction Blanshan avec NBtoRGB_stars, sur l'image elle-même.&#10;&#10;À RÉGLER : à la place d'Etoiles_screen : glisse sur l'image SHO sans étoiles finale.&#10;&#10;SI :&#10;- étoiles synthétiques -&gt; remplace NBtoRGB_stars par Stars_HOO&#10;- pour recommencer -&gt; Ctrl+Z</description>
       <parameter id="expression">S=0.20;
@@ -5989,17 +5619,6 @@ max($T,f1)</parameter>
       <parameter id="newImageColorSpace" value="SameAsTarget"/>
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
-   </instance>
-   <instance class="Resample" version="256" id="Opt_Agrandir_x2_instance">
-      <description>OPTION — après Binning_x2, pour un grand tirage : image agrandie 2 fois (Lanczos 3) juste avant Export_TIFF&#10;Ne recrée pas le détail perdu.&#10;&#10;PRÉRÉGLÉ : Resample : × 2 en largeur et hauteur, Lanczos 3, seuil d'écrêtage 0,30.&#10;&#10;À RÉGLER : glisse sur l'image finie, juste avant ICC_sRGB et Export_TIFF ; seulement après Binning_x2, pour un grand tirage.&#10;&#10;SI :&#10;- anneaux noirs autour des étoiles -&gt; interpolation Auto ou Bicubic spline</description>
-      <parameter id="xSize" value="2.000000"/>
-      <parameter id="ySize" value="2.000000"/>
-      <parameter id="mode" value="RelativeDimensions"/>
-      <parameter id="absoluteMode" value="ForceWidthAndHeight"/>
-      <parameter id="interpolation" value="Lanczos3"/>
-      <parameter id="clampingThreshold" value="0.30"/>
-      <parameter id="smoothness" value="1.50"/>
-      <parameter id="noGUIMessages" value="true"/>
    </instance>
    <instance class="ICCProfileTransformation" version="256" id="Opt_ICC_sRGB_instance">
       <description>OPTION — tout à la fin, avant une finition dans Photoshop, Lightroom ou Affinity : image convertie en sRGB IEC61966-2.1 (couleurs identiques dans l'autre logiciel).&#10;&#10;PRÉRÉGLÉ : ICCProfileTransformation : vers sRGB IEC61966-2.1, Convert to the specified profile, rendu Perceptual, compensation du point noir.&#10;&#10;À RÉGLER : glisse sur l'image finie avant l'export (Export_TIFF le fait aussi sur sa copie : cette icône sert si tu enregistres toi-même).&#10;&#10;SI :&#10;- impression ou Adobe RGB voulu -&gt; change le profil cible dans l'icône</description>
@@ -6049,7 +5668,7 @@ max($T,f1)</parameter>
       <description>MODE RAPIDE, phase 7 — Étoiles : R_C_Etoiles_fond_rapide GLISSÉ sur l'image sans étoiles finie : Fond_desature, Fond_auto (0,12), étoiles remises (Etoiles_screen avec NBtoRGB_stars), NXT_dernier (0,25), Export_TIFF. Icône de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="R_C_Etoiles_fond_rapide_instance">
-      <description>MODE RAPIDE, à la place de Fond_desature, Fond_auto, Etoiles_screen, NXT_dernier et Export_TIFF : GLISSE sur l'image sans étoiles finie, image d'étoiles du workflow ouverte et étirée.&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : Fond_desature (teinte du fond retirée), Fond_auto (fond amené à 0,12, neutre), Etoiles_screen (~((~$T) * (~NBtoRGB_stars))), NXT_dernier (Denoise 0,25, image avec étoiles), Export_TIFF (copie TIFF 16 bits sRGB nommée d'après le dossier des masters).&#10;&#10;À RÉGLER : glisse sur l'image sans étoiles finie ; NBtoRGB_stars (LinearFit_etoiles puis NB_to_RGB_Stars, étirée par le script) ouverte ; l'image est finie et exportée.&#10;&#10;SI :&#10;- étoiles trop présentes -&gt; fais les étapes à la main avec Etoiles_reduites (à la place d'Etoiles_screen)&#10;- étoiles d'un autre nom (Stars_HOO, RGB_stars…) -&gt; double-clic sur le conteneur, change le nom dans Etoiles_screen&#10;- fond trop sombre -&gt; Fond_auto_clair à la main à la place&#10;- nébuleuse qui remplit le champ (fond AVANT lu par Fond_auto au-dessus d'environ 0,20 dans la console) -&gt; Ctrl+Z, puis les étapes à la main sans Fond_auto</description>
+      <description>MODE RAPIDE, à la place de Fond_desature, Fond_auto, Etoiles_screen, NXT_dernier et Export_TIFF : GLISSE sur l'image sans étoiles finie, image d'étoiles du workflow ouverte et étirée.&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : Fond_desature (teinte du fond retirée), Fond_auto (fond amené à 0,12, neutre), Etoiles_screen (~((~$T) * (~NBtoRGB_stars))), NXT_dernier (Denoise 0,25, image avec étoiles), Export_TIFF (copie TIFF 16 bits sRGB nommée d'après le dossier des masters).&#10;&#10;À RÉGLER : glisse sur l'image sans étoiles finie ; NBtoRGB_stars (LinearFit_etoiles puis NB_to_RGB_Stars, étirée par le script) ouverte ; l'image est finie et exportée.&#10;&#10;SI :&#10;- étoiles trop présentes -&gt; fais les étapes à la main avec Etoiles_reduites (à la place d'Etoiles_screen)&#10;- étoiles d'un autre nom (Stars_HOO, RGB_stars…) -&gt; double-clic sur le conteneur, change le nom dans Etoiles_screen&#10;- nébuleuse qui remplit le champ (fond AVANT lu par Fond_auto au-dessus d'environ 0,20 dans la console) -&gt; Ctrl+Z, puis les étapes à la main sans Fond_auto</description>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js</parameter>
          <parameter id="md5sum"></parameter>
@@ -6182,12 +5801,10 @@ max($T,f1)</parameter>
    <icon id="P1_options" instance="P1_options_instance" xpos="30" ypos="170" workspace="Workspace01"/>
    <icon id="Opt_Crop_reference" instance="Opt_Crop_reference_instance" xpos="30" ypos="204" workspace="Workspace01"/>
    <icon id="Opt_Crop_appliquer" instance="Opt_Crop_appliquer_instance" xpos="30" ypos="234" workspace="Workspace01"/>
-   <icon id="Opt_WBPP" instance="Opt_WBPP_instance" xpos="30" ypos="264" workspace="Workspace01"/>
-   <icon id="Opt_CC_auto" instance="Opt_CC_auto_instance" xpos="30" ypos="294" workspace="Workspace01"/>
-   <icon id="P1_rapide" instance="P1_rapide_instance" xpos="30" ypos="340" workspace="Workspace01"/>
-   <icon id="R_C_Preparation_rapide" instance="R_C_Preparation_rapide_instance" xpos="30" ypos="374" workspace="Workspace01"/>
-   <icon id="P1_turbo" instance="P1_turbo_instance" xpos="30" ypos="420" workspace="Workspace01"/>
-   <icon id="T_Turbo_debut" instance="T_Turbo_debut_instance" xpos="30" ypos="454" workspace="Workspace01"/>
+   <icon id="P1_rapide" instance="P1_rapide_instance" xpos="30" ypos="280" workspace="Workspace01"/>
+   <icon id="R_C_Preparation_rapide" instance="R_C_Preparation_rapide_instance" xpos="30" ypos="314" workspace="Workspace01"/>
+   <icon id="P1_turbo" instance="P1_turbo_instance" xpos="30" ypos="360" workspace="Workspace01"/>
+   <icon id="T_Turbo_debut" instance="T_Turbo_debut_instance" xpos="30" ypos="394" workspace="Workspace01"/>
    <icon id="P2_Gradient" instance="P2_Gradient_instance" xpos="243" ypos="20" workspace="Workspace01"/>
    <icon id="E03_ImageSolver" instance="E03_ImageSolver_instance" xpos="243" ypos="64" workspace="Workspace01"/>
    <icon id="E04_SPFC_H" instance="E04_SPFC_H_instance" xpos="243" ypos="94" workspace="Workspace01"/>
@@ -6196,14 +5813,13 @@ max($T,f1)</parameter>
    <icon id="E07_MGC_MARS_O" instance="E07_MGC_MARS_O_instance" xpos="243" ypos="184" workspace="Workspace01"/>
    <icon id="E08_GradientCorrection" instance="E08_GradientCorrection_instance" xpos="243" ypos="214" workspace="Workspace01"/>
    <icon id="P2_options" instance="P2_options_instance" xpos="243" ypos="260" workspace="Workspace01"/>
-   <icon id="Opt_Binning_x2" instance="Opt_Binning_x2_instance" xpos="243" ypos="294" workspace="Workspace01"/>
-   <icon id="Opt_ImageSolver_seul" instance="Opt_ImageSolver_seul_instance" xpos="243" ypos="324" workspace="Workspace01"/>
-   <icon id="Opt_SPFC_S" instance="Opt_SPFC_S_instance" xpos="243" ypos="354" workspace="Workspace01"/>
-   <icon id="Opt_MGC_MARS" instance="Opt_MGC_MARS_instance" xpos="243" ypos="384" workspace="Workspace01"/>
-   <icon id="Opt_DBE" instance="Opt_DBE_instance" xpos="243" ypos="414" workspace="Workspace01"/>
-   <icon id="Opt_LinearFit_ref_H" instance="Opt_LinearFit_ref_H_instance" xpos="243" ypos="444" workspace="Workspace01"/>
-   <icon id="P2_rapide" instance="P2_rapide_instance" xpos="243" ypos="490" workspace="Workspace01"/>
-   <icon id="R_Gradient_auto_rapide" instance="R_Gradient_auto_rapide_instance" xpos="243" ypos="524" workspace="Workspace01"/>
+   <icon id="Opt_ImageSolver_seul" instance="Opt_ImageSolver_seul_instance" xpos="243" ypos="294" workspace="Workspace01"/>
+   <icon id="Opt_SPFC_S" instance="Opt_SPFC_S_instance" xpos="243" ypos="324" workspace="Workspace01"/>
+   <icon id="Opt_MGC_MARS" instance="Opt_MGC_MARS_instance" xpos="243" ypos="354" workspace="Workspace01"/>
+   <icon id="Opt_DBE" instance="Opt_DBE_instance" xpos="243" ypos="384" workspace="Workspace01"/>
+   <icon id="Opt_LinearFit_ref_H" instance="Opt_LinearFit_ref_H_instance" xpos="243" ypos="414" workspace="Workspace01"/>
+   <icon id="P2_rapide" instance="P2_rapide_instance" xpos="243" ypos="460" workspace="Workspace01"/>
+   <icon id="R_Gradient_auto_rapide" instance="R_Gradient_auto_rapide_instance" xpos="243" ypos="494" workspace="Workspace01"/>
    <icon id="P3_Lineaire" instance="P3_Lineaire_instance" xpos="430" ypos="20" workspace="Workspace01"/>
    <icon id="E09_Combinaison_SHO" instance="E09_Combinaison_SHO_instance" xpos="430" ypos="64" workspace="Workspace01"/>
    <icon id="E10_C_SHO_lineaire" instance="E10_C_SHO_lineaire_instance" xpos="430" ypos="94" workspace="Workspace01"/>
@@ -6214,11 +5830,9 @@ max($T,f1)</parameter>
    <icon id="Opt_SCNR_etoiles_vert" instance="Opt_SCNR_etoiles_vert_instance" xpos="430" ypos="264" workspace="Workspace01"/>
    <icon id="Opt_SCNR_etoiles_violet" instance="Opt_SCNR_etoiles_violet_instance" xpos="430" ypos="294" workspace="Workspace01"/>
    <icon id="Opt_Saturation_grosses" instance="Opt_Saturation_grosses_instance" xpos="430" ypos="324" workspace="Workspace01"/>
-   <icon id="Opt_NXT_H" instance="Opt_NXT_H_instance" xpos="430" ypos="354" workspace="Workspace01"/>
-   <icon id="Opt_NXT_O_S" instance="Opt_NXT_O_S_instance" xpos="430" ypos="384" workspace="Workspace01"/>
-   <icon id="Opt_STF" instance="Opt_STF_instance" xpos="430" ypos="414" workspace="Workspace01"/>
-   <icon id="P3_rapide" instance="P3_rapide_instance" xpos="430" ypos="460" workspace="Workspace01"/>
-   <icon id="R_C_Lineaire_rapide" instance="R_C_Lineaire_rapide_instance" xpos="430" ypos="494" workspace="Workspace01"/>
+   <icon id="Opt_STF" instance="Opt_STF_instance" xpos="430" ypos="354" workspace="Workspace01"/>
+   <icon id="P3_rapide" instance="P3_rapide_instance" xpos="430" ypos="400" workspace="Workspace01"/>
+   <icon id="R_C_Lineaire_rapide" instance="R_C_Lineaire_rapide_instance" xpos="430" ypos="434" workspace="Workspace01"/>
    <icon id="P4_Etirement" instance="P4_Etirement_instance" xpos="626" ypos="20" workspace="Workspace01"/>
    <icon id="E14_Statistical_Stretch" instance="E14_Statistical_Stretch_instance" xpos="626" ypos="80" workspace="Workspace01"/>
    <icon id="P4_options" instance="P4_options_instance" xpos="626" ypos="126" workspace="Workspace01"/>
@@ -6226,9 +5840,8 @@ max($T,f1)</parameter>
    <icon id="Opt_GHS_2_contraste" instance="Opt_GHS_2_contraste_instance" xpos="626" ypos="190" workspace="Workspace01"/>
    <icon id="Opt_MAS_light" instance="Opt_MAS_light_instance" xpos="626" ypos="220" workspace="Workspace01"/>
    <icon id="Opt_MAS_canaux" instance="Opt_MAS_canaux_instance" xpos="626" ypos="250" workspace="Workspace01"/>
-   <icon id="Opt_EZ_Soft_Stretch" instance="Opt_EZ_Soft_Stretch_instance" xpos="626" ypos="280" workspace="Workspace01"/>
-   <icon id="Opt_GHS_3_fond" instance="Opt_GHS_3_fond_instance" xpos="626" ypos="310" workspace="Workspace01"/>
-   <icon id="P4_rapide" instance="P4_rapide_instance" xpos="626" ypos="356" workspace="Workspace01"/>
+   <icon id="Opt_GHS_3_fond" instance="Opt_GHS_3_fond_instance" xpos="626" ypos="280" workspace="Workspace01"/>
+   <icon id="P4_rapide" instance="P4_rapide_instance" xpos="626" ypos="326" workspace="Workspace01"/>
    <icon id="P5_Couleur" instance="P5_Couleur_instance" xpos="817" ypos="20" workspace="Workspace01"/>
    <icon id="E15_SHO_simple" instance="E15_SHO_simple_instance" xpos="817" ypos="64" workspace="Workspace01"/>
    <icon id="E16_NBN_SHO" instance="E16_NBN_SHO_instance" xpos="817" ypos="94" workspace="Workspace01"/>
@@ -6253,11 +5866,10 @@ max($T,f1)</parameter>
    <icon id="Opt_Finition_saturee" instance="Opt_Finition_saturee_instance" xpos="1021" ypos="384" workspace="Workspace01"/>
    <icon id="Opt_Boost_finition_light" instance="Opt_Boost_finition_light_instance" xpos="1021" ypos="414" workspace="Workspace01"/>
    <icon id="Opt_Boost_finition" instance="Opt_Boost_finition_instance" xpos="1021" ypos="444" workspace="Workspace01"/>
-   <icon id="Opt_Sharp_USM" instance="Opt_Sharp_USM_instance" xpos="1021" ypos="474" workspace="Workspace01"/>
-   <icon id="Opt_NXT_final_doux" instance="Opt_NXT_final_doux_instance" xpos="1021" ypos="504" workspace="Workspace01"/>
-   <icon id="Opt_NXT_final_fort" instance="Opt_NXT_final_fort_instance" xpos="1021" ypos="534" workspace="Workspace01"/>
-   <icon id="P6_rapide" instance="P6_rapide_instance" xpos="1021" ypos="580" workspace="Workspace01"/>
-   <icon id="R_C_Fin_rapide" instance="R_C_Fin_rapide_instance" xpos="1021" ypos="614" workspace="Workspace01"/>
+   <icon id="Opt_NXT_final_doux" instance="Opt_NXT_final_doux_instance" xpos="1021" ypos="474" workspace="Workspace01"/>
+   <icon id="Opt_NXT_final_fort" instance="Opt_NXT_final_fort_instance" xpos="1021" ypos="504" workspace="Workspace01"/>
+   <icon id="P6_rapide" instance="P6_rapide_instance" xpos="1021" ypos="550" workspace="Workspace01"/>
+   <icon id="R_C_Fin_rapide" instance="R_C_Fin_rapide_instance" xpos="1021" ypos="584" workspace="Workspace01"/>
    <icon id="P7_Etoiles" instance="P7_Etoiles_instance" xpos="1225" ypos="20" workspace="Workspace01"/>
    <icon id="E21_Fond_desature" instance="E21_Fond_desature_instance" xpos="1225" ypos="64" workspace="Workspace01"/>
    <icon id="E22_Fond_auto" instance="E22_Fond_auto_instance" xpos="1225" ypos="94" workspace="Workspace01"/>
@@ -6266,19 +5878,12 @@ max($T,f1)</parameter>
    <icon id="P7_options" instance="P7_options_instance" xpos="1225" ypos="200" workspace="Workspace01"/>
    <icon id="Opt_NB_to_RGB_Stars" instance="Opt_NB_to_RGB_Stars_instance" xpos="1225" ypos="234" workspace="Workspace01"/>
    <icon id="Opt_Etoiles_HOO_synth" instance="Opt_Etoiles_HOO_synth_instance" xpos="1225" ypos="264" workspace="Workspace01"/>
-   <icon id="Opt_Star_Stretch" instance="Opt_Star_Stretch_instance" xpos="1225" ypos="294" workspace="Workspace01"/>
-   <icon id="Opt_MT_etoiles" instance="Opt_MT_etoiles_instance" xpos="1225" ypos="324" workspace="Workspace01"/>
-   <icon id="Opt_Halo_B_Gon" instance="Opt_Halo_B_Gon_instance" xpos="1225" ypos="354" workspace="Workspace01"/>
-   <icon id="Opt_Etoiles_grosses" instance="Opt_Etoiles_grosses_instance" xpos="1225" ypos="384" workspace="Workspace01"/>
-   <icon id="Opt_Boost_final_doux" instance="Opt_Boost_final_doux_instance" xpos="1225" ypos="414" workspace="Workspace01"/>
-   <icon id="Opt_Boost_final" instance="Opt_Boost_final_instance" xpos="1225" ypos="444" workspace="Workspace01"/>
-   <icon id="Opt_Fond_auto_clair" instance="Opt_Fond_auto_clair_instance" xpos="1225" ypos="474" workspace="Workspace01"/>
-   <icon id="Opt_Look_Lightroom" instance="Opt_Look_Lightroom_instance" xpos="1225" ypos="504" workspace="Workspace01"/>
-   <icon id="Opt_Etoiles_reduites" instance="Opt_Etoiles_reduites_instance" xpos="1225" ypos="534" workspace="Workspace01"/>
-   <icon id="Opt_Agrandir_x2" instance="Opt_Agrandir_x2_instance" xpos="1225" ypos="564" workspace="Workspace01"/>
-   <icon id="Opt_ICC_sRGB" instance="Opt_ICC_sRGB_instance" xpos="1225" ypos="594" workspace="Workspace01"/>
-   <icon id="Opt_Export_TIFF" instance="Opt_Export_TIFF_instance" xpos="1225" ypos="624" workspace="Workspace01"/>
-   <icon id="Opt_Fermer_tout" instance="Opt_Fermer_tout_instance" xpos="1225" ypos="654" workspace="Workspace01"/>
-   <icon id="P7_rapide" instance="P7_rapide_instance" xpos="1225" ypos="700" workspace="Workspace01"/>
-   <icon id="R_C_Etoiles_fond_rapide" instance="R_C_Etoiles_fond_rapide_instance" xpos="1225" ypos="734" workspace="Workspace01"/>
+   <icon id="Opt_Boost_final_doux" instance="Opt_Boost_final_doux_instance" xpos="1225" ypos="294" workspace="Workspace01"/>
+   <icon id="Opt_Boost_final" instance="Opt_Boost_final_instance" xpos="1225" ypos="324" workspace="Workspace01"/>
+   <icon id="Opt_Etoiles_reduites" instance="Opt_Etoiles_reduites_instance" xpos="1225" ypos="354" workspace="Workspace01"/>
+   <icon id="Opt_ICC_sRGB" instance="Opt_ICC_sRGB_instance" xpos="1225" ypos="384" workspace="Workspace01"/>
+   <icon id="Opt_Export_TIFF" instance="Opt_Export_TIFF_instance" xpos="1225" ypos="414" workspace="Workspace01"/>
+   <icon id="Opt_Fermer_tout" instance="Opt_Fermer_tout_instance" xpos="1225" ypos="444" workspace="Workspace01"/>
+   <icon id="P7_rapide" instance="P7_rapide_instance" xpos="1225" ypos="490" workspace="Workspace01"/>
+   <icon id="R_C_Etoiles_fond_rapide" instance="R_C_Etoiles_fond_rapide_instance" xpos="1225" ypos="524" workspace="Workspace01"/>
 </xpsm>
