@@ -158,7 +158,7 @@ S = {
                     ["cœur encore terne -> un Boost_finition_light de plus", "pas assez de détail -> a = 0,5 à 0,7 dans HDR_melange", "trop sombre ou gris -> a = 0,3"]),
     'HDRMT': ("6 couches, 1 itération, To lightness, Preserve hue, Lightness mask", "rien",
               ["pas assez -> 2 itérations", "trop fort -> mélange 50 % avec l'original"]),
-    'NBN_SHO': ("palette SHO, Lightness = Ha (H porte le détail), SCNR 0,7 (vert retiré en partie) (demandes de l'utilisateur) ; O3 boost, S2 boost, Brightness, Highlight reduction à 1 (neutres : ce sont des multiplicateurs, 0 rend l'image noire) ; Shadow point 1 (normalisation à partir de la médiane)", "glisse sur SHO_etire (SHO_simple) ; O3 puis S2 boost au-dessus de 1, peu à peu ; Shadow point : 1 = normalisation à partir de la médiane, vers 0 = zones faibles aussi (plus de bruit)",
+    'NBN_SHO': ("palette SHO, Lightness = Ha (H porte le détail), SCNR 0,7 (vert retiré en partie) (demandes de l'utilisateur) ; S2 boost 1,2 (demande de l'utilisateur, 20 octobre 2026) ; O3 boost, Brightness, Highlight reduction à 1 (neutres : ce sont des multiplicateurs, 0 rend l'image noire) ; Shadow point 1 (normalisation à partir de la médiane)", "glisse sur SHO_etire (SHO_simple) ; O3 boost au-dessus de 1, S2 boost autour de 1,2, peu à peu ; Shadow point : 1 = normalisation à partir de la médiane, vers 0 = zones faibles aussi (plus de bruit)",
                 ["trop vert -> SCNR partiel", "O discret -> O3 boost"]),
     'NBN_HOO': ("palette HOO ; O3 boost, Brightness, Highlight reduction à 1 (neutres : multiplicateurs, 0 rend l'image noire) ; Shadow point 1", "glisse sur HOO_etire (HOO_simple) ; Lightness = H ; O3 boost au-dessus de 1, peu à peu ; Shadow point : 1 = à partir de la médiane, vers 0 = zones faibles aussi (plus de bruit)", ["tout rouge -> O3 boost"]),
     'Foraxx_SHO': ("formule Foraxx SHO, image 'SHO_Foraxx'", "vues S, H, O étirées, sans étoiles, fonds proches", []),
@@ -298,7 +298,7 @@ V[('HOO', 'Turbo_debut')] = ("conteneur, en une fois : Renommer_auto, LinearPatt
 V[('RSHO', 'Turbo_debut')] = ("conteneur, en une fois : Renommer_auto, LinearPatternSubtraction, Combinaison_RGB, Solver_auto (RGB seulement, = R_C_Preparation_rapide) ; Gradient_auto (= R_Gradient_auto_rapide, RGB comprise) ; Lineaire_auto Combinaison_SHO, masters S, H, O fermés, Lineaire_auto C_SHO_lineaire, C_Extraction_SHO et C_RGB_lineaire (BXT Correct Only, SPCC, BXT, NXT sur RGB), SHO et SHO_stars fermées (= R_C_Lineaire_rapide) ; résultat : S, H, O sans étoiles, linéaires, et RGB linéaire avec ses étoiles", "masters S, H, O, R, G, B seuls ouverts ; Conteneurs-RGB-SHO chargé ; double-clic puis Apply Global (pas en glissant) ; ensuite GHS sur S, H, O, puis MAS, SXT_RGB_etire, SCNR_etoiles_vert, Fermer_RGB sur RGB", _TURBO_SI)
 
 V[('RSHO', 'C_RGB_etoiles_rapide')] = ("conteneur de scripts : Lineaire_auto lance MAS (fond 0,15, tes réglages ; sur une copie puis recopié : Ctrl+Z possible) puis SXT_RGB_etire (Unscreen : crée RGB_stars) sur RGB ; Etoiles_auto : SCNR vert 1,0 sur RGB_stars ; Fermer_vues ferme RGB (sans étoiles, inutile) ; résultat : RGB_stars étirée, prête pour la phase 7", "RGB linéaire avec ses étoiles ouvert, Conteneurs-RGB-SHO chargé (icônes MAS et SXT_RGB_etire du chemin principal) ; double-clic puis Apply Global (pas en glissant) ; à faire avant ou après les GHS de S, H, O", ["étoiles violettes ou grosses étoiles blanches -> SCNR_etoiles_violet ou Saturation_grosses (options P4) sur RGB_stars ensuite", "MAS à changer -> double-clic sur E##_MAS du chemin principal (c'est elle qui est lancée)", "une étape échoue -> la console dit laquelle ; fais la suite au chemin principal"])
-V[('SHO', 'C_Palette_rapide')] = V[('RSHO', 'C_Palette_rapide')] = ("conteneur de scripts : Lineaire_auto lance SHO_simple (S, H, O étirés -> SHO_etire) puis NBN_SHO sur SHO_etire (palette SHO, Lightness Ha, SCNR 0,7, boosts à 1 ; sur une copie puis recopié : Ctrl+Z annule NBN) ; S, H, O restent ouverts (Foraxx ou autre palette possible ensuite)", "S, H, O étirés, sans étoiles, même fond (après les GHS) ; Conteneurs du workflow chargé (icônes SHO_simple et NBN_SHO du chemin principal) ; double-clic puis Apply Global (pas en glissant) ; ensuite la finition (phase 6) sur SHO_etire", ["couleurs à affiner (O3, S2 boost, SCNR) -> Ctrl+Z sur SHO_etire, double-clic sur NBN_SHO, aperçu, puis glisse-la sur SHO_etire", "comparer avec Foraxx -> Foraxx_SHO sur S, H, O, toujours ouverts", "une image SHO_etire existe déjà -> ferme-la avant"])
+V[('SHO', 'C_Palette_rapide')] = V[('RSHO', 'C_Palette_rapide')] = ("conteneur de scripts : Lineaire_auto lance SHO_simple (S, H, O étirés -> SHO_etire) puis NBN_SHO sur SHO_etire (palette SHO, Lightness Ha, SCNR 0,7, S2 boost 1,2, autres boosts à 1 ; sur une copie puis recopié : Ctrl+Z annule NBN) ; S, H, O restent ouverts (Foraxx ou autre palette possible ensuite)", "S, H, O étirés, sans étoiles, même fond (après les GHS) ; Conteneurs du workflow chargé (icônes SHO_simple et NBN_SHO du chemin principal) ; double-clic puis Apply Global (pas en glissant) ; ensuite la finition (phase 6) sur SHO_etire", ["couleurs à affiner (O3, S2 boost, SCNR) -> Ctrl+Z sur SHO_etire, double-clic sur NBN_SHO, aperçu, puis glisse-la sur SHO_etire", "comparer avec Foraxx -> Foraxx_SHO sur S, H, O, toujours ouverts", "une image SHO_etire existe déjà -> ferme-la avant"])
 S['MAS_canaux'] = ("MultiscaleAdaptiveStretch, tes réglages MAS (Aggressiveness 0,70, Target background 0,250 comme le Target Median 0,25 de Statistical Stretch, Dynamic range compression 0,40, Contrast recovery) ; saturation décochée (canaux en gris)", "glisse sur chaque canal SANS étoiles, linéaire (S, H, O ; HOO : H, O), à la place de GHS_1 et GHS_2 ; même fond cible pour tous ; ensuite GHS_3_fond sur chaque canal (SP = HP = fond lu - 0,03, vers 0,22), puis la palette", ["fond d'un canal différent des autres -> GHS_3_fond sur ce canal", "O ou S trop faible -> Aggressiveness plus haut sur ce canal, ou GHS", "cœur brûlé -> Dynamic range compression plus haut"])
 V[('SHO', 'C_MAS_canaux_rapide')] = V[('RSHO', 'C_MAS_canaux_rapide')] = ("conteneur de scripts : Lineaire_auto lance Opt_MAS_canaux sur S, H et O (fond cible 0,25 pour les trois), chaque canal sur une copie puis recopié : un Ctrl+Z par canal", "S, H, O linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut) ; Conteneurs du workflow chargé ; double-clic puis Apply Global (pas en glissant) ; ensuite GHS_3_fond sur S, H et O (même fond, vers 0,12–0,14), puis R_C_Palette_rapide ou la palette", ["un canal mal étiré -> Ctrl+Z sur ce canal, puis GHS à la main", "réglage MAS à changer -> double-clic sur Opt_MAS_canaux (c'est elle qui est lancée)"])
 V[('SHO', 'C_Stat_canaux_rapide')] = V[('RSHO', 'C_Stat_canaux_rapide')] = ("conteneur de scripts : Stat_canaux (calcul de Statistical Stretch de SetiAstro) sur S, H et O : point noir médiane − 5 × 1,4826 × MAD, médiane amenée à 0,25 pour les trois ; un Ctrl+Z par canal", "S, H, O linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut) ; double-clic puis Apply Global (pas en glissant) ; ensuite GHS_3_fond sur S, H et O (même fond, vers 0,12–0,14), puis R_C_Palette_rapide ou la palette ; copie Stat_canaux.js dans src/scripts/clodoweg", ["fond trop sombre, signal faible perdu -> double-clic sur Stat_canaux dans le conteneur : Blackpoint Sigma 3", "fond trop clair -> Target Median 0,20", "un canal mal étiré -> Ctrl+Z sur ce canal, puis GHS à la main"])
@@ -356,15 +356,44 @@ DIALOGUE = {'Etoiles_grosses'}
 LAUNCH_DLG = "LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône)."
 MD5 = " Si l'icône est bloquée après une mise à jour du script, efface son champ MD5."
 
+# SHO et RGB + SHO : Statistical_Stretch au chemin principal, GHS_1, GHS_2 et GHS_3_fond en option (demande de l'utilisateur, 20 octobre 2026 :
+# « pour les SHO avec et sans RGB, mets le Stat Streh a la place du GHS (qui passe en option). Passe aussi le GHS 3 en option ») ; HOO inchangé
+STAT_SUBS = [("ensuite GHS_1_premier sur H", "ensuite Statistical_Stretch sur S, H et O"),
+             ("ensuite GHS_3_fond sur S, H et O (même fond, vers 0,12–0,14), puis", "GHS_3_fond (option) sur S, H et O seulement si le fond est trop clair ; puis"),
+             ("ensuite GHS_3_fond sur chaque canal (SP = HP = fond lu - 0,03, vers 0,22), puis", "GHS_3_fond (option) seulement si le fond est trop clair ; puis"),
+             ("ensuite GHS_3_fond sur chaque canal", "GHS_3_fond (option) seulement si le fond est trop clair"),
+             ("puis GHS_3_fond sur chaque canal", "puis GHS_3_fond (option) seulement si le fond est trop clair"),
+             ("à la place de GHS_1 et GHS_2", "à la place de Statistical_Stretch"),
+             ("après les GHS", "après Statistical_Stretch"), ("en phase 4 : GHS sur S, H, O", "en phase 4 : Statistical_Stretch sur S, H, O"),
+             ("les GHS de S, H, O", "Statistical_Stretch de S, H, O"), ("puis GHS à la main", "puis Statistical_Stretch à la main"),
+             ("à la place des GHS", "à la place de Statistical_Stretch"), ("des GHS sur chaque canal", "de Statistical_Stretch sur chaque canal")]
+def stat_sub(t):
+    for a, b in STAT_SUBS:
+        t = t.replace(a, b)
+    return t
+for _p in ('SHO', 'RSHO'):
+    for _b in set(S) | {b for (q, b) in V if q in (_p, 'NB')}:
+        _k = (_p, _b) if (_p, _b) in V else ('NB', _b) if ('NB', _b) in V else None
+        _t = V[_k] if _k else S[_b]
+        _n = (stat_sub(_t[0]), stat_sub(_t[1]), [stat_sub(x) for x in _t[2]])
+        if _n != tuple(_t[:2]) + (list(_t[2]),):
+            V[(_p, _b)] = _n
+    V[(_p, 'Statistical_Stretch')] = ("Target Median 0,25, Blackpoint Sigma 5, Linked coché, reste par défaut",
+                                      "CHEMIN PRINCIPAL (à la place des GHS) : glisse sur S, puis H, puis O, linéaires SANS étoiles ; même Target Median pour les trois (médianes identiques) ; ensuite la palette (SHO_simple, NBN_SHO)",
+                                      ["fond trop clair après la palette -> GHS_3_fond (option) sur chaque canal avant SHO_simple (SP = HP = 0,22)", "fond trop sombre, signal faible perdu -> Blackpoint Sigma plus bas (3)", "étirement à la main voulu -> options GHS_1_premier, GHS_2_contraste"])
+    V[(_p, 'GHS_1_premier')] = (S['GHS_1_premier'][0], "à la place de Statistical_Stretch : " + V[('NB', 'GHS_1_premier')][1] + " ; puis GHS_2_contraste", V[('NB', 'GHS_1_premier')][2])
+    V[(_p, 'GHS_2_contraste')] = (S['GHS_2_contraste'][0], "après GHS_1_premier : " + S['GHS_2_contraste'][1] + " ; puis GHS_3_fond", S['GHS_2_contraste'][2])
+    V[(_p, 'GHS_3_fond')] = (S['GHS_3_fond'][0], "glisse sur chaque canal, avant la palette ; " + S['GHS_3_fond'][1], S['GHS_3_fond'][2])
+
 
 def has(prefix, base):
-    key = ('NB', base) if prefix in NB and ('NB', base) in V else (prefix, base)
+    key = (prefix, base) if (prefix, base) in V else ('NB', base) if prefix in NB and ('NB', base) in V else (prefix, base)
     return key in V or base in S
 
 
 def text(prefix, base, drag=None, md5=False):
     """Paragraphes séparés par une ligne vide : LANCEMENT, PRÉRÉGLÉ, À RÉGLER, SI (un cas par ligne), Détails."""
-    key = ('NB', base) if prefix in NB and ('NB', base) in V else (prefix, base)
+    key = (prefix, base) if (prefix, base) in V else ('NB', base) if prefix in NB and ('NB', base) in V else (prefix, base)
     pre, todo, ifs = V.get(key) or S[base]
     parts = []
     if drag is not None:

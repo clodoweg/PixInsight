@@ -256,13 +256,13 @@ for _p, _x in (('RSHO', ", Combinaison_RGB comprise (RGB des étoiles)"), ('SHO'
     RAPIDE_NOTE[_p][3] = "R_C_Lineaire_rapide (double-clic puis Apply Global) à la place de toute la phase 3 : combinaison, %s, extraction des canaux (vues %s linéaires sans étoiles) ; masters et images linéaires inutiles fermés%s" % (
         'C_HOO_lineaire (BXT, SXT, NXT)' if _p == 'HOO' else 'C_SHO_lineaire (BXT, SXT, NXT)', 'H, O' if _p == 'HOO' else 'S, H, O',
         ' ; aussi C_RGB_lineaire sur RGB (BXT Correct Only, SPCC, BXT, NXT : RGB reste linéaire avec ses étoiles)' if _p == 'RSHO' else ' ; étoiles S_stars, H_stars, O_stars extraites de SHO_stars' if _p == 'SHO' else ' ; étoiles H_stars, O_stars extraites de HOO_stars')
-RAPIDE_NOTE['RSHO'][3] += " ; AVEC CONTINUUM (option) : ensuite Opt_C_Continuum_prep, Opt_Continuum_SHO (fenêtre, Starless), Opt_C_Continuum_fin, avant GHS_1_premier"
+RAPIDE_NOTE['RSHO'][3] += " ; AVEC CONTINUUM (option) : ensuite Opt_C_Continuum_prep, Opt_Continuum_SHO (fenêtre, Starless), Opt_C_Continuum_fin, avant Statistical_Stretch"
 for _p, _et in (('RSHO', 'RGB_stars'), ('SHO', 'NBtoRGB_stars'), ('HOO', 'NBtoRGB_stars')):
     RAPIDE_NOTE[_p][6] = "R_C_Fin_rapide GLISSÉ sur l'image sans étoiles après la palette : HDRMT à 30 %, masque, Courbes, LHE, LHE_fin, Sharp_MMT, masque retiré, NXT_final 0,40 (= HDRMT_30, C_Finition, C_Sharp_MMT et NXT_final)"
     RAPIDE_NOTE[_p][7] = "R_C_Etoiles_fond_rapide GLISSÉ sur l'image sans étoiles finie : Fond_desature, Fond_auto (0,12), étoiles remises (Etoiles_screen avec %s), NXT_dernier (0,25), Export_TIFF" % _et
 for _p in ('RSHO', 'SHO'):
     RAPIDE_NOTE[_p][5] = "R_C_Palette_rapide (double-clic puis Apply Global) à la place de SHO_simple et NBN_SHO : S, H, O étirés combinés en SHO_etire, NarrowbandNormalization (palette SHO, Lightness Ha, SCNR 0,7) ; S, H, O restent ouverts"
-RAPIDE_NOTE['RSHO'][4] = "GHS_1_premier, GHS_2_contraste, GHS_3_fond sur S, H, O (chemin principal, à régler) ; R_C_RGB_etoiles_rapide (double-clic puis Apply Global) à la place de MAS, SXT_RGB_etire, SCNR_etoiles_vert et Fermer_RGB : crée RGB_stars, ferme le RGB sans étoiles"
+RAPIDE_NOTE['RSHO'][4] = "Statistical_Stretch sur S, H, O (chemin principal, Target Median 0,25 ; GHS en option) ; R_C_RGB_etoiles_rapide (double-clic puis Apply Global) à la place de MAS, SXT_RGB_etire, SCNR_etoiles_vert et Fermer_RGB : crée RGB_stars, ferme le RGB sans étoiles"
 
 def layout_all(main, opts, rapide=None, notes=None, turbo=None):
     """Une colonne par phase : icône-titre, étapes du chemin principal (E01…), puis icône « options » et options (Opt_…)."""
@@ -1013,7 +1013,7 @@ sho_palette = [
     # combinaison des canaux ÉTIRÉS avant NBN (demande de l'utilisateur, 8 octobre 2026 : « il ne manque pas un process pour combiner les canaux ? »), comme HOO_simple
     (pm('SHO_simple', 'S', 'H', 'O', new_image=True, new_id='SHO_etire', space='RGB'),
      "PALETTE — combinaison simple sur 'S', 'H' et 'O' étirés sans étoiles (R = S, G = H, B = O), à équilibrer ensuite avec NarrowbandNormalization (icône suivante). Crée 'SHO_etire'."),
-    (M.instance('NarrowbandNormalization', 'NBN_SHO', {'palette': 'Palette_SHO', 'lightness': 'Lightness_Ha', 'scnr': '0.700', 'o3Boost': '1.000', 's2Boost': '1.000', 'highlightReduction': '1.000', 'brightness': '1.000'}),
+    (M.instance('NarrowbandNormalization', 'NBN_SHO', {'palette': 'Palette_SHO', 'lightness': 'Lightness_Ha', 'scnr': '0.700', 'o3Boost': '1.000', 's2Boost': '1.200', 'highlightReduction': '1.000', 'brightness': '1.000'}),
      "PALETTE — NarrowbandNormalization, palette SHO (valeurs par défaut ; nom interne Palette_SHO vérifié dans le module 1.1). Sur l'image SHO combinée (R = S, G = H, B = O), "
      "ÉTIRÉE et sans étoiles, canaux étirés avec le même fond et la même médiane (recombinés par l'icône SHO_simple : image 'SHO_etire'). Active l'aperçu. "
      "Ordre de réglage conseillé (suggestion de la fiche, pas une consigne de l'auteur) : Lightness (Off, Preserve, Ha, OIII ou SII ; souvent Ha) ; Shadowpoint pour le fond, sans l'écrêter ; "
@@ -1436,6 +1436,17 @@ insert_after(sho, 'Extraire_O_stars', [_it])
 
 # SHO sans RGB : pas de rapide en phase 4 (demande de l'utilisateur, 20 octobre 2026 : « supprime les P4 rapide pour SHO sans RGB ») ; Opt_MAS_canaux reste en option
 sho[:] = [x for x in sho if x[0][0] not in ('C_MAS_canaux_rapide', 'C_Stat_canaux_rapide')]
+
+# SHO et RGB + SHO (demande de l'utilisateur, 20 octobre 2026 : « pour les SHO avec et sans RGB, mets le Stat Streh a la place du GHS (qui passe en option).
+# Passe aussi le GHS 3 en option ») : Statistical_Stretch au chemin principal, avant les GHS (options, rôles dans layout.role) ; HOO inchangé
+STAT_SHO = (" SHO : CHEMIN PRINCIPAL, à la place des GHS (demande de l'utilisateur, 20 octobre 2026) : glisse sur S, puis H, puis O (canaux linéaires sans étoiles), même Target Median 0,25 ; "
+            "ensuite la palette (SHO_simple, NBN_SHO) ; GHS_3_fond en option si le fond est trop clair.")
+for _st in (rgbsho, sho):
+    _it = pick(_st, 'Statistical_Stretch')
+    _st.remove(_it)
+    assert escape(STAT_NB) in _it[0][1]
+    _it = (_it[0][0], _it[0][1].replace('Alternative à GHS. ', '').replace(escape(STAT_NB), escape(STAT_NB + STAT_SHO))), _it[1]
+    insert_before(_st, 'GHS_1_premier', [_it])
 
 # Look_Lightroom (option, tous les workflows) sur l'image SANS étoiles, juste avant la recombinaison des étoiles
 # (demande de l'utilisateur, 9 octobre 2026 : « Je vais faire ce process avant de mettre les étoiles »)
