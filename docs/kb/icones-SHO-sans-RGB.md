@@ -167,12 +167,15 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
    8. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
       paramètres : `views=SHO`, `dialogue=false`
+   9. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Etoiles_NB_auto.js`
+      paramètres : `h=H_stars`, `o=O_stars`, `s=S_stars`, `ratio=0.30`, `linearfit=true`, `stretch=6.0`, `boost=1.30`, `scnr=false`, `nom=NBtoRGB_stars`, `fermer=true`, `dialogue=false`
 
 > MODE TURBO, à la place de R_C_Preparation_rapide, R_Gradient_auto_rapide et R_C_Lineaire_rapide (phases 1 à 3) : masters seuls ouverts, Conteneurs du workflow chargé, double-clic puis Apply Global (pas en glissant) ; ensuite GHS_1_premier sur H.
 > 
 > LANCEMENT : masters seuls ouverts, double-clic puis Apply Global (rond bleu) ; pas en glissant (ImageSolver échoue sur une image en cours de traitement).
 > 
-> PRÉRÉGLÉ : conteneur, en une fois : Renommer_auto, LinearPatternSubtraction, Solver_auto (images couleur seulement : aucune ici, = R_C_Preparation_rapide) ; Gradient_auto (GradientCorrection sur toutes les images, = R_Gradient_auto_rapide) ; Lineaire_auto Combinaison_SHO, masters S, H, O fermés, Lineaire_auto C_SHO_lineaire (BXT, SXT, NXT_NB), C_Extraction_SHO et C_Extraction_etoiles, SHO fermée (= R_C_Lineaire_rapide) ; résultat : S, H, O sans étoiles, linéaires, S_stars, H_stars, O_stars et SHO_stars.
+> PRÉRÉGLÉ : conteneur, en une fois : Renommer_auto, LinearPatternSubtraction, Solver_auto (images couleur seulement : aucune ici, = R_C_Preparation_rapide) ; Gradient_auto (GradientCorrection sur toutes les images, = R_Gradient_auto_rapide) ; Lineaire_auto Combinaison_SHO, masters S, H, O fermés, Lineaire_auto C_SHO_lineaire (BXT, SXT, NXT_NB), C_Extraction_SHO et C_Extraction_etoiles, SHO fermée, Etoiles_NB_auto (= R_C_Lineaire_rapide) ; résultat : S, H, O sans étoiles, linéaires, NBtoRGB_stars (étirée) et SHO_stars.
 > 
 > À RÉGLER : masters S, H, O seuls ouverts ; Conteneurs-SHO-sans-RGB chargé ; double-clic puis Apply Global (pas en glissant : ImageSolver échoue sur une image en cours de traitement) ; ensuite GHS_1_premier sur H.
 > 
@@ -403,6 +406,22 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > Double-clic sur le conteneur pour voir ou changer les réglages de chaque étape.
 
+#### E13_Etoiles_NB_auto — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Etoiles_NB_auto.js`
+   paramètres : `h=H_stars`, `o=O_stars`, `s=S_stars`, `ratio=0.30`, `linearfit=true`, `stretch=6.0`, `boost=1.30`, `scnr=false`, `nom=NBtoRGB_stars`, `fermer=true`
+
+> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
+> 
+> PRÉRÉGLÉ : script Etoiles_NB_auto : LinearFit d'O_stars et S_stars sur H_stars ; mélange NB to RGB (R = 0,5·H + 0,5·S, G = 0,3·H + 0,7·O, B = O) dans NBtoRGB_stars ; étirement Star Stretch 6 ; Color Boost 1,3 ; H_stars, O_stars, S_stars fermées.
+> 
+> À RÉGLER : phase 3, juste après C_Extraction_etoiles (étoiles linéaires S_stars, H_stars, O_stars) : double-clic puis Apply Global (fenêtre), ou glisse l'icône sur n'importe quelle image ; aussi fait par R_C_Lineaire_rapide et T_Turbo_debut ; NBtoRGB_stars sert en phase 7 (Etoiles_screen) ; copie Etoiles_NB_auto.js dans src/scripts/clodoweg.
+> 
+> SI :
+> - étoiles trop saturées ou criardes -> Color Boost 1,0
+> - étoiles trop grosses ou cœurs blancs -> étirement 5
+> - étoiles encore trop bleues -> ratio 0,4 à 0,5
+> - reste de vert -> SCNR vert coché ou SCNR_etoiles_vert
+
 ### P3_options
 
 #### Opt_NXT_H — NoiseXTerminator
@@ -459,12 +478,15 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
    4. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
       paramètres : `views=SHO`, `dialogue=false`
+   5. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Etoiles_NB_auto.js`
+      paramètres : `h=H_stars`, `o=O_stars`, `s=S_stars`, `ratio=0.30`, `linearfit=true`, `stretch=6.0`, `boost=1.30`, `scnr=false`, `nom=NBtoRGB_stars`, `fermer=true`, `dialogue=false`
 
 > MODE RAPIDE, à la place de toute la phase 3 (combinaison, conteneur linéaire, extraction) : après R_Gradient_auto_rapide, double-clic puis Apply Global (pas en glissant) ; Conteneurs du workflow chargé ; ensuite GHS_1_premier sur H.
 > 
 > LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).
 > 
-> PRÉRÉGLÉ : conteneur de scripts : Lineaire_auto lance Combinaison_SHO (crée SHO) ; Fermer_vues ferme les masters S, H, O ; Lineaire_auto lance C_SHO_lineaire sur SHO (BXT_NB, SXT_lineaire qui crée SHO_stars, NXT_NB 0,75), C_Extraction_SHO sur SHO (crée S, H, O sans étoiles) et C_Extraction_etoiles sur SHO_stars (crée S_stars, H_stars, O_stars) ; Fermer_vues ferme SHO ; SHO_stars gardée.
+> PRÉRÉGLÉ : conteneur de scripts : Lineaire_auto lance Combinaison_SHO (crée SHO) ; Fermer_vues ferme les masters S, H, O ; Lineaire_auto lance C_SHO_lineaire sur SHO (BXT_NB, SXT_lineaire qui crée SHO_stars, NXT_NB 0,75), C_Extraction_SHO sur SHO (crée S, H, O sans étoiles) et C_Extraction_etoiles sur SHO_stars (crée S_stars, H_stars, O_stars) ; Fermer_vues ferme SHO ; Etoiles_NB_auto (LinearFit sur H_stars, mélange NB to RGB, étirement 6, Color Boost 1,3) crée NBtoRGB_stars et ferme S_stars, H_stars, O_stars ; SHO_stars gardée.
 > 
 > À RÉGLER : après R_Gradient_auto_rapide (ou la phase 2), double-clic puis Apply Global (pas en glissant) ; le fichier Conteneurs du workflow doit être chargé (icônes E## lancées par Lineaire_auto) ; les masters sont FERMÉS sans enregistrer : enregistre-les avant si tu veux les garder ; ensuite GHS_1_premier sur H.
 > 
@@ -475,7 +497,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 ## P4_Etirement
 
-#### E13_GHS_1_premier — GeneralizedHyperbolicStretch
+#### E14_GHS_1_premier — GeneralizedHyperbolicStretch
    stretchType=ST_GeneralisedHyperbolic ; stretchChannel=SC_RGB ; inverse=false ; stretchFactor=0.000 ; localIntensity=10.000 ; symmetryPoint=0.000000 ; highlightProtection=1.000000 ; shadowProtection=0.000000 ; blackPoint=0.000000 ; whitePoint=1.000000 ; colourBlend=1.000 ; clipType=CT_RGBBlend ; useRGBWorkingSpace=false
 
 > PRÉRÉGLÉ : b = 10, Stretch factor 0.
@@ -485,7 +507,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > SI :
 > - bruit de O ou S qui ressort -> SP trop bas, remonte-le
 
-#### E14_GHS_2_contraste — GeneralizedHyperbolicStretch
+#### E15_GHS_2_contraste — GeneralizedHyperbolicStretch
    stretchType=ST_GeneralisedHyperbolic ; stretchChannel=SC_RGB ; inverse=false ; stretchFactor=1.000 ; localIntensity=4.000 ; symmetryPoint=0.350000 ; highlightProtection=0.900000 ; shadowProtection=0.000000 ; blackPoint=0.000000 ; whitePoint=1.000000 ; colourBlend=1.000 ; clipType=CT_RGBBlend ; useRGBWorkingSpace=false
 
 > PRÉRÉGLÉ : b = 4, HP 0,9, Stretch factor 1, SP 0,35.
@@ -497,7 +519,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - fond trop sombre -> monte LP vers sa valeur (pas au-dessus de SP)
 > - fond bruité qui ressort -> SP trop bas
 
-#### E15_GHS_3_fond — GeneralizedHyperbolicStretch
+#### E16_GHS_3_fond — GeneralizedHyperbolicStretch
    stretchType=ST_GeneralisedHyperbolic ; stretchChannel=SC_RGB ; inverse=false ; stretchFactor=1.000 ; localIntensity=10.000 ; symmetryPoint=0.200000 ; highlightProtection=0.200000 ; shadowProtection=0.000000 ; blackPoint=0.000000 ; whitePoint=1.000000 ; colourBlend=1.000 ; clipType=CT_RGBBlend ; useRGBWorkingSpace=false
 
 > PRÉRÉGLÉ : b = 10, SP = HP = 0,20, Stretch factor 1 (fond à 0,23 après GHS_2).
@@ -605,7 +627,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 ## P5_Couleur
 
-#### E16_SHO_simple — PixelMath
+#### E17_SHO_simple — PixelMath
    expression = `S` ; expression1 = `H` ; expression2 = `O` ; useSingleExpression=false ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=true ; showNewImage=true ; newImageId=SHO_etire ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=RGB ; newImageSampleFormat=SameAsTarget
 
 > PRÉRÉGLÉ : R = S, G = H, B = O, nouvelle image SHO_etire.
@@ -616,7 +638,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - une image SHO_etire existe déjà -> ferme-la avant
 > - palette Foraxx voulue -> pas besoin : Foraxx_SHO lit S, H, O directement
 
-#### E17_NBN_SHO — NarrowbandNormalization
+#### E18_NBN_SHO — NarrowbandNormalization
    palette=Palette_SHO ; lightness=Lightness_Ha ; blendMode=Blend_Mode1 ; haBlend=0.000 ; scnr=0.700 ; o3Boost=1.000 ; s2Boost=1.000 ; shadowpoint=1.000 ; highlightReduction=1.000 ; brightness=1.000
 
 > PRÉRÉGLÉ : palette SHO, Lightness = Ha (H porte le détail), SCNR 0,7 (vert retiré en partie) (demandes de l'utilisateur) ; O3 boost, S2 boost, Brightness, Highlight reduction à 1 (neutres : ce sont des multiplicateurs, 0 rend l'image noire) ; Shadow point 1 (normalisation à partir de la médiane).
@@ -692,7 +714,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 ## P6_Finition
 
-#### E18_HDRMT_30 — ProcessContainer
+#### E19_HDRMT_30 — ProcessContainer
    1. PixelMath
       expression = `$T` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=true ; showNewImage=true ; newImageId=HDR_avant ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
    2. HDRMultiscaleTransform
@@ -713,7 +735,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - cœur encore trop clair -> HDRMT_40 ou HDRMT_50
 > - aucun effet visible -> saute la partie 1
 
-#### E19_C_Finition — ProcessContainer
+#### E20_C_Finition — ProcessContainer
    1. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
       paramètres : `mode=creer`, `s=0.14`, `flou=2`, `nom=masque_L`, `dialogue=false`
@@ -742,7 +764,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > Double-clic sur le conteneur pour voir ou changer les réglages de chaque étape.
 
-#### E20_C_Sharp_MMT — ProcessContainer
+#### E21_C_Sharp_MMT — ProcessContainer
    1. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
       paramètres : `mode=attacher`, `s=0.14`, `flou=2`, `nom=masque_L`, `dialogue=false`
@@ -765,7 +787,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - bruit accentué -> première couche 3
 > - autre rendu -> Sharp_USM (P6 options) à la place
 
-#### E21_NXT_final — NoiseXTerminator
+#### E22_NXT_final — NoiseXTerminator
    ml_version=0 ; denoise=0.40 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
 
 > PRÉRÉGLÉ : Denoise 0,40, 1 itération.
@@ -1107,22 +1129,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - trop ou pas assez net -> double-clic sur le conteneur, Sharp_MMT : biais 0.02 ou 0.06 ; copie Sharp_MMT.js dans src/scripts/clodoweg
 
 ## P7_Etoiles
-
-#### E22_Etoiles_NB_auto — Script
-   script `$PXI_SRCDIR/scripts/clodoweg/Etoiles_NB_auto.js`
-   paramètres : `h=H_stars`, `o=O_stars`, `s=S_stars`, `ratio=0.30`, `linearfit=true`, `stretch=6.0`, `boost=1.30`, `scnr=false`, `nom=NBtoRGB_stars`, `fermer=true`
-
-> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
-> 
-> PRÉRÉGLÉ : script Etoiles_NB_auto : LinearFit d'O_stars et S_stars sur H_stars ; mélange NB to RGB (R = 0,5·H + 0,5·S, G = 0,3·H + 0,7·O, B = O) dans NBtoRGB_stars ; étirement Star Stretch 6 ; Color Boost 1,3 ; H_stars, O_stars, S_stars fermées.
-> 
-> À RÉGLER : double-clic puis Apply Global (fenêtre : vues et réglages), ou glisse l'icône sur n'importe quelle image (réglages de l'icône) ; étoiles linéaires extraites en phase 3 ; ensuite Etoiles_screen (NBtoRGB_stars) ; copie Etoiles_NB_auto.js dans src/scripts/clodoweg.
-> 
-> SI :
-> - étoiles trop saturées ou criardes -> Color Boost 1,0
-> - étoiles trop grosses ou cœurs blancs -> étirement 5
-> - étoiles encore trop bleues -> ratio 0,4 à 0,5
-> - reste de vert -> SCNR vert coché ou SCNR_etoiles_vert
 
 #### E23_Fond_desature — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js`

@@ -11,6 +11,9 @@ PHASE_NOTE = [
     "étoiles : étirement, recombinaison, réduction",
 ]
 
+# phase propre à un workflow (prioritaire sur PHASE)
+PHASE_PREFIX = {('SHO', 'Etoiles_NB_auto'): 3}   # SHO sans RGB : étoiles faites en phase 3 (demande de l'utilisateur, 20 octobre 2026)
+
 PHASE = {
     'Renommer_auto': 1, 'LinearPatternSubtraction': 1, 'WBPP': 1, 'CC_auto': 1, 'DynamicCrop': 1, 'Combinaison_RGB': 1, 'DualBand_H': 1, 'DualBand_O': 1,
     'ImageSolver': 2, 'ImageSolver_seul': 2, 'SPFC_RGB_filtres': 2, 'SPFC_L': 2, 'SPFC_H': 2, 'SPFC_O': 2, 'SPFC_S': 2, 'MGC_MARS': 2, 'MGC_MARS_H': 2, 'MGC_MARS_O': 2,

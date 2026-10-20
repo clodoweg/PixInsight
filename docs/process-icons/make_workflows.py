@@ -483,7 +483,7 @@ def write(filename, prefix, title, steps):
     entries, prev = [], 1
     for item, desc in steps:
         base = item[0]
-        ph = max(L.PHASE[base], prev)
+        ph = max(L.PHASE_PREFIX.get((prefix, base), L.PHASE[base]), prev)
         prev = ph
         item = renamed(item, '__ID__')
         if 'class="NoOperation"' not in item[1] and 'class="ProcessContainer"' not in item[1] and '<description>' not in item[1]:
@@ -1302,7 +1302,11 @@ _P3_NB = {
 }
 def lineaire_nb_items(prefix):
     comb, masters, suite, fin = _P3_NB[prefix]
-    return [lineaire_rapide(comb), fermer('Fermer_masters', masters), lineaire_rapide(suite), fermer('Fermer_lineaires', fin)]
+    items = [lineaire_rapide(comb), fermer('Fermer_masters', masters), lineaire_rapide(suite), fermer('Fermer_lineaires', fin)]
+    if prefix == 'SHO':
+        # étoiles NBtoRGB_stars faites dès la phase 3 (demande de l'utilisateur, 20 octobre 2026), aussi dans le rapide et le turbo
+        items.append(etoiles_nb_item()[0])
+    return items
 def lineaire_rapide_nb(prefix):
     return cont('C_Lineaire_rapide', lineaire_nb_items(prefix))
 # RGB + SHO (demande de l'utilisateur, 8 octobre 2026 : « Il faut faire la meme chose que sur LRGB pour arriver jusqu'a RGB_stars ») :
@@ -1423,6 +1427,12 @@ _HA_R = 'Q = 2.0;\nBETA = 0.2;\n1 - (1 - $T)*(1 - min(1, Q*max(0, HaNB - med(HaN
 _HA_B = 'Q = 2.0;\nBETA = 0.2;\n$T + BETA*Q*max(0, HaNB - med(HaNB))'
 insert_after(lhargb, 'Main_continuum', [(cont('C_Ha_RGB_rapide', [pm('Ha_dans_RGB_rapide', _HA_R, '$T', _HA_B, symbols='Q, BETA')]
                                               + [pick(lhargb, b)[0] for b in ('NXT_RGB', 'Fermer_continuum')]), '')])
+
+# SHO sans RGB (demande de l'utilisateur, 20 octobre 2026 : « mets E22_Etoiles_NB_auto apres E12 et dans le rapide ») :
+# Etoiles_NB_auto juste après C_Extraction_etoiles (phase 3, étoiles linéaires) ; phase forcée par layout.PHASE_PREFIX
+_it = pick(sho, 'Etoiles_NB_auto')
+sho.remove(_it)
+insert_after(sho, 'Extraire_O_stars', [_it])
 
 # Look_Lightroom (option, tous les workflows) sur l'image SANS étoiles, juste avant la recombinaison des étoiles
 # (demande de l'utilisateur, 9 octobre 2026 : « Je vais faire ce process avant de mettre les étoiles »)
