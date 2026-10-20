@@ -1,7 +1,7 @@
 # Sources de la fiche PixInsight
 
 Sources consultées pour construire et vérifier `docs/pixinsight-workflow.html`, classées par sujet.
-Dernière mise à jour : septembre 2026.
+Dernière mise à jour : 20 octobre 2026 (revue par le skill maj-kb).
 
 Légende :
 - **Officiel** : documentation de l'éditeur ou de l'auteur de l'outil.
@@ -349,7 +349,7 @@ Les schémas ne reprennent que des faits déjà sourcés plus haut ; ils n'ajout
 - **Descriptions d'icônes contre réglages** : 129 valeurs vérifiées ; 3 descriptions complétées (Sharpen Stars de BXT_L et BXT_L_H, Lightness de H_en_luminance). Les valeurs d'accentuation de BXT Correct Only sont ignorées par le process, donc non citées.
 - **Cohérence interne de la page** : chaque réglage chiffré relevé partout où il apparaît (Denoise, Nonstellar, Sharpen Stars, Saturation, Hot sigma, k, Target Median, Amount, Stretch Amount, drizzle, pic et fond de GHS, b, LHE) ; seule incohérence, la fourchette BXT ci-dessus.
 - **Fiches des scripts contre leur code** (archive SetiAstro du 19 septembre 2026, CorrectMagentaStars) : valeurs par défaut et plages de Statistical Stretch, Star Stretch (0 à 8, 0 à 2), Halo-B-Gon (Low), NB to RGB Star Combination, Find Background et CorrectMagentaStars conformes.
-- **Versions** : RC Astro suite 2.6.9 (7 septembre 2026) : corrections de bugs, pas de nouveau réglage, BXT en AI4, NXT en AI3, SXT en AI11 ; GHS 3.1.0 (recompilé pour la 1.9.4) ; NarrowbandNormalization 1.1 ; StarReduction 2.1 ; PixInsight 1.9.5 (rubrique dédiée).
+- **Versions** (remplacé par la revue du 20 octobre 2026 plus bas : suite 2.6.10, BXT ML5) : RC Astro suite 2.6.9 (7 septembre 2026) : corrections de bugs, pas de nouveau réglage, BXT en AI4, NXT en AI3, SXT en AI11 ; GHS 3.1.0 (recompilé pour la 1.9.4) ; NarrowbandNormalization 1.1 ; StarReduction 2.1 ; PixInsight 1.9.5 (rubrique dédiée).
 - **Liens** : 125 URL uniques testées (page, sources, liste des dépôts, README). 96 répondent directement ; 20 renvoient 403 (GitHub filtré par le réseau de test, AstroBin, Cloudy Nights, npm, GraXpert) ; Star-watcher répond avec un navigateur. Liens morts traités : pixinsight-mcp (dépôt supprimé, remplacé par le code de statisticalstretch.js), Remote Astrophotography (410, points confirmés ailleurs), ancien tutoriel Telescope Live (404, remplacé par sa nouvelle adresse), Light Vortex (injoignable, signalé). Les racines de dépôt updates.setiastro.com et raw.githubusercontent.com/… renvoient 404 par nature ; leurs index updates.xri répondent.
 - **Icônes** : 258 icônes dans 9 fichiers ; XML valide, identifiants uniques, une description par icône de workflow. Schéma XPSM officiel toujours hors ligne. Chargement dans PixInsight non testé.
 - **Doublons** : trois dépôts apparaissent dans deux rubriques (AutoIntegrate, Seti Astro, CorrectMagentaStars), volontairement, car ils justifient des points différents.
@@ -372,15 +372,39 @@ Question : « Est-ce que tu penses qu'il est possible de rajouter à la fin une 
 
 - [GraXpert 3.0.2 and PixInsight script on Mac (AstroBin)](https://app.astrobin.com/forum/topic/125008/graxpert-302-and-pixinsight-script-on-mac-intel-macos-sonoma-145) — Forum *(résumé)* : scripts sous /Applications/PixInsight/src/scripts (chemin d'un message d'erreur).
 
+## Revue du 20 octobre 2026 (skill maj-kb)
+
+Versions et nouveautés :
+- Officiel — [PixInsight 1.9.5 Lockhart](https://pixinsight.net/dev/index.php?articles/pixinsight-1-9-5-lockhart-released.21/), [build 1705](https://pixinsight.net/dev/index.php?articles/pixinsight-1-9-5-build-1705-released.23/), [build 1706](https://pixinsight.net/dev/index.php?articles/pixinsight-1-9-5-build-1706-released.24/), [MLDenoise v42](https://pixinsight.net/dev/index.php?articles/mldenoise-model-v42-released.26/), [lettre ouverte du 3 octobre](https://pixinsight.net/dev/index.php?articles/open-letter-to-pixinsight-users.25/) : rien après 1.9.5 ; build 1705 (26 septembre 2026) : PSF type Auto essaie plusieurs Moffat et Gaussienne, résultats par défaut de SPFC et SPCC changés ; WBPP 3.1.1 ; build 1706 (28 septembre) : FFTRegistration 2.0 ; MLDenoise sur Windows, Linux, macOS (CPU, CUDA, CoreML).
+- Officiel — RC Astro : [suite unifiée](https://www.rc-astro.com/unified-pixinsight-rc-astro-suite/) (27 juillet 2026, dépôt unique https://www.rc-astro.com/PixInsight, menu Process › RCAstro, `ai_file` remplacé par `ml_version`, 0 = dernier modèle ; `correct_first`, `nonstellar_then_stellar`, `lum_only` supprimés), [bêta](https://www.rc-astro.com/pixinsight-rc-astro-suite-beta-release/), [historique des versions](https://www.rc-astro.com/version-history/) (2.6.10 du 10 octobre 2026), [BXT ML5](https://www.rc-astro.com/blurxterminator-ml5/) (28 août 2026 : plus net, environ 20 % plus lent, PSF choisie seule, mode Lunar/Planetary, payant si licence de plus d'un an), [mises à jour payantes](https://www.rc-astro.com/about-paid-upgrades/) ; NXT toujours AI3, SXT AI11. Les pages produit /software/bxt, /nxt, /sxt ne sont pas à jour (AI4, 30 avril 2026).
+- Forum — [AstroBin, BXT ML5 contre relevés du ciel](https://app.astrobin.com/forum/topic/252025/new-blurxterminator-ml5-model-accuracy-comparison-with-sky-survey-data) *(résumé)* : ML5 déformerait des structures faibles du fond.
+- Officiel — [MAS 1.1](https://pixinsight.net/dev/index.php?articles/multiscaleadaptivestretch-version-1-1-released.11/) (27 janvier 2026, Contrast Recovery Intensity, Background Reference) : déjà en place ; GHS 3.1.0 ([dépôt](https://www.ghsastro.co.uk/updates/updates.xri)) et NarrowbandNormalization 1.1 ([dépôt](https://www.cosmicphotons.com/pi-modules/narrowbandnormalization/updates.xri)) inchangés ; MARS DR2 inchangé.
+- Officiel — [dépôt SetiAstro](https://updates.setiastro.com/updates.xri) (archive du 6 octobre 2026 ; l'ancien dépôt GitHub renvoie vers cette adresse) : statisticalstretch v2.3, star_stretch v2.6, NBtoRGBStars v1.6, ContinuumSubtraction 1.3.6, Halo-B-Gon v2.1, MD5 identiques aux icônes.
+- Officiel — [Toolbox](https://www.ideviceapps.de/PixInsight/Utilities/updates.xri) (paquet du 18 octobre 2026) : CombineHaToRGB.js toujours v1.10 mais MD5 différent de celui de l'icône E15 LHaRGB (7061c2ce… contre 140cbb0f…) : icône à débloquer en effaçant son MD5 si PixInsight la refuse.
+
+Points du « Non vérifié » :
+- Forum — [forum PixInsight, ajouter un script](https://pixinsight.com/forum/index.php?threads/adding-a-script-to-pixinsight.15960/) (modérateur, 2021) : scripts Mac dans /Applications/PixInsight/src/scripts ; recoupé par un message d'erreur AstroBin *(résumé)*.
+- Officiel (code) — NBtoRGBStars.js v1.6 (archive SetiAstro du 6 octobre 2026) : mélange R = 0,5·Ha + 0,5·SII, G = ratio·Ha + (1−ratio)·OIII (ratio 0,3), B = OIII ; SCNR vert deux fois avant l'étirement ; Apply Star Stretch décochée par défaut, étirement et Color Boost identiques à star_stretch.js (Stretch 5, Color Boost 1,0, plage 0 à 3).
+- Toujours non vérifiés : valeurs par défaut de NarrowbandNormalization ; Saturation de Ha en luminance en HOO (sources LRGB générales seulement, 0,40 ; Lightness 0,5 neutre) ; libellés du menu MARS de MGC (doc MGC en 404) ; MLDenoise contre NXT (avis de forum seulement).
+
+Narrowband, sources récentes :
+- Officiel — [manuel NXT 2 / AI3](https://www.rc-astro.com/noisexterminator-2-ai3-user-manual-pixinsight) (1er février 2025) : pas besoin de débruiter chaque canal, mieux après la combinaison, jamais avant BXT ; [manuel BXT](https://www.rc-astro.com/?p=161138) : traiter l'image combinée plutôt que les canaux, mélange et équilibrage forts après BXT. Confirme le choix B (BXT puis NXT_NB sur la combinaison).
+- Tutoriel — [Cosgrove's Cosmos, NGC 2174](https://cosgrovescosmos.com/image-processing/ngc2174-2026-process) (11 janvier 2026) et [Sh2-157](https://cosgrovescosmos.com/image-processing/sh2-157-2025) (7 novembre 2025) : combinaison linéaire, NBN sur le SHO linéaire sans étoiles, puis MAS ; étoiles SHO par NB to RGB Stars puis screen.
+- Tutoriel — [Deep Space Place, PixInsight SHO workflow](https://deepspaceplace.com/tutorials/pixinsight-sho-workflow) (données 2026, PixInsight 1.9.4) : BXT, GradientCorrection, NXT, SXT par canal (contre l'avis de RC Astro), GHS puis NBN sur l'image étirée (SCNR 0,10-0,16, OIII 1,23-1,57, SII 1,45-1,48, Lightness Off ; « push the SII boost first ») ; étoiles NB to RGB Stars 5 / 1,0.
+- Forum — AstroBin *(résumé)* : NBN attend des canaux étirés de façon non liée (conseil attribué à Bill Blanshan) ; Ivo Jager (StarTools) *(résumé)* juge l'étirement séparé des canaux faux pour les teintes : avis divergents.
+- Tutoriel — [AstroBackyard, étoiles RGB en narrowband](https://astrobackyard.com/rgb-stars-narrowband-images/) (13 août 2025) : vraies étoiles RGB préférables quand c'est possible.
+- Tutoriel — [Martin Kaessler, MAS](https://www.martinkaessler.com/multiscale-adaptive-stretch-in-pixinsight/) (janvier 2026) : nébuleuses en émission, fond 0,15-0,20, saturation basse (extrapolation de l'auteur).
+- Tutoriel — [Warren Keller, masterclass d'étirement 2026](https://app.telescope.live/en/tutorials/217/2026-pixinsight-stretching-masterclass) et [NBN](https://app.telescope.live/en/tutorials/98/exploring-pixinsight-narrowband-normalization-techniques) : sans réglages chiffrés lisibles.
+
 ## Non vérifié
 
-- maj_mac.command (20 octobre 2026) : chemin /Applications/PixInsight/src/scripts relevé sur un forum, sans doc officielle ; script non testé sur Mac.
+- maj_mac.command (20 octobre 2026) : chemin /Applications/PixInsight/src/scripts confirmé par un modérateur du forum officiel (revue du 20 octobre 2026, voir plus bas), sans doc officielle ; script non testé sur Mac.
 
 - Stat_canaux.js (9 octobre 2026) : résultat identique à statisticalstretch.js (une passe, Target Median 0,25, Blackpoint Sigma 5) non vérifié dans PixInsight.
 
 - Look_Lightroom.js (8 et 9 octobre 2026, réglages Camera Raw de l'utilisateur : Exposition +0,25, Tons clairs -100, Blancs +50, Température +10) : correspondances curseurs Camera Raw / Lightroom -> exposition, courbe, coefficients choisies au jugé, à régler en comparant avec Lightroom ; script non testé dans PixInsight.
 
-- Etoiles_NB_auto.js (8 octobre 2026) : Color Boost de l'option Apply Star Stretch de NBtoRGBStars.js supposé identique à celui de star_stretch.js (non relu) ; script non testé dans PixInsight.
+- Etoiles_NB_auto.js (8 octobre 2026) : Color Boost de NBtoRGBStars.js v1.6 vérifié identique à star_stretch.js (code relu le 20 octobre 2026) ; coefficients 0,5H+0,5S / 0,3H+0,7O / O = ceux du script, LinearFit préalable sans source publiée ; script non testé dans PixInsight.
 
 - Conteneurs de finition par mélange PixelMath (sous_masque, 8 octobre 2026, choix de l'utilisateur : « tous les workflow ») : résultat identique au un par un non testé dans PixInsight.
 
@@ -406,7 +430,7 @@ Points toujours sans source directe (contrôle du 30 septembre 2026) :
 - Pas encore confirmés dans PixInsight par l'utilisateur (5 octobre 2026) : Sharp_MMT depuis sa fenêtre et cwApplyOnCopy nouvelle version (résultat recalculé sur la vue) ; Saturation_grosses après la correction de l'« Unknown error » ; Etoiles_grosses sans anneau (vérifié seulement en simulation) ; T_Turbo_debut ; SCNR_etoiles_violet (Invert en script). Réglages choisis sans source chiffrée : Courbes de C_Finition saturation 0,58 (au jugé de l'utilisateur : 0,65 trop saturé), NXT_dernier Denoise 0,25.
 
 - Continuum_SHO (RGB + SHO, 8 octobre 2026, version Starless) : non testé dans PixInsight (noms RGB_cont_R / RGB_cont_G des canaux extraits par le script supposés, fermés par précaution) ; part de l'émission retirée avec le continuum (raies dans R et G) non chiffrée.
-- NarrowbandNormalization : valeurs par défaut de l'interface non lues (icônes à 1, neutres d'après l'aide du module ; Shadow point 1 gardé du modèle).
+- NarrowbandNormalization (revue du 20 octobre 2026 : toujours aucune doc ; à lire dans PixInsight par Reset) : valeurs par défaut de l'interface non lues ; réglages SHO de l'utilisateur (SCNR 0,7, S2 boost 1,2, Lightness Ha) non recoupés, Deep Space Place (2026) emploie SCNR 0,10-0,16, OIII 1,2-1,6, SII 1,45-1,48, Lightness Off ; (icônes à 1, neutres d'après l'aide du module ; Shadow point 1 gardé du modèle).
 - MAS sur les canaux narrowband (Opt_MAS_canaux, 8 octobre 2026) : aucune source ; non testé.
 - Fond_auto en narrowband : seuil « fond avant au-dessus de 0,20 = pas de vrai ciel » au jugé (8 octobre 2026).
 - Mode rapide narrowband P1 (8 octobre 2026) : R_C_Preparation_rapide, R_Gradient_auto_rapide et R_C_Lineaire_rapide de SHO sans RGB, RGB + SHO et HOO pas encore lancés dans PixInsight (R_C_Lineaire_rapide : Lineaire_auto sur des icônes PixelMath et conteneurs d'extraction, nom SHO_stars de SXT supposé) (ImageSolver par Solver_auto sur des masters 3 nm non testé).

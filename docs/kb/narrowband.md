@@ -421,3 +421,10 @@ Options supprimées du narrowband (20 octobre 2026, demande de l'utilisateur : �
 GHS_2_contraste au chemin principal en SHO et RGB + SHO (20 octobre 2026, demande de l'utilisateur : « pour les 2 SHO et HOO, Opt_GHS_2_contraste ne doit pas etre une option mais un normal ») : juste après Statistical_Stretch, sur S, H, O ; GHS_1_premier et GHS_3_fond restent en option. HOO : GHS_2_contraste était déjà au chemin principal (E15).
 
 Ordre des options P4 en SHO et RGB + SHO (20 octobre 2026, demande de l'utilisateur) : Opt_GHS_1_premier, puis Opt_GHS_3_fond juste dessous, puis les autres. HOO : pas d'Opt_GHS (GHS_1, GHS_2, GHS_3_fond au chemin principal).
+
+Revue des sources du 20 octobre 2026 (skill maj-kb, détails dans `../sources.md`) :
+- Confirmé : BXT puis NXT sur l'image combinée (manuels RC Astro NXT 2025 et BXT) ; étoiles SHO par mélange NB to RGB (Cosgrove 2026, Deep Space Place 2026) ; HOO 5 / 1,0 = réglage de Deep Space Place ; NBtoRGBStars v1.6 : même étirement et Color Boost que star_stretch.
+- Diverge : ordre étirement / NBN. Utilisateur : canaux étirés séparément puis NBN (forum : NBN attend des canaux étirés non liés, conseil attribué à Blanshan). Cosgrove 2026 : combinaison linéaire, NBN en linéaire, puis MAS. Ivo Jager (StarTools) : étirement séparé déconseillé. Pas de position de l'éditeur de NBN trouvée.
+- Non recoupé : réglages NBN de l'utilisateur (SCNR 0,7, S2 boost 1,2, Lightness Ha) ; seule source chiffrée, Deep Space Place : SCNR 0,10-0,16, OIII 1,2-1,6, SII 1,45-1,48, Lightness Off.
+- Propositions (non appliquées, choix de l'utilisateur) : option de test NBN plus doux (SCNR 0,2, SII 1,4, OIII 1,2, Lightness Off) ; option « combinaison linéaire, NBN, MAS » (méthode Cosgrove) à comparer.
+

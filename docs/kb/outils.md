@@ -1141,3 +1141,11 @@ Option Opt_CloneStamp (P4, LRGB et LHaRGB, demande de l'utilisateur, 18 octobre 
 - Radius, Softness, Opacity : bord visible -> Softness plus haut ; motif répété -> changer souvent de source.
 - Instance : version 256, tables cloner et actions vides, width 0, height 0, couleurs 0xffe0e0e0 (défaut du module). Chargement dans PixInsight non vérifié.
 
+## Versions au 20 octobre 2026 (revue maj-kb, sources dans ../sources.md)
+
+- PixInsight : 1.9.5, build 1706 (28 septembre 2026) ; rien de plus récent. Build 1705 : PSF type Auto essaie plusieurs modèles (Moffat, Gaussienne) : SPFC et SPCC peuvent donner des résultats un peu différents d'avant. MLDenoise disponible aussi sous Windows (pas utilisé par les icônes).
+- RC Astro : suite unifiée 2.6.10 (10 octobre 2026), dépôt unique https://www.rc-astro.com/PixInsight (retirer les anciens dépôts RC Astro), menu Process › RCAstro. Paramètre `ml_version` (0 = dernier modèle) à la place de `ai_file`. BXT ML5 (28 août 2026), payant si la licence a plus d'un an ; NXT AI3, SXT AI11 inchangés. Avertissements possibles à l'ouverture d'anciennes icônes (paramètres supprimés), sans danger.
+- Icônes : 13 instances BXT Correct Only (modèle `BlurX_CorrectOnly` de `build/templates.json`) ont `ml_version = 4` : elles restent en ML4 même si ML5 est installé ; les autres instances RC Astro sont à 0. À décider par l'utilisateur (touche le LRGB).
+- MAS 1.1, GHS 3.1.0, NarrowbandNormalization 1.1, MARS DR2 : inchangés. Scripts SetiAstro : dépôt https://updates.setiastro.com/, mêmes versions et MD5 que les icônes.
+- Toolbox du 18 octobre 2026 : CombineHaToRGB.js (E15 LHaRGB) a un nouveau MD5 : si l'icône est bloquée, effacer son champ MD5.
+
