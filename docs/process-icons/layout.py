@@ -12,7 +12,11 @@ PHASE_NOTE = [
 ]
 
 # phase propre à un workflow (prioritaire sur PHASE)
-PHASE_PREFIX = {('SHO', 'Etoiles_NB_auto'): 3}   # SHO sans RGB : étoiles faites en phase 3 (demande de l'utilisateur, 20 octobre 2026)
+PHASE_PREFIX = {('SHO', 'Etoiles_NB_auto'): 3}
+# options d'étoiles en phase 3, là où l'image d'étoiles est faite (demande de l'utilisateur, 20 octobre 2026) : SHO et HOO (NBtoRGB_stars, Etoiles_NB_auto
+# en phase 3 aussi en HOO) ; RGB + SHO : toute la chaîne RGB_stars (MAS, SXT_RGB_etire, SCNR_etoiles_vert, Fermer_RGB, R_C_RGB_etoiles_rapide) en fin de phase 3
+PHASE_PREFIX.update({(p, b): 3 for p in ('SHO', 'HOO') for b in ('Etoiles_NB_auto', 'SCNR_etoiles_vert', 'SCNR_etoiles_violet', 'Saturation_grosses')})
+PHASE_PREFIX.update({('RSHO', b): 3 for b in ('MAS', 'SXT_RGB_etire', 'SCNR_etoiles_vert', 'SCNR_etoiles_violet', 'Saturation_grosses', 'Fermer_RGB', 'C_RGB_etoiles_rapide')})   # SHO sans RGB : étoiles faites en phase 3 (demande de l'utilisateur, 20 octobre 2026)
 
 PHASE = {
     'Renommer_auto': 1, 'LinearPatternSubtraction': 1, 'WBPP': 1, 'CC_auto': 1, 'DynamicCrop': 1, 'Combinaison_RGB': 1, 'DualBand_H': 1, 'DualBand_O': 1,
@@ -52,7 +56,7 @@ def role(prefix, base):
         return 'opt'    # galaxies (demande de l'utilisateur, 5 octobre 2026) : MAS sur le RGB
     if prefix in ('SHO', 'HOO') and base in ('Star_Stretch', 'NB_to_RGB_Stars'):
         return 'opt'    # étirement fait par NB_to_RGB_Stars (Apply Star Stretch 5 / 1,0, demande de l'utilisateur, 8 octobre 2026)
-    if prefix == 'SHO' and base == 'SCNR_etoiles_vert':
+    if prefix in ('SHO', 'HOO') and base == 'SCNR_etoiles_vert':
         return 'opt'    # SHO sans RGB : options étoiles sur NBtoRGB_stars (demande de l'utilisateur, 8 octobre 2026)
     if base in OPT or (base == 'MGC_MARS' and prefix in ('SHO', 'HOO')):   # RGB + SHO : MGC_MARS sur RGB au chemin principal (comme en LRGB)
         return 'opt'
@@ -215,7 +219,7 @@ WHEN_NB = {
     'Saturation_grosses': "grosses étoiles presque blanches, petites assez colorées : glisse sur n'importe quelle image après les SCNR ; seules les grosses étoiles et leur halo sont saturés ; pas dans le rapide",
     'Boost_final': "un peu plus de couleur sur les zones brillantes : sur l'image SANS étoiles finie, avant Fond_desature et Etoiles_screen (pas de L : masque tiré de l'image elle-même)",
     'Boost_final_doux': "comme Boost_final mais moitié moins fort : un petit cran de couleur, sur l'image SANS étoiles, avant Fond_desature et Etoiles_screen",
-    'MAS_light': "étirement plus doux que MAS (Aggressiveness 0,15, saturation 0,50) : à la place de MAS sur le RGB (RGB + SHO), ou de MAS_canaux / des GHS sur chaque canal sans étoiles ; glisse sur l'image linéaire",
+    'MAS_light': "étirement plus doux que MAS (Aggressiveness 0,15, saturation 0,50) : à la place de MAS sur le RGB (RGB + SHO, fin de phase 3), ou de MAS_canaux / des GHS sur chaque canal sans étoiles ; glisse sur l'image linéaire",
     'C_Fin_rapide': "MODE RAPIDE, à la place de HDRMT_30, C_Finition, C_Sharp_MMT et NXT_final : GLISSE sur l'image sans étoiles après la palette (SHO_etire après NBN_SHO, ou l'image de ta palette)",
     'C_Etoiles_fond_rapide': "MODE RAPIDE, à la place de Fond_desature, Fond_auto, Etoiles_screen, NXT_dernier et Export_TIFF : GLISSE sur l'image sans étoiles finie, image d'étoiles du workflow ouverte et étirée",
     'MAS_canaux': "à la place de GHS_1 et GHS_2 : MultiscaleAdaptiveStretch sur chaque canal sans étoiles, même fond cible 0,25 pour tous (règle du même fond), puis GHS_3_fond sur chaque canal ; glisse sur S, puis H, puis O (ou R_C_MAS_canaux_rapide) ; non testé en narrowband",
@@ -223,7 +227,7 @@ WHEN_NB = {
     'C_Palette_rapide': "MODE RAPIDE, à la place de SHO_simple et NBN_SHO : S, H, O étirés (après les GHS, même fond), double-clic puis Apply Global (pas en glissant) ; ensuite la finition sur SHO_etire",
     'C_RGB_etoiles_rapide': "MODE RAPIDE, à la place de MAS, SXT_RGB_etire, SCNR_etoiles_vert et Fermer_RGB : RGB linéaire avec étoiles ouvert (après C_RGB_lineaire, R_C_Lineaire_rapide ou T_Turbo_debut), double-clic puis Apply Global (pas en glissant) ; options SCNR_etoiles_violet et Saturation_grosses ensuite, sur RGB_stars, à la main si besoin",
     'Turbo_debut': "MODE TURBO, à la place de R_C_Preparation_rapide, R_Gradient_auto_rapide et R_C_Lineaire_rapide (phases 1 à 3) : masters seuls ouverts, Conteneurs du workflow chargé, double-clic puis Apply Global (pas en glissant) ; ensuite GHS_1_premier sur H",
-    'C_Continuum_prep': "continuum retiré de H, O, S (lumière d'étoiles et de poussière hors des canaux) ; pas sur une nébuleuse en émission brillante (cœur noirci : son émission est aussi dans R et G) : étape 1 de 3, fin de phase 3 (après C_Extraction_SHO et C_RGB_lineaire, ou après R_C_Lineaire_rapide) ; double-clic puis Apply Global : copie RGB_cont du RGB, sans étoiles (RGB garde les siennes pour MAS)",
+    'C_Continuum_prep': "continuum retiré de H, O, S (lumière d'étoiles et de poussière hors des canaux) ; pas sur une nébuleuse en émission brillante (cœur noirci : son émission est aussi dans R et G) : étape 1 de 3, fin de phase 3 (après C_Extraction_SHO et C_RGB_lineaire, ou après R_C_Lineaire_rapide ; AVANT MAS, qui étire le RGB) ; double-clic puis Apply Global : copie RGB_cont du RGB, sans étoiles (RGB garde les siennes pour MAS)",
     'Continuum_SHO': "étape 2 de 3, après C_Continuum_prep : double-clic puis Apply Global, fenêtre : Ha = H, OIII = O, SII = S, Red (or RGB) = RGB_cont, Green = Select Image, Starless coché ; crée HaNB, OIIINB, SIINB",
     'C_Continuum_fin': "étape 3 de 3, après Continuum_SHO : double-clic puis Apply Global ; ferme S, H, O, RGB_cont, puis HaNB, OIIINB, SIINB deviennent H, O, S ; ensuite GHS_1_premier sur H",
     'Copie_RGB_continuum': "lancée par C_Continuum_prep (ne pas utiliser seule) : copie RGB_cont du RGB linéaire",

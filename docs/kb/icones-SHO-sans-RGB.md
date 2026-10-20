@@ -425,6 +425,62 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 ### P3_options
 
+#### Opt_SCNR_etoiles_vert — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js`
+   paramètres : `vue=NBtoRGB_stars`, `amount=0`, `satAmount=0`, `scnr=true`, `violet=false`
+
+> OPTION — étoiles vertes : sur NBtoRGB_stars étirée (SHO sans RGB) ou RGB_stars, avant Etoiles_screen
+> Glisse sur n'importe quelle image.
+> 
+> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
+> 
+> PRÉRÉGLÉ : script Etoiles_auto réglé SCNR seul : SCNR vert, Amount 1,0, Average Neutral, Preserve lightness, sur NBtoRGB_stars (amount 0 = pas d'étirement, satAmount 0 = pas de saturation).
+> 
+> À RÉGLER : option : glisse sur n'importe quelle image (traite toujours NBtoRGB_stars), phase 3, juste après Etoiles_NB_auto (NBtoRGB_stars déjà étirée) : vert retiré des étoiles ; options ensuite : SCNR_etoiles_violet, Saturation_grosses.
+> 
+> SI :
+> - étoiles grisées ou magenta -> Ctrl+Z, ou double-clic : décoche SCNR
+> - autre nom d'étoiles (Stars_HOO, SHO_stars) -> vue = ce nom dans l'icône
+
+#### Opt_SCNR_etoiles_violet — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js`
+   paramètres : `vue=NBtoRGB_stars`, `amount=0`, `satAmount=0`, `scnr=false`, `violet=true`
+
+> OPTION — étoiles violettes (R et B nettement au-dessus de G à la sonde) : après SCNR_etoiles_vert, glisse sur n'importe quelle image
+> Invert, SCNR vert 1,0, Invert
+> Pas dans le rapide.
+> 
+> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
+> 
+> PRÉRÉGLÉ : script Etoiles_auto réglé violet seul : Invert, SCNR vert (Amount 1,0, Average Neutral, Preserve lightness), Invert sur NBtoRGB_stars : le magenta (violet) des étoiles retiré.
+> 
+> À RÉGLER : option, phase 3, après Etoiles_NB_auto (et SCNR_etoiles_vert) : glisse sur n'importe quelle image (traite toujours NBtoRGB_stars) ; à vérifier à la sonde : utile si R et B nettement au-dessus de G sur les étoiles.
+> 
+> SI :
+> - étoiles bleues devenues trop vertes ou ternes -> Ctrl+Z
+> - autre nom d'étoiles -> vue = ce nom dans l'icône
+
+#### Opt_Saturation_grosses — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Saturation_grosses.js`
+   paramètres : `vue=NBtoRGB_stars`, `taille=7`, `seuil=0.15`, `etendue=12`, `passes=1`
+
+> OPTION — grosses étoiles presque blanches, petites assez colorées : glisse sur n'importe quelle image après les SCNR
+> Seules les grosses étoiles et leur halo sont saturés
+> Pas dans le rapide.
+> 
+> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
+> 
+> PRÉRÉGLÉ : script Saturation_grosses sur la vue NBtoRGB_stars : masque des grosses étoiles (ouverture morphologique, disque de 7 px sur une copie à 2000 px, au-dessus de 0,15, étendu au halo, flou 12 px) ; sous ce masque, ta courbe de saturation (CurvesTransformation, c : 0,46 -> 0,54 et S : 0,46 -> 0,54, Akima), 1 passe ; petites étoiles intactes.
+> 
+> À RÉGLER : option : glisse sur n'importe quelle image (traite toujours NBtoRGB_stars), phase 3, après Etoiles_NB_auto et les SCNR ; pour régler à l'œil : double-clic puis Apply Global, « Voir le masque », puis Appliquer.
+> 
+> SI :
+> - pas assez saturé -> passes 2
+> - moyennes étoiles saturées aussi -> taille 9 ou 11
+> - certaines grosses pas saturées -> taille 5, ou seuil 0,10
+> - halo pas saturé jusqu'au bord -> etendue 16
+> - pour recommencer -> Ctrl+Z sur RGB_stars
+
 #### Opt_NXT_H — NoiseXTerminator
    ml_version=0 ; denoise=0.60 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
 
@@ -546,7 +602,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 #### Opt_MAS_light — MultiscaleAdaptiveStretch
    aggressiveness=0.15 ; targetBackground=0.150 ; dynamicRangeCompression=0.40 ; contrastRecovery=true ; scaleSeparation=1024 ; contrastRecoveryIntensity=1.000 ; previewLargeScale=false ; saturationEnabled=true ; saturationAmount=0.50 ; saturationBoost=0.50 ; saturationLightnessMask=true ; backgroundROIEnabled=false ; backgroundROIX0=0 ; backgroundROIY0=0 ; backgroundROIWidth=0 ; backgroundROIHeight=0
 
-> OPTION — étirement plus doux que MAS (Aggressiveness 0,15, saturation 0,50) : à la place de MAS sur le RGB (RGB + SHO), ou de MAS_canaux / de Statistical_Stretch sur chaque canal sans étoiles
+> OPTION — étirement plus doux que MAS (Aggressiveness 0,15, saturation 0,50) : à la place de MAS sur le RGB (RGB + SHO, fin de phase 3), ou de MAS_canaux / de Statistical_Stretch sur chaque canal sans étoiles
 > Glisse sur l'image linéaire.
 > 
 > PRÉRÉGLÉ : MultiscaleAdaptiveStretch doux, tes réglages : Aggressiveness 0,15, Target background 0,150, Dynamic range compression 0,40, Contrast recovery coché (séparation 1024, intensité 1,0), saturation cochée (0,50, boost 0,50, masque de luminosité).
@@ -1207,62 +1263,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - étoiles trop grosses -> 5 ou 4
 > - étoiles grisées par le SCNR -> décoche Remove Green
 > - étoiles criardes -> Color Boost 1,0
-
-#### Opt_SCNR_etoiles_vert — Script
-   script `$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js`
-   paramètres : `vue=NBtoRGB_stars`, `amount=0`, `satAmount=0`, `scnr=true`, `violet=false`
-
-> OPTION — étoiles vertes : sur NBtoRGB_stars étirée (SHO sans RGB) ou RGB_stars, avant Etoiles_screen
-> Glisse sur n'importe quelle image.
-> 
-> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
-> 
-> PRÉRÉGLÉ : script Etoiles_auto réglé SCNR seul : SCNR vert, Amount 1,0, Average Neutral, Preserve lightness, sur NBtoRGB_stars (amount 0 = pas d'étirement, satAmount 0 = pas de saturation).
-> 
-> À RÉGLER : option : glisse sur n'importe quelle image (traite toujours NBtoRGB_stars), après Star_Stretch, avant Etoiles_screen : vert retiré des étoiles ; options ensuite : SCNR_etoiles_violet, Saturation_grosses.
-> 
-> SI :
-> - étoiles grisées ou magenta -> Ctrl+Z, ou double-clic : décoche SCNR
-> - autre nom d'étoiles (Stars_HOO, SHO_stars) -> vue = ce nom dans l'icône
-
-#### Opt_SCNR_etoiles_violet — Script
-   script `$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js`
-   paramètres : `vue=NBtoRGB_stars`, `amount=0`, `satAmount=0`, `scnr=false`, `violet=true`
-
-> OPTION — étoiles violettes (R et B nettement au-dessus de G à la sonde) : après SCNR_etoiles_vert, glisse sur n'importe quelle image
-> Invert, SCNR vert 1,0, Invert
-> Pas dans le rapide.
-> 
-> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
-> 
-> PRÉRÉGLÉ : script Etoiles_auto réglé violet seul : Invert, SCNR vert (Amount 1,0, Average Neutral, Preserve lightness), Invert sur NBtoRGB_stars : le magenta (violet) des étoiles retiré.
-> 
-> À RÉGLER : option, après Star_Stretch (et SCNR_etoiles_vert) : glisse sur n'importe quelle image (traite toujours NBtoRGB_stars) ; à vérifier à la sonde : utile si R et B nettement au-dessus de G sur les étoiles.
-> 
-> SI :
-> - étoiles bleues devenues trop vertes ou ternes -> Ctrl+Z
-> - autre nom d'étoiles -> vue = ce nom dans l'icône
-
-#### Opt_Saturation_grosses — Script
-   script `$PXI_SRCDIR/scripts/clodoweg/Saturation_grosses.js`
-   paramètres : `vue=NBtoRGB_stars`, `taille=7`, `seuil=0.15`, `etendue=12`, `passes=1`
-
-> OPTION — grosses étoiles presque blanches, petites assez colorées : glisse sur n'importe quelle image après les SCNR
-> Seules les grosses étoiles et leur halo sont saturés
-> Pas dans le rapide.
-> 
-> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
-> 
-> PRÉRÉGLÉ : script Saturation_grosses sur la vue NBtoRGB_stars : masque des grosses étoiles (ouverture morphologique, disque de 7 px sur une copie à 2000 px, au-dessus de 0,15, étendu au halo, flou 12 px) ; sous ce masque, ta courbe de saturation (CurvesTransformation, c : 0,46 -> 0,54 et S : 0,46 -> 0,54, Akima), 1 passe ; petites étoiles intactes.
-> 
-> À RÉGLER : option : glisse sur n'importe quelle image (traite toujours NBtoRGB_stars), après Star_Stretch et les SCNR, avant Etoiles_screen ; pour régler à l'œil : double-clic puis Apply Global, « Voir le masque », puis Appliquer.
-> 
-> SI :
-> - pas assez saturé -> passes 2
-> - moyennes étoiles saturées aussi -> taille 9 ou 11
-> - certaines grosses pas saturées -> taille 5, ou seuil 0,10
-> - halo pas saturé jusqu'au bord -> etendue 16
-> - pour recommencer -> Ctrl+Z sur RGB_stars
 
 #### Opt_MT_etoiles — MorphologicalTransformation
    operator=Selection ; interlacingDistance=1 ; lowThreshold=0.000000 ; highThreshold=0.000000 ; numberOfIterations=1 ; amount=0.60 ; selectionPoint=0.25 ; structureName= ; structureSize=5 ; table structureWayTable (1 lignes)

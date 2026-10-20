@@ -255,14 +255,15 @@ for _p, _x in (('RSHO', ", Combinaison_RGB comprise (RGB des étoiles)"), ('SHO'
     RAPIDE_NOTE[_p][2] = "R_Gradient_auto_rapide (double-clic puis Apply Global) à la place de toute la phase 2 (ImageSolver, SPFC, MGC + MARS, GradientCorrection) : GradientCorrection sur toutes les images ouvertes (%s) ; l'astrométrie est déjà faite par R_C_Preparation_rapide" % ('S, H, O et RGB' if _p == 'RSHO' else 'S, H, O' if _p == 'SHO' else 'H, O')
     RAPIDE_NOTE[_p][3] = "R_C_Lineaire_rapide (double-clic puis Apply Global) à la place de toute la phase 3 : combinaison, %s, extraction des canaux (vues %s linéaires sans étoiles) ; masters et images linéaires inutiles fermés%s" % (
         'C_HOO_lineaire (BXT, SXT, NXT)' if _p == 'HOO' else 'C_SHO_lineaire (BXT, SXT, NXT)', 'H, O' if _p == 'HOO' else 'S, H, O',
-        ' ; aussi C_RGB_lineaire sur RGB (BXT Correct Only, SPCC, BXT, NXT : RGB reste linéaire avec ses étoiles)' if _p == 'RSHO' else ' ; étoiles S_stars, H_stars, O_stars extraites de SHO_stars' if _p == 'SHO' else ' ; étoiles H_stars, O_stars extraites de HOO_stars')
+        ' ; aussi C_RGB_lineaire sur RGB (BXT Correct Only, SPCC, BXT, NXT : RGB reste linéaire avec ses étoiles)' if _p == 'RSHO' else ' ; étoiles S_stars, H_stars, O_stars extraites de SHO_stars' if _p == 'SHO' else ' ; étoiles H_stars, O_stars extraites de HOO_stars, puis Etoiles_NB_auto (NBtoRGB_stars)')
 RAPIDE_NOTE['RSHO'][3] += " ; AVEC CONTINUUM (option) : ensuite Opt_C_Continuum_prep, Opt_Continuum_SHO (fenêtre, Starless), Opt_C_Continuum_fin, avant Statistical_Stretch"
 for _p, _et in (('RSHO', 'RGB_stars'), ('SHO', 'NBtoRGB_stars'), ('HOO', 'NBtoRGB_stars')):
     RAPIDE_NOTE[_p][6] = "R_C_Fin_rapide GLISSÉ sur l'image sans étoiles après la palette : HDRMT à 30 %, masque, Courbes, LHE, LHE_fin, Sharp_MMT, masque retiré, NXT_final 0,40 (= HDRMT_30, C_Finition, C_Sharp_MMT et NXT_final)"
     RAPIDE_NOTE[_p][7] = "R_C_Etoiles_fond_rapide GLISSÉ sur l'image sans étoiles finie : Fond_desature, Fond_auto (0,12), étoiles remises (Etoiles_screen avec %s), NXT_dernier (0,25), Export_TIFF" % _et
 for _p in ('RSHO', 'SHO'):
     RAPIDE_NOTE[_p][5] = "R_C_Palette_rapide (double-clic puis Apply Global) à la place de SHO_simple et NBN_SHO : S, H, O étirés combinés en SHO_etire, NarrowbandNormalization (palette SHO, Lightness Ha, SCNR 0,7) ; S, H, O restent ouverts"
-RAPIDE_NOTE['RSHO'][4] = "Statistical_Stretch sur S, H, O (chemin principal, Target Median 0,25 ; GHS en option) ; R_C_RGB_etoiles_rapide (double-clic puis Apply Global) à la place de MAS, SXT_RGB_etire, SCNR_etoiles_vert et Fermer_RGB : crée RGB_stars, ferme le RGB sans étoiles"
+RAPIDE_NOTE['RSHO'][4] = "Statistical_Stretch sur S, H, O (chemin principal, Target Median 0,25 ; GHS en option)"
+RAPIDE_NOTE['RSHO'][3] += " ; puis R_C_RGB_etoiles_rapide (double-clic puis Apply Global) à la place de MAS, SXT_RGB_etire, SCNR_etoiles_vert et Fermer_RGB : crée RGB_stars, ferme le RGB sans étoiles"
 
 def layout_all(main, opts, rapide=None, notes=None, turbo=None):
     """Une colonne par phase : icône-titre, étapes du chemin principal (E01…), puis icône « options » et options (Opt_…)."""
@@ -1104,7 +1105,7 @@ hoo = pre_block() + [
     (M.instance('LRGBCombination', 'H_en_luminance', {'mL': '0.500', 'mc': '0.400', 'noiseReduction': True}, post=M.lrgb_post),
      "Option — H en luminance : fais une copie de H étiré nommée 'L' (même fond et médiane proche que l'image HOO, sinon couleurs délavées), puis applique sur l'image HOO. Seul L activé, Lightness 0,5, Saturation 0,40."),
 ] + finish_block(galaxie=True) + [
-    (note('Etoiles_HOO', "ÉTOILES — avec RGB : suis le bloc étoiles RGB du workflow RGB + SHO. Sans RGB (chemin principal, 8 octobre 2026) : Etoiles_NB_auto (LinearFit d'O_stars sur H_stars, mélange NB to RGB sans S, Star Stretch 5, Color Boost 1,0) qui crée NBtoRGB_stars, l'image d'Etoiles_screen ; HOO_stars directe ou RGB_stars : change le nom dans Etoiles_screen. "
+    (note('Etoiles_HOO', "ÉTOILES — avec RGB : suis le bloc étoiles RGB du workflow RGB + SHO. Sans RGB (chemin principal, 8 octobre 2026 ; fait en phase 3, E13, depuis le 20 octobre 2026) : Etoiles_NB_auto (LinearFit d'O_stars sur H_stars, mélange NB to RGB sans S, Star Stretch 5, Color Boost 1,0) qui crée NBtoRGB_stars, l'image d'Etoiles_screen ; HOO_stars directe ou RGB_stars : change le nom dans Etoiles_screen. "
           "Les étoiles HOO tirent vers le rouge et le cyan : désature-les légèrement si besoin. "
           "STANDARD : étoiles plausibles, du bleu-blanc au jaune-orange, peu saturées, une gamme de couleurs, jamais vertes. En HOO classique (G = B = O), le magenta est impossible "
           "mais les étoiles chaudes sortent rouges ou saumon (jamais jaunes) et les froides cyan ; cœur rouge / halo cyan fréquent (étoiles O plus grosses). "
@@ -1303,9 +1304,9 @@ _P3_NB = {
 def lineaire_nb_items(prefix):
     comb, masters, suite, fin = _P3_NB[prefix]
     items = [lineaire_rapide(comb), fermer('Fermer_masters', masters), lineaire_rapide(suite), fermer('Fermer_lineaires', fin)]
-    if prefix == 'SHO':
-        # étoiles NBtoRGB_stars faites dès la phase 3 (demande de l'utilisateur, 20 octobre 2026), aussi dans le rapide et le turbo
-        items.append(etoiles_nb_item()[0])
+    if prefix in ('SHO', 'HOO'):
+        # étoiles NBtoRGB_stars faites dès la phase 3 (demande de l'utilisateur, 20 octobre 2026 ; HOO comme SHO), aussi dans le rapide et le turbo
+        items.append(etoiles_nb_item(prefix == 'SHO')[0])
     return items
 def lineaire_rapide_nb(prefix):
     return cont('C_Lineaire_rapide', lineaire_nb_items(prefix))
@@ -1433,6 +1434,21 @@ insert_after(lhargb, 'Main_continuum', [(cont('C_Ha_RGB_rapide', [pm('Ha_dans_RG
 _it = pick(sho, 'Etoiles_NB_auto')
 sho.remove(_it)
 insert_after(sho, 'Extraire_O_stars', [_it])
+
+# options d'étoiles en phase 3 (demande de l'utilisateur, 20 octobre 2026 : « deplace les option SCRN etoiles vertes voilettes et saturation grosses
+# dans P3 Options pour SHO avec RGB, HOO et SHO sans RGB » ; choix ensuite : HOO comme SHO, RGB + SHO toute la chaîne RGB_stars en P3) ; phases dans layout.PHASE_PREFIX
+_its = [pick(sho, b) for b in ('SCNR_etoiles_vert', 'SCNR_etoiles_violet', 'Saturation_grosses')]
+for _it in _its:
+    sho.remove(_it)
+insert_after(sho, 'Etoiles_NB_auto', _its)
+_it = pick(hoo, 'Etoiles_NB_auto')
+hoo.remove(_it)
+insert_after(hoo, 'Extraire_O_stars', [_it])
+insert_after(hoo, 'Etoiles_NB_auto', [((n, x), d) for ((n, x), d) in _its])
+_its = [pick(rgbsho, b) for b in ('MAS', 'SXT_RGB_etire', 'SCNR_etoiles_vert', 'SCNR_etoiles_violet', 'Saturation_grosses', 'Fermer_RGB', 'C_RGB_etoiles_rapide')]
+for _it in _its:
+    rgbsho.remove(_it)
+insert_before(rgbsho, 'STF', _its)   # fin de phase 3, après C_RGB_lineaire et les options continuum (RGB encore linéaire)
 
 # SHO sans RGB : pas de rapide en phase 4 (demande de l'utilisateur, 20 octobre 2026 : « supprime les P4 rapide pour SHO sans RGB ») ; Opt_MAS_canaux reste en option
 sho[:] = [x for x in sho if x[0][0] not in ('C_MAS_canaux_rapide', 'C_Stat_canaux_rapide')]

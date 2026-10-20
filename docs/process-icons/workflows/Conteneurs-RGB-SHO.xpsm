@@ -2137,6 +2137,76 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          <parameter id="overlap" value="0.20"/>
       </instance>
    </instance>
+   <instance class="MultiscaleAdaptiveStretch" version="256" id="E16_MAS_instance">
+      <description>PRÉRÉGLÉ : MultiscaleAdaptiveStretch, tes réglages : Aggressiveness 0,70, Target background 0,150, Dynamic range compression 0,40, Contrast recovery coché (séparation 1024, intensité 1,0), saturation cochée (0,75, boost 0,50, masque de luminosité).&#10;&#10;À RÉGLER : glisse sur le RGB LINÉAIRE AVEC ses étoiles (après C_RGB_lineaire) ; il ne sert qu'aux étoiles ; ensuite SXT_RGB_etire.&#10;&#10;SI :&#10;- étoiles trop saturées -&gt; saturation 0,5&#10;- étoiles toutes blanches -&gt; Aggressiveness plus bas</description>
+      <parameter id="aggressiveness" value="0.70"/>
+      <parameter id="targetBackground" value="0.150"/>
+      <parameter id="dynamicRangeCompression" value="0.40"/>
+      <parameter id="contrastRecovery" value="true"/>
+      <parameter id="scaleSeparation" value="1024"/>
+      <parameter id="contrastRecoveryIntensity" value="1.000"/>
+      <parameter id="previewLargeScale" value="false"/>
+      <parameter id="saturationEnabled" value="true"/>
+      <parameter id="saturationAmount" value="0.75"/>
+      <parameter id="saturationBoost" value="0.50"/>
+      <parameter id="saturationLightnessMask" value="true"/>
+      <parameter id="backgroundROIEnabled" value="false"/>
+      <parameter id="backgroundROIX0" value="0"/>
+      <parameter id="backgroundROIY0" value="0"/>
+      <parameter id="backgroundROIWidth" value="0"/>
+      <parameter id="backgroundROIHeight" value="0"/>
+   </instance>
+   <instance class="StarXTerminator" version="256" id="E17_SXT_RGB_etire_instance">
+      <description>PRÉRÉGLÉ : StarXTerminator, Unscreen COCHÉ (image étirée), Generate star image coché, Remove reflections coché : RGB sans étoiles + RGB_stars étirée.&#10;&#10;À RÉGLER : glisse sur le RGB juste après MAS ; garde RGB_stars ouverte jusqu'à la recombinaison (phase 7) ; ensuite SCNR_etoiles_vert (options SCNR_etoiles_violet, Saturation_grosses), puis Fermer_RGB.&#10;&#10;SI :&#10;- morceaux de nébuleuse dans RGB_stars -&gt; masque noir sur les zones brillantes avant SXT&#10;- quadrillage -&gt; Large overlap</description>
+      <parameter id="ml_version" value="0"/>
+      <parameter id="output_stars" value="true"/>
+      <parameter id="unscreen" value="true"/>
+      <parameter id="remove_stars" value="true"/>
+      <parameter id="remove_spikes" value="true"/>
+      <parameter id="remove_aureoles" value="true"/>
+      <parameter id="remove_reflections" value="true"/>
+      <parameter id="overlap" value="0.20"/>
+   </instance>
+   <instance class="Script" version="256" id="E18_SCNR_etoiles_vert_instance">
+      <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Etoiles_auto réglé SCNR seul : SCNR vert, Amount 1,0, Average Neutral, Preserve lightness, sur RGB_stars (amount 0 = pas d'étirement, satAmount 0 = pas de saturation).&#10;&#10;À RÉGLER : glisse sur n'importe quelle image juste après SXT_RGB_etire (traite toujours la vue RGB_stars) : vert retiré des étoiles ; options ensuite : SCNR_etoiles_violet, Saturation_grosses ; le RGB sans étoiles n'est pas touché.&#10;&#10;SI :&#10;- étoiles grisées ou magenta -&gt; double-clic : décoche SCNR, ou passe un SCNR natif à 0,5 sur RGB_stars&#10;- autre nom d'étoiles -&gt; vue = ce nom dans l'icône</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="5">
+         <tr>
+            <td id="id">vue</td>
+            <td id="value">RGB_stars</td>
+         </tr>
+         <tr>
+            <td id="id">amount</td>
+            <td id="value">0</td>
+         </tr>
+         <tr>
+            <td id="id">satAmount</td>
+            <td id="value">0</td>
+         </tr>
+         <tr>
+            <td id="id">scnr</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">violet</td>
+            <td id="value">false</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
+   </instance>
+   <instance class="Script" version="256" id="E19_Fermer_RGB_instance">
+      <description>PRÉRÉGLÉ : script Fermer_vues : ferme RGB (le RGB sans étoiles ne sert plus : les étoiles sont dans RGB_stars).&#10;&#10;À RÉGLER : double-clic puis Apply Global, après SCNR_etoiles_vert (et les options Saturation_grosses, SCNR_etoiles_violet) ; RGB_stars reste ouverte jusqu'à la recombinaison (phase 7).&#10;&#10;SI :&#10;- une vue absente est ignorée ; la console dit combien de vues sont fermées</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="1">
+         <tr>
+            <td id="id">views</td>
+            <td id="value">RGB</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
+   </instance>
    <instance class="NoOperation" version="256" id="P3_options_instance">
       <description>OPTIONS de la phase 3 — Linéaire : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
    </instance>
@@ -2246,7 +2316,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="overlap" value="0.20"/>
    </instance>
    <instance class="ProcessContainer" id="Opt_C_Continuum_prep_instance">
-      <description>OPTION — continuum retiré de H, O, S (lumière d'étoiles et de poussière hors des canaux)&#10;Pas sur une nébuleuse en émission brillante (cœur noirci : son émission est aussi dans R et G) : étape 1 de 3, fin de phase 3 (après C_Extraction_SHO et C_RGB_lineaire, ou après R_C_Lineaire_rapide)&#10;Double-clic puis Apply Global : copie RGB_cont du RGB, sans étoiles (RGB garde les siennes pour MAS).&#10;&#10;LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).&#10;&#10;PRÉRÉGLÉ : conteneur de scripts : Lineaire_auto lance Opt_Copie_RGB_continuum sur RGB (crée RGB_cont) puis Opt_SXT_RGB_continuum sur RGB_cont (étoiles retirées) ; RGB n'est pas touché.&#10;&#10;À RÉGLER : à la fin de la phase 3 : S, H, O extraits SANS étoiles et RGB linéaire ouverts (après C_Extraction_SHO et C_RGB_lineaire, ou R_C_Lineaire_rapide) ; double-clic puis Apply Global (pas en glissant) ; ensuite Opt_Continuum_SHO.&#10;&#10;SI :&#10;- une image RGB_cont existe déjà -&gt; ferme-la avant</description>
+      <description>OPTION — continuum retiré de H, O, S (lumière d'étoiles et de poussière hors des canaux)&#10;Pas sur une nébuleuse en émission brillante (cœur noirci : son émission est aussi dans R et G) : étape 1 de 3, fin de phase 3 (après C_Extraction_SHO et C_RGB_lineaire, ou après R_C_Lineaire_rapide&#10;AVANT MAS, qui étire le RGB)&#10;Double-clic puis Apply Global : copie RGB_cont du RGB, sans étoiles (RGB garde les siennes pour MAS).&#10;&#10;LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).&#10;&#10;PRÉRÉGLÉ : conteneur de scripts : Lineaire_auto lance Opt_Copie_RGB_continuum sur RGB (crée RGB_cont) puis Opt_SXT_RGB_continuum sur RGB_cont (étoiles retirées) ; RGB n'est pas touché.&#10;&#10;À RÉGLER : à la fin de la phase 3 : S, H, O extraits SANS étoiles et RGB linéaire ouverts (après C_Extraction_SHO et C_RGB_lineaire, ou R_C_Lineaire_rapide) ; double-clic puis Apply Global (pas en glissant) ; ensuite Opt_Continuum_SHO.&#10;&#10;SI :&#10;- une image RGB_cont existe déjà -&gt; ferme-la avant</description>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js</parameter>
          <parameter id="md5sum"></parameter>
@@ -2467,6 +2537,62 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="detail" value="0.15"/>
       <parameter id="overlap" value="0.20"/>
    </instance>
+   <instance class="Script" version="256" id="Opt_SCNR_etoiles_violet_instance">
+      <description>OPTION — étoiles violettes (R et B nettement au-dessus de G à la sonde) : après SCNR_etoiles_vert, glisse sur n'importe quelle image&#10;Invert, SCNR vert 1,0, Invert&#10;Pas dans le rapide.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Etoiles_auto réglé violet seul : Invert, SCNR vert (Amount 1,0, Average Neutral, Preserve lightness), Invert sur RGB_stars : le magenta (violet) des étoiles retiré.&#10;&#10;À RÉGLER : option, après SCNR_etoiles_vert : glisse sur n'importe quelle image (traite toujours la vue RGB_stars) ; le RGB sans étoiles n'est pas touché ; pas dans le rapide : à la main après R_C_RGB_etoiles_rapide si besoin ; à vérifier à la sonde : utile si R et B nettement au-dessus de G sur les étoiles bleues.&#10;&#10;SI :&#10;- étoiles bleues devenues trop vertes ou ternes -&gt; double-clic : décoche « Violet retiré », ou CorrectMagentaStars (moins fort)&#10;- autre nom d'étoiles -&gt; vue = ce nom dans l'icône</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="5">
+         <tr>
+            <td id="id">vue</td>
+            <td id="value">RGB_stars</td>
+         </tr>
+         <tr>
+            <td id="id">amount</td>
+            <td id="value">0</td>
+         </tr>
+         <tr>
+            <td id="id">satAmount</td>
+            <td id="value">0</td>
+         </tr>
+         <tr>
+            <td id="id">scnr</td>
+            <td id="value">false</td>
+         </tr>
+         <tr>
+            <td id="id">violet</td>
+            <td id="value">true</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
+   </instance>
+   <instance class="Script" version="256" id="Opt_Saturation_grosses_instance">
+      <description>OPTION — grosses étoiles presque blanches, petites assez colorées : glisse sur n'importe quelle image après les SCNR&#10;Seules les grosses étoiles et leur halo sont saturés&#10;Pas dans le rapide.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Saturation_grosses sur la vue RGB_stars : masque des grosses étoiles (ouverture morphologique, disque de 7 px sur une copie à 2000 px, au-dessus de 0,15, étendu au halo, flou 12 px) ; sous ce masque, ta courbe de saturation (CurvesTransformation, c : 0,46 -&gt; 0,54 et S : 0,46 -&gt; 0,54, Akima), 1 passe ; petites étoiles intactes.&#10;&#10;À RÉGLER : option P3 : glisse sur n'importe quelle image (traite toujours RGB_stars), après SCNR_etoiles_vert (et SCNR_etoiles_violet) ; pas dans le rapide ; pour régler à l'œil : double-clic puis Apply Global, « Voir le masque », puis Appliquer ; copie Saturation_grosses.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- pas assez saturé -&gt; passes 2&#10;- moyennes étoiles saturées aussi -&gt; taille 9 ou 11&#10;- certaines grosses pas saturées -&gt; taille 5, ou seuil 0,10&#10;- halo pas saturé jusqu'au bord -&gt; etendue 16&#10;- pour recommencer -&gt; Ctrl+Z sur RGB_stars</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Saturation_grosses.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="5">
+         <tr>
+            <td id="id">vue</td>
+            <td id="value">RGB_stars</td>
+         </tr>
+         <tr>
+            <td id="id">taille</td>
+            <td id="value">7</td>
+         </tr>
+         <tr>
+            <td id="id">seuil</td>
+            <td id="value">0.15</td>
+         </tr>
+         <tr>
+            <td id="id">etendue</td>
+            <td id="value">12</td>
+         </tr>
+         <tr>
+            <td id="id">passes</td>
+            <td id="value">1</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
+   </instance>
    <instance class="ScreenTransferFunction" version="256" id="Opt_STF_instance">
       <description>OPTION — n'importe quand : double-clic pour ouvrir la fenêtre ScreenTransferFunction (bouton A = auto-étirement de l'affichage, Reset pour revenir), pixels inchangés.&#10;&#10;PRÉRÉGLÉ : process ScreenTransferFunction (STF), réglage neutre ; affichage seulement, les pixels ne changent pas.&#10;&#10;À RÉGLER : double-clic sur l'icône : la fenêtre STF s'ouvre ; choisis l'image, puis A (Auto Stretch) ; lien R/G/B : bouton chaîne.&#10;&#10;SI :&#10;- revenir à l'image brute -&gt; Reset de la fenêtre STF (ou F12)&#10;- dominante de couleur à l'écran -&gt; décoche le lien R/G/B (chaîne), puis A</description>
       <table id="STF" rows="4">
@@ -2502,10 +2628,10 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="interaction" value="SeparateChannels"/>
    </instance>
    <instance class="NoOperation" version="256" id="P3_rapide_instance">
-      <description>MODE RAPIDE, phase 3 — Linéaire : R_C_Lineaire_rapide (double-clic puis Apply Global) à la place de toute la phase 3 : combinaison, C_SHO_lineaire (BXT, SXT, NXT), extraction des canaux (vues S, H, O linéaires sans étoiles) ; masters et images linéaires inutiles fermés ; aussi C_RGB_lineaire sur RGB (BXT Correct Only, SPCC, BXT, NXT : RGB reste linéaire avec ses étoiles) ; AVEC CONTINUUM (option) : ensuite Opt_C_Continuum_prep, Opt_Continuum_SHO (fenêtre, Starless), Opt_C_Continuum_fin, avant Statistical_Stretch. Icône de repère, sans effet.</description>
+      <description>MODE RAPIDE, phase 3 — Linéaire : R_C_Lineaire_rapide (double-clic puis Apply Global) à la place de toute la phase 3 : combinaison, C_SHO_lineaire (BXT, SXT, NXT), extraction des canaux (vues S, H, O linéaires sans étoiles) ; masters et images linéaires inutiles fermés ; aussi C_RGB_lineaire sur RGB (BXT Correct Only, SPCC, BXT, NXT : RGB reste linéaire avec ses étoiles) ; AVEC CONTINUUM (option) : ensuite Opt_C_Continuum_prep, Opt_Continuum_SHO (fenêtre, Starless), Opt_C_Continuum_fin, avant Statistical_Stretch ; puis R_C_RGB_etoiles_rapide (double-clic puis Apply Global) à la place de MAS, SXT_RGB_etire, SCNR_etoiles_vert et Fermer_RGB : crée RGB_stars, ferme le RGB sans étoiles. Icône de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="R_C_Lineaire_rapide_instance">
-      <description>MODE RAPIDE, à la place de toute la phase 3 (combinaison, conteneur linéaire, extraction) : après R_Gradient_auto_rapide, double-clic puis Apply Global (pas en glissant) ; Conteneurs du workflow chargé ; ensuite Statistical_Stretch sur S, H et O.&#10;&#10;LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).&#10;&#10;PRÉRÉGLÉ : conteneur de scripts : Lineaire_auto lance Combinaison_SHO (crée SHO) ; Fermer_vues ferme les masters S, H, O ; Lineaire_auto lance C_SHO_lineaire sur SHO (BXT_NB, SXT_lineaire, NXT_NB 0,75), C_Extraction_SHO sur SHO (crée S, H, O sans étoiles) et C_RGB_lineaire sur RGB (BXT Correct Only, SPCC, BXT, NXT 0,80 : RGB reste linéaire avec ses étoiles) ; Fermer_vues ferme SHO et SHO_stars.&#10;&#10;À RÉGLER : après R_Gradient_auto_rapide (ou la phase 2), double-clic puis Apply Global (pas en glissant) ; le fichier Conteneurs du workflow doit être chargé (icônes E## lancées par Lineaire_auto) ; les masters sont FERMÉS sans enregistrer : enregistre-les avant si tu veux les garder ; ensuite Statistical_Stretch sur S, H et O ; RGB doit être combinée et résolue (R_C_Preparation_rapide ou phase 1-2) ; en phase 4 : Statistical_Stretch sur S, H, O, puis MAS, SXT_RGB_etire, SCNR_etoiles_vert, Fermer_RGB sur RGB.&#10;&#10;SI :&#10;- une étape en erreur -&gt; la console dit laquelle ; fais la suite au chemin principal à partir de cette icône&#10;- NXT par canal voulu (NXT_H, NXT_O_S) -&gt; après ce conteneur, sur les vues extraites&#10;- BXT, SXT ou NXT à changer -&gt; double-clic sur le conteneur linéaire du chemin principal (c'est lui qui est lancé)&#10;- pas de RGB ouverte -&gt; l'étape C_RGB_lineaire s'arrête : fais-la au chemin principal</description>
+      <description>MODE RAPIDE, à la place de toute la phase 3 (combinaison, conteneur linéaire, extraction) : après R_Gradient_auto_rapide, double-clic puis Apply Global (pas en glissant) ; Conteneurs du workflow chargé ; ensuite Statistical_Stretch sur S, H et O.&#10;&#10;LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).&#10;&#10;PRÉRÉGLÉ : conteneur de scripts : Lineaire_auto lance Combinaison_SHO (crée SHO) ; Fermer_vues ferme les masters S, H, O ; Lineaire_auto lance C_SHO_lineaire sur SHO (BXT_NB, SXT_lineaire, NXT_NB 0,75), C_Extraction_SHO sur SHO (crée S, H, O sans étoiles) et C_RGB_lineaire sur RGB (BXT Correct Only, SPCC, BXT, NXT 0,80 : RGB reste linéaire avec ses étoiles) ; Fermer_vues ferme SHO et SHO_stars.&#10;&#10;À RÉGLER : après R_Gradient_auto_rapide (ou la phase 2), double-clic puis Apply Global (pas en glissant) ; le fichier Conteneurs du workflow doit être chargé (icônes E## lancées par Lineaire_auto) ; les masters sont FERMÉS sans enregistrer : enregistre-les avant si tu veux les garder ; ensuite Statistical_Stretch sur S, H et O ; RGB doit être combinée et résolue (R_C_Preparation_rapide ou phase 1-2) ; ensuite, fin de phase 3 : R_C_RGB_etoiles_rapide (ou MAS, SXT_RGB_etire, SCNR_etoiles_vert, Fermer_RGB) sur RGB ; en phase 4 : Statistical_Stretch sur S, H, O.&#10;&#10;SI :&#10;- une étape en erreur -&gt; la console dit laquelle ; fais la suite au chemin principal à partir de cette icône&#10;- NXT par canal voulu (NXT_H, NXT_O_S) -&gt; après ce conteneur, sur les vues extraites&#10;- BXT, SXT ou NXT à changer -&gt; double-clic sur le conteneur linéaire du chemin principal (c'est lui qui est lancé)&#10;- pas de RGB ouverte -&gt; l'étape C_RGB_lineaire s'arrête : fais-la au chemin principal</description>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js</parameter>
          <parameter id="md5sum"></parameter>
@@ -2567,10 +2693,74 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          <parameter id="information"></parameter>
       </instance>
    </instance>
+   <instance class="ProcessContainer" id="R_C_RGB_etoiles_rapide_instance">
+      <description>MODE RAPIDE, à la place de MAS, SXT_RGB_etire, SCNR_etoiles_vert et Fermer_RGB : RGB linéaire avec étoiles ouvert (après C_RGB_lineaire, R_C_Lineaire_rapide ou T_Turbo_debut), double-clic puis Apply Global (pas en glissant) ; options SCNR_etoiles_violet et Saturation_grosses ensuite, sur RGB_stars, à la main si besoin.&#10;&#10;LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).&#10;&#10;PRÉRÉGLÉ : conteneur de scripts : Lineaire_auto lance MAS (fond 0,15, tes réglages ; sur une copie puis recopié : Ctrl+Z possible) puis SXT_RGB_etire (Unscreen : crée RGB_stars) sur RGB ; Etoiles_auto : SCNR vert 1,0 sur RGB_stars ; Fermer_vues ferme RGB (sans étoiles, inutile) ; résultat : RGB_stars étirée, prête pour la phase 7.&#10;&#10;À RÉGLER : RGB linéaire avec ses étoiles ouvert, Conteneurs-RGB-SHO chargé (icônes MAS et SXT_RGB_etire du chemin principal) ; double-clic puis Apply Global (pas en glissant) ; fin de phase 3, après le continuum éventuel (il veut le RGB linéaire).&#10;&#10;SI :&#10;- étoiles violettes ou grosses étoiles blanches -&gt; SCNR_etoiles_violet ou Saturation_grosses (options P3) sur RGB_stars ensuite&#10;- MAS à changer -&gt; double-clic sur E##_MAS du chemin principal (c'est elle qui est lancée)&#10;- une étape échoue -&gt; la console dit laquelle ; fais la suite au chemin principal</description>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="2">
+            <tr>
+               <td id="id">etapes</td>
+               <td id="value">MAS*&gt;RGB ; SXT_RGB_etire&gt;RGB</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="6">
+            <tr>
+               <td id="id">vue</td>
+               <td id="value">RGB_stars</td>
+            </tr>
+            <tr>
+               <td id="id">amount</td>
+               <td id="value">0</td>
+            </tr>
+            <tr>
+               <td id="id">satAmount</td>
+               <td id="value">0</td>
+            </tr>
+            <tr>
+               <td id="id">scnr</td>
+               <td id="value">true</td>
+            </tr>
+            <tr>
+               <td id="id">violet</td>
+               <td id="value">false</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="2">
+            <tr>
+               <td id="id">views</td>
+               <td id="value">RGB</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+   </instance>
    <instance class="NoOperation" version="256" id="P4_Etirement_instance">
       <description>PHASE 4 — Étirement : passage en non linéaire, même fond pour toutes les images. Colonne de repère, sans effet.</description>
    </instance>
-   <instance class="Script" version="256" id="E16_Statistical_Stretch_instance">
+   <instance class="Script" version="256" id="E20_Statistical_Stretch_instance">
       <description>LANCEMENT : glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.&#10;&#10;PRÉRÉGLÉ : Target Median 0,25, Blackpoint Sigma 5, Linked coché, reste par défaut.&#10;&#10;À RÉGLER : CHEMIN PRINCIPAL (à la place des GHS) : glisse sur S, puis H, puis O, linéaires SANS étoiles ; même Target Median pour les trois (médianes identiques) ; ensuite la palette (SHO_simple, NBN_SHO).&#10;&#10;SI :&#10;- fond trop clair après la palette -&gt; GHS_3_fond (option) sur chaque canal avant SHO_simple (SP = HP = 0,22)&#10;- fond trop sombre, signal faible perdu -&gt; Blackpoint Sigma plus bas (3)&#10;- étirement à la main voulu -&gt; options GHS_1_premier, GHS_2_contraste</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/statisticalstretch.js</parameter>
       <parameter id="md5sum">defab45bb4e2f33db39a7bb016cdefb0</parameter>
@@ -2638,76 +2828,6 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </table>
       <parameter id="information"></parameter>
    </instance>
-   <instance class="MultiscaleAdaptiveStretch" version="256" id="E17_MAS_instance">
-      <description>PRÉRÉGLÉ : MultiscaleAdaptiveStretch, tes réglages : Aggressiveness 0,70, Target background 0,150, Dynamic range compression 0,40, Contrast recovery coché (séparation 1024, intensité 1,0), saturation cochée (0,75, boost 0,50, masque de luminosité).&#10;&#10;À RÉGLER : glisse sur le RGB LINÉAIRE AVEC ses étoiles (après C_RGB_lineaire) ; il ne sert qu'aux étoiles ; ensuite SXT_RGB_etire.&#10;&#10;SI :&#10;- étoiles trop saturées -&gt; saturation 0,5&#10;- étoiles toutes blanches -&gt; Aggressiveness plus bas</description>
-      <parameter id="aggressiveness" value="0.70"/>
-      <parameter id="targetBackground" value="0.150"/>
-      <parameter id="dynamicRangeCompression" value="0.40"/>
-      <parameter id="contrastRecovery" value="true"/>
-      <parameter id="scaleSeparation" value="1024"/>
-      <parameter id="contrastRecoveryIntensity" value="1.000"/>
-      <parameter id="previewLargeScale" value="false"/>
-      <parameter id="saturationEnabled" value="true"/>
-      <parameter id="saturationAmount" value="0.75"/>
-      <parameter id="saturationBoost" value="0.50"/>
-      <parameter id="saturationLightnessMask" value="true"/>
-      <parameter id="backgroundROIEnabled" value="false"/>
-      <parameter id="backgroundROIX0" value="0"/>
-      <parameter id="backgroundROIY0" value="0"/>
-      <parameter id="backgroundROIWidth" value="0"/>
-      <parameter id="backgroundROIHeight" value="0"/>
-   </instance>
-   <instance class="StarXTerminator" version="256" id="E18_SXT_RGB_etire_instance">
-      <description>PRÉRÉGLÉ : StarXTerminator, Unscreen COCHÉ (image étirée), Generate star image coché, Remove reflections coché : RGB sans étoiles + RGB_stars étirée.&#10;&#10;À RÉGLER : glisse sur le RGB juste après MAS ; garde RGB_stars ouverte jusqu'à la recombinaison (phase 7) ; ensuite SCNR_etoiles_vert (options SCNR_etoiles_violet, Saturation_grosses), puis Fermer_RGB.&#10;&#10;SI :&#10;- morceaux de nébuleuse dans RGB_stars -&gt; masque noir sur les zones brillantes avant SXT&#10;- quadrillage -&gt; Large overlap</description>
-      <parameter id="ml_version" value="0"/>
-      <parameter id="output_stars" value="true"/>
-      <parameter id="unscreen" value="true"/>
-      <parameter id="remove_stars" value="true"/>
-      <parameter id="remove_spikes" value="true"/>
-      <parameter id="remove_aureoles" value="true"/>
-      <parameter id="remove_reflections" value="true"/>
-      <parameter id="overlap" value="0.20"/>
-   </instance>
-   <instance class="Script" version="256" id="E19_SCNR_etoiles_vert_instance">
-      <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Etoiles_auto réglé SCNR seul : SCNR vert, Amount 1,0, Average Neutral, Preserve lightness, sur RGB_stars (amount 0 = pas d'étirement, satAmount 0 = pas de saturation).&#10;&#10;À RÉGLER : glisse sur n'importe quelle image juste après SXT_RGB_etire (traite toujours la vue RGB_stars) : vert retiré des étoiles ; options ensuite : SCNR_etoiles_violet, Saturation_grosses ; le RGB sans étoiles n'est pas touché.&#10;&#10;SI :&#10;- étoiles grisées ou magenta -&gt; double-clic : décoche SCNR, ou passe un SCNR natif à 0,5 sur RGB_stars&#10;- autre nom d'étoiles -&gt; vue = ce nom dans l'icône</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js</parameter>
-      <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="5">
-         <tr>
-            <td id="id">vue</td>
-            <td id="value">RGB_stars</td>
-         </tr>
-         <tr>
-            <td id="id">amount</td>
-            <td id="value">0</td>
-         </tr>
-         <tr>
-            <td id="id">satAmount</td>
-            <td id="value">0</td>
-         </tr>
-         <tr>
-            <td id="id">scnr</td>
-            <td id="value">true</td>
-         </tr>
-         <tr>
-            <td id="id">violet</td>
-            <td id="value">false</td>
-         </tr>
-      </table>
-      <parameter id="information"></parameter>
-   </instance>
-   <instance class="Script" version="256" id="E20_Fermer_RGB_instance">
-      <description>PRÉRÉGLÉ : script Fermer_vues : ferme RGB (le RGB sans étoiles ne sert plus : les étoiles sont dans RGB_stars).&#10;&#10;À RÉGLER : double-clic puis Apply Global, après SCNR_etoiles_vert (et les options Saturation_grosses, SCNR_etoiles_violet) ; RGB_stars reste ouverte jusqu'à la recombinaison (phase 7).&#10;&#10;SI :&#10;- une vue absente est ignorée ; la console dit combien de vues sont fermées</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
-      <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="1">
-         <tr>
-            <td id="id">views</td>
-            <td id="value">RGB</td>
-         </tr>
-      </table>
-      <parameter id="information"></parameter>
-   </instance>
    <instance class="NoOperation" version="256" id="P4_options_instance">
       <description>OPTIONS de la phase 4 — Étirement : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
    </instance>
@@ -2744,7 +2864,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="useRGBWorkingSpace" value="false"/>
    </instance>
    <instance class="MultiscaleAdaptiveStretch" version="256" id="Opt_MAS_light_instance">
-      <description>OPTION — étirement plus doux que MAS (Aggressiveness 0,15, saturation 0,50) : à la place de MAS sur le RGB (RGB + SHO), ou de MAS_canaux / de Statistical_Stretch sur chaque canal sans étoiles&#10;Glisse sur l'image linéaire.&#10;&#10;PRÉRÉGLÉ : MultiscaleAdaptiveStretch doux, tes réglages : Aggressiveness 0,15, Target background 0,150, Dynamic range compression 0,40, Contrast recovery coché (séparation 1024, intensité 1,0), saturation cochée (0,50, boost 0,50, masque de luminosité).&#10;&#10;À RÉGLER : glisse sur l'image LINÉAIRE à la place de MAS (même place dans le workflow) ; compare avec MAS sur la même image.&#10;&#10;SI :&#10;- encore trop clair -&gt; Target background 0,12&#10;- trop sombre ou plat -&gt; Aggressiveness 0,30, ou MAS&#10;- couleurs trop fades -&gt; saturation 0,60</description>
+      <description>OPTION — étirement plus doux que MAS (Aggressiveness 0,15, saturation 0,50) : à la place de MAS sur le RGB (RGB + SHO, fin de phase 3), ou de MAS_canaux / de Statistical_Stretch sur chaque canal sans étoiles&#10;Glisse sur l'image linéaire.&#10;&#10;PRÉRÉGLÉ : MultiscaleAdaptiveStretch doux, tes réglages : Aggressiveness 0,15, Target background 0,150, Dynamic range compression 0,40, Contrast recovery coché (séparation 1024, intensité 1,0), saturation cochée (0,50, boost 0,50, masque de luminosité).&#10;&#10;À RÉGLER : glisse sur l'image LINÉAIRE à la place de MAS (même place dans le workflow) ; compare avec MAS sur la même image.&#10;&#10;SI :&#10;- encore trop clair -&gt; Target background 0,12&#10;- trop sombre ou plat -&gt; Aggressiveness 0,30, ou MAS&#10;- couleurs trop fades -&gt; saturation 0,60</description>
       <parameter id="aggressiveness" value="0.15"/>
       <parameter id="targetBackground" value="0.150"/>
       <parameter id="dynamicRangeCompression" value="0.40"/>
@@ -2804,64 +2924,8 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="clipType" value="CT_RGBBlend"/>
       <parameter id="useRGBWorkingSpace" value="false"/>
    </instance>
-   <instance class="Script" version="256" id="Opt_SCNR_etoiles_violet_instance">
-      <description>OPTION — étoiles violettes (R et B nettement au-dessus de G à la sonde) : après SCNR_etoiles_vert, glisse sur n'importe quelle image&#10;Invert, SCNR vert 1,0, Invert&#10;Pas dans le rapide.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Etoiles_auto réglé violet seul : Invert, SCNR vert (Amount 1,0, Average Neutral, Preserve lightness), Invert sur RGB_stars : le magenta (violet) des étoiles retiré.&#10;&#10;À RÉGLER : option, après SCNR_etoiles_vert : glisse sur n'importe quelle image (traite toujours la vue RGB_stars) ; le RGB sans étoiles n'est pas touché ; pas dans le rapide : à la main après R_C_RGB_etire_rapide si besoin ; à vérifier à la sonde : utile si R et B nettement au-dessus de G sur les étoiles bleues.&#10;&#10;SI :&#10;- étoiles bleues devenues trop vertes ou ternes -&gt; double-clic : décoche « Violet retiré »&#10;- autre nom d'étoiles -&gt; vue = ce nom dans l'icône</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js</parameter>
-      <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="5">
-         <tr>
-            <td id="id">vue</td>
-            <td id="value">RGB_stars</td>
-         </tr>
-         <tr>
-            <td id="id">amount</td>
-            <td id="value">0</td>
-         </tr>
-         <tr>
-            <td id="id">satAmount</td>
-            <td id="value">0</td>
-         </tr>
-         <tr>
-            <td id="id">scnr</td>
-            <td id="value">false</td>
-         </tr>
-         <tr>
-            <td id="id">violet</td>
-            <td id="value">true</td>
-         </tr>
-      </table>
-      <parameter id="information"></parameter>
-   </instance>
-   <instance class="Script" version="256" id="Opt_Saturation_grosses_instance">
-      <description>OPTION — grosses étoiles presque blanches, petites assez colorées : glisse sur n'importe quelle image après les SCNR&#10;Seules les grosses étoiles et leur halo sont saturés&#10;Pas dans le rapide.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Saturation_grosses sur la vue RGB_stars : masque des grosses étoiles (ouverture morphologique, disque de 7 px sur une copie à 2000 px, au-dessus de 0,15, étendu au halo, flou 12 px) ; sous ce masque, ta courbe de saturation (CurvesTransformation, c : 0,46 -&gt; 0,54 et S : 0,46 -&gt; 0,54, Akima), 1 passe ; petites étoiles intactes.&#10;&#10;À RÉGLER : option P4 : glisse sur n'importe quelle image (traite toujours RGB_stars), après SCNR_etoiles_vert (et SCNR_etoiles_violet) ; pas dans le rapide ; pour régler à l'œil : double-clic puis Apply Global, « Voir le masque », puis Appliquer ; copie Saturation_grosses.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- pas assez saturé -&gt; passes 2&#10;- moyennes étoiles saturées aussi -&gt; taille 9 ou 11&#10;- certaines grosses pas saturées -&gt; taille 5, ou seuil 0,10&#10;- halo pas saturé jusqu'au bord -&gt; etendue 16&#10;- pour recommencer -&gt; Ctrl+Z sur RGB_stars</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Saturation_grosses.js</parameter>
-      <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="5">
-         <tr>
-            <td id="id">vue</td>
-            <td id="value">RGB_stars</td>
-         </tr>
-         <tr>
-            <td id="id">taille</td>
-            <td id="value">7</td>
-         </tr>
-         <tr>
-            <td id="id">seuil</td>
-            <td id="value">0.15</td>
-         </tr>
-         <tr>
-            <td id="id">etendue</td>
-            <td id="value">12</td>
-         </tr>
-         <tr>
-            <td id="id">passes</td>
-            <td id="value">1</td>
-         </tr>
-      </table>
-      <parameter id="information"></parameter>
-   </instance>
    <instance class="NoOperation" version="256" id="P4_rapide_instance">
-      <description>MODE RAPIDE, phase 4 — Étirement : Statistical_Stretch sur S, H, O (chemin principal, Target Median 0,25 ; GHS en option) ; R_C_RGB_etoiles_rapide (double-clic puis Apply Global) à la place de MAS, SXT_RGB_etire, SCNR_etoiles_vert et Fermer_RGB : crée RGB_stars, ferme le RGB sans étoiles. Icône de repère, sans effet.</description>
+      <description>MODE RAPIDE, phase 4 — Étirement : Statistical_Stretch sur S, H, O (chemin principal, Target Median 0,25 ; GHS en option). Icône de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="R_C_MAS_canaux_rapide_instance">
       <description>MODE RAPIDE, à la place de Statistical_Stretch sur les canaux (MAS fond 0,25) : S, H, O (HOO : H, O) linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut), double-clic puis Apply Global (pas en glissant) ; GHS_3_fond (option) seulement si le fond est trop clair, puis la palette.&#10;&#10;LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).&#10;&#10;PRÉRÉGLÉ : conteneur de scripts : Lineaire_auto lance Opt_MAS_canaux sur S, H et O (fond cible 0,25 pour les trois), chaque canal sur une copie puis recopié : un Ctrl+Z par canal.&#10;&#10;À RÉGLER : S, H, O linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut) ; Conteneurs du workflow chargé ; double-clic puis Apply Global (pas en glissant) ; GHS_3_fond (option) sur S, H et O seulement si le fond est trop clair ; puis R_C_Palette_rapide ou la palette.&#10;&#10;SI :&#10;- un canal mal étiré -&gt; Ctrl+Z sur ce canal, puis Statistical_Stretch à la main&#10;- réglage MAS à changer -&gt; double-clic sur Opt_MAS_canaux (c'est elle qui est lancée)</description>
@@ -2898,70 +2962,6 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
             <tr>
                <td id="id">sigma</td>
                <td id="value">5.0</td>
-            </tr>
-            <tr>
-               <td id="id">dialogue</td>
-               <td id="value">false</td>
-            </tr>
-         </table>
-         <parameter id="information"></parameter>
-      </instance>
-   </instance>
-   <instance class="ProcessContainer" id="R_C_RGB_etoiles_rapide_instance">
-      <description>MODE RAPIDE, à la place de MAS, SXT_RGB_etire, SCNR_etoiles_vert et Fermer_RGB : RGB linéaire avec étoiles ouvert (après C_RGB_lineaire, R_C_Lineaire_rapide ou T_Turbo_debut), double-clic puis Apply Global (pas en glissant) ; options SCNR_etoiles_violet et Saturation_grosses ensuite, sur RGB_stars, à la main si besoin.&#10;&#10;LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).&#10;&#10;PRÉRÉGLÉ : conteneur de scripts : Lineaire_auto lance MAS (fond 0,15, tes réglages ; sur une copie puis recopié : Ctrl+Z possible) puis SXT_RGB_etire (Unscreen : crée RGB_stars) sur RGB ; Etoiles_auto : SCNR vert 1,0 sur RGB_stars ; Fermer_vues ferme RGB (sans étoiles, inutile) ; résultat : RGB_stars étirée, prête pour la phase 7.&#10;&#10;À RÉGLER : RGB linéaire avec ses étoiles ouvert, Conteneurs-RGB-SHO chargé (icônes MAS et SXT_RGB_etire du chemin principal) ; double-clic puis Apply Global (pas en glissant) ; à faire avant ou après Statistical_Stretch de S, H, O.&#10;&#10;SI :&#10;- étoiles violettes ou grosses étoiles blanches -&gt; SCNR_etoiles_violet ou Saturation_grosses (options P4) sur RGB_stars ensuite&#10;- MAS à changer -&gt; double-clic sur E##_MAS du chemin principal (c'est elle qui est lancée)&#10;- une étape échoue -&gt; la console dit laquelle ; fais la suite au chemin principal</description>
-      <instance class="Script" version="256" enabled="true">
-         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js</parameter>
-         <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="2">
-            <tr>
-               <td id="id">etapes</td>
-               <td id="value">MAS*&gt;RGB ; SXT_RGB_etire&gt;RGB</td>
-            </tr>
-            <tr>
-               <td id="id">dialogue</td>
-               <td id="value">false</td>
-            </tr>
-         </table>
-         <parameter id="information"></parameter>
-      </instance>
-      <instance class="Script" version="256" enabled="true">
-         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js</parameter>
-         <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="6">
-            <tr>
-               <td id="id">vue</td>
-               <td id="value">RGB_stars</td>
-            </tr>
-            <tr>
-               <td id="id">amount</td>
-               <td id="value">0</td>
-            </tr>
-            <tr>
-               <td id="id">satAmount</td>
-               <td id="value">0</td>
-            </tr>
-            <tr>
-               <td id="id">scnr</td>
-               <td id="value">true</td>
-            </tr>
-            <tr>
-               <td id="id">violet</td>
-               <td id="value">false</td>
-            </tr>
-            <tr>
-               <td id="id">dialogue</td>
-               <td id="value">false</td>
-            </tr>
-         </table>
-         <parameter id="information"></parameter>
-      </instance>
-      <instance class="Script" version="256" enabled="true">
-         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
-         <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="2">
-            <tr>
-               <td id="id">views</td>
-               <td id="value">RGB</td>
             </tr>
             <tr>
                <td id="id">dialogue</td>
@@ -6445,7 +6445,7 @@ max($T,f1)</parameter>
       <description>MODE RAPIDE, phase 7 — Étoiles : R_C_Etoiles_fond_rapide GLISSÉ sur l'image sans étoiles finie : Fond_desature, Fond_auto (0,12), étoiles remises (Etoiles_screen avec RGB_stars), NXT_dernier (0,25), Export_TIFF. Icône de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="R_C_Etoiles_fond_rapide_instance">
-      <description>MODE RAPIDE, à la place de Fond_desature, Fond_auto, Etoiles_screen, NXT_dernier et Export_TIFF : GLISSE sur l'image sans étoiles finie, image d'étoiles du workflow ouverte et étirée.&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : Fond_desature (teinte du fond retirée), Fond_auto (fond amené à 0,12, neutre), Etoiles_screen (~((~$T) * (~RGB_stars))), NXT_dernier (Denoise 0,25, image avec étoiles), Export_TIFF (copie TIFF 16 bits sRGB nommée d'après le dossier des masters).&#10;&#10;À RÉGLER : glisse sur l'image sans étoiles finie ; RGB_stars (P4) ouverte ; l'image est finie et exportée.&#10;&#10;SI :&#10;- étoiles trop présentes -&gt; fais les étapes à la main avec Etoiles_reduites (à la place d'Etoiles_screen)&#10;- étoiles d'un autre nom (Stars_HOO, RGB_stars…) -&gt; double-clic sur le conteneur, change le nom dans Etoiles_screen&#10;- fond trop sombre -&gt; Fond_auto_clair à la main à la place&#10;- nébuleuse qui remplit le champ (fond AVANT lu par Fond_auto au-dessus d'environ 0,20 dans la console) -&gt; Ctrl+Z, puis les étapes à la main sans Fond_auto</description>
+      <description>MODE RAPIDE, à la place de Fond_desature, Fond_auto, Etoiles_screen, NXT_dernier et Export_TIFF : GLISSE sur l'image sans étoiles finie, image d'étoiles du workflow ouverte et étirée.&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : Fond_desature (teinte du fond retirée), Fond_auto (fond amené à 0,12, neutre), Etoiles_screen (~((~$T) * (~RGB_stars))), NXT_dernier (Denoise 0,25, image avec étoiles), Export_TIFF (copie TIFF 16 bits sRGB nommée d'après le dossier des masters).&#10;&#10;À RÉGLER : glisse sur l'image sans étoiles finie ; RGB_stars (P3) ouverte ; l'image est finie et exportée.&#10;&#10;SI :&#10;- étoiles trop présentes -&gt; fais les étapes à la main avec Etoiles_reduites (à la place d'Etoiles_screen)&#10;- étoiles d'un autre nom (Stars_HOO, RGB_stars…) -&gt; double-clic sur le conteneur, change le nom dans Etoiles_screen&#10;- fond trop sombre -&gt; Fond_auto_clair à la main à la place&#10;- nébuleuse qui remplit le champ (fond AVANT lu par Fond_auto au-dessus d'environ 0,20 dans la console) -&gt; Ctrl+Z, puis les étapes à la main sans Fond_auto</description>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js</parameter>
          <parameter id="md5sum"></parameter>
@@ -6607,38 +6607,38 @@ max($T,f1)</parameter>
    <icon id="E13_C_SHO_lineaire" instance="E13_C_SHO_lineaire_instance" xpos="430" ypos="94" workspace="Workspace01"/>
    <icon id="E14_C_Extraction_SHO" instance="E14_C_Extraction_SHO_instance" xpos="430" ypos="124" workspace="Workspace01"/>
    <icon id="E15_C_RGB_lineaire" instance="E15_C_RGB_lineaire_instance" xpos="430" ypos="154" workspace="Workspace01"/>
-   <icon id="P3_options" instance="P3_options_instance" xpos="430" ypos="200" workspace="Workspace01"/>
-   <icon id="Opt_Find_Background" instance="Opt_Find_Background_instance" xpos="430" ypos="234" workspace="Workspace01"/>
-   <icon id="Opt_Copie_RGB_continuum" instance="Opt_Copie_RGB_continuum_instance" xpos="430" ypos="264" workspace="Workspace01"/>
-   <icon id="Opt_SXT_RGB_continuum" instance="Opt_SXT_RGB_continuum_instance" xpos="430" ypos="294" workspace="Workspace01"/>
-   <icon id="Opt_C_Continuum_prep" instance="Opt_C_Continuum_prep_instance" xpos="430" ypos="324" workspace="Workspace01"/>
-   <icon id="Opt_Continuum_SHO" instance="Opt_Continuum_SHO_instance" xpos="430" ypos="354" workspace="Workspace01"/>
-   <icon id="Opt_C_NB_renommer" instance="Opt_C_NB_renommer_instance" xpos="430" ypos="384" workspace="Workspace01"/>
-   <icon id="Opt_C_Continuum_fin" instance="Opt_C_Continuum_fin_instance" xpos="430" ypos="414" workspace="Workspace01"/>
-   <icon id="Opt_NXT_H" instance="Opt_NXT_H_instance" xpos="430" ypos="444" workspace="Workspace01"/>
-   <icon id="Opt_NXT_O_S" instance="Opt_NXT_O_S_instance" xpos="430" ypos="474" workspace="Workspace01"/>
-   <icon id="Opt_STF" instance="Opt_STF_instance" xpos="430" ypos="504" workspace="Workspace01"/>
-   <icon id="P3_rapide" instance="P3_rapide_instance" xpos="430" ypos="550" workspace="Workspace01"/>
-   <icon id="R_C_Lineaire_rapide" instance="R_C_Lineaire_rapide_instance" xpos="430" ypos="584" workspace="Workspace01"/>
+   <icon id="E16_MAS" instance="E16_MAS_instance" xpos="430" ypos="184" workspace="Workspace01"/>
+   <icon id="E17_SXT_RGB_etire" instance="E17_SXT_RGB_etire_instance" xpos="430" ypos="214" workspace="Workspace01"/>
+   <icon id="E18_SCNR_etoiles_vert" instance="E18_SCNR_etoiles_vert_instance" xpos="430" ypos="244" workspace="Workspace01"/>
+   <icon id="E19_Fermer_RGB" instance="E19_Fermer_RGB_instance" xpos="430" ypos="274" workspace="Workspace01"/>
+   <icon id="P3_options" instance="P3_options_instance" xpos="430" ypos="320" workspace="Workspace01"/>
+   <icon id="Opt_Find_Background" instance="Opt_Find_Background_instance" xpos="430" ypos="354" workspace="Workspace01"/>
+   <icon id="Opt_Copie_RGB_continuum" instance="Opt_Copie_RGB_continuum_instance" xpos="430" ypos="384" workspace="Workspace01"/>
+   <icon id="Opt_SXT_RGB_continuum" instance="Opt_SXT_RGB_continuum_instance" xpos="430" ypos="414" workspace="Workspace01"/>
+   <icon id="Opt_C_Continuum_prep" instance="Opt_C_Continuum_prep_instance" xpos="430" ypos="444" workspace="Workspace01"/>
+   <icon id="Opt_Continuum_SHO" instance="Opt_Continuum_SHO_instance" xpos="430" ypos="474" workspace="Workspace01"/>
+   <icon id="Opt_C_NB_renommer" instance="Opt_C_NB_renommer_instance" xpos="430" ypos="504" workspace="Workspace01"/>
+   <icon id="Opt_C_Continuum_fin" instance="Opt_C_Continuum_fin_instance" xpos="430" ypos="534" workspace="Workspace01"/>
+   <icon id="Opt_NXT_H" instance="Opt_NXT_H_instance" xpos="430" ypos="564" workspace="Workspace01"/>
+   <icon id="Opt_NXT_O_S" instance="Opt_NXT_O_S_instance" xpos="430" ypos="594" workspace="Workspace01"/>
+   <icon id="Opt_SCNR_etoiles_violet" instance="Opt_SCNR_etoiles_violet_instance" xpos="430" ypos="624" workspace="Workspace01"/>
+   <icon id="Opt_Saturation_grosses" instance="Opt_Saturation_grosses_instance" xpos="430" ypos="654" workspace="Workspace01"/>
+   <icon id="Opt_STF" instance="Opt_STF_instance" xpos="430" ypos="684" workspace="Workspace01"/>
+   <icon id="P3_rapide" instance="P3_rapide_instance" xpos="430" ypos="730" workspace="Workspace01"/>
+   <icon id="R_C_Lineaire_rapide" instance="R_C_Lineaire_rapide_instance" xpos="430" ypos="764" workspace="Workspace01"/>
+   <icon id="R_C_RGB_etoiles_rapide" instance="R_C_RGB_etoiles_rapide_instance" xpos="430" ypos="794" workspace="Workspace01"/>
    <icon id="P4_Etirement" instance="P4_Etirement_instance" xpos="621" ypos="20" workspace="Workspace01"/>
-   <icon id="E16_Statistical_Stretch" instance="E16_Statistical_Stretch_instance" xpos="621" ypos="80" workspace="Workspace01"/>
-   <icon id="E17_MAS" instance="E17_MAS_instance" xpos="621" ypos="110" workspace="Workspace01"/>
-   <icon id="E18_SXT_RGB_etire" instance="E18_SXT_RGB_etire_instance" xpos="621" ypos="140" workspace="Workspace01"/>
-   <icon id="E19_SCNR_etoiles_vert" instance="E19_SCNR_etoiles_vert_instance" xpos="621" ypos="170" workspace="Workspace01"/>
-   <icon id="E20_Fermer_RGB" instance="E20_Fermer_RGB_instance" xpos="621" ypos="200" workspace="Workspace01"/>
-   <icon id="P4_options" instance="P4_options_instance" xpos="621" ypos="246" workspace="Workspace01"/>
-   <icon id="Opt_GHS_1_premier" instance="Opt_GHS_1_premier_instance" xpos="621" ypos="280" workspace="Workspace01"/>
-   <icon id="Opt_GHS_2_contraste" instance="Opt_GHS_2_contraste_instance" xpos="621" ypos="310" workspace="Workspace01"/>
-   <icon id="Opt_MAS_light" instance="Opt_MAS_light_instance" xpos="621" ypos="340" workspace="Workspace01"/>
-   <icon id="Opt_MAS_canaux" instance="Opt_MAS_canaux_instance" xpos="621" ypos="370" workspace="Workspace01"/>
-   <icon id="Opt_EZ_Soft_Stretch" instance="Opt_EZ_Soft_Stretch_instance" xpos="621" ypos="400" workspace="Workspace01"/>
-   <icon id="Opt_GHS_3_fond" instance="Opt_GHS_3_fond_instance" xpos="621" ypos="430" workspace="Workspace01"/>
-   <icon id="Opt_SCNR_etoiles_violet" instance="Opt_SCNR_etoiles_violet_instance" xpos="621" ypos="460" workspace="Workspace01"/>
-   <icon id="Opt_Saturation_grosses" instance="Opt_Saturation_grosses_instance" xpos="621" ypos="490" workspace="Workspace01"/>
-   <icon id="P4_rapide" instance="P4_rapide_instance" xpos="621" ypos="536" workspace="Workspace01"/>
-   <icon id="R_C_MAS_canaux_rapide" instance="R_C_MAS_canaux_rapide_instance" xpos="621" ypos="570" workspace="Workspace01"/>
-   <icon id="R_C_Stat_canaux_rapide" instance="R_C_Stat_canaux_rapide_instance" xpos="621" ypos="600" workspace="Workspace01"/>
-   <icon id="R_C_RGB_etoiles_rapide" instance="R_C_RGB_etoiles_rapide_instance" xpos="621" ypos="630" workspace="Workspace01"/>
+   <icon id="E20_Statistical_Stretch" instance="E20_Statistical_Stretch_instance" xpos="621" ypos="80" workspace="Workspace01"/>
+   <icon id="P4_options" instance="P4_options_instance" xpos="621" ypos="126" workspace="Workspace01"/>
+   <icon id="Opt_GHS_1_premier" instance="Opt_GHS_1_premier_instance" xpos="621" ypos="160" workspace="Workspace01"/>
+   <icon id="Opt_GHS_2_contraste" instance="Opt_GHS_2_contraste_instance" xpos="621" ypos="190" workspace="Workspace01"/>
+   <icon id="Opt_MAS_light" instance="Opt_MAS_light_instance" xpos="621" ypos="220" workspace="Workspace01"/>
+   <icon id="Opt_MAS_canaux" instance="Opt_MAS_canaux_instance" xpos="621" ypos="250" workspace="Workspace01"/>
+   <icon id="Opt_EZ_Soft_Stretch" instance="Opt_EZ_Soft_Stretch_instance" xpos="621" ypos="280" workspace="Workspace01"/>
+   <icon id="Opt_GHS_3_fond" instance="Opt_GHS_3_fond_instance" xpos="621" ypos="310" workspace="Workspace01"/>
+   <icon id="P4_rapide" instance="P4_rapide_instance" xpos="621" ypos="356" workspace="Workspace01"/>
+   <icon id="R_C_MAS_canaux_rapide" instance="R_C_MAS_canaux_rapide_instance" xpos="621" ypos="390" workspace="Workspace01"/>
+   <icon id="R_C_Stat_canaux_rapide" instance="R_C_Stat_canaux_rapide_instance" xpos="621" ypos="420" workspace="Workspace01"/>
    <icon id="P5_Couleur" instance="P5_Couleur_instance" xpos="812" ypos="20" workspace="Workspace01"/>
    <icon id="E21_SHO_simple" instance="E21_SHO_simple_instance" xpos="812" ypos="64" workspace="Workspace01"/>
    <icon id="E22_NBN_SHO" instance="E22_NBN_SHO_instance" xpos="812" ypos="94" workspace="Workspace01"/>
