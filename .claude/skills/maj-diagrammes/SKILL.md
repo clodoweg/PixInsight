@@ -55,7 +55,7 @@ done
 
    Testé le 20 octobre 2026 : toutes les icônes présentes (LRGB 63, LHaRGB 77, RGB-SHO 82, SHO-sans-RGB 70, HOO 72). Si le motif `<icon id=…>` ne trouve rien (format du xpsm changé), lis un xpsm pour l'adapter. Une icône absente : regarde pourquoi dans `kb_icons.py` ou `diagrammes.py` (phase, groupe `P#_Nom` / `P#_options` / `P#_rapide` / `P#_turbo`) et corrige le script, pas la page à la main.
 2. Contrôle l'ordre : dans chaque phase, les `E##_` du diagramme dans l'ordre des numéros ; options et rapides dans leur colonne.
-3. Si possible, ouvre la page avec Chromium (Playwright, `executablePath: '/opt/pw-browsers/chromium'`) et fais une capture de chaque onglet pour voir qu'elle s'affiche (pas de case vide, pas de texte coupé).
+3. Ouvre la page avec Chromium sans fenêtre et regarde la capture (Read) : `/opt/pw-browsers/chromium-*/chrome-linux/chrome --headless --no-sandbox --disable-gpu --window-size=1400,900 --screenshot=<scratchpad>/diag.png file://$PWD/../Diagrammes-workflows.html` (le module Python playwright n'est pas installé) ; pas de case vide, pas de texte coupé.
 4. `git diff --stat` : seuls `docs/kb/icones-*.md` et `docs/Diagrammes-workflows.html` doivent changer (plus les scripts de `build/` si tu les as corrigés). Un xpsm modifié par ce skill = erreur : ne le committe pas.
 
 ## 4. Publier
