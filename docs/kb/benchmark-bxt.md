@@ -8,7 +8,7 @@ Abréviations : Ét. = Sharpen Stars, Hal. = Adjust Star Halos, NS = Sharpen Non
 
 | Icône | Ét. | Hal. | NS | PSF |
 |---|---|---|---|---|
-| BXT_L, BXT_L_H (LRGB, LHaRGB) | 0,25 | 0 | **0,80** | auto |
+| BXT_L, BXT_L_H (LRGB, LHaRGB) | 0,25 | 0 | **0,50** (0,80 avant le 20 octobre 2026) | auto |
 | BXT_RGB (galaxies, RGB + SHO) | 0,25 | 0 | 0,50 | auto |
 | BXT_NB (SHO, HOO, RGB + SHO) | 0,25 | 0 | 0,60 | auto |
 | BXT Correct Only | – | – | – | auto, Correct Only |
@@ -52,3 +52,7 @@ Toutes en `ml_version = 0` (ML5 avec la licence de l'utilisateur).
 - BXT_RGB NS 0,50 et BXT_NB NS 0,60 : cohérents (Brecher 0,75 à 0,4"/px en 3 nm).
 - Mesurer la FWHM des masters (FWHMEccentricity) : au-delà de 8 px, BXT est hors limite (binning ×2 retiré des workflows à la demande de l'utilisateur).
 - Non vérifié : baisse de NS à cause de ML5 (déduction) ; réglages ML5 sur données suréchantillonnées ; défaut AI4 de Sharpen Stars (0,5 selon des utilisateurs).
+
+## Décision (20 octobre 2026)
+
+L'utilisateur a choisi 0,50 pour BXT_L et BXT_L_H (LRGB et LHaRGB ; demande : « y a une diff entre 0,5 et 0,44? » puis « oui ») : médiane publiée et limite haute de Morefield (CDK17, même échantillonnage). Repères : vers ou cordes à 400 % -> 0,40 ; galaxie résolue en étoiles -> 0,30.

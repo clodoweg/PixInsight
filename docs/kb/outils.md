@@ -462,7 +462,7 @@ Paramètres
 - **Passe 1 (avant SPCC)** : Correct Only coché
 - **Sharpen Stars** : 0,25
 - **Adjust Star Halos** : 0
-- **Sharpen Nonstellar** : L et H 0,80 ; narrowband 0,60 ; RGB 0,50
+- **Sharpen Nonstellar** : L et H 0,50 (0,80 avant le 20 octobre 2026, voir benchmark-bxt.md) ; narrowband 0,60 ; RGB 0,50
 - **Automatic PSF** : coché
 
   * Vers ou pores à 100 % → baisse Sharpen Nonstellar.
@@ -483,7 +483,7 @@ Paramètres
 
 - **Adjust Star Halos** : 0 (−0,5 à +0,5).
 
-- **Sharpen Nonstellar** : L et H 0,80, narrowband 0,60, RGB 0,50 ; vers ou pores à 100 % : baisse.
+- **Sharpen Nonstellar** : L et H 0,50, narrowband 0,60, RGB 0,50 ; vers ou cordes à 400 % : 0,40 ; galaxie résolue en étoiles : 0,30.
 
 - **Automatic PSF** : Coché. PSF manuelle : 8 px au maximum ; au CDK17 en bin 1 (0,264″/px), une FWHM au-delà de 2,1″ demande bin 2 ou une réduction ×0,5.
 
@@ -1161,6 +1161,6 @@ Option Opt_CloneStamp (P4, LRGB et LHaRGB, demande de l'utilisateur, 18 octobre 
 
 - L'utilisateur a la licence ML5 ; toutes les icônes en `ml_version = 0` prennent ML5.
 - RC Astro : plus net que ML4 à réglage égal, aucun réglage conseillé, manuel pas mis à jour. Forums : étoiles plus petites ; fausses étoiles ou beignets dans les coins aberrants même en Correct Only (correctif annoncé ; contournement : Correct Only en ML4).
-- Réglages actuels des icônes : Sharpen Stars 0,25, Halos 0 partout ; Nonstellar 0,50 (RGB galaxies), 0,80 (L galaxies), 0,60 (narrowband) ; PSF auto.
-- Pistes non vérifiées : L 0,80 -> 0,60-0,70 si trop dur ; garder le reste ; contrôler les coins après Correct Only.
+- Réglages actuels des icônes : Sharpen Stars 0,25, Halos 0 partout ; Nonstellar 0,50 (RGB galaxies), 0,50 (L galaxies et H du LHaRGB, 0,80 avant le 20 octobre 2026), 0,60 (narrowband) ; PSF auto.
+- L passé à 0,50 après le benchmark (accord de l'utilisateur) ; contrôler les coins après Correct Only.
 

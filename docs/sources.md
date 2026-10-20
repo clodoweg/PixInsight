@@ -219,6 +219,7 @@ Légende :
 - Demandes de l'utilisateur (20 octobre 2026, après la revue maj-kb) : « pour avoir ML5 il faut payer ? met la derniere version toujours » (ml_version 0 partout, LRGB et LHaRGB compris) ; « Met un NBN en option comme ca » (Opt_NBN_SHO_doux) ; « Met une option et un rapide Cosgrove pour que je teste » (Opt_NBN_SHO_lineaire, Opt_MAS_Cosgrove, R_C_Cosgrove_rapide).
 - Demande de l'utilisateur (20 octobre 2026) : « enlève cosgrove de mes process icon » : options et rapide Cosgrove retirés.
 - Demande de l'utilisateur (20 octobre 2026, « oui ») : MD5 de E15_CombineHaWithRGB (LHaRGB) passé à 7061c2ce12eb08a05413140f29466c21, calculé sur [20261018-PixInsightToolbox-Package.zip](https://www.ideviceapps.de/PixInsight/Utilities/20261018-PixInsightToolbox-Package.zip) ; paramètres du script identiques à la version précédente (alphaView, amount, beta, bg, sigma, mask, invertMask, linear, rgbLinked).
+- Demande de l'utilisateur (20 octobre 2026) : « y a une diff entre 0,5 et 0,44? » puis « oui » : BXT_L et BXT_L_H (LRGB, LHaRGB) Sharpen Nonstellar 0,80 -> 0,50, d'après le benchmark BXT (médiane publiée 0,50 ; Morefield, CDK17 à 0,264"/px : 0,30-0,44, jamais mieux au-dessus de 0,50).
 - Ordre de réglage de NarrowbandNormalization (Lightness, Shadowpoint, boosts, hautes lumières, Brightness, SCNR) : suggestion de la fiche, signalée comme telle sur la page ; aucune source ne fixe d'ordre.
 
 ## Neutralisation du fond dans SPCC

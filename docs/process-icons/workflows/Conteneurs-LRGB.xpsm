@@ -1758,7 +1758,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          <parameter id="adjust_star_halos" value="0.00"/>
          <parameter id="nonstellar_diameter" value="0.0"/>
          <parameter id="auto_nonstellar_psf" value="true"/>
-         <parameter id="sharpen_nonstellar" value="0.80"/>
+         <parameter id="sharpen_nonstellar" value="0.50"/>
          <parameter id="lunar_planetary" value="false"/>
          <parameter id="overlap" value="0.20"/>
       </instance>

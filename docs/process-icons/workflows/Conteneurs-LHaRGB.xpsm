@@ -1798,14 +1798,14 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </instance>
    </instance>
    <instance class="BlurXTerminator" version="256" id="E11_BXT_L_H_instance">
-      <description>PRÉRÉGLÉ : Sharpen Stars 0,25, Halos 0, Nonstellar 0,80, PSF auto.&#10;&#10;À RÉGLER : rien ; sur L puis sur H, linéaires, avant tout mélange.&#10;&#10;SI :&#10;- vers ou pores -&gt; Nonstellar 0,70&#10;- FWHM &gt; 8 px -&gt; bin 2 ou réduction ×0,5 avant</description>
+      <description>PRÉRÉGLÉ : Sharpen Stars 0,25, Halos 0, Nonstellar 0,50, PSF auto.&#10;&#10;À RÉGLER : rien ; sur L puis sur H, linéaires, avant tout mélange.&#10;&#10;SI :&#10;- vers ou cordes à 400 % -&gt; Nonstellar 0,40&#10;- galaxie résolue en étoiles (M33, NGC 300) -&gt; 0,30&#10;- FWHM &gt; 8 px -&gt; bin 2 ou réduction ×0,5 avant</description>
       <parameter id="ml_version" value="0"/>
       <parameter id="correct_only" value="false"/>
       <parameter id="sharpen_stars" value="0.25"/>
       <parameter id="adjust_star_halos" value="0.00"/>
       <parameter id="nonstellar_diameter" value="0.0"/>
       <parameter id="auto_nonstellar_psf" value="true"/>
-      <parameter id="sharpen_nonstellar" value="0.80"/>
+      <parameter id="sharpen_nonstellar" value="0.50"/>
       <parameter id="lunar_planetary" value="false"/>
       <parameter id="overlap" value="0.20"/>
    </instance>

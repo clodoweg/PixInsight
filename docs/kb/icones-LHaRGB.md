@@ -301,14 +301,15 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > Double-clic sur le conteneur pour voir ou changer les réglages de chaque étape.
 
 #### E11_BXT_L_H — BlurXTerminator
-   ml_version=0 ; correct_only=false ; sharpen_stars=0.25 ; adjust_star_halos=0.00 ; nonstellar_diameter=0.0 ; auto_nonstellar_psf=true ; sharpen_nonstellar=0.80 ; lunar_planetary=false ; overlap=0.20
+   ml_version=0 ; correct_only=false ; sharpen_stars=0.25 ; adjust_star_halos=0.00 ; nonstellar_diameter=0.0 ; auto_nonstellar_psf=true ; sharpen_nonstellar=0.50 ; lunar_planetary=false ; overlap=0.20
 
-> PRÉRÉGLÉ : Sharpen Stars 0,25, Halos 0, Nonstellar 0,80, PSF auto.
+> PRÉRÉGLÉ : Sharpen Stars 0,25, Halos 0, Nonstellar 0,50, PSF auto.
 > 
 > À RÉGLER : rien ; sur L puis sur H, linéaires, avant tout mélange.
 > 
 > SI :
-> - vers ou pores -> Nonstellar 0,70
+> - vers ou cordes à 400 % -> Nonstellar 0,40
+> - galaxie résolue en étoiles (M33, NGC 300) -> 0,30
 > - FWHM > 8 px -> bin 2 ou réduction ×0,5 avant
 
 #### E12_NXT_L — NoiseXTerminator

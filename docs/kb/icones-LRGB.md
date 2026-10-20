@@ -287,7 +287,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 #### E09_C_L_lineaire — ProcessContainer
    1. BlurXTerminator
-      ml_version=0 ; correct_only=false ; sharpen_stars=0.25 ; adjust_star_halos=0.00 ; nonstellar_diameter=0.0 ; auto_nonstellar_psf=true ; sharpen_nonstellar=0.80 ; lunar_planetary=false ; overlap=0.20
+      ml_version=0 ; correct_only=false ; sharpen_stars=0.25 ; adjust_star_halos=0.00 ; nonstellar_diameter=0.0 ; auto_nonstellar_psf=true ; sharpen_nonstellar=0.50 ; lunar_planetary=false ; overlap=0.20
    2. NoiseXTerminator
       ml_version=0 ; denoise=0.60 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
    3. StarXTerminator

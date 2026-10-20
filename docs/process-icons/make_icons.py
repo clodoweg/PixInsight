@@ -224,7 +224,7 @@ sxt = lambda n, un: instance('StarXTerminator', n, {'output_stars': True, 'unscr
 rc = [
     bxt('BXT_CorrectOnly', True, 0.25, 0.0, 0.50),
     bxt('BXT_RGB', False, 0.25, 0.0, 0.50),
-    bxt('BXT_L_H', False, 0.25, 0.0, 0.80),
+    bxt('BXT_L_H', False, 0.25, 0.0, 0.50),
     bxt('BXT_NB_combine', False, 0.25, 0.0, 0.60),
     nxt('NXT_L_H', 0.60, 1),
     nxt('NXT_RGB', 0.80, 1),

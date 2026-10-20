@@ -927,7 +927,7 @@ lrgb = pre_block() + [rgb_comb_item(), (solver_container(), ''), (solver_seul(),
     (note('Find_Background', T_FINDBG), ''),
     spcc(),
     (M.bxt('BXT_RGB', False, 0.25, 0.0, 0.50), "BlurXTerminator complet sur RGB, APRÈS SPCC : Sharpen Stars 0,25 (0 à 0,5), Adjust Star Halos 0, PSF automatique, Sharpen Nonstellar 0,50 (le détail viendra de L). Avant toute réduction de bruit." + BXT_C),
-    (M.bxt('BXT_L', False, 0.25, 0.0, 0.80), "BlurXTerminator complet sur L (linéaire, gradient retiré) : Sharpen Stars 0,25, Halos 0, Sharpen Nonstellar 0,80 (0,70 à 0,90), plus fort que sur RGB car la luminance porte le détail. Si vers ou pores à 100 % : baisse Nonstellar." + BXT_C),
+    (M.bxt('BXT_L', False, 0.25, 0.0, 0.50), "BlurXTerminator complet sur L (linéaire, gradient retiré) : Sharpen Stars 0,25, Halos 0, Sharpen Nonstellar 0,50 (benchmark du 20 octobre 2026 : médiane publiée sur L de galaxies ; CDK17 au même échantillonnage 0,30-0,44, jamais mieux au-dessus de 0,50). Zoom à 400 % : vers ou cordes -> 0,40 ; galaxie résolue en étoiles (M33, NGC 300) -> 0,30." + BXT_C),
     # LRGB (demande de l'utilisateur, 5 octobre 2026) : SXT linéaire sur L, GHS sur L sans étoiles ; MAS sur RGB avec étoiles puis SXT Unscreen ; LRGB sans étoiles
     (M.nxt('NXT_RGB', 0.80, 1), "NoiseXTerminator sur RGB (linéaire, AVEC ses étoiles : SXT vient après LRGB) : Denoise 0,80 (0,70 à 0,90), Detail 0,15. Toujours après BXT. Fonctionne en linéaire ou après étirement (RC Astro)." + NXT_C),
     (M.nxt('NXT_L', 0.60, 1), "NoiseXTerminator sur L (linéaire) : Denoise 0,60 (0,50 à 0,70) pour garder le détail fin." + NXT_C),
@@ -944,7 +944,7 @@ lhargb = pre_block() + [rgb_comb_item(),   # R fermée comme en LRGB : Continuum
     (note('Find_Background', T_FINDBG), ''),
     spcc(),
     (M.bxt('BXT_RGB', False, 0.25, 0.0, 0.50), "BlurXTerminator complet sur RGB, après SPCC : Sharpen Stars 0,25, Halos 0, Nonstellar 0,50." + BXT_C),
-    (M.bxt('BXT_L_H', False, 0.25, 0.0, 0.80), "BlurXTerminator complet sur L et sur le master H (mono, linéaires) : Sharpen Stars 0,25, Halos 0, Nonstellar 0,80. Déconvolue AVANT tout mélange (soustraction du continuum, injection)." + BXT_C),
+    (M.bxt('BXT_L_H', False, 0.25, 0.0, 0.50), "BlurXTerminator complet sur L et sur le master H (mono, linéaires) : Sharpen Stars 0,25, Halos 0, Nonstellar 0,50 (benchmark du 20 octobre 2026 ; vers ou cordes à 400 % -> 0,40). Déconvolue AVANT tout mélange (soustraction du continuum, injection)." + BXT_C),
     # Continuum_H (PixelMath, k à la main) supprimé (demande de l'utilisateur) : Continuum_auto au chemin principal
     (note('Continuum_auto', "Soustraction du continuum AUTOMATIQUE (SetiAstro, Automatic Continuum Subtraction, ContinuumSubtraction.js), au chemin principal (demande de l'utilisateur, à la place de l'ancien Continuum_H). "
           "Double-clic puis Apply Global : dans le dialogue, Ha = H (master linéaire, BXT fait), Red (or RGB) = RGB (l'image RGB linéaire calibrée, après C_RGB_couleur : le script en prend le rouge ; R n'est plus gardée) ; le reste vide ; Execute. "
