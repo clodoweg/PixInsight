@@ -5232,7 +5232,7 @@ max($T, HaNB*a)</parameter>
       <table id="outputData" rows="0"/>
    </instance>
    <instance class="NoiseXTerminator" version="256" id="E33_NXT_dernier_instance">
-      <description>PRÉRÉGLÉ : NoiseXTerminator Denoise 0,25, 1 itération.&#10;&#10;À RÉGLER : toute dernière étape avant l'export : glisse sur l'image finie AVEC ses étoiles, juste après Etoiles_screen.&#10;&#10;SI :&#10;- aspect plastique -&gt; Denoise 0,15&#10;- bruit encore visible -&gt; 0,35&#10;- étoiles adoucies -&gt; 0,15, ou saute cette étape</description>
+      <description>PRÉRÉGLÉ : NoiseXTerminator Denoise 0,25, 1 itération.&#10;&#10;À RÉGLER : dernière étape avant Export_TIFF : glisse sur l'image finie AVEC ses étoiles, juste après Etoiles_screen.&#10;&#10;SI :&#10;- aspect plastique -&gt; Denoise 0,15&#10;- bruit encore visible -&gt; 0,35&#10;- étoiles adoucies -&gt; 0,15, ou saute cette étape</description>
       <parameter id="ml_version" value="0"/>
       <parameter id="denoise" value="0.25"/>
       <parameter id="enable_color_separation" value="false"/>
@@ -5249,6 +5249,30 @@ max($T, HaNB*a)</parameter>
       <parameter id="iterations" value="1"/>
       <parameter id="detail" value="0.15"/>
       <parameter id="overlap" value="0.20"/>
+   </instance>
+   <instance class="Script" version="256" id="E34_Export_TIFF_instance">
+      <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Export_TIFF : copie de l'image en entiers 16 bits, convertie en sRGB IEC61966-2.1 (icc = true), enregistrée en TIFF (.tiff) sous le NOM DE L'OBJET, sans espace (NGC 1532 -&gt; NGC1532), = nom du dossier des masters ouverts (L, R, G, B, H…), dossiers génériques (master, lights, output, WBPP…) sautés ; masters fermés (narrowband) : dossier retenu par Renommer_auto ; enregistrée dans ce dossier ; l'image ouverte ne change pas.&#10;&#10;À RÉGLER : DERNIÈRE étape du chemin principal : glisse sur l'image finie, juste après NXT_dernier ; aucune vue n'est fermée ; copie Export_TIFF.js et clodoweg_objet.jsh dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- aucun master ouvert -&gt; mot-clé OBJECT, sinon nom de la vue, dans ton dossier personnel&#10;- autre nom -&gt; remplis nom&#10;- autre dossier -&gt; remplis dossier&#10;- garder plusieurs versions -&gt; suffixe (ex. _v2)&#10;- garder le profil actuel -&gt; icc false</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="4">
+         <tr>
+            <td id="id">nom</td>
+            <td id="value"></td>
+         </tr>
+         <tr>
+            <td id="id">suffixe</td>
+            <td id="value"></td>
+         </tr>
+         <tr>
+            <td id="id">dossier</td>
+            <td id="value"></td>
+         </tr>
+         <tr>
+            <td id="id">icc</td>
+            <td id="value">true</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
    </instance>
    <instance class="NoOperation" version="256" id="P7_options_instance">
       <description>OPTIONS de la phase 7 — Étoiles : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
@@ -5832,30 +5856,6 @@ max($T,f1)</parameter>
       <parameter id="useBlackPointCompensation" value="true"/>
       <parameter id="useFloatingPointTransformation" value="true"/>
    </instance>
-   <instance class="Script" version="256" id="Opt_Export_TIFF_instance">
-      <description>OPTION — tout à la fin : copie enregistrée en TIFF 16 bits sRGB, profil ICC intégré, pour Photoshop, Lightroom ou Affinity.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Export_TIFF : copie de l'image en entiers 16 bits, convertie en sRGB IEC61966-2.1 (icc = true), enregistrée en TIFF (.tiff) sous le NOM DE L'OBJET, sans espace (NGC 1532 -&gt; NGC1532), = nom du dossier des masters ouverts (L, R, G, B, H…), dossiers génériques (master, lights, output, WBPP…) sautés ; masters fermés (narrowband) : dossier retenu par Renommer_auto ; enregistrée dans ce dossier ; l'image ouverte ne change pas.&#10;&#10;À RÉGLER : glisse sur l'image finie (après Etoiles_screen) ; aucune vue n'est fermée ; copie Export_TIFF.js et clodoweg_objet.jsh dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- aucun master ouvert -&gt; mot-clé OBJECT, sinon nom de la vue, dans ton dossier personnel&#10;- autre nom -&gt; remplis nom&#10;- autre dossier -&gt; remplis dossier&#10;- garder plusieurs versions -&gt; suffixe (ex. _v2)&#10;- garder le profil actuel -&gt; icc false</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js</parameter>
-      <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="4">
-         <tr>
-            <td id="id">nom</td>
-            <td id="value"></td>
-         </tr>
-         <tr>
-            <td id="id">suffixe</td>
-            <td id="value"></td>
-         </tr>
-         <tr>
-            <td id="id">dossier</td>
-            <td id="value"></td>
-         </tr>
-         <tr>
-            <td id="id">icc</td>
-            <td id="value">true</td>
-         </tr>
-      </table>
-      <parameter id="information"></parameter>
-   </instance>
    <instance class="Script" version="256" id="Opt_Fermer_tout_instance">
       <description>OPTION — tout à la fin, après Export_TIFF : ferme toutes les vues ouvertes sans demander (image suivante).&#10;&#10;PRÉRÉGLÉ : script Fermer_vues, views = * : ferme TOUTES les vues ouvertes, sans demander d'enregistrer.&#10;&#10;À RÉGLER : après Export_TIFF (TIFF déjà enregistré) : double-clic puis Apply Global, la fenêtre s'ouvre avec toutes les vues cochées, clique Fermer ; glissée sur une image, ferme tout sauf cette image ; copie Fermer_vues.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- une vue à garder -&gt; décoche-la dans la fenêtre&#10;- rien n'est enregistré : exporte ou sauve AVANT</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
@@ -6087,12 +6087,12 @@ max($T,f1)</parameter>
    <icon id="E31_Fond_auto" instance="E31_Fond_auto_instance" xpos="1163" ypos="94" workspace="Workspace01"/>
    <icon id="E32_Etoiles_screen" instance="E32_Etoiles_screen_instance" xpos="1163" ypos="124" workspace="Workspace01"/>
    <icon id="E33_NXT_dernier" instance="E33_NXT_dernier_instance" xpos="1163" ypos="154" workspace="Workspace01"/>
-   <icon id="P7_options" instance="P7_options_instance" xpos="1163" ypos="200" workspace="Workspace01"/>
-   <icon id="Opt_Etoiles_reduites" instance="Opt_Etoiles_reduites_instance" xpos="1163" ypos="234" workspace="Workspace01"/>
-   <icon id="Opt_Boost_final_doux" instance="Opt_Boost_final_doux_instance" xpos="1163" ypos="264" workspace="Workspace01"/>
-   <icon id="Opt_Boost_final" instance="Opt_Boost_final_instance" xpos="1163" ypos="294" workspace="Workspace01"/>
-   <icon id="Opt_ICC_sRGB" instance="Opt_ICC_sRGB_instance" xpos="1163" ypos="324" workspace="Workspace01"/>
-   <icon id="Opt_Export_TIFF" instance="Opt_Export_TIFF_instance" xpos="1163" ypos="354" workspace="Workspace01"/>
+   <icon id="E34_Export_TIFF" instance="E34_Export_TIFF_instance" xpos="1163" ypos="184" workspace="Workspace01"/>
+   <icon id="P7_options" instance="P7_options_instance" xpos="1163" ypos="230" workspace="Workspace01"/>
+   <icon id="Opt_Etoiles_reduites" instance="Opt_Etoiles_reduites_instance" xpos="1163" ypos="264" workspace="Workspace01"/>
+   <icon id="Opt_Boost_final_doux" instance="Opt_Boost_final_doux_instance" xpos="1163" ypos="294" workspace="Workspace01"/>
+   <icon id="Opt_Boost_final" instance="Opt_Boost_final_instance" xpos="1163" ypos="324" workspace="Workspace01"/>
+   <icon id="Opt_ICC_sRGB" instance="Opt_ICC_sRGB_instance" xpos="1163" ypos="354" workspace="Workspace01"/>
    <icon id="Opt_Fermer_tout" instance="Opt_Fermer_tout_instance" xpos="1163" ypos="384" workspace="Workspace01"/>
    <icon id="P7_rapide" instance="P7_rapide_instance" xpos="1163" ypos="430" workspace="Workspace01"/>
    <icon id="R_C_Etoiles_fond_rapide" instance="R_C_Etoiles_fond_rapide_instance" xpos="1163" ypos="464" workspace="Workspace01"/>

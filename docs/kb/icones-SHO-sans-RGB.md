@@ -1086,12 +1086,29 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 > PRÉRÉGLÉ : NoiseXTerminator Denoise 0,25, 1 itération.
 > 
-> À RÉGLER : toute dernière étape avant l'export : glisse sur l'image finie AVEC ses étoiles, juste après la recombinaison (Etoiles_reduites ou Etoiles_screen).
+> À RÉGLER : dernière étape avant Export_TIFF : glisse sur l'image finie AVEC ses étoiles, juste après la recombinaison (Etoiles_reduites ou Etoiles_screen).
 > 
 > SI :
 > - aspect plastique -> Denoise 0,15
 > - bruit encore visible -> 0,35
 > - étoiles adoucies -> 0,15, ou saute cette étape
+
+#### E25_Export_TIFF — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js`
+   paramètres : `nom=`, `suffixe=`, `dossier=`, `icc=true`
+
+> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
+> 
+> PRÉRÉGLÉ : script Export_TIFF : copie de l'image en entiers 16 bits, convertie en sRGB IEC61966-2.1 (icc = true), enregistrée en TIFF (.tiff) sous le NOM DE L'OBJET, sans espace (NGC 1532 -> NGC1532), = nom du dossier des masters ouverts (L, R, G, B, H…), dossiers génériques (master, lights, output, WBPP…) sautés ; masters fermés (narrowband) : dossier retenu par Renommer_auto ; enregistrée dans ce dossier ; l'image ouverte ne change pas.
+> 
+> À RÉGLER : DERNIÈRE étape du chemin principal : glisse sur l'image finie, juste après NXT_dernier ; aucune vue n'est fermée ; copie Export_TIFF.js et clodoweg_objet.jsh dans src/scripts/clodoweg.
+> 
+> SI :
+> - aucun master ouvert -> mot-clé OBJECT, sinon nom de la vue, dans ton dossier personnel
+> - autre nom -> remplis nom
+> - autre dossier -> remplis dossier
+> - garder plusieurs versions -> suffixe (ex. _v2)
+> - garder le profil actuel -> icc false
 
 ### P7_options
 
@@ -1206,25 +1223,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > SI :
 > - impression ou Adobe RGB voulu -> change le profil cible dans l'icône
-
-#### Opt_Export_TIFF — Script
-   script `$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js`
-   paramètres : `nom=`, `suffixe=`, `dossier=`, `icc=true`
-
-> OPTION — tout à la fin : copie enregistrée en TIFF 16 bits sRGB, profil ICC intégré, pour Photoshop, Lightroom ou Affinity.
-> 
-> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
-> 
-> PRÉRÉGLÉ : script Export_TIFF : copie de l'image en entiers 16 bits, convertie en sRGB IEC61966-2.1 (icc = true), enregistrée en TIFF (.tiff) sous le NOM DE L'OBJET, sans espace (NGC 1532 -> NGC1532), = nom du dossier des masters ouverts (L, R, G, B, H…), dossiers génériques (master, lights, output, WBPP…) sautés ; masters fermés (narrowband) : dossier retenu par Renommer_auto ; enregistrée dans ce dossier ; l'image ouverte ne change pas.
-> 
-> À RÉGLER : glisse sur l'image finie (après Etoiles_screen) ; aucune vue n'est fermée ; copie Export_TIFF.js et clodoweg_objet.jsh dans src/scripts/clodoweg.
-> 
-> SI :
-> - aucun master ouvert -> mot-clé OBJECT, sinon nom de la vue, dans ton dossier personnel
-> - autre nom -> remplis nom
-> - autre dossier -> remplis dossier
-> - garder plusieurs versions -> suffixe (ex. _v2)
-> - garder le profil actuel -> icc false
 
 #### Opt_Fermer_tout — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`

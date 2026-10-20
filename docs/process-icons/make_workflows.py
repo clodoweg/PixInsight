@@ -798,7 +798,7 @@ def icc_srgb():
                         '      <parameter id="useFloatingPointTransformation" value="true"/>\n'
                         '   </instance>')
 
-EXPORT = [(icc_srgb(), ''), (script('Export_TIFF', ''), '')]   # options, tout à la fin : finition hors PixInsight (demande de l'utilisateur)
+EXPORT = [(icc_srgb(), ''), (script('Export_TIFF', ''), '')]   # tout à la fin : ICC_sRGB en option, Export_TIFF au chemin principal, dernier élément après NXT_dernier (demande de l'utilisateur, 20 octobre 2026)
 EXPORT.append((fermer('Fermer_tout', '*'), ''))   # option après Export_TIFF : fermer toutes les vues (demande de l'utilisateur)
 
 def etoiles_nb_item(s_stars=True):
