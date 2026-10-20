@@ -112,3 +112,5 @@ Demande de l'utilisateur : « je veux l'équivalent de maj_pc avec maj_mac qui m
 ## LPS_UnClic : L, R, G, B seulement (20 octobre 2026)
 
 Demande de l'utilisateur : « pour les LPS un clic, n'inclue pas par défaut les SHO, que les LRGB ca vaut pour tous les process ». Nouveau paramètre `vues` (défaut L,R,G,B ; vide = tous les masters mono) dans LPS_UnClic.js et dans l'icône LinearPatternSubtraction de tous les workflows ; la fenêtre a un champ « Masters de l'icône » et ne coche d'avance que ces masters. Sans master à corriger (SHO sans RGB, HOO), le script avertit et s'arrête sans erreur (les conteneurs rapides continuent). Renommer_auto doit passer avant (noms L, R, G, B), ce qui est l'ordre E00 / E01 de tous les workflows.
+
+Skill `maj-diagrammes` (20 octobre 2026, demande de l'utilisateur) : `build/kb_icons.py` puis `build/diagrammes/diagrammes.py` sur les xpsm du dépôt (sans `make_workflows.py`), puis contrôle que chaque icône des xpsm est dans `icones-*.md` et dans `docs/Diagrammes-workflows.html`.

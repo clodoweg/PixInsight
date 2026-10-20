@@ -38,7 +38,7 @@ Chaque script de `docs/process-icons/scripts/` a une fenêtre de réglages (dema
 - Branche `main`, commits en français avec les lignes d'attribution de la session, puis `git push origin main`.
 - Séquence : `sh docs/process-icons/build/build.sh` (régénère les xpsm et `docs/kb/icones-*.md` ; valide les XML), mise à jour de `docs/kb/` et `docs/sources.md`, commit, push.
 - Plus de page HTML ni d'artifact (supprimés le 5 octobre 2026, à la demande de l'utilisateur ; l'ancienne fiche reste dans l'historique git).
-- Diagrammes des workflows (demande de l'utilisateur, 18 octobre 2026) : `python3 docs/process-icons/build/diagrammes/diagrammes.py sortie.html` (page construite depuis `docs/kb/icones-*.md`) : `docs/Diagrammes-workflows.html`, dans le dépôt (demande de l'utilisateur), régénérée par `build.sh` à chaque build.
+- Diagrammes des workflows (demande de l'utilisateur, 18 octobre 2026) : `python3 docs/process-icons/build/diagrammes/diagrammes.py sortie.html` (page construite depuis `docs/kb/icones-*.md`) : `docs/Diagrammes-workflows.html`, dans le dépôt (demande de l'utilisateur), régénérée par `build.sh` à chaque build. Skill `maj-diagrammes` (`.claude/skills/maj-diagrammes/SKILL.md`, demande de l'utilisateur du 20 octobre 2026) : refait la page depuis les xpsm actuels sans les régénérer, et vérifie qu'aucune icône ne manque.
 
 ## Utilisateur
 
