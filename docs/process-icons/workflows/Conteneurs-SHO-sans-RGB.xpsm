@@ -2369,6 +2369,22 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="clipType" value="CT_RGBBlend"/>
       <parameter id="useRGBWorkingSpace" value="false"/>
    </instance>
+   <instance class="GeneralizedHyperbolicStretch" version="256" id="Opt_GHS_3_fond_instance">
+      <description>OPTION — fond trop clair après Statistical_Stretch (0,25) ou les GHS : sur chaque canal, même SP = HP pour tous (0,22 après Statistical Stretch), fond vers 0,12–0,14, avant la palette.&#10;&#10;PRÉRÉGLÉ : b = 10, SP = HP = 0,20, Stretch factor 1 (fond à 0,23 après GHS_2).&#10;&#10;À RÉGLER : glisse sur chaque canal, avant la palette ; SP = HP = fond lu - 0,03 (0,22 après Statistical Stretch à 0,25) ; Stretch factor 0,8 à 1,2 jusqu'au fond vers 0,12–0,14.</description>
+      <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
+      <parameter id="stretchChannel" value="SC_RGB"/>
+      <parameter id="inverse" value="false"/>
+      <parameter id="stretchFactor" value="1.000"/>
+      <parameter id="localIntensity" value="10.000"/>
+      <parameter id="symmetryPoint" value="0.200000"/>
+      <parameter id="highlightProtection" value="0.200000"/>
+      <parameter id="shadowProtection" value="0.000000"/>
+      <parameter id="blackPoint" value="0.000000"/>
+      <parameter id="whitePoint" value="1.000000"/>
+      <parameter id="colourBlend" value="1.000"/>
+      <parameter id="clipType" value="CT_RGBBlend"/>
+      <parameter id="useRGBWorkingSpace" value="false"/>
+   </instance>
    <instance class="MultiscaleAdaptiveStretch" version="256" id="Opt_MAS_light_instance">
       <description>OPTION — étirement plus doux que MAS (Aggressiveness 0,15, saturation 0,50) : à la place de MAS sur le RGB (RGB + SHO, fin de phase 3), ou de MAS_canaux / de Statistical_Stretch sur chaque canal sans étoiles&#10;Glisse sur l'image linéaire.&#10;&#10;PRÉRÉGLÉ : MultiscaleAdaptiveStretch doux, tes réglages : Aggressiveness 0,15, Target background 0,150, Dynamic range compression 0,40, Contrast recovery coché (séparation 1024, intensité 1,0), saturation cochée (0,50, boost 0,50, masque de luminosité).&#10;&#10;À RÉGLER : glisse sur l'image LINÉAIRE à la place de MAS (même place dans le workflow) ; compare avec MAS sur la même image.&#10;&#10;SI :&#10;- encore trop clair -&gt; Target background 0,12&#10;- trop sombre ou plat -&gt; Aggressiveness 0,30, ou MAS&#10;- couleurs trop fades -&gt; saturation 0,60</description>
       <parameter id="aggressiveness" value="0.15"/>
@@ -2406,22 +2422,6 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="backgroundROIY0" value="0"/>
       <parameter id="backgroundROIWidth" value="0"/>
       <parameter id="backgroundROIHeight" value="0"/>
-   </instance>
-   <instance class="GeneralizedHyperbolicStretch" version="256" id="Opt_GHS_3_fond_instance">
-      <description>OPTION — fond trop clair après Statistical_Stretch (0,25) ou les GHS : sur chaque canal, même SP = HP pour tous (0,22 après Statistical Stretch), fond vers 0,12–0,14, avant la palette.&#10;&#10;PRÉRÉGLÉ : b = 10, SP = HP = 0,20, Stretch factor 1 (fond à 0,23 après GHS_2).&#10;&#10;À RÉGLER : glisse sur chaque canal, avant la palette ; SP = HP = fond lu - 0,03 (0,22 après Statistical Stretch à 0,25) ; Stretch factor 0,8 à 1,2 jusqu'au fond vers 0,12–0,14.</description>
-      <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
-      <parameter id="stretchChannel" value="SC_RGB"/>
-      <parameter id="inverse" value="false"/>
-      <parameter id="stretchFactor" value="1.000"/>
-      <parameter id="localIntensity" value="10.000"/>
-      <parameter id="symmetryPoint" value="0.200000"/>
-      <parameter id="highlightProtection" value="0.200000"/>
-      <parameter id="shadowProtection" value="0.000000"/>
-      <parameter id="blackPoint" value="0.000000"/>
-      <parameter id="whitePoint" value="1.000000"/>
-      <parameter id="colourBlend" value="1.000"/>
-      <parameter id="clipType" value="CT_RGBBlend"/>
-      <parameter id="useRGBWorkingSpace" value="false"/>
    </instance>
    <instance class="NoOperation" version="256" id="P4_rapide_instance">
       <description>MODE RAPIDE, phase 4 — Étirement : pas encore de rapide narrowband : chemin principal. Icône de repère, sans effet.</description>
@@ -5838,9 +5838,9 @@ max($T,f1)</parameter>
    <icon id="E15_GHS_2_contraste" instance="E15_GHS_2_contraste_instance" xpos="626" ypos="110" workspace="Workspace01"/>
    <icon id="P4_options" instance="P4_options_instance" xpos="626" ypos="156" workspace="Workspace01"/>
    <icon id="Opt_GHS_1_premier" instance="Opt_GHS_1_premier_instance" xpos="626" ypos="190" workspace="Workspace01"/>
-   <icon id="Opt_MAS_light" instance="Opt_MAS_light_instance" xpos="626" ypos="220" workspace="Workspace01"/>
-   <icon id="Opt_MAS_canaux" instance="Opt_MAS_canaux_instance" xpos="626" ypos="250" workspace="Workspace01"/>
-   <icon id="Opt_GHS_3_fond" instance="Opt_GHS_3_fond_instance" xpos="626" ypos="280" workspace="Workspace01"/>
+   <icon id="Opt_GHS_3_fond" instance="Opt_GHS_3_fond_instance" xpos="626" ypos="220" workspace="Workspace01"/>
+   <icon id="Opt_MAS_light" instance="Opt_MAS_light_instance" xpos="626" ypos="250" workspace="Workspace01"/>
+   <icon id="Opt_MAS_canaux" instance="Opt_MAS_canaux_instance" xpos="626" ypos="280" workspace="Workspace01"/>
    <icon id="P4_rapide" instance="P4_rapide_instance" xpos="626" ypos="326" workspace="Workspace01"/>
    <icon id="P5_Couleur" instance="P5_Couleur_instance" xpos="817" ypos="20" workspace="Workspace01"/>
    <icon id="E16_SHO_simple" instance="E16_SHO_simple_instance" xpos="817" ypos="64" workspace="Workspace01"/>

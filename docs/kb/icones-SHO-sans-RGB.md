@@ -522,6 +522,15 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > SI :
 > - bruit de O ou S qui ressort -> SP trop bas, remonte-le
 
+#### Opt_GHS_3_fond — GeneralizedHyperbolicStretch
+   stretchType=ST_GeneralisedHyperbolic ; stretchChannel=SC_RGB ; inverse=false ; stretchFactor=1.000 ; localIntensity=10.000 ; symmetryPoint=0.200000 ; highlightProtection=0.200000 ; shadowProtection=0.000000 ; blackPoint=0.000000 ; whitePoint=1.000000 ; colourBlend=1.000 ; clipType=CT_RGBBlend ; useRGBWorkingSpace=false
+
+> OPTION — fond trop clair après Statistical_Stretch (0,25) ou les GHS : sur chaque canal, même SP = HP pour tous (0,22 après Statistical Stretch), fond vers 0,12–0,14, avant la palette.
+> 
+> PRÉRÉGLÉ : b = 10, SP = HP = 0,20, Stretch factor 1 (fond à 0,23 après GHS_2).
+> 
+> À RÉGLER : glisse sur chaque canal, avant la palette ; SP = HP = fond lu - 0,03 (0,22 après Statistical Stretch à 0,25) ; Stretch factor 0,8 à 1,2 jusqu'au fond vers 0,12–0,14.
+
 #### Opt_MAS_light — MultiscaleAdaptiveStretch
    aggressiveness=0.15 ; targetBackground=0.150 ; dynamicRangeCompression=0.40 ; contrastRecovery=true ; scaleSeparation=1024 ; contrastRecoveryIntensity=1.000 ; previewLargeScale=false ; saturationEnabled=true ; saturationAmount=0.50 ; saturationBoost=0.50 ; saturationLightnessMask=true ; backgroundROIEnabled=false ; backgroundROIX0=0 ; backgroundROIY0=0 ; backgroundROIWidth=0 ; backgroundROIHeight=0
 
@@ -553,15 +562,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - fond d'un canal différent des autres -> GHS_3_fond sur ce canal
 > - O ou S trop faible -> Aggressiveness plus haut sur ce canal, ou GHS
 > - cœur brûlé -> Dynamic range compression plus haut
-
-#### Opt_GHS_3_fond — GeneralizedHyperbolicStretch
-   stretchType=ST_GeneralisedHyperbolic ; stretchChannel=SC_RGB ; inverse=false ; stretchFactor=1.000 ; localIntensity=10.000 ; symmetryPoint=0.200000 ; highlightProtection=0.200000 ; shadowProtection=0.000000 ; blackPoint=0.000000 ; whitePoint=1.000000 ; colourBlend=1.000 ; clipType=CT_RGBBlend ; useRGBWorkingSpace=false
-
-> OPTION — fond trop clair après Statistical_Stretch (0,25) ou les GHS : sur chaque canal, même SP = HP pour tous (0,22 après Statistical Stretch), fond vers 0,12–0,14, avant la palette.
-> 
-> PRÉRÉGLÉ : b = 10, SP = HP = 0,20, Stretch factor 1 (fond à 0,23 après GHS_2).
-> 
-> À RÉGLER : glisse sur chaque canal, avant la palette ; SP = HP = fond lu - 0,03 (0,22 après Statistical Stretch à 0,25) ; Stretch factor 0,8 à 1,2 jusqu'au fond vers 0,12–0,14.
 
 ### P4_rapide
 

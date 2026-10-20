@@ -1488,6 +1488,12 @@ SUPPR_NB = {'NXT_H', 'NXT_O_S', 'WBPP', 'CC_auto', 'Binning_x2', 'EZ_Soft_Stretc
 for _st in (rgbsho, sho, hoo):
     _st[:] = [x for x in _st if x[0][0] not in SUPPR_NB]
 
+# SHO et RGB + SHO : Opt_GHS_3_fond juste sous Opt_GHS_1_premier dans les options P4 (demande de l'utilisateur, 20 octobre 2026)
+for _st in (rgbsho, sho):
+    _it = pick(_st, 'GHS_3_fond')
+    _st.remove(_it)
+    insert_after(_st, 'GHS_1_premier', [_it])
+
 for fn, pre, title, steps in [
     ('Workflow-LRGB.xpsm', 'LRGB', 'Workflow LRGB', lrgb),
     ('Workflow-LHaRGB.xpsm', 'LHA', 'Workflow LHaRGB', lhargb),
