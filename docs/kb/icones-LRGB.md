@@ -22,15 +22,16 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 #### E01_LinearPatternSubtraction — Script
    script `$PXI_SRCDIR/scripts/clodoweg/LPS_UnClic.js`
-   paramètres : `correctColumns=false`, `correctEntireImage=true`, `defectTableFilePath=`, `layersToRemove=9`, `rejectionLimit=3`, `globalRejection=true`, `globalRejectionLimit=5`, `autoBackground=true`, `backgroundReferenceLeft=0`, `backgroundReferenceTop=0`, `backgroundReferenceWidth=512`, `backgroundReferenceHeight=512`, `allOpenImages=true`, `closeWorkingImages=true`
+   paramètres : `correctColumns=false`, `correctEntireImage=true`, `defectTableFilePath=`, `layersToRemove=9`, `rejectionLimit=3`, `globalRejection=true`, `globalRejectionLimit=5`, `autoBackground=true`, `backgroundReferenceLeft=0`, `backgroundReferenceTop=0`, `backgroundReferenceWidth=512`, `backgroundReferenceHeight=512`, `allOpenImages=true`, `closeWorkingImages=true`, `vues=L,R,G,B`
 
 > LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
 > 
-> PRÉRÉGLÉ : script LPS_UnClic (moteur de Vicent Peris, sans dialogue) : lignes, Correct the entire image, Layers to remove 9, Rejection limit 3, Global rejection 5, zone de fond choisie automatiquement (la plus sombre), fenêtres de travail fermées, TOUTES les images ouvertes corrigées (allOpenImages = true).
+> PRÉRÉGLÉ : script LPS_UnClic (moteur de Vicent Peris, sans dialogue) : lignes, Correct the entire image, Layers to remove 9, Rejection limit 3, Global rejection 5, zone de fond choisie automatiquement (la plus sombre), fenêtres de travail fermées ; masters L, R, G, B ouverts corrigés (vues = L,R,G,B ; S, H, O jamais corrigés par défaut, une image couleur non plus).
 > 
-> À RÉGLER : une seule fois par ordinateur (Mac ou PC) : crée le dossier clodoweg dans src/scripts de PixInsight (à côté de PatternCorrection ; Mac : /Applications/PixInsight/src/scripts/clodoweg, PC : en général C:\Program Files\PixInsight\src\scripts\clodoweg ; pas le dossier scripts du premier niveau) et copies-y LPS_UnClic.js ; ensuite ouvre les masters linéaires de la cible (et rien d'autre), puis glisse l'icône sur l'un d'eux : tous sont corrigés, avant le recadrage (la correction se fait dans les images).
+> À RÉGLER : une seule fois par ordinateur (Mac ou PC) : crée le dossier clodoweg dans src/scripts de PixInsight (à côté de PatternCorrection ; Mac : /Applications/PixInsight/src/scripts/clodoweg, PC : en général C:\Program Files\PixInsight\src\scripts\clodoweg ; pas le dossier scripts du premier niveau) et copies-y LPS_UnClic.js ; ensuite ouvre les masters linéaires de la cible (et rien d'autre), puis glisse l'icône sur l'un d'eux : L, R, G, B sont corrigés (S, H, O laissés tels quels), avant le recadrage (la correction se fait dans les images).
 > 
 > SI :
+> - corriger aussi S, H, O -> vues = L,R,G,B,S,H,O dans l'icône (vide = tous les masters mono)
 > - corriger des colonnes -> correctColumns = true dans l'icône
 > - une seule image -> allOpenImages = false dans l'icône, puis glisse-la sur l'image
 > - artefacts -> Ctrl+Z : le script est conçu pour les brutes, avant alignement
@@ -109,7 +110,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
       paramètres : `fermerAutocrop=true`, `dialogue=false`
    2. Script
       script `$PXI_SRCDIR/scripts/clodoweg/LPS_UnClic.js`
-      paramètres : `correctColumns=false`, `correctEntireImage=true`, `defectTableFilePath=`, `layersToRemove=9`, `rejectionLimit=3`, `globalRejection=true`, `globalRejectionLimit=5`, `autoBackground=true`, `backgroundReferenceLeft=0`, `backgroundReferenceTop=0`, `backgroundReferenceWidth=512`, `backgroundReferenceHeight=512`, `allOpenImages=true`, `closeWorkingImages=true`, `dialogue=false`
+      paramètres : `correctColumns=false`, `correctEntireImage=true`, `defectTableFilePath=`, `layersToRemove=9`, `rejectionLimit=3`, `globalRejection=true`, `globalRejectionLimit=5`, `autoBackground=true`, `backgroundReferenceLeft=0`, `backgroundReferenceTop=0`, `backgroundReferenceWidth=512`, `backgroundReferenceHeight=512`, `allOpenImages=true`, `closeWorkingImages=true`, `vues=L,R,G,B`, `dialogue=false`
    3. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Combiner_RGB.js`
       paramètres : `red=R`, `green=G`, `blue=B`, `newId=RGB`, `closeSources=true`, `copyKeywords=true`, `garder=`, `dialogue=false`
@@ -121,7 +122,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > LANCEMENT : masters seuls ouverts, double-clic puis Apply Global (rond bleu) ; pas en glissant (ImageSolver échoue sur une image en cours de traitement).
 > 
-> PRÉRÉGLÉ : conteneur : Renommer_auto (L, R, G, B d'après FILTER), LinearPatternSubtraction sur tous les masters mono ouverts, Combinaison_RGB, Solver_auto (ImageSolver sur le RGB seulement : SPCC en a besoin ; L non résolue, pas de SPFC dans les rapides).
+> PRÉRÉGLÉ : conteneur : Renommer_auto (L, R, G, B d'après FILTER), LinearPatternSubtraction sur L, R, G, B, Combinaison_RGB, Solver_auto (ImageSolver sur le RGB seulement : SPCC en a besoin ; L non résolue, pas de SPFC dans les rapides).
 > 
 > À RÉGLER : masters seuls ouverts ; double-clic puis Apply Global (pas en glissant sur une image : ImageSolver échouerait sur celle-ci) ; remplace E00 à E03.
 > 
@@ -137,7 +138,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
       paramètres : `fermerAutocrop=true`, `dialogue=false`
    2. Script
       script `$PXI_SRCDIR/scripts/clodoweg/LPS_UnClic.js`
-      paramètres : `correctColumns=false`, `correctEntireImage=true`, `defectTableFilePath=`, `layersToRemove=9`, `rejectionLimit=3`, `globalRejection=true`, `globalRejectionLimit=5`, `autoBackground=true`, `backgroundReferenceLeft=0`, `backgroundReferenceTop=0`, `backgroundReferenceWidth=512`, `backgroundReferenceHeight=512`, `allOpenImages=true`, `closeWorkingImages=true`, `dialogue=false`
+      paramètres : `correctColumns=false`, `correctEntireImage=true`, `defectTableFilePath=`, `layersToRemove=9`, `rejectionLimit=3`, `globalRejection=true`, `globalRejectionLimit=5`, `autoBackground=true`, `backgroundReferenceLeft=0`, `backgroundReferenceTop=0`, `backgroundReferenceWidth=512`, `backgroundReferenceHeight=512`, `allOpenImages=true`, `closeWorkingImages=true`, `vues=L,R,G,B`, `dialogue=false`
    3. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Combiner_RGB.js`
       paramètres : `red=R`, `green=G`, `blue=B`, `newId=RGB`, `closeSources=true`, `copyKeywords=true`, `garder=`, `dialogue=false`

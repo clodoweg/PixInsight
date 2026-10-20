@@ -108,3 +108,7 @@ Script de la fiche, convention habituelle (clodoweg_ui.jsh : fenêtre par double
 ## maj_mac.command (20 octobre 2026)
 
 Demande de l'utilisateur : « je veux l'équivalent de maj_pc avec maj_mac qui met au bon endroit sur mac ». Script bash à la racine (exécutable, LF imposé par .gitattributes), double-clic dans le Finder : git pull dans le dossier du fichier, test d'écriture dans /Applications/PixInsight/src/scripts/clodoweg, sinon une seule fois `sudo mkdir -p` + `sudo chown -R` au compte, puis `cp -R` des scripts. Chemin d'installation Mac : /Applications/PixInsight/src/scripts (relevé dans un message d'erreur d'utilisateur, forum AstroBin ; pas de doc officielle trouvée). Non testé sur Mac.
+
+## LPS_UnClic : L, R, G, B seulement (20 octobre 2026)
+
+Demande de l'utilisateur : « pour les LPS un clic, n'inclue pas par défaut les SHO, que les LRGB ca vaut pour tous les process ». Nouveau paramètre `vues` (défaut L,R,G,B ; vide = tous les masters mono) dans LPS_UnClic.js et dans l'icône LinearPatternSubtraction de tous les workflows ; la fenêtre a un champ « Masters de l'icône » et ne coche d'avance que ces masters. Sans master à corriger (SHO sans RGB, HOO), le script avertit et s'arrête sans erreur (les conteneurs rapides continuent). Renommer_auto doit passer avant (noms L, R, G, B), ce qui est l'ordre E00 / E01 de tous les workflows.

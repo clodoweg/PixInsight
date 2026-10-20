@@ -5,6 +5,9 @@
 // (<pjsr/LinearPatternSubtraction.jsh>, livré avec PixInsight) avec des
 // réglages fixes, sur toutes les images MONO ouvertes (par défaut : les
 // masters ; une image couleur ouverte est ignorée) ou une seule.
+// vues = liste des masters à corriger (défaut L,R,G,B : les masters S, H, O
+// ne sont pas corrigés, demande de l'utilisateur du 20 octobre 2026) ;
+// vide = toutes les images mono.
 // Zone de fond : choisie automatiquement (la plus sombre) si autoBackground.
 //
 // Installation (Mac et PC) : créer le dossier clodoweg dans src/scripts de
@@ -43,6 +46,7 @@ function LPS1Parameters()
    this.autoBackground = true;           // cherche la zone de fond la plus sombre
    this.allOpenImages = true;            // true = traite toutes les images ouvertes (false = image active ou cible)
    this.closeWorkingImages = true;       // ferme les fenêtres LS, SS et pattern
+   this.vues = "L,R,G,B";                // masters corrigés (vide = tous les mono) ; S, H, O exclus par défaut
 
    this.import = function()
    {
@@ -53,7 +57,7 @@ function LPS1Parameters()
       i( "layersToRemove" ); i( "rejectionLimit" ); b( "globalRejection" ); i( "globalRejectionLimit" );
       i( "backgroundReferenceLeft" ); i( "backgroundReferenceTop" );
       i( "backgroundReferenceWidth" ); i( "backgroundReferenceHeight" );
-      b( "autoBackground" ); b( "allOpenImages" ); b( "closeWorkingImages" );
+      b( "autoBackground" ); b( "allOpenImages" ); b( "closeWorkingImages" ); s( "vues" );
    };
 }
 
@@ -124,6 +128,13 @@ function correctWindow( window, P )
    engine.execute();
 }
 
+// vue retenue par la liste vues (vide = toutes)
+function lpsVoulue( id, P )
+{
+   let l = P.vues.split( "," ).map( function( x ) { return x.trim(); } ).filter( function( x ) { return x.length > 0; } );
+   return l.length == 0 || l.indexOf( id ) >= 0;
+}
+
 function lpsCandidate( w )
 {
    let id = w.mainView.id;
@@ -139,7 +150,7 @@ function lpsExport( P )
    b( "correctColumns" ); b( "correctEntireImage" ); Parameters.set( "defectTableFilePath", P.defectTableFilePath );
    i( "layersToRemove" ); i( "rejectionLimit" ); b( "globalRejection" ); i( "globalRejectionLimit" );
    i( "backgroundReferenceLeft" ); i( "backgroundReferenceTop" ); i( "backgroundReferenceWidth" ); i( "backgroundReferenceHeight" );
-   b( "autoBackground" ); b( "allOpenImages" ); b( "closeWorkingImages" );
+   b( "autoBackground" ); b( "allOpenImages" ); b( "closeWorkingImages" ); Parameters.set( "vues", P.vues );
 }
 
 function lpsDialog( P )
@@ -154,11 +165,12 @@ function lpsDialog( P )
    d.numeric( "Limite globale :", 1, 10, 0, P.globalRejectionLimit, "Global rejection limit (5 par défaut).", function( v ) { P.globalRejectionLimit = v; } );
    d.check( "Zone de fond automatique (la plus sombre)", P.autoBackground, "Sinon : zone 0, 0, 512, 512 de l'icône.", function( c ) { P.autoBackground = c; } );
    d.check( "Fermer les fenêtres de travail (LS, SS, pattern)", P.closeWorkingImages, "", function( c ) { P.closeWorkingImages = c; } );
+   d.edit( "Masters de l'icône :", P.vues, "Masters corrigés en exécution directe (L,R,G,B par défaut : S, H, O exclus) ; vide = tous les masters mono. Cases cochées ci-dessous d'après cette liste.", function( t ) { P.vues = t.trim(); } );
    let windows = ImageWindow.windows, boxes = [];
    d.group( "Masters à corriger (mono)" );
    for ( let k = 0; k < windows.length; ++k )
       if ( lpsCandidate( windows[ k ] ) )
-         boxes.push( { w: windows[ k ], box: d.check( windows[ k ].mainView.id, true, "", null ) } );
+         boxes.push( { w: windows[ k ], box: d.check( windows[ k ].mainView.id, lpsVoulue( windows[ k ].mainView.id, P ), "", null ) } );
    if ( boxes.length == 0 )
       d.info( "Aucun master mono ouvert." );
    d.endGroup();
@@ -212,6 +224,11 @@ function lpsUnClic()
             console.writeln( LPS_TITLE + " : " + id + " (couleur) ignorée." );
             continue;
          }
+         if ( !lpsVoulue( id, P ) )
+         {
+            console.writeln( LPS_TITLE + " : " + id + " ignorée (pas dans vues = " + P.vues + ")." );
+            continue;
+         }
          windows.push( all[ k ] );
       }
    }
@@ -221,7 +238,10 @@ function lpsUnClic()
       windows.push( ImageWindow.activeWindow );
 
    if ( windows.length == 0 )
-      throw new Error( LPS_TITLE + " : aucune image ouverte." );
+   {
+      console.warningln( LPS_TITLE + " : aucun master à corriger (vues = " + P.vues + ")." );
+      return;
+   }
 
    let T = new ElapsedTime;
    for ( let k = 0; k < windows.length; ++k )

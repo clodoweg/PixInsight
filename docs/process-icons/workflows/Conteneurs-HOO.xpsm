@@ -21,10 +21,10 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="information"></parameter>
    </instance>
    <instance class="Script" version="256" id="E01_LinearPatternSubtraction_instance">
-      <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script LPS_UnClic (moteur de Vicent Peris, sans dialogue) : lignes, Correct the entire image, Layers to remove 9, Rejection limit 3, Global rejection 5, zone de fond choisie automatiquement (la plus sombre), fenêtres de travail fermées, TOUTES les images ouvertes corrigées (allOpenImages = true).&#10;&#10;À RÉGLER : une seule fois par ordinateur (Mac ou PC) : crée le dossier clodoweg dans src/scripts de PixInsight (à côté de PatternCorrection ; Mac : /Applications/PixInsight/src/scripts/clodoweg, PC : en général C:\Program Files\PixInsight\src\scripts\clodoweg ; pas le dossier scripts du premier niveau) et copies-y LPS_UnClic.js ; ensuite ouvre les masters linéaires de la cible (et rien d'autre), puis glisse l'icône sur l'un d'eux : tous sont corrigés, avant le recadrage (la correction se fait dans les images).&#10;&#10;SI :&#10;- corriger des colonnes -&gt; correctColumns = true dans l'icône&#10;- une seule image -&gt; allOpenImages = false dans l'icône, puis glisse-la sur l'image&#10;- artefacts -&gt; Ctrl+Z : le script est conçu pour les brutes, avant alignement&#10;- script introuvable -&gt; vérifie le dossier scripts/clodoweg (à recopier après une réinstallation de PixInsight) ; version avec dialogue : menu Script › Pattern Correction › LinearPatternSubtraction</description>
+      <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script LPS_UnClic (moteur de Vicent Peris, sans dialogue) : lignes, Correct the entire image, Layers to remove 9, Rejection limit 3, Global rejection 5, zone de fond choisie automatiquement (la plus sombre), fenêtres de travail fermées ; masters L, R, G, B ouverts corrigés (vues = L,R,G,B ; S, H, O jamais corrigés par défaut, une image couleur non plus).&#10;&#10;À RÉGLER : une seule fois par ordinateur (Mac ou PC) : crée le dossier clodoweg dans src/scripts de PixInsight (à côté de PatternCorrection ; Mac : /Applications/PixInsight/src/scripts/clodoweg, PC : en général C:\Program Files\PixInsight\src\scripts\clodoweg ; pas le dossier scripts du premier niveau) et copies-y LPS_UnClic.js ; ensuite ouvre les masters linéaires de la cible (et rien d'autre), puis glisse l'icône sur l'un d'eux : L, R, G, B sont corrigés (S, H, O laissés tels quels), avant le recadrage (la correction se fait dans les images).&#10;&#10;SI :&#10;- corriger aussi S, H, O -&gt; vues = L,R,G,B,S,H,O dans l'icône (vide = tous les masters mono)&#10;- corriger des colonnes -&gt; correctColumns = true dans l'icône&#10;- une seule image -&gt; allOpenImages = false dans l'icône, puis glisse-la sur l'image&#10;- artefacts -&gt; Ctrl+Z : le script est conçu pour les brutes, avant alignement&#10;- script introuvable -&gt; vérifie le dossier scripts/clodoweg (à recopier après une réinstallation de PixInsight) ; version avec dialogue : menu Script › Pattern Correction › LinearPatternSubtraction</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/LPS_UnClic.js</parameter>
       <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="14">
+      <table id="parameters" rows="15">
          <tr>
             <td id="id">correctColumns</td>
             <td id="value">false</td>
@@ -80,6 +80,10 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          <tr>
             <td id="id">closeWorkingImages</td>
             <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">vues</td>
+            <td id="value">L,R,G,B</td>
          </tr>
       </table>
       <parameter id="information"></parameter>
@@ -422,7 +426,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <description>MODE RAPIDE, phase 1 — Préparation : MODE RAPIDE (nébuleuses, en cours) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre : R_C_Preparation_rapide, R_Gradient_auto_rapide, R_C_Lineaire_rapide (ou les trois en un : T_Turbo_debut), puis chemin principal à partir de la phase 4. Phase 1 : R_C_Preparation_rapide (masters seuls ouverts, double-clic puis Apply Global) à la place de LinearPatternSubtraction, Renommer_auto et Solver_auto. Icône de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="R_C_Preparation_rapide_instance">
-      <description>MODE RAPIDE, à la place de LinearPatternSubtraction, Renommer_auto (Combinaison_RGB en RGB + SHO) et Solver_auto : masters seuls ouverts, double-clic puis Apply Global (pas en glissant : ImageSolver échoue sur une image en cours de traitement) ; ImageSolver sur le RGB seulement ; ensuite R_Gradient_auto_rapide (ou la phase 2 avec ImageSolver sur S, H, O : SPFC en a besoin).&#10;&#10;LANCEMENT : masters seuls ouverts, double-clic puis Apply Global (rond bleu) ; pas en glissant (ImageSolver échoue sur une image en cours de traitement).&#10;&#10;PRÉRÉGLÉ : conteneur : Renommer_auto (H, O d'après FILTER), LinearPatternSubtraction sur tous les masters ouverts, Solver_auto (ImageSolver sur les images couleur seulement : aucune ici, rien n'en a besoin dans les rapides) ; pas de combinaison (HOO combinée en phase 3, après le gradient).&#10;&#10;À RÉGLER : masters H et O seuls ouverts (caméra mono) ; double-clic puis Apply Global (pas en glissant) ; remplace LinearPatternSubtraction, Renommer_auto et Solver_auto ; ensuite R_Gradient_auto_rapide, ou la phase 2 du chemin principal (ImageSolver d'abord sur les masters mono : SPFC en a besoin, le rapide ne résout que le RGB).&#10;&#10;SI :&#10;- une étape en erreur -&gt; lis la console, puis fais les icônes une par une&#10;- caméra couleur dual-band -&gt; pas ce conteneur : chemin principal (DualBand_H, DualBand_O)&#10;- masters décalés, bandes noires -&gt; Crop_reference et Crop_appliquer AVANT ce conteneur</description>
+      <description>MODE RAPIDE, à la place de LinearPatternSubtraction, Renommer_auto (Combinaison_RGB en RGB + SHO) et Solver_auto : masters seuls ouverts, double-clic puis Apply Global (pas en glissant : ImageSolver échoue sur une image en cours de traitement) ; ImageSolver sur le RGB seulement ; ensuite R_Gradient_auto_rapide (ou la phase 2 avec ImageSolver sur S, H, O : SPFC en a besoin).&#10;&#10;LANCEMENT : masters seuls ouverts, double-clic puis Apply Global (rond bleu) ; pas en glissant (ImageSolver échoue sur une image en cours de traitement).&#10;&#10;PRÉRÉGLÉ : conteneur : Renommer_auto (H, O d'après FILTER), LinearPatternSubtraction sur aucun master (S, H, O exclus : vues = L,R,G,B), Solver_auto (ImageSolver sur les images couleur seulement : aucune ici, rien n'en a besoin dans les rapides) ; pas de combinaison (HOO combinée en phase 3, après le gradient).&#10;&#10;À RÉGLER : masters H et O seuls ouverts (caméra mono) ; double-clic puis Apply Global (pas en glissant) ; remplace LinearPatternSubtraction, Renommer_auto et Solver_auto ; ensuite R_Gradient_auto_rapide, ou la phase 2 du chemin principal (ImageSolver d'abord sur les masters mono : SPFC en a besoin, le rapide ne résout que le RGB).&#10;&#10;SI :&#10;- une étape en erreur -&gt; lis la console, puis fais les icônes une par une&#10;- caméra couleur dual-band -&gt; pas ce conteneur : chemin principal (DualBand_H, DualBand_O)&#10;- masters décalés, bandes noires -&gt; Crop_reference et Crop_appliquer AVANT ce conteneur</description>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Renommer_auto.js</parameter>
          <parameter id="md5sum"></parameter>
@@ -441,7 +445,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/LPS_UnClic.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="15">
+         <table id="parameters" rows="16">
             <tr>
                <td id="id">correctColumns</td>
                <td id="value">false</td>
@@ -497,6 +501,10 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
             <tr>
                <td id="id">closeWorkingImages</td>
                <td id="value">true</td>
+            </tr>
+            <tr>
+               <td id="id">vues</td>
+               <td id="value">L,R,G,B</td>
             </tr>
             <tr>
                <td id="id">dialogue</td>
@@ -740,7 +748,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/LPS_UnClic.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="15">
+         <table id="parameters" rows="16">
             <tr>
                <td id="id">correctColumns</td>
                <td id="value">false</td>
@@ -796,6 +804,10 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
             <tr>
                <td id="id">closeWorkingImages</td>
                <td id="value">true</td>
+            </tr>
+            <tr>
+               <td id="id">vues</td>
+               <td id="value">L,R,G,B</td>
             </tr>
             <tr>
                <td id="id">dialogue</td>
