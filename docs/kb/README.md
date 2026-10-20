@@ -21,6 +21,8 @@ PixInsight 1.9.5 sur PC Windows ; CDK17 (2 939 mm) + QHY600 (IMX455, 3,76 µm, 0
 
 ## Règles de mise à jour
 
+- Rafraîchir la base par les sources : skill `maj-kb` (`.claude/skills/maj-kb/SKILL.md`) ; revoit les sources de `../sources.md`, cherche des versions et sources plus récentes, ne change pas les icônes.
+
 - Toute modification d'icône : générateur, puis `build.sh` (régénère `icones-*.md`), puis le fichier thématique concerné ici, puis `sources.md`.
 - Une valeur non vérifiée est marquée « non vérifié » ici et dans `sources.md`.
 - Ordre de priorité si deux fichiers divergent : `icones-*.md` (ce que font vraiment les icônes) > `workflows.md` / `outils.md` > ancienne fiche HTML.

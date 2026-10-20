@@ -15,6 +15,8 @@ Le workflow LRGB fonctionne bien. Depuis le 8 octobre 2026, le travail porte sur
 
 ## Valider avec des sources avant d'insérer
 
+Skill `maj-kb` (`.claude/skills/maj-kb/SKILL.md`, demande de l'utilisateur du 20 octobre 2026) : revérifie les sources notées, cherche des sources et versions plus récentes, met à jour `docs/kb/` et `docs/sources.md` sans toucher aux icônes (propositions seulement).
+
 Avant d'ajouter ou de modifier un contenu technique (réglage, valeur, ordre des étapes, formule, URL) :
 
 1. Cherche des sources et lis-les : documentation officielle d'abord, puis tutoriels reconnus, puis forums.
