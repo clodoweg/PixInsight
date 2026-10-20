@@ -177,7 +177,7 @@ def shorten(xml, prefix, base):
     drag = md5 = None
     if xml.lstrip().startswith('<instance class="ProcessContainer"'):
         # conteneur (retour de l'utilisateur) : rien ne disait de le GLISSER ; le rond Apply Global échoue avec des process natifs
-        drag = 'cont_global' if '/GC_Solver_auto.js' in xml else 'cont_scripts' if base in ('C_Lineaire_rapide', 'C_Cosgrove_rapide', 'C_MAS_canaux_rapide', 'C_Stat_canaux_rapide', 'C_Palette_rapide', 'C_Continuum_prep', 'C_Continuum_fin', 'C_RGB_etoiles_rapide') else 'cont'
+        drag = 'cont_global' if '/GC_Solver_auto.js' in xml else 'cont_scripts' if base in ('C_Lineaire_rapide', 'C_MAS_canaux_rapide', 'C_Stat_canaux_rapide', 'C_Palette_rapide', 'C_Continuum_prep', 'C_Continuum_fin', 'C_RGB_etoiles_rapide') else 'cont'
         if '<description>' not in xml:
             xml = re.sub(r'(<instance class="ProcessContainer" id="[^"]*">)', r'\1\n      <description></description>', xml, count=1)
     elif base in SCRIPTS and 'class="Script"' in xml:
@@ -228,7 +228,7 @@ def layout(entries, naming):
     return insts, icons
 
 TURBO = {'Turbo_debut'}   # ancien mode Turbo supprimé ; Turbo_debut ajouté ensuite (demande de l'utilisateur, 5 octobre 2026)
-RAPIDE = {'C_Cosgrove_rapide', 'C_Ha_RGB_rapide', 'C_Lineaire_rapide', 'C_MAS_canaux_rapide', 'C_Stat_canaux_rapide', 'C_Palette_rapide', 'C_RGB_etoiles_rapide', 'Main_continuum', 'Lineaire_rapide', 'C_P3_rapide', 'C_RGB_etire_rapide', 'C_Fin_rapide', 'C_Etoiles_fond_rapide', 'C_Preparation_rapide', 'Gradient_auto_rapide', 'C_RGB_rapide', 'C_L_rapide', 'C_RGB_fin_rapide', 'C_LRGB_rapide'}
+RAPIDE = {'C_Ha_RGB_rapide', 'C_Lineaire_rapide', 'C_MAS_canaux_rapide', 'C_Stat_canaux_rapide', 'C_Palette_rapide', 'C_RGB_etoiles_rapide', 'Main_continuum', 'Lineaire_rapide', 'C_P3_rapide', 'C_RGB_etire_rapide', 'C_Fin_rapide', 'C_Etoiles_fond_rapide', 'C_Preparation_rapide', 'Gradient_auto_rapide', 'C_RGB_rapide', 'C_L_rapide', 'C_RGB_fin_rapide', 'C_LRGB_rapide'}
 RAPIDE_NOTE = {
     'LRGB': {1: "MODE RAPIDE (galaxies) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre (étoiles gardées jusqu'à LRGB) : R_C_Preparation_rapide ; R_Gradient_auto_rapide ; R_Lineaire_rapide (RGB et L) ; GHS_1_premier, GHS_2_contraste, GHS_3_fond sur L ; R_C_RGB_etire_rapide sur RGB ; R_C_LRGB_rapide (LRGB sans étoiles) ; finition. Phase 1 : R_C_Preparation_rapide (double-clic puis Apply Global) à la place de LinearPatternSubtraction, Renommer_auto, Combinaison_RGB et Solver_auto",
              2: "R_Gradient_auto_rapide à la place de toute la phase 2 : GradientCorrection sur toutes les images ouvertes (l'astrométrie est déjà faite par R_C_Preparation_rapide)",
@@ -1495,24 +1495,16 @@ for _st in (rgbsho, sho):
     insert_after(_st, 'GHS_1_premier', [_it])
 
 # 20 octobre 2026, après la revue des sources (skill maj-kb), demandes de l'utilisateur : « Met un NBN en option comme ca » et
-# « Met une option et un rapide Cosgrove pour que je teste » (SHO sans RGB et RGB + SHO)
+# « Met une option et un rapide Cosgrove pour que je teste » (SHO sans RGB et RGB + SHO ; Cosgrove retiré ensuite)
 def nbn_sho(name, **kw):
     v = {'palette': 'Palette_SHO', 'lightness': 'Lightness_Ha', 'scnr': '0.700', 'o3Boost': '1.000', 's2Boost': '1.200', 'highlightReduction': '1.000', 'brightness': '1.000'}
     v.update(kw)
     return M.instance('NarrowbandNormalization', name, v)
-def mas_cosgrove():
-    n, x = mas()
-    a = 'id="saturationAmount" value="0.75"'
-    assert a in x
-    return 'MAS_Cosgrove', x.replace(a, 'id="saturationAmount" value="0.50"').replace('id="MAS_instance"', 'id="MAS_Cosgrove_instance"', 1)
 D_NBN_DOUX = ("OPTION, à la place de NBN_SHO, à tester : NarrowbandNormalization plus doux, réglages de Deep Space Place (2026) : Lightness Off, SCNR 0,20, OIII boost 1,2, SII boost 1,4, "
               "Highlight reduction et Brightness 1. Glisse sur SHO_etire (après SHO_simple). Une seule source chiffrée : non recoupé.")
-D_NBN_LIN = ("OPTION méthode Cosgrove (2026), étape 1 de 2 : NarrowbandNormalization sur le SHO LINÉAIRE sans étoiles (image SHO après C_SHO_lineaire, ou recréée par Combinaison_SHO), "
-             "palette SHO, Lightness Off (en linéaire), SCNR 0,7, SII boost 1,2, autres à 1 ; ensuite MAS_Cosgrove. Réglages de Cosgrove illisibles : valeurs de NBN_SHO reprises, non vérifié.")
 for _st in (rgbsho, sho):
     insert_after(_st, 'NBN_SHO', [(nbn_sho('NBN_SHO_doux', lightness='Lightness_Off', scnr='0.200', o3Boost='1.200', s2Boost='1.400'), D_NBN_DOUX)])
-    insert_after(_st, 'MAS_canaux', [(nbn_sho('NBN_SHO_lineaire', lightness='Lightness_Off'), D_NBN_LIN), (mas_cosgrove(), ''),
-                                     (cont('C_Cosgrove_rapide', [fermer('Fermer_SHO', 'SHO'), lineaire_rapide('Combinaison_SHO>H ; Opt_NBN_SHO_lineaire*>SHO ; Opt_MAS_Cosgrove*>SHO')]), '')])
+    # méthode Cosgrove (NBN_SHO_lineaire, MAS_Cosgrove, R_C_Cosgrove_rapide) retirée le même jour (demande de l'utilisateur : « enlève cosgrove de mes process icon »)
 
 for fn, pre, title, steps in [
     ('Workflow-LRGB.xpsm', 'LRGB', 'Workflow LRGB', lrgb),

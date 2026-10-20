@@ -2423,73 +2423,8 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="backgroundROIWidth" value="0"/>
       <parameter id="backgroundROIHeight" value="0"/>
    </instance>
-   <instance class="NarrowbandNormalization" version="256" id="Opt_NBN_SHO_lineaire_instance">
-      <description>OPTION — méthode Cosgrove à tester, étape 1 de 2 (à la place de Statistical_Stretch, GHS_2_contraste, SHO_simple et NBN_SHO) : glisse sur l'image SHO LINÉAIRE sans étoiles (après C_SHO_lineaire)&#10;Ensuite MAS_Cosgrove&#10;Ou R_C_Cosgrove_rapide.&#10;&#10;PRÉRÉGLÉ : NarrowbandNormalization palette SHO, Lightness Off (image linéaire), SCNR 0,7, SII boost 1,2, autres à 1.&#10;&#10;À RÉGLER : méthode Cosgrove : glisse sur l'image SHO LINÉAIRE sans étoiles (après C_SHO_lineaire) ; aperçu avec STF ; ensuite MAS_Cosgrove.&#10;&#10;SI :&#10;- trop vert après MAS -&gt; SCNR plus haut&#10;- SHO déjà fermée (rapide P3) -&gt; R_C_Cosgrove_rapide (la recrée)</description>
-      <parameter id="palette" value="Palette_SHO"/>
-      <parameter id="lightness" value="Lightness_Off"/>
-      <parameter id="blendMode" value="Blend_Mode1"/>
-      <parameter id="haBlend" value="0.000"/>
-      <parameter id="scnr" value="0.700"/>
-      <parameter id="o3Boost" value="1.000"/>
-      <parameter id="s2Boost" value="1.200"/>
-      <parameter id="shadowpoint" value="1.000"/>
-      <parameter id="highlightReduction" value="1.000"/>
-      <parameter id="brightness" value="1.000"/>
-   </instance>
-   <instance class="MultiscaleAdaptiveStretch" version="256" id="Opt_MAS_Cosgrove_instance">
-      <description>OPTION — méthode Cosgrove, étape 2 de 2 : glisse sur SHO juste après NBN_SHO_lineaire&#10;Étire l'image combinée d'un coup (fond 0,15, saturation 0,50)&#10;Ensuite la finition (phase 6) sur SHO.&#10;&#10;PRÉRÉGLÉ : MultiscaleAdaptiveStretch, tes réglages MAS (Aggressiveness 0,70, fond 0,15, Dynamic range compression 0,40, Contrast recovery) avec saturation 0,50.&#10;&#10;À RÉGLER : méthode Cosgrove : glisse sur SHO juste après NBN_SHO_lineaire ; ensuite la finition (phase 6) sur SHO.&#10;&#10;SI :&#10;- image trop claire -&gt; Aggressiveness 0,50 ou MAS_light&#10;- couleurs trop fortes -&gt; saturation 0,30&#10;- O dominant : fond pas sous 0,12 (Kaessler)</description>
-      <parameter id="aggressiveness" value="0.70"/>
-      <parameter id="targetBackground" value="0.150"/>
-      <parameter id="dynamicRangeCompression" value="0.40"/>
-      <parameter id="contrastRecovery" value="true"/>
-      <parameter id="scaleSeparation" value="1024"/>
-      <parameter id="contrastRecoveryIntensity" value="1.000"/>
-      <parameter id="previewLargeScale" value="false"/>
-      <parameter id="saturationEnabled" value="true"/>
-      <parameter id="saturationAmount" value="0.50"/>
-      <parameter id="saturationBoost" value="0.50"/>
-      <parameter id="saturationLightnessMask" value="true"/>
-      <parameter id="backgroundROIEnabled" value="false"/>
-      <parameter id="backgroundROIX0" value="0"/>
-      <parameter id="backgroundROIY0" value="0"/>
-      <parameter id="backgroundROIWidth" value="0"/>
-      <parameter id="backgroundROIHeight" value="0"/>
-   </instance>
    <instance class="NoOperation" version="256" id="P4_rapide_instance">
       <description>MODE RAPIDE, phase 4 — Étirement : pas encore de rapide narrowband : chemin principal. Icône de repère, sans effet.</description>
-   </instance>
-   <instance class="ProcessContainer" id="R_C_Cosgrove_rapide_instance">
-      <description>MODE RAPIDE méthode Cosgrove, à tester (à la place de Statistical_Stretch, GHS_2_contraste, SHO_simple et NBN_SHO) : S, H, O linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou la phase 3), double-clic puis Apply Global (pas en glissant) ; Conteneurs du workflow chargé ; résultat dans SHO, ensuite la finition (phase 6) sur SHO.&#10;&#10;LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).&#10;&#10;PRÉRÉGLÉ : conteneur de scripts : Fermer_vues ferme SHO si elle est ouverte ; Lineaire_auto lance Combinaison_SHO (S, H, O linéaires -&gt; SHO), Opt_NBN_SHO_lineaire puis Opt_MAS_Cosgrove sur SHO (chacun sur une copie : Ctrl+Z possible) ; S, H, O restent ouverts (pour comparer avec le chemin principal).&#10;&#10;À RÉGLER : S, H, O linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou la phase 3) ; Conteneurs du workflow chargé ; double-clic puis Apply Global (pas en glissant) ; ensuite la finition sur SHO.&#10;&#10;SI :&#10;- résultat à comparer -&gt; chemin principal (Statistical_Stretch...) sur S, H, O restés linéaires&#10;- une étape échoue -&gt; la console dit laquelle ; fais les options à la main</description>
-      <instance class="Script" version="256" enabled="true">
-         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
-         <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="2">
-            <tr>
-               <td id="id">views</td>
-               <td id="value">SHO</td>
-            </tr>
-            <tr>
-               <td id="id">dialogue</td>
-               <td id="value">false</td>
-            </tr>
-         </table>
-         <parameter id="information"></parameter>
-      </instance>
-      <instance class="Script" version="256" enabled="true">
-         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js</parameter>
-         <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="2">
-            <tr>
-               <td id="id">etapes</td>
-               <td id="value">Combinaison_SHO&gt;H ; Opt_NBN_SHO_lineaire*&gt;SHO ; Opt_MAS_Cosgrove*&gt;SHO</td>
-            </tr>
-            <tr>
-               <td id="id">dialogue</td>
-               <td id="value">false</td>
-            </tr>
-         </table>
-         <parameter id="information"></parameter>
-      </instance>
    </instance>
    <instance class="NoOperation" version="256" id="P5_Couleur_instance">
       <description>PHASE 5 — Couleur : combinaison finale et palette. Colonne de repère, sans effet.</description>
@@ -5919,10 +5854,7 @@ max($T,f1)</parameter>
    <icon id="Opt_GHS_3_fond" instance="Opt_GHS_3_fond_instance" xpos="626" ypos="220" workspace="Workspace01"/>
    <icon id="Opt_MAS_light" instance="Opt_MAS_light_instance" xpos="626" ypos="250" workspace="Workspace01"/>
    <icon id="Opt_MAS_canaux" instance="Opt_MAS_canaux_instance" xpos="626" ypos="280" workspace="Workspace01"/>
-   <icon id="Opt_NBN_SHO_lineaire" instance="Opt_NBN_SHO_lineaire_instance" xpos="626" ypos="310" workspace="Workspace01"/>
-   <icon id="Opt_MAS_Cosgrove" instance="Opt_MAS_Cosgrove_instance" xpos="626" ypos="340" workspace="Workspace01"/>
-   <icon id="P4_rapide" instance="P4_rapide_instance" xpos="626" ypos="386" workspace="Workspace01"/>
-   <icon id="R_C_Cosgrove_rapide" instance="R_C_Cosgrove_rapide_instance" xpos="626" ypos="420" workspace="Workspace01"/>
+   <icon id="P4_rapide" instance="P4_rapide_instance" xpos="626" ypos="326" workspace="Workspace01"/>
    <icon id="P5_Couleur" instance="P5_Couleur_instance" xpos="817" ypos="20" workspace="Workspace01"/>
    <icon id="E16_SHO_simple" instance="E16_SHO_simple_instance" xpos="817" ypos="64" workspace="Workspace01"/>
    <icon id="E17_NBN_SHO" instance="E17_NBN_SHO_instance" xpos="817" ypos="94" workspace="Workspace01"/>
