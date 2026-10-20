@@ -13,6 +13,7 @@ Source de référence pour répondre aux questions de l'utilisateur et modifier 
 | Outils et dépôts à installer, WBPP, phase linéaire commune | `preparation.md` (dépôts : `../depots-pixinsight.txt`) |
 | Narrowband (RGB + SHO, SHO, HOO) : chantier en cours (8 octobre 2026), analyses BXT et NXT, état des workflows | `narrowband.md` |
 | Modifier ou ajouter une icône : fichiers, fonctions, check-list, contraintes PixInsight | `generateur.md` |
+| Réglages BXT publiés (L galaxies, SHO, longue focale, ML5), comparés aux icônes | `benchmark-bxt.md` |
 | D'où vient une valeur, ce qui n'est pas vérifié | `../sources.md` |
 
 ## Utilisateur
