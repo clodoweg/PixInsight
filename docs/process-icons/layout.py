@@ -234,5 +234,10 @@ WHEN_NB = {
     'Fond_auto_clair': "à la place de Fond_auto : image trop sombre, fond amené à 0,14, après Fond_desature, avant la recombinaison des étoiles",
 }
 
+# texte d'option propre à un workflow (prioritaire)
+WHEN_PREFIX = {('SHO', 'MAS_canaux'): WHEN_NB['MAS_canaux'].replace(" (ou R_C_MAS_canaux_rapide)", "")}   # pas de rapide P4 en SHO sans RGB (20 octobre 2026)
+
 def when(prefix, base):
+    if (prefix, base) in WHEN_PREFIX:
+        return WHEN_PREFIX[(prefix, base)]
     return WHEN_NB[base] if prefix in NB and base in WHEN_NB else WHEN[base]

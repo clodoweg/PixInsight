@@ -560,7 +560,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
    aggressiveness=0.70 ; targetBackground=0.250 ; dynamicRangeCompression=0.40 ; contrastRecovery=true ; scaleSeparation=1024 ; contrastRecoveryIntensity=1.000 ; previewLargeScale=false ; saturationEnabled=false ; saturationAmount=0.75 ; saturationBoost=0.50 ; saturationLightnessMask=true ; backgroundROIEnabled=false ; backgroundROIX0=0 ; backgroundROIY0=0 ; backgroundROIWidth=0 ; backgroundROIHeight=0
 
 > OPTION — à la place de GHS_1 et GHS_2 : MultiscaleAdaptiveStretch sur chaque canal sans étoiles, même fond cible 0,25 pour tous (règle du même fond), puis GHS_3_fond sur chaque canal
-> Glisse sur S, puis H, puis O (ou R_C_MAS_canaux_rapide)
+> Glisse sur S, puis H, puis O
 > Non testé en narrowband.
 > 
 > PRÉRÉGLÉ : MultiscaleAdaptiveStretch, tes réglages MAS (Aggressiveness 0,70, Target background 0,250 comme le Target Median 0,25 de Statistical Stretch, Dynamic range compression 0,40, Contrast recovery) ; saturation décochée (canaux en gris).
@@ -590,41 +590,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - fond coupé à noir -> Aggressiveness plus bas (2 à 3)
 
 ### P4_rapide
-
-#### R_C_MAS_canaux_rapide — ProcessContainer
-   1. Script
-      script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
-      paramètres : `etapes=Opt_MAS_canaux*>S,H,O`, `dialogue=false`
-
-> MODE RAPIDE, à la place de GHS_1 et GHS_2 sur les canaux (MAS fond 0,25) : S, H, O (HOO : H, O) linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut), double-clic puis Apply Global (pas en glissant) ; ensuite GHS_3_fond sur chaque canal, puis la palette.
-> 
-> LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).
-> 
-> PRÉRÉGLÉ : conteneur de scripts : Lineaire_auto lance Opt_MAS_canaux sur S, H et O (fond cible 0,25 pour les trois), chaque canal sur une copie puis recopié : un Ctrl+Z par canal.
-> 
-> À RÉGLER : S, H, O linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut) ; Conteneurs du workflow chargé ; double-clic puis Apply Global (pas en glissant) ; ensuite GHS_3_fond sur S, H et O (même fond, vers 0,12–0,14), puis R_C_Palette_rapide ou la palette.
-> 
-> SI :
-> - un canal mal étiré -> Ctrl+Z sur ce canal, puis GHS à la main
-> - réglage MAS à changer -> double-clic sur Opt_MAS_canaux (c'est elle qui est lancée)
-
-#### R_C_Stat_canaux_rapide — ProcessContainer
-   1. Script
-      script `$PXI_SRCDIR/scripts/clodoweg/Stat_canaux.js`
-      paramètres : `vues=S,H,O`, `cible=0.25`, `sigma=5.0`, `dialogue=false`
-
-> MODE RAPIDE, à la place de GHS_1 et GHS_2 sur les canaux (Statistical Stretch, médiane 0,25) : S, H, O linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut), double-clic puis Apply Global (pas en glissant) ; ensuite GHS_3_fond sur chaque canal, puis la palette.
-> 
-> LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).
-> 
-> PRÉRÉGLÉ : conteneur de scripts : Stat_canaux (calcul de Statistical Stretch de SetiAstro) sur S, H et O : point noir médiane − 5 × 1,4826 × MAD, médiane amenée à 0,25 pour les trois ; un Ctrl+Z par canal.
-> 
-> À RÉGLER : S, H, O linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut) ; double-clic puis Apply Global (pas en glissant) ; ensuite GHS_3_fond sur S, H et O (même fond, vers 0,12–0,14), puis R_C_Palette_rapide ou la palette ; copie Stat_canaux.js dans src/scripts/clodoweg.
-> 
-> SI :
-> - fond trop sombre, signal faible perdu -> double-clic sur Stat_canaux dans le conteneur : Blackpoint Sigma 3
-> - fond trop clair -> Target Median 0,20
-> - un canal mal étiré -> Ctrl+Z sur ce canal, puis GHS à la main
 
 ## P5_Couleur
 

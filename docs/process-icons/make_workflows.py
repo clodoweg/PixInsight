@@ -1434,6 +1434,9 @@ _it = pick(sho, 'Etoiles_NB_auto')
 sho.remove(_it)
 insert_after(sho, 'Extraire_O_stars', [_it])
 
+# SHO sans RGB : pas de rapide en phase 4 (demande de l'utilisateur, 20 octobre 2026 : « supprime les P4 rapide pour SHO sans RGB ») ; Opt_MAS_canaux reste en option
+sho[:] = [x for x in sho if x[0][0] not in ('C_MAS_canaux_rapide', 'C_Stat_canaux_rapide')]
+
 # Look_Lightroom (option, tous les workflows) sur l'image SANS étoiles, juste avant la recombinaison des étoiles
 # (demande de l'utilisateur, 9 octobre 2026 : « Je vais faire ce process avant de mettre les étoiles »)
 for _st in (lrgb, lhargb, rgbsho, sho, hoo):
