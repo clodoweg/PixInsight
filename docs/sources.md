@@ -374,6 +374,16 @@ Question : « Est-ce que tu penses qu'il est possible de rajouter à la fin une 
 
 - [GraXpert 3.0.2 and PixInsight script on Mac (AstroBin)](https://app.astrobin.com/forum/topic/125008/graxpert-302-and-pixinsight-script-on-mac-intel-macos-sonoma-145) — Forum *(résumé)* : scripts sous /Applications/PixInsight/src/scripts (chemin d'un message d'erreur).
 
+## Veille du 20 octobre 2026 (skill veille, période 20 octobre 2025 - 20 octobre 2026)
+
+Rapport complet et liste des URL : `docs/veille/veille-2026-10-20.md`. Principales sources :
+- Officiel — [PixInsight 1.9.4](https://pixinsight.net/dev/index.php?articles/pixinsight-1-9-4-lockhart-released.15/) (12 mai 2026 : moteur V8, instances Script distinctes, identifiants d'images automatiques, icônes ABE / SubframeSelector à refaire) ; [1.9.5](https://pixinsight.net/dev/index.php?articles/pixinsight-1-9-5-lockhart-released.21/) (ImageSolver « recursive surface splines », aperçus 32 bits, XISF 1.0 rév. 1) ; [WBPP 2.9](https://pixinsight.net/dev/index.php?articles/wbpp-2-9-0-release-announcement.8/), [WBPP 3.1](https://pixinsight.net/dev/index.php?articles/wbpp-3-1-0-release-announcement.20/) ; guide V8 *(résumé)*.
+- Officiel — Cosmic Photons : [SyntheticLuminance 1.1](https://www.cosmicphotons.com/pi-scripts/syntheticluminance/) (septembre 2026), [ColourMask 2.2](https://www.cosmicphotons.com/pi-modules/colourmask/) (mai 2026), [NBColourMapper 3.1](https://www.cosmicphotons.com/pi-scripts/nbcolourmapper/updates.xri) ; [Toolbox](https://www.ideviceapps.de/PixInsight/Utilities/updates.xri) (18 octobre 2026).
+- Forum — [ChannelDesigner](https://pixinsight.com/forum/index.php?threads/new-script-channeldesigner.26627/), [SkySolver](https://pixinsight.com/forum/index.php?threads/skysolver-pixinsight-plugin-fast-blind-solving-for-all-images-live-preview-annotations.27573/), [Smart Quantile Stretch](https://pixinsight.com/forum/index.php?threads/smart-quantile-stretch-sqs-%E2%80%94-adaptive-one-click-stretch.27467/).
+- Officiel — autres outils : [Siril 1.4.0](https://siril.org/download/2025-12-05-siril-1-4-0/), [Siril 1.4.4](https://siril.org/download/2026-06-17-siril-1-4-4/), [Seti Astro Suite Pro](https://github.com/setiastro/setiastrosuitepro/releases), [SyQon](https://syqon.eu/), [GraXpert](https://github.com/Steffenhir/GraXpert/releases), [StarTools](https://www.startools.org/downloads), [RC Astro CLI](https://www.rc-astro.com/stand-alone-cli-release-1-0-0/).
+- Tutoriel — [Adam Block, WorkFlow Examples 2026](https://adamblockstudios.com/?p=6944) (contenu payant : MAS sur L et RGB, LRGB par ImageBlend) ; [Cosgrove, M104 2026](https://cosgrovescosmos.com/image-processing/m104-process-2026), [Sh2-140](https://cosgrovescosmos.com/image-processing/sh2-140), [Astro Contrast Enhancer](https://cosgrovescosmos.com/astro-contrast-enhancer) ; [Ron Brecher, Sh2-132](https://astrodoc.ca/sh2-132/) (LHE à deux échelles) ; [Warren Keller, masterclasses 2026](https://app.telescope.live/en/tutorials/217/2026-pixinsight-stretching-masterclass).
+- Forum — MARS DR2, soucis signalés (reference data, halos) : [AstroBin](https://app.astrobin.com/forum/topic/242060/mars-dr2-release-for-pixinsight-msgc) *(résumé)*.
+
 ## Revue du 20 octobre 2026 (skill maj-kb)
 
 Versions et nouveautés :
@@ -399,6 +409,8 @@ Narrowband, sources récentes :
 - Tutoriel — [Warren Keller, masterclass d'étirement 2026](https://app.telescope.live/en/tutorials/217/2026-pixinsight-stretching-masterclass) et [NBN](https://app.telescope.live/en/tutorials/98/exploring-pixinsight-narrowband-normalization-techniques) : sans réglages chiffrés lisibles.
 
 ## Non vérifié
+
+- Veille du 20 octobre 2026 : BXT avec PSF à 2 × la FWHM mesurée (Cosgrove seul) ; MARS DR2 « halos sombres » (forums seulement) ; contenu des leçons d'Adam Block (payant, non vu) ; date de GraXpert 3.1.0rc2 ; Gaia DR4 le 2 décembre 2026 (résumé) ; SkySolver limité à un champ d'environ 0,5° (champ du CDK17 + QHY600 estimé à 0,7°, non vérifié).
 
 - NBN_SHO_doux (20 octobre 2026) : réglages d'une seule source (Deep Space Place) ; non testé dans PixInsight (méthode Cosgrove retirée).
 

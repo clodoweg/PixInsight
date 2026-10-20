@@ -1149,3 +1149,11 @@ Option Opt_CloneStamp (P4, LRGB et LHaRGB, demande de l'utilisateur, 18 octobre 
 - MAS 1.1, GHS 3.1.0, NarrowbandNormalization 1.1, MARS DR2 : inchangés. Scripts SetiAstro : dépôt https://updates.setiastro.com/, mêmes versions et MD5 que les icônes.
 - Toolbox du 18 octobre 2026 : CombineHaToRGB.js (E15 LHaRGB) a un nouveau MD5 : si l'icône est bloquée, effacer son champ MD5.
 
+## Veille du 20 octobre 2026 (rapport : ../veille/veille-2026-10-20.md)
+
+- PixInsight 1.9.4 (mai 2026) : moteur JavaScript V8 (cause des `#engine v8`), instances Script distinctes des process, identifiants d'images automatiques (Préférences › Global Object Identifiers : à laisser désactivé, Renommer_auto nomme les vues), icônes ABE / SubframeSelector anciennes à refaire (aucune dans nos xpsm).
+- PixInsight 1.9.5 : ImageSolver option « recursive surface splines » (astrométrie plus précise) ; XISF enregistrés en 1.9.5 illisibles avant 1.9.5 ; aperçus 32 bits pour MAS, MMT, MLT.
+- Scripts à connaître : SyntheticLuminance 1.1 (Cosmic Photons, super-L pondérée au meilleur rapport signal/bruit), ColourMask 2.2, ChannelDesigner (palettes avec aperçu), Astro Contrast Enhancer (Cosgrove, bêta, dépôt non signé), SkySolver (bêta, résolution en aveugle).
+- Hors PixInsight : rien ne bat BXT, NXT, SXT et MGC pour ce matériel (Siril 1.4, SASpro, SyQon, GraXpert, StarTools, APP 2.0) ; Camera Raw : ne pas utiliser Denoise ni l'IA générative sur une image astro.
+- À suivre : Gaia DR4 (2 décembre 2026, base SPCC / ImageSolver probable), outils IA natifs annoncés par PixInsight.
+
