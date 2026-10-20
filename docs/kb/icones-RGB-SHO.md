@@ -6,7 +6,21 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 ## P1_Preparation
 
-#### E00_LinearPatternSubtraction — Script
+#### E00_Renommer_auto — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Renommer_auto.js`
+   paramètres : `fermerAutocrop=true`
+
+> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
+> 
+> PRÉRÉGLÉ : script Renommer_auto : renomme les masters mono ouverts L, R, G, B, H, O, S d'après le mot-clé FILTER (Lum, Red, Ha, OIII... ; V ou Vert -> G), sinon d'après le nom du fichier, puis le nom de la vue ; ferme d'abord, sans demander, les vues dont le nom finit par autocrop ou autocrop_c QUAND une autre vue du même filtre est ouverte (doublon) ; une vue autocrop seule pour son filtre est gardée et renommée (fermerAutocrop = true) ; retient aussi le dossier des masters pour Export_TIFF.
+> 
+> À RÉGLER : une seule fois par ordinateur : copie Renommer_auto.js et clodoweg_objet.jsh dans src/scripts/clodoweg ; ouvre tes masters, puis lance l'icône.
+> 
+> SI :
+> - filtre inconnu ou nom déjà pris -> message dans la console, renomme cette vue à la main
+> - vue autocrop à garder -> décoche la case dans la fenêtre (ou fermerAutocrop = false)
+
+#### E01_LinearPatternSubtraction — Script
    script `$PXI_SRCDIR/scripts/clodoweg/LPS_UnClic.js`
    paramètres : `correctColumns=false`, `correctEntireImage=true`, `defectTableFilePath=`, `layersToRemove=9`, `rejectionLimit=3`, `globalRejection=true`, `globalRejectionLimit=5`, `autoBackground=true`, `backgroundReferenceLeft=0`, `backgroundReferenceTop=0`, `backgroundReferenceWidth=512`, `backgroundReferenceHeight=512`, `allOpenImages=true`, `closeWorkingImages=true`
 
@@ -21,20 +35,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - une seule image -> allOpenImages = false dans l'icône, puis glisse-la sur l'image
 > - artefacts -> Ctrl+Z : le script est conçu pour les brutes, avant alignement
 > - script introuvable -> vérifie le dossier scripts/clodoweg (à recopier après une réinstallation de PixInsight) ; version avec dialogue : menu Script › Pattern Correction › LinearPatternSubtraction
-
-#### E01_Renommer_auto — Script
-   script `$PXI_SRCDIR/scripts/clodoweg/Renommer_auto.js`
-   paramètres : `fermerAutocrop=true`
-
-> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
-> 
-> PRÉRÉGLÉ : script Renommer_auto : renomme les masters mono ouverts L, R, G, B, H, O, S d'après le mot-clé FILTER (Lum, Red, Ha, OIII... ; V ou Vert -> G), sinon d'après le nom du fichier, puis le nom de la vue ; ferme d'abord, sans demander, les vues dont le nom finit par autocrop ou autocrop_c QUAND une autre vue du même filtre est ouverte (doublon) ; une vue autocrop seule pour son filtre est gardée et renommée (fermerAutocrop = true) ; retient aussi le dossier des masters pour Export_TIFF.
-> 
-> À RÉGLER : une seule fois par ordinateur : copie Renommer_auto.js et clodoweg_objet.jsh dans src/scripts/clodoweg ; ouvre tes masters, puis lance l'icône.
-> 
-> SI :
-> - filtre inconnu ou nom déjà pris -> message dans la console, renomme cette vue à la main
-> - vue autocrop à garder -> décoche la case dans la fenêtre (ou fermerAutocrop = false)
 
 #### E02_Combinaison_RGB — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Combiner_RGB.js`

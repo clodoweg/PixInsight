@@ -1431,7 +1431,7 @@ for _st in (lrgb, lhargb, rgbsho, sho, hoo):
 
 # galaxies : Renommer_auto avant LinearPatternSubtraction (E00, E01 inversés, demande de l'utilisateur, 18 octobre 2026 ;
 # R_C_Preparation_rapide et T_Turbo_debut font déjà Renommer_auto en premier)
-for _st in (lrgb, lhargb):
+for _st in (lrgb, lhargb, rgbsho, sho, hoo):   # narrowband aussi (demande de l'utilisateur, 20 octobre 2026)
     _it = pick(_st, 'Renommer_auto')
     _st.remove(_it)
     insert_before(_st, 'LinearPatternSubtraction', [_it])
