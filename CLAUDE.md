@@ -17,6 +17,8 @@ Le workflow LRGB fonctionne bien. Depuis le 8 octobre 2026, le travail porte sur
 
 Skill `maj-kb` (`.claude/skills/maj-kb/SKILL.md`, demande de l'utilisateur du 20 octobre 2026) : revérifie les sources notées, cherche des sources et versions plus récentes, met à jour `docs/kb/` et `docs/sources.md` sans toucher aux icônes (propositions seulement).
 
+Skill `veille` (`.claude/skills/veille/SKILL.md`, demande de l'utilisateur du 20 octobre 2026) : nouveautés de traitement des 12 derniers mois (PixInsight et autres outils, méthodes), comparées aux workflows de l'utilisateur ; rapport `docs/veille/veille-AAAA-MM-JJ.md`, propositions numérotées, aucune icône modifiée.
+
 Avant d'ajouter ou de modifier un contenu technique (réglage, valeur, ordre des étapes, formule, URL) :
 
 1. Cherche des sources et lis-les : documentation officielle d'abord, puis tutoriels reconnus, puis forums.
