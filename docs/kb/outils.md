@@ -1157,3 +1157,10 @@ Option Opt_CloneStamp (P4, LRGB et LHaRGB, demande de l'utilisateur, 18 octobre 
 - Hors PixInsight : rien ne bat BXT, NXT, SXT et MGC pour ce matériel (Siril 1.4, SASpro, SyQon, GraXpert, StarTools, APP 2.0) ; Camera Raw : ne pas utiliser Denoise ni l'IA générative sur une image astro.
 - À suivre : Gaia DR4 (2 décembre 2026, base SPCC / ImageSolver probable), outils IA natifs annoncés par PixInsight.
 
+## BXT ML5 : réglages (20 octobre 2026)
+
+- L'utilisateur a la licence ML5 ; toutes les icônes en `ml_version = 0` prennent ML5.
+- RC Astro : plus net que ML4 à réglage égal, aucun réglage conseillé, manuel pas mis à jour. Forums : étoiles plus petites ; fausses étoiles ou beignets dans les coins aberrants même en Correct Only (correctif annoncé ; contournement : Correct Only en ML4).
+- Réglages actuels des icônes : Sharpen Stars 0,25, Halos 0 partout ; Nonstellar 0,50 (RGB galaxies), 0,80 (L galaxies), 0,60 (narrowband) ; PSF auto.
+- Pistes non vérifiées : L 0,80 -> 0,60-0,70 si trop dur ; garder le reste ; contrôler les coins après Correct Only.
+

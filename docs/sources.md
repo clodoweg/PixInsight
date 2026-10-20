@@ -384,6 +384,14 @@ Rapport complet et liste des URL : `docs/veille/veille-2026-10-20.md`. Principal
 - Tutoriel — [Adam Block, WorkFlow Examples 2026](https://adamblockstudios.com/?p=6944) (contenu payant : MAS sur L et RGB, LRGB par ImageBlend) ; [Cosgrove, M104 2026](https://cosgrovescosmos.com/image-processing/m104-process-2026), [Sh2-140](https://cosgrovescosmos.com/image-processing/sh2-140), [Astro Contrast Enhancer](https://cosgrovescosmos.com/astro-contrast-enhancer) ; [Ron Brecher, Sh2-132](https://astrodoc.ca/sh2-132/) (LHE à deux échelles) ; [Warren Keller, masterclasses 2026](https://app.telescope.live/en/tutorials/217/2026-pixinsight-stretching-masterclass).
 - Forum — MARS DR2, soucis signalés (reference data, halos) : [AstroBin](https://app.astrobin.com/forum/topic/242060/mars-dr2-release-for-pixinsight-msgc) *(résumé)*.
 
+## BXT ML5 : réglages (recherche du 20 octobre 2026, demande de l'utilisateur : « cherche sur le net s'il y a des infos sur les modif de reglages pour passer de 4 a 5 »)
+
+- Officiel — [RC Astro, BXT ML5](https://www.rc-astro.com/blurxterminator-ml5/) : « ML5 will produce even sharper results on most images than ML4 » ; réseau plus gros (environ 45 M de paramètres contre 12), environ 20 % plus lent, étoiles de référence de la PSF choisies en interne ; aucun réglage conseillé.
+- Officiel — [manuel technique BXT](https://www.rc-astro.com/blurxterminator-technical-manual/) : pas mis à jour pour ML5 (AI4, décembre 2024) ; PSF jusqu'à 8 px ; FWHM au-dessus de 6-8 px : binning x2 possible ; PSF auto : il faut des étoiles partout.
+- Officiel — [CLI 1.0.0](https://www.rc-astro.com/stand-alone-cli-release-1-0-0/) : paramètre non stellaire renommé en diamètre (= FWHM) ; sans effet en PSF auto.
+- Forum — [Cloudy Nights, fil ML5](https://www.cloudynights.com/forums/topic/1009047-blurxterminator-ml5/) *(résumé, page fermée)* : étoiles plus petites, réglage étoiles revu à la baisse par un utilisateur ; fausses étoiles ou « beignets » dans les coins aberrants, même en Correct Only (Russell Croman : ML5 plus sensible aux variations rapides de PSF, correctif annoncé) ; contournement : Correct Only en ML4.
+- Forum — [Stargazers Lounge](https://stargazerslounge.com/topic/447867-rc-astro-released-blurxterminator-ml5/) *(résumé)* : un avis inverse (ML5 plus doux et moins d'artefacts que ML4) ; [AstroBin, comparaison aux relevés](https://app.astrobin.com/forum/topic/252025/russell-croman-astrophotography-blurxterminator/new-blurxterminator-ml5-model-accuracy-comparison-with-sky-survey-data) *(résumé)* : structures étendues trop modifiées.
+
 ## Revue du 20 octobre 2026 (skill maj-kb)
 
 Versions et nouveautés :
@@ -409,6 +417,8 @@ Narrowband, sources récentes :
 - Tutoriel — [Warren Keller, masterclass d'étirement 2026](https://app.telescope.live/en/tutorials/217/2026-pixinsight-stretching-masterclass) et [NBN](https://app.telescope.live/en/tutorials/98/exploring-pixinsight-narrowband-normalization-techniques) : sans réglages chiffrés lisibles.
 
 ## Non vérifié
+
+- BXT ML5 (20 octobre 2026) : aucune valeur conseillée par RC Astro ; force relative ML5 / ML4 non chiffrée ; comportement en narrowband et sur données suréchantillonnées (CDK17, FWHM 5-8 px) sans source ; baisse de Sharpen Nonstellar (L 0,80 -> 0,60-0,70) seulement déduite de « plus net à réglage égal ».
 
 - Veille du 20 octobre 2026 : BXT avec PSF à 2 × la FWHM mesurée (Cosgrove seul) ; MARS DR2 « halos sombres » (forums seulement) ; contenu des leçons d'Adam Block (payant, non vu) ; date de GraXpert 3.1.0rc2 ; Gaia DR4 le 2 décembre 2026 (résumé) ; SkySolver limité à un champ d'environ 0,5° (champ du CDK17 + QHY600 estimé à 0,7°, non vérifié).
 
