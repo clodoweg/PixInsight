@@ -218,6 +218,7 @@ Légende :
 - Demande de l'utilisateur (20 octobre 2026) : « dans les options , pour ces 3 process, deplace Opt_GHS_3_fond juste au dessous de Opt_GHS_1_premier » : ordre des options P4 (SHO, RGB + SHO ; en HOO, les GHS sont au chemin principal).
 - Demandes de l'utilisateur (20 octobre 2026, après la revue maj-kb) : « pour avoir ML5 il faut payer ? met la derniere version toujours » (ml_version 0 partout, LRGB et LHaRGB compris) ; « Met un NBN en option comme ca » (Opt_NBN_SHO_doux) ; « Met une option et un rapide Cosgrove pour que je teste » (Opt_NBN_SHO_lineaire, Opt_MAS_Cosgrove, R_C_Cosgrove_rapide).
 - Demande de l'utilisateur (20 octobre 2026) : « enlève cosgrove de mes process icon » : options et rapide Cosgrove retirés.
+- Demande de l'utilisateur (20 octobre 2026, « oui ») : MD5 de E15_CombineHaWithRGB (LHaRGB) passé à 7061c2ce12eb08a05413140f29466c21, calculé sur [20261018-PixInsightToolbox-Package.zip](https://www.ideviceapps.de/PixInsight/Utilities/20261018-PixInsightToolbox-Package.zip) ; paramètres du script identiques à la version précédente (alphaView, amount, beta, bg, sigma, mask, invertMask, linear, rgbLinked).
 - Ordre de réglage de NarrowbandNormalization (Lightness, Shadowpoint, boosts, hautes lumières, Brightness, SCNR) : suggestion de la fiche, signalée comme telle sur la page ; aucune source ne fixe d'ordre.
 
 ## Neutralisation du fond dans SPCC

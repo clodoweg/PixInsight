@@ -1870,7 +1870,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
    <instance class="Script" version="256" id="E15_CombineHaWithRGB_instance">
       <description>LANCEMENT : glisse l'icône sur l'image. Si l'icône est bloquée après une mise à jour du script, efface son champ MD5.&#10;&#10;PRÉRÉGLÉ : script CombineHaWithRGB (PixInsight Toolbox, Jürgen Terpe) : H Alpha = HaNB (sortie de Continuum_auto), Amount 2, Beta 0,2 (un peu de H dans le bleu : régions HII roses), Background 0,05, Sigma 0, Linear Image coché, canaux liés.&#10;&#10;À RÉGLER : après E14_Continuum_auto (HaNB ouverte) : glisse sur le RGB linéaire ; double-clic : fenêtre du script avec aperçu ; ensuite C_RGB_bruit.&#10;&#10;SI :&#10;- régions HII trop rouges -&gt; Amount 1,5&#10;- trop discrètes -&gt; Amount 2,5&#10;- trop roses ou violettes -&gt; Beta 0,1&#10;- bruit rouge dans le fond -&gt; Background plus haut, ou Sigma 1&#10;- vue créée HaNB1 par Continuum_auto -&gt; renomme-la HaNB avant</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/Toolbox/CombineHaToRGB.js</parameter>
-      <parameter id="md5sum">140cbb0fc118263dc1d71b8e9e39f0e1</parameter>
+      <parameter id="md5sum">7061c2ce12eb08a05413140f29466c21</parameter>
       <table id="parameters" rows="8">
          <tr>
             <td id="id">alphaView</td>
