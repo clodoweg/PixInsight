@@ -402,6 +402,15 @@ Synthèse : `docs/kb/benchmark-bxt.md`. Principales sources :
 - Tutoriel — Ron Brecher : [M57](https://astrodoc.ca/m57/), [Sh2-200](https://astrodoc.ca/sh2-200/), [Sh2-101](https://astrodoc.ca/sh2-101-in-three-palettes/), [Pacman SHO](https://astrodoc.ca/pacman-sho/) ; [Deep Space Place, SHO](https://deepspaceplace.com/tutorials/pixinsight-sho-workflow) ; [theAstroShed, workflows 2024](https://www.theastroshed.com/my-rgb-and-sho-workflows-2024-edition/) (icônes lues) ; Cosgrove : [article BXT](https://cosgrovescosmos.com/tips-n-techniques/blurxtermintor-a-breakthrough-for-decon), [M27](https://cosgrovescosmos.com/projects/m27-the-dumbbell-nebula-reprocess) ; [Chaotic Nebula](https://chaoticnebula.com/how-to-reduce-blurring-in-astrophotos-with-blurxterminator/) ; [Telescope Live](https://telescope.live/blog/pixinsight-blur-xterminator-process) ; [AstroWorldCreations, suréchantillonnage CDK14](https://www.astroworldcreations.com/blog/oversampling).
 - Forum — [Webastro](https://www.webastro.net/forums/topic/232216-essai-du-nouveau-script-blurxterminator/) [ouverte] ; Cloudy Nights ([BXT](https://www.cloudynights.com/forums/topic/855024-blurxterminator/page/5/), [NB](https://www.cloudynights.com/forums/topic/907829), [ML5](https://www.cloudynights.com/forums/topic/1009047-blurxterminator-ml5/)), [Stargazers Lounge, suréchantillonnage](https://stargazerslounge.com/topic/404242-blurxterminator-and-oversampled-data/), [Astrosurf](https://www.astrosurf.com/topic/158835) *(résumés)*.
 
+## Contrôle des liens (20 octobre 2026, skill maj-kb)
+
+388 URL uniques (sources.md, kb, dépôts) : 245 répondent ; 99 en 403 et 20 en 406 (AstroBin, Cloudy Nights, GitHub, sites qui bloquent les robots : liens bons dans un navigateur) ; 4 en 429 (limite de requêtes). Dépôts PixInsight : les adresses de dossier renvoient 404, normal ; leur `updates.xri` répond (SetiAstro, GHS, Cosmic Photons dont SyntheticLuminance, Charles Hagen, VeraLux).
+Liens morts ou injoignables (gardés pour mémoire, contenu déjà résumé dans la base) :
+- [MKStarReduction](https://mhkastro.github.io/MKStarReduction/) (404, option supprimée de toute façon) ;
+- Light Vortex Astronomy, tous les tutoriels (site injoignable) ;
+- [infocusastro, ColourMask](https://infocusastro.com/colormask-script/), [Wolf Creek, étoiles saturées](https://wolfcreek.space/index.php/2022/07/25/fixing-saturated-stars-in-pixinsight/), [The Coldest Nights](https://thecoldestnights.com/2020/06/pixinsight-dynamic-narrowband-combinations-with-pixelmath/) (injoignables) ;
+- [junruiye, HOO](https://www.junruiye.com/hoo-processing-pixinsight-pencil-nebula/) (503, peut-être passager).
+
 ## Revue du 20 octobre 2026 (skill maj-kb)
 
 Versions et nouveautés :
