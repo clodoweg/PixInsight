@@ -314,7 +314,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 #### E10_C_SHO_lineaire — ProcessContainer
    1. BlurXTerminator
-      ml_version=4 ; correct_only=false ; sharpen_stars=0.25 ; adjust_star_halos=0.00 ; nonstellar_diameter=0.0 ; auto_nonstellar_psf=true ; sharpen_nonstellar=0.60 ; lunar_planetary=false ; overlap=0.20
+      ml_version=0 ; correct_only=false ; sharpen_stars=0.25 ; adjust_star_halos=0.00 ; nonstellar_diameter=0.0 ; auto_nonstellar_psf=true ; sharpen_nonstellar=0.60 ; lunar_planetary=false ; overlap=0.20
    2. StarXTerminator
       ml_version=0 ; output_stars=true ; unscreen=false ; remove_stars=true ; remove_spikes=true ; remove_aureoles=true ; remove_reflections=true ; overlap=0.20
    3. NoiseXTerminator
@@ -563,7 +563,58 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - O ou S trop faible -> Aggressiveness plus haut sur ce canal, ou GHS
 > - cœur brûlé -> Dynamic range compression plus haut
 
+#### Opt_NBN_SHO_lineaire — NarrowbandNormalization
+   palette=Palette_SHO ; lightness=Lightness_Off ; blendMode=Blend_Mode1 ; haBlend=0.000 ; scnr=0.700 ; o3Boost=1.000 ; s2Boost=1.200 ; shadowpoint=1.000 ; highlightReduction=1.000 ; brightness=1.000
+
+> OPTION — méthode Cosgrove à tester, étape 1 de 2 (à la place de Statistical_Stretch, GHS_2_contraste, SHO_simple et NBN_SHO) : glisse sur l'image SHO LINÉAIRE sans étoiles (après C_SHO_lineaire)
+> Ensuite MAS_Cosgrove
+> Ou R_C_Cosgrove_rapide.
+> 
+> PRÉRÉGLÉ : NarrowbandNormalization palette SHO, Lightness Off (image linéaire), SCNR 0,7, SII boost 1,2, autres à 1.
+> 
+> À RÉGLER : méthode Cosgrove : glisse sur l'image SHO LINÉAIRE sans étoiles (après C_SHO_lineaire) ; aperçu avec STF ; ensuite MAS_Cosgrove.
+> 
+> SI :
+> - trop vert après MAS -> SCNR plus haut
+> - SHO déjà fermée (rapide P3) -> R_C_Cosgrove_rapide (la recrée)
+
+#### Opt_MAS_Cosgrove — MultiscaleAdaptiveStretch
+   aggressiveness=0.70 ; targetBackground=0.150 ; dynamicRangeCompression=0.40 ; contrastRecovery=true ; scaleSeparation=1024 ; contrastRecoveryIntensity=1.000 ; previewLargeScale=false ; saturationEnabled=true ; saturationAmount=0.50 ; saturationBoost=0.50 ; saturationLightnessMask=true ; backgroundROIEnabled=false ; backgroundROIX0=0 ; backgroundROIY0=0 ; backgroundROIWidth=0 ; backgroundROIHeight=0
+
+> OPTION — méthode Cosgrove, étape 2 de 2 : glisse sur SHO juste après NBN_SHO_lineaire
+> Étire l'image combinée d'un coup (fond 0,15, saturation 0,50)
+> Ensuite la finition (phase 6) sur SHO.
+> 
+> PRÉRÉGLÉ : MultiscaleAdaptiveStretch, tes réglages MAS (Aggressiveness 0,70, fond 0,15, Dynamic range compression 0,40, Contrast recovery) avec saturation 0,50.
+> 
+> À RÉGLER : méthode Cosgrove : glisse sur SHO juste après NBN_SHO_lineaire ; ensuite la finition (phase 6) sur SHO.
+> 
+> SI :
+> - image trop claire -> Aggressiveness 0,50 ou MAS_light
+> - couleurs trop fortes -> saturation 0,30
+> - O dominant : fond pas sous 0,12 (Kaessler)
+
 ### P4_rapide
+
+#### R_C_Cosgrove_rapide — ProcessContainer
+   1. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
+      paramètres : `views=SHO`, `dialogue=false`
+   2. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
+      paramètres : `etapes=Combinaison_SHO>H ; Opt_NBN_SHO_lineaire*>SHO ; Opt_MAS_Cosgrove*>SHO`, `dialogue=false`
+
+> MODE RAPIDE méthode Cosgrove, à tester (à la place de Statistical_Stretch, GHS_2_contraste, SHO_simple et NBN_SHO) : S, H, O linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou la phase 3), double-clic puis Apply Global (pas en glissant) ; Conteneurs du workflow chargé ; résultat dans SHO, ensuite la finition (phase 6) sur SHO.
+> 
+> LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).
+> 
+> PRÉRÉGLÉ : conteneur de scripts : Fermer_vues ferme SHO si elle est ouverte ; Lineaire_auto lance Combinaison_SHO (S, H, O linéaires -> SHO), Opt_NBN_SHO_lineaire puis Opt_MAS_Cosgrove sur SHO (chacun sur une copie : Ctrl+Z possible) ; S, H, O restent ouverts (pour comparer avec le chemin principal).
+> 
+> À RÉGLER : S, H, O linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou la phase 3) ; Conteneurs du workflow chargé ; double-clic puis Apply Global (pas en glissant) ; ensuite la finition sur SHO.
+> 
+> SI :
+> - résultat à comparer -> chemin principal (Statistical_Stretch...) sur S, H, O restés linéaires
+> - une étape échoue -> la console dit laquelle ; fais les options à la main
 
 ## P5_Couleur
 
@@ -590,6 +641,21 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - O discret -> O3 boost
 
 ### P5_options
+
+#### Opt_NBN_SHO_doux — NarrowbandNormalization
+   palette=Palette_SHO ; lightness=Lightness_Off ; blendMode=Blend_Mode1 ; haBlend=0.000 ; scnr=0.200 ; o3Boost=1.200 ; s2Boost=1.400 ; shadowpoint=1.000 ; highlightReduction=1.000 ; brightness=1.000
+
+> OPTION — à la place de NBN_SHO, à tester : réglages plus doux (Deep Space Place 2026 : Lightness Off, SCNR 0,20, OIII 1,2, SII 1,4)
+> Glisse sur SHO_etire après SHO_simple, compare avec NBN_SHO.
+> 
+> PRÉRÉGLÉ : NarrowbandNormalization palette SHO, Lightness Off, SCNR 0,20, OIII boost 1,2, SII boost 1,4, Highlight reduction et Brightness à 1 (Deep Space Place 2026).
+> 
+> À RÉGLER : glisse sur SHO_etire après SHO_simple, à la place de NBN_SHO ; compare les deux (Ctrl+Z entre les deux).
+> 
+> SI :
+> - trop vert -> SCNR 0,4
+> - pas assez d'orange -> SII boost 1,5
+> - détail pâteux -> Lightness Ha
 
 #### Opt_Foraxx_SHO — PixelMath
    expression = `(O^~O)*S + ~(O^~O)*H` ; expression1 = `((O*H)^~(O*H))*H + ~((O*H)^~(O*H))*O` ; expression2 = `O` ; useSingleExpression=false ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=true ; showNewImage=true ; newImageId=SHO_Foraxx ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=RGB ; newImageSampleFormat=SameAsTarget

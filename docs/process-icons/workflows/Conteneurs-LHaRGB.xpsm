@@ -1720,7 +1720,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
    <instance class="ProcessContainer" id="E10_C_RGB_couleur_instance">
       <description>LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;CONTENEUR : BXT_CorrectOnly, SPCC, BXT_RGB.&#10;&#10;SUR : l'image RGB combinée, linéaire, gradient retiré.&#10;&#10;Double-clic sur le conteneur pour voir ou changer les réglages de chaque étape.</description>
       <instance class="BlurXTerminator" version="256" enabled="true">
-         <parameter id="ml_version" value="4"/>
+         <parameter id="ml_version" value="0"/>
          <parameter id="correct_only" value="true"/>
          <parameter id="sharpen_stars" value="0.25"/>
          <parameter id="adjust_star_halos" value="0.00"/>
@@ -1786,7 +1786,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          <parameter id="outputDirectory"></parameter>
       </instance>
       <instance class="BlurXTerminator" version="256" enabled="true">
-         <parameter id="ml_version" value="4"/>
+         <parameter id="ml_version" value="0"/>
          <parameter id="correct_only" value="false"/>
          <parameter id="sharpen_stars" value="0.25"/>
          <parameter id="adjust_star_halos" value="0.00"/>
@@ -1799,7 +1799,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
    </instance>
    <instance class="BlurXTerminator" version="256" id="E11_BXT_L_H_instance">
       <description>PRÉRÉGLÉ : Sharpen Stars 0,25, Halos 0, Nonstellar 0,80, PSF auto.&#10;&#10;À RÉGLER : rien ; sur L puis sur H, linéaires, avant tout mélange.&#10;&#10;SI :&#10;- vers ou pores -&gt; Nonstellar 0,70&#10;- FWHM &gt; 8 px -&gt; bin 2 ou réduction ×0,5 avant</description>
-      <parameter id="ml_version" value="4"/>
+      <parameter id="ml_version" value="0"/>
       <parameter id="correct_only" value="false"/>
       <parameter id="sharpen_stars" value="0.25"/>
       <parameter id="adjust_star_halos" value="0.00"/>
@@ -2143,7 +2143,7 @@ max($T, HaNB*a)</parameter>
    <instance class="ProcessContainer" id="R_C_P3_rapide_instance">
       <description>MODE RAPIDE, à la place de E10 à E13 : après R_Gradient_auto_rapide, GLISSE sur RGB (L et H ouvertes, Conteneurs-LHaRGB chargé) ; ensuite E14_Continuum_auto, R_C_Ha_RGB_rapide (ou E15 à E17).&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : BXT Correct Only, SPCC, BXT sur RGB ; Lineaire_auto : BXT_L_H sur L et H, NXT_L et SXT_L_lineaire sur L (= E10 à E13).&#10;&#10;À RÉGLER : après R_Gradient_auto_rapide : glisse sur le RGB linéaire (L et H ouvertes ; Conteneurs-LHaRGB chargé pour BXT_L_H, NXT_L, SXT_L_lineaire) ; ensuite E14_Continuum_auto (fenêtre), R_C_Ha_RGB_rapide glissé sur RGB (ou E15 à E17), puis GHS_1_premier sur L.&#10;&#10;SI :&#10;- une étape échoue -&gt; la console dit laquelle</description>
       <instance class="BlurXTerminator" version="256" enabled="true">
-         <parameter id="ml_version" value="4"/>
+         <parameter id="ml_version" value="0"/>
          <parameter id="correct_only" value="true"/>
          <parameter id="sharpen_stars" value="0.25"/>
          <parameter id="adjust_star_halos" value="0.00"/>
@@ -2209,7 +2209,7 @@ max($T, HaNB*a)</parameter>
          <parameter id="outputDirectory"></parameter>
       </instance>
       <instance class="BlurXTerminator" version="256" enabled="true">
-         <parameter id="ml_version" value="4"/>
+         <parameter id="ml_version" value="0"/>
          <parameter id="correct_only" value="false"/>
          <parameter id="sharpen_stars" value="0.25"/>
          <parameter id="adjust_star_halos" value="0.00"/>

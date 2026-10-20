@@ -374,6 +374,17 @@ for _p in NB:
     V[(_p, 'C_Sharp_MMT')] = (S['C_Sharp_MMT'][0], S['C_Sharp_MMT'][1], [x for x in S['C_Sharp_MMT'][2] if 'Sharp_USM' not in x])
     V[(_p, 'C_Etoiles_fond_rapide')] = V[(_p, 'C_Etoiles_fond_rapide')][:2] + ([x for x in V[(_p, 'C_Etoiles_fond_rapide')][2] if 'Fond_auto_clair' not in x],)
 
+# options NBN doux et méthode Cosgrove (demandes de l'utilisateur, 20 octobre 2026)
+S['NBN_SHO_doux'] = ("NarrowbandNormalization palette SHO, Lightness Off, SCNR 0,20, OIII boost 1,2, SII boost 1,4, Highlight reduction et Brightness à 1 (Deep Space Place 2026)", "glisse sur SHO_etire après SHO_simple, à la place de NBN_SHO ; compare les deux (Ctrl+Z entre les deux)",
+                     ["trop vert -> SCNR 0,4", "pas assez d'orange -> SII boost 1,5", "détail pâteux -> Lightness Ha"])
+S['NBN_SHO_lineaire'] = ("NarrowbandNormalization palette SHO, Lightness Off (image linéaire), SCNR 0,7, SII boost 1,2, autres à 1", "méthode Cosgrove : glisse sur l'image SHO LINÉAIRE sans étoiles (après C_SHO_lineaire) ; aperçu avec STF ; ensuite MAS_Cosgrove",
+                         ["trop vert après MAS -> SCNR plus haut", "SHO déjà fermée (rapide P3) -> R_C_Cosgrove_rapide (la recrée)"])
+S['MAS_Cosgrove'] = ("MultiscaleAdaptiveStretch, tes réglages MAS (Aggressiveness 0,70, fond 0,15, Dynamic range compression 0,40, Contrast recovery) avec saturation 0,50", "méthode Cosgrove : glisse sur SHO juste après NBN_SHO_lineaire ; ensuite la finition (phase 6) sur SHO",
+                     ["image trop claire -> Aggressiveness 0,50 ou MAS_light", "couleurs trop fortes -> saturation 0,30", "O dominant : fond pas sous 0,12 (Kaessler)"])
+S['C_Cosgrove_rapide'] = ("conteneur de scripts : Fermer_vues ferme SHO si elle est ouverte ; Lineaire_auto lance Combinaison_SHO (S, H, O linéaires -> SHO), Opt_NBN_SHO_lineaire puis Opt_MAS_Cosgrove sur SHO (chacun sur une copie : Ctrl+Z possible) ; S, H, O restent ouverts (pour comparer avec le chemin principal)",
+                          "S, H, O linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou la phase 3) ; Conteneurs du workflow chargé ; double-clic puis Apply Global (pas en glissant) ; ensuite la finition sur SHO",
+                          ["résultat à comparer -> chemin principal (Statistical_Stretch...) sur S, H, O restés linéaires", "une étape échoue -> la console dit laquelle ; fais les options à la main"])
+
 # SHO et RGB + SHO : Statistical_Stretch au chemin principal, GHS_1, GHS_2 et GHS_3_fond en option (demande de l'utilisateur, 20 octobre 2026 :
 # « pour les SHO avec et sans RGB, mets le Stat Streh a la place du GHS (qui passe en option). Passe aussi le GHS 3 en option ») ; HOO inchangé
 STAT_SUBS = [("ensuite GHS_1_premier sur H", "ensuite Statistical_Stretch sur S, H et O"),

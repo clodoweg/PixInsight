@@ -428,3 +428,7 @@ Revue des sources du 20 octobre 2026 (skill maj-kb, détails dans `../sources.md
 - Non recoupé : réglages NBN de l'utilisateur (SCNR 0,7, S2 boost 1,2, Lightness Ha) ; seule source chiffrée, Deep Space Place : SCNR 0,10-0,16, OIII 1,2-1,6, SII 1,45-1,48, Lightness Off.
 - Propositions (non appliquées, choix de l'utilisateur) : option de test NBN plus doux (SCNR 0,2, SII 1,4, OIII 1,2, Lightness Off) ; option « combinaison linéaire, NBN, MAS » (méthode Cosgrove) à comparer.
 
+Options ajoutées après la revue (20 octobre 2026, demandes de l'utilisateur : « Met un NBN en option comme ca », « Met une option et un rapide Cosgrove pour que je teste ») , SHO sans RGB et RGB + SHO :
+- Opt_NBN_SHO_doux (P5) : à la place de NBN_SHO sur SHO_etire ; Lightness Off, SCNR 0,20, OIII boost 1,2, SII boost 1,4, Highlight et Brightness 1 (Deep Space Place 2026, seule source chiffrée).
+- Méthode Cosgrove (P4) : Opt_NBN_SHO_lineaire (NBN sur l'image SHO linéaire sans étoiles, Lightness Off, autres valeurs de NBN_SHO : réglages de Cosgrove illisibles, non vérifié), puis Opt_MAS_Cosgrove (MAS de l'utilisateur, fond 0,15, saturation 0,50 au lieu de 0,75, conseil « saturation basse » de Kaessler). R_C_Cosgrove_rapide (Apply Global) : Fermer_vues SHO, Lineaire_auto Combinaison_SHO (S, H, O linéaires -> SHO), Opt_NBN_SHO_lineaire*, Opt_MAS_Cosgrove* ; résultat dans SHO, S, H, O restés ouverts pour comparer. Remplace Statistical_Stretch, GHS_2_contraste, SHO_simple et NBN_SHO ; finition ensuite sur SHO. HOO non concerné.
+

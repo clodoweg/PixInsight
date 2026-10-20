@@ -216,6 +216,7 @@ Légende :
 - Demande de l'utilisateur (20 octobre 2026) : « pourtous les porocess icones, Opt_Export_TIFF ne doit pas etre une option mais le dernier element avec le NXT final » : Export_TIFF au chemin principal, après NXT_dernier, dans les 5 workflows (LRGB et LHaRGB compris, demandé explicitement).
 - Demande de l'utilisateur (20 octobre 2026) : « pour les 2 SHO et HOO, Opt_GHS_2_contraste ne doit pas etre une option mais un normal » : GHS_2_contraste au chemin principal après Statistical_Stretch (SHO, RGB + SHO ; déjà fait en HOO).
 - Demande de l'utilisateur (20 octobre 2026) : « dans les options , pour ces 3 process, deplace Opt_GHS_3_fond juste au dessous de Opt_GHS_1_premier » : ordre des options P4 (SHO, RGB + SHO ; en HOO, les GHS sont au chemin principal).
+- Demandes de l'utilisateur (20 octobre 2026, après la revue maj-kb) : « pour avoir ML5 il faut payer ? met la derniere version toujours » (ml_version 0 partout, LRGB et LHaRGB compris) ; « Met un NBN en option comme ca » (Opt_NBN_SHO_doux) ; « Met une option et un rapide Cosgrove pour que je teste » (Opt_NBN_SHO_lineaire, Opt_MAS_Cosgrove, R_C_Cosgrove_rapide).
 - Ordre de réglage de NarrowbandNormalization (Lightness, Shadowpoint, boosts, hautes lumières, Brightness, SCNR) : suggestion de la fiche, signalée comme telle sur la page ; aucune source ne fixe d'ordre.
 
 ## Neutralisation du fond dans SPCC
@@ -397,6 +398,8 @@ Narrowband, sources récentes :
 - Tutoriel — [Warren Keller, masterclass d'étirement 2026](https://app.telescope.live/en/tutorials/217/2026-pixinsight-stretching-masterclass) et [NBN](https://app.telescope.live/en/tutorials/98/exploring-pixinsight-narrowband-normalization-techniques) : sans réglages chiffrés lisibles.
 
 ## Non vérifié
+
+- Méthode Cosgrove (20 octobre 2026) : réglages NBN sur image linéaire (Lightness Off, SCNR 0,7, SII 1,2) et MAS (fond 0,15, saturation 0,50) choisis par défaut, ceux de Cosgrove étant dans des captures illisibles ; NBN_SHO_doux d'après une seule source (Deep Space Place) ; non testés dans PixInsight.
 
 - maj_mac.command (20 octobre 2026) : chemin /Applications/PixInsight/src/scripts confirmé par un modérateur du forum officiel (revue du 20 octobre 2026, voir plus bas), sans doc officielle ; script non testé sur Mac.
 

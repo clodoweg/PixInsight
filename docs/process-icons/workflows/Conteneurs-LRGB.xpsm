@@ -1654,7 +1654,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
    <instance class="ProcessContainer" id="E08_C_RGB_lineaire_instance">
       <description>LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;CONTENEUR : BXT_CorrectOnly, SPCC, BXT_RGB, NXT_RGB.&#10;&#10;SUR : l'image RGB combinée, linéaire, gradient retiré (étoiles gardées) : BXT Correct Only, SPCC, BXT, NXT.&#10;&#10;Double-clic sur le conteneur pour voir ou changer les réglages de chaque étape.</description>
       <instance class="BlurXTerminator" version="256" enabled="true">
-         <parameter id="ml_version" value="4"/>
+         <parameter id="ml_version" value="0"/>
          <parameter id="correct_only" value="true"/>
          <parameter id="sharpen_stars" value="0.25"/>
          <parameter id="adjust_star_halos" value="0.00"/>
@@ -1720,7 +1720,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          <parameter id="outputDirectory"></parameter>
       </instance>
       <instance class="BlurXTerminator" version="256" enabled="true">
-         <parameter id="ml_version" value="4"/>
+         <parameter id="ml_version" value="0"/>
          <parameter id="correct_only" value="false"/>
          <parameter id="sharpen_stars" value="0.25"/>
          <parameter id="adjust_star_halos" value="0.00"/>
@@ -1752,7 +1752,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
    <instance class="ProcessContainer" id="E09_C_L_lineaire_instance">
       <description>LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;CONTENEUR : BXT_L, NXT_L, SXT_L_lineaire.&#10;&#10;SUR : le master L, linéaire, gradient retiré : BXT, NXT, puis SXT (L sans étoiles).&#10;&#10;Double-clic sur le conteneur pour voir ou changer les réglages de chaque étape.</description>
       <instance class="BlurXTerminator" version="256" enabled="true">
-         <parameter id="ml_version" value="4"/>
+         <parameter id="ml_version" value="0"/>
          <parameter id="correct_only" value="false"/>
          <parameter id="sharpen_stars" value="0.25"/>
          <parameter id="adjust_star_halos" value="0.00"/>
