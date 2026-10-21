@@ -770,7 +770,7 @@ Paramètres
 
 - **Brightness** : étirement MTF ; 1 = neutre, au-dessus de 1 éclaircit, en dessous assombrit (pas pour récupérer un écrêtage)
 
-- **Lightness** : Off (défaut), Preserve, H, O ou S : canal qui porte la luminance, souvent H
+- **Lightness** : Off (défaut), Preserve, H, O ou S : canal qui porte la luminance, souvent H (Off : aucun ajustement ; Preserve : garde la luminosité de l'image d'entrée ; Ha : la luminosité suit le canal H, le plus net et le moins bruité, effet « plus de punch » selon un utilisateur ; Deep Space Place : Off. Formule exacte non publiée, non vérifiée. Déduit : avec Ha, les zones riches en O mais pauvres en H sont rendues plus sombres)
 
 - **Blend mode / Ha blend** : Mode de mélange du vert, surtout pour les données de caméra couleur
 

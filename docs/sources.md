@@ -1308,3 +1308,11 @@ Fait : étape « 4 bis » ajoutée au skill maj-kb : scripts du dossier scripts/
 
 Demande : « pour les sho, hoo, avec ou sans rgb, ajoute R_C_RGB_etoiles_rapide dans le turbo »
 Fait : T_Turbo_debut du RGB + SHO se termine par les étapes de R_C_RGB_etoiles_rapide (Lineaire_auto MAS et SXT_RGB_etire sur RGB, SCNR vert sur RGB_stars, RGB fermé). SHO sans RGB et HOO : pas de RGB, donc ni ce rapide ni ce changement. Conséquence : continuum (qui veut le RGB linéaire) plus possible après le turbo.
+
+### NarrowbandNormalization : rôle de Lightness (21 octobre 2026)
+
+Demande : « a quoi sert de mettre lightness dans NarowbandNormaliosation ? »
+- Tutoriel — [Telescope Live, Narrowband Normalization](https://telescope.live/comment/2433) *(résumé)* : Off (aucun ajustement), Preserve (garde la luminosité d'origine), Ha (le canal H sert de base à la luminosité) ; Preserve et Ha les plus utilisés.
+- Forum — [Cloudy Nights, duo narrowband](https://www.cloudynights.com/forums/topic/930998-the-latest-updated-way-to-process-a-duo-narrowband-image/) *(résumé)* : Lightness Ha donne « un peu plus de punch ».
+- Tutoriel — [Deep Space Place, SHO](https://deepspaceplace.com/tutorials/pixinsight-sho-workflow) *(résumé)* : Lightness Off.
+Non vérifié : formule exacte des modes (aide du module à lire dans PixInsight).
