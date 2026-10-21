@@ -53,6 +53,8 @@ PixInsight 1.9.5 sur **PC Windows** ; CDK17 (2 939 mm) + QHY600 (IMX455) ; filtr
 
 ## Fichiers
 
+- Nouveau script dans `docs/process-icons/scripts/` (ou rôle changé) : mettre à jour le tableau des scripts de `docs/process-icons/README.md` (demande de l'utilisateur, 21 octobre 2026).
+
 - `docs/kb/` : base de connaissances (voir plus haut).
 - `docs/process-icons/` : `make_workflows.py` (listes d'étapes par workflow, conteneurs rapides), `layout.py` (phase, rôle core / opt / alternative, `CONTAINERS`, textes `WHEN`), `short_desc.py` (descriptions LANCEMENT / PRÉRÉGLÉ / À RÉGLER / SI ; variantes par workflow dans `V`), `make_icons.py` (instances). Sortie : `workflows/Conteneurs-X.xpsm` seulement.
 - `maj_pc.bat` (racine) : sur le PC de l'utilisateur, git pull de C:\Dev\PixInsight puis copie des scripts vers C:\Program Files\PixInsight\src\scripts\clodoweg (admin demandé une seule fois : icacls donne au compte le droit Modifier sur clodoweg, ensuite plus jamais ; pas de pause finale, pause seulement en cas d'erreur). Après un changement de script : dire à l'utilisateur de lancer maj_pc.bat (et d'effacer le MD5 de l'icône si elle est bloquée).

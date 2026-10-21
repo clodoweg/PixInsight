@@ -1293,3 +1293,8 @@ Demande : « pour LRGB et HARGB je veux un turbo 2 qui me fasse les étapes rapi
 Fait : T_Turbo_fin (colonne P5, groupe P5_turbo) : un conteneur avec les étapes de R_C_LRGB_rapide (LRGB_ajout_L), R_C_Fin_rapide (HDRMT 30 %, finition sous masque, Sharp_MMT, NXT_final) et R_C_Etoiles_fond_rapide (Fond_desature, Fond_auto, Etoiles_screen, Boost_final, NXT_dernier, Export_TIFF), 25 étapes à plat (fin_rapide_items) ; glissé sur le RGB sans étoiles étiré. Non vérifié dans PixInsight.
 - Puis « deplace le turbo fin dans P4 rapide et rajoute R_C_RGB_etire_rapide dans le turbo fin » : T_Turbo_fin en colonne P4 (groupe P4_turbo, sous P4_rapide), avec en tête MAS, SXT_RGB_etire, SCNR_etoiles_vert, SCNR_RGB, GHS fond ; glissé sur le RGB linéaire avec étoiles, après les GHS sur L.
 - Puis (21 octobre 2026) « dans le renommage et les view que tu fermes, rajoute toutes celles qui ont autocrop dans le nom » : vues dont le nom CONTIENT autocrop (plus seulement à la fin), même règle du doublon (fermée seulement si une autre vue du même filtre est ouverte, sinon renommée).
+
+### README : tous les scripts listés (21 octobre 2026)
+
+Demande : « tu as bien dans le readme tous les scripts que tu as crée? »
+Fait : tableau des scripts de docs/process-icons/README.md complété (Binning_x2, Etoiles_NB_auto, Look_Lightroom, Saturation_grosses, Stat_canaux, clodoweg_objet manquaient) et rôles mis à jour (Renommer_auto, Masque_auto, Export_TIFF, Etoiles_auto…) ; lien depuis le README racine ; règle ajoutée dans CLAUDE.md.

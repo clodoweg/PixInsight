@@ -11,36 +11,44 @@ Icônes prêtes à charger, réglages expliqués dans `docs/kb/`. Ce sont des **
 ## Organisation
 
 - Une colonne par phase (P1 Préparation … P7 Étoiles), avec une icône-titre en haut.
-- Dans chaque colonne : `P#_Nom` (chemin principal, `E##_`), `P#_options` (`Opt_`), `P#_rapide` (`R_`, LRGB et LHaRGB).
+- Dans chaque colonne : `P#_Nom` (chemin principal, `E##_`), `P#_options` (`Opt_`), `P#_rapide` (`R_`) et `P#_turbo` (`T_`, plusieurs rapides à la suite).
 - Dans le chemin principal, les suites d'étapes sans réglage sont regroupées en conteneurs (`C_…`).
 - Chaque icône a une description courte : LANCEMENT, PRÉRÉGLÉ, À RÉGLER, SI … ->.
-- LRGB et LHaRGB : L et RGB étirées avec leurs étoiles, LRGB, puis `SXT_LRGB` (Unscreen) ; les images inutiles sont fermées au fur et à mesure. Ordre détaillé : sections « Mode rapide » et workflows de la page.
+- LRGB et LHaRGB : L sans étoiles étirée par GHS, RGB étiré par MAS avec ses étoiles puis SXT (RGB_stars), LRGB sur les deux images sans étoiles, étoiles remises à la fin ; les images inutiles sont fermées au fur et à mesure. Ordre détaillé : `docs/Diagrammes-workflows.html`.
 - SPCC et SPFC sont configurés pour le QHY600 et les filtres Antlia V Pro ; GHS_1 et DBE se règlent sur l'image.
 
-Icônes non testées par l'auteur dans PixInsight 1.9.5 : si l'une ne se charge pas, signale-la.
+Icônes non testées par Claude dans PixInsight 1.9.5 : si l'une ne se charge pas, signale-la.
 
 ## Scripts (`scripts/`)
 
+Tous à copier dans `src/scripts/clodoweg/` de PixInsight (`maj_pc.bat` le fait). Chaque script a une fenêtre de réglages (double-clic sur l'icône, puis Apply Global) ; glissé sur une image ou dans un conteneur, il s'exécute directement.
+
 | Script | Rôle |
 |---|---|
-| `Renommer_auto.js` | renomme les masters L, R, G, B, H, O, S d'après FILTER |
+| `clodoweg_ui.jsh` | fenêtres de réglages et fonctions communes à tous les scripts (à copier avec eux) |
+| `clodoweg_objet.jsh` | dossier de l'objet (dossier des masters), commun à Renommer_auto et Export_TIFF |
+| `Renommer_auto.js` | renomme les masters L, R, G, B, H, O, S d'après FILTER, le nom du fichier ou de la vue (V -> G) ; ferme les vues *autocrop* en doublon |
 | `LPS_UnClic.js` | LinearPatternSubtraction sans dialogue sur tous les masters mono ouverts |
-| `Combiner_RGB.js` | R, G, B → `RGB`, en-tête du rouge copié ; ferme les masters (`garder` : R en LHaRGB) |
-| `GC_Solver_auto.js` | ImageSolver sur toutes les images (icône Solver_auto) |
-| `clodoweg_ui.jsh` | fenêtres de réglages communes à tous les scripts (à copier avec eux) |
-| `Sharp_MMT.js` | accentuation finale MultiscaleMedianTransform (conteneur C_Sharp_MMT) |
-| `Lineaire_auto.js` | lance des icônes du chemin principal sur des vues (icône R_Lineaire_rapide) |
-| `Gradient_auto.js` | GradientCorrection seule sur toutes les images (icône R_Gradient_auto_rapide) |
-| `ImageSolver_Date.js` | date ajoutée si absente, puis ImageSolver avec les réglages du matériel |
-| `Masque_auto.js` | Masque_L (crée et attache masque_L), Masque_retirer |
-| `Etoiles_auto.js` | saturation et SCNR des étoiles (et étirement si amount > 0) |
-| `Fond_auto.js` | fond de chaque canal amené à 0,12 (0,14 : Fond_auto_clair) |
-| `Fond_desature.js` | retire la teinte et le violet du fond |
-| `Nettoyage_sans_etoiles.js` | restes de halos des étoiles brillantes après SXT |
-| `Etoiles_grosses.js` | réduit seulement les grosses étoiles de RGB_stars, avant Etoiles_screen |
-| `Export_TIFF.js` | TIFF 16 bits sRGB nommé d'après le dossier des masters ; ferme L ensuite (`fermer`) |
+| `Combiner_RGB.js` | R, G, B → `RGB`, en-tête du rouge copié ; ferme les masters (`garder` pour en garder) |
+| `GC_Solver_auto.js` | ImageSolver sur toutes les images, ou les images couleur seulement (icône Solver_auto) |
+| `ImageSolver_Date.js` | date ajoutée si absente, puis ImageSolver avec les réglages du matériel (catalogue en ligne Gaia DR2) |
 | `Crop_commun.js` | crop commun : image minimum Crop_ref + DynamicCrop (`mode=reference`), puis même crop sur toutes les images (`mode=appliquer`) |
-| `Fermer_vues.js` | ferme les vues listées (`views`) |
+| `Binning_x2.js` | binning logiciel 2×2 de toutes les images ouvertes (solution astrométrique gardée) |
+| `Gradient_auto.js` | GradientCorrection seule sur toutes les images (icône R_Gradient_auto_rapide) |
+| `Lineaire_auto.js` | lance des icônes du chemin principal sur des vues données (rapides et turbos) |
+| `Stat_canaux.js` | Statistical Stretch sur plusieurs canaux mono (S, H, O) en un clic |
+| `Etoiles_auto.js` | sur l'image d'étoiles : SCNR vert (SCNR_etoiles_vert), anti-violet (SCNR_etoiles_violet), saturation, étirement si amount > 0 |
+| `Etoiles_NB_auto.js` | étoiles RGB plausibles à partir des étoiles narrowband (SHO sans RGB, HOO) |
+| `Saturation_grosses.js` | sature seulement les grosses étoiles presque blanches de RGB_stars |
+| `Etoiles_grosses.js` | réduit seulement les grosses étoiles de l'image d'étoiles, avant la recombinaison |
+| `Masque_auto.js` | masque de luminance masque_L : attacher, retirer, créer sans attacher (couleur = RGB pour les conteneurs), mélanger |
+| `Sharp_MMT.js` | accentuation finale MultiscaleMedianTransform (C_Sharp_MMT) |
+| `Nettoyage_sans_etoiles.js` | restes de halos des étoiles brillantes après SXT |
+| `Fond_desature.js` | retire la teinte et le violet du fond |
+| `Fond_auto.js` | fond de chaque canal amené à 0,12, neutre |
+| `Look_Lightroom.js` | retouche finale façon Camera Raw / Lightroom (Exposition, Tons clairs, Blancs, Température…) |
+| `Export_TIFF.js` | TIFF 16 bits sRGB nommé d'après le dossier des masters (aucune vue fermée) |
+| `Fermer_vues.js` | ferme les vues listées (`views`, `*` = toutes) |
 
 ## Régénérer
 

@@ -27,4 +27,5 @@ Ensuite, réponds simplement à Claude avec ce que tu veux garder (par exemple �
 - `docs/veille/` : les rapports de veille.
 - `docs/depots-pixinsight.txt` : les dépôts à ajouter dans PixInsight (Resources › Updates › Manage Repositories).
 - `docs/kb/` et `docs/sources.md` : la base de connaissances de Claude et ses sources.
+- `docs/process-icons/scripts/` : les scripts clodoweg (liste et rôle de chacun dans `docs/process-icons/README.md`).
 - `docs/process-icons/` : le générateur des icônes (c'est Claude qui le modifie).
