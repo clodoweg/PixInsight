@@ -144,7 +144,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
       script `$PXI_SRCDIR/scripts/clodoweg/Etoiles_NB_auto.js`
       paramètres : `h=H_stars`, `o=O_stars`, `s=S_stars`, `ratio=0.30`, `linearfit=true`, `stretch=6.0`, `boost=1.30`, `scnr=false`, `nom=NBtoRGB_stars`, `fermer=true`, `dialogue=false`
 
-> MODE TURBO, à la place de R_C_Preparation_rapide, R_Gradient_auto_rapide et R_C_Lineaire_rapide (phases 1 à 3) : masters seuls ouverts, Conteneurs du workflow chargé, double-clic puis Apply Global (pas en glissant) ; ensuite Statistical_Stretch sur S, H et O.
+> MODE TURBO, à la place de R_C_Preparation_rapide, R_Gradient_auto_rapide et R_C_Lineaire_rapide (phases 1 à 3 ; RGB + SHO : aussi R_C_RGB_etoiles_rapide) : masters seuls ouverts, Conteneurs du workflow chargé, double-clic puis Apply Global (pas en glissant) ; ensuite Statistical_Stretch sur S, H et O.
 > 
 > LANCEMENT : masters seuls ouverts, double-clic puis Apply Global (rond bleu) ; pas en glissant (ImageSolver échoue sur une image en cours de traitement).
 > 

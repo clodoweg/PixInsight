@@ -1303,3 +1303,8 @@ Fait : tableau des scripts de docs/process-icons/README.md complété (Binning_x
 
 Demande : « c'est pas dans le skill de bien faire attention a ce que les fichiers md soient a jour? »
 Fait : étape « 4 bis » ajoutée au skill maj-kb : scripts du dossier scripts/ tous listés dans docs/process-icons/README.md et CLAUDE.md, icônes citées dans CLAUDE.md et la kb encore présentes, README à jour, diagrammes régénérés ; écarts corrigés et listés dans le rapport. README racine mis à jour.
+
+### RGB + SHO : R_C_RGB_etoiles_rapide dans le turbo (21 octobre 2026)
+
+Demande : « pour les sho, hoo, avec ou sans rgb, ajoute R_C_RGB_etoiles_rapide dans le turbo »
+Fait : T_Turbo_debut du RGB + SHO se termine par les étapes de R_C_RGB_etoiles_rapide (Lineaire_auto MAS et SXT_RGB_etire sur RGB, SCNR vert sur RGB_stars, RGB fermé). SHO sans RGB et HOO : pas de RGB, donc ni ce rapide ni ce changement. Conséquence : continuum (qui veut le RGB linéaire) plus possible après le turbo.

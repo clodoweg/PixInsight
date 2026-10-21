@@ -161,14 +161,23 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
    9. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
       paramètres : `views=SHO, SHO_stars`, `dialogue=false`
+   10. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
+      paramètres : `etapes=MAS*>RGB ; SXT_RGB_etire>RGB`, `dialogue=false`
+   11. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js`
+      paramètres : `vue=RGB_stars`, `amount=0`, `satAmount=0`, `scnr=true`, `violet=false`, `dialogue=false`
+   12. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
+      paramètres : `views=RGB`, `dialogue=false`
 
-> MODE TURBO, à la place de R_C_Preparation_rapide, R_Gradient_auto_rapide et R_C_Lineaire_rapide (phases 1 à 3) : masters seuls ouverts, Conteneurs du workflow chargé, double-clic puis Apply Global (pas en glissant) ; ensuite Statistical_Stretch sur S, H et O.
+> MODE TURBO, à la place de R_C_Preparation_rapide, R_Gradient_auto_rapide et R_C_Lineaire_rapide (phases 1 à 3 ; RGB + SHO : aussi R_C_RGB_etoiles_rapide) : masters seuls ouverts, Conteneurs du workflow chargé, double-clic puis Apply Global (pas en glissant) ; ensuite Statistical_Stretch sur S, H et O.
 > 
 > LANCEMENT : masters seuls ouverts, double-clic puis Apply Global (rond bleu) ; pas en glissant (ImageSolver échoue sur une image en cours de traitement).
 > 
-> PRÉRÉGLÉ : conteneur, en une fois : Renommer_auto, LinearPatternSubtraction, Combinaison_RGB, Solver_auto (RGB seulement, = R_C_Preparation_rapide) ; Gradient_auto (= R_Gradient_auto_rapide, RGB comprise) ; Lineaire_auto Combinaison_SHO, masters S, H, O fermés, Lineaire_auto C_SHO_lineaire, C_Extraction_SHO et C_RGB_lineaire (BXT Correct Only, SPCC, BXT, NXT sur RGB), SHO et SHO_stars fermées (= R_C_Lineaire_rapide) ; résultat : S, H, O sans étoiles, linéaires, et RGB linéaire avec ses étoiles.
+> PRÉRÉGLÉ : conteneur, en une fois : Renommer_auto, LinearPatternSubtraction, Combinaison_RGB, Solver_auto (RGB seulement, = R_C_Preparation_rapide) ; Gradient_auto (= R_Gradient_auto_rapide, RGB comprise) ; Lineaire_auto Combinaison_SHO, masters S, H, O fermés, Lineaire_auto C_SHO_lineaire, C_Extraction_SHO et C_RGB_lineaire (BXT Correct Only, SPCC, BXT, NXT sur RGB), SHO et SHO_stars fermées (= R_C_Lineaire_rapide) ; Lineaire_auto MAS et SXT_RGB_etire sur RGB, SCNR vert sur RGB_stars, RGB fermé (= R_C_RGB_etoiles_rapide) ; résultat : S, H, O sans étoiles, linéaires, et RGB_stars étirée.
 > 
-> À RÉGLER : masters S, H, O, R, G, B seuls ouverts ; Conteneurs-RGB-SHO chargé ; double-clic puis Apply Global (pas en glissant) ; ensuite GHS sur S, H, O, puis MAS, SXT_RGB_etire, SCNR_etoiles_vert, Fermer_RGB sur RGB.
+> À RÉGLER : masters S, H, O, R, G, B seuls ouverts ; Conteneurs-RGB-SHO chargé ; double-clic puis Apply Global (pas en glissant) ; ensuite l'étirement de S, H, O ; pas de continuum possible ensuite (RGB fermé).
 > 
 > SI :
 > - une étape échoue -> la console dit laquelle ; lance les icônes R_ une par une pour voir où

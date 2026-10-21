@@ -713,7 +713,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <description>MODE TURBO, phase 1 — Préparation : une icône T_ enchaîne en un clic les étapes de plusieurs icônes rapides (R_) ; elle les contient, les icônes R_ ne sont pas nécessaires. Icône de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="T_Turbo_debut_instance">
-      <description>MODE TURBO, à la place de R_C_Preparation_rapide, R_Gradient_auto_rapide et R_C_Lineaire_rapide (phases 1 à 3) : masters seuls ouverts, Conteneurs du workflow chargé, double-clic puis Apply Global (pas en glissant) ; ensuite Statistical_Stretch sur S, H et O.&#10;&#10;LANCEMENT : masters seuls ouverts, double-clic puis Apply Global (rond bleu) ; pas en glissant (ImageSolver échoue sur une image en cours de traitement).&#10;&#10;PRÉRÉGLÉ : conteneur, en une fois : Renommer_auto, LinearPatternSubtraction, Combinaison_RGB, Solver_auto (RGB seulement, = R_C_Preparation_rapide) ; Gradient_auto (= R_Gradient_auto_rapide, RGB comprise) ; Lineaire_auto Combinaison_SHO, masters S, H, O fermés, Lineaire_auto C_SHO_lineaire, C_Extraction_SHO et C_RGB_lineaire (BXT Correct Only, SPCC, BXT, NXT sur RGB), SHO et SHO_stars fermées (= R_C_Lineaire_rapide) ; résultat : S, H, O sans étoiles, linéaires, et RGB linéaire avec ses étoiles.&#10;&#10;À RÉGLER : masters S, H, O, R, G, B seuls ouverts ; Conteneurs-RGB-SHO chargé ; double-clic puis Apply Global (pas en glissant) ; ensuite GHS sur S, H, O, puis MAS, SXT_RGB_etire, SCNR_etoiles_vert, Fermer_RGB sur RGB.&#10;&#10;SI :&#10;- une étape échoue -&gt; la console dit laquelle ; lance les icônes R_ une par une pour voir où&#10;- gradient mal retiré (O, Lune) -&gt; fais plutôt R_C_Preparation_rapide, la phase 2 du chemin principal (MGC + MARS), puis R_C_Lineaire_rapide&#10;- masters à garder -&gt; enregistre-les AVANT : ils sont fermés sans enregistrer</description>
+      <description>MODE TURBO, à la place de R_C_Preparation_rapide, R_Gradient_auto_rapide et R_C_Lineaire_rapide (phases 1 à 3 ; RGB + SHO : aussi R_C_RGB_etoiles_rapide) : masters seuls ouverts, Conteneurs du workflow chargé, double-clic puis Apply Global (pas en glissant) ; ensuite Statistical_Stretch sur S, H et O.&#10;&#10;LANCEMENT : masters seuls ouverts, double-clic puis Apply Global (rond bleu) ; pas en glissant (ImageSolver échoue sur une image en cours de traitement).&#10;&#10;PRÉRÉGLÉ : conteneur, en une fois : Renommer_auto, LinearPatternSubtraction, Combinaison_RGB, Solver_auto (RGB seulement, = R_C_Preparation_rapide) ; Gradient_auto (= R_Gradient_auto_rapide, RGB comprise) ; Lineaire_auto Combinaison_SHO, masters S, H, O fermés, Lineaire_auto C_SHO_lineaire, C_Extraction_SHO et C_RGB_lineaire (BXT Correct Only, SPCC, BXT, NXT sur RGB), SHO et SHO_stars fermées (= R_C_Lineaire_rapide) ; Lineaire_auto MAS et SXT_RGB_etire sur RGB, SCNR vert sur RGB_stars, RGB fermé (= R_C_RGB_etoiles_rapide) ; résultat : S, H, O sans étoiles, linéaires, et RGB_stars étirée.&#10;&#10;À RÉGLER : masters S, H, O, R, G, B seuls ouverts ; Conteneurs-RGB-SHO chargé ; double-clic puis Apply Global (pas en glissant) ; ensuite l'étirement de S, H, O ; pas de continuum possible ensuite (RGB fermé).&#10;&#10;SI :&#10;- une étape échoue -&gt; la console dit laquelle ; lance les icônes R_ une par une pour voir où&#10;- gradient mal retiré (O, Lune) -&gt; fais plutôt R_C_Preparation_rapide, la phase 2 du chemin principal (MGC + MARS), puis R_C_Lineaire_rapide&#10;- masters à garder -&gt; enregistre-les AVANT : ils sont fermés sans enregistrer</description>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Renommer_auto.js</parameter>
          <parameter id="md5sum"></parameter>
@@ -1113,6 +1113,67 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
             <tr>
                <td id="id">views</td>
                <td id="value">SHO, SHO_stars</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="2">
+            <tr>
+               <td id="id">etapes</td>
+               <td id="value">MAS*&gt;RGB ; SXT_RGB_etire&gt;RGB</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="6">
+            <tr>
+               <td id="id">vue</td>
+               <td id="value">RGB_stars</td>
+            </tr>
+            <tr>
+               <td id="id">amount</td>
+               <td id="value">0</td>
+            </tr>
+            <tr>
+               <td id="id">satAmount</td>
+               <td id="value">0</td>
+            </tr>
+            <tr>
+               <td id="id">scnr</td>
+               <td id="value">true</td>
+            </tr>
+            <tr>
+               <td id="id">violet</td>
+               <td id="value">false</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="2">
+            <tr>
+               <td id="id">views</td>
+               <td id="value">RGB</td>
             </tr>
             <tr>
                <td id="id">dialogue</td>

@@ -1375,7 +1375,10 @@ for _st, _rgb in ((rgbsho, True), (sho, False), (hoo, False)):
     _p = {id(rgbsho): 'RSHO', id(sho): 'SHO', id(hoo): 'HOO'}[id(_st)]
     insert_after(_st, 'C_Preparation_rapide', [(cont('Turbo_debut', [pick(_st, b)[0] for b in ('Renommer_auto', 'LinearPatternSubtraction')]
                                                     + ([rgb_comb_item()[0]] if _rgb else []) + [gc_solver('Solver_auto', tout=False), script('Gradient_auto_rapide', '')]
-                                                    + lineaire_nb_items(_p)), '')])
+                                                    + lineaire_nb_items(_p)
+                                                    # RGB + SHO : étapes de R_C_RGB_etoiles_rapide à la fin (demande de l'utilisateur, 21 octobre 2026 ;
+                                                    # SHO sans RGB et HOO n'ont pas de RGB, donc pas ce rapide)
+                                                    + ([lineaire_rapide('MAS*>RGB ; SXT_RGB_etire>RGB'), script('SCNR_etoiles_vert', ''), fermer('Fermer_RGB', 'RGB')] if _p == 'RSHO' else [])), '')])
 # P6 et P7 rapides narrowband (demande de l'utilisateur, 8 octobre 2026 : « fais un P6 et un P7 rapide aussi ») : mêmes conteneurs que les galaxies
 # (fin_rapide : finition identique, P7 avec les étoiles du workflow dans Etoiles_screen), à GLISSER sur l'image sans étoiles
 for _st in (rgbsho, sho, hoo):
