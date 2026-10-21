@@ -1493,11 +1493,13 @@ for _st in (lrgb, lhargb):
     _st.remove(_it)
     insert_after(_st, 'Etoiles_screen', [_it])
 
-# T_Turbo_fin (demande de l'utilisateur, 21 octobre 2026) : étapes de R_C_LRGB_rapide, R_C_Fin_rapide et R_C_Etoiles_fond_rapide
-# à la suite, en un seul conteneur GLISSÉ sur le RGB sans étoiles (L sans étoiles et RGB_stars ouvertes) ; colonne P5
+# T_Turbo_fin (demande de l'utilisateur, 21 octobre 2026) : étapes de R_C_RGB_etire_rapide, R_C_LRGB_rapide, R_C_Fin_rapide et
+# R_C_Etoiles_fond_rapide à la suite, en un seul conteneur GLISSÉ sur le RGB linéaire avec étoiles (L sans étoiles étirée ouverte) ; colonne P4
 for _st in (lrgb, lhargb):
     _i6, _i7 = fin_rapide_items(_st, boost=True)
-    insert_after(_st, 'C_LRGB_rapide', [(cont('Turbo_fin', [pick(_st, 'LRGB_ajout_L')[0]] + _i6 + _i7), '')])
+    # R_C_RGB_etire_rapide en tête et colonne P4 (demande de l'utilisateur, 21 octobre 2026) : glissé sur le RGB LINÉAIRE avec étoiles
+    _i4 = [pick(_st, b)[0] for b in ('MAS', 'SXT_RGB_etire', 'SCNR_etoiles_vert', 'SCNR_RGB')] + [ghs('GHS_fond', 10, hp=0.12, sf=1.0, sp=0.12)]
+    insert_after(_st, 'C_RGB_etire_rapide', [(cont('Turbo_fin', _i4 + [pick(_st, 'LRGB_ajout_L')[0]] + _i6 + _i7), '')])
 
 # options supprimées des galaxies (demande de l'utilisateur, 18 octobre 2026) : restent en narrowband
 SUPPR_GALAXIES_2 = {'Look_Lightroom', 'Fond_auto_clair', 'Etoiles_grosses', 'Halo_B_Gon', 'MT_etoiles',

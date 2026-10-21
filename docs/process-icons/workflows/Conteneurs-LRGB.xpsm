@@ -2288,83 +2288,91 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          <parameter id="useRGBWorkingSpace" value="false"/>
       </instance>
    </instance>
-   <instance class="NoOperation" version="256" id="P5_Couleur_instance">
-      <description>PHASE 5 — Couleur : combinaison finale et palette. Colonne de repère, sans effet.</description>
-   </instance>
-   <instance class="LRGBCombination" version="256" id="E17_LRGB_ajout_L_instance">
-      <description>PRÉRÉGLÉ : seul L coché, Lightness 0,5, Saturation 0,5, réduction du bruit de chrominance.&#10;&#10;À RÉGLER : vue L nommée 'L' (sans étoiles, GHS faits) ; glisse sur le RGB SANS étoiles (après MAS, SXT_RGB_etire, GHS_3_fond) ; les étoiles reviennent en phase 7 (Etoiles_screen).&#10;&#10;SI :&#10;- couleurs délavées -&gt; étire L moins fort&#10;- couleurs trop vives -&gt; Saturation plus haute (0,6)</description>
-      <table id="channels" rows="4">
-         <tr>
-            <td id="enabled" value="false"/>
-            <td id="id"></td>
-            <td id="k" value="1.00000"/>
-         </tr>
-         <tr>
-            <td id="enabled" value="false"/>
-            <td id="id"></td>
-            <td id="k" value="1.00000"/>
-         </tr>
-         <tr>
-            <td id="enabled" value="false"/>
-            <td id="id"></td>
-            <td id="k" value="1.00000"/>
-         </tr>
-         <tr>
-            <td id="enabled" value="true"/>
-            <td id="id">L</td>
-            <td id="k" value="1.00000"/>
-         </tr>
-      </table>
-      <parameter id="mL" value="0.500"/>
-      <parameter id="mc" value="0.500"/>
-      <parameter id="clipHighlights" value="false"/>
-      <parameter id="noiseReduction" value="true"/>
-      <parameter id="layersRemoved" value="4"/>
-      <parameter id="layersProtected" value="2"/>
-      <parameter id="inheritAstrometricSolution" value="true"/>
-   </instance>
-   <instance class="NoOperation" version="256" id="P5_rapide_instance">
-      <description>MODE RAPIDE, phase 5 — Couleur : R_C_LRGB_rapide sur RGB sans étoiles (L sans étoiles ouverte) à la place de LRGB_ajout_L : L ajoutée (Saturation 0,5). Icône de repère, sans effet.</description>
-   </instance>
-   <instance class="ProcessContainer" id="R_C_LRGB_rapide_instance">
-      <description>MODE RAPIDE, à la place de LRGB_ajout_L : glisse sur le RGB sans étoiles, L sans étoiles étirée ouverte ; LRGB_ajout_L (Saturation 0,5) seule.&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : LRGB_ajout_L (L sans étoiles, Lightness 0,5, Saturation 0,5).&#10;&#10;À RÉGLER : glisse sur le RGB sans étoiles (après R_C_RGB_etire_rapide), L sans étoiles étirée ouverte ; ensuite R_C_Fin_rapide.&#10;&#10;SI :&#10;- taches ou halos restés -&gt; Nettoyage_sans_etoiles (P6 options) avant R_C_Fin_rapide</description>
-      <instance class="LRGBCombination" version="256" enabled="true">
-         <table id="channels" rows="4">
-            <tr>
-               <td id="enabled" value="false"/>
-               <td id="id"></td>
-               <td id="k" value="1.00000"/>
-            </tr>
-            <tr>
-               <td id="enabled" value="false"/>
-               <td id="id"></td>
-               <td id="k" value="1.00000"/>
-            </tr>
-            <tr>
-               <td id="enabled" value="false"/>
-               <td id="id"></td>
-               <td id="k" value="1.00000"/>
-            </tr>
-            <tr>
-               <td id="enabled" value="true"/>
-               <td id="id">L</td>
-               <td id="k" value="1.00000"/>
-            </tr>
-         </table>
-         <parameter id="mL" value="0.500"/>
-         <parameter id="mc" value="0.500"/>
-         <parameter id="clipHighlights" value="false"/>
-         <parameter id="noiseReduction" value="true"/>
-         <parameter id="layersRemoved" value="4"/>
-         <parameter id="layersProtected" value="2"/>
-         <parameter id="inheritAstrometricSolution" value="true"/>
-      </instance>
-   </instance>
-   <instance class="NoOperation" version="256" id="P5_turbo_instance">
-      <description>MODE TURBO, phase 5 — Couleur : une icône T_ enchaîne en un clic les étapes de plusieurs icônes rapides (R_) ; elle les contient, les icônes R_ ne sont pas nécessaires. Icône de repère, sans effet.</description>
+   <instance class="NoOperation" version="256" id="P4_turbo_instance">
+      <description>MODE TURBO, phase 4 — Étirement : une icône T_ enchaîne en un clic les étapes de plusieurs icônes rapides (R_) ; elle les contient, les icônes R_ ne sont pas nécessaires. Icône de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="T_Turbo_fin_instance">
-      <description>MODE TURBO, à la place de R_C_LRGB_rapide, R_C_Fin_rapide et R_C_Etoiles_fond_rapide (phases 5 à 7) : GLISSE sur le RGB sans étoiles étiré (après R_C_RGB_etire_rapide et les GHS sur L), L sans étoiles étirée et RGB_stars ouvertes ; image finie et exportée.&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur, en une fois : LRGB_ajout_L (= R_C_LRGB_rapide) ; HDRMT 30 %, Courbes, LHE, LHE_fin sous masque_L, Sharp_MMT, NXT_final (= R_C_Fin_rapide) ; Fond_desature, Fond_auto, Etoiles_screen, Boost_final, NXT_dernier, Export_TIFF (= R_C_Etoiles_fond_rapide).&#10;&#10;À RÉGLER : glisse sur le RGB sans étoiles étiré (GHS_1, GHS_2, GHS_3_fond faits sur L, R_C_RGB_etire_rapide fait sur le RGB) ; L sans étoiles et RGB_stars ouvertes ; à la fin l'image est finie et exportée.&#10;&#10;SI :&#10;- une étape échoue -&gt; lance R_C_LRGB_rapide, R_C_Fin_rapide et R_C_Etoiles_fond_rapide un par un pour voir laquelle&#10;- couleurs délavées -&gt; étire L moins fort avant (LRGB_ajout_L)</description>
+      <description>MODE TURBO, à la place de R_C_RGB_etire_rapide, R_C_LRGB_rapide, R_C_Fin_rapide et R_C_Etoiles_fond_rapide (phases 4 à 7) : GLISSE sur le RGB LINÉAIRE avec étoiles, après les GHS sur L (L sans étoiles étirée ouverte) ; image finie et exportée.&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur, en une fois : MAS, SXT_RGB_etire (RGB_stars créée), SCNR vert sur RGB_stars, SCNR_RGB, GHS fond (= R_C_RGB_etire_rapide) ; LRGB_ajout_L (= R_C_LRGB_rapide) ; HDRMT 30 %, Courbes, LHE, LHE_fin sous masque_L, Sharp_MMT, NXT_final (= R_C_Fin_rapide) ; Fond_desature, Fond_auto, Etoiles_screen, Boost_final, NXT_dernier, Export_TIFF (= R_C_Etoiles_fond_rapide).&#10;&#10;À RÉGLER : glisse sur le RGB LINÉAIRE avec étoiles, après GHS_1, GHS_2 et GHS_3_fond sur L ; L sans étoiles étirée ouverte ; à la fin l'image est finie et exportée.&#10;&#10;SI :&#10;- une étape échoue -&gt; lance R_C_RGB_etire_rapide, R_C_LRGB_rapide, R_C_Fin_rapide et R_C_Etoiles_fond_rapide un par un pour voir laquelle&#10;- fond du RGB pas au même niveau que L -&gt; fais R_C_RGB_etire_rapide à part et règle GHS_3_fond à la main&#10;- couleurs délavées -&gt; étire L moins fort avant</description>
+      <instance class="MultiscaleAdaptiveStretch" version="256" enabled="true">
+         <parameter id="aggressiveness" value="0.70"/>
+         <parameter id="targetBackground" value="0.150"/>
+         <parameter id="dynamicRangeCompression" value="0.40"/>
+         <parameter id="contrastRecovery" value="true"/>
+         <parameter id="scaleSeparation" value="1024"/>
+         <parameter id="contrastRecoveryIntensity" value="1.000"/>
+         <parameter id="previewLargeScale" value="false"/>
+         <parameter id="saturationEnabled" value="true"/>
+         <parameter id="saturationAmount" value="0.75"/>
+         <parameter id="saturationBoost" value="0.50"/>
+         <parameter id="saturationLightnessMask" value="true"/>
+         <parameter id="backgroundROIEnabled" value="false"/>
+         <parameter id="backgroundROIX0" value="0"/>
+         <parameter id="backgroundROIY0" value="0"/>
+         <parameter id="backgroundROIWidth" value="0"/>
+         <parameter id="backgroundROIHeight" value="0"/>
+      </instance>
+      <instance class="StarXTerminator" version="256" enabled="true">
+         <parameter id="ml_version" value="0"/>
+         <parameter id="output_stars" value="true"/>
+         <parameter id="unscreen" value="true"/>
+         <parameter id="remove_stars" value="true"/>
+         <parameter id="remove_spikes" value="true"/>
+         <parameter id="remove_aureoles" value="true"/>
+         <parameter id="remove_reflections" value="true"/>
+         <parameter id="overlap" value="0.20"/>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="6">
+            <tr>
+               <td id="id">vue</td>
+               <td id="value">RGB_stars</td>
+            </tr>
+            <tr>
+               <td id="id">amount</td>
+               <td id="value">0</td>
+            </tr>
+            <tr>
+               <td id="id">satAmount</td>
+               <td id="value">0</td>
+            </tr>
+            <tr>
+               <td id="id">scnr</td>
+               <td id="value">true</td>
+            </tr>
+            <tr>
+               <td id="id">violet</td>
+               <td id="value">false</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+      <instance class="SCNR" version="256" enabled="true">
+         <parameter id="amount" value="1.00"/>
+         <parameter id="protectionMethod" value="AverageNeutral"/>
+         <parameter id="colorToRemove" value="Green"/>
+         <parameter id="preserveLightness" value="true"/>
+      </instance>
+      <instance class="GeneralizedHyperbolicStretch" version="256" enabled="true">
+         <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
+         <parameter id="stretchChannel" value="SC_RGB"/>
+         <parameter id="inverse" value="false"/>
+         <parameter id="stretchFactor" value="1.000"/>
+         <parameter id="localIntensity" value="10.000"/>
+         <parameter id="symmetryPoint" value="0.120000"/>
+         <parameter id="highlightProtection" value="0.120000"/>
+         <parameter id="shadowProtection" value="0.000000"/>
+         <parameter id="blackPoint" value="0.000000"/>
+         <parameter id="whitePoint" value="1.000000"/>
+         <parameter id="colourBlend" value="1.000"/>
+         <parameter id="clipType" value="CT_RGBBlend"/>
+         <parameter id="useRGBWorkingSpace" value="false"/>
+      </instance>
       <instance class="LRGBCombination" version="256" enabled="true">
          <table id="channels" rows="4">
             <tr>
@@ -3248,6 +3256,78 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
             </tr>
          </table>
          <parameter id="information"></parameter>
+      </instance>
+   </instance>
+   <instance class="NoOperation" version="256" id="P5_Couleur_instance">
+      <description>PHASE 5 — Couleur : combinaison finale et palette. Colonne de repère, sans effet.</description>
+   </instance>
+   <instance class="LRGBCombination" version="256" id="E17_LRGB_ajout_L_instance">
+      <description>PRÉRÉGLÉ : seul L coché, Lightness 0,5, Saturation 0,5, réduction du bruit de chrominance.&#10;&#10;À RÉGLER : vue L nommée 'L' (sans étoiles, GHS faits) ; glisse sur le RGB SANS étoiles (après MAS, SXT_RGB_etire, GHS_3_fond) ; les étoiles reviennent en phase 7 (Etoiles_screen).&#10;&#10;SI :&#10;- couleurs délavées -&gt; étire L moins fort&#10;- couleurs trop vives -&gt; Saturation plus haute (0,6)</description>
+      <table id="channels" rows="4">
+         <tr>
+            <td id="enabled" value="false"/>
+            <td id="id"></td>
+            <td id="k" value="1.00000"/>
+         </tr>
+         <tr>
+            <td id="enabled" value="false"/>
+            <td id="id"></td>
+            <td id="k" value="1.00000"/>
+         </tr>
+         <tr>
+            <td id="enabled" value="false"/>
+            <td id="id"></td>
+            <td id="k" value="1.00000"/>
+         </tr>
+         <tr>
+            <td id="enabled" value="true"/>
+            <td id="id">L</td>
+            <td id="k" value="1.00000"/>
+         </tr>
+      </table>
+      <parameter id="mL" value="0.500"/>
+      <parameter id="mc" value="0.500"/>
+      <parameter id="clipHighlights" value="false"/>
+      <parameter id="noiseReduction" value="true"/>
+      <parameter id="layersRemoved" value="4"/>
+      <parameter id="layersProtected" value="2"/>
+      <parameter id="inheritAstrometricSolution" value="true"/>
+   </instance>
+   <instance class="NoOperation" version="256" id="P5_rapide_instance">
+      <description>MODE RAPIDE, phase 5 — Couleur : R_C_LRGB_rapide sur RGB sans étoiles (L sans étoiles ouverte) à la place de LRGB_ajout_L : L ajoutée (Saturation 0,5). Icône de repère, sans effet.</description>
+   </instance>
+   <instance class="ProcessContainer" id="R_C_LRGB_rapide_instance">
+      <description>MODE RAPIDE, à la place de LRGB_ajout_L : glisse sur le RGB sans étoiles, L sans étoiles étirée ouverte ; LRGB_ajout_L (Saturation 0,5) seule.&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : LRGB_ajout_L (L sans étoiles, Lightness 0,5, Saturation 0,5).&#10;&#10;À RÉGLER : glisse sur le RGB sans étoiles (après R_C_RGB_etire_rapide), L sans étoiles étirée ouverte ; ensuite R_C_Fin_rapide.&#10;&#10;SI :&#10;- taches ou halos restés -&gt; Nettoyage_sans_etoiles (P6 options) avant R_C_Fin_rapide</description>
+      <instance class="LRGBCombination" version="256" enabled="true">
+         <table id="channels" rows="4">
+            <tr>
+               <td id="enabled" value="false"/>
+               <td id="id"></td>
+               <td id="k" value="1.00000"/>
+            </tr>
+            <tr>
+               <td id="enabled" value="false"/>
+               <td id="id"></td>
+               <td id="k" value="1.00000"/>
+            </tr>
+            <tr>
+               <td id="enabled" value="false"/>
+               <td id="id"></td>
+               <td id="k" value="1.00000"/>
+            </tr>
+            <tr>
+               <td id="enabled" value="true"/>
+               <td id="id">L</td>
+               <td id="k" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="mL" value="0.500"/>
+         <parameter id="mc" value="0.500"/>
+         <parameter id="clipHighlights" value="false"/>
+         <parameter id="noiseReduction" value="true"/>
+         <parameter id="layersRemoved" value="4"/>
+         <parameter id="layersProtected" value="2"/>
+         <parameter id="inheritAstrometricSolution" value="true"/>
       </instance>
    </instance>
    <instance class="NoOperation" version="256" id="P6_Finition_instance">
@@ -6838,12 +6918,12 @@ max($T,f1)</parameter>
    <icon id="Opt_Star_Stretch" instance="Opt_Star_Stretch_instance" xpos="604" ypos="474" workspace="Workspace01"/>
    <icon id="P4_rapide" instance="P4_rapide_instance" xpos="604" ypos="520" workspace="Workspace01"/>
    <icon id="R_C_RGB_etire_rapide" instance="R_C_RGB_etire_rapide_instance" xpos="604" ypos="554" workspace="Workspace01"/>
+   <icon id="P4_turbo" instance="P4_turbo_instance" xpos="604" ypos="600" workspace="Workspace01"/>
+   <icon id="T_Turbo_fin" instance="T_Turbo_fin_instance" xpos="604" ypos="634" workspace="Workspace01"/>
    <icon id="P5_Couleur" instance="P5_Couleur_instance" xpos="795" ypos="20" workspace="Workspace01"/>
    <icon id="E17_LRGB_ajout_L" instance="E17_LRGB_ajout_L_instance" xpos="795" ypos="64" workspace="Workspace01"/>
    <icon id="P5_rapide" instance="P5_rapide_instance" xpos="795" ypos="110" workspace="Workspace01"/>
    <icon id="R_C_LRGB_rapide" instance="R_C_LRGB_rapide_instance" xpos="795" ypos="144" workspace="Workspace01"/>
-   <icon id="P5_turbo" instance="P5_turbo_instance" xpos="795" ypos="190" workspace="Workspace01"/>
-   <icon id="T_Turbo_fin" instance="T_Turbo_fin_instance" xpos="795" ypos="224" workspace="Workspace01"/>
    <icon id="P6_Finition" instance="P6_Finition_instance" xpos="955" ypos="20" workspace="Workspace01"/>
    <icon id="E18_HDRMT_30" instance="E18_HDRMT_30_instance" xpos="955" ypos="64" workspace="Workspace01"/>
    <icon id="E19_C_Finition" instance="E19_C_Finition_instance" xpos="955" ypos="94" workspace="Workspace01"/>
