@@ -227,7 +227,7 @@ def layout(entries, naming):
         rows += 1
     return insts, icons
 
-TURBO = {'Turbo_debut'}   # ancien mode Turbo supprimé ; Turbo_debut ajouté ensuite (demande de l'utilisateur, 5 octobre 2026)
+TURBO = {'Turbo_debut', 'Turbo_fin'}   # ancien mode Turbo supprimé ; Turbo_debut ajouté ensuite (demande de l'utilisateur, 5 octobre 2026)
 RAPIDE = {'C_Ha_RGB_rapide', 'C_Lineaire_rapide', 'C_MAS_canaux_rapide', 'C_Stat_canaux_rapide', 'C_Palette_rapide', 'C_RGB_etoiles_rapide', 'Main_continuum', 'Lineaire_rapide', 'C_P3_rapide', 'C_RGB_etire_rapide', 'C_Fin_rapide', 'C_Etoiles_fond_rapide', 'C_Preparation_rapide', 'Gradient_auto_rapide', 'C_RGB_rapide', 'C_L_rapide', 'C_RGB_fin_rapide', 'C_LRGB_rapide'}
 RAPIDE_NOTE = {
     'LRGB': {1: "MODE RAPIDE (galaxies) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre (étoiles gardées jusqu'à LRGB) : R_C_Preparation_rapide ; R_Gradient_auto_rapide ; R_Lineaire_rapide (RGB et L) ; GHS_1_premier, GHS_2_contraste, GHS_3_fond sur L ; R_C_RGB_etire_rapide sur RGB ; R_C_LRGB_rapide (LRGB sans étoiles) ; finition. Phase 1 : R_C_Preparation_rapide (double-clic puis Apply Global) à la place de LinearPatternSubtraction, Renommer_auto, Combinaison_RGB et Solver_auto",
@@ -1222,15 +1222,20 @@ for _st in (lrgb, lhargb):
         _st.remove(_it)
         insert_before(_st, 'Etoiles_screen', [_it])
 
+def fin_rapide_items(steps, boost=False):
+    """Étapes de R_C_Fin_rapide (P6) et de R_C_Etoiles_fond_rapide (P7), à plat (reprises par T_Turbo_fin)."""
+    # Courbes, LHE, LHE_fin mélangés par masque_L (sous_masque) ; puis masque attaché pour Sharp_MMT (le script lit le masque attaché), retiré
+    i6 = (list(hdrmt_items('0.3')) + sous_masque([pick(steps, b)[0] for b in ('Courbes', 'LHE', 'LHE_fin')])
+          + [pick(steps, 'Masque_L')[0], script('Sharp_MMT', '')] + [pick(steps, b)[0] for b in ('Masque_retirer', 'NXT_final')])   # Sharp_MMT sous le masque (demande de l'utilisateur)
+    # boost (galaxies, demande de l'utilisateur, 21 octobre 2026) : Boost_final (étapes à plat) après Etoiles_screen, avant NXT_dernier
+    i7 = ([pick(steps, b)[0] for b in ('Fond_desature', 'Fond_auto', 'Etoiles_screen')]
+          + (boost_final_items() if boost else []) + [pick(steps, b)[0] for b in ('NXT_dernier', 'Export_TIFF')])   # Export_TIFF en dernier (demande de l'utilisateur)
+    return i6, i7
+
 def fin_rapide(steps, boost=False):
     """P6_rapide et P7_rapide (demande de l'utilisateur) : un conteneur par phase avec les étapes de la finition."""
-    # Courbes, LHE, LHE_fin mélangés par masque_L (sous_masque) ; puis masque attaché pour Sharp_MMT (le script lit le masque attaché), retiré
-    c6 = cont('C_Fin_rapide', list(hdrmt_items('0.3')) + sous_masque([pick(steps, b)[0] for b in ('Courbes', 'LHE', 'LHE_fin')])
-               + [pick(steps, 'Masque_L')[0], script('Sharp_MMT', '')] + [pick(steps, b)[0] for b in ('Masque_retirer', 'NXT_final')])   # Sharp_MMT sous le masque (demande de l'utilisateur)
-    # boost (galaxies, demande de l'utilisateur, 21 octobre 2026) : Boost_final (étapes à plat) après Etoiles_screen, avant NXT_dernier
-    c7 = cont('C_Etoiles_fond_rapide', [pick(steps, b)[0] for b in ('Fond_desature', 'Fond_auto', 'Etoiles_screen')]
-              + (boost_final_items() if boost else []) + [pick(steps, b)[0] for b in ('NXT_dernier', 'Export_TIFF')])   # Export_TIFF en dernier (demande de l'utilisateur)
-    return c6, c7
+    i6, i7 = fin_rapide_items(steps, boost)
+    return cont('C_Fin_rapide', i6), cont('C_Etoiles_fond_rapide', i7)
 
 for _st in (lrgb, lhargb):
     # P4_rapide « Fin de GHS » (demande de l'utilisateur) : GHS_2_contraste puis GHS_3_fond en un conteneur, sur L après GHS_1_premier
@@ -1487,6 +1492,12 @@ for _st in (lrgb, lhargb):
     _it = pick(_st, 'Boost_final')
     _st.remove(_it)
     insert_after(_st, 'Etoiles_screen', [_it])
+
+# T_Turbo_fin (demande de l'utilisateur, 21 octobre 2026) : étapes de R_C_LRGB_rapide, R_C_Fin_rapide et R_C_Etoiles_fond_rapide
+# à la suite, en un seul conteneur GLISSÉ sur le RGB sans étoiles (L sans étoiles et RGB_stars ouvertes) ; colonne P5
+for _st in (lrgb, lhargb):
+    _i6, _i7 = fin_rapide_items(_st, boost=True)
+    insert_after(_st, 'C_LRGB_rapide', [(cont('Turbo_fin', [pick(_st, 'LRGB_ajout_L')[0]] + _i6 + _i7), '')])
 
 # options supprimées des galaxies (demande de l'utilisateur, 18 octobre 2026) : restent en narrowband
 SUPPR_GALAXIES_2 = {'Look_Lightroom', 'Fond_auto_clair', 'Etoiles_grosses', 'Halo_B_Gon', 'MT_etoiles',

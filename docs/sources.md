@@ -1286,3 +1286,8 @@ Fait : cause = référence à une image grise (masque_L, 1 canal) dans un PixelM
 
 Demande : « Opt_Boost_final ne doit pas etre une option mais un normal pour LRGB et HALRGB. il doit aussi etre dans le rapide »
 Fait : Boost_final au chemin principal, juste après Etoiles_screen (image finie avec étoiles, masque tiré de L sans étoiles, RGB_stars exclues), avant NXT_dernier (LRGB E25) ; R_C_Etoiles_fond_rapide = Fond_desature, Fond_auto, Etoiles_screen, étapes de Boost_final, NXT_dernier, Export_TIFF. Boost_final_doux reste une option, à la place. Narrowband non touché.
+
+### LRGB et LHaRGB : turbo 2, T_Turbo_fin (21 octobre 2026)
+
+Demande : « pour LRGB et HARGB je veux un turbo 2 qui me fasse les étapes rapides 5, 6 et 7 a la suite »
+Fait : T_Turbo_fin (colonne P5, groupe P5_turbo) : un conteneur avec les étapes de R_C_LRGB_rapide (LRGB_ajout_L), R_C_Fin_rapide (HDRMT 30 %, finition sous masque, Sharp_MMT, NXT_final) et R_C_Etoiles_fond_rapide (Fond_desature, Fond_auto, Etoiles_screen, Boost_final, NXT_dernier, Export_TIFF), 25 étapes à plat (fin_rapide_items) ; glissé sur le RGB sans étoiles étiré. Non vérifié dans PixInsight.
