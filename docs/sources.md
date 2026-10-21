@@ -1298,3 +1298,8 @@ Fait : T_Turbo_fin (colonne P5, groupe P5_turbo) : un conteneur avec les étapes
 
 Demande : « tu as bien dans le readme tous les scripts que tu as crée? »
 Fait : tableau des scripts de docs/process-icons/README.md complété (Binning_x2, Etoiles_NB_auto, Look_Lightroom, Saturation_grosses, Stat_canaux, clodoweg_objet manquaient) et rôles mis à jour (Renommer_auto, Masque_auto, Export_TIFF, Etoiles_auto…) ; lien depuis le README racine ; règle ajoutée dans CLAUDE.md.
+
+### Skill maj-kb : cohérence des .md avec le dépôt (21 octobre 2026)
+
+Demande : « c'est pas dans le skill de bien faire attention a ce que les fichiers md soient a jour? »
+Fait : étape « 4 bis » ajoutée au skill maj-kb : scripts du dossier scripts/ tous listés dans docs/process-icons/README.md et CLAUDE.md, icônes citées dans CLAUDE.md et la kb encore présentes, README à jour, diagrammes régénérés ; écarts corrigés et listés dans le rapport. README racine mis à jour.

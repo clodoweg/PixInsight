@@ -54,6 +54,19 @@ Règles de `CLAUDE.md` « Valider avec des sources avant d'insérer » :
 
 **Les icônes ne changent pas dans ce skill.** Si une source nouvelle suggère un autre réglage, un autre ordre ou un nouvel outil pour une icône : liste-le dans le rapport comme proposition. Méthode de l'utilisateur : analyse et sources d'abord, puis il choisit, puis on modifie (avec la règle LRGB / LHaRGB de `CLAUDE.md` : lister les impacts et demander avant).
 
+## 4 bis. Cohérence des fichiers .md avec le dépôt (à faire à chaque passage)
+
+Ajouté à la demande de l'utilisateur (21 octobre 2026) : les .md doivent décrire ce qui est VRAIMENT dans le dépôt, pas seulement être justes par rapport aux sources.
+
+1. **Scripts** : chaque fichier de `docs/process-icons/scripts/` (`ls`) a une ligne dans le tableau « Scripts » de `docs/process-icons/README.md` et apparaît dans la liste de `CLAUDE.md` (section Fichiers) ; aucun script supprimé n'y reste ; le rôle décrit correspond à l'en-tête du script (lire ses premières lignes de commentaire).
+   ```sh
+   for s in $(ls docs/process-icons/scripts/ | sed 's/\.jsh\?$//'); do grep -q "$s" docs/process-icons/README.md || echo "README : $s absent"; grep -q "$s" CLAUDE.md || echo "CLAUDE.md : $s absent"; done
+   ```
+2. **Icônes** : les étapes et options citées dans `CLAUDE.md` (sections Workflows) et dans `docs/kb/workflows.md` / `narrowband.md` existent encore dans `docs/kb/icones-*.md` (même nom, même phase, chemin principal / option / rapide / turbo) ; une icône supprimée n'est plus décrite comme présente.
+3. **Fichiers racine** : `README.md` (skills, mise à jour du PC, où trouver quoi) et `docs/process-icons/README.md` (organisation, chargement) à jour ; les fichiers qu'ils citent existent (`ls`).
+4. **Diagrammes** : `docs/Diagrammes-workflows.html` régénéré depuis les icônes actuelles (sinon lancer `/maj-diagrammes` ou `build.sh`).
+5. Corrige les écarts trouvés (sans toucher aux icônes) et liste-les dans le rapport, partie « Vérifié ».
+
 ## 5. Publier
 
 Si des fichiers ont changé : commit en français avec les lignes d'attribution de la session, puis `git push origin main` (et la branche de la session si `CLAUDE.md` ou la session en donne une). Pas de `build.sh` nécessaire tant que le générateur n'a pas changé.
@@ -62,7 +75,7 @@ Si des fichiers ont changé : commit en français avec les lignes d'attribution 
 
 Court, en quatre parties :
 
-1. **Vérifié** : ce qui est confirmé (nombre de sources, sujets).
+1. **Vérifié** : ce qui est confirmé (nombre de sources, sujets) et les écarts corrigés dans les .md (étape 4 bis).
 2. **Nouveau** : versions ou sources récentes trouvées, avec la date et ce qu'elles changent.
 3. **Diverge** : les désaccords entre sources, et la position de l'éditeur.
 4. **Non vérifié / à décider** : ce qui reste non vérifié, et les changements d'icônes proposés (l'utilisateur choisit).
