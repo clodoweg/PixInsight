@@ -8,7 +8,7 @@
 // dans le nom de la vue. V (vert) devient G.
 // Les images couleur et les vues déjà bien nommées ne sont pas touchées ;
 // si deux images ont le même filtre, seule la première est renommée.
-// Ferme d'abord, sans demander, les vues dont le nom finit par autocrop ou autocrop_c quand
+// Ferme d'abord, sans demander, les vues dont le nom contient autocrop quand
 // une autre vue du même filtre est ouverte (doublon) ; seule pour son filtre, elle
 // est gardée et renommée (paramètre fermerAutocrop, coché par défaut).
 // Retient aussi le dossier de l'objet (dossier des masters, clodoweg_objet.jsh)
@@ -92,10 +92,10 @@ function fromFileName( window )
    return "";
 }
 
-// Vues à fermer : nom finissant par autocrop ou autocrop_c (demande de l'utilisateur)
+// Vues à fermer : nom contenant autocrop (demande de l'utilisateur)
 function renIsAutocrop( id )
 {
-   return /autocrop(_c)?$/i.test( id );   // …_autocrop et …_autocrop_c (WBPP) ; retour de l'utilisateur, 19 octobre 2026
+   return /autocrop/i.test( id );   // « autocrop » n'importe où dans le nom (demande de l'utilisateur, 21 octobre 2026)
 }
 
 // Filtre d'une vue mono (FILTER, nom du fichier, nom de la vue) ; "" si inconnu ou couleur.
@@ -107,12 +107,12 @@ function renFilterOf( w )
    if ( id.length == 0 )
       id = fromFileName( w );
    if ( id.length == 0 )
-      id = filterToId( w.mainView.id.replace( /_?autocrop(_c)?$/i, "" ) );
+      id = filterToId( w.mainView.id.replace( /_?autocrop[A-Za-z0-9]*(_c)?/ig, "" ) );
    return id;
 }
 
-// Vues *autocrop_c à fermer : seulement si une AUTRE vue (sans autocrop_c) du même filtre est ouverte
-// (doublon). Une vue autocrop_c seule pour son filtre (par exemple le seul master H) est gardée et
+// Vues *autocrop* à fermer : seulement si une AUTRE vue (sans autocrop) du même filtre est ouverte
+// (doublon). Une vue autocrop seule pour son filtre (par exemple le seul master H) est gardée et
 // renommée (retour de l'utilisateur, 19 octobre 2026 : H fermé à tort).
 function renAutocropWindows()
 {
@@ -134,7 +134,7 @@ function renAutocropWindows()
 }
 
 // Renommages prévus : [{ view, old, id, source, note }] (note non vide = pas renommée).
-// fermer : les vues autocrop_c (fermées avant) sont ignorées.
+// fermer : les vues autocrop (fermées avant) sont ignorées.
 function renProposals( fermer )
 {
    let fermees = {};
@@ -244,8 +244,8 @@ function renDialog( list, p )
    let dir = cwObjectDirFromWindows();
    d.info( html + "</table><p>Dossier de l'objet retenu pour Export_TIFF : <b>" + (dir.length > 0 ? dir : "aucun (images sans fichier)") + "</b></p>" );
    let ac = renAutocropWindows().map( function( w ) { return w.mainView.id; } );
-   d.check( "Fermer les vues *autocrop / *autocrop_c" + (ac.length > 0 ? " (" + ac.join( ", " ) + ")" : " (aucune ouverte)"), p.fermer,
-            "Ferme sans demander, avant le renommage, les vues dont le nom finit par autocrop ou autocrop_c QUAND une autre vue du même filtre est ouverte ; une vue autocrop_c seule pour son filtre est gardée et renommée.", function( c ) { p.fermer = c; } );
+   d.check( "Fermer les vues *autocrop*" + (ac.length > 0 ? " (" + ac.join( ", " ) + ")" : " (aucune ouverte)"), p.fermer,
+            "Ferme sans demander, avant le renommage, les vues dont le nom contient autocrop QUAND une autre vue du même filtre est ouverte ; une vue autocrop_c seule pour son filtre est gardée et renommée.", function( c ) { p.fermer = c; } );
    d.onExport = function() { Parameters.set( "fermerAutocrop", p.fermer ? "true" : "false" ); };
    d.finish( "Renommer" );
    return d.execute();
@@ -256,7 +256,7 @@ function renommerAuto()
    let p = { fermer: cwBool( "fermerAutocrop", true ) };
    if ( cwWantsDialog() )
    {
-      let list = renProposals( true );   // vues autocrop_c hors liste (case cochée par défaut)
+      let list = renProposals( true );   // vues autocrop hors liste (case cochée par défaut)
       if ( renDialog( list, p ) )
          cwRun( REN_TITLE, function() { renApply( p.fermer ? list : renProposals( false ), p.fermer ); } );
       return;
