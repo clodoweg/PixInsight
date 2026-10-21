@@ -1222,18 +1222,20 @@ for _st in (lrgb, lhargb):
         _st.remove(_it)
         insert_before(_st, 'Etoiles_screen', [_it])
 
-def fin_rapide(steps):
+def fin_rapide(steps, boost=False):
     """P6_rapide et P7_rapide (demande de l'utilisateur) : un conteneur par phase avec les étapes de la finition."""
     # Courbes, LHE, LHE_fin mélangés par masque_L (sous_masque) ; puis masque attaché pour Sharp_MMT (le script lit le masque attaché), retiré
     c6 = cont('C_Fin_rapide', list(hdrmt_items('0.3')) + sous_masque([pick(steps, b)[0] for b in ('Courbes', 'LHE', 'LHE_fin')])
                + [pick(steps, 'Masque_L')[0], script('Sharp_MMT', '')] + [pick(steps, b)[0] for b in ('Masque_retirer', 'NXT_final')])   # Sharp_MMT sous le masque (demande de l'utilisateur)
-    c7 = cont('C_Etoiles_fond_rapide', [pick(steps, b)[0] for b in ('Fond_desature', 'Fond_auto', 'Etoiles_screen', 'NXT_dernier', 'Export_TIFF')])   # Export_TIFF en dernier (demande de l'utilisateur)
+    # boost (galaxies, demande de l'utilisateur, 21 octobre 2026) : Boost_final (étapes à plat) après Etoiles_screen, avant NXT_dernier
+    c7 = cont('C_Etoiles_fond_rapide', [pick(steps, b)[0] for b in ('Fond_desature', 'Fond_auto', 'Etoiles_screen')]
+              + (boost_final_items() if boost else []) + [pick(steps, b)[0] for b in ('NXT_dernier', 'Export_TIFF')])   # Export_TIFF en dernier (demande de l'utilisateur)
     return c6, c7
 
 for _st in (lrgb, lhargb):
     # P4_rapide « Fin de GHS » (demande de l'utilisateur) : GHS_2_contraste puis GHS_3_fond en un conteneur, sur L après GHS_1_premier
     insert_after(_st, 'Statistical_Stretch', [(rgb_etire_rapide(_st), '')])   # R_C_Fin_GHS_rapide supprimé (demande de l'utilisateur)
-    _c6, _c7 = fin_rapide(_st)
+    _c6, _c7 = fin_rapide(_st, boost=True)
     insert_after(_st, 'LRGB_ajout_L', [(lrgb_rapide(_st), '')])
     insert_after(_st, 'NXT_final_fort', [(_c6, '')])
     _st.append((_c7, ''))
@@ -1474,6 +1476,17 @@ for _st in (lrgb, lhargb, rgbsho, sho, hoo):   # narrowband aussi (demande de l'
     _it = pick(_st, 'Renommer_auto')
     _st.remove(_it)
     insert_before(_st, 'LinearPatternSubtraction', [_it])
+
+# galaxies : Boost_final au chemin principal, juste après Etoiles_screen (image finie avec étoiles), avant NXT_dernier
+# (demande de l'utilisateur, 21 octobre 2026) ; Boost_final_doux reste une option, à la place
+for _st in (lrgb, lhargb):
+    for _b in ('Boost_final', 'Boost_final_doux'):
+        _it = pick(_st, _b)
+        _st.remove(_it)
+        insert_after(_st, 'Etoiles_screen', [_it])
+    _it = pick(_st, 'Boost_final')
+    _st.remove(_it)
+    insert_after(_st, 'Etoiles_screen', [_it])
 
 # options supprimées des galaxies (demande de l'utilisateur, 18 octobre 2026) : restent en narrowband
 SUPPR_GALAXIES_2 = {'Look_Lightroom', 'Fond_auto_clair', 'Etoiles_grosses', 'Halo_B_Gon', 'MT_etoiles',

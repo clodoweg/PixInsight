@@ -49,6 +49,8 @@ def role(prefix, base):
         return 'opt'    # SHO et RGB + SHO : GHS en option, Statistical_Stretch au chemin principal (demande de l'utilisateur, 20 octobre 2026)
     if prefix in ('SHO', 'RSHO') and base in ('Statistical_Stretch', 'GHS_2_contraste'):
         return 'core'   # GHS_2_contraste au chemin principal après Statistical_Stretch (demande de l'utilisateur, 20 octobre 2026)
+    if prefix in LUM and base == 'Boost_final':
+        return 'core'   # galaxies : chemin principal après Etoiles_screen (demande de l'utilisateur, 21 octobre 2026)
     if prefix in LUM and base == 'Star_Stretch':
         return 'opt'    # galaxies (demande de l'utilisateur) : option d'étirement des étoiles linéaires
     if (prefix in LUM or prefix in NB) and base in ('NXT_final', 'Fond_desature', 'HDRMT_30'):
@@ -100,7 +102,7 @@ CHOICES = {
 WHEN = {
     'Look_Lightroom': "retouche finale façon Camera Raw / Lightroom (tes réglages : Exposition +0,25, Tons clairs -100, Blancs +50, Température +10) : glisse sur l'image SANS étoiles finie (après Fond_desature et Fond_auto), juste avant Etoiles_screen ; toute l'image par défaut (masque de luminance en option dans la fenêtre)",
     'C_Fin_rapide': "MODE RAPIDE, à la place de HDRMT_30, C_Finition, C_Sharp_MMT et NXT_final : sur l'image sans étoiles après LRGB_ajout_L (ou R_C_LRGB_rapide)",
-    'C_Etoiles_fond_rapide': "MODE RAPIDE, à la place de Fond_desature, Fond_auto, Etoiles_screen, NXT_dernier et Export_TIFF : sur l'image sans étoiles finie, RGB_stars et L ouvertes",
+    'C_Etoiles_fond_rapide': "MODE RAPIDE, à la place de Fond_desature, Fond_auto, Etoiles_screen, Boost_final, NXT_dernier et Export_TIFF : sur l'image sans étoiles finie, RGB_stars et L ouvertes",
     'SXT_non_lineaire': "double-clic : ouvre StarXTerminator réglé pour une image ÉTIRÉE (Unscreen coché, Generate star image coché) ; à glisser sur une image non linéaire qui a encore des étoiles",
     'Gradient_auto_rapide': "MODE RAPIDE, à la place de la phase 2 : GradientCorrection sur TOUTES les images ouvertes (plus d'ImageSolver : fait par Solver_auto en phase 1) ; à faire AVANT R_Lineaire_rapide (sans GradientCorrection)",
     'Mode_rapide': "repère du mode rapide (galaxies), sans effet : lis sa description pour l'ordre",
@@ -146,7 +148,7 @@ WHEN = {
     'HDRMT_40': "partie 1, à la place de HDRMT_30 : cœur encore trop clair (HDRMT appliqué à 40 %)",
     'HDRMT_50': "cœur de galaxie ou nébuleuse brillante brûlé (HDRMT appliqué à 50 %)",
     'Fond_desature': "fond du ciel teinté (violet, bruit de couleur) sur l'image finie : couleur retirée du fond seulement",
-    'Boost_final_doux': "comme Boost_final mais moitié moins fort (courbes c et S montées de moitié) : un petit cran de couleur sur l'image finie, sans toucher aux étoiles ; L encore ouverte",
+    'Boost_final_doux': "À LA PLACE de Boost_final (chemin principal), moitié moins fort (courbes c et S montées de moitié) : un petit cran de couleur sur l'image finie, sans toucher aux étoiles ; L encore ouverte",
     'Boost_final': "sur l'image FINIE, étoiles comprises : un peu plus de couleur sans toucher aux étoiles (masque tiré de L sans étoiles, courbes chrominance et saturation)",
     'HDRMT_eclat': "cœur laiteux sans détail, mais terne avec HDRMT seul : HDRMT à 40 % puis Boost_finition_light, en un glisser", 'NXT_final': "bruit visible sur l'image finale",
     'SCNR_etoiles_violet': "étoiles violettes (R et B nettement au-dessus de G à la sonde, surtout en LHaRGB) : après SCNR_etoiles_vert, glisse sur n'importe quelle image (traite RGB_stars) ; Invert, SCNR vert 1,0, Invert ; pas dans le rapide",

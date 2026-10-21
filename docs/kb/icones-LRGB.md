@@ -1015,7 +1015,35 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > SI :
 > - autre nom d'étoiles -> corrige-le dans la formule
 
-#### E25_NXT_dernier — NoiseXTerminator
+#### E25_Boost_final — ProcessContainer
+   1. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
+      paramètres : `mode=creer`, `s=0.20`, `gamma=2`, `flou=2`, `nom=masque_L`, `source=L`, `exclure=RGB_stars`, `exclureGain=4`, `couleur=true`, `dialogue=false`
+   2. PixelMath
+      expression = `$T` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=true ; showNewImage=true ; newImageId=Masque_avant ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
+   3. CurvesTransformation
+      Rt=AkimaSubsplines ; Gt=AkimaSubsplines ; Bt=AkimaSubsplines ; Kt=AkimaSubsplines ; At=AkimaSubsplines ; Lt=AkimaSubsplines ; at=AkimaSubsplines ; bt=AkimaSubsplines ; ct=AkimaSubsplines ; Ht=AkimaSubsplines ; St=AkimaSubsplines ; table R (2 lignes) ; table G (2 lignes) ; table B (2 lignes) ; table K (2 lignes) ; table A (2 lignes) ; table L (2 lignes) ; table a (2 lignes) ; table b (2 lignes) ; table c (3 lignes) ; table H (2 lignes) ; table S (3 lignes)
+   4. PixelMath
+      expression = `masque_L*$T + (1 - masque_L)*Masque_avant` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
+   5. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
+      paramètres : `views=Masque_avant`, `dialogue=false`
+   6. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
+      paramètres : `mode=retirer`, `nom=masque_L`, `dialogue=false`
+
+> LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
+> 
+> PRÉRÉGLÉ : conteneur : masque de luminance tiré de L sans étoiles (script Masque_auto, source = L, s = 0,20, gamma 2 : fort sur le cœur et les bras brillants, faible sur le halo et les bras faibles ; étoiles de RGB_stars retirées du masque) créé sans être attaché, copie, CurvesTransformation c 0,46094 -> 0,53646 et S 0,46354 -> 0,54167, mélange par masque_L, copie et masque fermés.
+> 
+> À RÉGLER : glisse sur l'image finie avec étoiles ; L (sans étoiles, étirée) doit être ouverte.
+> 
+> SI :
+> - masque encore trop large -> gamma 3 dans Masque_L_source
+> - trop fort -> rapproche les points de la diagonale
+> - étoiles touchées -> vérifie que L est bien la version sans étoiles
+
+#### E26_NXT_dernier — NoiseXTerminator
    ml_version=0 ; denoise=0.25 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
 
 > PRÉRÉGLÉ : NoiseXTerminator Denoise 0,25, 1 itération.
@@ -1027,7 +1055,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - bruit encore visible -> 0,35
 > - étoiles adoucies -> 0,15, ou saute cette étape
 
-#### E26_Export_TIFF — Script
+#### E27_Export_TIFF — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js`
    paramètres : `nom=`, `suffixe=`, `dossier=`, `icc=true`
 
@@ -1046,20 +1074,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 ### P7_options
 
-#### Opt_Etoiles_reduites — PixelMath
-   expression = `S=0.20; W=~((~$T)*(~RGB_stars)); f1= ~((~mtf(~S,W)/~mtf(~S,$T))*~$T); max($T,f1)` ; useSingleExpression=true ; symbols = `S, W, f1` ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
-
-> ALTERNATIVE — Recombinaison + réduction Blanshan.
-> 
-> PRÉRÉGLÉ : S = 0,20 (Bill : 0,15) ; recombinaison screen + réduction Blanshan en une formule, sur l'image elle-même.
-> 
-> À RÉGLER : À LA PLACE d'Etoiles_screen : glisse sur l'image sans étoiles finale ; étoiles étirées nommées RGB_stars.
-> 
-> SI :
-> - étoiles encore grosses -> S 0,15
-> - trop petites -> S 0,25, ou Etoiles_screen
-> - pour recommencer -> Ctrl+Z
-
 #### Opt_Boost_final_doux — ProcessContainer
    1. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
@@ -1077,7 +1091,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
       paramètres : `mode=retirer`, `nom=masque_L`, `dialogue=false`
 
-> OPTION — comme Boost_final mais moitié moins fort (courbes c et S montées de moitié) : un petit cran de couleur sur l'image finie, sans toucher aux étoiles
+> OPTION — À LA PLACE de Boost_final (chemin principal), moitié moins fort (courbes c et S montées de moitié) : un petit cran de couleur sur l'image finie, sans toucher aux étoiles
 > L encore ouverte.
 > 
 > LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
@@ -1091,35 +1105,19 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - trop fort -> rapproche les points de la diagonale
 > - étoiles touchées -> vérifie que L est bien la version sans étoiles
 
-#### Opt_Boost_final — ProcessContainer
-   1. Script
-      script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
-      paramètres : `mode=creer`, `s=0.20`, `gamma=2`, `flou=2`, `nom=masque_L`, `source=L`, `exclure=RGB_stars`, `exclureGain=4`, `couleur=true`, `dialogue=false`
-   2. PixelMath
-      expression = `$T` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=true ; showNewImage=true ; newImageId=Masque_avant ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
-   3. CurvesTransformation
-      Rt=AkimaSubsplines ; Gt=AkimaSubsplines ; Bt=AkimaSubsplines ; Kt=AkimaSubsplines ; At=AkimaSubsplines ; Lt=AkimaSubsplines ; at=AkimaSubsplines ; bt=AkimaSubsplines ; ct=AkimaSubsplines ; Ht=AkimaSubsplines ; St=AkimaSubsplines ; table R (2 lignes) ; table G (2 lignes) ; table B (2 lignes) ; table K (2 lignes) ; table A (2 lignes) ; table L (2 lignes) ; table a (2 lignes) ; table b (2 lignes) ; table c (3 lignes) ; table H (2 lignes) ; table S (3 lignes)
-   4. PixelMath
-      expression = `masque_L*$T + (1 - masque_L)*Masque_avant` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
-   5. Script
-      script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
-      paramètres : `views=Masque_avant`, `dialogue=false`
-   6. Script
-      script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
-      paramètres : `mode=retirer`, `nom=masque_L`, `dialogue=false`
+#### Opt_Etoiles_reduites — PixelMath
+   expression = `S=0.20; W=~((~$T)*(~RGB_stars)); f1= ~((~mtf(~S,W)/~mtf(~S,$T))*~$T); max($T,f1)` ; useSingleExpression=true ; symbols = `S, W, f1` ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
 
-> OPTION — sur l'image FINIE, étoiles comprises : un peu plus de couleur sans toucher aux étoiles (masque tiré de L sans étoiles, courbes chrominance et saturation).
+> ALTERNATIVE — Recombinaison + réduction Blanshan.
 > 
-> LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
+> PRÉRÉGLÉ : S = 0,20 (Bill : 0,15) ; recombinaison screen + réduction Blanshan en une formule, sur l'image elle-même.
 > 
-> PRÉRÉGLÉ : conteneur : masque de luminance tiré de L sans étoiles (script Masque_auto, source = L, s = 0,20, gamma 2 : fort sur le cœur et les bras brillants, faible sur le halo et les bras faibles ; étoiles de RGB_stars retirées du masque) créé sans être attaché, copie, CurvesTransformation c 0,46094 -> 0,53646 et S 0,46354 -> 0,54167, mélange par masque_L, copie et masque fermés.
-> 
-> À RÉGLER : glisse sur l'image finie avec étoiles ; L (sans étoiles, étirée) doit être ouverte.
+> À RÉGLER : À LA PLACE d'Etoiles_screen : glisse sur l'image sans étoiles finale ; étoiles étirées nommées RGB_stars.
 > 
 > SI :
-> - masque encore trop large -> gamma 3 dans Masque_L_source
-> - trop fort -> rapproche les points de la diagonale
-> - étoiles touchées -> vérifie que L est bien la version sans étoiles
+> - étoiles encore grosses -> S 0,15
+> - trop petites -> S 0,25, ou Etoiles_screen
+> - pour recommencer -> Ctrl+Z
 
 #### Opt_ICC_sRGB — ICCProfileTransformation
    targetProfile=sRGB IEC61966-2.1 ; toDefaultProfile=false ; renderingIntent=Perceptual ; useBlackPointCompensation=true ; useFloatingPointTransformation=true
@@ -1158,17 +1156,32 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
       paramètres : `cible=0.12`, `tolerance=0.005`, `grille=8`, `dialogue=false`
    3. PixelMath
       expression = `~((~$T) * (~RGB_stars))` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
-   4. NoiseXTerminator
+   4. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
+      paramètres : `mode=creer`, `s=0.20`, `gamma=2`, `flou=2`, `nom=masque_L`, `source=L`, `exclure=RGB_stars`, `exclureGain=4`, `couleur=true`, `dialogue=false`
+   5. PixelMath
+      expression = `$T` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=true ; showNewImage=true ; newImageId=Masque_avant ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
+   6. CurvesTransformation
+      Rt=AkimaSubsplines ; Gt=AkimaSubsplines ; Bt=AkimaSubsplines ; Kt=AkimaSubsplines ; At=AkimaSubsplines ; Lt=AkimaSubsplines ; at=AkimaSubsplines ; bt=AkimaSubsplines ; ct=AkimaSubsplines ; Ht=AkimaSubsplines ; St=AkimaSubsplines ; table R (2 lignes) ; table G (2 lignes) ; table B (2 lignes) ; table K (2 lignes) ; table A (2 lignes) ; table L (2 lignes) ; table a (2 lignes) ; table b (2 lignes) ; table c (3 lignes) ; table H (2 lignes) ; table S (3 lignes)
+   7. PixelMath
+      expression = `masque_L*$T + (1 - masque_L)*Masque_avant` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
+   8. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
+      paramètres : `views=Masque_avant`, `dialogue=false`
+   9. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
+      paramètres : `mode=retirer`, `nom=masque_L`, `dialogue=false`
+   10. NoiseXTerminator
       ml_version=0 ; denoise=0.25 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
-   5. Script
+   11. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js`
       paramètres : `nom=`, `suffixe=`, `dossier=`, `icc=true`, `dialogue=false`
 
-> MODE RAPIDE, à la place de Fond_desature, Fond_auto, Etoiles_screen, NXT_dernier et Export_TIFF : sur l'image sans étoiles finie, RGB_stars et L ouvertes.
+> MODE RAPIDE, à la place de Fond_desature, Fond_auto, Etoiles_screen, Boost_final, NXT_dernier et Export_TIFF : sur l'image sans étoiles finie, RGB_stars et L ouvertes.
 > 
 > LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
 > 
-> PRÉRÉGLÉ : conteneur : Fond_desature (teinte et violet du fond retirés), Fond_auto (fond amené à 0,12, neutre), Etoiles_screen (~((~$T) * (~RGB_stars))), NXT_dernier (Denoise 0,25, image avec étoiles), Export_TIFF (copie TIFF 16 bits sRGB nommée d'après le dossier des masters).
+> PRÉRÉGLÉ : conteneur : Fond_desature (teinte et violet du fond retirés), Fond_auto (fond amené à 0,12, neutre), Etoiles_screen (~((~$T) * (~RGB_stars))), Boost_final (masque tiré de L sans étoiles, étoiles de RGB_stars exclues, courbes c et S), NXT_dernier (Denoise 0,25, image avec étoiles), Export_TIFF (copie TIFF 16 bits sRGB nommée d'après le dossier des masters).
 > 
 > À RÉGLER : glisse sur l'image sans étoiles finie ; RGB_stars et L ouvertes ; l'image est finie et exportée.
 > 

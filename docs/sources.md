@@ -1281,3 +1281,8 @@ Fait : dans le rapide seulement, CombineHaWithRGB remplacé par Ha_dans_RGB_rapi
 
 Demande : log de l'utilisateur (R_C_Fin_rapide / C_Finition) : « masque_L*$T + (1 - masque_L)*Masque_avant … channel #0: done … *** Error: Unknown error ».
 Fait : cause = référence à une image grise (masque_L, 1 canal) dans un PixelMath sur une image RGB : échec au canal 1. Masque_auto.js : paramètre couleur (masque converti en RGB par ConvertToRGBColor, sur la fenêtre du masque) ; icônes Masque_L_creer, Masque_L_source_creer, Masque_L_boost_nb_creer avec couleur = true ; Masque_melange revient à une expression unique (comme HDR_melange). Tous les workflows. Non vérifié dans PixInsight.
+
+### LRGB et LHaRGB : Boost_final au chemin principal et dans le rapide (21 octobre 2026)
+
+Demande : « Opt_Boost_final ne doit pas etre une option mais un normal pour LRGB et HALRGB. il doit aussi etre dans le rapide »
+Fait : Boost_final au chemin principal, juste après Etoiles_screen (image finie avec étoiles, masque tiré de L sans étoiles, RGB_stars exclues), avant NXT_dernier (LRGB E25) ; R_C_Etoiles_fond_rapide = Fond_desature, Fond_auto, Etoiles_screen, étapes de Boost_final, NXT_dernier, Export_TIFF. Boost_final_doux reste une option, à la place. Narrowband non touché.
