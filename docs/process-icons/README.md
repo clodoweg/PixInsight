@@ -26,7 +26,7 @@ Tous à copier dans `src/scripts/clodoweg/` de PixInsight (`maj_pc.bat` le fait)
 | Script | Rôle |
 |---|---|
 | `clodoweg_ui.jsh` | fenêtres de réglages et fonctions communes à tous les scripts (à copier avec eux) |
-| `clodoweg_objet.jsh` | dossier de l'objet (dossier des masters), commun à Renommer_auto et Export_TIFF |
+| `clodoweg_objet.jsh` | dossier de l'objet (dossier des masters), commun à Renommer_auto et Export_TIFF ; dernier .tif exporté, relu par Retour_Photoshop |
 | `Renommer_auto.js` | renomme les masters L, R, G, B, H, O, S d'après FILTER, le nom du fichier ou de la vue (V -> G) ; ferme les vues *autocrop* en doublon |
 | `LPS_UnClic.js` | LinearPatternSubtraction sans dialogue sur tous les masters mono ouverts |
 | `Combiner_RGB.js` | R, G, B → `RGB`, en-tête du rouge copié ; ferme les masters (`garder` pour en garder) |
@@ -36,6 +36,7 @@ Tous à copier dans `src/scripts/clodoweg/` de PixInsight (`maj_pc.bat` le fait)
 | `Binning_x2.js` | binning logiciel 2×2 de toutes les images ouvertes (solution astrométrique gardée) |
 | `Gradient_auto.js` | GradientCorrection seule sur toutes les images (R_Gradient_auto_rapide), ou GraXpert avec `outil=graxpert` (R_Gradient_auto_graxpert_rapide) |
 | `Lineaire_auto.js` | lance des icônes du chemin principal sur des vues données (rapides et turbos) |
+| `Retour_Photoshop.js` | rouvre dans une nouvelle vue <nom>_PS le dernier .tif d'Export_TIFF, retouché et enregistré dans Photoshop (paramètre `fichier` : chemin forcé) ; pas encore d'icône |
 | `Stat_canaux.js` | Statistical Stretch sur plusieurs canaux mono (S, H, O) en un clic |
 | `Etoiles_auto.js` | sur l'image d'étoiles : SCNR vert (SCNR_etoiles_vert), anti-violet (SCNR_etoiles_violet), saturation, étirement si amount > 0 |
 | `Etoiles_NB_auto.js` | étoiles RGB plausibles à partir des étoiles narrowband (SHO sans RGB, HOO) |

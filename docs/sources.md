@@ -1339,3 +1339,8 @@ Non vérifié : version d'instance 256 ; exécution du process depuis un script 
 
 Demande de l'utilisateur : « il est possible d'avoir un script qui ouvre le fichier en tif 16bits dans photoshop directe dans piwinsight? ».
 Fait : option `photoshop` (fausse par défaut) et `photoshopExe` dans Export_TIFF.js, case et choix du fichier dans la fenêtre. Lancement par l'objet PJSR ExternalProcess (classe PCL ExternalProcess, https://pixinsight.com/developer/pcl/doc/html/ExternalProcess_8h_source.html) via `cmd /c start` (PC) ou `open -b com.adobe.Photoshop` (Mac) ; signatures JavaScript non trouvées dans la documentation, non testé dans PixInsight. Icônes non changées.
+
+### Retour_Photoshop.js (22 octobre 2026)
+
+Demande de l'utilisateur : « et ensuite les modifs de photoshop pourraient etre reouverte dans pixinsight via une icone? ».
+Fait : script Retour_Photoshop.js et chemin du dernier export retenu par Export_TIFF (Settings, comme clodoweg/objectDir). APIs PJSR ImageWindow.open, File.extractName, OpenFileDialog.filters : non vérifiées dans la documentation, non testé dans PixInsight. Aucune icône ajoutée.

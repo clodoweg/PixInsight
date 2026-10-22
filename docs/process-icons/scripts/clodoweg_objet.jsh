@@ -9,6 +9,8 @@
 //   réglages de PixInsight (clé clodoweg/objectDir), écrit par Renommer_auto
 //   au début du traitement, relu par Export_TIFF quand les masters sont fermés
 //   (narrowband : les rapides ferment S, H, O).
+// cwSaveLastExport( path ) / cwLastExport() : dernier .tif écrit par
+//   Export_TIFF (clé clodoweg/lastExport), relu par Retour_Photoshop.
 // À copier avec les scripts dans src/scripts/clodoweg.
 // ----------------------------------------------------------------------------
 
@@ -18,6 +20,7 @@
 #include <pjsr/DataType.jsh>
 
 #define CW_OBJDIR_KEY "clodoweg/objectDir"
+#define CW_LASTEXPORT_KEY "clodoweg/lastExport"
 
 var CW_GENERIQUES = [ "master", "masters", "light", "lights", "output", "wbpp", "calibrated", "registered",
                       "integration", "integrated", "stacked", "fits", "xisf", "traitement", "pixinsight" ];
@@ -56,6 +59,17 @@ function cwSavedObjectDir()
 {
    let dir = Settings.read( CW_OBJDIR_KEY, DataType_String );
    return (Settings.lastReadOK && dir != null && File.directoryExists( dir )) ? dir : "";
+}
+
+function cwSaveLastExport( path )
+{
+   Settings.write( CW_LASTEXPORT_KEY, DataType_String, path );
+}
+
+function cwLastExport()
+{
+   let path = Settings.read( CW_LASTEXPORT_KEY, DataType_String );
+   return (Settings.lastReadOK && path != null) ? path : "";
 }
 
 #endif   // __CLODOWEG_OBJET_JSH

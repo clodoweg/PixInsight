@@ -239,6 +239,7 @@ function etRun( view, p )
    if ( !ok )
       throw new Error( TITLE + " : échec de l'enregistrement de " + path + "." );
    console.noteln( TITLE + " : " + path + " (TIFF 16 bits" + (icc && img.isColor ? ", sRGB IEC61966-2.1" : "") + ")." );
+   cwSaveLastExport( path );   // relu par Retour_Photoshop
    if ( p.photoshop )
       etOpenPhotoshop( path, p.photoshopExe );
 }
