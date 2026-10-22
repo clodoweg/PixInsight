@@ -1390,6 +1390,20 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - trop petites -> S 0,25, ou Etoiles_screen
 > - pour recommencer -> Ctrl+Z
 
+#### Opt_Contraste_GHS — GeneralizedHyperbolicStretch
+   stretchType=ST_GeneralisedHyperbolic ; stretchChannel=SC_RGB ; inverse=false ; stretchFactor=0.320 ; localIntensity=4.000 ; symmetryPoint=0.350000 ; highlightProtection=0.900000 ; shadowProtection=0.000000 ; blackPoint=0.000000 ; whitePoint=1.000000 ; colourBlend=1.000 ; clipType=CT_RGBBlend ; useRGBWorkingSpace=false
+
+> OPTION — tout à la fin, sur l'image finie avec étoiles, avant Export_TIFF : un peu plus de contraste sans toucher au fond.
+> 
+> PRÉRÉGLÉ : GHS Generalised Hyperbolic, RGB, Stretch factor 0,32, b = 4, SP 0,35, LP 0, HP 0,9 (réglage de l'utilisateur).
+> 
+> À RÉGLER : glisse sur l'image finie avec étoiles, après NXT_dernier et avant Export_TIFF ; SP = valeur de ta zone plate, au-dessus du fond.
+> 
+> SI :
+> - fond qui monte -> monte SP ou baisse le Stretch factor
+> - cœur brillant qui sature -> baisse HP
+> - trop fort -> Stretch factor 0,15–0,20
+
 #### Opt_ICC_sRGB — ICCProfileTransformation
    targetProfile=sRGB IEC61966-2.1 ; toDefaultProfile=false ; renderingIntent=Perceptual ; useBlackPointCompensation=true ; useFloatingPointTransformation=true
 

@@ -1353,3 +1353,8 @@ Fait : Retour_Photoshop.js renommé Lecture_Photoshop.js ; icônes Opt_Export_Ph
 ### Export_TIFF, erreur de regex (22 octobre 2026)
 
 Retour de l'utilisateur (Opt_Export_Photoshop) : « line 113: SyntaxError: unterminated regular expression literal args = [ "/c", "start", "", exe.replace( / ». Cause : le préprocesseur PJSR coupe la ligne au « // » de la regex `/\//g`. Fait : `split( "/" ).join( "\\" )`. Leçon dans docs/kb/generateur.md.
+
+### Option Contraste_GHS, tous les workflows (22 octobre 2026)
+
+Demande de l'utilisateur (capture de sa fenêtre GHS) : « rajoute une option Contraste GHS a la fin de toutes les process icones ».
+Fait : icône Opt_Contraste_GHS en options P7 des 5 workflows (LRGB et LHaRGB compris, demandé explicitement), avant ICC_sRGB et les exports : GeneralizedHyperbolicStretch, Generalised Hyperbolic, mode RGB, RGBBlend, Colour blend 1, Stretch factor 0,32, b 4, SP 0,35, LP 0, HP 0,9 (valeurs lues sur la capture). Rapides et turbos inchangés.

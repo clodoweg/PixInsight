@@ -800,7 +800,8 @@ def icc_srgb():
                         '      <parameter id="useFloatingPointTransformation" value="true"/>\n'
                         '   </instance>')
 
-EXPORT = [(icc_srgb(), ''), (script('Export_TIFF', ''), '')]   # tout à la fin : ICC_sRGB en option, Export_TIFF au chemin principal, dernier élément après NXT_dernier (demande de l'utilisateur, 20 octobre 2026)
+EXPORT = [(ghs('Contraste_GHS', 4, hp=0.9, sf=0.32, sp=0.35), ''),   # option P7 : contraste final, réglage de l'utilisateur (22 octobre 2026)
+          (icc_srgb(), ''), (script('Export_TIFF', ''), '')]   # tout à la fin : ICC_sRGB en option, Export_TIFF au chemin principal, dernier élément après NXT_dernier (demande de l'utilisateur, 20 octobre 2026)
 EXPORT += [(script('Export_Photoshop', ''), ''), (script('Lecture_Photoshop', ''), '')]   # options : export + Photoshop, puis relecture du .tif retouché (demande de l'utilisateur, 22 octobre 2026 ; Export_TIFF par défaut inchangé)
 EXPORT.append((fermer('Fermer_tout', '*'), ''))   # option après Export_TIFF : fermer toutes les vues (demande de l'utilisateur)
 
