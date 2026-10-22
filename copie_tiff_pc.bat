@@ -1,5 +1,5 @@
 @echo off
-rem Copie tous les .tiff de Fits\<annee>\<cible>\ vers Works\Astro\<annee>\ (seulement si la source est plus recente : les .tiff inchanges ne sont pas recopies), puis affiche un recap.
+rem Copie tous les .tif (et les anciens .tiff) de Fits\<annee>\<cible>\ vers Works\Astro\<annee>\ (seulement si la source est plus recente : les .tiff inchanges ne sont pas recopies), puis affiche un recap.
 rem Ensuite le .tiff d'origine est SUPPRIME de Fits, seulement si la copie existe bien dans Works\Astro (copie, remplace ou deja la).
 chcp 65001 >nul
 setlocal
@@ -21,7 +21,7 @@ if not exist "%SRC%\" (
   exit /b 1
 )
 
-echo Copie des .tiff en cours...
+echo Copie des .tif / .tiff en cours...
 echo.
 
 rem Chaque sous-dossier de Fits (annee) ; les .tiff sont cherches dans tous ses sous-dossiers.
@@ -40,12 +40,14 @@ exit /b 0
 
 :annee
 rem %1 = sous-dossier de Fits (for /r n'accepte pas une variable de boucle comme racine)
-for /r "%~1" %%F in (*.tiff) do call :copier "%%F" "%~nx1"
+for /r "%~1" %%F in (*.tif *.tiff) do call :copier "%%F" "%~nx1"
 exit /b 0
 
 :copier
 rem %1 = fichier .tiff source, %2 = nom du sous-dossier (annee)
-if /i not "%~x1"==".tiff" exit /b 0
+rem .tif (Export_TIFF depuis le 22 octobre 2026) ou ancien .tiff ; deja traite (supprime) : on passe
+if /i not "%~x1"==".tif" if /i not "%~x1"==".tiff" exit /b 0
+if not exist "%~f1" exit /b 0
 if not exist "%DST%\%~2\" mkdir "%DST%\%~2"
 set "ETAT=nouveau"
 if exist "%DST%\%~2\%~nx1" set "ETAT=remplacé"

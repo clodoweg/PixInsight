@@ -1329,7 +1329,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 > LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
 > 
-> PRÉRÉGLÉ : script Export_TIFF : copie de l'image en entiers 16 bits, convertie en sRGB IEC61966-2.1 (icc = true), enregistrée en TIFF (.tiff) sous le NOM DE L'OBJET, sans espace (NGC 1532 -> NGC1532), = nom du dossier des masters ouverts (L, R, G, B, H…), dossiers génériques (master, lights, output, WBPP…) sautés ; masters fermés (narrowband) : dossier retenu par Renommer_auto ; enregistrée dans ce dossier ; l'image ouverte ne change pas.
+> PRÉRÉGLÉ : script Export_TIFF : copie de l'image en entiers 16 bits, convertie en sRGB IEC61966-2.1 (icc = true), enregistrée en TIFF (.tif) sous le NOM DE L'OBJET, sans espace (NGC 1532 -> NGC1532), = nom du dossier des masters ouverts (L, R, G, B, H…), dossiers génériques (master, lights, output, WBPP…) sautés ; masters fermés (narrowband) : dossier retenu par Renommer_auto ; enregistrée dans ce dossier ; l'image ouverte ne change pas.
 > 
 > À RÉGLER : DERNIÈRE étape du chemin principal : glisse sur l'image finie, juste après NXT_dernier ; aucune vue n'est fermée ; copie Export_TIFF.js et clodoweg_objet.jsh dans src/scripts/clodoweg.
 > 

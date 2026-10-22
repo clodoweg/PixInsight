@@ -1321,3 +1321,8 @@ Non vérifié : formule exacte des modes (aide du module à lire dans PixInsight
 
 Demande : « dans le script qui copie les images, quand elles ont été copier/deplacer/ ou rien parceque existait deja, tu les supprime du repertoire d'origine ok ? »
 Fait : après robocopy (copié, remplacé ou inchangé car déjà présent), le .tiff d'origine est supprimé de Fits SEULEMENT si le fichier existe à l'arrivée ; erreur de copie ou fichier absent à l'arrivée : original gardé et signalé ; compteur « Supprimés de Fits » dans le récap. Non testé sous Windows.
+
+### Export en .tif (22 octobre 2026)
+
+Demande : « je veux que export tiff soit en fait en .tif pour tous les scripts »
+Fait : Export_TIFF.js enregistre NOM.tif (au lieu de .tiff) ; copie_tiff_pc.bat copie les .tif et les anciens .tiff (fichier déjà traité ignoré) ; descriptions et CLAUDE.md mis à jour. Format inchangé (TIFF 16 bits sRGB).

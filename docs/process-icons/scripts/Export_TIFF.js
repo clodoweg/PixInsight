@@ -11,7 +11,7 @@
 //      viennent les masters (L, R, G, B, H… encore ouverts, ou toute image
 //      ouverte depuis un fichier) ; un dossier au nom générique (master,
 //      masters, lights, output, WBPP…) est sauté au profit du dossier parent.
-//      Ex. : /Astro/NGC1532/master/masterLight_L.xisf -> NGC1532.tiff, enregistré
+//      Ex. : /Astro/NGC1532/master/masterLight_L.xisf -> NGC1532.tif, enregistré
 //      dans /Astro/NGC1532/. Espaces toujours retirés : « NGC 1532 » -> NGC1532.
 //      Si aucune image ouverte n'a de fichier (narrowband : masters fermés
 //      par les rapides) : dossier retenu par Renommer_auto au début du
@@ -83,7 +83,7 @@ function etPath( view, p )
       dossier = dir.length > 0 ? dir : File.homeDirectory;
    if ( !dossier.endsWith( "/" ) )
       dossier += "/";
-   return dossier + nom + p.suffixe.replace( /\s+/g, "" ) + ".tiff";
+   return dossier + nom + p.suffixe.replace( /\s+/g, "" ) + ".tif";   // .tif (demande de l'utilisateur, 22 octobre 2026)
 }
 
 function etDialog( p, view )
