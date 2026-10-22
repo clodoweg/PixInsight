@@ -110,7 +110,8 @@ function etOpenPhotoshop( path, exe )
          return;
       }
       prog = "cmd.exe";
-      args = [ "/c", "start", "", exe.replace( /\//g, "\\" ), path.replace( /\//g, "\\" ) ];
+      // split/join et pas de regex « /\//g » : le préprocesseur de PixInsight y voit un commentaire « // »
+      args = [ "/c", "start", "", exe.split( "/" ).join( "\\" ), path.split( "/" ).join( "\\" ) ];
    }
    else
    {

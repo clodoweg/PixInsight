@@ -1349,3 +1349,7 @@ Fait : script Lecture_Photoshop.js et chemin du dernier export retenu par Export
 
 Demande de l'utilisateur : « du coup ne touche pas a l'Export_TIFF par defaut qui est utilisé dans les rapide. Crée un Export Photoshop et un Lecture photoshop que tu met en option ».
 Fait : Retour_Photoshop.js renommé Lecture_Photoshop.js ; icônes Opt_Export_Photoshop (Export_TIFF.js, photoshop = true) et Opt_Lecture_Photoshop en options P7 des 5 workflows (LRGB et LHaRGB compris, impacts annoncés avant), entre Export_TIFF et Fermer_tout. Export_TIFF du chemin principal, des rapides et des turbos inchangé (photoshop absent = faux).
+
+### Export_TIFF, erreur de regex (22 octobre 2026)
+
+Retour de l'utilisateur (Opt_Export_Photoshop) : « line 113: SyntaxError: unterminated regular expression literal args = [ "/c", "start", "", exe.replace( / ». Cause : le préprocesseur PJSR coupe la ligne au « // » de la regex `/\//g`. Fait : `split( "/" ).join( "\\" )`. Leçon dans docs/kb/generateur.md.
