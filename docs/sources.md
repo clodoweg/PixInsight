@@ -1334,3 +1334,8 @@ Fait : Opt_GraXpert (P2, process natif : backgroundExtraction, smoothing 0, crea
 Sources :
 - Officiel — dépôt DeepSkyForge https://pixinsight.deepskyforge.com/update/graxpert-process/updates.xri (module GraXpert 3.1.0, 18 octobre 2026, PixInsight 1.9.5 à 1.9.9) ; paquet Windows lu : documentation GraXpert.html (application GraXpert 4.0.0 ou plus exigée ; Correction Subtraction sauf gradient très fort ; Smoothing 0,0 conseillé) et identifiants des paramètres dans GraXpert-pxm.dll.
 Non vérifié : version d'instance 256 ; exécution du process depuis un script (executeOn) ; test dans PixInsight.
+
+### Export_TIFF ouvre le .tif dans Photoshop (22 octobre 2026)
+
+Demande de l'utilisateur : « il est possible d'avoir un script qui ouvre le fichier en tif 16bits dans photoshop directe dans piwinsight? ».
+Fait : option `photoshop` (fausse par défaut) et `photoshopExe` dans Export_TIFF.js, case et choix du fichier dans la fenêtre. Lancement par l'objet PJSR ExternalProcess (classe PCL ExternalProcess, https://pixinsight.com/developer/pcl/doc/html/ExternalProcess_8h_source.html) via `cmd /c start` (PC) ou `open -b com.adobe.Photoshop` (Mac) ; signatures JavaScript non trouvées dans la documentation, non testé dans PixInsight. Icônes non changées.

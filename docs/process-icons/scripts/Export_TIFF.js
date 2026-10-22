@@ -20,6 +20,11 @@
 //      Paramètres : nom (force le nom), dossier (force le dossier), suffixe
 //      (ajouté au nom, vide par défaut). Un fichier existant est remplacé.
 // Aucune vue n'est fermée (demande de l'utilisateur).
+// photoshop = true : le .tif est ensuite ouvert dans Photoshop (demande de
+//   l'utilisateur, 22 octobre 2026). PC : Photoshop.exe cherché dans
+//   C:/Program Files/Adobe/Adobe Photoshop* (le plus récent), ou chemin forcé
+//   par photoshopExe ; lancé par « cmd /c start ». Mac : « open -b
+//   com.adobe.Photoshop ». Faux par défaut. Non testé dans PixInsight.
 // Le profil ICC est intégré selon les préférences de PixInsight (Edit >
 // Global Preferences > Color Management : Embed ICC profiles, coché par
 // défaut).
@@ -29,7 +34,8 @@
 
 #feature-id    Export_TIFF : clodoweg > Export TIFF 16 bits sRGB
 #feature-info  Enregistre une copie de l'image en TIFF 16 bits, convertie en \
-   sRGB avec profil ICC, pour Photoshop, Lightroom ou Affinity.
+   sRGB avec profil ICC, pour Photoshop, Lightroom ou Affinity ; peut \
+   l'ouvrir ensuite dans Photoshop.
 
 #include <pjsr/UndoFlag.jsh>
 
@@ -58,7 +64,7 @@ function keyword( view, name )
 function etParams()
 {
    return { nom: cwParam( "nom", "" ), suffixe: cwParam( "suffixe", "" ), dossier: cwParam( "dossier", "" ),
-            icc: cwBool( "icc", true ) };
+            icc: cwBool( "icc", true ), photoshop: cwBool( "photoshop", false ), photoshopExe: cwParam( "photoshopExe", "" ) };
 }
 
 function etExport( p )
@@ -67,6 +73,60 @@ function etExport( p )
    Parameters.set( "suffixe", p.suffixe );
    Parameters.set( "dossier", p.dossier );
    Parameters.set( "icc", p.icc ? "true" : "false" );
+   Parameters.set( "photoshop", p.photoshop ? "true" : "false" );
+   Parameters.set( "photoshopExe", p.photoshopExe );
+}
+
+// PC : Photoshop.exe le plus récent de C:/Program Files/Adobe, sinon "".
+function etFindPhotoshop()
+{
+   let base = "C:/Program Files/Adobe/";
+   let names = [];
+   let f = new FileFind;
+   if ( f.begin( base + "*" ) )
+      do
+         if ( f.isDirectory && f.name.indexOf( "Adobe Photoshop" ) == 0 && File.exists( base + f.name + "/Photoshop.exe" ) )
+            names.push( f.name );
+      while ( f.next() );
+   f.end();
+   names.sort();   // « Adobe Photoshop 2025 » après « Adobe Photoshop 2024 »
+   return names.length > 0 ? base + names[ names.length - 1 ] + "/Photoshop.exe" : "";
+}
+
+// Ouvre le fichier dans Photoshop ; un échec n'annule pas l'export (message seulement).
+function etOpenPhotoshop( path, exe )
+{
+   let windows = File.directoryExists( "C:/Windows" );
+   let prog, args;
+   if ( windows )
+   {
+      if ( exe.length == 0 )
+         exe = etFindPhotoshop();
+      if ( exe.length == 0 || !File.exists( exe ) )
+      {
+         console.warningln( TITLE + " : Photoshop.exe introuvable" + (exe.length > 0 ? " (" + exe + ")" : " dans C:/Program Files/Adobe") +
+                            " ; indique son chemin dans la fenêtre (photoshopExe)." );
+         return;
+      }
+      prog = "cmd.exe";
+      args = [ "/c", "start", "", exe.replace( /\//g, "\\" ), path.replace( /\//g, "\\" ) ];
+   }
+   else
+   {
+      prog = "/usr/bin/open";
+      args = exe.length > 0 ? [ "-a", exe, path ] : [ "-b", "com.adobe.Photoshop", path ];
+   }
+   try
+   {
+      let P = new ExternalProcess;
+      P.start( prog, args );
+      P.waitForFinished( 15000 );   // cmd / open rendent la main tout de suite, Photoshop reste ouvert
+      console.noteln( TITLE + " : ouverture dans Photoshop demandée." );
+   }
+   catch ( e )
+   {
+      console.warningln( TITLE + " : Photoshop non lancé (" + e.message + ")." );
+   }
 }
 
 // Chemin du fichier : nom et dossier vides = d'après le dossier des masters ouverts.
@@ -113,6 +173,18 @@ function etDialog( p, view )
       }
    } );
    d.check( "Convertir en sRGB IEC61966-2.1 (profil ICC intégré)", p.icc, "", function( c ) { p.icc = c; } );
+   d.check( "Ouvrir ensuite dans Photoshop", p.photoshop, "Le .tif est ouvert dans Photoshop après l'enregistrement.", function( c ) { p.photoshop = c; } );
+   let exeEdit = d.edit( "Photoshop :", p.photoshopExe, "Vide = trouvé tout seul (PC : C:/Program Files/Adobe/Adobe Photoshop…/Photoshop.exe ; Mac : open -b com.adobe.Photoshop).", function( t ) { p.photoshopExe = t.trim(); } );
+   d.button( "Choisir Photoshop…", "Choisir Photoshop.exe (PC) ou l'application (Mac).", function()
+   {
+      let o = new OpenFileDialog;
+      o.caption = "Photoshop";
+      if ( o.execute() )
+      {
+         p.photoshopExe = o.fileName;
+         exeEdit.text = p.photoshopExe;
+      }
+   } );
    pathLabel = d.info( "" );
    refresh();
    d.onExport = function() { etExport( p ); };
@@ -167,6 +239,8 @@ function etRun( view, p )
    if ( !ok )
       throw new Error( TITLE + " : échec de l'enregistrement de " + path + "." );
    console.noteln( TITLE + " : " + path + " (TIFF 16 bits" + (icc && img.isColor ? ", sRGB IEC61966-2.1" : "") + ")." );
+   if ( p.photoshop )
+      etOpenPhotoshop( path, p.photoshopExe );
 }
 
 main();

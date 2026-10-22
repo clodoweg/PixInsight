@@ -47,7 +47,7 @@ Tous à copier dans `src/scripts/clodoweg/` de PixInsight (`maj_pc.bat` le fait)
 | `Fond_desature.js` | retire la teinte et le violet du fond |
 | `Fond_auto.js` | fond de chaque canal amené à 0,12, neutre |
 | `Look_Lightroom.js` | retouche finale façon Camera Raw / Lightroom (Exposition, Tons clairs, Blancs, Température…) |
-| `Export_TIFF.js` | TIFF 16 bits sRGB nommé d'après le dossier des masters (aucune vue fermée) |
+| `Export_TIFF.js` | TIFF 16 bits sRGB nommé d'après le dossier des masters (aucune vue fermée) ; option `photoshop` (fenêtre : « Ouvrir ensuite dans Photoshop », chemin `photoshopExe` vide = trouvé tout seul), fausse par défaut |
 | `Fermer_vues.js` | ferme les vues listées (`views`, `*` = toutes) |
 
 ## Régénérer
