@@ -34,7 +34,7 @@ Tous à copier dans `src/scripts/clodoweg/` de PixInsight (`maj_pc.bat` le fait)
 | `ImageSolver_Date.js` | date ajoutée si absente, puis ImageSolver avec les réglages du matériel (catalogue en ligne Gaia DR2) |
 | `Crop_commun.js` | crop commun : image minimum Crop_ref + DynamicCrop (`mode=reference`), puis même crop sur toutes les images (`mode=appliquer`) |
 | `Binning_x2.js` | binning logiciel 2×2 de toutes les images ouvertes (solution astrométrique gardée) |
-| `Gradient_auto.js` | GradientCorrection seule sur toutes les images (icône R_Gradient_auto_rapide) |
+| `Gradient_auto.js` | GradientCorrection seule sur toutes les images (R_Gradient_auto_rapide), ou GraXpert avec `outil=graxpert` (R_Gradient_auto_graxpert_rapide) |
 | `Lineaire_auto.js` | lance des icônes du chemin principal sur des vues données (rapides et turbos) |
 | `Stat_canaux.js` | Statistical Stretch sur plusieurs canaux mono (S, H, O) en un clic |
 | `Etoiles_auto.js` | sur l'image d'étoiles : SCNR vert (SCNR_etoiles_vert), anti-violet (SCNR_etoiles_violet), saturation, étirement si amount > 0 |

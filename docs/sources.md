@@ -1326,3 +1326,11 @@ Fait : après robocopy (copié, remplacé ou inchangé car déjà présent), le 
 
 Demande : « je veux que export tiff soit en fait en .tif pour tous les scripts »
 Fait : Export_TIFF.js enregistre NOM.tif (au lieu de .tiff) ; copie_tiff_pc.bat copie les .tif et les anciens .tiff (fichier déjà traité ignoré) ; descriptions et CLAUDE.md mis à jour. Format inchangé (TIFF 16 bits sRGB).
+
+### Narrowband : GraXpert (22 octobre 2026)
+
+Demande : « pour les SHO avec RGB, HOO et SHO sans RGB, j'aimerais que tu me fasse une option GraExpert, et que tu me fasse un rapide qui utilise GraExpert au lieu de Gradient COrrection. Mets ce rapide en dessous de l'autre. Fait aussi un turbo 1 avec graexpert en dessous de l'autre »
+Fait : Opt_GraXpert (P2, process natif : backgroundExtraction, smoothing 0, createBackground, denoising et deconvolution false, replaceImage) ; Gradient_auto.js paramètre outil = graxpert (GraXpert sur toutes les images) ; R_Gradient_auto_graxpert_rapide sous R_Gradient_auto_rapide ; T_Turbo_debut_graxpert sous T_Turbo_debut (même conteneur, étape de gradient GraXpert). LRGB et LHaRGB non touchés.
+Sources :
+- Officiel — dépôt DeepSkyForge https://pixinsight.deepskyforge.com/update/graxpert-process/updates.xri (module GraXpert 3.1.0, 18 octobre 2026, PixInsight 1.9.5 à 1.9.9) ; paquet Windows lu : documentation GraXpert.html (application GraXpert 4.0.0 ou plus exigée ; Correction Subtraction sauf gradient très fort ; Smoothing 0,0 conseillé) et identifiants des paramètres dans GraXpert-pxm.dll.
+Non vérifié : version d'instance 256 ; exécution du process depuis un script (executeOn) ; test dans PixInsight.

@@ -6,6 +6,9 @@
 // (generateGradientModel décoché), sur chaque vue principale ouverte.
 // Les images au nom se terminant par « _stars » sont ignorées ; une image en
 // erreur n'arrête pas les autres (bilan en fin de console).
+// outil = graxpert (demande de l'utilisateur, 22 octobre 2026) : process GraXpert (module DeepSkyForge,
+// application GraXpert 4.0.0 ou plus installée), extraction de fond par IA, Subtraction, smoothing 0,
+// image remplacée, sans débruitage ni déconvolution ; outil = gc (défaut) : GradientCorrection.
 // À lancer AVANT R_C_RGB_rapide, R_C_L_rapide, R_C_RGB_fin_rapide, qui n'ont
 // pas de GradientCorrection.
 // Lancement : double-clic sur l'icône, puis Apply Global.
@@ -14,16 +17,39 @@
 // ----------------------------------------------------------------------------
 
 #feature-id    Gradient_auto : clodoweg > GradientCorrection sur toutes les images
-#feature-info  GradientCorrection (sans modèle) sur toutes les images ouvertes.
+#feature-info  GradientCorrection (sans modèle) ou GraXpert sur toutes les images ouvertes.
 
 #include "clodoweg_ui.jsh"
 
 #define GA_TITLE "Gradient_auto"
 
+var GA_OUTIL = cwParam( "outil", "gc" ).toLowerCase();
+
+function gaNomOutil()
+{
+   return GA_OUTIL == "graxpert" ? "GraXpert" : "GradientCorrection";
+}
+
 function gaGradient( view )
 {
-   let G = new GradientCorrection;
-   G.generateGradientModel = false;
+   let G;
+   if ( GA_OUTIL == "graxpert" )
+   {
+      if ( typeof GraXpert == "undefined" )
+         throw new Error( "process GraXpert absent : installe le module (dépôt DeepSkyForge) et l'application GraXpert 4.0.0 ou plus" );
+      G = new GraXpert;
+      G.backgroundExtraction = true;
+      G.smoothing = 0;
+      G.createBackground = false;
+      G.denoising = false;
+      G.deconvolution = false;
+      G.replaceImage = true;
+   }
+   else
+   {
+      G = new GradientCorrection;
+      G.generateGradientModel = false;
+   }
    if ( !G.executeOn( view ) )
       throw new Error( "échec (voir la console)" );
 }
@@ -44,7 +70,7 @@ function gaRun( wins, onCopy )
             cwApplyOnCopy( wins[ i ].mainView, gaGradient );
          else
             gaGradient( wins[ i ].mainView );
-         bilan.push( id + " : GradientCorrection" );
+         bilan.push( id + " : " + gaNomOutil() );
       }
       catch ( e )
       {
@@ -57,8 +83,11 @@ function gaRun( wins, onCopy )
 
 function gaDialog()
 {
-   let d = new CWDialog( GA_TITLE, "<b>GradientCorrection</b> (réglages par défaut, sans modèle de gradient) sur les images cochées. " +
-                         "Mode rapide, avant R_Lineaire_rapide.", "Images :" );
+   let d = new CWDialog( GA_TITLE, "<b>Retrait du gradient</b> sur les images cochées : GradientCorrection (réglages par défaut, sans modèle) " +
+                         "ou GraXpert (IA, Subtraction, smoothing 0 ; application GraXpert 4.0.0 ou plus). Mode rapide, avant la phase 3.", "Images :" );
+   d.combo( "Outil :", [ "GradientCorrection", "GraXpert (IA)" ], GA_OUTIL == "graxpert" ? 1 : 0, "GraXpert : module DeepSkyForge et application GraXpert installés.",
+            function( k ) { GA_OUTIL = k == 1 ? "graxpert" : "gc"; } );
+   d.onExport = function() { Parameters.set( "outil", GA_OUTIL ); };
    let windows = ImageWindow.windows, boxes = [];
    d.group( "Images à corriger" );
    if ( windows.length == 0 )

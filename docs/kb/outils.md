@@ -281,7 +281,7 @@ Paramètres
 
 - **Replace target image** : Coché
 
-#### GraXpert (module DeepSkyForge) — plus d'icône (supprimée à la demande de l'utilisateur)
+#### GraXpert (module DeepSkyForge) — narrowband : Opt_GraXpert, R_Gradient_auto_graxpert_rapide, T_Turbo_debut_graxpert (22 octobre 2026) ; plus d'icône en galaxies
 GRATUIT
 
 **À régler :**
@@ -296,7 +296,7 @@ GRATUIT
 
 Méthode
 
-1. Installe GraXpert sur ta machine, puis le module via son dépôt.
+1. Installe l'application GraXpert (4.0.0 ou plus exigé par le module 3.1.0) sur ta machine, puis le module via son dépôt (https://pixinsight.deepskyforge.com/update/graxpert-process/). Paramètres d'icône lus dans le module (GraXpert-pxm.dll, octobre 2026) : backgroundExtraction, smoothing, correction, createBackground, denoising, deconvolution, replaceImage, backgroundExtractionAIModel. Version de l'instance (256) non vérifiée.
 2. Lance le process sur l'image linéaire, contrôle le modèle de fond.
 
 Paramètres

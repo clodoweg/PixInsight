@@ -80,7 +80,8 @@ SCRIPTS = {
     'Fond_auto_clair': ('$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js', '', [('cible', '0.14'), ('tolerance', '0.005'), ('grille', '8')], L_DRAG),
     'Solver_auto': ('$PXI_SRCDIR/scripts/clodoweg/GC_Solver_auto.js', '', [('gradient', 'false'), ('solve', 'true'), ('solveTout', 'true'), ('defaultDate', '2020-01-01T00:00:00')], L_GLOBAL),
     'Lineaire_rapide': ('$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js', '', [('etapes', '')], L_GLOBAL),   # P3_rapide : une seule icône (demande de l'utilisateur)
-    'Gradient_auto_rapide': ('$PXI_SRCDIR/scripts/clodoweg/Gradient_auto.js', '', [], L_GLOBAL),   # GradientCorrection seule, sans ImageSolver (demande de l'utilisateur)
+    'Gradient_auto_rapide': ('$PXI_SRCDIR/scripts/clodoweg/Gradient_auto.js', '', [], L_GLOBAL),
+    'Gradient_auto_graxpert_rapide': ('$PXI_SRCDIR/scripts/clodoweg/Gradient_auto.js', '', [('outil', 'graxpert')], L_GLOBAL),   # GraXpert à la place de GradientCorrection (narrowband, demande de l'utilisateur, 22 octobre 2026)   # GradientCorrection seule, sans ImageSolver (demande de l'utilisateur)
     'ImageSolver_Date': ('$PXI_SRCDIR/scripts/clodoweg/ImageSolver_Date.js', '', [('defaultDate', '2020-01-01T00:00:00')], L_DRAG),
     'LinearPatternSubtraction': ('$PXI_SRCDIR/scripts/clodoweg/LPS_UnClic.js', '',
              [('correctColumns', 'false'), ('correctEntireImage', 'true'), ('defectTableFilePath', ''), ('layersToRemove', '9'),
@@ -227,8 +228,8 @@ def layout(entries, naming):
         rows += 1
     return insts, icons
 
-TURBO = {'Turbo_debut', 'Turbo_fin'}   # ancien mode Turbo supprimé ; Turbo_debut ajouté ensuite (demande de l'utilisateur, 5 octobre 2026)
-RAPIDE = {'C_Ha_RGB_rapide', 'C_Lineaire_rapide', 'C_MAS_canaux_rapide', 'C_Stat_canaux_rapide', 'C_Palette_rapide', 'C_RGB_etoiles_rapide', 'Main_continuum', 'Lineaire_rapide', 'C_P3_rapide', 'C_RGB_etire_rapide', 'C_Fin_rapide', 'C_Etoiles_fond_rapide', 'C_Preparation_rapide', 'Gradient_auto_rapide', 'C_RGB_rapide', 'C_L_rapide', 'C_RGB_fin_rapide', 'C_LRGB_rapide'}
+TURBO = {'Turbo_debut', 'Turbo_fin', 'Turbo_debut_graxpert'}   # ancien mode Turbo supprimé ; Turbo_debut ajouté ensuite (demande de l'utilisateur, 5 octobre 2026)
+RAPIDE = {'Gradient_auto_graxpert_rapide', 'C_Ha_RGB_rapide', 'C_Lineaire_rapide', 'C_MAS_canaux_rapide', 'C_Stat_canaux_rapide', 'C_Palette_rapide', 'C_RGB_etoiles_rapide', 'Main_continuum', 'Lineaire_rapide', 'C_P3_rapide', 'C_RGB_etire_rapide', 'C_Fin_rapide', 'C_Etoiles_fond_rapide', 'C_Preparation_rapide', 'Gradient_auto_rapide', 'C_RGB_rapide', 'C_L_rapide', 'C_RGB_fin_rapide', 'C_LRGB_rapide'}
 RAPIDE_NOTE = {
     'LRGB': {1: "MODE RAPIDE (galaxies) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre (étoiles gardées jusqu'à LRGB) : R_C_Preparation_rapide ; R_Gradient_auto_rapide ; R_Lineaire_rapide (RGB et L) ; GHS_1_premier, GHS_2_contraste, GHS_3_fond sur L ; R_C_RGB_etire_rapide sur RGB ; R_C_LRGB_rapide (LRGB sans étoiles) ; finition. Phase 1 : R_C_Preparation_rapide (double-clic puis Apply Global) à la place de LinearPatternSubtraction, Renommer_auto, Combinaison_RGB et Solver_auto",
              2: "R_Gradient_auto_rapide à la place de toute la phase 2 : GradientCorrection sur toutes les images ouvertes (l'astrométrie est déjà faite par R_C_Preparation_rapide)",
@@ -1373,12 +1374,25 @@ for _st, _rgb in ((rgbsho, True), (sho, False), (hoo, False)):
     insert_before(_st, 'STF', [(lineaire_rapide_nb({id(rgbsho): 'RSHO', id(sho): 'SHO', id(hoo): 'HOO'}[id(_st)]), '')])   # P3 rapide
     # Turbo narrowband (demande de l'utilisateur, 8 octobre 2026) : R_C_Preparation_rapide + R_Gradient_auto_rapide + R_C_Lineaire_rapide en un seul conteneur, Apply Global
     _p = {id(rgbsho): 'RSHO', id(sho): 'SHO', id(hoo): 'HOO'}[id(_st)]
-    insert_after(_st, 'C_Preparation_rapide', [(cont('Turbo_debut', [pick(_st, b)[0] for b in ('Renommer_auto', 'LinearPatternSubtraction')]
-                                                    + ([rgb_comb_item()[0]] if _rgb else []) + [gc_solver('Solver_auto', tout=False), script('Gradient_auto_rapide', '')]
+    _turbo = lambda _grad: ([pick(_st, b)[0] for b in ('Renommer_auto', 'LinearPatternSubtraction')]
+                                                    + ([rgb_comb_item()[0]] if _rgb else []) + [gc_solver('Solver_auto', tout=False), script(_grad, '')]
                                                     + lineaire_nb_items(_p)
                                                     # RGB + SHO : étapes de R_C_RGB_etoiles_rapide à la fin (demande de l'utilisateur, 21 octobre 2026 ;
                                                     # SHO sans RGB et HOO n'ont pas de RGB, donc pas ce rapide)
-                                                    + ([lineaire_rapide('MAS*>RGB ; SXT_RGB_etire>RGB'), script('SCNR_etoiles_vert', ''), fermer('Fermer_RGB', 'RGB')] if _p == 'RSHO' else [])), '')])
+                                                    + ([lineaire_rapide('MAS*>RGB ; SXT_RGB_etire>RGB'), script('SCNR_etoiles_vert', ''), fermer('Fermer_RGB', 'RGB')] if _p == 'RSHO' else []))
+    insert_after(_st, 'C_Preparation_rapide', [(cont('Turbo_debut', _turbo('Gradient_auto_rapide')), '')])
+    # turbo 1 avec GraXpert, sous l'autre (demande de l'utilisateur, 22 octobre 2026)
+    insert_after(_st, 'Turbo_debut', [(cont('Turbo_debut_graxpert', _turbo('Gradient_auto_graxpert_rapide')), '')])
+# GraXpert en narrowband (demande de l'utilisateur, 22 octobre 2026) : option Opt_GraXpert (P2, process natif du module DeepSkyForge ;
+# identifiants lus dans le module 3.1.0 : backgroundExtraction, smoothing, createBackground, denoising, deconvolution, replaceImage ;
+# correction et modèle IA par défaut), R_Gradient_auto_graxpert_rapide sous R_Gradient_auto_rapide, T_Turbo_debut_graxpert sous T_Turbo_debut
+def graxpert():
+    return M.build('GraXpert', 256, 'GraXpert', [('backgroundExtraction', True, 'v'), ('smoothing', '0.000', 'v'), ('createBackground', False, 'v'),
+                                                 ('denoising', False, 'v'), ('deconvolution', False, 'v'), ('replaceImage', True, 'v')])
+for _st in (rgbsho, sho, hoo):
+    insert_after(_st, 'DBE', [(graxpert(), '')])
+    insert_after(_st, 'Gradient_auto_rapide', [(script('Gradient_auto_graxpert_rapide', ''), '')])
+
 # P6 et P7 rapides narrowband (demande de l'utilisateur, 8 octobre 2026 : « fais un P6 et un P7 rapide aussi ») : mêmes conteneurs que les galaxies
 # (fin_rapide : finition identique, P7 avec les étoiles du workflow dans Etoiles_screen), à GLISSER sur l'image sans étoiles
 for _st in (rgbsho, sho, hoo):
