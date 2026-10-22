@@ -1358,3 +1358,8 @@ Retour de l'utilisateur (Opt_Export_Photoshop) : « line 113: SyntaxError: unter
 
 Demande de l'utilisateur (capture de sa fenêtre GHS) : « rajoute une option Contraste GHS a la fin de toutes les process icones ».
 Fait : icône Opt_Contraste_GHS en options P7 des 5 workflows (LRGB et LHaRGB compris, demandé explicitement), avant ICC_sRGB et les exports : GeneralizedHyperbolicStretch, Generalised Hyperbolic, mode RGB, RGBBlend, Colour blend 1, Stretch factor 0,32, b 4, SP 0,35, LP 0, HP 0,9 (valeurs lues sur la capture). Rapides et turbos inchangés.
+
+### GHS_2_contraste en option en narrowband (22 octobre 2026)
+
+Demande de l'utilisateur : « pour les SHO avec ou sans rgb et hoo, remet E15_GHS_2_contraste en option ».
+Fait : layout.role, GHS_2_contraste = option en SHO, RGB + SHO et HOO ; textes des icônes mis à jour (« GHS_2_contraste (option, plus de contraste) »). LRGB et LHaRGB inchangés (vérifié : aucun fichier LRGB / LHaRGB modifié).
