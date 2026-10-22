@@ -70,6 +70,8 @@ SCRIPTS = {
     'Saturation_grosses': ('$PXI_SRCDIR/scripts/clodoweg/Saturation_grosses.js', '', [('vue', 'RGB_stars'), ('taille', '7'), ('seuil', '0.15'), ('etendue', '12'), ('passes', '1')], L_DRAG),   # option P4 : courbe de saturation de l'utilisateur sur les grosses étoiles seulement (demande de l'utilisateur)
     'Etoiles_grosses': ('$PXI_SRCDIR/scripts/clodoweg/Etoiles_grosses.js', '', [('taille', '7'), ('seuil', '0.15'), ('etendue', '12'), ('force', '0.80'), ('afficherMasque', 'false')], L_DRAG),   # demande de l'utilisateur : réduire seulement les grosses étoiles
     'Export_TIFF': ('$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js', '', [('nom', ''), ('suffixe', ''), ('dossier', ''), ('icc', 'true')], L_DRAG),   # plus aucune vue fermée (demande de l'utilisateur)
+    'Export_Photoshop': ('$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js', '', [('nom', ''), ('suffixe', ''), ('dossier', ''), ('icc', 'true'), ('photoshop', 'true'), ('photoshopExe', '')], L_DRAG),   # option P7 : export TIFF puis ouverture dans Photoshop (demande de l'utilisateur, 22 octobre 2026)
+    'Lecture_Photoshop': ('$PXI_SRCDIR/scripts/clodoweg/Lecture_Photoshop.js', '', [('fichier', '')], L_GLOBAL),   # option P7 : rouvre le .tif retouché dans Photoshop
     'Crop_reference': ('$PXI_SRCDIR/scripts/clodoweg/Crop_commun.js', '', [('mode', 'reference'), ('nom', 'Crop_ref')], L_GLOBAL),   # option P1 (demande de l'utilisateur) : image minimum + DynamicCrop
     'Crop_appliquer': ('$PXI_SRCDIR/scripts/clodoweg/Crop_commun.js', '', [('mode', 'appliquer'), ('nom', 'Crop_ref')], L_GLOBAL),   # même crop sur toutes les images ouvertes
     'Binning_x2': ('$PXI_SRCDIR/scripts/clodoweg/Binning_x2.js', '', [('facteur', '2')], L_GLOBAL),   # demande de l'utilisateur : binning logiciel de toutes les images
@@ -799,6 +801,7 @@ def icc_srgb():
                         '   </instance>')
 
 EXPORT = [(icc_srgb(), ''), (script('Export_TIFF', ''), '')]   # tout à la fin : ICC_sRGB en option, Export_TIFF au chemin principal, dernier élément après NXT_dernier (demande de l'utilisateur, 20 octobre 2026)
+EXPORT += [(script('Export_Photoshop', ''), ''), (script('Lecture_Photoshop', ''), '')]   # options : export + Photoshop, puis relecture du .tif retouché (demande de l'utilisateur, 22 octobre 2026 ; Export_TIFF par défaut inchangé)
 EXPORT.append((fermer('Fermer_tout', '*'), ''))   # option après Export_TIFF : fermer toutes les vues (demande de l'utilisateur)
 
 def etoiles_nb_item(s_stars=True):

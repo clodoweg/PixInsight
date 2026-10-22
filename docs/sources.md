@@ -1340,7 +1340,12 @@ Non vérifié : version d'instance 256 ; exécution du process depuis un script 
 Demande de l'utilisateur : « il est possible d'avoir un script qui ouvre le fichier en tif 16bits dans photoshop directe dans piwinsight? ».
 Fait : option `photoshop` (fausse par défaut) et `photoshopExe` dans Export_TIFF.js, case et choix du fichier dans la fenêtre. Lancement par l'objet PJSR ExternalProcess (classe PCL ExternalProcess, https://pixinsight.com/developer/pcl/doc/html/ExternalProcess_8h_source.html) via `cmd /c start` (PC) ou `open -b com.adobe.Photoshop` (Mac) ; signatures JavaScript non trouvées dans la documentation, non testé dans PixInsight. Icônes non changées.
 
-### Retour_Photoshop.js (22 octobre 2026)
+### Lecture_Photoshop.js (d'abord Lecture_Photoshop.js) (22 octobre 2026)
 
 Demande de l'utilisateur : « et ensuite les modifs de photoshop pourraient etre reouverte dans pixinsight via une icone? ».
-Fait : script Retour_Photoshop.js et chemin du dernier export retenu par Export_TIFF (Settings, comme clodoweg/objectDir). APIs PJSR ImageWindow.open, File.extractName, OpenFileDialog.filters : non vérifiées dans la documentation, non testé dans PixInsight. Aucune icône ajoutée.
+Fait : script Lecture_Photoshop.js et chemin du dernier export retenu par Export_TIFF (Settings, comme clodoweg/objectDir). APIs PJSR ImageWindow.open, File.extractName, OpenFileDialog.filters : non vérifiées dans la documentation, non testé dans PixInsight. Aucune icône ajoutée.
+
+### Options Export_Photoshop et Lecture_Photoshop (22 octobre 2026)
+
+Demande de l'utilisateur : « du coup ne touche pas a l'Export_TIFF par defaut qui est utilisé dans les rapide. Crée un Export Photoshop et un Lecture photoshop que tu met en option ».
+Fait : Retour_Photoshop.js renommé Lecture_Photoshop.js ; icônes Opt_Export_Photoshop (Export_TIFF.js, photoshop = true) et Opt_Lecture_Photoshop en options P7 des 5 workflows (LRGB et LHaRGB compris, impacts annoncés avant), entre Export_TIFF et Fermer_tout. Export_TIFF du chemin principal, des rapides et des turbos inchangé (photoshop absent = faux).

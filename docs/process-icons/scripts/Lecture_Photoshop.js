@@ -1,25 +1,25 @@
 // ----------------------------------------------------------------------------
-// Retour_Photoshop.js — rouvre dans PixInsight le .tif retouché dans Photoshop.
+// Lecture_Photoshop.js — rouvre dans PixInsight le .tif retouché dans Photoshop.
 // ----------------------------------------------------------------------------
 // Export_TIFF retient le chemin du dernier .tif écrit ; après les retouches,
 // enregistre dans Photoshop (Ctrl+S, même fichier, TIFF), puis lance ce script :
 // le fichier est ouvert dans une nouvelle vue <nom>_PS (l'image d'origine ne
 // change pas).
 // Paramètre fichier : chemin forcé ; vide = dernier export d'Export_TIFF.
-// Demande de l'utilisateur, 22 octobre 2026. Non testé dans PixInsight.
+// Icône Opt_Lecture_Photoshop (P7, option). Demande de l'utilisateur, 22 octobre 2026. Non testé dans PixInsight.
 //
 // Installation (Mac et PC) : dans src/scripts/clodoweg de PixInsight, avec
 // clodoweg_ui.jsh et clodoweg_objet.jsh.
 // ----------------------------------------------------------------------------
 
-#feature-id    Retour_Photoshop : clodoweg > Retour de Photoshop
+#feature-id    Lecture_Photoshop : clodoweg > Lecture Photoshop
 #feature-info  Rouvre dans PixInsight le dernier TIFF exporté par Export_TIFF, \
    après ses retouches dans Photoshop.
 
 #include "clodoweg_ui.jsh"
 #include "clodoweg_objet.jsh"
 
-#define TITLE "Retour de Photoshop"
+#define TITLE "Lecture Photoshop"
 
 function rpPath( p )
 {
@@ -28,7 +28,7 @@ function rpPath( p )
 
 function rpDialog( p )
 {
-   let d = new CWDialog( TITLE, "<b>Retour de Photoshop</b> : rouvre le .tif retouché (enregistré dans Photoshop par Ctrl+S) " +
+   let d = new CWDialog( TITLE, "<b>Lecture Photoshop</b> : rouvre le .tif retouché (enregistré dans Photoshop par Ctrl+S) " +
                          "dans une nouvelle vue. Vide = dernier export d'Export_TIFF.", "Fichier :" );
    let pathLabel = null;
    function refresh()

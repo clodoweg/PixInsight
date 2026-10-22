@@ -6674,6 +6674,50 @@ max($T,f1)</parameter>
       <parameter id="useBlackPointCompensation" value="true"/>
       <parameter id="useFloatingPointTransformation" value="true"/>
    </instance>
+   <instance class="Script" version="256" id="Opt_Export_Photoshop_instance">
+      <description>OPTION — à la place d'Export_TIFF, pour retoucher dans Photoshop : même TIFF 16 bits sRGB, puis ouvert dans Photoshop.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Export_TIFF, photoshop = true : même export qu'Export_TIFF (TIFF 16 bits sRGB, nom du dossier des masters), puis le .tif est ouvert dans Photoshop (PC : Photoshop.exe le plus récent de C:/Program Files/Adobe ; Mac : open -b com.adobe.Photoshop).&#10;&#10;À RÉGLER : à la place d'Export_TIFF : glisse sur l'image finie ; copie Export_TIFF.js et clodoweg_objet.jsh dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- Photoshop introuvable -&gt; double-clic, Apply Global, bouton Choisir Photoshop… (ou photoshopExe dans l'icône) ; le .tif est quand même enregistré</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="6">
+         <tr>
+            <td id="id">nom</td>
+            <td id="value"></td>
+         </tr>
+         <tr>
+            <td id="id">suffixe</td>
+            <td id="value"></td>
+         </tr>
+         <tr>
+            <td id="id">dossier</td>
+            <td id="value"></td>
+         </tr>
+         <tr>
+            <td id="id">icc</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">photoshop</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">photoshopExe</td>
+            <td id="value"></td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
+   </instance>
+   <instance class="Script" version="256" id="Opt_Lecture_Photoshop_instance">
+      <description>OPTION — après tes retouches dans Photoshop (Ctrl+S, même fichier) : rouvre le .tif dans PixInsight, nouvelle vue &lt;nom&gt;_PS.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Lecture_Photoshop : ouvre le dernier .tif écrit par Export_TIFF / Export_Photoshop dans une nouvelle vue &lt;nom&gt;_PS (fichier = chemin forcé).&#10;&#10;À RÉGLER : après tes retouches : dans Photoshop, Ctrl+S (même fichier, TIFF), puis double-clic sur l'icône et Apply Global ; copie Lecture_Photoshop.js et clodoweg_objet.jsh dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- calques dans Photoshop -&gt; aplatis avant d'enregistrer, par prudence&#10;- autre fichier -&gt; bouton Choisir le fichier… dans la fenêtre</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Lecture_Photoshop.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="1">
+         <tr>
+            <td id="id">fichier</td>
+            <td id="value"></td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
+   </instance>
    <instance class="Script" version="256" id="Opt_Fermer_tout_instance">
       <description>OPTION — tout à la fin, après Export_TIFF : ferme toutes les vues ouvertes sans demander (image suivante).&#10;&#10;PRÉRÉGLÉ : script Fermer_vues, views = * : ferme TOUTES les vues ouvertes, sans demander d'enregistrer.&#10;&#10;À RÉGLER : après Export_TIFF (TIFF déjà enregistré) : double-clic puis Apply Global, la fenêtre s'ouvre avec toutes les vues cochées, clique Fermer ; glissée sur une image, ferme tout sauf cette image ; copie Fermer_vues.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- une vue à garder -&gt; décoche-la dans la fenêtre&#10;- rien n'est enregistré : exporte ou sauve AVANT</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
@@ -6921,7 +6965,9 @@ max($T,f1)</parameter>
    <icon id="Opt_Boost_final" instance="Opt_Boost_final_instance" xpos="1259" ypos="294" workspace="Workspace01"/>
    <icon id="Opt_Etoiles_reduites" instance="Opt_Etoiles_reduites_instance" xpos="1259" ypos="324" workspace="Workspace01"/>
    <icon id="Opt_ICC_sRGB" instance="Opt_ICC_sRGB_instance" xpos="1259" ypos="354" workspace="Workspace01"/>
-   <icon id="Opt_Fermer_tout" instance="Opt_Fermer_tout_instance" xpos="1259" ypos="384" workspace="Workspace01"/>
-   <icon id="P7_rapide" instance="P7_rapide_instance" xpos="1259" ypos="430" workspace="Workspace01"/>
-   <icon id="R_C_Etoiles_fond_rapide" instance="R_C_Etoiles_fond_rapide_instance" xpos="1259" ypos="464" workspace="Workspace01"/>
+   <icon id="Opt_Export_Photoshop" instance="Opt_Export_Photoshop_instance" xpos="1259" ypos="384" workspace="Workspace01"/>
+   <icon id="Opt_Lecture_Photoshop" instance="Opt_Lecture_Photoshop_instance" xpos="1259" ypos="414" workspace="Workspace01"/>
+   <icon id="Opt_Fermer_tout" instance="Opt_Fermer_tout_instance" xpos="1259" ypos="444" workspace="Workspace01"/>
+   <icon id="P7_rapide" instance="P7_rapide_instance" xpos="1259" ypos="490" workspace="Workspace01"/>
+   <icon id="R_C_Etoiles_fond_rapide" instance="R_C_Etoiles_fond_rapide_instance" xpos="1259" ypos="524" workspace="Workspace01"/>
 </xpsm>

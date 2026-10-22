@@ -24,7 +24,8 @@
 //   l'utilisateur, 22 octobre 2026). PC : Photoshop.exe cherché dans
 //   C:/Program Files/Adobe/Adobe Photoshop* (le plus récent), ou chemin forcé
 //   par photoshopExe ; lancé par « cmd /c start ». Mac : « open -b
-//   com.adobe.Photoshop ». Faux par défaut. Non testé dans PixInsight.
+//   com.adobe.Photoshop ». Faux par défaut (Export_TIFF du chemin
+//   principal et des rapides inchangé) ; vrai dans l'icône Opt_Export_Photoshop. Non testé dans PixInsight.
 // Le profil ICC est intégré selon les préférences de PixInsight (Edit >
 // Global Preferences > Color Management : Embed ICC profiles, coché par
 // défaut).
@@ -239,7 +240,7 @@ function etRun( view, p )
    if ( !ok )
       throw new Error( TITLE + " : échec de l'enregistrement de " + path + "." );
    console.noteln( TITLE + " : " + path + " (TIFF 16 bits" + (icc && img.isColor ? ", sRGB IEC61966-2.1" : "") + ")." );
-   cwSaveLastExport( path );   // relu par Retour_Photoshop
+   cwSaveLastExport( path );   // relu par Lecture_Photoshop
    if ( p.photoshop )
       etOpenPhotoshop( path, p.photoshopExe );
 }

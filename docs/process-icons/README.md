@@ -26,7 +26,7 @@ Tous à copier dans `src/scripts/clodoweg/` de PixInsight (`maj_pc.bat` le fait)
 | Script | Rôle |
 |---|---|
 | `clodoweg_ui.jsh` | fenêtres de réglages et fonctions communes à tous les scripts (à copier avec eux) |
-| `clodoweg_objet.jsh` | dossier de l'objet (dossier des masters), commun à Renommer_auto et Export_TIFF ; dernier .tif exporté, relu par Retour_Photoshop |
+| `clodoweg_objet.jsh` | dossier de l'objet (dossier des masters), commun à Renommer_auto et Export_TIFF ; dernier .tif exporté, relu par Lecture_Photoshop |
 | `Renommer_auto.js` | renomme les masters L, R, G, B, H, O, S d'après FILTER, le nom du fichier ou de la vue (V -> G) ; ferme les vues *autocrop* en doublon |
 | `LPS_UnClic.js` | LinearPatternSubtraction sans dialogue sur tous les masters mono ouverts |
 | `Combiner_RGB.js` | R, G, B → `RGB`, en-tête du rouge copié ; ferme les masters (`garder` pour en garder) |
@@ -36,7 +36,7 @@ Tous à copier dans `src/scripts/clodoweg/` de PixInsight (`maj_pc.bat` le fait)
 | `Binning_x2.js` | binning logiciel 2×2 de toutes les images ouvertes (solution astrométrique gardée) |
 | `Gradient_auto.js` | GradientCorrection seule sur toutes les images (R_Gradient_auto_rapide), ou GraXpert avec `outil=graxpert` (R_Gradient_auto_graxpert_rapide) |
 | `Lineaire_auto.js` | lance des icônes du chemin principal sur des vues données (rapides et turbos) |
-| `Retour_Photoshop.js` | rouvre dans une nouvelle vue <nom>_PS le dernier .tif d'Export_TIFF, retouché et enregistré dans Photoshop (paramètre `fichier` : chemin forcé) ; pas encore d'icône |
+| `Lecture_Photoshop.js` | icône Opt_Lecture_Photoshop (P7) : rouvre dans une nouvelle vue <nom>_PS le dernier .tif d'Export_TIFF, retouché et enregistré dans Photoshop (paramètre `fichier` : chemin forcé) |
 | `Stat_canaux.js` | Statistical Stretch sur plusieurs canaux mono (S, H, O) en un clic |
 | `Etoiles_auto.js` | sur l'image d'étoiles : SCNR vert (SCNR_etoiles_vert), anti-violet (SCNR_etoiles_violet), saturation, étirement si amount > 0 |
 | `Etoiles_NB_auto.js` | étoiles RGB plausibles à partir des étoiles narrowband (SHO sans RGB, HOO) |
@@ -48,7 +48,7 @@ Tous à copier dans `src/scripts/clodoweg/` de PixInsight (`maj_pc.bat` le fait)
 | `Fond_desature.js` | retire la teinte et le violet du fond |
 | `Fond_auto.js` | fond de chaque canal amené à 0,12, neutre |
 | `Look_Lightroom.js` | retouche finale façon Camera Raw / Lightroom (Exposition, Tons clairs, Blancs, Température…) |
-| `Export_TIFF.js` | TIFF 16 bits sRGB nommé d'après le dossier des masters (aucune vue fermée) ; option `photoshop` (fenêtre : « Ouvrir ensuite dans Photoshop », chemin `photoshopExe` vide = trouvé tout seul), fausse par défaut |
+| `Export_TIFF.js` | TIFF 16 bits sRGB nommé d'après le dossier des masters (aucune vue fermée) ; option `photoshop` (icône Opt_Export_Photoshop, P7 ; fenêtre : « Ouvrir ensuite dans Photoshop », chemin `photoshopExe` vide = trouvé tout seul), fausse par défaut |
 | `Fermer_vues.js` | ferme les vues listées (`views`, `*` = toutes) |
 
 ## Régénérer

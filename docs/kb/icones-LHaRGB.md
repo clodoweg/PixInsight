@@ -1402,6 +1402,37 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > SI :
 > - impression ou Adobe RGB voulu -> change le profil cible dans l'icône
 
+#### Opt_Export_Photoshop — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js`
+   paramètres : `nom=`, `suffixe=`, `dossier=`, `icc=true`, `photoshop=true`, `photoshopExe=`
+
+> OPTION — à la place d'Export_TIFF, pour retoucher dans Photoshop : même TIFF 16 bits sRGB, puis ouvert dans Photoshop.
+> 
+> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
+> 
+> PRÉRÉGLÉ : script Export_TIFF, photoshop = true : même export qu'Export_TIFF (TIFF 16 bits sRGB, nom du dossier des masters), puis le .tif est ouvert dans Photoshop (PC : Photoshop.exe le plus récent de C:/Program Files/Adobe ; Mac : open -b com.adobe.Photoshop).
+> 
+> À RÉGLER : à la place d'Export_TIFF : glisse sur l'image finie ; copie Export_TIFF.js et clodoweg_objet.jsh dans src/scripts/clodoweg.
+> 
+> SI :
+> - Photoshop introuvable -> double-clic, Apply Global, bouton Choisir Photoshop… (ou photoshopExe dans l'icône) ; le .tif est quand même enregistré
+
+#### Opt_Lecture_Photoshop — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Lecture_Photoshop.js`
+   paramètres : `fichier=`
+
+> OPTION — après tes retouches dans Photoshop (Ctrl+S, même fichier) : rouvre le .tif dans PixInsight, nouvelle vue <nom>_PS.
+> 
+> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
+> 
+> PRÉRÉGLÉ : script Lecture_Photoshop : ouvre le dernier .tif écrit par Export_TIFF / Export_Photoshop dans une nouvelle vue <nom>_PS (fichier = chemin forcé).
+> 
+> À RÉGLER : après tes retouches : dans Photoshop, Ctrl+S (même fichier, TIFF), puis double-clic sur l'icône et Apply Global ; copie Lecture_Photoshop.js et clodoweg_objet.jsh dans src/scripts/clodoweg.
+> 
+> SI :
+> - calques dans Photoshop -> aplatis avant d'enregistrer, par prudence
+> - autre fichier -> bouton Choisir le fichier… dans la fenêtre
+
 #### Opt_Fermer_tout — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
    paramètres : `views=*`

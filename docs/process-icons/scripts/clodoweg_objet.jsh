@@ -10,7 +10,7 @@
 //   au début du traitement, relu par Export_TIFF quand les masters sont fermés
 //   (narrowband : les rapides ferment S, H, O).
 // cwSaveLastExport( path ) / cwLastExport() : dernier .tif écrit par
-//   Export_TIFF (clé clodoweg/lastExport), relu par Retour_Photoshop.
+//   Export_TIFF (clé clodoweg/lastExport), relu par Lecture_Photoshop.
 // À copier avec les scripts dans src/scripts/clodoweg.
 // ----------------------------------------------------------------------------
 
