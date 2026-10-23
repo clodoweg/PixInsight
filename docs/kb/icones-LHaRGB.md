@@ -617,6 +617,24 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - motif répété -> change souvent de source (Ctrl+clic)
 > - erreur -> Ctrl+Z dans la fenêtre CloneStamp avant de valider
 
+#### Opt_Taches_fond — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Taches_fond.js`
+   paramètres : `couches=6`, `force=1.00`, `debut=0.05`, `fin=0.20`, `flou=3`
+
+> OPTION — fond marbré de taches de couleur (rouges, bleues) qui restent après GraXpert ou GradientCorrection : sur le RGB étiré SANS étoiles, après SCNR_RGB, avant LRGB
+> La luminosité ne change pas (elle vient de L).
+> 
+> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
+> 
+> PRÉRÉGLÉ : script Taches_fond : couleur du fond remplacée par une version très floutée (MultiscaleLinearTransform, résidu après 6 couches, ~64 px), luminosité gardée ; complet sous fond + 0,05, rien au-dessus de fond + 0,20 (galaxies, halos brillants).
+> 
+> À RÉGLER : glisse sur le RGB étiré SANS étoiles, après SCNR_RGB, avant LRGB ; copie Taches_fond.js dans src/scripts/clodoweg.
+> 
+> SI :
+> - taches plus grandes qui restent -> couches 7
+> - halo jaunâtre autour des galaxies -> fin 0,15
+> - couleur du fond trop grise -> force 0,6
+
 #### Opt_SCNR_etoiles_violet — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js`
    paramètres : `vue=RGB_stars`, `amount=0`, `satAmount=0`, `scnr=false`, `violet=true`

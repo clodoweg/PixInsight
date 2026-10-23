@@ -70,6 +70,7 @@ SCRIPTS = {
     'Saturation_grosses': ('$PXI_SRCDIR/scripts/clodoweg/Saturation_grosses.js', '', [('vue', 'RGB_stars'), ('taille', '7'), ('seuil', '0.15'), ('etendue', '12'), ('passes', '1')], L_DRAG),   # option P4 : courbe de saturation de l'utilisateur sur les grosses étoiles seulement (demande de l'utilisateur)
     'Etoiles_grosses': ('$PXI_SRCDIR/scripts/clodoweg/Etoiles_grosses.js', '', [('taille', '7'), ('seuil', '0.15'), ('etendue', '12'), ('force', '0.80'), ('afficherMasque', 'false')], L_DRAG),   # demande de l'utilisateur : réduire seulement les grosses étoiles
     'Export_TIFF': ('$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js', '', [('nom', ''), ('suffixe', ''), ('dossier', ''), ('icc', 'true')], L_DRAG),   # plus aucune vue fermée (demande de l'utilisateur)
+    'Taches_fond': ('$PXI_SRCDIR/scripts/clodoweg/Taches_fond.js', '', [('couches', '6'), ('force', '1.00'), ('debut', '0.05'), ('fin', '0.20'), ('flou', '3')], L_DRAG),   # option P4 galaxies : couleur du fond lissée (demande de l'utilisateur, 23 octobre 2026)
     'Export_Photoshop': ('$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js', '', [('nom', ''), ('suffixe', ''), ('dossier', ''), ('icc', 'true'), ('photoshop', 'true'), ('photoshopExe', '')], L_DRAG),   # option P7 : export TIFF puis ouverture dans Photoshop (demande de l'utilisateur, 22 octobre 2026)
     'Lecture_Photoshop': ('$PXI_SRCDIR/scripts/clodoweg/Lecture_Photoshop.js', '', [('fichier', '')], L_GLOBAL),   # option P7 : rouvre le .tif retouché dans Photoshop
     'Crop_reference': ('$PXI_SRCDIR/scripts/clodoweg/Crop_commun.js', '', [('mode', 'reference'), ('nom', 'Crop_ref')], L_GLOBAL),   # option P1 (demande de l'utilisateur) : image minimum + DynamicCrop
@@ -1221,6 +1222,7 @@ for _st in (lrgb, lhargb):
     # tables cloner et actions vides, width, height, clonerColor et boundsColor par défaut 0xffe0e0e0) ; s'ouvre au double-clic
     insert_after(_st, 'SCNR_RGB', [(M.build('CloneStamp', 256, 'CloneStamp', [('cloner', '', 'table0'), ('actions', '', 'table0'), ('width', '0', 'v'), ('height', '0', 'v'),
                                                                               ('clonerColor', '4292927712', 'v'), ('boundsColor', '4292927712', 'v')]), '')])
+    insert_after(_st, 'CloneStamp', [(script('Taches_fond', ''), '')])   # option P4 : taches de couleur du fond du RGB sans étoiles (demande de l'utilisateur, 23 octobre 2026)
     # P7 (demande de l'utilisateur) : Fond_desature, Fond_auto (et Fond_auto_clair) sur l'image SANS étoiles, puis Etoiles_screen
     for _b in ('Fond_desature', 'Fond_auto', 'Fond_auto_clair'):
         _it = pick(_st, _b)

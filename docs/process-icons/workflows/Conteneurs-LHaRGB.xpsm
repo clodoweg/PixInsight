@@ -2435,6 +2435,34 @@ max($T, HaNB*a)</parameter>
       <parameter id="clonerColor" value="4292927712"/>
       <parameter id="boundsColor" value="4292927712"/>
    </instance>
+   <instance class="Script" version="256" id="Opt_Taches_fond_instance">
+      <description>OPTION — fond marbré de taches de couleur (rouges, bleues) qui restent après GraXpert ou GradientCorrection : sur le RGB étiré SANS étoiles, après SCNR_RGB, avant LRGB&#10;La luminosité ne change pas (elle vient de L).&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Taches_fond : couleur du fond remplacée par une version très floutée (MultiscaleLinearTransform, résidu après 6 couches, ~64 px), luminosité gardée ; complet sous fond + 0,05, rien au-dessus de fond + 0,20 (galaxies, halos brillants).&#10;&#10;À RÉGLER : glisse sur le RGB étiré SANS étoiles, après SCNR_RGB, avant LRGB ; copie Taches_fond.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- taches plus grandes qui restent -&gt; couches 7&#10;- halo jaunâtre autour des galaxies -&gt; fin 0,15&#10;- couleur du fond trop grise -&gt; force 0,6</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Taches_fond.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="5">
+         <tr>
+            <td id="id">couches</td>
+            <td id="value">6</td>
+         </tr>
+         <tr>
+            <td id="id">force</td>
+            <td id="value">1.00</td>
+         </tr>
+         <tr>
+            <td id="id">debut</td>
+            <td id="value">0.05</td>
+         </tr>
+         <tr>
+            <td id="id">fin</td>
+            <td id="value">0.20</td>
+         </tr>
+         <tr>
+            <td id="id">flou</td>
+            <td id="value">3</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
+   </instance>
    <instance class="Script" version="256" id="Opt_SCNR_etoiles_violet_instance">
       <description>OPTION — étoiles violettes (R et B nettement au-dessus de G à la sonde, surtout en LHaRGB) : après SCNR_etoiles_vert, glisse sur n'importe quelle image (traite RGB_stars)&#10;Invert, SCNR vert 1,0, Invert&#10;Pas dans le rapide.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Etoiles_auto réglé violet seul : Invert, SCNR vert (Amount 1,0, Average Neutral, Preserve lightness), Invert sur RGB_stars : le magenta (violet) des étoiles retiré.&#10;&#10;À RÉGLER : option, après SCNR_etoiles_vert : glisse sur n'importe quelle image (traite toujours la vue RGB_stars) ; le RGB sans étoiles n'est pas touché ; pas dans le rapide : à la main après R_C_RGB_etire_rapide si besoin ; à vérifier à la sonde : utile si R et B nettement au-dessus de G sur les étoiles bleues.&#10;&#10;SI :&#10;- étoiles bleues devenues trop vertes ou ternes -&gt; double-clic : décoche « Violet retiré », ou CorrectMagentaStars (moins fort)&#10;- autre nom d'étoiles -&gt; vue = ce nom dans l'icône</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js</parameter>
@@ -7385,15 +7413,16 @@ max($T,f1)</parameter>
    <icon id="E24_SCNR_RGB" instance="E24_SCNR_RGB_instance" xpos="608" ypos="244" workspace="Workspace01"/>
    <icon id="P4_options" instance="P4_options_instance" xpos="608" ypos="290" workspace="Workspace01"/>
    <icon id="Opt_CloneStamp" instance="Opt_CloneStamp_instance" xpos="608" ypos="324" workspace="Workspace01"/>
-   <icon id="Opt_SCNR_etoiles_violet" instance="Opt_SCNR_etoiles_violet_instance" xpos="608" ypos="354" workspace="Workspace01"/>
-   <icon id="Opt_Saturation_grosses" instance="Opt_Saturation_grosses_instance" xpos="608" ypos="384" workspace="Workspace01"/>
-   <icon id="Opt_Statistical_Stretch" instance="Opt_Statistical_Stretch_instance" xpos="608" ypos="414" workspace="Workspace01"/>
-   <icon id="Opt_MAS_light" instance="Opt_MAS_light_instance" xpos="608" ypos="444" workspace="Workspace01"/>
-   <icon id="Opt_Star_Stretch" instance="Opt_Star_Stretch_instance" xpos="608" ypos="474" workspace="Workspace01"/>
-   <icon id="P4_rapide" instance="P4_rapide_instance" xpos="608" ypos="520" workspace="Workspace01"/>
-   <icon id="R_C_RGB_etire_rapide" instance="R_C_RGB_etire_rapide_instance" xpos="608" ypos="554" workspace="Workspace01"/>
-   <icon id="P4_turbo" instance="P4_turbo_instance" xpos="608" ypos="600" workspace="Workspace01"/>
-   <icon id="T_Turbo_fin" instance="T_Turbo_fin_instance" xpos="608" ypos="634" workspace="Workspace01"/>
+   <icon id="Opt_Taches_fond" instance="Opt_Taches_fond_instance" xpos="608" ypos="354" workspace="Workspace01"/>
+   <icon id="Opt_SCNR_etoiles_violet" instance="Opt_SCNR_etoiles_violet_instance" xpos="608" ypos="384" workspace="Workspace01"/>
+   <icon id="Opt_Saturation_grosses" instance="Opt_Saturation_grosses_instance" xpos="608" ypos="414" workspace="Workspace01"/>
+   <icon id="Opt_Statistical_Stretch" instance="Opt_Statistical_Stretch_instance" xpos="608" ypos="444" workspace="Workspace01"/>
+   <icon id="Opt_MAS_light" instance="Opt_MAS_light_instance" xpos="608" ypos="474" workspace="Workspace01"/>
+   <icon id="Opt_Star_Stretch" instance="Opt_Star_Stretch_instance" xpos="608" ypos="504" workspace="Workspace01"/>
+   <icon id="P4_rapide" instance="P4_rapide_instance" xpos="608" ypos="550" workspace="Workspace01"/>
+   <icon id="R_C_RGB_etire_rapide" instance="R_C_RGB_etire_rapide_instance" xpos="608" ypos="584" workspace="Workspace01"/>
+   <icon id="P4_turbo" instance="P4_turbo_instance" xpos="608" ypos="630" workspace="Workspace01"/>
+   <icon id="T_Turbo_fin" instance="T_Turbo_fin_instance" xpos="608" ypos="664" workspace="Workspace01"/>
    <icon id="P5_Couleur" instance="P5_Couleur_instance" xpos="799" ypos="20" workspace="Workspace01"/>
    <icon id="E25_LRGB_ajout_L" instance="E25_LRGB_ajout_L_instance" xpos="799" ypos="64" workspace="Workspace01"/>
    <icon id="P5_rapide" instance="P5_rapide_instance" xpos="799" ypos="110" workspace="Workspace01"/>

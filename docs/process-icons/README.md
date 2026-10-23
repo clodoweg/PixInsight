@@ -37,6 +37,7 @@ Tous à copier dans `src/scripts/clodoweg/` de PixInsight (`maj_pc.bat` le fait)
 | `Gradient_auto.js` | GradientCorrection seule sur toutes les images (R_Gradient_auto_rapide), ou GraXpert avec `outil=graxpert` (R_Gradient_auto_graxpert_rapide) |
 | `Lineaire_auto.js` | lance des icônes du chemin principal sur des vues données (rapides et turbos) |
 | `Lecture_Photoshop.js` | icône Opt_Lecture_Photoshop (P7) : rouvre dans une nouvelle vue <nom>_PS le dernier .tif d'Export_TIFF, retouché et enregistré dans Photoshop (paramètre `fichier` : chemin forcé) |
+| `Taches_fond.js` | option P4 galaxies : lisse la couleur du fond du RGB sans étoiles (taches rouges, bleues), luminosité gardée |
 | `Stat_canaux.js` | Statistical Stretch sur plusieurs canaux mono (S, H, O) en un clic |
 | `Etoiles_auto.js` | sur l'image d'étoiles : SCNR vert (SCNR_etoiles_vert), anti-violet (SCNR_etoiles_violet), saturation, étirement si amount > 0 |
 | `Etoiles_NB_auto.js` | étoiles RGB plausibles à partir des étoiles narrowband (SHO sans RGB, HOO) |

@@ -1363,3 +1363,8 @@ Fait : icône Opt_Contraste_GHS en options P7 des 5 workflows (LRGB et LHaRGB co
 
 Demande de l'utilisateur : « pour les SHO avec ou sans rgb et hoo, remet E15_GHS_2_contraste en option ».
 Fait : layout.role, GHS_2_contraste = option en SHO, RGB + SHO et HOO ; textes des icônes mis à jour (« GHS_2_contraste (option, plus de contraste) »). LRGB et LHaRGB inchangés (vérifié : aucun fichier LRGB / LHaRGB modifié).
+
+### Option Taches_fond, LRGB et LHaRGB (23 octobre 2026)
+
+Demande de l'utilisateur : « comment faire quand le fond noir de la photo n'est pas homogène » (capture du RGB étiré sans étoiles, « je suis en non lineaire la et j'avais deja fait GraExpert »), puis, à ma proposition d'une icône en option P4 pour LRGB et LHaRGB : « rajoute moi un option special oui ».
+Fait : script Taches_fond.js et icône Opt_Taches_fond (P4, après CloneStamp). Méthode : lissage de la chrominance seule (technique classique de réduction du bruit de couleur à grande échelle, ici par remplacement de la couleur par celle du résidu de MultiscaleLinearTransform). Paramètres de la table layers de MultiscaleLinearTransform (enabled, biasEnabled, bias, noiseReductionEnabled, noiseReductionThreshold, noiseReductionAmount, noiseReductionIterations) : de mémoire, non vérifiés. Non testé dans PixInsight.
