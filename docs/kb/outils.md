@@ -1157,6 +1157,16 @@ Option Opt_CloneStamp (P4, LRGB et LHaRGB, demande de l'utilisateur, 18 octobre 
 - Hors PixInsight : rien ne bat BXT, NXT, SXT et MGC pour ce matériel (Siril 1.4, SASpro, SyQon, GraXpert, StarTools, APP 2.0) ; Camera Raw : ne pas utiliser Denoise ni l'IA générative sur une image astro.
 - À suivre : Gaia DR4 (2 décembre 2026, base SPCC / ImageSolver probable), outils IA natifs annoncés par PixInsight.
 
+## PixInsight 1.9.6 (veille du 4 novembre 2026, rapport : ../veille/veille-2026-11-04.md)
+
+- 1.9.6 « Lockhart », build 1713 (Windows, macOS, Linux), installeur complet ; Windows testé seulement sous Windows 11 ; AVX2 / FMA3 exigés.
+- ImageSolver 6.6.0 : résolution en aveugle (paramètre « Blind solver » : Automatic par défaut, Always, Disabled ; script BlindSolver) avec index Gaia DR3 locaux, téléchargés à part et choisis dans les préférences du process Gaia (`g17` 1,8 Go, champs 0,25° à 80° : suffit pour le CDK17 + QHY600 ; `g19` 11 Go, jusqu'à 0,07°).
+- Risque pour les icônes : GC_Solver_auto et ImageSolver_Date incluent `../ImageSolver/ImageSolver.js` ; version 6.6.0 non lue (GitLab encore en 6.4.2 le 4 novembre 2026) : à tester (non vérifié).
+- Crop, DynamicCrop, Rotation, Resample… transforment la solution astrométrique linéaire au lieu de l'effacer.
+- MGC : facteurs d'échelle automatiques, Edge correction (désactivé par défaut), pixels à zéro = sans données, « Allow MARS mosaics » (désactivé) ; les icônes gardent scaleFactor 1,00.
+- Nouveaux : MultiscaleTGVDenoise (TGVDenoise obsolète), ImageAnalysis (SubframeSelector obsolète), AstrometricRegistration, FeatureRegistration, WBPP / FBPP 3.2.0, ImageIntegration 1.8.0 ; MLDenoise sur plus de GPU NVIDIA ; graphes natifs SPCC / SPFC ; aperçus 32 bits HT, Curves ; XISF révision 2 ; modules PNG, WebP, JPEG XL, BigTIFF, XMP / EXIF en TIFF ; fenêtres « Contained » et police Inter par défaut ; Pyth4PI bloqué.
+- Dépôts au 4 novembre 2026 : RC Astro 2.6.10 (1.9.5:1.9.99), SetiAstro (1.9.4:1.9.9 ; BlindSolver2000 et Cosmic Clarity retirés le 31 octobre), Toolbox (1.9.4:1.9.7), GHS, NarrowbandNormalization, Cosmic Photons (jusqu'à 1.9.99) : installables en 1.9.6. GraXpert : dépôt injoignable ce jour.
+
 ## BXT ML5 : réglages (20 octobre 2026)
 
 - L'utilisateur a la licence ML5 ; toutes les icônes en `ml_version = 0` prennent ML5.

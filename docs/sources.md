@@ -376,6 +376,14 @@ Question : « Est-ce que tu penses qu'il est possible de rajouter à la fin une 
 
 - [GraXpert 3.0.2 and PixInsight script on Mac (AstroBin)](https://app.astrobin.com/forum/topic/125008/graxpert-302-and-pixinsight-script-on-mac-intel-macos-sonoma-145) — Forum *(résumé)* : scripts sous /Applications/PixInsight/src/scripts (chemin d'un message d'erreur).
 
+## Veille du 4 novembre 2026 (skill veille, thème PixInsight 1.9.6)
+
+Rapport : `docs/veille/veille-2026-11-04.md`. Demande de l'utilisateur : « Verifie ce qu'il y a de nouveau, notamment grace a la 1.9.6 de pix. Impact sur 'os process icons? ».
+- Officiel — [PixInsight 1.9.6 Lockhart Released](https://pixinsight.net/dev/index.php?articles/pixinsight-1-9-6-lockhart-released.28/) (build 1713 ; ouverte, fin lue en résumé).
+- Forum — [Cloudy Nights, PI 1.9.6](https://www.cloudynights.com/forums/topic/1014157-pi-196-might-as-well-have-been-20/) *(résumé)* ; Tutoriel — [vidéo 1](https://www.youtube.com/watch?v=kUqxxDjx178), [vidéo 2](https://www.youtube.com/watch?v=7hStXoH-ANM) *(résumé)*.
+- Officiel — fichiers `updates.xri` des dépôts de `docs/depots-pixinsight.txt`, lus le 4 novembre 2026 (plages de versions ; SetiAstro du 31 octobre 2026).
+- Code — [ImageSolver.js, GitLab PJSR](https://gitlab.com/pixinsight/PJSR/-/blob/master/src/scripts/ImageSolver/ImageSolver.js) : 6.4.2, dernier commit 23 juin 2026.
+
 ## Veille du 20 octobre 2026 (skill veille, période 20 octobre 2025 - 20 octobre 2026)
 
 Rapport complet et liste des URL : `docs/veille/veille-2026-10-20.md`. Principales sources :
@@ -445,6 +453,8 @@ Narrowband, sources récentes :
 - Tutoriel — [Warren Keller, masterclass d'étirement 2026](https://app.telescope.live/en/tutorials/217/2026-pixinsight-stretching-masterclass) et [NBN](https://app.telescope.live/en/tutorials/98/exploring-pixinsight-narrowband-normalization-techniques) : sans réglages chiffrés lisibles.
 
 ## Non vérifié
+
+- Veille du 4 novembre 2026 (PixInsight 1.9.6) : compatibilité de GC_Solver_auto et ImageSolver_Date avec ImageSolver 6.6.0 (code non publié) ; nom exact du paramètre « Blind solver » dans une icône ImageSolver ; fin des notes de version lue en résumé (prérequis, problèmes connus, lecture des XISF révision 2 en 1.9.5) ; date exacte de sortie (affichée « Friday ») ; dépôt GraXpert injoignable.
 
 - Revue du 20 octobre 2026 (2e passage) : défauts et plages d'Aggressiveness et de DRC de MAS ; couverture MARS DR2 à 2 939 mm ; Reject high 0,92 de LinearFit (Siril seulement) ; textes officiels LHE, HDRMT, MMT, CurvesTransformation (pages doc en 404/406) ; valeurs Light Vortex et Chaotic Nebula non relues (sites injoignables).
 
