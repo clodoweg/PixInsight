@@ -381,7 +381,7 @@ Question : « Est-ce que tu penses qu'il est possible de rajouter à la fin une 
 Demande de l'utilisateur : « oui chage vers harbard pour tout » (après l'erreur « Failed to connect to vizier.cds.unistra.fr port 443 after 21052 ms », ImageSolver_Date.js, cible à −48,7°).
 Fait : `solver_vizierServer = https://vizier.cfa.harvard.edu/vizier/` dans toutes les icônes ImageSolver, Solver_auto, ImageSolver_seul et les conteneurs qui les reprennent (5 workflows, LRGB et LHaRGB compris, accord de l'utilisateur) ; description d'ImageSolver mise à jour (miroirs de secours).
 - Officiel (code) — [AstronomicalCatalogs.jsh](https://gitlab.com/pixinsight/PJSR/-/blob/master/src/scripts/AdP/AstronomicalCatalogs.jsh) : `VizierCatalog.mirrors`, dont « CFA Harvard: Cambridge, USA » https://vizier.cfa.harvard.edu/vizier/ et IDIA http://vizier.idia.ac.za/vizier/.
-- Test (6 novembre 2026, depuis la session) : requête Gaia DR2 sur Harvard : réponse 200 en 0,5 s ; Strasbourg, Tokyo, Pune, Pékin : pas de réponse (peut aussi venir du réseau de la session) ; IDIA : 404 sur ce chemin.
+- Test (6 novembre 2026, depuis la session) : requête Gaia DR2 sur Harvard : réponse 200 en 0,5 s ; Strasbourg, Tokyo, Pune, Pékin : pas de réponse (peut aussi venir du réseau de la session) ; IDIA : 404 sur ce chemin. Second test (même jour, rayon en degrés, après « too short response » de l'utilisateur) : Harvard renvoie un tableau vide pour Gaia DR2 (I/345/gaia2), DR3 (I/355/gaiadr3) et EDR3 ; Tycho-2 répond. IDIA (https://vizier.idia.ac.za/, chemin /vizier/ en 404) : Gaia DR3, PPMXL (I/317), UCAC3 (I/315), USNO-B1 (I/284) répondent ; Gaia DR2 vide. Code AstronomicalCatalogs.jsh : catalogues en ligne Gaia DR1 et DR2 seulement ; Gaia DR3 seulement en local (GaiaDR3_XPSD, GaiaDR3SP_XPSD).
 - Forum — [Astrotreff, SIMBAD Strasbourg hors ligne](https://www.astrotreff.de/forum/index.php?thread%2F311091-simbad-astronomical-database-strasbourg-offline%2F=) *(résumé)* ; GitHub — [spherical #262](https://github.com/m-samland/spherical/pull/262), [alerce #42](https://github.com/fforster/alerce-explorer-experimental/pull/42) *(résumé)* : bascule vers Harvard pendant la panne du CDS.
 - Officiel — [nouvelles du CDS](https://cds.unistra.fr/news/) *(résumé)* : aucun avis de panne trouvé ; cause et date de début non vérifiées.
 
@@ -463,7 +463,7 @@ Narrowband, sources récentes :
 
 ## Non vérifié
 
-- Panne VizieR du CDS (novembre 2026) : date de début, cause et durée (forums seulement) ; miroir IDIA (404 sur le chemin testé).
+- Panne VizieR du CDS (novembre 2026) : date de début, cause et durée (forums seulement) ; adresse IDIA corrigée (https://vizier.idia.ac.za/) ; retour des miroirs à Gaia DR2 inconnu.
 
 - Veille du 4 novembre 2026 (PixInsight 1.9.6) : compatibilité de GC_Solver_auto et ImageSolver_Date avec ImageSolver 6.6.0 (code non publié) ; nom exact du paramètre « Blind solver » dans une icône ImageSolver ; fin des notes de version lue en résumé (prérequis, problèmes connus, lecture des XISF révision 2 en 1.9.5) ; date exacte de sortie (affichée « Friday ») ; dépôt GraXpert injoignable. Complément du 5 novembre : résultat de PixelMath pour une division par zéro en 1.9.6 (non précisé), effet sur Etoiles_reduites ; 17 des 24 scripts mis à jour non nommés par les notes.
 
