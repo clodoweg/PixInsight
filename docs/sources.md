@@ -376,6 +376,14 @@ Question : « Est-ce que tu penses qu'il est possible de rajouter à la fin une 
 
 - [GraXpert 3.0.2 and PixInsight script on Mac (AstroBin)](https://app.astrobin.com/forum/topic/125008/graxpert-302-and-pixinsight-script-on-mac-intel-macos-sonoma-145) — Forum *(résumé)* : scripts sous /Applications/PixInsight/src/scripts (chemin d'un message d'erreur).
 
+## ImageSolver en local Gaia DR3/SP (6 novembre 2026)
+
+Demande de l'utilisateur : « je veux utiliser ern local C:\GAIA\DR3SP » (après « too short response » sur le miroir de Harvard).
+Fait : `solver_catalogMode = 3`, `solver_catalog = GaiaDR3SP_XPSD`, `solver_vizierServer = https://vizier.idia.ac.za/` dans toutes les icônes ImageSolver, Solver_auto, ImageSolver_seul et les conteneurs (5 workflows, LRGB et LHaRGB compris : suite de l'accord « pour tout ») ; description d'ImageSolver mise à jour (SI : préférences du process Gaia, retour en ligne par PPMXL).
+- Officiel (code) — [ImageSolverEngine.js](https://gitlab.com/pixinsight/PJSR/-/blob/master/src/scripts/ImageSolver/ImageSolverEngine.js) (GitLab, version 1.9.4) : `CatalogMode.LocalXPSDServer = 3` ; hors mode Automatic, `catalogName = solverCfg.catalog` et magnitude = `solverCfg.magnitude`.
+- Officiel (code) — [AstronomicalCatalogs.jsh](https://gitlab.com/pixinsight/PJSR/-/blob/master/src/scripts/AdP/AstronomicalCatalogs.jsh) : `GaiaDR3SPXPSDCatalog`, identifiant « GaiaDR3SP_XPSD », process Gaia en `DataRelease_3_SP`, 219 197 643 sources.
+- Non vérifié : code d'ImageSolver 6.6.0 (1.9.6) non relu ; résolution avec Gaia DR3/SP à magnitude 15 sur le CDK17 (à confirmer par l'utilisateur).
+
 ## Serveur VizieR : miroir de Harvard (6 novembre 2026)
 
 Demande de l'utilisateur : « oui chage vers harbard pour tout » (après l'erreur « Failed to connect to vizier.cds.unistra.fr port 443 after 21052 ms », ImageSolver_Date.js, cible à −48,7°).
