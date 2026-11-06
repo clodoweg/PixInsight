@@ -1397,3 +1397,8 @@ Fait : layout.role, GHS_2_contraste = option en SHO, RGB + SHO et HOO ; textes d
 
 Demande de l'utilisateur : « comment faire quand le fond noir de la photo n'est pas homogène » (capture du RGB étiré sans étoiles, « je suis en non lineaire la et j'avais deja fait GraExpert »), puis, à ma proposition d'une icône en option P4 pour LRGB et LHaRGB : « rajoute moi un option special oui ».
 Fait : script Taches_fond.js et icône Opt_Taches_fond (P4, après CloneStamp). Méthode : lissage de la chrominance seule (technique classique de réduction du bruit de couleur à grande échelle, ici par remplacement de la couleur par celle du résidu de MultiscaleLinearTransform). Paramètres de la table layers de MultiscaleLinearTransform (enabled, biasEnabled, bias, noiseReductionEnabled, noiseReductionThreshold, noiseReductionAmount, noiseReductionIterations) : de mémoire, non vérifiés. Non testé dans PixInsight.
+
+### copie_tiff_pc.bat : validation de chaque remplacement (6 novembre 2026)
+
+Demande de l'utilisateur : « le fichier copie_tiff doit demander validation pour chaquye fichier quand il remplace dans le repertoire astro a la fin ».
+Fait : un fichier déjà présent dans Works\Astro et plus récent dans Fits (robocopy /XO /L : simulation, code 1 = serait copié) n'est plus copié pendant le passage ; il est noté dans %TEMP%\copie_tiff_attente.txt. À la fin, avant le récap, une question par fichier (dates et tailles des deux fichiers, `choice /c ON`) : O = remplacé puis original supprimé de Fits ; N = rien ne change, original gardé dans Fits (compteur « Remplacements refusés »). Nouveaux fichiers et fichiers inchangés : comme avant. Non testé sous Windows.
