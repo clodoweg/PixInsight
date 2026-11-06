@@ -172,7 +172,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 > LANCEMENT : glisse l'icône sur l'image.
 > 
-> PRÉRÉGLÉ : script ImageSolver_Date.js en une seule icône (pas de conteneur) : date d'observation 2020-01-01 ajoutée seulement si l'image n'en a pas, puis ImageSolver 6.4.2 lancé avec focale 2 939 mm, pixel 3,76 µm (0,264″/px), catalogue EN LIGNE Gaia DR2 (VizieR, connexion internet), magnitude limite fixe 15, correction de distorsion ; coordonnées et vraie date lues dans l'image.
+> PRÉRÉGLÉ : script ImageSolver_Date.js en une seule icône (pas de conteneur) : date d'observation 2020-01-01 ajoutée seulement si l'image n'en a pas, puis ImageSolver 6.4.2 lancé avec focale 2 939 mm, pixel 3,76 µm (0,264″/px), catalogue EN LIGNE Gaia DR2 (VizieR, miroir de Harvard, connexion internet), magnitude limite fixe 15, correction de distorsion ; coordonnées et vraie date lues dans l'image.
 > 
 > À RÉGLER : une seule fois par ordinateur : copie la NOUVELLE version d'ImageSolver_Date.js dans src/scripts/clodoweg ; ensuite glisse l'icône sur CHAQUE image à calibrer, juste avant SPFC ou SPCC : image RGB combinée, master L, masters H, O et S.
 > 
@@ -181,6 +181,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - échec sans coordonnées dans l'en-tête -> lance ImageSolver depuis le menu Script et utilise Search (nom de l'objet)
 > - master en bin 2 -> metadata_xpixsz = 7.52 et metadata_resolution = 0.0001466 dans solverParams
 > - trop peu d'étoiles (log : Catalog ... objects sous 300) -> solver_magnitude = 16
+> - « Failed to connect to vizier… » -> miroir en panne : clic droit sur l'icône, Edit Instance Source Code, solver_vizierServer = https://vizier.cds.unistra.fr/ (Strasbourg) ou http://vizier.idia.ac.za/vizier/ (Afrique du Sud)
 > - pas d'internet ou VizieR en panne -> catalogue local Gaia DR3 (XPSD) dans la fenêtre, seulement si la base locale est complète
 
 #### E05_SPFC_RGB_filtres — SpectrophotometricFluxCalibration

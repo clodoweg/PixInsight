@@ -376,6 +376,15 @@ Question : « Est-ce que tu penses qu'il est possible de rajouter à la fin une 
 
 - [GraXpert 3.0.2 and PixInsight script on Mac (AstroBin)](https://app.astrobin.com/forum/topic/125008/graxpert-302-and-pixinsight-script-on-mac-intel-macos-sonoma-145) — Forum *(résumé)* : scripts sous /Applications/PixInsight/src/scripts (chemin d'un message d'erreur).
 
+## Serveur VizieR : miroir de Harvard (6 novembre 2026)
+
+Demande de l'utilisateur : « oui chage vers harbard pour tout » (après l'erreur « Failed to connect to vizier.cds.unistra.fr port 443 after 21052 ms », ImageSolver_Date.js, cible à −48,7°).
+Fait : `solver_vizierServer = https://vizier.cfa.harvard.edu/vizier/` dans toutes les icônes ImageSolver, Solver_auto, ImageSolver_seul et les conteneurs qui les reprennent (5 workflows, LRGB et LHaRGB compris, accord de l'utilisateur) ; description d'ImageSolver mise à jour (miroirs de secours).
+- Officiel (code) — [AstronomicalCatalogs.jsh](https://gitlab.com/pixinsight/PJSR/-/blob/master/src/scripts/AdP/AstronomicalCatalogs.jsh) : `VizierCatalog.mirrors`, dont « CFA Harvard: Cambridge, USA » https://vizier.cfa.harvard.edu/vizier/ et IDIA http://vizier.idia.ac.za/vizier/.
+- Test (6 novembre 2026, depuis la session) : requête Gaia DR2 sur Harvard : réponse 200 en 0,5 s ; Strasbourg, Tokyo, Pune, Pékin : pas de réponse (peut aussi venir du réseau de la session) ; IDIA : 404 sur ce chemin.
+- Forum — [Astrotreff, SIMBAD Strasbourg hors ligne](https://www.astrotreff.de/forum/index.php?thread%2F311091-simbad-astronomical-database-strasbourg-offline%2F=) *(résumé)* ; GitHub — [spherical #262](https://github.com/m-samland/spherical/pull/262), [alerce #42](https://github.com/fforster/alerce-explorer-experimental/pull/42) *(résumé)* : bascule vers Harvard pendant la panne du CDS.
+- Officiel — [nouvelles du CDS](https://cds.unistra.fr/news/) *(résumé)* : aucun avis de panne trouvé ; cause et date de début non vérifiées.
+
 ## Veille du 4 novembre 2026 (skill veille, thème PixInsight 1.9.6)
 
 Rapport : `docs/veille/veille-2026-11-04.md`. Demande de l'utilisateur : « Verifie ce qu'il y a de nouveau, notamment grace a la 1.9.6 de pix. Impact sur 'os process icons? ».
@@ -453,6 +462,8 @@ Narrowband, sources récentes :
 - Tutoriel — [Warren Keller, masterclass d'étirement 2026](https://app.telescope.live/en/tutorials/217/2026-pixinsight-stretching-masterclass) et [NBN](https://app.telescope.live/en/tutorials/98/exploring-pixinsight-narrowband-normalization-techniques) : sans réglages chiffrés lisibles.
 
 ## Non vérifié
+
+- Panne VizieR du CDS (novembre 2026) : date de début, cause et durée (forums seulement) ; miroir IDIA (404 sur le chemin testé).
 
 - Veille du 4 novembre 2026 (PixInsight 1.9.6) : compatibilité de GC_Solver_auto et ImageSolver_Date avec ImageSolver 6.6.0 (code non publié) ; nom exact du paramètre « Blind solver » dans une icône ImageSolver ; fin des notes de version lue en résumé (prérequis, problèmes connus, lecture des XISF révision 2 en 1.9.5) ; date exacte de sortie (affichée « Friday ») ; dépôt GraXpert injoignable. Complément du 5 novembre : résultat de PixelMath pour une division par zéro en 1.9.6 (non précisé), effet sur Etoiles_reduites ; 17 des 24 scripts mis à jour non nommés par les notes.
 
