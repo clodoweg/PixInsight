@@ -819,7 +819,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
       expression = `~((~$T) * (~RGB_stars))` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
    26. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
-      paramètres : `mode=creer`, `s=0.20`, `gamma=2`, `flou=2`, `nom=masque_L`, `source=L`, `exclure=RGB_stars`, `exclureGain=4`, `couleur=true`, `dialogue=false`
+      paramètres : `mode=creer`, `s=0.15`, `gamma=1`, `flou=2`, `nom=masque_L`, `source=L`, `exclure=RGB_stars`, `exclureGain=4`, `couleur=true`, `dialogue=false`
    27. PixelMath
       expression = `$T` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=true ; showNewImage=true ; newImageId=Masque_avant ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
    28. CurvesTransformation
@@ -1308,7 +1308,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 #### E33_Boost_final — ProcessContainer
    1. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
-      paramètres : `mode=creer`, `s=0.20`, `gamma=2`, `flou=2`, `nom=masque_L`, `source=L`, `exclure=RGB_stars`, `exclureGain=4`, `couleur=true`, `dialogue=false`
+      paramètres : `mode=creer`, `s=0.15`, `gamma=1`, `flou=2`, `nom=masque_L`, `source=L`, `exclure=RGB_stars`, `exclureGain=4`, `couleur=true`, `dialogue=false`
    2. PixelMath
       expression = `$T` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=true ; showNewImage=true ; newImageId=Masque_avant ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
    3. CurvesTransformation
@@ -1324,12 +1324,12 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 > LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
 > 
-> PRÉRÉGLÉ : conteneur : masque de luminance tiré de L sans étoiles (script Masque_auto, source = L, s = 0,20, gamma 2 : fort sur le cœur et les bras brillants, faible sur le halo et les bras faibles ; étoiles de RGB_stars retirées du masque) créé sans être attaché, copie, CurvesTransformation c 0,46094 -> 0,53646 et S 0,46354 -> 0,54167, mélange par masque_L, copie et masque fermés.
+> PRÉRÉGLÉ : conteneur : masque de luminance tiré de L sans étoiles (script Masque_auto, source = L, s = 0,15, gamma 1 : linéaire, bras et halo pris (30 à 50 %), fond protégé ; étoiles de RGB_stars retirées du masque) créé sans être attaché, copie, CurvesTransformation c 0,46094 -> 0,53646 et S 0,46354 -> 0,54167, mélange par masque_L, copie et masque fermés.
 > 
 > À RÉGLER : glisse sur l'image finie avec étoiles ; L (sans étoiles, étirée) doit être ouverte.
 > 
 > SI :
-> - masque encore trop large -> gamma 3 dans Masque_L_source
+> - fond ou halo trop boostés -> s 0,20 ou gamma 1,5 dans Masque_L_source_creer (double-clic sur le conteneur)
 > - trop fort -> rapproche les points de la diagonale
 > - étoiles touchées -> vérifie que L est bien la version sans étoiles
 
@@ -1367,7 +1367,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 #### Opt_Boost_final_doux — ProcessContainer
    1. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
-      paramètres : `mode=creer`, `s=0.20`, `gamma=2`, `flou=2`, `nom=masque_L`, `source=L`, `exclure=RGB_stars`, `exclureGain=4`, `couleur=true`, `dialogue=false`
+      paramètres : `mode=creer`, `s=0.15`, `gamma=1`, `flou=2`, `nom=masque_L`, `source=L`, `exclure=RGB_stars`, `exclureGain=4`, `couleur=true`, `dialogue=false`
    2. PixelMath
       expression = `$T` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=true ; showNewImage=true ; newImageId=Masque_avant ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
    3. CurvesTransformation
@@ -1386,12 +1386,12 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
 > 
-> PRÉRÉGLÉ : conteneur : masque de luminance tiré de L sans étoiles (script Masque_auto, source = L, s = 0,20, gamma 2 : fort sur le cœur et les bras brillants, faible sur le halo et les bras faibles ; étoiles de RGB_stars retirées du masque) créé sans être attaché, copie, CurvesTransformation c 0,46094 -> 0,49870 et S 0,46354 -> 0,50261, mélange par masque_L, copie et masque fermés.
+> PRÉRÉGLÉ : conteneur : masque de luminance tiré de L sans étoiles (script Masque_auto, source = L, s = 0,15, gamma 1 : linéaire, bras et halo pris (30 à 50 %), fond protégé ; étoiles de RGB_stars retirées du masque) créé sans être attaché, copie, CurvesTransformation c 0,46094 -> 0,49870 et S 0,46354 -> 0,50261, mélange par masque_L, copie et masque fermés.
 > 
 > À RÉGLER : glisse sur l'image finie avec étoiles ; L (sans étoiles, étirée) doit être ouverte.
 > 
 > SI :
-> - masque encore trop large -> gamma 3 dans Masque_L_source
+> - fond ou halo trop boostés -> s 0,20 ou gamma 1,5 dans Masque_L_source_creer (double-clic sur le conteneur)
 > - trop fort -> rapproche les points de la diagonale
 > - étoiles touchées -> vérifie que L est bien la version sans étoiles
 
@@ -1493,7 +1493,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
       expression = `~((~$T) * (~RGB_stars))` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
    4. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
-      paramètres : `mode=creer`, `s=0.20`, `gamma=2`, `flou=2`, `nom=masque_L`, `source=L`, `exclure=RGB_stars`, `exclureGain=4`, `couleur=true`, `dialogue=false`
+      paramètres : `mode=creer`, `s=0.15`, `gamma=1`, `flou=2`, `nom=masque_L`, `source=L`, `exclure=RGB_stars`, `exclureGain=4`, `couleur=true`, `dialogue=false`
    5. PixelMath
       expression = `$T` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=true ; showNewImage=true ; newImageId=Masque_avant ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
    6. CurvesTransformation

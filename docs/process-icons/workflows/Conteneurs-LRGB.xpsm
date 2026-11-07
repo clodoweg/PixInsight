@@ -2980,11 +2980,11 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
             </tr>
             <tr>
                <td id="id">s</td>
-               <td id="value">0.20</td>
+               <td id="value">0.15</td>
             </tr>
             <tr>
                <td id="id">gamma</td>
-               <td id="value">2</td>
+               <td id="value">1</td>
             </tr>
             <tr>
                <td id="id">flou</td>
@@ -5854,7 +5854,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <table id="outputData" rows="0"/>
    </instance>
    <instance class="ProcessContainer" id="E25_Boost_final_instance">
-      <description>LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : masque de luminance tiré de L sans étoiles (script Masque_auto, source = L, s = 0,20, gamma 2 : fort sur le cœur et les bras brillants, faible sur le halo et les bras faibles ; étoiles de RGB_stars retirées du masque) créé sans être attaché, copie, CurvesTransformation c 0,46094 -&gt; 0,53646 et S 0,46354 -&gt; 0,54167, mélange par masque_L, copie et masque fermés.&#10;&#10;À RÉGLER : glisse sur l'image finie avec étoiles ; L (sans étoiles, étirée) doit être ouverte.&#10;&#10;SI :&#10;- masque encore trop large -&gt; gamma 3 dans Masque_L_source&#10;- trop fort -&gt; rapproche les points de la diagonale&#10;- étoiles touchées -&gt; vérifie que L est bien la version sans étoiles</description>
+      <description>LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : masque de luminance tiré de L sans étoiles (script Masque_auto, source = L, s = 0,15, gamma 1 : linéaire, bras et halo pris (30 à 50 %), fond protégé ; étoiles de RGB_stars retirées du masque) créé sans être attaché, copie, CurvesTransformation c 0,46094 -&gt; 0,53646 et S 0,46354 -&gt; 0,54167, mélange par masque_L, copie et masque fermés.&#10;&#10;À RÉGLER : glisse sur l'image finie avec étoiles ; L (sans étoiles, étirée) doit être ouverte.&#10;&#10;SI :&#10;- fond ou halo trop boostés -&gt; s 0,20 ou gamma 1,5 dans Masque_L_source_creer (double-clic sur le conteneur)&#10;- trop fort -&gt; rapproche les points de la diagonale&#10;- étoiles touchées -&gt; vérifie que L est bien la version sans étoiles</description>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
@@ -5865,11 +5865,11 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
             </tr>
             <tr>
                <td id="id">s</td>
-               <td id="value">0.20</td>
+               <td id="value">0.15</td>
             </tr>
             <tr>
                <td id="id">gamma</td>
-               <td id="value">2</td>
+               <td id="value">1</td>
             </tr>
             <tr>
                <td id="id">flou</td>
@@ -6173,7 +6173,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <description>OPTIONS de la phase 7 — Étoiles : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="Opt_Boost_final_doux_instance">
-      <description>OPTION — À LA PLACE de Boost_final (chemin principal), moitié moins fort (courbes c et S montées de moitié) : un petit cran de couleur sur l'image finie, sans toucher aux étoiles&#10;L encore ouverte.&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : masque de luminance tiré de L sans étoiles (script Masque_auto, source = L, s = 0,20, gamma 2 : fort sur le cœur et les bras brillants, faible sur le halo et les bras faibles ; étoiles de RGB_stars retirées du masque) créé sans être attaché, copie, CurvesTransformation c 0,46094 -&gt; 0,49870 et S 0,46354 -&gt; 0,50261, mélange par masque_L, copie et masque fermés.&#10;&#10;À RÉGLER : glisse sur l'image finie avec étoiles ; L (sans étoiles, étirée) doit être ouverte.&#10;&#10;SI :&#10;- masque encore trop large -&gt; gamma 3 dans Masque_L_source&#10;- trop fort -&gt; rapproche les points de la diagonale&#10;- étoiles touchées -&gt; vérifie que L est bien la version sans étoiles</description>
+      <description>OPTION — À LA PLACE de Boost_final (chemin principal), moitié moins fort (courbes c et S montées de moitié) : un petit cran de couleur sur l'image finie, sans toucher aux étoiles&#10;L encore ouverte.&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : masque de luminance tiré de L sans étoiles (script Masque_auto, source = L, s = 0,15, gamma 1 : linéaire, bras et halo pris (30 à 50 %), fond protégé ; étoiles de RGB_stars retirées du masque) créé sans être attaché, copie, CurvesTransformation c 0,46094 -&gt; 0,49870 et S 0,46354 -&gt; 0,50261, mélange par masque_L, copie et masque fermés.&#10;&#10;À RÉGLER : glisse sur l'image finie avec étoiles ; L (sans étoiles, étirée) doit être ouverte.&#10;&#10;SI :&#10;- fond ou halo trop boostés -&gt; s 0,20 ou gamma 1,5 dans Masque_L_source_creer (double-clic sur le conteneur)&#10;- trop fort -&gt; rapproche les points de la diagonale&#10;- étoiles touchées -&gt; vérifie que L est bien la version sans étoiles</description>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
@@ -6184,11 +6184,11 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
             </tr>
             <tr>
                <td id="id">s</td>
-               <td id="value">0.20</td>
+               <td id="value">0.15</td>
             </tr>
             <tr>
                <td id="id">gamma</td>
-               <td id="value">2</td>
+               <td id="value">1</td>
             </tr>
             <tr>
                <td id="id">flou</td>
@@ -6652,11 +6652,11 @@ max($T,f1)</parameter>
             </tr>
             <tr>
                <td id="id">s</td>
-               <td id="value">0.20</td>
+               <td id="value">0.15</td>
             </tr>
             <tr>
                <td id="id">gamma</td>
-               <td id="value">2</td>
+               <td id="value">1</td>
             </tr>
             <tr>
                <td id="id">flou</td>

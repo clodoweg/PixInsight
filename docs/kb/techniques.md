@@ -291,3 +291,11 @@ Réglages Camera Raw (9 octobre 2026, capture de l'utilisateur : « en fait je v
 ## Fond marbré de taches de couleur (23 octobre 2026)
 
 Demande de l'utilisateur (Leo Triplet, RGB étiré sans étoiles marbré de rouge et de bleu après GraXpert) : « comment faire quand le fond noir de la photo n'est pas homogène », puis « rajoute moi un option special oui ». Diagnostic : après GraXpert, ce n'est plus un gradient mais du bruit de couleur à grande échelle (flats, temps de pose). En LRGB, le détail vient de L : la couleur du fond du RGB peut être lissée fort. Option P4 `Opt_Taches_fond` (LRGB, LHaRGB, après CloneStamp, avant LRGB) : script Taches_fond.js, chaque canal = Y + (B − YB) dans le fond (B = résidu de MultiscaleLinearTransform après 6 couches, Y et YB luminances), poids 1 sous fond + 0,05, 0 au-dessus de fond + 0,20 ; luminosité inchangée. Prévention en linéaire : NXT 0,90 sur le RGB, vérifier les flats. Non testé dans PixInsight.
+
+## Boost_final : masque trop faible, réglages par workflow (7 novembre 2026)
+
+Retour de l'utilisateur : « je trouve aussi que le Opt Boost FInal ne boost pas bcp. peut etre du au mask ». Analyse : masque = ((L − 0,20)/0,80)² : L 0,30 -> 2 %, 0,40 -> 6 %, 0,50 -> 14 %, 0,80 -> 56 % ; les bras et le halo ne recevaient que 2 à 15 % des courbes c et S (montée 0,075 au milieu). Puis, à la remarque de l'utilisateur (« A mon avis ca doit différé suivant les LRGB, LHARGB et tous les SHO ou HOO ») et à son « oui » :
+- LRGB, LHaRGB : masque tiré de L sans étoiles, s 0,15, gamma 1 (L 0,30 -> 18 %, 0,50 -> 41 %, 0,80 -> 76 %) ; même réglage pour les deux (galaxie compacte, fond vers 0,12) ; régions HII qui saturent en LHaRGB -> Boost_final_doux.
+- SHO, RGB + SHO : masque tiré de l'image sans étoiles, luminosité = MOYENNE (R + G + B)/3 (la luminance Rec. 709 ne donne que 7 % au bleu : l'OIII bleu ou turquoise restait hors du masque), s 0,20 (nébuleuse dans tout le champ, bruit de couleur du fond plus fort), gamma 1.
+- HOO : idem, s 0,18 (l'OIII est la moitié de l'image).
+Courbes inchangées. Choix de réglages de ma part, à juger sur les images ; non testé dans PixInsight.

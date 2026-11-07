@@ -54,10 +54,11 @@ SCRIPTS = {
     # Statistical Stretch (calcul de SetiAstro) sur S, H, O en un clic (demande de l'utilisateur, 9 octobre 2026) : R_C_Stat_canaux_rapide
     'Stat_canaux': ('$PXI_SRCDIR/scripts/clodoweg/Stat_canaux.js', '', [('vues', 'S,H,O'), ('cible', '0.25'), ('sigma', '5.0')], L_GLOBAL),
     'Masque_L_creer': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'creer'), ('s', '0.14'), ('flou', '2'), ('nom', 'masque_L'), ('couleur', 'true')], L_DRAG),
-    'Masque_L_source_creer': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'creer'), ('s', '0.20'), ('gamma', '2'), ('flou', '2'), ('nom', 'masque_L'), ('source', 'L'), ('exclure', 'RGB_stars'), ('exclureGain', '4'), ('couleur', 'true')], L_DRAG),
-    'Masque_L_boost_nb_creer': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'creer'), ('s', '0.20'), ('gamma', '2'), ('flou', '2'), ('nom', 'masque_L'), ('couleur', 'true')], L_DRAG),
-    'Masque_L_boost_nb': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'attacher'), ('s', '0.20'), ('gamma', '2'), ('flou', '2'), ('nom', 'masque_L')], L_DRAG),   # narrowband : masque tiré de l'image sans étoiles elle-même
-    'Masque_L_source': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'attacher'), ('s', '0.20'), ('gamma', '2'), ('flou', '2'), ('nom', 'masque_L'), ('source', 'L'), ('exclure', 'RGB_stars'), ('exclureGain', '4')], L_DRAG),
+    'Masque_L_source_creer': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'creer'), ('s', '0.15'), ('gamma', '1'), ('flou', '2'), ('nom', 'masque_L'), ('source', 'L'), ('exclure', 'RGB_stars'), ('exclureGain', '4'), ('couleur', 'true')], L_DRAG),
+    'Masque_L_boost_nb_creer': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'creer'), ('s', '0.20'), ('gamma', '1'), ('flou', '2'), ('nom', 'masque_L'), ('luminosite', 'moyenne'), ('couleur', 'true')], L_DRAG),
+    'Masque_L_boost_hoo_creer': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'creer'), ('s', '0.18'), ('gamma', '1'), ('flou', '2'), ('nom', 'masque_L'), ('luminosite', 'moyenne'), ('couleur', 'true')], L_DRAG),   # HOO : s 0,18 (demande de l'utilisateur, 7 novembre 2026)
+    'Masque_L_boost_nb': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'attacher'), ('s', '0.20'), ('gamma', '1'), ('flou', '2'), ('nom', 'masque_L'), ('luminosite', 'moyenne')], L_DRAG),   # narrowband : masque tiré de l'image sans étoiles elle-même
+    'Masque_L_source': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'attacher'), ('s', '0.15'), ('gamma', '1'), ('flou', '2'), ('nom', 'masque_L'), ('source', 'L'), ('exclure', 'RGB_stars'), ('exclureGain', '4')], L_DRAG),
     'Masque_retirer': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'retirer'), ('nom', 'masque_L')], L_DRAG),
     # mélange masque_L × retouche + (1 − masque_L) × Masque_avant par script (demande de l'utilisateur, 18 octobre 2026 : le PixelMath natif
     # en place dans le conteneur glissé donnait « Unknown error ») ; ferme Masque_avant
@@ -392,16 +393,19 @@ def curves_cs(name, c, s):
         return t
     return M.instance('CurvesTransformation', name, post=post)
 
-def boost_final_items(doux=False, nb=False):
+def boost_final_items(doux=False, nb=False, hoo=False):
     """Image finie (étoiles comprises) : masque tiré de L sans étoiles, étoiles de RGB_stars retirées, courbes c et S
     (réglage de l'utilisateur : c 0,46094 -> 0,53646, S 0,46354 -> 0,54167), masque retiré.
     doux (demande de l'utilisateur) : même masque, montée des courbes divisée par deux (c -> 0,49870, S -> 0,50261)."""
     c, s = ((0.46094, 0.49870), (0.46354, 0.50261)) if doux else ((0.46094, 0.53646), (0.46354, 0.54167))
     # nb (demande de l'utilisateur, 8 octobre 2026) : pas de L en narrowband ; sur l'image SANS étoiles avant Etoiles_screen, masque tiré d'elle-même
-    return sous_masque([curves_cs('Courbes_boost_final', [(0, 0), c, (1, 1)], [(0, 0), s, (1, 1)])], 'Masque_L_boost_nb_creer' if nb else 'Masque_L_source_creer')
+    # masques (demande de l'utilisateur, 7 novembre 2026 : « le Opt Boost FInal ne boost pas bcp ») : gamma 2 laissait 2 à 15 % du boost sur les bras ;
+    # galaxies : L, s 0,15, gamma 1 ; SHO et RGB + SHO : moyenne R, G, B (OIII compris), s 0,20, gamma 1 ; HOO : idem, s 0,18
+    masque = ('Masque_L_boost_hoo_creer' if hoo else 'Masque_L_boost_nb_creer') if nb else 'Masque_L_source_creer'
+    return sous_masque([curves_cs('Courbes_boost_final', [(0, 0), c, (1, 1)], [(0, 0), s, (1, 1)])], masque)
 
-def boost_final(doux=False, nb=False):
-    items = boost_final_items(doux, nb)
+def boost_final(doux=False, nb=False, hoo=False):
+    items = boost_final_items(doux, nb, hoo)
     name = 'Boost_final_doux' if doux else 'Boost_final'
     return name, container(name, [x.replace('id="%s_instance"' % n, 'id="__ID___instance"', 1) for n, x in items])
 
@@ -1306,7 +1310,7 @@ for _st in (rgbsho, sho, hoo):
     _it = ((_it[0][0], _it[0][1].replace(_a, _a.replace('0.15', '0.08'))), _it[1])
     insert_before(_st, 'Etoiles_screen', [_it, (note('Fond_auto', D_FOND), ''), (script('Fond_auto_clair', ''), '')])
     # options Boost_final_doux et Boost_final (demande de l'utilisateur, 8 octobre 2026) : sur l'image sans étoiles, avant Fond_desature et Etoiles_screen
-    insert_before(_st, 'Fond_desature', [(boost_final(True, nb=True), ''), (boost_final(nb=True), '')])
+    insert_before(_st, 'Fond_desature', [(boost_final(True, nb=True, hoo=_st is hoo), ''), (boost_final(nb=True, hoo=_st is hoo), '')])
     insert_after(_st, 'Etoiles_reduites', [(M.nxt('NXT_dernier', 0.25, 1), D_NXT_DERNIER_NB)])
     _st[:] = [x for x in _st if x[0][0] != 'Etoiles_plafond']
 # P3 rapide narrowband (demande de l'utilisateur, 8 octobre 2026) : conteneur de scripts (Apply Global) ; Lineaire_auto lance les icônes du chemin

@@ -23,6 +23,10 @@
 //   de finition : un process natif d'un conteneur n'utilise pas le masque
 //   attaché pendant le conteneur ; le conteneur mélange lui-même par PixelMath
 //   masque_L*$T + (1-masque_L)*copie ; demande de l'utilisateur, 8 octobre 2026).
+// luminosite = y (défaut) : luminance Rec. 709 de l'image couleur (le bleu
+//   compte pour 7 %) ; moyenne : (R + G + B)/3, le bleu compte autant que le
+//   rouge (narrowband : zones d'OIII bleues ou turquoise prises dans le masque ;
+//   Boost_final SHO et HOO, demande de l'utilisateur, 7 novembre 2026).
 // couleur = true : masque converti en RGB (conteneurs de finition, mélange PixelMath).
 // mode = melanger : nom*$T + (1-nom)*copie (copie = Masque_avant par défaut)
 //   calculé dans une image cachée puis recopié dans l'image en une fois, copie
@@ -50,7 +54,8 @@ function maParams()
    return { mode: cwParam( "mode", "attacher" ).toLowerCase(), s: parseFloat( cwParam( "s", "0.14" ) ), gamma: parseFloat( cwParam( "gamma", "1" ) ),
             flou: parseFloat( cwParam( "flou", "2" ) ), nom: cwParam( "nom", "masque_L" ), source: cwParam( "source", "" ),
             exclure: cwParam( "exclure", "" ), exclureGain: parseFloat( cwParam( "exclureGain", "4" ) ),
-            copie: cwParam( "copie", "Masque_avant" ), couleur: cwBool( "couleur", false ) };
+            copie: cwParam( "copie", "Masque_avant" ), couleur: cwBool( "couleur", false ),
+            luminosite: cwParam( "luminosite", "y" ).toLowerCase() };
 }
 
 function maExport( p )
@@ -65,6 +70,7 @@ function maExport( p )
    Parameters.set( "exclureGain", p.exclureGain.toFixed( 1 ) );
    Parameters.set( "copie", p.copie );
    Parameters.set( "couleur", p.couleur ? "true" : "false" );
+   Parameters.set( "luminosite", p.luminosite );
 }
 
 function maDialog( p, view )
@@ -83,6 +89,8 @@ function maDialog( p, view )
    d.numeric( "Seuil s :", 0.00, 0.50, 2, p.s, "Tout ce qui est sous s passe à 0 (protégé). Règle : fond mesuré + 0,01.", function( v ) { p.s = v; } );
    d.numeric( "Gamma :", 0.5, 4, 1, p.gamma, "1 = linéaire ; 2 = masque fort seulement sur le très lumineux (Boost_final).", function( v ) { p.gamma = v; } );
    d.numeric( "Flou (px) :", 0, 10, 1, p.flou, "Lissage du masque.", function( v ) { p.flou = v; } );
+   d.combo( "Luminosité :", [ "luminance (Y Rec. 709)", "moyenne R, G, B (narrowband : OIII compris)" ], p.luminosite == "moyenne" ? 1 : 0,
+            "Image couleur : Y donne 7 % au bleu ; moyenne : le bleu compte autant que le rouge.", function( k ) { p.luminosite = k == 1 ? "moyenne" : "y"; } );
    d.edit( "Source :", p.source, "Autre vue d'où tirer la luminance (L sans étoiles pour Boost_final) ; vide = l'image.", function( t ) { p.source = t.trim(); } );
    d.check( "Masque en couleur (RGB)", p.couleur, "Masque converti en RGB (3 canaux identiques) : obligatoire pour un mélange PixelMath dans un conteneur sur une image couleur.", function( c ) { p.couleur = c; } );
    d.edit( "Copie (mélanger) :", p.copie, "Mode mélanger : copie de l'image faite avant les retouches (Masque_avant).", function( t ) { p.copie = t.trim(); } );
@@ -225,7 +233,7 @@ function maRun( view, p )
       else
          src = sw.mainView;
    }
-   let lum = src.image.isColor ? "(0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2])" : "$T";
+   let lum = !src.image.isColor ? "$T" : p.luminosite == "moyenne" ? "(($T[0] + $T[1] + $T[2])/3)" : "(0.2126*$T[0] + 0.7152*$T[1] + 0.0722*$T[2])";
    let P = new PixelMath;
    P.expression = gamma == 1 ? "max(0, (" + lum + " - " + s + ") / (1 - " + s + "))"
                              : "max(0, (" + lum + " - " + s + ") / (1 - " + s + "))^" + gamma;

@@ -1407,3 +1407,8 @@ Fait : un fichier déjà présent dans Works\Astro et plus récent dans Fits (ro
 
 Retour de l'utilisateur : « parfois le script d'export photoshop freeze tout pixinsight et je suis obligé de relancer ».
 Cause probable : `waitForFinished` sur `cmd /c start` depuis le fil principal. Documentation PCL d'ExternalProcess (https://pixinsight.com/developer/pcl/doc/html/classpcl_1_1ExternalProcess.html) : WaitForFinished « can freeze the entire PixInsight graphical interface » quand il est appelé depuis le fil principal ; StartProgram « launches a standalone process that can continue running after the calling application has terminated ». Fait : Photoshop.exe lancé directement par `ExternalProcess.startProgram` (repli : `start` sans attente). Nom PJSR non vérifié, non testé.
+
+### Boost_final : masques par workflow (7 novembre 2026)
+
+Demandes de l'utilisateur : « je trouve aussi que le Opt Boost FInal ne boost pas bcp. peut etre du au mask ou je ne sais quoi? analyse dabord », puis « il faut les meme reglages en narrowband aussi ? A mon avis ca doit différé suivant les LRGB, LHARGB et tous les SHO ou HOO », puis « oui » (impacts LRGB / LHaRGB annoncés : chemin principal, R_C_Etoiles_fond_rapide, T_Turbo_fin, Boost_final_doux).
+Fait : Masque_auto.js, paramètre `luminosite` (y par défaut, ou moyenne) avec choix dans la fenêtre ; Masque_L_source_creer s 0,15 gamma 1 ; Masque_L_boost_nb_creer gamma 1, luminosité moyenne ; nouveau Masque_L_boost_hoo_creer (s 0,18). Coefficients Rec. 709 (0,2126 / 0,7152 / 0,0722) : norme ITU-R BT.709. Valeurs de s et gamma : calcul (tableau dans docs/kb/techniques.md) et choix, non testés.
