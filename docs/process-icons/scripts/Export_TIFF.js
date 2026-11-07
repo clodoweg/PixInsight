@@ -23,7 +23,7 @@
 // photoshop = true : le .tif est ensuite ouvert dans Photoshop (demande de
 //   l'utilisateur, 22 octobre 2026). PC : Photoshop.exe cherché dans
 //   C:/Program Files/Adobe/Adobe Photoshop* (le plus récent), ou chemin forcé
-//   par photoshopExe ; lancé par « cmd /c start ». Mac : « open -b
+//   par photoshopExe ; lancé en processus indépendant, sans attente. Mac : « open -b
 //   com.adobe.Photoshop ». Faux par défaut (Export_TIFF du chemin
 //   principal et des rapides inchangé) ; vrai dans l'icône Opt_Export_Photoshop. Non testé dans PixInsight.
 // Le profil ICC est intégré selon les préférences de PixInsight (Edit >
@@ -94,6 +94,8 @@ function etFindPhotoshop()
    return names.length > 0 ? base + names[ names.length - 1 ] + "/Photoshop.exe" : "";
 }
 
+var etPS = null;
+
 // Ouvre le fichier dans Photoshop ; un échec n'annule pas l'export (message seulement).
 function etOpenPhotoshop( path, exe )
 {
@@ -109,20 +111,28 @@ function etOpenPhotoshop( path, exe )
                             " ; indique son chemin dans la fenêtre (photoshopExe)." );
          return;
       }
-      prog = "cmd.exe";
+      // Photoshop lancé directement (plus de cmd /c start)
       // split/join et pas de regex « /\//g » : le préprocesseur de PixInsight y voit un commentaire « // »
-      args = [ "/c", "start", "", exe.split( "/" ).join( "\\" ), path.split( "/" ).join( "\\" ) ];
+      prog = exe.split( "/" ).join( "\\" );
+      args = [ path.split( "/" ).join( "\\" ) ];
    }
    else
    {
       prog = "/usr/bin/open";
       args = exe.length > 0 ? [ "-a", exe, path ] : [ "-b", "com.adobe.Photoshop", path ];
    }
+   // Processus INDÉPENDANT (ExternalProcess.startProgram, PCL StartProgram), sans attente : waitForFinished
+   // depuis le fil principal peut geler toute l'interface de PixInsight (doc PCL ; retour de l'utilisateur,
+   // 7 novembre 2026 : « parfois le script d'export photoshop freeze tout pixinsight »).
    try
    {
-      let P = new ExternalProcess;
-      P.start( prog, args );
-      P.waitForFinished( 15000 );   // cmd / open rendent la main tout de suite, Photoshop reste ouvert
+      if ( typeof ExternalProcess.startProgram == "function" )
+         ExternalProcess.startProgram( prog, args );
+      else
+      {
+         etPS = new ExternalProcess;   // gardé en global : pas détruit à la fin du script ; jamais attendu
+         etPS.start( prog, args );
+      }
       console.noteln( TITLE + " : ouverture dans Photoshop demandée." );
    }
    catch ( e )

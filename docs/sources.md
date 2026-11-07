@@ -1402,3 +1402,8 @@ Fait : script Taches_fond.js et icône Opt_Taches_fond (P4, après CloneStamp). 
 
 Demande de l'utilisateur : « le fichier copie_tiff doit demander validation pour chaquye fichier quand il remplace dans le repertoire astro a la fin ».
 Fait : un fichier déjà présent dans Works\Astro et plus récent dans Fits (robocopy /XO /L : simulation, code 1 = serait copié) n'est plus copié pendant le passage ; il est noté dans %TEMP%\copie_tiff_attente.txt. À la fin, avant le récap, une question par fichier (dates et tailles des deux fichiers, `choice /c ON`) : O = remplacé puis original supprimé de Fits ; N = rien ne change, original gardé dans Fits (compteur « Remplacements refusés »). Nouveaux fichiers et fichiers inchangés : comme avant. Non testé sous Windows.
+
+### Export_Photoshop : PixInsight gelé (7 novembre 2026)
+
+Retour de l'utilisateur : « parfois le script d'export photoshop freeze tout pixinsight et je suis obligé de relancer ».
+Cause probable : `waitForFinished` sur `cmd /c start` depuis le fil principal. Documentation PCL d'ExternalProcess (https://pixinsight.com/developer/pcl/doc/html/classpcl_1_1ExternalProcess.html) : WaitForFinished « can freeze the entire PixInsight graphical interface » quand il est appelé depuis le fil principal ; StartProgram « launches a standalone process that can continue running after the calling application has terminated ». Fait : Photoshop.exe lancé directement par `ExternalProcess.startProgram` (repli : `start` sans attente). Nom PJSR non vérifié, non testé.
