@@ -1423,21 +1423,51 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - cœur brillant qui sature -> baisse HP
 > - trop fort -> Stretch factor 0,15–0,20
 
-#### Opt_Lumiere_Photoshop — Script
+#### Opt_Courbes_Photoshop — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Look_Lightroom.js`
-   paramètres : `contrasteLineaire=true`, `voile=25`, `exposition=0`, `contraste=0`, `hautes=-50`, `foncees=0`, `blancs=50`, `noirs=0`, `temperature=0`, `teinte=0`, `masque=false`, `s=0.14`, `flou=2.0`
+   paramètres : `contrasteLineaire=true`, `voile=0`, `exposition=0`, `contraste=0`, `hautes=0`, `foncees=0`, `blancs=0`, `noirs=0`, `temperature=0`, `teinte=0`, `masque=false`, `s=0.14`, `flou=2.0`
 
-> OPTION — tout à la fin, sur l'image finie avec étoiles, avant Export_TIFF : imite tes calques Photoshop Courbes (Contraste linéaire), Correction du voile (+25) et Lumière (Tons clairs -50, Blancs +50) sans passer par Photoshop.
+> OPTION — tout à la fin, sur l'image finie avec étoiles, avant Export_TIFF : imite ton calque Courbes « Contraste linéaire (RVB) » de Photoshop
+> À prendre seul ou avec Voile_Photoshop et Lumiere_Photoshop, dans cet ordre.
 > 
 > LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
 > 
-> PRÉRÉGLÉ : script Look_Lightroom réglé comme tes calques Photoshop : d'abord Courbes « Contraste linéaire (RVB) » (0,305 -> 0,286, 0,694 -> 0,713, sur R, G, B), puis Correction du voile +25 (approché : voile local = min(R, G, B) lissé 8 px, ($T − 0,25·V)/(1 − 0,25·V) : fond assombri, contraste et couleurs montés), puis Lumière : Exposition 0, Contraste 0, Tons clairs -50, Tons foncés 0, Blancs +50, Noirs 0 (Température et Teinte 0), toute l'image ; équivalents APPROCHÉS (formules d'Adobe non publiées) : courbe de luminosité CIE L*, tons clairs 0,75 et 0,90 abaissés, blancs 0,90 et 0,97 remontés.
+> PRÉRÉGLÉ : script Look_Lightroom, contrasteLineaire = true, le reste à 0 : courbe « Contraste linéaire (RVB) » de Photoshop, 0,305 -> 0,286 et 0,694 -> 0,713 sur R, G, B (points du préréglage linear_contrast de FFmpeg, repris de Photoshop).
 > 
-> À RÉGLER : glisse sur l'image finie avec étoiles, après NXT_dernier, avant Export_TIFF ; double-clic puis Apply Global = fenêtre avec les 8 curseurs ; copie Look_Lightroom.js dans src/scripts/clodoweg.
+> À RÉGLER : glisse sur l'image finie avec étoiles, après NXT_dernier ; puis, si tu veux, Voile_Photoshop et Lumiere_Photoshop ; copie Look_Lightroom.js dans src/scripts/clodoweg.
 > 
 > SI :
-> - différent de Photoshop -> ajuste Correction du voile, Tons clairs et Blancs dans la fenêtre (mêmes valeurs ne veulent pas dire même rendu)
-> - fond trop noir ou couleurs trop fortes -> Correction du voile 10 à 15
+> - trop de contraste -> Ctrl+Z, l'image s'en passe
+
+#### Opt_Voile_Photoshop — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Look_Lightroom.js`
+   paramètres : `contrasteLineaire=false`, `voile=25`, `exposition=0`, `contraste=0`, `hautes=0`, `foncees=0`, `blancs=0`, `noirs=0`, `temperature=0`, `teinte=0`, `masque=false`, `s=0.14`, `flou=2.0`
+
+> OPTION — tout à la fin, après Courbes_Photoshop si tu le prends : imite ta Correction du voile +25 de Photoshop (fond plus sombre, contraste et couleurs montés).
+> 
+> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
+> 
+> PRÉRÉGLÉ : script Look_Lightroom, voile = 25, le reste à 0 : Correction du voile approchée (formule d'Adobe non publiée : voile local = min(R, G, B) lissé 8 px, ($T − 0,25·V)/(1 − 0,25·V) : fond assombri, contraste et couleurs montés).
+> 
+> À RÉGLER : glisse sur l'image finie avec étoiles, après Courbes_Photoshop si tu le prends ; double-clic puis Apply Global = fenêtre (curseur Correction du voile).
+> 
+> SI :
+> - fond trop noir ou couleurs trop fortes -> voile 10 à 15 dans la fenêtre
+
+#### Opt_Lumiere_Photoshop — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Look_Lightroom.js`
+   paramètres : `contrasteLineaire=false`, `voile=0`, `exposition=0`, `contraste=0`, `hautes=-50`, `foncees=0`, `blancs=50`, `noirs=0`, `temperature=0`, `teinte=0`, `masque=false`, `s=0.14`, `flou=2.0`
+
+> OPTION — tout à la fin, après Courbes_Photoshop et Voile_Photoshop si tu les prends : imite ton calque Lumière de Photoshop (Tons clairs -50, Blancs +50).
+> 
+> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
+> 
+> PRÉRÉGLÉ : script Look_Lightroom réglé comme ton calque Lumière de Photoshop : Exposition 0, Contraste 0, Tons clairs -50, Tons foncés 0, Blancs +50, Noirs 0, le reste à 0 ; équivalents APPROCHÉS (formules d'Adobe non publiées) : courbe de luminosité CIE L*, tons clairs 0,75 et 0,90 abaissés, blancs 0,90 et 0,97 remontés.
+> 
+> À RÉGLER : glisse sur l'image finie avec étoiles, après Courbes_Photoshop et Voile_Photoshop si tu les prends, avant Export_TIFF ; double-clic puis Apply Global = fenêtre avec tous les curseurs ; copie Look_Lightroom.js dans src/scripts/clodoweg.
+> 
+> SI :
+> - différent de Photoshop -> ajuste Tons clairs et Blancs dans la fenêtre (mêmes valeurs ne veulent pas dire même rendu)
 > - fond qui bouge -> coche le masque de luminance dans la fenêtre
 
 #### Opt_ICC_sRGB — ICCProfileTransformation

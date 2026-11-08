@@ -1460,3 +1460,8 @@ Fait : paramètre voile dans Look_Lightroom.js (curseur dans la fenêtre), 25 da
 
 Demande de l'utilisateur (capture du calque Courbes de Photoshop, préréglage « Contraste linéaire (RVB) ») : « je veux aussi un equivalent du contraste lineaire de photoshop ».
 Source des points : FFmpeg, libavfilter/vf_curves.c (https://raw.githubusercontent.com/FFmpeg/FFmpeg/master/libavfilter/vf_curves.c), PRESET_LINEAR_CONTRAST = « 0/0 0.305/0.286 0.694/0.713 1/1 » (préréglages repris de Photoshop selon FFmpeg) ; points lus sur la capture de l'utilisateur : environ 0,31/0,29 et 0,69/0,72. Fait : paramètre contrasteLineaire de Look_Lightroom.js, vrai dans Opt_Lumiere_Photoshop (5 workflows), appliqué avant la correction du voile et Lumière (ordre des calques). Non testé.
+
+### Courbes, voile et Lumière en trois options (8 novembre 2026)
+
+Demande de l'utilisateur : « Mais je veux pouvoir choisir si je fais les 1, 2 ou 3. Je veux pas forcement tout a chaque fois ».
+Fait : Opt_Lumiere_Photoshop découpé en Opt_Courbes_Photoshop, Opt_Voile_Photoshop et Opt_Lumiere_Photoshop (P7 options, 5 workflows), chacune avec un seul réglage de Look_Lightroom.js, le reste à 0.
