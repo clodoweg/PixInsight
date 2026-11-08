@@ -1421,3 +1421,7 @@ Retour de l'utilisateur : « export tiff fait le probleme aussid e freeze ». Pa
 
 Demande de l'utilisateur : « pour les process SHO et hoo, je veux que le process qui crée les SHO dans P5 fasse scnr 0 et couche O et S a 1 (au lieu de 0.7 ,1 , 1.2) ».
 Fait : NarrowbandNormalization NBN_SHO (SHO sans RGB, RGB + SHO, rapide R_C_Palette_rapide) scnr 0, o3Boost 1, s2Boost 1 ; NBN_HOO scnr 0. NBN_SHO_doux (option) inchangé. LRGB et LHaRGB non touchés.
+
+### Sauvegarde du projet : abandonnée (8 novembre 2026)
+
+Réponse de l'utilisateur à la sauvegarde des images en XISF : « non pas du tout ca va me faire trop lourd. Je veux enregistrer le projet. SI c'est pas possible ne fait rien ». Aucune fonction PJSR documentée pour enregistrer le projet (.xosm) : rien n'est fait, la sauvegarde XISF (Sauver_vues.js, fin des turbos, icône Sauvegarde_projet) est retirée (git revert). Projet : File > Save Project, à la main.
