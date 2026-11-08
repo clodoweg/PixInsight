@@ -245,9 +245,16 @@ function etRun( view, p )
       T.executeOn( w.mainView );
    }
 
-   // 3. enregistrement
+   // 3. enregistrement ; messages avant / après pour savoir si PixInsight est gelé ou écrit encore
+   // (retour de l'utilisateur, 8 novembre 2026 : « export tiff fait le probleme aussi de freeze ») ; dossier sur
+   // Google Drive (Mon Drive) : l'écriture peut être très lente, PixInsight ne répond plus pendant ce temps
+   let mo = img.width*img.height*img.numberOfChannels*2/1048576;
+   console.writeln( TITLE + " : enregistrement de ~" + mo.toFixed( 0 ) + " Mo dans " + path + (File.exists( path ) ? " (remplace le fichier existant)" : "") + "…" );
+   processEvents();
+   let t0 = Date.now();
    let ok = w.saveAs( path, false/*queryOptions*/, false/*allowMessages*/, false/*strict*/, false/*verifyOverwrite*/ );
    w.forceClose();
+   console.writeln( TITLE + " : écriture terminée en " + ((Date.now() - t0)/1000).toFixed( 1 ) + " s." );
    if ( !ok )
       throw new Error( TITLE + " : échec de l'enregistrement de " + path + "." );
    console.noteln( TITLE + " : " + path + " (TIFF 16 bits" + (icc && img.isColor ? ", sRGB IEC61966-2.1" : "") + ")." );
