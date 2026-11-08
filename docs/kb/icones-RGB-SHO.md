@@ -857,7 +857,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
       script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
       paramètres : `etapes=Opt_GHS_2_contraste*>S,H,O`, `dialogue=false`
 
-> MODE RAPIDE, à la place de Statistical_Stretch sur les canaux (Statistical Stretch, médiane 0,25) : S, H, O linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut), double-clic puis Apply Global (pas en glissant) ; ensuite GHS_2_contraste (option, plus de contraste) ; GHS_3_fond (option) seulement si le fond est trop clair, puis la palette.
+> MODE RAPIDE, à la place de Statistical_Stretch sur les canaux (Statistical Stretch, médiane 0,25) : S, H, O linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut), double-clic puis Apply Global (pas en glissant) ; GHS_2_contraste compris ; ensuite la palette (GHS_3_fond en option).
 > 
 > LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).
 > 

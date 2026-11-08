@@ -226,7 +226,7 @@ CONTAINERS = {
 # Textes d'option propres au narrowband
 WHEN_NB = {
     'NBN_SHO_doux': "à la place de NBN_SHO, à tester : réglages plus doux (Deep Space Place 2026 : Lightness Off, SCNR 0,20, OIII 1,2, SII 1,4) ; glisse sur SHO_etire après SHO_simple, compare avec NBN_SHO",
-    'C_Stat_canaux_rapide': "MODE RAPIDE, à la place de GHS_1 et GHS_2 sur les canaux (Statistical Stretch, médiane 0,25) : S, H, O linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut), double-clic puis Apply Global (pas en glissant) ; ensuite GHS_3_fond sur chaque canal, puis la palette",
+    'C_Stat_canaux_rapide': "MODE RAPIDE, à la place de GHS_1 et GHS_2 sur les canaux (Statistical Stretch, médiane 0,25) : S, H, O linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut), double-clic puis Apply Global (pas en glissant) ; GHS_2_contraste compris ; ensuite la palette (GHS_3_fond en option)",
     'NB_to_RGB_Stars': "à la place d'Etoiles_NB_auto, à la main dans la fenêtre du script SetiAstro (même mélange) ; LinearFit des étoiles sur H_stars avant",
     'Star_Stretch': "seulement si NB_to_RGB_Stars a été lancé sans Apply Star Stretch (ou pour HOO_stars, Stars_HOO) : sur l'image d'étoiles LINÉAIRE",
     'SCNR_etoiles_vert': "étoiles vertes : sur NBtoRGB_stars étirée (SHO sans RGB) ou RGB_stars, avant Etoiles_screen ; glisse sur n'importe quelle image",
