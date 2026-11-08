@@ -1474,3 +1474,7 @@ Fait : script Couleur_selective.js (fenêtre : méthode, une ligne c,m,y,k par g
 ### Lumière renforcée (8 novembre 2026)
 
 Retour de l'utilisateur : « le lumière ne fonctionne pas. l'effet est tres faible ». Fait : courbe de luminosité de Look_Lightroom.js environ 2,5 fois plus forte (détail dans docs/kb/techniques.md) ; icônes inchangées (réglages -50 / +50 gardés). Choix de ma part, non testé.
+
+### Contraste_GHS au chemin principal (8 novembre 2026)
+
+Demande de l'utilisateur : « Opt_Contraste_GHS ne doit plus etre une option ». Fait : Contraste_GHS retiré des options (layout.OPT) : chemin principal des 5 workflows (l'icône existait dans les 5, LRGB et LHaRGB compris), entre NXT_dernier et Export_TIFF (LRGB E27, LHaRGB E35, RGB + SHO E32, SHO sans RGB E26, HOO E28). Pas ajouté à R_C_Etoiles_fond_rapide ni à T_Turbo_fin (non demandé).

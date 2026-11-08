@@ -6145,7 +6145,23 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="detail" value="0.15"/>
       <parameter id="overlap" value="0.20"/>
    </instance>
-   <instance class="Script" version="256" id="E27_Export_TIFF_instance">
+   <instance class="GeneralizedHyperbolicStretch" version="256" id="E27_Contraste_GHS_instance">
+      <description>PRÉRÉGLÉ : GHS Generalised Hyperbolic, RGB, Stretch factor 0,32, b = 4, SP 0,35, LP 0, HP 0,9 (réglage de l'utilisateur).&#10;&#10;À RÉGLER : glisse sur l'image finie avec étoiles, après NXT_dernier et avant Export_TIFF ; SP = valeur de ta zone plate, au-dessus du fond.&#10;&#10;SI :&#10;- fond qui monte -&gt; monte SP ou baisse le Stretch factor&#10;- cœur brillant qui sature -&gt; baisse HP&#10;- trop fort -&gt; Stretch factor 0,15–0,20</description>
+      <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
+      <parameter id="stretchChannel" value="SC_RGB"/>
+      <parameter id="inverse" value="false"/>
+      <parameter id="stretchFactor" value="0.320"/>
+      <parameter id="localIntensity" value="4.000"/>
+      <parameter id="symmetryPoint" value="0.350000"/>
+      <parameter id="highlightProtection" value="0.900000"/>
+      <parameter id="shadowProtection" value="0.000000"/>
+      <parameter id="blackPoint" value="0.000000"/>
+      <parameter id="whitePoint" value="1.000000"/>
+      <parameter id="colourBlend" value="1.000"/>
+      <parameter id="clipType" value="CT_RGBBlend"/>
+      <parameter id="useRGBWorkingSpace" value="false"/>
+   </instance>
+   <instance class="Script" version="256" id="E28_Export_TIFF_instance">
       <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Export_TIFF : copie de l'image en entiers 16 bits, convertie en sRGB IEC61966-2.1 (icc = true), enregistrée en TIFF (.tif) sous le NOM DE L'OBJET, sans espace (NGC 1532 -&gt; NGC1532), = nom du dossier des masters ouverts (L, R, G, B, H…), dossiers génériques (master, lights, output, WBPP…) sautés ; masters fermés (narrowband) : dossier retenu par Renommer_auto ; enregistrée dans ce dossier ; l'image ouverte ne change pas.&#10;&#10;À RÉGLER : DERNIÈRE étape du chemin principal : glisse sur l'image finie, juste après NXT_dernier ; aucune vue n'est fermée ; copie Export_TIFF.js et clodoweg_objet.jsh dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- aucun master ouvert -&gt; mot-clé OBJECT, sinon nom de la vue, dans ton dossier personnel&#10;- autre nom -&gt; remplis nom&#10;- autre dossier -&gt; remplis dossier&#10;- garder plusieurs versions -&gt; suffixe (ex. _v2)&#10;- garder le profil actuel -&gt; icc false</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js</parameter>
       <parameter id="md5sum"></parameter>
@@ -6477,22 +6493,6 @@ max($T,f1)</parameter>
       <parameter id="newImageColorSpace" value="SameAsTarget"/>
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
-   </instance>
-   <instance class="GeneralizedHyperbolicStretch" version="256" id="Opt_Contraste_GHS_instance">
-      <description>OPTION — tout à la fin, sur l'image finie avec étoiles, avant Export_TIFF : un peu plus de contraste sans toucher au fond.&#10;&#10;PRÉRÉGLÉ : GHS Generalised Hyperbolic, RGB, Stretch factor 0,32, b = 4, SP 0,35, LP 0, HP 0,9 (réglage de l'utilisateur).&#10;&#10;À RÉGLER : glisse sur l'image finie avec étoiles, après NXT_dernier et avant Export_TIFF ; SP = valeur de ta zone plate, au-dessus du fond.&#10;&#10;SI :&#10;- fond qui monte -&gt; monte SP ou baisse le Stretch factor&#10;- cœur brillant qui sature -&gt; baisse HP&#10;- trop fort -&gt; Stretch factor 0,15–0,20</description>
-      <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
-      <parameter id="stretchChannel" value="SC_RGB"/>
-      <parameter id="inverse" value="false"/>
-      <parameter id="stretchFactor" value="0.320"/>
-      <parameter id="localIntensity" value="4.000"/>
-      <parameter id="symmetryPoint" value="0.350000"/>
-      <parameter id="highlightProtection" value="0.900000"/>
-      <parameter id="shadowProtection" value="0.000000"/>
-      <parameter id="blackPoint" value="0.000000"/>
-      <parameter id="whitePoint" value="1.000000"/>
-      <parameter id="colourBlend" value="1.000"/>
-      <parameter id="clipType" value="CT_RGBBlend"/>
-      <parameter id="useRGBWorkingSpace" value="false"/>
    </instance>
    <instance class="Script" version="256" id="Opt_Courbes_Photoshop_instance">
       <description>OPTION — tout à la fin, sur l'image finie avec étoiles, avant Export_TIFF : imite ton calque Courbes « Contraste linéaire (RVB) » de Photoshop&#10;À prendre seul ou avec Voile_Photoshop et Lumiere_Photoshop, dans cet ordre.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Look_Lightroom, contrasteLineaire = true, le reste à 0 : courbe « Contraste linéaire (RVB) » de Photoshop, 0,305 -&gt; 0,286 et 0,694 -&gt; 0,713 sur R, G, B (points du préréglage linear_contrast de FFmpeg, repris de Photoshop).&#10;&#10;À RÉGLER : glisse sur l'image finie avec étoiles, après NXT_dernier ; puis, si tu veux, Voile_Photoshop et Lumiere_Photoshop ; copie Look_Lightroom.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- trop de contraste -&gt; Ctrl+Z, l'image s'en passe</description>
@@ -7225,11 +7225,11 @@ max($T,f1)</parameter>
    <icon id="E24_Etoiles_screen" instance="E24_Etoiles_screen_instance" xpos="1159" ypos="124" workspace="Workspace01"/>
    <icon id="E25_Boost_final" instance="E25_Boost_final_instance" xpos="1159" ypos="154" workspace="Workspace01"/>
    <icon id="E26_NXT_dernier" instance="E26_NXT_dernier_instance" xpos="1159" ypos="184" workspace="Workspace01"/>
-   <icon id="E27_Export_TIFF" instance="E27_Export_TIFF_instance" xpos="1159" ypos="214" workspace="Workspace01"/>
-   <icon id="P7_options" instance="P7_options_instance" xpos="1159" ypos="260" workspace="Workspace01"/>
-   <icon id="Opt_Boost_final_doux" instance="Opt_Boost_final_doux_instance" xpos="1159" ypos="294" workspace="Workspace01"/>
-   <icon id="Opt_Etoiles_reduites" instance="Opt_Etoiles_reduites_instance" xpos="1159" ypos="324" workspace="Workspace01"/>
-   <icon id="Opt_Contraste_GHS" instance="Opt_Contraste_GHS_instance" xpos="1159" ypos="354" workspace="Workspace01"/>
+   <icon id="E27_Contraste_GHS" instance="E27_Contraste_GHS_instance" xpos="1159" ypos="214" workspace="Workspace01"/>
+   <icon id="E28_Export_TIFF" instance="E28_Export_TIFF_instance" xpos="1159" ypos="244" workspace="Workspace01"/>
+   <icon id="P7_options" instance="P7_options_instance" xpos="1159" ypos="290" workspace="Workspace01"/>
+   <icon id="Opt_Boost_final_doux" instance="Opt_Boost_final_doux_instance" xpos="1159" ypos="324" workspace="Workspace01"/>
+   <icon id="Opt_Etoiles_reduites" instance="Opt_Etoiles_reduites_instance" xpos="1159" ypos="354" workspace="Workspace01"/>
    <icon id="Opt_Courbes_Photoshop" instance="Opt_Courbes_Photoshop_instance" xpos="1159" ypos="384" workspace="Workspace01"/>
    <icon id="Opt_Voile_Photoshop" instance="Opt_Voile_Photoshop_instance" xpos="1159" ypos="414" workspace="Workspace01"/>
    <icon id="Opt_Lumiere_Photoshop" instance="Opt_Lumiere_Photoshop_instance" xpos="1159" ypos="444" workspace="Workspace01"/>
