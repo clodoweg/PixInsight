@@ -5697,7 +5697,23 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </table>
       <parameter id="information"></parameter>
    </instance>
-   <instance class="PixelMath" version="256" id="E24_Etoiles_screen_instance">
+   <instance class="GeneralizedHyperbolicStretch" version="256" id="E24_Contraste_GHS_instance">
+      <description>PRÉRÉGLÉ : GHS Generalised Hyperbolic, RGB, Stretch factor 0,32, b = 4, SP 0,35, LP 0, HP 0,9 (réglage de l'utilisateur).&#10;&#10;À RÉGLER : glisse sur l'image SANS étoiles finie, après Fond_auto et avant Etoiles_screen (puis NXT_dernier et Export_TIFF) ; SP = valeur de ta zone plate, au-dessus du fond.&#10;&#10;SI :&#10;- fond qui monte -&gt; monte SP ou baisse le Stretch factor&#10;- cœur brillant qui sature -&gt; baisse HP&#10;- trop fort -&gt; Stretch factor 0,15–0,20</description>
+      <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
+      <parameter id="stretchChannel" value="SC_RGB"/>
+      <parameter id="inverse" value="false"/>
+      <parameter id="stretchFactor" value="0.320"/>
+      <parameter id="localIntensity" value="4.000"/>
+      <parameter id="symmetryPoint" value="0.350000"/>
+      <parameter id="highlightProtection" value="0.900000"/>
+      <parameter id="shadowProtection" value="0.000000"/>
+      <parameter id="blackPoint" value="0.000000"/>
+      <parameter id="whitePoint" value="1.000000"/>
+      <parameter id="colourBlend" value="1.000"/>
+      <parameter id="clipType" value="CT_RGBBlend"/>
+      <parameter id="useRGBWorkingSpace" value="false"/>
+   </instance>
+   <instance class="PixelMath" version="256" id="E25_Etoiles_screen_instance">
       <description>PRÉRÉGLÉ : ~((~$T) * (~NBtoRGB_stars)), sur l'image elle-même.&#10;&#10;À RÉGLER : glisse sur l'image SHO sans étoiles finale ; étoiles de NB to RGB (NBtoRGB_stars), étirées.&#10;&#10;SI :&#10;- étoiles synthétiques -&gt; remplace par Stars_HOO&#10;- étoiles aux couleurs de la palette -&gt; par SHO_stars (étirée)</description>
       <parameter id="expression">~((~$T) * (~NBtoRGB_stars))</parameter>
       <parameter id="expression1"></parameter>
@@ -5727,7 +5743,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
-   <instance class="NoiseXTerminator" version="256" id="E25_NXT_dernier_instance">
+   <instance class="NoiseXTerminator" version="256" id="E26_NXT_dernier_instance">
       <description>PRÉRÉGLÉ : NoiseXTerminator Denoise 0,25, 1 itération.&#10;&#10;À RÉGLER : dernière étape avant Export_TIFF : glisse sur l'image finie AVEC ses étoiles, juste après la recombinaison (Etoiles_reduites ou Etoiles_screen).&#10;&#10;SI :&#10;- aspect plastique -&gt; Denoise 0,15&#10;- bruit encore visible -&gt; 0,35&#10;- étoiles adoucies -&gt; 0,15, ou saute cette étape</description>
       <parameter id="ml_version" value="0"/>
       <parameter id="denoise" value="0.25"/>
@@ -5745,22 +5761,6 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="iterations" value="1"/>
       <parameter id="detail" value="0.15"/>
       <parameter id="overlap" value="0.20"/>
-   </instance>
-   <instance class="GeneralizedHyperbolicStretch" version="256" id="E26_Contraste_GHS_instance">
-      <description>PRÉRÉGLÉ : GHS Generalised Hyperbolic, RGB, Stretch factor 0,32, b = 4, SP 0,35, LP 0, HP 0,9 (réglage de l'utilisateur).&#10;&#10;À RÉGLER : glisse sur l'image finie avec étoiles, après NXT_dernier et avant Export_TIFF ; SP = valeur de ta zone plate, au-dessus du fond.&#10;&#10;SI :&#10;- fond qui monte -&gt; monte SP ou baisse le Stretch factor&#10;- cœur brillant qui sature -&gt; baisse HP&#10;- trop fort -&gt; Stretch factor 0,15–0,20</description>
-      <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
-      <parameter id="stretchChannel" value="SC_RGB"/>
-      <parameter id="inverse" value="false"/>
-      <parameter id="stretchFactor" value="0.320"/>
-      <parameter id="localIntensity" value="4.000"/>
-      <parameter id="symmetryPoint" value="0.350000"/>
-      <parameter id="highlightProtection" value="0.900000"/>
-      <parameter id="shadowProtection" value="0.000000"/>
-      <parameter id="blackPoint" value="0.000000"/>
-      <parameter id="whitePoint" value="1.000000"/>
-      <parameter id="colourBlend" value="1.000"/>
-      <parameter id="clipType" value="CT_RGBBlend"/>
-      <parameter id="useRGBWorkingSpace" value="false"/>
    </instance>
    <instance class="Script" version="256" id="E27_Export_TIFF_instance">
       <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Export_TIFF : copie de l'image en entiers 16 bits, convertie en sRGB IEC61966-2.1 (icc = true), enregistrée en TIFF (.tif) sous le NOM DE L'OBJET, sans espace (NGC 1532 -&gt; NGC1532), = nom du dossier des masters ouverts (L, R, G, B, H…), dossiers génériques (master, lights, output, WBPP…) sautés ; masters fermés (narrowband) : dossier retenu par Renommer_auto ; enregistrée dans ce dossier ; l'image ouverte ne change pas.&#10;&#10;À RÉGLER : DERNIÈRE étape du chemin principal : glisse sur l'image finie, juste après NXT_dernier ; aucune vue n'est fermée ; copie Export_TIFF.js et clodoweg_objet.jsh dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- aucun master ouvert -&gt; mot-clé OBJECT, sinon nom de la vue, dans ton dossier personnel&#10;- autre nom -&gt; remplis nom&#10;- autre dossier -&gt; remplis dossier&#10;- garder plusieurs versions -&gt; suffixe (ex. _v2)&#10;- garder le profil actuel -&gt; icc false</description>
@@ -6680,9 +6680,9 @@ max($T,f1)</parameter>
    <icon id="P7_Etoiles" instance="P7_Etoiles_instance" xpos="1269" ypos="20" workspace="Workspace01"/>
    <icon id="E22_Fond_desature" instance="E22_Fond_desature_instance" xpos="1269" ypos="64" workspace="Workspace01"/>
    <icon id="E23_Fond_auto" instance="E23_Fond_auto_instance" xpos="1269" ypos="94" workspace="Workspace01"/>
-   <icon id="E24_Etoiles_screen" instance="E24_Etoiles_screen_instance" xpos="1269" ypos="124" workspace="Workspace01"/>
-   <icon id="E25_NXT_dernier" instance="E25_NXT_dernier_instance" xpos="1269" ypos="154" workspace="Workspace01"/>
-   <icon id="E26_Contraste_GHS" instance="E26_Contraste_GHS_instance" xpos="1269" ypos="184" workspace="Workspace01"/>
+   <icon id="E24_Contraste_GHS" instance="E24_Contraste_GHS_instance" xpos="1269" ypos="124" workspace="Workspace01"/>
+   <icon id="E25_Etoiles_screen" instance="E25_Etoiles_screen_instance" xpos="1269" ypos="154" workspace="Workspace01"/>
+   <icon id="E26_NXT_dernier" instance="E26_NXT_dernier_instance" xpos="1269" ypos="184" workspace="Workspace01"/>
    <icon id="E27_Export_TIFF" instance="E27_Export_TIFF_instance" xpos="1269" ypos="214" workspace="Workspace01"/>
    <icon id="P7_options" instance="P7_options_instance" xpos="1269" ypos="260" workspace="Workspace01"/>
    <icon id="Opt_NB_to_RGB_Stars" instance="Opt_NB_to_RGB_Stars_instance" xpos="1269" ypos="294" workspace="Workspace01"/>

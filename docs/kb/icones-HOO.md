@@ -1166,7 +1166,19 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - données très propres -> 0,10 à 0,11
 > - nébuleuse qui remplit le champ : regarde le fond AVANT dans la console ; au-dessus d'environ 0,20 (seuil au jugé), ce n'est pas du vrai ciel -> Ctrl+Z et saute cette étape
 
-#### E26_Etoiles_screen — PixelMath
+#### E26_Contraste_GHS — GeneralizedHyperbolicStretch
+   stretchType=ST_GeneralisedHyperbolic ; stretchChannel=SC_RGB ; inverse=false ; stretchFactor=0.320 ; localIntensity=4.000 ; symmetryPoint=0.350000 ; highlightProtection=0.900000 ; shadowProtection=0.000000 ; blackPoint=0.000000 ; whitePoint=1.000000 ; colourBlend=1.000 ; clipType=CT_RGBBlend ; useRGBWorkingSpace=false
+
+> PRÉRÉGLÉ : GHS Generalised Hyperbolic, RGB, Stretch factor 0,32, b = 4, SP 0,35, LP 0, HP 0,9 (réglage de l'utilisateur).
+> 
+> À RÉGLER : glisse sur l'image SANS étoiles finie, après Fond_auto et avant Etoiles_screen (puis NXT_dernier et Export_TIFF) ; SP = valeur de ta zone plate, au-dessus du fond.
+> 
+> SI :
+> - fond qui monte -> monte SP ou baisse le Stretch factor
+> - cœur brillant qui sature -> baisse HP
+> - trop fort -> Stretch factor 0,15–0,20
+
+#### E27_Etoiles_screen — PixelMath
    expression = `~((~$T) * (~NBtoRGB_stars))` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
 
 > PRÉRÉGLÉ : ~((~$T) * (~NBtoRGB_stars)), sur l'image elle-même.
@@ -1178,7 +1190,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - étoiles HOO classiques -> HOO_stars (étirée)
 > - synthétiques -> Stars_HOO
 
-#### E27_NXT_dernier — NoiseXTerminator
+#### E28_NXT_dernier — NoiseXTerminator
    ml_version=0 ; denoise=0.25 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
 
 > PRÉRÉGLÉ : NoiseXTerminator Denoise 0,25, 1 itération.
@@ -1189,18 +1201,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - aspect plastique -> Denoise 0,15
 > - bruit encore visible -> 0,35
 > - étoiles adoucies -> 0,15, ou saute cette étape
-
-#### E28_Contraste_GHS — GeneralizedHyperbolicStretch
-   stretchType=ST_GeneralisedHyperbolic ; stretchChannel=SC_RGB ; inverse=false ; stretchFactor=0.320 ; localIntensity=4.000 ; symmetryPoint=0.350000 ; highlightProtection=0.900000 ; shadowProtection=0.000000 ; blackPoint=0.000000 ; whitePoint=1.000000 ; colourBlend=1.000 ; clipType=CT_RGBBlend ; useRGBWorkingSpace=false
-
-> PRÉRÉGLÉ : GHS Generalised Hyperbolic, RGB, Stretch factor 0,32, b = 4, SP 0,35, LP 0, HP 0,9 (réglage de l'utilisateur).
-> 
-> À RÉGLER : glisse sur l'image finie avec étoiles, après NXT_dernier et avant Export_TIFF ; SP = valeur de ta zone plate, au-dessus du fond.
-> 
-> SI :
-> - fond qui monte -> monte SP ou baisse le Stretch factor
-> - cœur brillant qui sature -> baisse HP
-> - trop fort -> Stretch factor 0,15–0,20
 
 #### E29_Export_TIFF — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js`
