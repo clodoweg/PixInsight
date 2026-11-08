@@ -299,3 +299,7 @@ Retour de l'utilisateur : « je trouve aussi que le Opt Boost FInal ne boost pas
 - SHO, RGB + SHO : masque tiré de l'image sans étoiles, luminosité = MOYENNE (R + G + B)/3 (la luminance Rec. 709 ne donne que 7 % au bleu : l'OIII bleu ou turquoise restait hors du masque), s 0,20 (nébuleuse dans tout le champ, bruit de couleur du fond plus fort), gamma 1.
 - HOO : idem, s 0,18 (l'OIII est la moitié de l'image).
 Courbes inchangées. Choix de réglages de ma part, à juger sur les images ; non testé dans PixInsight.
+
+## Option Lumiere_Photoshop (8 novembre 2026)
+
+Demande de l'utilisateur (capture de son calque Lumière dans Photoshop : Exposition 0, Contraste 0, Tons clairs -50, Tons foncés 0, Blancs +50, Noirs 0) : « tu serais faire une option a la fin (pour tous les process) qui imite Photoshop Lumiere ». Option P7 `Opt_Lumiere_Photoshop` des 5 workflows, après Contraste_GHS, avant ICC_sRGB et les exports : script Look_Lightroom.js (voir « Réglages façon Lightroom » plus haut) avec ces valeurs, Température et Teinte 0, sans masque. Correspondances APPROCHÉES : les formules d'Adobe ne sont pas publiées, mêmes chiffres ne veut pas dire même rendu. Non testé.

@@ -1423,6 +1423,22 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - cœur brillant qui sature -> baisse HP
 > - trop fort -> Stretch factor 0,15–0,20
 
+#### Opt_Lumiere_Photoshop — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Look_Lightroom.js`
+   paramètres : `exposition=0`, `contraste=0`, `hautes=-50`, `foncees=0`, `blancs=50`, `noirs=0`, `temperature=0`, `teinte=0`, `masque=false`, `s=0.14`, `flou=2.0`
+
+> OPTION — tout à la fin, sur l'image finie avec étoiles, avant Export_TIFF : imite ton réglage Lumière de Photoshop (Tons clairs -50, Blancs +50) sans passer par Photoshop.
+> 
+> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
+> 
+> PRÉRÉGLÉ : script Look_Lightroom réglé comme ton calque Lumière de Photoshop : Exposition 0, Contraste 0, Tons clairs -50, Tons foncés 0, Blancs +50, Noirs 0 (Température et Teinte 0), toute l'image ; équivalents APPROCHÉS (formules d'Adobe non publiées) : courbe de luminosité CIE L*, tons clairs 0,75 et 0,90 abaissés, blancs 0,90 et 0,97 remontés.
+> 
+> À RÉGLER : glisse sur l'image finie avec étoiles, après NXT_dernier, avant Export_TIFF ; double-clic puis Apply Global = fenêtre avec les 8 curseurs ; copie Look_Lightroom.js dans src/scripts/clodoweg.
+> 
+> SI :
+> - différent de Photoshop -> ajuste Tons clairs et Blancs dans la fenêtre (mêmes valeurs ne veulent pas dire même rendu)
+> - fond qui bouge -> coche le masque de luminance dans la fenêtre
+
 #### Opt_ICC_sRGB — ICCProfileTransformation
    targetProfile=sRGB IEC61966-2.1 ; toDefaultProfile=false ; renderingIntent=Perceptual ; useBlackPointCompensation=true ; useFloatingPointTransformation=true
 

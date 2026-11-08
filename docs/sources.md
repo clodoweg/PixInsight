@@ -1445,3 +1445,8 @@ Fait : layout.role GHS_2_contraste = chemin principal en SHO, RGB + SHO et HOO ;
 
 Demande de l'utilisateur : « je veux opt Opt lecture photoshop et opt export photoshop ne travaille plus sur le nom de l'objet mais sur un tmp.tiff ».
 Fait : paramètre temp (Export_TIFF.js, Lecture_Photoshop.js), vrai dans Opt_Export_Photoshop et Opt_Lecture_Photoshop (5 workflows, LRGB et LHaRGB compris : icônes concernées par la demande) ; fichier tmp.tiff dans le dossier temporaire (choix : hors du dossier de l'objet pour que copie_tiff_pc.bat ne le déplace pas). File.systemTempDirectory et getEnvironmentVariable : non vérifiés, utilisés seulement s'ils existent (repli : dossier personnel).
+
+### Option Lumiere_Photoshop, 5 workflows (8 novembre 2026)
+
+Demande de l'utilisateur (capture du calque Lumière de Photoshop : Exposition 0,00, Contraste 0, Tons clairs -50, Tons foncés 0, Blancs +50, Noirs 0) : « tu serais faire une option a la fin (pour tous les process) qui imite Photoshop Lumiere ».
+Fait : icône Opt_Lumiere_Photoshop (P7 options, 5 workflows, LRGB et LHaRGB compris, demandé explicitement), script Look_Lightroom.js existant avec ces réglages. Équivalences approchées (voir la section Look_Lightroom du 9 octobre 2026). Non testé.
