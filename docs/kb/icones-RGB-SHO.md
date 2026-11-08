@@ -1584,6 +1584,55 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - différent de Photoshop -> ajuste Tons clairs et Blancs dans la fenêtre (mêmes valeurs ne veulent pas dire même rendu)
 > - fond qui bouge -> coche le masque de luminance dans la fenêtre
 
+#### Opt_Couleur_selective_SHO — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Couleur_selective.js`
+   paramètres : `rouges=-25,25,0,0`, `jaunes=-50,50,0,0`, `verts=-50,50,0,0`, `cyans=0,0,-50,0`, `bleus=0,0,0,0`, `magentas=0,0,0,0`, `blancs=0,0,0,0`, `neutres=0,0,0,0`, `noirs=0,0,0,0`, `relatif=true`
+
+> OPTION — tout à la fin, image finie : ton profil Couleur sélective « SHO » de Photoshop (le plus fort : rouges et jaunes tirés vers l'or, verts -50/+50, cyans vers le bleu)
+> Un seul des trois profils.
+> 
+> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
+> 
+> PRÉRÉGLÉ : script Couleur_selective (équivalent approché de Couleur sélective de Photoshop, méthode relative) : profil SHO : rouges -25,+25,0,0 ; jaunes -50,+50,0,0 ; verts -50,+50,0,0 ; cyans 0,0,-50,0 ; bleus, magentas, blancs, neutres, noirs à 0 (cyan, magenta, jaune, noir).
+> 
+> À RÉGLER : glisse sur l'image finie (couleur) ; un seul profil à la fois ; double-clic puis Apply Global = fenêtre (une ligne par gamme) ; copie Couleur_selective.js dans src/scripts/clodoweg.
+> 
+> SI :
+> - trop fort -> profil plus doux (SHO_2, puis SHO_3)
+> - différent de Photoshop -> formule d'Adobe non publiée : ajuste les valeurs dans la fenêtre
+
+#### Opt_Couleur_selective_SHO_2 — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Couleur_selective.js`
+   paramètres : `rouges=-25,25,0,0`, `jaunes=-25,25,0,0`, `verts=-50,50,0,0`, `cyans=0,0,-50,0`, `bleus=0,0,0,0`, `magentas=0,0,0,0`, `blancs=0,0,0,0`, `neutres=0,0,0,0`, `noirs=0,0,0,0`, `relatif=true`
+
+> OPTION — tout à la fin, image finie : ton profil « SHO_2 » (comme SHO, jaunes moitié moins tirés).
+> 
+> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
+> 
+> PRÉRÉGLÉ : script Couleur_selective (équivalent approché de Couleur sélective de Photoshop, méthode relative) : profil SHO_2 : rouges -25,+25,0,0 ; jaunes -25,+25,0,0 ; verts -50,+50,0,0 ; cyans 0,0,-50,0 ; bleus, magentas, blancs, neutres, noirs à 0 (cyan, magenta, jaune, noir).
+> 
+> À RÉGLER : glisse sur l'image finie (couleur) ; un seul profil à la fois ; double-clic puis Apply Global = fenêtre (une ligne par gamme) ; copie Couleur_selective.js dans src/scripts/clodoweg.
+> 
+> SI :
+> - trop fort -> profil plus doux (SHO_2, puis SHO_3)
+> - différent de Photoshop -> formule d'Adobe non publiée : ajuste les valeurs dans la fenêtre
+
+#### Opt_Couleur_selective_SHO_3 — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Couleur_selective.js`
+   paramètres : `rouges=0,0,0,0`, `jaunes=-25,25,0,0`, `verts=-50,50,0,0`, `cyans=0,0,-50,0`, `bleus=0,0,0,0`, `magentas=0,0,0,0`, `blancs=0,0,0,0`, `neutres=0,0,0,0`, `noirs=0,0,0,0`, `relatif=true`
+
+> OPTION — tout à la fin, image finie : ton profil « SHO_3 » (le plus doux : rouges inchangés, jaunes moitié moins).
+> 
+> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
+> 
+> PRÉRÉGLÉ : script Couleur_selective (équivalent approché de Couleur sélective de Photoshop, méthode relative) : profil SHO_3 : rouges 0 ; jaunes -25,+25,0,0 ; verts -50,+50,0,0 ; cyans 0,0,-50,0 ; bleus, magentas, blancs, neutres, noirs à 0 (cyan, magenta, jaune, noir).
+> 
+> À RÉGLER : glisse sur l'image finie (couleur) ; un seul profil à la fois ; double-clic puis Apply Global = fenêtre (une ligne par gamme) ; copie Couleur_selective.js dans src/scripts/clodoweg.
+> 
+> SI :
+> - trop fort -> profil plus doux (SHO_2, puis SHO_3)
+> - différent de Photoshop -> formule d'Adobe non publiée : ajuste les valeurs dans la fenêtre
+
 #### Opt_ICC_sRGB — ICCProfileTransformation
    targetProfile=sRGB IEC61966-2.1 ; toDefaultProfile=false ; renderingIntent=Perceptual ; useBlackPointCompensation=true ; useFloatingPointTransformation=true
 

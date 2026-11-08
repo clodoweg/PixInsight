@@ -77,6 +77,10 @@ SCRIPTS = {
     'Courbes_Photoshop': ('$PXI_SRCDIR/scripts/clodoweg/Look_Lightroom.js', '', [('contrasteLineaire', 'true'), ('voile', '0'), ('exposition', '0'), ('contraste', '0'), ('hautes', '0'), ('foncees', '0'), ('blancs', '0'), ('noirs', '0'), ('temperature', '0'), ('teinte', '0'), ('masque', 'false'), ('s', '0.14'), ('flou', '2.0')], L_DRAG),   # options P7 séparées, une par calque Photoshop (demande de l'utilisateur, 8 novembre 2026)
     'Voile_Photoshop': ('$PXI_SRCDIR/scripts/clodoweg/Look_Lightroom.js', '', [('contrasteLineaire', 'false'), ('voile', '25'), ('exposition', '0'), ('contraste', '0'), ('hautes', '0'), ('foncees', '0'), ('blancs', '0'), ('noirs', '0'), ('temperature', '0'), ('teinte', '0'), ('masque', 'false'), ('s', '0.14'), ('flou', '2.0')], L_DRAG),
     'Lumiere_Photoshop': ('$PXI_SRCDIR/scripts/clodoweg/Look_Lightroom.js', '', [('contrasteLineaire', 'false'), ('voile', '0'), ('exposition', '0'), ('contraste', '0'), ('hautes', '-50'), ('foncees', '0'), ('blancs', '50'), ('noirs', '0'), ('temperature', '0'), ('teinte', '0'), ('masque', 'false'), ('s', '0.14'), ('flou', '2.0')], L_DRAG),
+    # Couleur sélective, profils .asv de l'utilisateur lus (version 1, méthode relative ; demande de l'utilisateur, 8 novembre 2026)
+    'Couleur_selective_SHO': ('$PXI_SRCDIR/scripts/clodoweg/Couleur_selective.js', '', [('rouges', '-25,25,0,0'), ('jaunes', '-50,50,0,0'), ('verts', '-50,50,0,0'), ('cyans', '0,0,-50,0'), ('bleus', '0,0,0,0'), ('magentas', '0,0,0,0'), ('blancs', '0,0,0,0'), ('neutres', '0,0,0,0'), ('noirs', '0,0,0,0'), ('relatif', 'true')], L_DRAG),
+    'Couleur_selective_SHO_2': ('$PXI_SRCDIR/scripts/clodoweg/Couleur_selective.js', '', [('rouges', '-25,25,0,0'), ('jaunes', '-25,25,0,0'), ('verts', '-50,50,0,0'), ('cyans', '0,0,-50,0'), ('bleus', '0,0,0,0'), ('magentas', '0,0,0,0'), ('blancs', '0,0,0,0'), ('neutres', '0,0,0,0'), ('noirs', '0,0,0,0'), ('relatif', 'true')], L_DRAG),
+    'Couleur_selective_SHO_3': ('$PXI_SRCDIR/scripts/clodoweg/Couleur_selective.js', '', [('rouges', '0,0,0,0'), ('jaunes', '-25,25,0,0'), ('verts', '-50,50,0,0'), ('cyans', '0,0,-50,0'), ('bleus', '0,0,0,0'), ('magentas', '0,0,0,0'), ('blancs', '0,0,0,0'), ('neutres', '0,0,0,0'), ('noirs', '0,0,0,0'), ('relatif', 'true')], L_DRAG),
     'Export_Photoshop': ('$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js', '', [('nom', ''), ('suffixe', ''), ('dossier', ''), ('icc', 'true'), ('photoshop', 'true'), ('photoshopExe', ''), ('temp', 'true')], L_DRAG),   # option P7 : export TIFF puis ouverture dans Photoshop (demande de l'utilisateur, 22 octobre 2026)
     'Lecture_Photoshop': ('$PXI_SRCDIR/scripts/clodoweg/Lecture_Photoshop.js', '', [('fichier', ''), ('temp', 'true')], L_GLOBAL),   # tmp.tiff (8 novembre 2026)   # option P7 : rouvre le .tif retouché dans Photoshop
     'Crop_reference': ('$PXI_SRCDIR/scripts/clodoweg/Crop_commun.js', '', [('mode', 'reference'), ('nom', 'Crop_ref')], L_GLOBAL),   # option P1 (demande de l'utilisateur) : image minimum + DynamicCrop
@@ -1496,7 +1500,10 @@ for _it in _its:
 insert_before(rgbsho, 'STF', _its)   # fin de phase 3, après C_RGB_lineaire et les options continuum (RGB encore linéaire)
 
 # SHO sans RGB : pas de R_C_MAS_canaux_rapide en phase 4 (demande de l'utilisateur, 20 octobre 2026) ; R_C_Stat_canaux_rapide remis le 8 novembre 2026 ; Opt_MAS_canaux reste en option
-sho[:] = [x for x in sho if x[0][0] != 'C_MAS_canaux_rapide']   # R_C_Stat_canaux_rapide remis (demande de l'utilisateur, 8 novembre 2026)
+sho[:] = [x for x in sho if x[0][0] != 'C_MAS_canaux_rapide']
+# options P7 Couleur sélective (profils SHO, SHO_2, SHO_3 de l'utilisateur), SHO et RGB + SHO, après les options Photoshop (8 novembre 2026)
+for _st in (rgbsho, sho):
+    insert_after(_st, 'Lumiere_Photoshop', [(script(n, ''), '') for n in ('Couleur_selective_SHO', 'Couleur_selective_SHO_2', 'Couleur_selective_SHO_3')])   # R_C_Stat_canaux_rapide remis (demande de l'utilisateur, 8 novembre 2026)
 
 # T_Turbo_palette (demande de l'utilisateur, 8 novembre 2026, possibilité 1) : Stat_canaux puis la palette (combinaison + NBN) en un
 # conteneur de scripts (Apply Global) ; R_C_Fin_rapide reste à glisser ensuite sur l'image créée (il doit être glissé, et contient des scripts)

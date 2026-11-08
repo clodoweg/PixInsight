@@ -1465,3 +1465,8 @@ Source des points : FFmpeg, libavfilter/vf_curves.c (https://raw.githubuserconte
 
 Demande de l'utilisateur : « Mais je veux pouvoir choisir si je fais les 1, 2 ou 3. Je veux pas forcement tout a chaque fois ».
 Fait : Opt_Lumiere_Photoshop découpé en Opt_Courbes_Photoshop, Opt_Voile_Photoshop et Opt_Lumiere_Photoshop (P7 options, 5 workflows), chacune avec un seul réglage de Look_Lightroom.js, le reste à 0.
+
+### Couleur sélective : 3 options d'après les profils .asv (8 novembre 2026)
+
+Demande de l'utilisateur (fichiers SHO.asv, SHO_2.asv, SHO_3.asv joints) : « je veux que tu me fasse 3 script optionel qui font l'équivalent de couleur selective a partir des 3 profiles ».
+Fait : script Couleur_selective.js (fenêtre : méthode, une ligne c,m,y,k par gamme) ; icônes Opt_Couleur_selective_SHO, _SHO_2, _SHO_3 (P7, SHO et RGB + SHO : profils nommés SHO ; HOO, LRGB, LHaRGB non touchés). Profils copiés dans docs/process-icons/profils/. Format .asv : spécification Adobe de mémoire, non revérifiée ; formule de Couleur sélective non publiée par Adobe : reconstitution approchée. Non testé dans PixInsight.

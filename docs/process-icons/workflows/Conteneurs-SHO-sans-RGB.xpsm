@@ -6425,6 +6425,150 @@ max($T,f1)</parameter>
       </table>
       <parameter id="information"></parameter>
    </instance>
+   <instance class="Script" version="256" id="Opt_Couleur_selective_SHO_instance">
+      <description>OPTION — tout à la fin, image finie : ton profil Couleur sélective « SHO » de Photoshop (le plus fort : rouges et jaunes tirés vers l'or, verts -50/+50, cyans vers le bleu)&#10;Un seul des trois profils.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Couleur_selective (équivalent approché de Couleur sélective de Photoshop, méthode relative) : profil SHO : rouges -25,+25,0,0 ; jaunes -50,+50,0,0 ; verts -50,+50,0,0 ; cyans 0,0,-50,0 ; bleus, magentas, blancs, neutres, noirs à 0 (cyan, magenta, jaune, noir).&#10;&#10;À RÉGLER : glisse sur l'image finie (couleur) ; un seul profil à la fois ; double-clic puis Apply Global = fenêtre (une ligne par gamme) ; copie Couleur_selective.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- trop fort -&gt; profil plus doux (SHO_2, puis SHO_3)&#10;- différent de Photoshop -&gt; formule d'Adobe non publiée : ajuste les valeurs dans la fenêtre</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Couleur_selective.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="10">
+         <tr>
+            <td id="id">rouges</td>
+            <td id="value">-25,25,0,0</td>
+         </tr>
+         <tr>
+            <td id="id">jaunes</td>
+            <td id="value">-50,50,0,0</td>
+         </tr>
+         <tr>
+            <td id="id">verts</td>
+            <td id="value">-50,50,0,0</td>
+         </tr>
+         <tr>
+            <td id="id">cyans</td>
+            <td id="value">0,0,-50,0</td>
+         </tr>
+         <tr>
+            <td id="id">bleus</td>
+            <td id="value">0,0,0,0</td>
+         </tr>
+         <tr>
+            <td id="id">magentas</td>
+            <td id="value">0,0,0,0</td>
+         </tr>
+         <tr>
+            <td id="id">blancs</td>
+            <td id="value">0,0,0,0</td>
+         </tr>
+         <tr>
+            <td id="id">neutres</td>
+            <td id="value">0,0,0,0</td>
+         </tr>
+         <tr>
+            <td id="id">noirs</td>
+            <td id="value">0,0,0,0</td>
+         </tr>
+         <tr>
+            <td id="id">relatif</td>
+            <td id="value">true</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
+   </instance>
+   <instance class="Script" version="256" id="Opt_Couleur_selective_SHO_2_instance">
+      <description>OPTION — tout à la fin, image finie : ton profil « SHO_2 » (comme SHO, jaunes moitié moins tirés).&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Couleur_selective (équivalent approché de Couleur sélective de Photoshop, méthode relative) : profil SHO_2 : rouges -25,+25,0,0 ; jaunes -25,+25,0,0 ; verts -50,+50,0,0 ; cyans 0,0,-50,0 ; bleus, magentas, blancs, neutres, noirs à 0 (cyan, magenta, jaune, noir).&#10;&#10;À RÉGLER : glisse sur l'image finie (couleur) ; un seul profil à la fois ; double-clic puis Apply Global = fenêtre (une ligne par gamme) ; copie Couleur_selective.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- trop fort -&gt; profil plus doux (SHO_2, puis SHO_3)&#10;- différent de Photoshop -&gt; formule d'Adobe non publiée : ajuste les valeurs dans la fenêtre</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Couleur_selective.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="10">
+         <tr>
+            <td id="id">rouges</td>
+            <td id="value">-25,25,0,0</td>
+         </tr>
+         <tr>
+            <td id="id">jaunes</td>
+            <td id="value">-25,25,0,0</td>
+         </tr>
+         <tr>
+            <td id="id">verts</td>
+            <td id="value">-50,50,0,0</td>
+         </tr>
+         <tr>
+            <td id="id">cyans</td>
+            <td id="value">0,0,-50,0</td>
+         </tr>
+         <tr>
+            <td id="id">bleus</td>
+            <td id="value">0,0,0,0</td>
+         </tr>
+         <tr>
+            <td id="id">magentas</td>
+            <td id="value">0,0,0,0</td>
+         </tr>
+         <tr>
+            <td id="id">blancs</td>
+            <td id="value">0,0,0,0</td>
+         </tr>
+         <tr>
+            <td id="id">neutres</td>
+            <td id="value">0,0,0,0</td>
+         </tr>
+         <tr>
+            <td id="id">noirs</td>
+            <td id="value">0,0,0,0</td>
+         </tr>
+         <tr>
+            <td id="id">relatif</td>
+            <td id="value">true</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
+   </instance>
+   <instance class="Script" version="256" id="Opt_Couleur_selective_SHO_3_instance">
+      <description>OPTION — tout à la fin, image finie : ton profil « SHO_3 » (le plus doux : rouges inchangés, jaunes moitié moins).&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Couleur_selective (équivalent approché de Couleur sélective de Photoshop, méthode relative) : profil SHO_3 : rouges 0 ; jaunes -25,+25,0,0 ; verts -50,+50,0,0 ; cyans 0,0,-50,0 ; bleus, magentas, blancs, neutres, noirs à 0 (cyan, magenta, jaune, noir).&#10;&#10;À RÉGLER : glisse sur l'image finie (couleur) ; un seul profil à la fois ; double-clic puis Apply Global = fenêtre (une ligne par gamme) ; copie Couleur_selective.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- trop fort -&gt; profil plus doux (SHO_2, puis SHO_3)&#10;- différent de Photoshop -&gt; formule d'Adobe non publiée : ajuste les valeurs dans la fenêtre</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Couleur_selective.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="10">
+         <tr>
+            <td id="id">rouges</td>
+            <td id="value">0,0,0,0</td>
+         </tr>
+         <tr>
+            <td id="id">jaunes</td>
+            <td id="value">-25,25,0,0</td>
+         </tr>
+         <tr>
+            <td id="id">verts</td>
+            <td id="value">-50,50,0,0</td>
+         </tr>
+         <tr>
+            <td id="id">cyans</td>
+            <td id="value">0,0,-50,0</td>
+         </tr>
+         <tr>
+            <td id="id">bleus</td>
+            <td id="value">0,0,0,0</td>
+         </tr>
+         <tr>
+            <td id="id">magentas</td>
+            <td id="value">0,0,0,0</td>
+         </tr>
+         <tr>
+            <td id="id">blancs</td>
+            <td id="value">0,0,0,0</td>
+         </tr>
+         <tr>
+            <td id="id">neutres</td>
+            <td id="value">0,0,0,0</td>
+         </tr>
+         <tr>
+            <td id="id">noirs</td>
+            <td id="value">0,0,0,0</td>
+         </tr>
+         <tr>
+            <td id="id">relatif</td>
+            <td id="value">true</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
+   </instance>
    <instance class="ICCProfileTransformation" version="256" id="Opt_ICC_sRGB_instance">
       <description>OPTION — tout à la fin, avant une finition dans Photoshop, Lightroom ou Affinity : image convertie en sRGB IEC61966-2.1 (couleurs identiques dans l'autre logiciel).&#10;&#10;PRÉRÉGLÉ : ICCProfileTransformation : vers sRGB IEC61966-2.1, Convert to the specified profile, rendu Perceptual, compensation du point noir.&#10;&#10;À RÉGLER : glisse sur l'image finie avant l'export (Export_TIFF le fait aussi sur sa copie : cette icône sert si tu enregistres toi-même).&#10;&#10;SI :&#10;- impression ou Adobe RGB voulu -&gt; change le profil cible dans l'icône</description>
       <parameter id="targetProfile">sRGB IEC61966-2.1</parameter>
@@ -6726,10 +6870,13 @@ max($T,f1)</parameter>
    <icon id="Opt_Courbes_Photoshop" instance="Opt_Courbes_Photoshop_instance" xpos="1264" ypos="444" workspace="Workspace01"/>
    <icon id="Opt_Voile_Photoshop" instance="Opt_Voile_Photoshop_instance" xpos="1264" ypos="474" workspace="Workspace01"/>
    <icon id="Opt_Lumiere_Photoshop" instance="Opt_Lumiere_Photoshop_instance" xpos="1264" ypos="504" workspace="Workspace01"/>
-   <icon id="Opt_ICC_sRGB" instance="Opt_ICC_sRGB_instance" xpos="1264" ypos="534" workspace="Workspace01"/>
-   <icon id="Opt_Export_Photoshop" instance="Opt_Export_Photoshop_instance" xpos="1264" ypos="564" workspace="Workspace01"/>
-   <icon id="Opt_Lecture_Photoshop" instance="Opt_Lecture_Photoshop_instance" xpos="1264" ypos="594" workspace="Workspace01"/>
-   <icon id="Opt_Fermer_tout" instance="Opt_Fermer_tout_instance" xpos="1264" ypos="624" workspace="Workspace01"/>
-   <icon id="P7_rapide" instance="P7_rapide_instance" xpos="1264" ypos="670" workspace="Workspace01"/>
-   <icon id="R_C_Etoiles_fond_rapide" instance="R_C_Etoiles_fond_rapide_instance" xpos="1264" ypos="704" workspace="Workspace01"/>
+   <icon id="Opt_Couleur_selective_SHO" instance="Opt_Couleur_selective_SHO_instance" xpos="1264" ypos="534" workspace="Workspace01"/>
+   <icon id="Opt_Couleur_selective_SHO_2" instance="Opt_Couleur_selective_SHO_2_instance" xpos="1264" ypos="564" workspace="Workspace01"/>
+   <icon id="Opt_Couleur_selective_SHO_3" instance="Opt_Couleur_selective_SHO_3_instance" xpos="1264" ypos="594" workspace="Workspace01"/>
+   <icon id="Opt_ICC_sRGB" instance="Opt_ICC_sRGB_instance" xpos="1264" ypos="624" workspace="Workspace01"/>
+   <icon id="Opt_Export_Photoshop" instance="Opt_Export_Photoshop_instance" xpos="1264" ypos="654" workspace="Workspace01"/>
+   <icon id="Opt_Lecture_Photoshop" instance="Opt_Lecture_Photoshop_instance" xpos="1264" ypos="684" workspace="Workspace01"/>
+   <icon id="Opt_Fermer_tout" instance="Opt_Fermer_tout_instance" xpos="1264" ypos="714" workspace="Workspace01"/>
+   <icon id="P7_rapide" instance="P7_rapide_instance" xpos="1264" ypos="760" workspace="Workspace01"/>
+   <icon id="R_C_Etoiles_fond_rapide" instance="R_C_Etoiles_fond_rapide_instance" xpos="1264" ypos="794" workspace="Workspace01"/>
 </xpsm>
