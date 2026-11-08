@@ -1501,9 +1501,9 @@ insert_before(rgbsho, 'STF', _its)   # fin de phase 3, après C_RGB_lineaire et 
 
 # SHO sans RGB : pas de R_C_MAS_canaux_rapide en phase 4 (demande de l'utilisateur, 20 octobre 2026) ; R_C_Stat_canaux_rapide remis le 8 novembre 2026 ; Opt_MAS_canaux reste en option
 sho[:] = [x for x in sho if x[0][0] != 'C_MAS_canaux_rapide']
-# options P7 Couleur sélective (profils SHO, SHO_2, SHO_3 de l'utilisateur), SHO et RGB + SHO, après les options Photoshop (8 novembre 2026)
+# options Couleur sélective (profils SHO, SHO_2, SHO_3 de l'utilisateur), SHO et RGB + SHO : P5, après NBN_SHO_doux (8 novembre 2026, d'abord en P7)
 for _st in (rgbsho, sho):
-    insert_after(_st, 'Contraste_GHS', [(script(n, ''), '') for n in ('Couleur_selective_SHO', 'Couleur_selective_SHO_2', 'Couleur_selective_SHO_3')])   # R_C_Stat_canaux_rapide remis (demande de l'utilisateur, 8 novembre 2026)
+    insert_after(_st, 'NBN_SHO', [(script(n, ''), '') for n in ('Couleur_selective_SHO', 'Couleur_selective_SHO_2', 'Couleur_selective_SHO_3')])   # R_C_Stat_canaux_rapide remis (demande de l'utilisateur, 8 novembre 2026)
 
 # T_Turbo_palette (demande de l'utilisateur, 8 novembre 2026, possibilité 1) : Stat_canaux puis la palette (combinaison + NBN) en un
 # conteneur de scripts (Apply Global) ; R_C_Fin_rapide reste à glisser ensuite sur l'image créée (il doit être glissé, et contient des scripts)
