@@ -48,7 +48,7 @@ var LR_CURSEURS = [
 
 function lrParams()
 {
-   let p = { masque: cwBool( "masque", false ), s: parseFloat( cwParam( "s", "0.14" ) ), flou: parseFloat( cwParam( "flou", "2" ) ) };
+   let p = { contrasteLineaire: cwBool( "contrasteLineaire", false ), masque: cwBool( "masque", false ), s: parseFloat( cwParam( "s", "0.14" ) ), flou: parseFloat( cwParam( "flou", "2" ) ) };
    for ( let i = 0; i < LR_CURSEURS.length; ++i )
       p[ LR_CURSEURS[ i ][ 0 ] ] = parseFloat( cwParam( LR_CURSEURS[ i ][ 0 ], String( LR_CURSEURS[ i ][ 2 ] ) ) );
    return p;
@@ -61,6 +61,7 @@ function lrExport( p )
       let k = LR_CURSEURS[ i ][ 0 ];
       Parameters.set( k, k == "exposition" ? p[ k ].toFixed( 2 ) : p[ k ].toFixed( 0 ) );
    }
+   Parameters.set( "contrasteLineaire", p.contrasteLineaire ? "true" : "false" );
    Parameters.set( "masque", p.masque ? "true" : "false" );
    Parameters.set( "s", p.s.toFixed( 2 ) );
    Parameters.set( "flou", p.flou.toFixed( 1 ) );
@@ -73,6 +74,7 @@ function lrDialog( p, view )
    let sel = { view: view };
    d.viewList( "Image :", view, "L'image sans étoiles finie, avant Etoiles_screen.", function( v ) { sel.view = v; } );
    d.group( "Réglages" );
+   d.check( "Courbes : Contraste linéaire (RVB) de Photoshop", p.contrasteLineaire, "Courbe RVB 0,305 -> 0,286 et 0,694 -> 0,713, appliquée en premier (calque Courbes sous les autres).", function( c ) { p.contrasteLineaire = c; } );
    LR_CURSEURS.forEach( function( c )
    {
       let k = c[ 0 ];
@@ -113,6 +115,18 @@ function lrCourbe( p )
 
 function lrProcess( view, p )
 {
+   // -1. Courbes, préréglage « Contraste linéaire (RVB) » de Photoshop (calque Courbes tout en bas chez l'utilisateur, donc
+   //     appliqué en premier) : points 0/0, 0,305/0,286, 0,694/0,713, 1/1 (valeurs du préréglage linear_contrast de FFmpeg,
+   //     vf_curves.c, reprises des préréglages de Photoshop ; cohérentes avec la capture de l'utilisateur), même courbe sur
+   //     R, G et B (canal RGB/K). Demande de l'utilisateur, 8 novembre 2026.
+   if ( p.contrasteLineaire )
+   {
+      let K = new CurvesTransformation;
+      K.K = [ [ 0, 0 ], [ 0.305, 0.286 ], [ 0.694, 0.713 ], [ 1, 1 ] ];
+      let cs = CurvesTransformation.prototype.CubicSpline;
+      K.Kt = (cs !== undefined) ? cs : CurvesTransformation.prototype.AkimaSubsplines;
+      K.executeOn( view );
+   }
    // 0. correction du voile (Dehaze de Camera Raw, approché ; avant le reste, comme le calque « Clarté et correction du voile »
    //    sous le calque Lumière de l'utilisateur) : voile local V = canal sombre min(R, G, B) lissé (8 px) ;
    //    + : ($T − a·V)/(1 − a·V), a = voile/100 (fond assombri, contraste et saturation montés, 1 reste 1) ;
@@ -230,7 +244,7 @@ function lrRun( view, p )
       if ( mid )
          cwCloseWindow( mid );
    }
-   console.noteln( LR_TITLE + " : " + view.id + " (" + LR_CURSEURS.map( function( c ) { return c[ 0 ] + " " + p[ c[ 0 ] ]; } ).join( ", " ) +
+   console.noteln( LR_TITLE + " : " + view.id + " (" + (p.contrasteLineaire ? "contraste linéaire, " : "") + LR_CURSEURS.map( function( c ) { return c[ 0 ] + " " + p[ c[ 0 ] ]; } ).join( ", " ) +
                    (mid ? ", sous masque de luminance s = " + p.s : ", toute l'image") + ")." );
 }
 

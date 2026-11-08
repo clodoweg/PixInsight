@@ -1313,13 +1313,13 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 #### Opt_Lumiere_Photoshop — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Look_Lightroom.js`
-   paramètres : `voile=25`, `exposition=0`, `contraste=0`, `hautes=-50`, `foncees=0`, `blancs=50`, `noirs=0`, `temperature=0`, `teinte=0`, `masque=false`, `s=0.14`, `flou=2.0`
+   paramètres : `contrasteLineaire=true`, `voile=25`, `exposition=0`, `contraste=0`, `hautes=-50`, `foncees=0`, `blancs=50`, `noirs=0`, `temperature=0`, `teinte=0`, `masque=false`, `s=0.14`, `flou=2.0`
 
-> OPTION — tout à la fin, sur l'image finie avec étoiles, avant Export_TIFF : imite tes calques Photoshop Correction du voile (+25) et Lumière (Tons clairs -50, Blancs +50) sans passer par Photoshop.
+> OPTION — tout à la fin, sur l'image finie avec étoiles, avant Export_TIFF : imite tes calques Photoshop Courbes (Contraste linéaire), Correction du voile (+25) et Lumière (Tons clairs -50, Blancs +50) sans passer par Photoshop.
 > 
 > LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
 > 
-> PRÉRÉGLÉ : script Look_Lightroom réglé comme tes calques Photoshop : d'abord Correction du voile +25 (approché : voile local = min(R, G, B) lissé 8 px, ($T − 0,25·V)/(1 − 0,25·V) : fond assombri, contraste et couleurs montés), puis Lumière : Exposition 0, Contraste 0, Tons clairs -50, Tons foncés 0, Blancs +50, Noirs 0 (Température et Teinte 0), toute l'image ; équivalents APPROCHÉS (formules d'Adobe non publiées) : courbe de luminosité CIE L*, tons clairs 0,75 et 0,90 abaissés, blancs 0,90 et 0,97 remontés.
+> PRÉRÉGLÉ : script Look_Lightroom réglé comme tes calques Photoshop : d'abord Courbes « Contraste linéaire (RVB) » (0,305 -> 0,286, 0,694 -> 0,713, sur R, G, B), puis Correction du voile +25 (approché : voile local = min(R, G, B) lissé 8 px, ($T − 0,25·V)/(1 − 0,25·V) : fond assombri, contraste et couleurs montés), puis Lumière : Exposition 0, Contraste 0, Tons clairs -50, Tons foncés 0, Blancs +50, Noirs 0 (Température et Teinte 0), toute l'image ; équivalents APPROCHÉS (formules d'Adobe non publiées) : courbe de luminosité CIE L*, tons clairs 0,75 et 0,90 abaissés, blancs 0,90 et 0,97 remontés.
 > 
 > À RÉGLER : glisse sur l'image finie avec étoiles, après NXT_dernier, avant Export_TIFF ; double-clic puis Apply Global = fenêtre avec les 8 curseurs ; copie Look_Lightroom.js dans src/scripts/clodoweg.
 > 

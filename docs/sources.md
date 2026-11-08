@@ -1455,3 +1455,8 @@ Fait : icône Opt_Lumiere_Photoshop (P7 options, 5 workflows, LRGB et LHaRGB com
 
 Demande de l'utilisateur (capture du calque Photoshop « Clarté et correction du voile » : Clarté 0, Correction du voile +25) : « je veux aussi le correction du voile ».
 Fait : paramètre voile dans Look_Lightroom.js (curseur dans la fenêtre), 25 dans Opt_Lumiere_Photoshop (5 workflows). Formule d'Adobe non publiée : approximation par le canal sombre lissé (choix de ma part, détail dans docs/kb/techniques.md). Clarté non faite (0 chez l'utilisateur). Non testé.
+
+### Contraste linéaire (RVB) dans Opt_Lumiere_Photoshop (8 novembre 2026)
+
+Demande de l'utilisateur (capture du calque Courbes de Photoshop, préréglage « Contraste linéaire (RVB) ») : « je veux aussi un equivalent du contraste lineaire de photoshop ».
+Source des points : FFmpeg, libavfilter/vf_curves.c (https://raw.githubusercontent.com/FFmpeg/FFmpeg/master/libavfilter/vf_curves.c), PRESET_LINEAR_CONTRAST = « 0/0 0.305/0.286 0.694/0.713 1/1 » (préréglages repris de Photoshop selon FFmpeg) ; points lus sur la capture de l'utilisateur : environ 0,31/0,29 et 0,69/0,72. Fait : paramètre contrasteLineaire de Look_Lightroom.js, vrai dans Opt_Lumiere_Photoshop (5 workflows), appliqué avant la correction du voile et Lumière (ordre des calques). Non testé.
