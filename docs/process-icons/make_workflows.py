@@ -268,7 +268,7 @@ for _p, _et in (('RSHO', 'RGB_stars'), ('SHO', 'NBtoRGB_stars'), ('HOO', 'NBtoRG
     RAPIDE_NOTE[_p][6] = "R_C_Fin_rapide GLISSÉ sur l'image sans étoiles après la palette : HDRMT à 30 %, masque, Courbes, LHE, LHE_fin, Sharp_MMT, masque retiré, NXT_final 0,40 (= HDRMT_30, C_Finition, C_Sharp_MMT et NXT_final)"
     RAPIDE_NOTE[_p][7] = "R_C_Etoiles_fond_rapide GLISSÉ sur l'image sans étoiles finie : Fond_desature, Fond_auto (0,12), étoiles remises (Etoiles_screen avec %s), NXT_dernier (0,25), Export_TIFF" % _et
 for _p in ('RSHO', 'SHO'):
-    RAPIDE_NOTE[_p][5] = "R_C_Palette_rapide (double-clic puis Apply Global) à la place de SHO_simple et NBN_SHO : S, H, O étirés combinés en SHO_etire, NarrowbandNormalization (palette SHO, Lightness Ha, SCNR 0,7) ; S, H, O restent ouverts"
+    RAPIDE_NOTE[_p][5] = "R_C_Palette_rapide (double-clic puis Apply Global) à la place de SHO_simple et NBN_SHO : S, H, O étirés combinés en SHO_etire, NarrowbandNormalization (palette SHO, Lightness Ha, SCNR 0, O3 et S2 boost 1) ; S, H, O restent ouverts"
 RAPIDE_NOTE['RSHO'][4] = "Statistical_Stretch sur S, H, O (chemin principal, Target Median 0,25 ; GHS en option)"
 RAPIDE_NOTE['RSHO'][3] += " ; puis R_C_RGB_etoiles_rapide (double-clic puis Apply Global) à la place de MAS, SXT_RGB_etire, SCNR_etoiles_vert et Fermer_RGB : crée RGB_stars, ferme le RGB sans étoiles"
 
@@ -1025,7 +1025,7 @@ sho_palette = [
     # combinaison des canaux ÉTIRÉS avant NBN (demande de l'utilisateur, 8 octobre 2026 : « il ne manque pas un process pour combiner les canaux ? »), comme HOO_simple
     (pm('SHO_simple', 'S', 'H', 'O', new_image=True, new_id='SHO_etire', space='RGB'),
      "PALETTE — combinaison simple sur 'S', 'H' et 'O' étirés sans étoiles (R = S, G = H, B = O), à équilibrer ensuite avec NarrowbandNormalization (icône suivante). Crée 'SHO_etire'."),
-    (M.instance('NarrowbandNormalization', 'NBN_SHO', {'palette': 'Palette_SHO', 'lightness': 'Lightness_Ha', 'scnr': '0.700', 'o3Boost': '1.000', 's2Boost': '1.200', 'highlightReduction': '1.000', 'brightness': '1.000'}),
+    (M.instance('NarrowbandNormalization', 'NBN_SHO', {'palette': 'Palette_SHO', 'lightness': 'Lightness_Ha', 'scnr': '0.000', 'o3Boost': '1.000', 's2Boost': '1.000', 'highlightReduction': '1.000', 'brightness': '1.000'}),
      "PALETTE — NarrowbandNormalization, palette SHO (valeurs par défaut ; nom interne Palette_SHO vérifié dans le module 1.1). Sur l'image SHO combinée (R = S, G = H, B = O), "
      "ÉTIRÉE et sans étoiles, canaux étirés avec le même fond et la même médiane (recombinés par l'icône SHO_simple : image 'SHO_etire'). Active l'aperçu. "
      "Ordre de réglage conseillé (suggestion de la fiche, pas une consigne de l'auteur) : Lightness (Off, Preserve, Ha, OIII ou SII ; souvent Ha) ; Shadowpoint pour le fond, sans l'écrêter ; "
@@ -1100,7 +1100,7 @@ hoo = pre_block() + [
 ] + extract([(0, 'H'), (1, 'O')], "l'image HOO sans étoiles") + extract([(0, 'H_stars'), (1, 'O_stars')], "l'image d'étoiles HOO (linéaire)") + nb_noise + ghs_block(GHS_NB, STAT_NB) + [
     (pm('HOO_simple', 'H', 'O', 'O', new_image=True, new_id='HOO_etire', space='RGB'),
      "PALETTE — combinaison simple sur 'H' et 'O' étirés sans étoiles, à équilibrer ensuite avec NarrowbandNormalization (icône suivante)."),
-    (M.instance('NarrowbandNormalization', 'NBN_HOO', {'palette': 'Palette_HOO', 'o3Boost': '1.000', 's2Boost': '1.000', 'highlightReduction': '1.000', 'brightness': '1.000'}),
+    (M.instance('NarrowbandNormalization', 'NBN_HOO', {'palette': 'Palette_HOO', 'scnr': '0.000', 'o3Boost': '1.000', 's2Boost': '1.000', 'highlightReduction': '1.000', 'brightness': '1.000'}),
      ("NarrowbandNormalization, palette HOO (valeurs par défaut) : applique sur l'image HOO étirée sans étoiles, active l'aperçu, monte O3 boost progressivement, Shadowpoint pour le fond, SCNR si besoin. "
       "RENDU VISÉ (HOO classique R = H, G = B = O) : zones H rouge profond à rouge orangé, zones O cyan / turquoise, zones mixtes rose saumon à blanchâtre (or ou orange seulement si le vert reçoit du H : Foraxx HOO, variante Hubble), fond gris neutre foncé. "
       "CONTRÔLE à la sonde 15x15 : zone H R >> G = B ; zone O G = B, nettement au-dessus de R ; fond R = G = B (fond rouge : H trop étiré ; fond cyan : O trop étiré). G et B sont égaux avant NBN : un écart vient du module ou des courbes. "
@@ -1338,7 +1338,7 @@ insert_after(rgbsho, 'GHS_3_fond', [pick(lrgb, b) for b in ('MAS', 'SXT_RGB_etir
 # P4 rapide RGB + SHO (demande de l'utilisateur, 8 octobre 2026 : « un P4 comme pour LRGB qui travaille sur le RGB et fait le RGB_stars a la fin ») :
 # conteneur de scripts en Apply Global (rien à glisser) : Lineaire_auto lance MAS et SXT_RGB_etire du chemin principal sur RGB, SCNR_etoiles_vert sur RGB_stars, Fermer_RGB
 # P5 rapide SHO (demande de l'utilisateur, 8 octobre 2026 : « fais un P5 rapide avec SHO, puis Narrowband normalisation pour le SNCR a 0.7 ») :
-# Apply Global ; Lineaire_auto lance SHO_simple (canaux étirés -> SHO_etire) puis NBN_SHO (SCNR 0,7) sur SHO_etire ; S, H, O restent ouverts
+# Apply Global ; Lineaire_auto lance SHO_simple (canaux étirés -> SHO_etire) puis NBN_SHO (SCNR 0, O3 et S2 boost 1) sur SHO_etire ; S, H, O restent ouverts
 # P4 rapide MAS sur les canaux (demande de l'utilisateur, 8 octobre 2026 : « un rapide dans P4 qui me ferait MAS sur les 3 S H O ») :
 # option MAS_canaux (réglages MAS de l'utilisateur, fond 0,25 pour tous les canaux puis GHS_3_fond, saturation décochée : images en gris) et R_C_MAS_canaux_rapide (Apply Global)
 def mas_canaux():
@@ -1551,7 +1551,7 @@ for _st in (rgbsho, sho):
 # 20 octobre 2026, après la revue des sources (skill maj-kb), demandes de l'utilisateur : « Met un NBN en option comme ca » et
 # « Met une option et un rapide Cosgrove pour que je teste » (SHO sans RGB et RGB + SHO ; Cosgrove retiré ensuite)
 def nbn_sho(name, **kw):
-    v = {'palette': 'Palette_SHO', 'lightness': 'Lightness_Ha', 'scnr': '0.700', 'o3Boost': '1.000', 's2Boost': '1.200', 'highlightReduction': '1.000', 'brightness': '1.000'}
+    v = {'palette': 'Palette_SHO', 'lightness': 'Lightness_Ha', 'scnr': '0.000', 'o3Boost': '1.000', 's2Boost': '1.000', 'highlightReduction': '1.000', 'brightness': '1.000'}
     v.update(kw)
     return M.instance('NarrowbandNormalization', name, v)
 D_NBN_DOUX = ("OPTION, à la place de NBN_SHO, à tester : NarrowbandNormalization plus doux, réglages de Deep Space Place (2026) : Lightness Off, SCNR 0,20, OIII boost 1,2, SII boost 1,4, "

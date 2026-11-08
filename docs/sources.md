@@ -1416,3 +1416,8 @@ Fait : Masque_auto.js, paramètre `luminosite` (y par défaut, ou moyenne) avec 
 ### Export_TIFF : gel aussi sans Photoshop (8 novembre 2026)
 
 Retour de l'utilisateur : « export tiff fait le probleme aussid e freeze ». Partie commune à Export_TIFF et Export_Photoshop : ImageWindow.saveAs, synchrone sur le fil principal (PixInsight ne répond pas pendant l'écriture). Hypothèse : dossier de l'objet sur Google Drive pour ordinateur (Mon Drive), TIFF 16 bits d'environ 350 Mo (9576 × 6388 × 3 × 2 octets) : écriture lente, ou fichier verrouillé (synchronisation, ou ouvert dans Photoshop) quand il est remplacé. Fait : messages dans la console avant (taille, chemin, remplacement) et après l'écriture (durée), avec processEvents. Test demandé : export dans un dossier local (paramètre dossier). Non testé.
+
+### NBN_SHO et NBN_HOO : SCNR 0, boosts à 1 (8 novembre 2026)
+
+Demande de l'utilisateur : « pour les process SHO et hoo, je veux que le process qui crée les SHO dans P5 fasse scnr 0 et couche O et S a 1 (au lieu de 0.7 ,1 , 1.2) ».
+Fait : NarrowbandNormalization NBN_SHO (SHO sans RGB, RGB + SHO, rapide R_C_Palette_rapide) scnr 0, o3Boost 1, s2Boost 1 ; NBN_HOO scnr 0. NBN_SHO_doux (option) inchangé. LRGB et LHaRGB non touchés.

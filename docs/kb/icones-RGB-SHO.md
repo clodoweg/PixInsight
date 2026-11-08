@@ -881,9 +881,9 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - palette Foraxx voulue -> pas besoin : Foraxx_SHO lit S, H, O directement
 
 #### E22_NBN_SHO — NarrowbandNormalization
-   palette=Palette_SHO ; lightness=Lightness_Ha ; blendMode=Blend_Mode1 ; haBlend=0.000 ; scnr=0.700 ; o3Boost=1.000 ; s2Boost=1.200 ; shadowpoint=1.000 ; highlightReduction=1.000 ; brightness=1.000
+   palette=Palette_SHO ; lightness=Lightness_Ha ; blendMode=Blend_Mode1 ; haBlend=0.000 ; scnr=0.000 ; o3Boost=1.000 ; s2Boost=1.000 ; shadowpoint=1.000 ; highlightReduction=1.000 ; brightness=1.000
 
-> PRÉRÉGLÉ : palette SHO, Lightness = Ha (H porte le détail), SCNR 0,7 (vert retiré en partie) (demandes de l'utilisateur) ; S2 boost 1,2 (demande de l'utilisateur, 20 octobre 2026) ; O3 boost, Brightness, Highlight reduction à 1 (neutres : ce sont des multiplicateurs, 0 rend l'image noire) ; Shadow point 1 (normalisation à partir de la médiane).
+> PRÉRÉGLÉ : palette SHO, Lightness = Ha (H porte le détail) (demande de l'utilisateur) ; SCNR 0, O3 boost 1, S2 boost 1 (demande de l'utilisateur, 8 novembre 2026) ; Brightness, Highlight reduction à 1 (neutres : ce sont des multiplicateurs, 0 rend l'image noire) ; Shadow point 1 (normalisation à partir de la médiane).
 > 
 > À RÉGLER : glisse sur SHO_etire (SHO_simple) ; O3 boost au-dessus de 1, S2 boost autour de 1,2, peu à peu ; Shadow point : 1 = normalisation à partir de la médiane, vers 0 = zones faibles aussi (plus de bruit).
 > 
@@ -960,7 +960,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).
 > 
-> PRÉRÉGLÉ : conteneur de scripts : Lineaire_auto lance SHO_simple (S, H, O étirés -> SHO_etire) puis NBN_SHO sur SHO_etire (palette SHO, Lightness Ha, SCNR 0,7, S2 boost 1,2, autres boosts à 1 ; sur une copie puis recopié : Ctrl+Z annule NBN) ; S, H, O restent ouverts (Foraxx ou autre palette possible ensuite).
+> PRÉRÉGLÉ : conteneur de scripts : Lineaire_auto lance SHO_simple (S, H, O étirés -> SHO_etire) puis NBN_SHO sur SHO_etire (palette SHO, Lightness Ha, SCNR 0, O3 et S2 boost 1 ; sur une copie puis recopié : Ctrl+Z annule NBN) ; S, H, O restent ouverts (Foraxx ou autre palette possible ensuite).
 > 
 > À RÉGLER : S, H, O étirés, sans étoiles, même fond (après Statistical_Stretch) ; Conteneurs du workflow chargé (icônes SHO_simple et NBN_SHO du chemin principal) ; double-clic puis Apply Global (pas en glissant) ; ensuite la finition (phase 6) sur SHO_etire.
 > 
