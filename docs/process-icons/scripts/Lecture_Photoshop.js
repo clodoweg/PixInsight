@@ -6,6 +6,7 @@
 // le fichier est ouvert dans une nouvelle vue <nom>_PS (l'image d'origine ne
 // change pas).
 // Paramètre fichier : chemin forcé ; vide = dernier export d'Export_TIFF.
+// temp = true (icône Opt_Lecture_Photoshop) : tmp.tiff du dossier temporaire, écrit par Opt_Export_Photoshop.
 // Icône Opt_Lecture_Photoshop (P7, option). Demande de l'utilisateur, 22 octobre 2026. Non testé dans PixInsight.
 //
 // Installation (Mac et PC) : dans src/scripts/clodoweg de PixInsight, avec
@@ -23,6 +24,8 @@
 
 function rpPath( p )
 {
+   if ( p.temp )
+      return cwTempTiff();   // Opt_Lecture_Photoshop : tmp.tiff écrit par Opt_Export_Photoshop
    return p.fichier.length > 0 ? p.fichier : cwLastExport();
 }
 
@@ -51,7 +54,8 @@ function rpDialog( p )
    } );
    pathLabel = d.info( "" );
    refresh();
-   d.onExport = function() { Parameters.set( "fichier", p.fichier ); };
+   d.check( "Fichier temporaire tmp.tiff (celui d'Opt_Export_Photoshop)", p.temp, "Sinon : le fichier ci-dessus, ou le dernier export.", function( c ) { p.temp = c; refresh(); } );
+   d.onExport = function() { Parameters.set( "fichier", p.fichier ); Parameters.set( "temp", p.temp ? "true" : "false" ); };
    d.validate = function() { return rpPath( p ).length == 0 ? "Aucun export retenu : choisis le fichier." : ""; };
    d.finish( "Ouvrir" );
    return d.execute();
@@ -78,7 +82,7 @@ function rpRun( p )
 
 function main()
 {
-   let p = { fichier: cwParam( "fichier", "" ) };
+   let p = { fichier: cwParam( "fichier", "" ), temp: cwBool( "temp", false ) };
    if ( cwWantsDialog() )
    {
       if ( rpDialog( p ) )

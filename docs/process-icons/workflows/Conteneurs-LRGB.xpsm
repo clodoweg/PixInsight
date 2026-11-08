@@ -6503,10 +6503,10 @@ max($T,f1)</parameter>
       <parameter id="useFloatingPointTransformation" value="true"/>
    </instance>
    <instance class="Script" version="256" id="Opt_Export_Photoshop_instance">
-      <description>OPTION — à la place d'Export_TIFF, pour retoucher dans Photoshop : même TIFF 16 bits sRGB, puis ouvert dans Photoshop.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Export_TIFF, photoshop = true : même export qu'Export_TIFF (TIFF 16 bits sRGB, nom du dossier des masters), puis le .tif est ouvert dans Photoshop (PC : Photoshop.exe le plus récent de C:/Program Files/Adobe ; Mac : open -b com.adobe.Photoshop).&#10;&#10;À RÉGLER : à la place d'Export_TIFF : glisse sur l'image finie ; copie Export_TIFF.js et clodoweg_objet.jsh dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- Photoshop introuvable -&gt; double-clic, Apply Global, bouton Choisir Photoshop… (ou photoshopExe dans l'icône) ; le .tif est quand même enregistré</description>
+      <description>OPTION — pour retoucher dans Photoshop : TIFF 16 bits sRGB enregistré sous tmp.tiff (dossier temporaire), puis ouvert dans Photoshop&#10;Export_TIFF reste l'export final au nom de l'objet.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Export_TIFF, photoshop = true, temp = true : TIFF 16 bits sRGB enregistré sous tmp.tiff dans le dossier temporaire (plus sous le nom de l'objet ; remplacé à chaque fois), puis ouvert dans Photoshop (PC : Photoshop.exe le plus récent de C:/Program Files/Adobe ; Mac : open -b com.adobe.Photoshop).&#10;&#10;À RÉGLER : à la place d'Export_TIFF : glisse sur l'image finie ; copie Export_TIFF.js et clodoweg_objet.jsh dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- Photoshop introuvable -&gt; double-clic, Apply Global, bouton Choisir Photoshop… (ou photoshopExe dans l'icône) ; le .tif est quand même enregistré</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js</parameter>
       <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="6">
+      <table id="parameters" rows="7">
          <tr>
             <td id="id">nom</td>
             <td id="value"></td>
@@ -6531,17 +6531,25 @@ max($T,f1)</parameter>
             <td id="id">photoshopExe</td>
             <td id="value"></td>
          </tr>
+         <tr>
+            <td id="id">temp</td>
+            <td id="value">true</td>
+         </tr>
       </table>
       <parameter id="information"></parameter>
    </instance>
    <instance class="Script" version="256" id="Opt_Lecture_Photoshop_instance">
-      <description>OPTION — après tes retouches dans Photoshop (Ctrl+S, même fichier) : rouvre le .tif dans PixInsight, nouvelle vue &lt;nom&gt;_PS.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Lecture_Photoshop : ouvre le dernier .tif écrit par Export_TIFF / Export_Photoshop dans une nouvelle vue &lt;nom&gt;_PS (fichier = chemin forcé).&#10;&#10;À RÉGLER : après tes retouches : dans Photoshop, Ctrl+S (même fichier, TIFF), puis double-clic sur l'icône et Apply Global ; copie Lecture_Photoshop.js et clodoweg_objet.jsh dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- calques dans Photoshop -&gt; aplatis avant d'enregistrer, par prudence&#10;- autre fichier -&gt; bouton Choisir le fichier… dans la fenêtre</description>
+      <description>OPTION — après tes retouches dans Photoshop (Ctrl+S sur tmp.tiff) : rouvre tmp.tiff dans PixInsight, nouvelle vue tmp_PS.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Lecture_Photoshop, temp = true : ouvre tmp.tiff (dossier temporaire, écrit par Opt_Export_Photoshop) dans une nouvelle vue tmp_PS.&#10;&#10;À RÉGLER : après tes retouches : dans Photoshop, Ctrl+S (même fichier, TIFF), puis double-clic sur l'icône et Apply Global ; copie Lecture_Photoshop.js et clodoweg_objet.jsh dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- calques dans Photoshop -&gt; aplatis avant d'enregistrer, par prudence&#10;- autre fichier -&gt; bouton Choisir le fichier… dans la fenêtre</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Lecture_Photoshop.js</parameter>
       <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="1">
+      <table id="parameters" rows="2">
          <tr>
             <td id="id">fichier</td>
             <td id="value"></td>
+         </tr>
+         <tr>
+            <td id="id">temp</td>
+            <td id="value">true</td>
          </tr>
       </table>
       <parameter id="information"></parameter>

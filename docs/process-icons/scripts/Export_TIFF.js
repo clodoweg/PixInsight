@@ -65,7 +65,8 @@ function keyword( view, name )
 function etParams()
 {
    return { nom: cwParam( "nom", "" ), suffixe: cwParam( "suffixe", "" ), dossier: cwParam( "dossier", "" ),
-            icc: cwBool( "icc", true ), photoshop: cwBool( "photoshop", false ), photoshopExe: cwParam( "photoshopExe", "" ) };
+            icc: cwBool( "icc", true ), photoshop: cwBool( "photoshop", false ), photoshopExe: cwParam( "photoshopExe", "" ),
+            temp: cwBool( "temp", false ) };
 }
 
 function etExport( p )
@@ -76,6 +77,7 @@ function etExport( p )
    Parameters.set( "icc", p.icc ? "true" : "false" );
    Parameters.set( "photoshop", p.photoshop ? "true" : "false" );
    Parameters.set( "photoshopExe", p.photoshopExe );
+   Parameters.set( "temp", p.temp ? "true" : "false" );
 }
 
 // PC : Photoshop.exe le plus récent de C:/Program Files/Adobe, sinon "".
@@ -144,6 +146,8 @@ function etOpenPhotoshop( path, exe )
 // Chemin du fichier : nom et dossier vides = d'après le dossier des masters ouverts.
 function etPath( view, p )
 {
+   if ( p.temp )
+      return cwTempTiff();   // Opt_Export_Photoshop : tmp.tiff dans le dossier temporaire (nom, suffixe et dossier ignorés)
    let nom = p.nom, dossier = p.dossier;
    let dir = objectDir();
    if ( nom.length == 0 )
@@ -185,6 +189,7 @@ function etDialog( p, view )
       }
    } );
    d.check( "Convertir en sRGB IEC61966-2.1 (profil ICC intégré)", p.icc, "", function( c ) { p.icc = c; } );
+   d.check( "Fichier temporaire tmp.tiff (dossier temporaire)", p.temp, "Nom, suffixe et dossier ignorés : sert à l'aller-retour avec Photoshop (Lecture_Photoshop le relit).", function( c ) { p.temp = c; refresh(); } );
    d.check( "Ouvrir ensuite dans Photoshop", p.photoshop, "Le .tif est ouvert dans Photoshop après l'enregistrement.", function( c ) { p.photoshop = c; } );
    let exeEdit = d.edit( "Photoshop :", p.photoshopExe, "Vide = trouvé tout seul (PC : C:/Program Files/Adobe/Adobe Photoshop…/Photoshop.exe ; Mac : open -b com.adobe.Photoshop).", function( t ) { p.photoshopExe = t.trim(); } );
    d.button( "Choisir Photoshop…", "Choisir Photoshop.exe (PC) ou l'application (Mac).", function()

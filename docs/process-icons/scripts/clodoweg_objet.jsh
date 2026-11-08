@@ -72,4 +72,22 @@ function cwLastExport()
    return (Settings.lastReadOK && path != null) ? path : "";
 }
 
+// Fichier de travail tmp.tiff des icônes Opt_Export_Photoshop et Opt_Lecture_Photoshop (demande de l'utilisateur,
+// 8 novembre 2026 : plus le nom de l'objet) : dossier temporaire du système, sinon %TEMP%, sinon dossier personnel
+// (hors du dossier de l'objet : copie_tiff_pc.bat ne le prend pas). File.systemTempDirectory et getEnvironmentVariable
+// ne sont utilisés que s'ils existent (non vérifiés).
+function cwTempTiff()
+{
+   let dir = "";
+   try { if ( typeof File.systemTempDirectory == "string" ) dir = File.systemTempDirectory; } catch ( e ) {}
+   if ( dir.length == 0 )
+      try { if ( typeof getEnvironmentVariable == "function" ) dir = getEnvironmentVariable( "TEMP" ); } catch ( e ) {}
+   if ( dir == null || dir.length == 0 )
+      dir = File.homeDirectory;
+   dir = dir.split( "\\" ).join( "/" );
+   if ( !dir.endsWith( "/" ) )
+      dir += "/";
+   return dir + "tmp.tiff";
+}
+
 #endif   // __CLODOWEG_OBJET_JSH

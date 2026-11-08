@@ -1370,13 +1370,14 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 #### Opt_Export_Photoshop — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js`
-   paramètres : `nom=`, `suffixe=`, `dossier=`, `icc=true`, `photoshop=true`, `photoshopExe=`
+   paramètres : `nom=`, `suffixe=`, `dossier=`, `icc=true`, `photoshop=true`, `photoshopExe=`, `temp=true`
 
-> OPTION — à la place d'Export_TIFF, pour retoucher dans Photoshop : même TIFF 16 bits sRGB, puis ouvert dans Photoshop.
+> OPTION — pour retoucher dans Photoshop : TIFF 16 bits sRGB enregistré sous tmp.tiff (dossier temporaire), puis ouvert dans Photoshop
+> Export_TIFF reste l'export final au nom de l'objet.
 > 
 > LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
 > 
-> PRÉRÉGLÉ : script Export_TIFF, photoshop = true : même export qu'Export_TIFF (TIFF 16 bits sRGB, nom du dossier des masters), puis le .tif est ouvert dans Photoshop (PC : Photoshop.exe le plus récent de C:/Program Files/Adobe ; Mac : open -b com.adobe.Photoshop).
+> PRÉRÉGLÉ : script Export_TIFF, photoshop = true, temp = true : TIFF 16 bits sRGB enregistré sous tmp.tiff dans le dossier temporaire (plus sous le nom de l'objet ; remplacé à chaque fois), puis ouvert dans Photoshop (PC : Photoshop.exe le plus récent de C:/Program Files/Adobe ; Mac : open -b com.adobe.Photoshop).
 > 
 > À RÉGLER : à la place d'Export_TIFF : glisse sur l'image finie ; copie Export_TIFF.js et clodoweg_objet.jsh dans src/scripts/clodoweg.
 > 
@@ -1385,13 +1386,13 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 #### Opt_Lecture_Photoshop — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Lecture_Photoshop.js`
-   paramètres : `fichier=`
+   paramètres : `fichier=`, `temp=true`
 
-> OPTION — après tes retouches dans Photoshop (Ctrl+S, même fichier) : rouvre le .tif dans PixInsight, nouvelle vue <nom>_PS.
+> OPTION — après tes retouches dans Photoshop (Ctrl+S sur tmp.tiff) : rouvre tmp.tiff dans PixInsight, nouvelle vue tmp_PS.
 > 
 > LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
 > 
-> PRÉRÉGLÉ : script Lecture_Photoshop : ouvre le dernier .tif écrit par Export_TIFF / Export_Photoshop dans une nouvelle vue <nom>_PS (fichier = chemin forcé).
+> PRÉRÉGLÉ : script Lecture_Photoshop, temp = true : ouvre tmp.tiff (dossier temporaire, écrit par Opt_Export_Photoshop) dans une nouvelle vue tmp_PS.
 > 
 > À RÉGLER : après tes retouches : dans Photoshop, Ctrl+S (même fichier, TIFF), puis double-clic sur l'icône et Apply Global ; copie Lecture_Photoshop.js et clodoweg_objet.jsh dans src/scripts/clodoweg.
 > 

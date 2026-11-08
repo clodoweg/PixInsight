@@ -1440,3 +1440,8 @@ Fait : après Stat_canaux, Lineaire_auto lance Opt_GHS_2_contraste sur S, H, O (
 
 Demande de l'utilisateur : « et dans coup ne mets plus Opt_GHS_2_contraste dans les options mais dans P4 ».
 Fait : layout.role GHS_2_contraste = chemin principal en SHO, RGB + SHO et HOO ; rapide et turbo : Lineaire_auto lance « GHS_2_contraste* » (trouve E##_GHS_2_contraste) ; textes des icônes remis. LRGB et LHaRGB non touchés.
+
+### Export / Lecture Photoshop sur tmp.tiff (8 novembre 2026)
+
+Demande de l'utilisateur : « je veux opt Opt lecture photoshop et opt export photoshop ne travaille plus sur le nom de l'objet mais sur un tmp.tiff ».
+Fait : paramètre temp (Export_TIFF.js, Lecture_Photoshop.js), vrai dans Opt_Export_Photoshop et Opt_Lecture_Photoshop (5 workflows, LRGB et LHaRGB compris : icônes concernées par la demande) ; fichier tmp.tiff dans le dossier temporaire (choix : hors du dossier de l'objet pour que copie_tiff_pc.bat ne le déplace pas). File.systemTempDirectory et getEnvironmentVariable : non vérifiés, utilisés seulement s'ils existent (repli : dossier personnel).
