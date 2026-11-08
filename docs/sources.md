@@ -1430,3 +1430,8 @@ Réponse de l'utilisateur à la sauvegarde des images en XISF : « non pas du to
 
 Demandes de l'utilisateur : « pour les SHO et HOO rajoute un autre turbo qui fait: R_C_Stat_canaux_rapide, R_C_Palette_rapide (ca fait bien NBN avec les paramùetres par defaut que l'on vient de modifier?), R_C_Fin_rapide », puis « fait la possibilité 1 ; SHO sans RGB: refait R_C_Stat_canaux_rapide ; HOO: ok ».
 Fait : T_Turbo_palette (P4 turbo, RGB + SHO, SHO sans RGB, HOO) ; R_C_Stat_canaux_rapide remis en SHO sans RGB. R_C_Palette_rapide lance l'icône NBN_SHO du fichier Conteneurs (réglages du 8 novembre). LRGB et LHaRGB non touchés.
+
+### GHS_2_contraste dans R_C_Stat_canaux_rapide et T_Turbo_palette (8 novembre 2026)
+
+Demande de l'utilisateur : « dans stats rapide (et le turbo, rajoute Opt_GHS_2_contraste ».
+Fait : après Stat_canaux, Lineaire_auto lance Opt_GHS_2_contraste sur S, H, O (HOO : H, O, turbo seulement), sur une copie (une étape Ctrl+Z par canal) ; R_C_Stat_canaux_rapide (SHO, RGB + SHO) et T_Turbo_palette (3 workflows). Opt_GHS_2_contraste reste une option au chemin principal. LRGB et LHaRGB non touchés.

@@ -2851,7 +2851,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <description>MODE TURBO, phase 4 — Étirement : une icône T_ enchaîne en un clic les étapes de plusieurs icônes rapides (R_) ; elle les contient, les icônes R_ ne sont pas nécessaires. Icône de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="T_Turbo_palette_instance">
-      <description>MODE TURBO, à la place de R_C_Stat_canaux_rapide et R_C_Palette_rapide : canaux linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut), double-clic puis Apply Global ; ensuite GLISSE R_C_Fin_rapide sur l'image créée.&#10;&#10;LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).&#10;&#10;PRÉRÉGLÉ : conteneur de scripts, en une fois : Stat_canaux (Statistical Stretch, médiane 0,25, sur H et O, à la place des GHS) puis Lineaire_auto : HOO_simple (H, O -&gt; HOO_etire) et NBN_HOO (palette HOO, SCNR 0) sur HOO_etire ; H et O restent ouverts.&#10;&#10;À RÉGLER : H et O linéaires, sans étoiles, ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut) ; Conteneurs-HOO chargé ; double-clic puis Apply Global (pas en glissant) ; ENSUITE glisse R_C_Fin_rapide sur HOO_etire.&#10;&#10;SI :&#10;- une étape échoue -&gt; la console dit laquelle ; fais le chemin principal à partir de cette étape&#10;- fond trop clair -&gt; GHS_3_fond (option) sur H et O avant HOO_simple, puis relance la palette à la main</description>
+      <description>MODE TURBO, à la place de R_C_Stat_canaux_rapide et R_C_Palette_rapide : canaux linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut), double-clic puis Apply Global ; ensuite GLISSE R_C_Fin_rapide sur l'image créée.&#10;&#10;LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).&#10;&#10;PRÉRÉGLÉ : conteneur de scripts, en une fois : Stat_canaux (Statistical Stretch, médiane 0,25, sur H et O, à la place des GHS) puis Lineaire_auto : Opt_GHS_2_contraste sur H et O, HOO_simple (H, O -&gt; HOO_etire) et NBN_HOO (palette HOO, SCNR 0) sur HOO_etire ; H et O restent ouverts.&#10;&#10;À RÉGLER : H et O linéaires, sans étoiles, ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut) ; Conteneurs-HOO chargé ; double-clic puis Apply Global (pas en glissant) ; ENSUITE glisse R_C_Fin_rapide sur HOO_etire.&#10;&#10;SI :&#10;- une étape échoue -&gt; la console dit laquelle ; fais le chemin principal à partir de cette étape&#10;- fond trop clair -&gt; GHS_3_fond (option) sur H et O avant HOO_simple, puis relance la palette à la main</description>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Stat_canaux.js</parameter>
          <parameter id="md5sum"></parameter>
@@ -2881,7 +2881,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          <table id="parameters" rows="2">
             <tr>
                <td id="id">etapes</td>
-               <td id="value">HOO_simple&gt;H ; NBN_HOO*&gt;HOO_etire</td>
+               <td id="value">Opt_GHS_2_contraste*&gt;H,O ; HOO_simple&gt;H ; NBN_HOO*&gt;HOO_etire</td>
             </tr>
             <tr>
                <td id="id">dialogue</td>
