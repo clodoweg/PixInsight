@@ -640,6 +640,46 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 ### P4_rapide
 
+#### R_C_Stat_canaux_rapide — ProcessContainer
+   1. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Stat_canaux.js`
+      paramètres : `vues=S,H,O`, `cible=0.25`, `sigma=5.0`, `dialogue=false`
+
+> MODE RAPIDE, à la place de Statistical_Stretch sur les canaux (Statistical Stretch, médiane 0,25) : S, H, O linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut), double-clic puis Apply Global (pas en glissant) ; ensuite GHS_2_contraste (option, plus de contraste) ; GHS_3_fond (option) seulement si le fond est trop clair, puis la palette.
+> 
+> LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).
+> 
+> PRÉRÉGLÉ : conteneur de scripts : Stat_canaux (calcul de Statistical Stretch de SetiAstro) sur S, H et O : point noir médiane − 5 × 1,4826 × MAD, médiane amenée à 0,25 pour les trois ; un Ctrl+Z par canal.
+> 
+> À RÉGLER : S, H, O linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut) ; double-clic puis Apply Global (pas en glissant) ; ensuite GHS_2_contraste (option, plus de contraste) sur S, H et O ; GHS_3_fond (option) seulement si le fond est trop clair ; puis R_C_Palette_rapide ou la palette ; copie Stat_canaux.js dans src/scripts/clodoweg.
+> 
+> SI :
+> - fond trop sombre, signal faible perdu -> double-clic sur Stat_canaux dans le conteneur : Blackpoint Sigma 3
+> - fond trop clair -> Target Median 0,20
+> - un canal mal étiré -> Ctrl+Z sur ce canal, puis Statistical_Stretch à la main
+
+### P4_turbo
+
+#### T_Turbo_palette — ProcessContainer
+   1. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Stat_canaux.js`
+      paramètres : `vues=S,H,O`, `cible=0.25`, `sigma=5.0`, `dialogue=false`
+   2. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
+      paramètres : `etapes=SHO_simple>H ; NBN_SHO*>SHO_etire`, `dialogue=false`
+
+> MODE TURBO, à la place de R_C_Stat_canaux_rapide et R_C_Palette_rapide : canaux linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut), double-clic puis Apply Global ; ensuite GLISSE R_C_Fin_rapide sur l'image créée.
+> 
+> LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).
+> 
+> PRÉRÉGLÉ : conteneur de scripts, en une fois : Stat_canaux (Statistical Stretch, médiane 0,25, sur S, H, O) puis Lineaire_auto : SHO_simple (S, H, O -> SHO_etire) et NBN_SHO (palette SHO, Lightness Ha, SCNR 0, O3 et S2 boost 1) sur SHO_etire ; S, H, O restent ouverts.
+> 
+> À RÉGLER : S, H, O linéaires, sans étoiles, ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut) ; Conteneurs du workflow chargé ; double-clic puis Apply Global (pas en glissant) ; ENSUITE glisse R_C_Fin_rapide sur SHO_etire (il ne peut pas être enchaîné : il doit être glissé).
+> 
+> SI :
+> - une étape échoue -> la console dit laquelle ; lance R_C_Stat_canaux_rapide puis R_C_Palette_rapide un par un
+> - palette trop verte -> SCNR dans l'icône NBN_SHO (P5), puis relance
+
 ## P5_Couleur
 
 #### E15_SHO_simple — PixelMath

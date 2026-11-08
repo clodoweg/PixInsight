@@ -655,6 +655,28 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - un canal mal étiré -> Ctrl+Z sur ce canal, puis GHS à la main
 > - réglage MAS à changer -> double-clic sur Opt_MAS_canaux
 
+### P4_turbo
+
+#### T_Turbo_palette — ProcessContainer
+   1. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Stat_canaux.js`
+      paramètres : `vues=H,O`, `cible=0.25`, `sigma=5.0`, `dialogue=false`
+   2. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
+      paramètres : `etapes=HOO_simple>H ; NBN_HOO*>HOO_etire`, `dialogue=false`
+
+> MODE TURBO, à la place de R_C_Stat_canaux_rapide et R_C_Palette_rapide : canaux linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut), double-clic puis Apply Global ; ensuite GLISSE R_C_Fin_rapide sur l'image créée.
+> 
+> LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).
+> 
+> PRÉRÉGLÉ : conteneur de scripts, en une fois : Stat_canaux (Statistical Stretch, médiane 0,25, sur H et O, à la place des GHS) puis Lineaire_auto : HOO_simple (H, O -> HOO_etire) et NBN_HOO (palette HOO, SCNR 0) sur HOO_etire ; H et O restent ouverts.
+> 
+> À RÉGLER : H et O linéaires, sans étoiles, ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut) ; Conteneurs-HOO chargé ; double-clic puis Apply Global (pas en glissant) ; ENSUITE glisse R_C_Fin_rapide sur HOO_etire.
+> 
+> SI :
+> - une étape échoue -> la console dit laquelle ; fais le chemin principal à partir de cette étape
+> - fond trop clair -> GHS_3_fond (option) sur H et O avant HOO_simple, puis relance la palette à la main
+
 ## P5_Couleur
 
 #### E16_HOO_simple — PixelMath

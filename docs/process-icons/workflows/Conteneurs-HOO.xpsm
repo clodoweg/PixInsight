@@ -2827,7 +2827,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="backgroundROIHeight" value="0"/>
    </instance>
    <instance class="NoOperation" version="256" id="P4_rapide_instance">
-      <description>MODE RAPIDE, phase 4 — Étirement : pas encore de rapide narrowband : chemin principal. Icône de repère, sans effet.</description>
+      <description>MODE RAPIDE, phase 4 — Étirement : T_Turbo_palette (P4 turbo, double-clic puis Apply Global) : Statistical Stretch sur H et O (à la place des GHS) puis HOO_simple et NBN_HOO en une fois ; ensuite R_C_Fin_rapide glissé sur HOO_etire. Icône de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="R_C_MAS_canaux_rapide_instance">
       <description>MODE RAPIDE, à la place de GHS_1 et GHS_2 sur les canaux (MAS fond 0,25) : S, H, O (HOO : H, O) linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut), double-clic puis Apply Global (pas en glissant) ; ensuite GHS_3_fond sur chaque canal, puis la palette.&#10;&#10;LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).&#10;&#10;PRÉRÉGLÉ : conteneur de scripts : Lineaire_auto lance Opt_MAS_canaux sur H et O (fond cible 0,25 pour les deux), chaque canal sur une copie puis recopié : un Ctrl+Z par canal.&#10;&#10;À RÉGLER : H, O linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut) ; Conteneurs-HOO chargé ; double-clic puis Apply Global (pas en glissant) ; ensuite GHS_3_fond sur H et O (même fond, vers 0,12–0,14), puis HOO_simple et NBN_HOO.&#10;&#10;SI :&#10;- un canal mal étiré -&gt; Ctrl+Z sur ce canal, puis GHS à la main&#10;- réglage MAS à changer -&gt; double-clic sur Opt_MAS_canaux</description>
@@ -2838,6 +2838,50 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
             <tr>
                <td id="id">etapes</td>
                <td id="value">Opt_MAS_canaux*&gt;H,O</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+   </instance>
+   <instance class="NoOperation" version="256" id="P4_turbo_instance">
+      <description>MODE TURBO, phase 4 — Étirement : une icône T_ enchaîne en un clic les étapes de plusieurs icônes rapides (R_) ; elle les contient, les icônes R_ ne sont pas nécessaires. Icône de repère, sans effet.</description>
+   </instance>
+   <instance class="ProcessContainer" id="T_Turbo_palette_instance">
+      <description>MODE TURBO, à la place de R_C_Stat_canaux_rapide et R_C_Palette_rapide : canaux linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut), double-clic puis Apply Global ; ensuite GLISSE R_C_Fin_rapide sur l'image créée.&#10;&#10;LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).&#10;&#10;PRÉRÉGLÉ : conteneur de scripts, en une fois : Stat_canaux (Statistical Stretch, médiane 0,25, sur H et O, à la place des GHS) puis Lineaire_auto : HOO_simple (H, O -&gt; HOO_etire) et NBN_HOO (palette HOO, SCNR 0) sur HOO_etire ; H et O restent ouverts.&#10;&#10;À RÉGLER : H et O linéaires, sans étoiles, ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut) ; Conteneurs-HOO chargé ; double-clic puis Apply Global (pas en glissant) ; ENSUITE glisse R_C_Fin_rapide sur HOO_etire.&#10;&#10;SI :&#10;- une étape échoue -&gt; la console dit laquelle ; fais le chemin principal à partir de cette étape&#10;- fond trop clair -&gt; GHS_3_fond (option) sur H et O avant HOO_simple, puis relance la palette à la main</description>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Stat_canaux.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="4">
+            <tr>
+               <td id="id">vues</td>
+               <td id="value">H,O</td>
+            </tr>
+            <tr>
+               <td id="id">cible</td>
+               <td id="value">0.25</td>
+            </tr>
+            <tr>
+               <td id="id">sigma</td>
+               <td id="value">5.0</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="2">
+            <tr>
+               <td id="id">etapes</td>
+               <td id="value">HOO_simple&gt;H ; NBN_HOO*&gt;HOO_etire</td>
             </tr>
             <tr>
                <td id="id">dialogue</td>
@@ -6378,6 +6422,8 @@ max($T,f1)</parameter>
    <icon id="Opt_MAS_canaux" instance="Opt_MAS_canaux_instance" xpos="665" ypos="264" workspace="Workspace01"/>
    <icon id="P4_rapide" instance="P4_rapide_instance" xpos="665" ypos="310" workspace="Workspace01"/>
    <icon id="R_C_MAS_canaux_rapide" instance="R_C_MAS_canaux_rapide_instance" xpos="665" ypos="344" workspace="Workspace01"/>
+   <icon id="P4_turbo" instance="P4_turbo_instance" xpos="665" ypos="390" workspace="Workspace01"/>
+   <icon id="T_Turbo_palette" instance="T_Turbo_palette_instance" xpos="665" ypos="424" workspace="Workspace01"/>
    <icon id="P5_Couleur" instance="P5_Couleur_instance" xpos="856" ypos="20" workspace="Workspace01"/>
    <icon id="E16_HOO_simple" instance="E16_HOO_simple_instance" xpos="856" ypos="64" workspace="Workspace01"/>
    <icon id="E17_NBN_HOO" instance="E17_NBN_HOO_instance" xpos="856" ypos="94" workspace="Workspace01"/>

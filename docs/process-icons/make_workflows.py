@@ -184,7 +184,7 @@ def shorten(xml, prefix, base):
     drag = md5 = None
     if xml.lstrip().startswith('<instance class="ProcessContainer"'):
         # conteneur (retour de l'utilisateur) : rien ne disait de le GLISSER ; le rond Apply Global échoue avec des process natifs
-        drag = 'cont_global' if '/GC_Solver_auto.js' in xml else 'cont_scripts' if base in ('C_Lineaire_rapide', 'C_MAS_canaux_rapide', 'C_Stat_canaux_rapide', 'C_Palette_rapide', 'C_Continuum_prep', 'C_Continuum_fin', 'C_RGB_etoiles_rapide') else 'cont'
+        drag = 'cont_global' if '/GC_Solver_auto.js' in xml else 'cont_scripts' if base in ('C_Lineaire_rapide', 'C_MAS_canaux_rapide', 'C_Stat_canaux_rapide', 'C_Palette_rapide', 'Turbo_palette', 'C_Continuum_prep', 'C_Continuum_fin', 'C_RGB_etoiles_rapide') else 'cont'
         if '<description>' not in xml:
             xml = re.sub(r'(<instance class="ProcessContainer" id="[^"]*">)', r'\1\n      <description></description>', xml, count=1)
     elif base in SCRIPTS and 'class="Script"' in xml:
@@ -234,7 +234,7 @@ def layout(entries, naming):
         rows += 1
     return insts, icons
 
-TURBO = {'Turbo_debut', 'Turbo_fin', 'Turbo_debut_graxpert'}   # ancien mode Turbo supprimé ; Turbo_debut ajouté ensuite (demande de l'utilisateur, 5 octobre 2026)
+TURBO = {'Turbo_debut', 'Turbo_fin', 'Turbo_debut_graxpert', 'Turbo_palette'}   # ancien mode Turbo supprimé ; Turbo_debut ajouté ensuite (demande de l'utilisateur, 5 octobre 2026)
 RAPIDE = {'Gradient_auto_graxpert_rapide', 'C_Ha_RGB_rapide', 'C_Lineaire_rapide', 'C_MAS_canaux_rapide', 'C_Stat_canaux_rapide', 'C_Palette_rapide', 'C_RGB_etoiles_rapide', 'Main_continuum', 'Lineaire_rapide', 'C_P3_rapide', 'C_RGB_etire_rapide', 'C_Fin_rapide', 'C_Etoiles_fond_rapide', 'C_Preparation_rapide', 'Gradient_auto_rapide', 'C_RGB_rapide', 'C_L_rapide', 'C_RGB_fin_rapide', 'C_LRGB_rapide'}
 RAPIDE_NOTE = {
     'LRGB': {1: "MODE RAPIDE (galaxies) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre (étoiles gardées jusqu'à LRGB) : R_C_Preparation_rapide ; R_Gradient_auto_rapide ; R_Lineaire_rapide (RGB et L) ; GHS_1_premier, GHS_2_contraste, GHS_3_fond sur L ; R_C_RGB_etire_rapide sur RGB ; R_C_LRGB_rapide (LRGB sans étoiles) ; finition. Phase 1 : R_C_Preparation_rapide (double-clic puis Apply Global) à la place de LinearPatternSubtraction, Renommer_auto, Combinaison_RGB et Solver_auto",
@@ -270,6 +270,10 @@ for _p, _et in (('RSHO', 'RGB_stars'), ('SHO', 'NBtoRGB_stars'), ('HOO', 'NBtoRG
 for _p in ('RSHO', 'SHO'):
     RAPIDE_NOTE[_p][5] = "R_C_Palette_rapide (double-clic puis Apply Global) à la place de SHO_simple et NBN_SHO : S, H, O étirés combinés en SHO_etire, NarrowbandNormalization (palette SHO, Lightness Ha, SCNR 0, O3 et S2 boost 1) ; S, H, O restent ouverts"
 RAPIDE_NOTE['RSHO'][4] = "Statistical_Stretch sur S, H, O (chemin principal, Target Median 0,25 ; GHS en option)"
+# P4 (8 novembre 2026) : R_C_Stat_canaux_rapide (SHO, RGB + SHO) ; T_Turbo_palette (3 workflows) = Stat_canaux + palette, puis R_C_Fin_rapide glissé
+for _p in ('RSHO', 'SHO'):
+    RAPIDE_NOTE[_p][4] = "R_C_Stat_canaux_rapide (double-clic puis Apply Global) à la place de Statistical_Stretch sur S, H, O ; ou T_Turbo_palette (P4 turbo) : Statistical Stretch puis la palette (SHO_simple, NBN_SHO) en une fois, ensuite R_C_Fin_rapide glissé sur SHO_etire"
+RAPIDE_NOTE['HOO'][4] = "T_Turbo_palette (P4 turbo, double-clic puis Apply Global) : Statistical Stretch sur H et O (à la place des GHS) puis HOO_simple et NBN_HOO en une fois ; ensuite R_C_Fin_rapide glissé sur HOO_etire"
 RAPIDE_NOTE['RSHO'][3] += " ; puis R_C_RGB_etoiles_rapide (double-clic puis Apply Global) à la place de MAS, SXT_RGB_etire, SCNR_etoiles_vert et Fermer_RGB : crée RGB_stars, ferme le RGB sans étoiles"
 
 def layout_all(main, opts, rapide=None, notes=None, turbo=None):
@@ -1485,8 +1489,20 @@ for _it in _its:
     rgbsho.remove(_it)
 insert_before(rgbsho, 'STF', _its)   # fin de phase 3, après C_RGB_lineaire et les options continuum (RGB encore linéaire)
 
-# SHO sans RGB : pas de rapide en phase 4 (demande de l'utilisateur, 20 octobre 2026 : « supprime les P4 rapide pour SHO sans RGB ») ; Opt_MAS_canaux reste en option
-sho[:] = [x for x in sho if x[0][0] not in ('C_MAS_canaux_rapide', 'C_Stat_canaux_rapide')]
+# SHO sans RGB : pas de R_C_MAS_canaux_rapide en phase 4 (demande de l'utilisateur, 20 octobre 2026) ; R_C_Stat_canaux_rapide remis le 8 novembre 2026 ; Opt_MAS_canaux reste en option
+sho[:] = [x for x in sho if x[0][0] != 'C_MAS_canaux_rapide']   # R_C_Stat_canaux_rapide remis (demande de l'utilisateur, 8 novembre 2026)
+
+# T_Turbo_palette (demande de l'utilisateur, 8 novembre 2026, possibilité 1) : Stat_canaux puis la palette (combinaison + NBN) en un
+# conteneur de scripts (Apply Global) ; R_C_Fin_rapide reste à glisser ensuite sur l'image créée (il doit être glissé, et contient des scripts)
+def _stat_vues(v):
+    n, x = script('Stat_canaux', '')
+    a = '<td id="id">vues</td>\n            <td id="value">S,H,O</td>'
+    assert a in x
+    return n, x.replace(a, a.replace('S,H,O', v))
+for _st, _v, _pal in ((rgbsho, 'S,H,O', 'SHO_simple>H ; NBN_SHO*>SHO_etire'), (sho, 'S,H,O', 'SHO_simple>H ; NBN_SHO*>SHO_etire'),
+                      (hoo, 'H,O', 'HOO_simple>H ; NBN_HOO*>HOO_etire')):
+    _at = 'C_Stat_canaux_rapide' if _st is not hoo else 'C_MAS_canaux_rapide'
+    insert_after(_st, _at, [(cont('Turbo_palette', [_stat_vues(_v), lineaire_rapide(_pal)]), '')])
 
 # SHO et RGB + SHO (demande de l'utilisateur, 20 octobre 2026 : « pour les SHO avec et sans RGB, mets le Stat Streh a la place du GHS (qui passe en option).
 # Passe aussi le GHS 3 en option ») : Statistical_Stretch au chemin principal, avant les GHS (options, rôles dans layout.role) ; HOO inchangé

@@ -1425,3 +1425,8 @@ Fait : NarrowbandNormalization NBN_SHO (SHO sans RGB, RGB + SHO, rapide R_C_Pale
 ### Sauvegarde du projet : abandonnée (8 novembre 2026)
 
 Réponse de l'utilisateur à la sauvegarde des images en XISF : « non pas du tout ca va me faire trop lourd. Je veux enregistrer le projet. SI c'est pas possible ne fait rien ». Aucune fonction PJSR documentée pour enregistrer le projet (.xosm) : rien n'est fait, la sauvegarde XISF (Sauver_vues.js, fin des turbos, icône Sauvegarde_projet) est retirée (git revert). Projet : File > Save Project, à la main.
+
+### T_Turbo_palette et R_C_Stat_canaux_rapide (8 novembre 2026)
+
+Demandes de l'utilisateur : « pour les SHO et HOO rajoute un autre turbo qui fait: R_C_Stat_canaux_rapide, R_C_Palette_rapide (ca fait bien NBN avec les paramùetres par defaut que l'on vient de modifier?), R_C_Fin_rapide », puis « fait la possibilité 1 ; SHO sans RGB: refait R_C_Stat_canaux_rapide ; HOO: ok ».
+Fait : T_Turbo_palette (P4 turbo, RGB + SHO, SHO sans RGB, HOO) ; R_C_Stat_canaux_rapide remis en SHO sans RGB. R_C_Palette_rapide lance l'icône NBN_SHO du fichier Conteneurs (réglages du 8 novembre). LRGB et LHaRGB non touchés.
