@@ -1182,29 +1182,6 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          </table>
          <parameter id="information"></parameter>
       </instance>
-      <instance class="Script" version="256" enabled="true">
-         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Sauver_vues.js</parameter>
-         <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="4">
-            <tr>
-               <td id="id">dossier</td>
-               <td id="value"></td>
-            </tr>
-            <tr>
-               <td id="id">sousDossier</td>
-               <td id="value">sauvegarde_Turbo_debut</td>
-            </tr>
-            <tr>
-               <td id="id">horodatage</td>
-               <td id="value">true</td>
-            </tr>
-            <tr>
-               <td id="id">dialogue</td>
-               <td id="value">false</td>
-            </tr>
-         </table>
-         <parameter id="information"></parameter>
-      </instance>
    </instance>
    <instance class="ProcessContainer" id="T_Turbo_debut_graxpert_instance">
       <description>MODE TURBO, comme T_Turbo_debut mais avec GraXpert au lieu de GradientCorrection : masters seuls ouverts, Conteneurs du workflow chargé, double-clic puis Apply Global (pas en glissant) ; module et application GraXpert installés.&#10;&#10;LANCEMENT : masters seuls ouverts, double-clic puis Apply Global (rond bleu) ; pas en glissant (ImageSolver échoue sur une image en cours de traitement).&#10;&#10;PRÉRÉGLÉ : conteneur, en une fois : comme T_Turbo_debut, mais l'étape de gradient est GraXpert (Gradient_auto.js, outil = graxpert) au lieu de GradientCorrection.&#10;&#10;À RÉGLER : masters seuls ouverts ; Conteneurs du workflow chargé ; double-clic puis Apply Global (pas en glissant) ; module et application GraXpert installés.&#10;&#10;SI :&#10;- une étape échoue -&gt; lance les icônes R_ une par une pour voir laquelle&#10;- « process GraXpert absent » -&gt; installe le module et l'application GraXpert</description>
@@ -1672,29 +1649,6 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
             <tr>
                <td id="id">views</td>
                <td id="value">RGB</td>
-            </tr>
-            <tr>
-               <td id="id">dialogue</td>
-               <td id="value">false</td>
-            </tr>
-         </table>
-         <parameter id="information"></parameter>
-      </instance>
-      <instance class="Script" version="256" enabled="true">
-         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Sauver_vues.js</parameter>
-         <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="4">
-            <tr>
-               <td id="id">dossier</td>
-               <td id="value"></td>
-            </tr>
-            <tr>
-               <td id="id">sousDossier</td>
-               <td id="value">sauvegarde_Turbo_debut_graxpert</td>
-            </tr>
-            <tr>
-               <td id="id">horodatage</td>
-               <td id="value">true</td>
             </tr>
             <tr>
                <td id="id">dialogue</td>
@@ -6930,26 +6884,6 @@ max($T,f1)</parameter>
          <parameter id="information"></parameter>
       </instance>
    </instance>
-   <instance class="Script" version="256" id="Sauvegarde_projet_instance">
-      <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Sauver_vues : copie XISF de TOUTES les images ouvertes dans &lt;dossier de l'objet&gt;/sauvegarde_&lt;date&gt;_&lt;heure&gt; (mots-clés FITS et astrométrie recopiés) ; les images ouvertes ne changent pas. PixInsight ne permet pas d'enregistrer le PROJET depuis un script : projet complet (icônes, historique) par File &gt; Save Project.&#10;&#10;À RÉGLER : quand tu veux, à n'importe quelle étape : double-clic puis Apply Global (fenêtre : dossier, sous-dossier, date) ; copie Sauver_vues.js, clodoweg_ui.jsh et clodoweg_objet.jsh dans src/scripts/clodoweg ; pour reprendre : rouvre les .xisf puis le fichier Conteneurs.&#10;&#10;SI :&#10;- dossier sur Google Drive -&gt; écriture lente (des centaines de Mo) : patiente, ou choisis un dossier local&#10;- ancienne sauvegarde à garder -&gt; laisse la date cochée (nouveau sous-dossier à chaque fois)</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Sauver_vues.js</parameter>
-      <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="3">
-         <tr>
-            <td id="id">dossier</td>
-            <td id="value"></td>
-         </tr>
-         <tr>
-            <td id="id">sousDossier</td>
-            <td id="value">sauvegarde</td>
-         </tr>
-         <tr>
-            <td id="id">horodatage</td>
-            <td id="value">true</td>
-         </tr>
-      </table>
-      <parameter id="information"></parameter>
-   </instance>
    <icon id="P1_Preparation" instance="P1_Preparation_instance" xpos="30" ypos="20" workspace="Workspace01"/>
    <icon id="E00_Renommer_auto" instance="E00_Renommer_auto_instance" xpos="30" ypos="64" workspace="Workspace01"/>
    <icon id="E01_LinearPatternSubtraction" instance="E01_LinearPatternSubtraction_instance" xpos="30" ypos="94" workspace="Workspace01"/>
@@ -7061,5 +6995,4 @@ max($T,f1)</parameter>
    <icon id="Opt_Fermer_tout" instance="Opt_Fermer_tout_instance" xpos="1259" ypos="474" workspace="Workspace01"/>
    <icon id="P7_rapide" instance="P7_rapide_instance" xpos="1259" ypos="520" workspace="Workspace01"/>
    <icon id="R_C_Etoiles_fond_rapide" instance="R_C_Etoiles_fond_rapide_instance" xpos="1259" ypos="554" workspace="Workspace01"/>
-   <icon id="Sauvegarde_projet" instance="Sauvegarde_projet_instance" xpos="1450" ypos="20" workspace="Workspace01"/>
 </xpsm>
