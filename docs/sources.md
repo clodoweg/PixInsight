@@ -1435,3 +1435,8 @@ Fait : T_Turbo_palette (P4 turbo, RGB + SHO, SHO sans RGB, HOO) ; R_C_Stat_canau
 
 Demande de l'utilisateur : « dans stats rapide (et le turbo, rajoute Opt_GHS_2_contraste ».
 Fait : après Stat_canaux, Lineaire_auto lance Opt_GHS_2_contraste sur S, H, O (HOO : H, O, turbo seulement), sur une copie (une étape Ctrl+Z par canal) ; R_C_Stat_canaux_rapide (SHO, RGB + SHO) et T_Turbo_palette (3 workflows). Opt_GHS_2_contraste reste une option au chemin principal. LRGB et LHaRGB non touchés.
+
+### GHS_2_contraste au chemin principal P4 en narrowband (8 novembre 2026)
+
+Demande de l'utilisateur : « et dans coup ne mets plus Opt_GHS_2_contraste dans les options mais dans P4 ».
+Fait : layout.role GHS_2_contraste = chemin principal en SHO, RGB + SHO et HOO ; rapide et turbo : Lineaire_auto lance « GHS_2_contraste* » (trouve E##_GHS_2_contraste) ; textes des icônes remis. LRGB et LHaRGB non touchés.

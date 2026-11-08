@@ -1357,8 +1357,8 @@ for _st, _v in ((rgbsho, 'S,H,O'), (sho, 'S,H,O'), (hoo, 'H,O')):
     insert_after(_st, 'Statistical_Stretch', [(mas_canaux(), ''), (cont('C_MAS_canaux_rapide', [lineaire_rapide('Opt_MAS_canaux*>' + _v)]), '')])
 for _st in (rgbsho, sho):
     # R_C_Stat_canaux_rapide (demande de l'utilisateur, 9 octobre 2026 : « fais aussi R_C_MAS_canaux_rapide avec StatStrech pour SHO sans et avec RGB »)
-    # + Opt_GHS_2_contraste sur S, H, O par Lineaire_auto (demande de l'utilisateur, 8 novembre 2026)
-    insert_after(_st, 'C_MAS_canaux_rapide', [(cont('C_Stat_canaux_rapide', [script('Stat_canaux', ''), lineaire_rapide('Opt_GHS_2_contraste*>S,H,O')]), '')])
+    # + GHS_2_contraste (E## du chemin principal) sur S, H, O par Lineaire_auto (demande de l'utilisateur, 8 novembre 2026)
+    insert_after(_st, 'C_MAS_canaux_rapide', [(cont('C_Stat_canaux_rapide', [script('Stat_canaux', ''), lineaire_rapide('GHS_2_contraste*>S,H,O')]), '')])
     insert_after(_st, 'NBN_SHO', [(cont('C_Palette_rapide', [lineaire_rapide('SHO_simple>H ; NBN_SHO*>SHO_etire')]), '')])   # S, H, O gardés ouverts (demande de l'utilisateur, 8 octobre 2026)
 insert_after(rgbsho, 'Fermer_RGB', [(cont('C_RGB_etoiles_rapide', [lineaire_rapide('MAS*>RGB ; SXT_RGB_etire>RGB'), script('SCNR_etoiles_vert', ''), fermer('Fermer_RGB', 'RGB')]), '')])
 # RGB + SHO, continuum (demande de l'utilisateur, 8 octobre 2026 : « il faut pouvoir gerer le continuum aussi » ; choix : nettoyer H, O, S par le RGB,
@@ -1504,7 +1504,7 @@ for _st, _v, _pal in ((rgbsho, 'S,H,O', 'SHO_simple>H ; NBN_SHO*>SHO_etire'), (s
                       (hoo, 'H,O', 'HOO_simple>H ; NBN_HOO*>HOO_etire')):
     _at = 'C_Stat_canaux_rapide' if _st is not hoo else 'C_MAS_canaux_rapide'
     # GHS_2_contraste sur les canaux entre Stat_canaux et la palette (demande de l'utilisateur, 8 novembre 2026)
-    insert_after(_st, _at, [(cont('Turbo_palette', [_stat_vues(_v), lineaire_rapide('Opt_GHS_2_contraste*>%s ; %s' % (_v, _pal))]), '')])
+    insert_after(_st, _at, [(cont('Turbo_palette', [_stat_vues(_v), lineaire_rapide('GHS_2_contraste*>%s ; %s' % (_v, _pal))]), '')])
 
 # SHO et RGB + SHO (demande de l'utilisateur, 20 octobre 2026 : « pour les SHO avec et sans RGB, mets le Stat Streh a la place du GHS (qui passe en option).
 # Passe aussi le GHS 3 en option ») : Statistical_Stretch au chemin principal, avant les GHS (options, rôles dans layout.role) ; HOO inchangé

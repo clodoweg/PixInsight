@@ -48,7 +48,7 @@ def role(prefix, base):
     if prefix in ('SHO', 'RSHO') and base in ('GHS_1_premier', 'GHS_3_fond'):
         return 'opt'    # SHO et RGB + SHO : GHS en option, Statistical_Stretch au chemin principal (demande de l'utilisateur, 20 octobre 2026)
     if prefix in NB and base == 'GHS_2_contraste':
-        return 'opt'    # SHO, RGB + SHO et HOO : GHS_2_contraste en option (demande de l'utilisateur, 22 octobre 2026)
+        return 'core'   # SHO, RGB + SHO et HOO : chemin principal P4 (option le 22 octobre, de nouveau au chemin principal le 8 novembre 2026, demandes de l'utilisateur)
     if prefix in ('SHO', 'RSHO') and base == 'Statistical_Stretch':
         return 'core'
     if prefix in LUM and base == 'Boost_final':
@@ -262,8 +262,8 @@ WHEN_PREFIX = {('SHO', 'MAS_canaux'): WHEN_NB['MAS_canaux'].replace(" (ou R_C_MA
 
 # SHO et RGB + SHO : Statistical_Stretch au chemin principal, GHS en option (demande de l'utilisateur, 20 octobre 2026)
 _STAT_SUBS = [("ensuite GHS_1_premier sur H", "ensuite Statistical_Stretch sur S, H et O"),
-              ("ensuite GHS_3_fond sur chaque canal", "ensuite GHS_2_contraste (option, plus de contraste) ; GHS_3_fond (option) seulement si le fond est trop clair"),
-              ("puis GHS_3_fond sur chaque canal", "puis GHS_2_contraste (option, plus de contraste) ; GHS_3_fond (option) seulement si le fond est trop clair"),
+              ("ensuite GHS_3_fond sur chaque canal", "ensuite GHS_2_contraste ; GHS_3_fond (option) seulement si le fond est trop clair"),
+              ("puis GHS_3_fond sur chaque canal", "puis GHS_2_contraste ; GHS_3_fond (option) seulement si le fond est trop clair"),
               ("à la place de GHS_1 et GHS_2", "à la place de Statistical_Stretch"), ("après les GHS", "après Statistical_Stretch"),
               ("à la place des GHS", "à la place de Statistical_Stretch"), ("des GHS sur chaque canal", "de Statistical_Stretch sur chaque canal")]
 for _p in ('SHO', 'RSHO'):
@@ -274,7 +274,7 @@ for _p in ('SHO', 'RSHO'):
             _n = _n.replace(_a, _c)
         if _n != _t:
             WHEN_PREFIX[(_p, _b)] = _n
-    WHEN_PREFIX[(_p, 'GHS_1_premier')] = "à la place de Statistical_Stretch : étirement à la main de chaque canal sans étoiles, H d'abord, puis O et S jusqu'au même fond ; ensuite GHS_2_contraste (option) et GHS_3_fond"
+    WHEN_PREFIX[(_p, 'GHS_1_premier')] = "à la place de Statistical_Stretch : étirement à la main de chaque canal sans étoiles, H d'abord, puis O et S jusqu'au même fond ; ensuite GHS_2_contraste et GHS_3_fond"
     WHEN_PREFIX[(_p, 'GHS_2_contraste')] = "plus de contraste : après Statistical_Stretch (ou GHS_1_premier), sur chaque canal, même réglage pour les trois, avant la palette"
     WHEN_PREFIX[(_p, 'GHS_3_fond')] = "fond trop clair après Statistical_Stretch (0,25) ou les GHS : sur chaque canal, même SP = HP pour tous (0,22 après Statistical Stretch), fond vers 0,12–0,14, avant la palette"
 WHEN_PREFIX[('HOO', 'GHS_2_contraste')] = "plus de contraste : après GHS_1_premier, sur H puis O, même réglage pour les deux, avant GHS_3_fond"   # option (demande de l'utilisateur, 22 octobre 2026)
