@@ -4,6 +4,7 @@
 // (capture du 9 octobre 2026 : Exposition +0,25, Contraste 0, Tons clairs
 // -100, Tons foncés 0, Blancs +50, Noirs 0, Température +10, Teinte 0).
 // ----------------------------------------------------------------------------
+// voile = Correction du voile (Dehaze), étape 0, voir lrProcess (8 novembre 2026).
 // Les formules d'Adobe ne sont pas publiées : équivalents APPROCHÉS (valeurs
 // choisies au jugé), curseurs de -100 à +100, Exposition en IL. Ordre :
 //   1. température t : R × (1 + 0,003·t), B × (1 − 0,003·t) ; teinte n :
@@ -35,6 +36,7 @@
 
 // curseurs du panneau Camera Raw (Photoshop) : clé, libellé, défaut, aide (réglages de l'utilisateur, 9 octobre 2026)
 var LR_CURSEURS = [
+   [ "voile", "Correction du voile :", 0, "0 par défaut : + retire le voile (fond plus sombre, contraste et couleurs plus forts), - en ajoute. Option Lumiere_Photoshop : +25." ],
    [ "exposition", "Exposition (IL) :", 0.25, "+0,25 par défaut : image plus claire (comme +0,25 IL, hautes lumières adoucies)." ],
    [ "contraste", "Contraste :", 0, "0 par défaut : courbe en S (+) ou plus plate (-)." ],
    [ "hautes", "Tons clairs :", -100, "-100 par défaut : zones claires assombries (détail récupéré)." ],
@@ -111,6 +113,38 @@ function lrCourbe( p )
 
 function lrProcess( view, p )
 {
+   // 0. correction du voile (Dehaze de Camera Raw, approché ; avant le reste, comme le calque « Clarté et correction du voile »
+   //    sous le calque Lumière de l'utilisateur) : voile local V = canal sombre min(R, G, B) lissé (8 px) ;
+   //    + : ($T − a·V)/(1 − a·V), a = voile/100 (fond assombri, contraste et saturation montés, 1 reste 1) ;
+   //    − : $T·(1 − a·V) + a·V (voile ajouté). Demande de l'utilisateur, 8 novembre 2026. Image de travail en couleur
+   //    (une image grise dans un PixelMath couleur échoue au canal 1).
+   if ( p.voile != 0 )
+   {
+      let a = Math.abs( p.voile )/100;
+      let vw = cwPixelMathNew( view, view.image.isColor ? "min($T[0], $T[1], $T[2])" : "$T", "lr_voile" );
+      try
+      {
+         let G = new Convolution;
+         G.mode = Convolution.prototype.Parametric;
+         G.sigma = 8;
+         G.shape = 2;
+         G.aspectRatio = 1;
+         G.rotationAngle = 0;
+         G.executeOn( vw.mainView );
+         let D = new PixelMath;
+         D.expression = p.voile > 0 ? "($T - " + a.toFixed( 4 ) + "*lr_voile)/(1 - " + a.toFixed( 4 ) + "*lr_voile)"
+                                    : "$T*(1 - " + a.toFixed( 4 ) + "*lr_voile) + " + a.toFixed( 4 ) + "*lr_voile";
+         D.useSingleExpression = true;
+         D.createNewImage = false;
+         D.rescale = false;
+         D.truncate = true;
+         D.executeOn( view );
+      }
+      finally
+      {
+         vw.forceClose();
+      }
+   }
    // 1. balance des blancs
    if ( view.image.isColor && (p.temperature != 0 || p.teinte != 0) )
    {

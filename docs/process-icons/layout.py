@@ -144,7 +144,7 @@ WHEN = {
     'Finition_saturee': "à la place de C_Finition, couleurs trop ternes : même finition (masque, Courbes, LHE, LHE_fin, masque retiré) avec la saturation de l'ancienne version (0,65 au lieu de 0,58)",
     'Boost_finition_light': "un tout petit peu plus de couleur et de contraste après LHE_fin (version douce du Boost, rejouable)",
     'Boost_finition': "encore un peu plus de couleur et de contraste après LHE_fin (rejouable)",
-    'Lumiere_Photoshop': "tout à la fin, sur l'image finie avec étoiles, avant Export_TIFF : imite ton réglage Lumière de Photoshop (Tons clairs -50, Blancs +50) sans passer par Photoshop",
+    'Lumiere_Photoshop': "tout à la fin, sur l'image finie avec étoiles, avant Export_TIFF : imite tes calques Photoshop Correction du voile (+25) et Lumière (Tons clairs -50, Blancs +50) sans passer par Photoshop",
     'Contraste_GHS': "tout à la fin, sur l'image finie avec étoiles, avant Export_TIFF : un peu plus de contraste sans toucher au fond",
     'ICC_sRGB': "tout à la fin, avant une finition dans Photoshop, Lightroom ou Affinity : image convertie en sRGB IEC61966-2.1 (couleurs identiques dans l'autre logiciel)",
     'Export_TIFF': "tout à la fin : copie enregistrée en TIFF 16 bits sRGB, profil ICC intégré, pour Photoshop, Lightroom ou Affinity",

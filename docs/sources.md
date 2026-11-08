@@ -1450,3 +1450,8 @@ Fait : paramètre temp (Export_TIFF.js, Lecture_Photoshop.js), vrai dans Opt_Exp
 
 Demande de l'utilisateur (capture du calque Lumière de Photoshop : Exposition 0,00, Contraste 0, Tons clairs -50, Tons foncés 0, Blancs +50, Noirs 0) : « tu serais faire une option a la fin (pour tous les process) qui imite Photoshop Lumiere ».
 Fait : icône Opt_Lumiere_Photoshop (P7 options, 5 workflows, LRGB et LHaRGB compris, demandé explicitement), script Look_Lightroom.js existant avec ces réglages. Équivalences approchées (voir la section Look_Lightroom du 9 octobre 2026). Non testé.
+
+### Correction du voile dans Opt_Lumiere_Photoshop (8 novembre 2026)
+
+Demande de l'utilisateur (capture du calque Photoshop « Clarté et correction du voile » : Clarté 0, Correction du voile +25) : « je veux aussi le correction du voile ».
+Fait : paramètre voile dans Look_Lightroom.js (curseur dans la fenêtre), 25 dans Opt_Lumiere_Photoshop (5 workflows). Formule d'Adobe non publiée : approximation par le canal sombre lissé (choix de ma part, détail dans docs/kb/techniques.md). Clarté non faite (0 chez l'utilisateur). Non testé.
