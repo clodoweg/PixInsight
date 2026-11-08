@@ -1470,3 +1470,7 @@ Fait : Opt_Lumiere_Photoshop découpé en Opt_Courbes_Photoshop, Opt_Voile_Photo
 
 Demande de l'utilisateur (fichiers SHO.asv, SHO_2.asv, SHO_3.asv joints) : « je veux que tu me fasse 3 script optionel qui font l'équivalent de couleur selective a partir des 3 profiles ».
 Fait : script Couleur_selective.js (fenêtre : méthode, une ligne c,m,y,k par gamme) ; icônes Opt_Couleur_selective_SHO, _SHO_2, _SHO_3 (P7, SHO et RGB + SHO : profils nommés SHO ; HOO, LRGB, LHaRGB non touchés). Profils copiés dans docs/process-icons/profils/. Format .asv : spécification Adobe de mémoire, non revérifiée ; formule de Couleur sélective non publiée par Adobe : reconstitution approchée. Non testé dans PixInsight.
+
+### Lumière renforcée (8 novembre 2026)
+
+Retour de l'utilisateur : « le lumière ne fonctionne pas. l'effet est tres faible ». Fait : courbe de luminosité de Look_Lightroom.js environ 2,5 fois plus forte (détail dans docs/kb/techniques.md) ; icônes inchangées (réglages -50 / +50 gardés). Choix de ma part, non testé.

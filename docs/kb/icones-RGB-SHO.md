@@ -1576,7 +1576,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
 > 
-> PRÉRÉGLÉ : script Look_Lightroom réglé comme ton calque Lumière de Photoshop : Exposition 0, Contraste 0, Tons clairs -50, Tons foncés 0, Blancs +50, Noirs 0, le reste à 0 ; équivalents APPROCHÉS (formules d'Adobe non publiées) : courbe de luminosité CIE L*, tons clairs 0,75 et 0,90 abaissés, blancs 0,90 et 0,97 remontés.
+> PRÉRÉGLÉ : script Look_Lightroom réglé comme ton calque Lumière de Photoshop : Exposition 0, Contraste 0, Tons clairs -50, Tons foncés 0, Blancs +50, Noirs 0, le reste à 0 ; équivalents APPROCHÉS (formules d'Adobe non publiées) : courbe de luminosité CIE L* : avec -50 / +50, 0,62 -> 0,57, 0,75 -> 0,65, 0,88 -> 0,85, 0,95 -> 0,975 (effets renforcés le 8 novembre 2026).
 > 
 > À RÉGLER : glisse sur l'image finie avec étoiles, après Courbes_Photoshop et Voile_Photoshop si tu les prends, avant Export_TIFF ; double-clic puis Apply Global = fenêtre avec tous les curseurs ; copie Look_Lightroom.js dans src/scripts/clodoweg.
 > 

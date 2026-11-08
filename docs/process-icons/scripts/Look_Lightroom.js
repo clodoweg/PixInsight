@@ -95,18 +95,24 @@ function lrDialog( p, view )
    return d.execute() ? sel.view : null;
 }
 
-// points de la courbe de luminosité (valeurs choisies au jugé), croissants, 0 et 1 fixes
+// points de la courbe de luminosité (valeurs choisies au jugé), croissants, 0 et 1 fixes.
+// 8 novembre 2026 (retour de l'utilisateur : « le lumière ne fonctionne pas. l'effet est tres faible ») : effets environ
+// 2,5 fois plus forts et tons clairs sur une plage plus large (0,62 à 0,88) ; avant, Tons clairs -50 n'abaissait 0,75
+// que de 0,04 et Blancs +50 ne remontait 0,97 que de 0,0125 (les deux s'annulaient vers 0,90).
+//   Tons clairs h : 0,62 + 0,10·h, 0,75 + 0,20·h, 0,88 + 0,12·h ; Blancs b : 0,88 + 0,06·b, 0,95 + 0,05·b ;
+//   Tons foncés f : 0,12 + 0,08·f, 0,25 + 0,12·f ; Noirs n : 0,03 + 0,03·n, 0,12 + 0,03·n ; Contraste c : S autour de 0,5.
 function lrCourbe( p )
 {
    let c = p.contraste/100, h = p.hautes/100, f = p.foncees/100, b = p.blancs/100, n = p.noirs/100;
    let pts = [ [ 0, 0 ],
-               [ 0.03, 0.03 + 0.02*n ],
-               [ 0.10, 0.10 + 0.01*n + 0.04*f - 0.01*c ],
-               [ 0.25, 0.25 + 0.08*f - 0.04*c ],
+               [ 0.03, 0.03 + 0.03*n ],
+               [ 0.12, 0.12 + 0.03*n + 0.08*f - 0.02*c ],
+               [ 0.25, 0.25 + 0.12*f - 0.06*c ],
                [ 0.5, 0.5 ],
-               [ 0.75, 0.75 + 0.08*h + 0.04*c ],
-               [ 0.90, 0.90 + 0.05*h + 0.05*b + 0.01*c ],
-               [ 0.97, 0.97 + 0.025*b ],
+               [ 0.62, 0.62 + 0.10*h + 0.03*c ],
+               [ 0.75, 0.75 + 0.20*h + 0.06*c ],
+               [ 0.88, 0.88 + 0.12*h + 0.06*b + 0.02*c ],
+               [ 0.95, 0.95 + 0.05*b ],
                [ 1, 1 ] ];
    for ( let i = 1; i < pts.length - 1; ++i )
       pts[ i ][ 1 ] = Math.min( Math.max( pts[ i ][ 1 ], pts[ i - 1 ][ 1 ] + 0.001 ), 0.99 + 0.001*i );
