@@ -74,6 +74,7 @@ SCRIPTS = {
     'Etoiles_grosses': ('$PXI_SRCDIR/scripts/clodoweg/Etoiles_grosses.js', '', [('taille', '7'), ('seuil', '0.15'), ('etendue', '12'), ('force', '0.80'), ('afficherMasque', 'false')], L_DRAG),   # demande de l'utilisateur : réduire seulement les grosses étoiles
     'Export_TIFF': ('$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js', '', [('nom', ''), ('suffixe', ''), ('dossier', ''), ('icc', 'true')], L_DRAG),   # plus aucune vue fermée (demande de l'utilisateur)
     'Taches_fond': ('$PXI_SRCDIR/scripts/clodoweg/Taches_fond.js', '', [('couches', '6'), ('force', '1.00'), ('debut', '0.05'), ('fin', '0.20'), ('flou', '3')], L_DRAG),   # option P4 galaxies : couleur du fond lissée (demande de l'utilisateur, 23 octobre 2026)
+    'Sauver_vues': ('$PXI_SRCDIR/scripts/clodoweg/Sauver_vues.js', '', [('dossier', ''), ('sousDossier', 'sauvegarde'), ('horodatage', 'true')], L_GLOBAL),   # sauvegarde XISF des images ouvertes (demande de l'utilisateur, 8 novembre 2026)
     'Export_Photoshop': ('$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js', '', [('nom', ''), ('suffixe', ''), ('dossier', ''), ('icc', 'true'), ('photoshop', 'true'), ('photoshopExe', '')], L_DRAG),   # option P7 : export TIFF puis ouverture dans Photoshop (demande de l'utilisateur, 22 octobre 2026)
     'Lecture_Photoshop': ('$PXI_SRCDIR/scripts/clodoweg/Lecture_Photoshop.js', '', [('fichier', '')], L_GLOBAL),   # option P7 : rouvre le .tif retouché dans Photoshop
     'Crop_reference': ('$PXI_SRCDIR/scripts/clodoweg/Crop_commun.js', '', [('mode', 'reference'), ('nom', 'Crop_ref')], L_GLOBAL),   # option P1 (demande de l'utilisateur) : image minimum + DynamicCrop
@@ -339,6 +340,11 @@ def layout_all(main, opts, rapide=None, notes=None, turbo=None):
                 insts.append(xml.replace('id="__ID___instance"', 'id="%s_instance"' % name, 1))
                 icons.append('   <icon id="%s" instance="%s_instance" xpos="%d" ypos="%d" workspace="Workspace01"/>' % (name, name, x, y))
                 y += 30
+    # icône Sauvegarde_projet tout à droite, en haut (demande de l'utilisateur, 8 novembre 2026)
+    sn, sx = sauver('Sauvegarde_projet', 'sauvegarde')
+    sx = re.sub(r'<description>.*?</description>', lambda m: '<description>%s</description>' % escape(SD.text('', 'Sauvegarde_projet', 'dlg', False)), sx, count=1, flags=re.S)
+    insts.append(sx)
+    icons.append('   <icon id="%s" instance="%s_instance" xpos="%d" ypos="20" workspace="Workspace01"/>' % (sn, sn, xs[-1] + col_width(cols[-1])))
     return insts, icons
 
 CONT_LAYOUT = {}   # prefix -> (fichier Conteneurs, titre, insts, icons) : le mode rapide est ajouté en bas du même fichier
@@ -380,6 +386,14 @@ def fermer(icon, views):
     assert a in x
     x = x.replace(a, '<td id="id">views</td>\n            <td id="value">%s</td>' % views)
     return icon, x.replace('id="Fermer_vues_instance"', 'id="%s_instance"' % icon, 1)
+
+def sauver(icon, sous):
+    """Icône Script Sauver_vues : copie XISF des images ouvertes dans <dossier de l'objet>/<sous>_<date> (fin des turbos, demande de l'utilisateur, 8 novembre 2026)."""
+    n, x = script('Sauver_vues', '')
+    a = '<td id="id">sousDossier</td>\n            <td id="value">sauvegarde</td>'
+    assert a in x
+    x = x.replace(a, a.replace('>sauvegarde<', '>%s<' % sous))
+    return icon, x.replace('id="Sauver_vues_instance"', 'id="%s_instance"' % icon, 1)
 
 def curves_cs(name, c, s):
     """CurvesTransformation : seulement les courbes c (chrominance) et S (saturation), le reste à l'identité."""
@@ -1286,7 +1300,7 @@ for _b in ('NXT_L', 'SXT_L_lineaire'):
 def turbo_debut(steps, extra=()):
     """Turbo (demande de l'utilisateur) : en une fois R_C_Preparation_rapide, R_Gradient_auto_rapide, R_Lineaire_rapide (leurs étapes à la suite, un seul conteneur, Apply Global)"""
     return cont('Turbo_debut', [pick(steps, b)[0] for b in ('Renommer_auto', 'LinearPatternSubtraction', 'Combinaison_RGB')] + [gc_solver('Solver_auto', tout=False),
-                script('Gradient_auto_rapide', ''), pick(steps, 'Lineaire_rapide')[0]] + list(extra))
+                script('Gradient_auto_rapide', ''), pick(steps, 'Lineaire_rapide')[0]] + list(extra) + [sauver('Sauvegarde_turbo', 'sauvegarde_Turbo_debut')])
 insert_after(lrgb, 'C_Preparation_rapide', [(turbo_debut(lrgb), '')])   # colonne P1, à côté de R_C_Preparation_rapide
 insert_after(lhargb, 'C_Preparation_rapide', [(turbo_debut(lhargb), '')])   # turbo LHaRGB laissé tel quel (Lineaire_auto), à revoir (demande de l'utilisateur)
 
@@ -1391,7 +1405,9 @@ for _st, _rgb in ((rgbsho, True), (sho, False), (hoo, False)):
                                                     + lineaire_nb_items(_p)
                                                     # RGB + SHO : étapes de R_C_RGB_etoiles_rapide à la fin (demande de l'utilisateur, 21 octobre 2026 ;
                                                     # SHO sans RGB et HOO n'ont pas de RGB, donc pas ce rapide)
-                                                    + ([lineaire_rapide('MAS*>RGB ; SXT_RGB_etire>RGB'), script('SCNR_etoiles_vert', ''), fermer('Fermer_RGB', 'RGB')] if _p == 'RSHO' else []))
+                                                    + ([lineaire_rapide('MAS*>RGB ; SXT_RGB_etire>RGB'), script('SCNR_etoiles_vert', ''), fermer('Fermer_RGB', 'RGB')] if _p == 'RSHO' else [])
+                                                    # sauvegarde des images à la fin du turbo (demande de l'utilisateur, 8 novembre 2026)
+                                                    + [sauver('Sauvegarde_turbo', 'sauvegarde_Turbo_debut' + ('_graxpert' if 'graxpert' in _grad else ''))])
     insert_after(_st, 'C_Preparation_rapide', [(cont('Turbo_debut', _turbo('Gradient_auto_rapide')), '')])
     # turbo 1 avec GraXpert, sous l'autre (demande de l'utilisateur, 22 octobre 2026)
     insert_after(_st, 'Turbo_debut', [(cont('Turbo_debut_graxpert', _turbo('Gradient_auto_graxpert_rapide')), '')])
@@ -1528,7 +1544,7 @@ for _st in (lrgb, lhargb):
     _i6, _i7 = fin_rapide_items(_st, boost=True)
     # R_C_RGB_etire_rapide en tête et colonne P4 (demande de l'utilisateur, 21 octobre 2026) : glissé sur le RGB LINÉAIRE avec étoiles
     _i4 = [pick(_st, b)[0] for b in ('MAS', 'SXT_RGB_etire', 'SCNR_etoiles_vert', 'SCNR_RGB')] + [ghs('GHS_fond', 10, hp=0.12, sf=1.0, sp=0.12)]
-    insert_after(_st, 'C_RGB_etire_rapide', [(cont('Turbo_fin', _i4 + [pick(_st, 'LRGB_ajout_L')[0]] + _i6 + _i7), '')])
+    insert_after(_st, 'C_RGB_etire_rapide', [(cont('Turbo_fin', _i4 + [pick(_st, 'LRGB_ajout_L')[0]] + _i6 + _i7 + [sauver('Sauvegarde_turbo', 'sauvegarde_Turbo_fin')]), '')])   # sauvegarde à la fin (8 novembre 2026)
 
 # options supprimées des galaxies (demande de l'utilisateur, 18 octobre 2026) : restent en narrowband
 SUPPR_GALAXIES_2 = {'Look_Lightroom', 'Fond_auto_clair', 'Etoiles_grosses', 'Halo_B_Gon', 'MT_etoiles',

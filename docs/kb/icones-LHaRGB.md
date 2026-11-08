@@ -151,6 +151,9 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
    6. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
       paramètres : `etapes=C_RGB_couleur>RGB ; BXT_L_H>L,H ; NXT_L>L ; SXT_L_lineaire>L`, `dialogue=false`
+   7. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Sauver_vues.js`
+      paramètres : `dossier=`, `sousDossier=sauvegarde_Turbo_debut`, `horodatage=true`, `dialogue=false`
 
 > MODE TURBO, à la place de R_C_Preparation_rapide, R_Gradient_auto_rapide et R_Lineaire_rapide (phases 1 à 3) : masters seuls ouverts, double-clic puis Apply Global (pas en glissant) ; ensuite GHS_1_premier sur L.
 > 
@@ -837,6 +840,9 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
    33. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js`
       paramètres : `nom=`, `suffixe=`, `dossier=`, `icc=true`, `dialogue=false`
+   34. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Sauver_vues.js`
+      paramètres : `dossier=`, `sousDossier=sauvegarde_Turbo_fin`, `horodatage=true`, `dialogue=false`
 
 > MODE TURBO, à la place de R_C_RGB_etire_rapide, R_C_LRGB_rapide, R_C_Fin_rapide et R_C_Etoiles_fond_rapide (phases 4 à 7) : GLISSE sur le RGB LINÉAIRE avec étoiles, après les GHS sur L (L sans étoiles étirée ouverte) ; image finie et exportée.
 > 
@@ -1524,3 +1530,17 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - étoiles trop présentes -> Etoiles_reduites (à la place d'Etoiles_screen)
 > - grosses étoiles presque blanches -> Saturation_grosses (option P4, sur RGB_stars, avant ce conteneur)
 > - image trop sombre -> Fond_auto du chemin principal, double-clic, cible 0,14
+
+#### Sauvegarde_projet — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Sauver_vues.js`
+   paramètres : `dossier=`, `sousDossier=sauvegarde`, `horodatage=true`
+
+> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
+> 
+> PRÉRÉGLÉ : script Sauver_vues : copie XISF de TOUTES les images ouvertes dans <dossier de l'objet>/sauvegarde_<date>_<heure> (mots-clés FITS et astrométrie recopiés) ; les images ouvertes ne changent pas. PixInsight ne permet pas d'enregistrer le PROJET depuis un script : projet complet (icônes, historique) par File > Save Project.
+> 
+> À RÉGLER : quand tu veux, à n'importe quelle étape : double-clic puis Apply Global (fenêtre : dossier, sous-dossier, date) ; copie Sauver_vues.js, clodoweg_ui.jsh et clodoweg_objet.jsh dans src/scripts/clodoweg ; pour reprendre : rouvre les .xisf puis le fichier Conteneurs.
+> 
+> SI :
+> - dossier sur Google Drive -> écriture lente (des centaines de Mo) : patiente, ou choisis un dossier local
+> - ancienne sauvegarde à garder -> laisse la date cochée (nouveau sous-dossier à chaque fois)
