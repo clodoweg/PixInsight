@@ -1240,7 +1240,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 #### Opt_Boost_final_doux — ProcessContainer
    1. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
-      paramètres : `mode=creer`, `s=0.18`, `gamma=1`, `flou=2`, `nom=masque_L`, `luminosite=moyenne`, `couleur=true`, `dialogue=false`
+      paramètres : `mode=creer`, `s=0.00`, `gamma=1`, `flou=0`, `nom=masque_L`, `luminosite=y`, `couleur=true`, `dialogue=false`
    2. PixelMath
       expression = `$T` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=true ; showNewImage=true ; newImageId=Masque_avant ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
    3. CurvesTransformation
@@ -1264,12 +1264,12 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > SI :
 > - pas assez -> un deuxième passage, ou Boost_final
-> - fond ou voiles trop boostés -> s plus haut (0,25) ou gamma 1,5 dans le masque du conteneur
+> - fond trop boosté -> s 0,15 dans le masque du conteneur (double-clic sur le conteneur)
 
 #### Opt_Boost_final — ProcessContainer
    1. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
-      paramètres : `mode=creer`, `s=0.18`, `gamma=1`, `flou=2`, `nom=masque_L`, `luminosite=moyenne`, `couleur=true`, `dialogue=false`
+      paramètres : `mode=creer`, `s=0.00`, `gamma=1`, `flou=0`, `nom=masque_L`, `luminosite=y`, `couleur=true`, `dialogue=false`
    2. PixelMath
       expression = `$T` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=true ; showNewImage=true ; newImageId=Masque_avant ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
    3. CurvesTransformation
@@ -1283,16 +1283,16 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
       paramètres : `mode=retirer`, `nom=masque_L`, `dialogue=false`
 
-> OPTION — un peu plus de couleur sur les zones brillantes : sur l'image SANS étoiles finie, avant Fond_desature et Etoiles_screen (pas de L : masque tiré de l'image elle-même).
+> OPTION — un peu plus de couleur sur les zones brillantes : sur l'image SANS étoiles finie, avant Fond_desature et Etoiles_screen (masque de luminance simple tiré de l'image).
 > 
 > LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
 > 
-> PRÉRÉGLÉ : conteneur : masque de luminance tiré de l'image elle-même (script Masque_auto, luminosité = moyenne R, G, B : zones d'OIII comprises ; s = 0,20 en SHO, 0,18 en HOO, gamma 1) créé sans être attaché, copie, CurvesTransformation c 0,46094 -> 0,53646 et S 0,46354 -> 0,54167, mélange par masque_L, copie et masque fermés.
+> PRÉRÉGLÉ : conteneur : masque de luminance tiré de l'image elle-même (script Masque_auto, luminance simple : Y de l'image, sans seuil, sans gamma, sans flou) créé sans être attaché, copie, CurvesTransformation c 0,46094 -> 0,53646 et S 0,46354 -> 0,54167, mélange par masque_L, copie et masque fermés.
 > 
 > À RÉGLER : glisse sur l'image SANS étoiles finie (après la finition), avant Fond_desature et Etoiles_screen.
 > 
 > SI :
-> - fond ou voiles trop boostés -> s plus haut (0,25) ou gamma 1,5 dans le masque du conteneur
+> - fond trop boosté -> s 0,15 dans le masque du conteneur (double-clic sur le conteneur)
 > - trop fort -> Boost_final_doux
 > - fond teinté -> Fond_desature ensuite le retire
 

@@ -3373,14 +3373,14 @@ max($T, HaNB*a)</parameter>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="10">
+         <table id="parameters" rows="8">
             <tr>
                <td id="id">mode</td>
                <td id="value">creer</td>
             </tr>
             <tr>
                <td id="id">s</td>
-               <td id="value">0.15</td>
+               <td id="value">0.00</td>
             </tr>
             <tr>
                <td id="id">gamma</td>
@@ -3388,23 +3388,15 @@ max($T, HaNB*a)</parameter>
             </tr>
             <tr>
                <td id="id">flou</td>
-               <td id="value">2</td>
+               <td id="value">0</td>
             </tr>
             <tr>
                <td id="id">nom</td>
                <td id="value">masque_L</td>
             </tr>
             <tr>
-               <td id="id">source</td>
-               <td id="value">L</td>
-            </tr>
-            <tr>
-               <td id="id">exclure</td>
-               <td id="value">RGB_stars</td>
-            </tr>
-            <tr>
-               <td id="id">exclureGain</td>
-               <td id="value">4</td>
+               <td id="id">luminosite</td>
+               <td id="value">y</td>
             </tr>
             <tr>
                <td id="id">couleur</td>
@@ -6254,18 +6246,18 @@ max($T, HaNB*a)</parameter>
       <table id="outputData" rows="0"/>
    </instance>
    <instance class="ProcessContainer" id="E33_Boost_final_instance">
-      <description>LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : masque de luminance tiré de L sans étoiles (script Masque_auto, source = L, s = 0,15, gamma 1 : linéaire, bras et halo pris (30 à 50 %), fond protégé ; étoiles de RGB_stars retirées du masque) créé sans être attaché, copie, CurvesTransformation c 0,46094 -&gt; 0,53646 et S 0,46354 -&gt; 0,54167, mélange par masque_L, copie et masque fermés.&#10;&#10;À RÉGLER : glisse sur l'image finie avec étoiles ; L (sans étoiles, étirée) doit être ouverte.&#10;&#10;SI :&#10;- fond ou halo trop boostés -&gt; s 0,20 ou gamma 1,5 dans Masque_L_source_creer (double-clic sur le conteneur)&#10;- trop fort -&gt; rapproche les points de la diagonale&#10;- étoiles touchées -&gt; vérifie que L est bien la version sans étoiles</description>
+      <description>LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : masque de luminance SIMPLE (script Masque_auto : luminance Y de l'image elle-même, sans seuil, sans gamma, sans flou) créé sans être attaché, copie, CurvesTransformation c 0,46094 -&gt; 0,53646 et S 0,46354 -&gt; 0,54167, mélange par masque_L, copie et masque fermés.&#10;&#10;À RÉGLER : glisse sur l'image finie avec étoiles ; L (sans étoiles, étirée) doit être ouverte.&#10;&#10;SI :&#10;- fond trop boosté -&gt; s 0,15 dans le masque du conteneur (double-clic sur le conteneur)&#10;- trop fort -&gt; rapproche les points de la diagonale&#10;- étoiles colorées trop saturées (le masque simple les prend) -&gt; Boost_final_doux</description>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="10">
+         <table id="parameters" rows="8">
             <tr>
                <td id="id">mode</td>
                <td id="value">creer</td>
             </tr>
             <tr>
                <td id="id">s</td>
-               <td id="value">0.15</td>
+               <td id="value">0.00</td>
             </tr>
             <tr>
                <td id="id">gamma</td>
@@ -6273,23 +6265,15 @@ max($T, HaNB*a)</parameter>
             </tr>
             <tr>
                <td id="id">flou</td>
-               <td id="value">2</td>
+               <td id="value">0</td>
             </tr>
             <tr>
                <td id="id">nom</td>
                <td id="value">masque_L</td>
             </tr>
             <tr>
-               <td id="id">source</td>
-               <td id="value">L</td>
-            </tr>
-            <tr>
-               <td id="id">exclure</td>
-               <td id="value">RGB_stars</td>
-            </tr>
-            <tr>
-               <td id="id">exclureGain</td>
-               <td id="value">4</td>
+               <td id="id">luminosite</td>
+               <td id="value">y</td>
             </tr>
             <tr>
                <td id="id">couleur</td>
@@ -6589,18 +6573,18 @@ max($T, HaNB*a)</parameter>
       <description>OPTIONS de la phase 7 — Étoiles : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="Opt_Boost_final_doux_instance">
-      <description>OPTION — À LA PLACE de Boost_final (chemin principal), moitié moins fort (courbes c et S montées de moitié) : un petit cran de couleur sur l'image finie, sans toucher aux étoiles&#10;L encore ouverte.&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : masque de luminance tiré de L sans étoiles (script Masque_auto, source = L, s = 0,15, gamma 1 : linéaire, bras et halo pris (30 à 50 %), fond protégé ; étoiles de RGB_stars retirées du masque) créé sans être attaché, copie, CurvesTransformation c 0,46094 -&gt; 0,49870 et S 0,46354 -&gt; 0,50261, mélange par masque_L, copie et masque fermés.&#10;&#10;À RÉGLER : glisse sur l'image finie avec étoiles ; L (sans étoiles, étirée) doit être ouverte.&#10;&#10;SI :&#10;- fond ou halo trop boostés -&gt; s 0,20 ou gamma 1,5 dans Masque_L_source_creer (double-clic sur le conteneur)&#10;- trop fort -&gt; rapproche les points de la diagonale&#10;- étoiles touchées -&gt; vérifie que L est bien la version sans étoiles</description>
+      <description>OPTION — À LA PLACE de Boost_final (chemin principal), moitié moins fort (courbes c et S montées de moitié) : un petit cran de couleur sur l'image finie, sans toucher aux étoiles&#10;L encore ouverte.&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : masque de luminance SIMPLE (script Masque_auto : luminance Y de l'image elle-même, sans seuil, sans gamma, sans flou) créé sans être attaché, copie, CurvesTransformation c 0,46094 -&gt; 0,49870 et S 0,46354 -&gt; 0,50261, mélange par masque_L, copie et masque fermés.&#10;&#10;À RÉGLER : glisse sur l'image finie avec étoiles ; L (sans étoiles, étirée) doit être ouverte.&#10;&#10;SI :&#10;- fond trop boosté -&gt; s 0,15 dans le masque du conteneur (double-clic sur le conteneur)&#10;- trop fort -&gt; rapproche les points de la diagonale&#10;- étoiles colorées trop saturées (le masque simple les prend) -&gt; Boost_final_doux</description>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="10">
+         <table id="parameters" rows="8">
             <tr>
                <td id="id">mode</td>
                <td id="value">creer</td>
             </tr>
             <tr>
                <td id="id">s</td>
-               <td id="value">0.15</td>
+               <td id="value">0.00</td>
             </tr>
             <tr>
                <td id="id">gamma</td>
@@ -6608,23 +6592,15 @@ max($T, HaNB*a)</parameter>
             </tr>
             <tr>
                <td id="id">flou</td>
-               <td id="value">2</td>
+               <td id="value">0</td>
             </tr>
             <tr>
                <td id="id">nom</td>
                <td id="value">masque_L</td>
             </tr>
             <tr>
-               <td id="id">source</td>
-               <td id="value">L</td>
-            </tr>
-            <tr>
-               <td id="id">exclure</td>
-               <td id="value">RGB_stars</td>
-            </tr>
-            <tr>
-               <td id="id">exclureGain</td>
-               <td id="value">4</td>
+               <td id="id">luminosite</td>
+               <td id="value">y</td>
             </tr>
             <tr>
                <td id="id">couleur</td>
@@ -7150,7 +7126,7 @@ max($T,f1)</parameter>
       <description>MODE RAPIDE, phase 7 — Étoiles : R_C_Etoiles_fond_rapide sur l'image sans étoiles finie : Fond_desature, Fond_auto (0,12) sur l'image sans étoiles, étoiles remises (Etoiles_screen), NXT_dernier (0,25), puis Export_TIFF en un seul conteneur. Icône de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="R_C_Etoiles_fond_rapide_instance">
-      <description>MODE RAPIDE, à la place de Fond_desature, Fond_auto, Etoiles_screen, Boost_final, NXT_dernier et Export_TIFF : sur l'image sans étoiles finie, RGB_stars et L ouvertes.&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : Fond_desature (teinte et violet du fond retirés), Fond_auto (fond amené à 0,12, neutre), Etoiles_screen (~((~$T) * (~RGB_stars))), Boost_final (masque tiré de L sans étoiles, étoiles de RGB_stars exclues, courbes c et S), NXT_dernier (Denoise 0,25, image avec étoiles), Export_TIFF (copie TIFF 16 bits sRGB nommée d'après le dossier des masters).&#10;&#10;À RÉGLER : glisse sur l'image sans étoiles finie ; RGB_stars et L ouvertes ; l'image est finie et exportée.&#10;&#10;SI :&#10;- étoiles trop présentes -&gt; Etoiles_reduites (à la place d'Etoiles_screen)&#10;- grosses étoiles presque blanches -&gt; Saturation_grosses (option P4, sur RGB_stars, avant ce conteneur)&#10;- image trop sombre -&gt; Fond_auto du chemin principal, double-clic, cible 0,14</description>
+      <description>MODE RAPIDE, à la place de Fond_desature, Fond_auto, Etoiles_screen, Boost_final, NXT_dernier et Export_TIFF : sur l'image sans étoiles finie, RGB_stars et L ouvertes.&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : Fond_desature (teinte et violet du fond retirés), Fond_auto (fond amené à 0,12, neutre), Etoiles_screen (~((~$T) * (~RGB_stars))), Boost_final (masque de luminance simple de l'image, courbes c et S), NXT_dernier (Denoise 0,25, image avec étoiles), Export_TIFF (copie TIFF 16 bits sRGB nommée d'après le dossier des masters).&#10;&#10;À RÉGLER : glisse sur l'image sans étoiles finie ; RGB_stars et L ouvertes ; l'image est finie et exportée.&#10;&#10;SI :&#10;- étoiles trop présentes -&gt; Etoiles_reduites (à la place d'Etoiles_screen)&#10;- grosses étoiles presque blanches -&gt; Saturation_grosses (option P4, sur RGB_stars, avant ce conteneur)&#10;- image trop sombre -&gt; Fond_auto du chemin principal, double-clic, cible 0,14</description>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js</parameter>
          <parameter id="md5sum"></parameter>
@@ -7233,14 +7209,14 @@ max($T,f1)</parameter>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="10">
+         <table id="parameters" rows="8">
             <tr>
                <td id="id">mode</td>
                <td id="value">creer</td>
             </tr>
             <tr>
                <td id="id">s</td>
-               <td id="value">0.15</td>
+               <td id="value">0.00</td>
             </tr>
             <tr>
                <td id="id">gamma</td>
@@ -7248,23 +7224,15 @@ max($T,f1)</parameter>
             </tr>
             <tr>
                <td id="id">flou</td>
-               <td id="value">2</td>
+               <td id="value">0</td>
             </tr>
             <tr>
                <td id="id">nom</td>
                <td id="value">masque_L</td>
             </tr>
             <tr>
-               <td id="id">source</td>
-               <td id="value">L</td>
-            </tr>
-            <tr>
-               <td id="id">exclure</td>
-               <td id="value">RGB_stars</td>
-            </tr>
-            <tr>
-               <td id="id">exclureGain</td>
-               <td id="value">4</td>
+               <td id="id">luminosite</td>
+               <td id="value">y</td>
             </tr>
             <tr>
                <td id="id">couleur</td>

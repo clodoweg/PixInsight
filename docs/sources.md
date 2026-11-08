@@ -1478,3 +1478,8 @@ Retour de l'utilisateur : « le lumière ne fonctionne pas. l'effet est tres fai
 ### Contraste_GHS au chemin principal (8 novembre 2026)
 
 Demande de l'utilisateur : « Opt_Contraste_GHS ne doit plus etre une option ». Fait : Contraste_GHS retiré des options (layout.OPT) : chemin principal des 5 workflows (l'icône existait dans les 5, LRGB et LHaRGB compris), entre NXT_dernier et Export_TIFF (LRGB E27, LHaRGB E35, RGB + SHO E32, SHO sans RGB E26, HOO E28). Pas ajouté à R_C_Etoiles_fond_rapide ni à T_Turbo_fin (non demandé).
+
+### Boost_final : masque de luminance simple, 5 workflows (8 novembre 2026)
+
+Demande de l'utilisateur : « Opt_Boost_final doit avec un mask de luminance simple (juste extraction de la couche de luminance) , pareil pour Opt_Boost_final_doux. et ce, pour tous les process ».
+Fait : Masque_luminance_creer (Masque_auto : creer, s 0, gamma 1, flou 0, luminosite y, couleur) dans Boost_final et Boost_final_doux des 5 workflows (chemin principal, options, R_C_Etoiles_fond_rapide, T_Turbo_fin). Luminance Y Rec. 709 (et non CIE L* de ChannelExtraction : extraction par PixelMath, comme les autres masques).

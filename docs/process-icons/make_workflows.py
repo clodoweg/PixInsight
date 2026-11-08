@@ -55,6 +55,7 @@ SCRIPTS = {
     'Stat_canaux': ('$PXI_SRCDIR/scripts/clodoweg/Stat_canaux.js', '', [('vues', 'S,H,O'), ('cible', '0.25'), ('sigma', '5.0')], L_GLOBAL),
     'Masque_L_creer': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'creer'), ('s', '0.14'), ('flou', '2'), ('nom', 'masque_L'), ('couleur', 'true')], L_DRAG),
     'Masque_L_source_creer': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'creer'), ('s', '0.15'), ('gamma', '1'), ('flou', '2'), ('nom', 'masque_L'), ('source', 'L'), ('exclure', 'RGB_stars'), ('exclureGain', '4'), ('couleur', 'true')], L_DRAG),
+    'Masque_luminance_creer': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'creer'), ('s', '0.00'), ('gamma', '1'), ('flou', '0'), ('nom', 'masque_L'), ('luminosite', 'y'), ('couleur', 'true')], L_DRAG),   # Boost_final, Boost_final_doux : luminance simple (8 novembre 2026)
     'Masque_L_boost_nb_creer': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'creer'), ('s', '0.20'), ('gamma', '1'), ('flou', '2'), ('nom', 'masque_L'), ('luminosite', 'moyenne'), ('couleur', 'true')], L_DRAG),
     'Masque_L_boost_hoo_creer': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'creer'), ('s', '0.18'), ('gamma', '1'), ('flou', '2'), ('nom', 'masque_L'), ('luminosite', 'moyenne'), ('couleur', 'true')], L_DRAG),   # HOO : s 0,18 (demande de l'utilisateur, 7 novembre 2026)
     'Masque_L_boost_nb': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'attacher'), ('s', '0.20'), ('gamma', '1'), ('flou', '2'), ('nom', 'masque_L'), ('luminosite', 'moyenne')], L_DRAG),   # narrowband : masque tiré de l'image sans étoiles elle-même
@@ -412,7 +413,10 @@ def boost_final_items(doux=False, nb=False, hoo=False):
     # nb (demande de l'utilisateur, 8 octobre 2026) : pas de L en narrowband ; sur l'image SANS étoiles avant Etoiles_screen, masque tiré d'elle-même
     # masques (demande de l'utilisateur, 7 novembre 2026 : « le Opt Boost FInal ne boost pas bcp ») : gamma 2 laissait 2 à 15 % du boost sur les bras ;
     # galaxies : L, s 0,15, gamma 1 ; SHO et RGB + SHO : moyenne R, G, B (OIII compris), s 0,20, gamma 1 ; HOO : idem, s 0,18
-    masque = ('Masque_L_boost_hoo_creer' if hoo else 'Masque_L_boost_nb_creer') if nb else 'Masque_L_source_creer'
+    # 8 novembre 2026 (demande de l'utilisateur : « Opt_Boost_final doit avec un mask de luminance simple (juste extraction de la couche de
+    # luminance), pareil pour Opt_Boost_final_doux. et ce, pour tous les process ») : un seul masque pour tous les workflows, luminance
+    # Y de l'image elle-même, sans seuil (s 0), sans gamma (1), sans flou, sans source L ni retrait des étoiles
+    masque = 'Masque_luminance_creer'
     return sous_masque([curves_cs('Courbes_boost_final', [(0, 0), c, (1, 1)], [(0, 0), s, (1, 1)])], masque)
 
 def boost_final(doux=False, nb=False, hoo=False):

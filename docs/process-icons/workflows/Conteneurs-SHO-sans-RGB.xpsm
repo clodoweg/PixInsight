@@ -5683,7 +5683,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <table id="outputData" rows="0"/>
    </instance>
    <instance class="ProcessContainer" id="Opt_Boost_final_doux_instance">
-      <description>OPTION — comme Boost_final mais moitié moins fort : un petit cran de couleur, sur l'image SANS étoiles, avant Fond_desature et Etoiles_screen.&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : comme Boost_final, courbes montées de moitié (c 0,46094 -&gt; 0,49870, S 0,46354 -&gt; 0,50261).&#10;&#10;À RÉGLER : glisse sur l'image SANS étoiles finie, avant Fond_desature et Etoiles_screen ; un glisser = un petit cran.&#10;&#10;SI :&#10;- pas assez -&gt; un deuxième passage, ou Boost_final&#10;- fond ou voiles trop boostés -&gt; s plus haut (0,25) ou gamma 1,5 dans le masque du conteneur</description>
+      <description>OPTION — comme Boost_final mais moitié moins fort : un petit cran de couleur, sur l'image SANS étoiles, avant Fond_desature et Etoiles_screen.&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : comme Boost_final, courbes montées de moitié (c 0,46094 -&gt; 0,49870, S 0,46354 -&gt; 0,50261).&#10;&#10;À RÉGLER : glisse sur l'image SANS étoiles finie, avant Fond_desature et Etoiles_screen ; un glisser = un petit cran.&#10;&#10;SI :&#10;- pas assez -&gt; un deuxième passage, ou Boost_final&#10;- fond trop boosté -&gt; s 0,15 dans le masque du conteneur (double-clic sur le conteneur)</description>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
@@ -5694,7 +5694,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
             </tr>
             <tr>
                <td id="id">s</td>
-               <td id="value">0.20</td>
+               <td id="value">0.00</td>
             </tr>
             <tr>
                <td id="id">gamma</td>
@@ -5702,7 +5702,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
             </tr>
             <tr>
                <td id="id">flou</td>
-               <td id="value">2</td>
+               <td id="value">0</td>
             </tr>
             <tr>
                <td id="id">nom</td>
@@ -5710,7 +5710,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
             </tr>
             <tr>
                <td id="id">luminosite</td>
-               <td id="value">moyenne</td>
+               <td id="value">y</td>
             </tr>
             <tr>
                <td id="id">couleur</td>
@@ -5948,7 +5948,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </instance>
    </instance>
    <instance class="ProcessContainer" id="Opt_Boost_final_instance">
-      <description>OPTION — un peu plus de couleur sur les zones brillantes : sur l'image SANS étoiles finie, avant Fond_desature et Etoiles_screen (pas de L : masque tiré de l'image elle-même).&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : masque de luminance tiré de l'image elle-même (script Masque_auto, luminosité = moyenne R, G, B : zones d'OIII comprises ; s = 0,20 en SHO, 0,18 en HOO, gamma 1) créé sans être attaché, copie, CurvesTransformation c 0,46094 -&gt; 0,53646 et S 0,46354 -&gt; 0,54167, mélange par masque_L, copie et masque fermés.&#10;&#10;À RÉGLER : glisse sur l'image SANS étoiles finie (après la finition), avant Fond_desature et Etoiles_screen.&#10;&#10;SI :&#10;- fond ou voiles trop boostés -&gt; s plus haut (0,25) ou gamma 1,5 dans le masque du conteneur&#10;- trop fort -&gt; Boost_final_doux&#10;- fond teinté -&gt; Fond_desature ensuite le retire</description>
+      <description>OPTION — un peu plus de couleur sur les zones brillantes : sur l'image SANS étoiles finie, avant Fond_desature et Etoiles_screen (masque de luminance simple tiré de l'image).&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : masque de luminance tiré de l'image elle-même (script Masque_auto, luminance simple : Y de l'image, sans seuil, sans gamma, sans flou) créé sans être attaché, copie, CurvesTransformation c 0,46094 -&gt; 0,53646 et S 0,46354 -&gt; 0,54167, mélange par masque_L, copie et masque fermés.&#10;&#10;À RÉGLER : glisse sur l'image SANS étoiles finie (après la finition), avant Fond_desature et Etoiles_screen.&#10;&#10;SI :&#10;- fond trop boosté -&gt; s 0,15 dans le masque du conteneur (double-clic sur le conteneur)&#10;- trop fort -&gt; Boost_final_doux&#10;- fond teinté -&gt; Fond_desature ensuite le retire</description>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
          <parameter id="md5sum"></parameter>
@@ -5959,7 +5959,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
             </tr>
             <tr>
                <td id="id">s</td>
-               <td id="value">0.20</td>
+               <td id="value">0.00</td>
             </tr>
             <tr>
                <td id="id">gamma</td>
@@ -5967,7 +5967,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
             </tr>
             <tr>
                <td id="id">flou</td>
-               <td id="value">2</td>
+               <td id="value">0</td>
             </tr>
             <tr>
                <td id="id">nom</td>
@@ -5975,7 +5975,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
             </tr>
             <tr>
                <td id="id">luminosite</td>
-               <td id="value">moyenne</td>
+               <td id="value">y</td>
             </tr>
             <tr>
                <td id="id">couleur</td>
