@@ -75,9 +75,6 @@ SCRIPTS = {
     'Etoiles_grosses': ('$PXI_SRCDIR/scripts/clodoweg/Etoiles_grosses.js', '', [('taille', '7'), ('seuil', '0.15'), ('etendue', '12'), ('force', '0.80'), ('afficherMasque', 'false')], L_DRAG),   # demande de l'utilisateur : réduire seulement les grosses étoiles
     'Export_TIFF': ('$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js', '', [('nom', ''), ('suffixe', ''), ('dossier', ''), ('icc', 'true')], L_DRAG),   # plus aucune vue fermée (demande de l'utilisateur)
     'Taches_fond': ('$PXI_SRCDIR/scripts/clodoweg/Taches_fond.js', '', [('couches', '6'), ('force', '1.00'), ('debut', '0.05'), ('fin', '0.20'), ('flou', '3')], L_DRAG),   # option P4 galaxies : couleur du fond lissée (demande de l'utilisateur, 23 octobre 2026)
-    'Courbes_Photoshop': ('$PXI_SRCDIR/scripts/clodoweg/Look_Lightroom.js', '', [('contrasteLineaire', 'true'), ('voile', '0'), ('exposition', '0'), ('contraste', '0'), ('hautes', '0'), ('foncees', '0'), ('blancs', '0'), ('noirs', '0'), ('temperature', '0'), ('teinte', '0'), ('masque', 'false'), ('s', '0.14'), ('flou', '2.0')], L_DRAG),   # options P7 séparées, une par calque Photoshop (demande de l'utilisateur, 8 novembre 2026)
-    'Voile_Photoshop': ('$PXI_SRCDIR/scripts/clodoweg/Look_Lightroom.js', '', [('contrasteLineaire', 'false'), ('voile', '25'), ('exposition', '0'), ('contraste', '0'), ('hautes', '0'), ('foncees', '0'), ('blancs', '0'), ('noirs', '0'), ('temperature', '0'), ('teinte', '0'), ('masque', 'false'), ('s', '0.14'), ('flou', '2.0')], L_DRAG),
-    'Lumiere_Photoshop': ('$PXI_SRCDIR/scripts/clodoweg/Look_Lightroom.js', '', [('contrasteLineaire', 'false'), ('voile', '0'), ('exposition', '0'), ('contraste', '0'), ('hautes', '-50'), ('foncees', '0'), ('blancs', '50'), ('noirs', '0'), ('temperature', '0'), ('teinte', '0'), ('masque', 'false'), ('s', '0.14'), ('flou', '2.0')], L_DRAG),
     # Couleur sélective, profils .asv de l'utilisateur lus (version 1, méthode relative ; demande de l'utilisateur, 8 novembre 2026)
     'Couleur_selective_SHO': ('$PXI_SRCDIR/scripts/clodoweg/Couleur_selective.js', '', [('rouges', '-25,25,0,0'), ('jaunes', '-50,50,0,0'), ('verts', '-50,50,0,0'), ('cyans', '0,0,-50,0'), ('bleus', '0,0,0,0'), ('magentas', '0,0,0,0'), ('blancs', '0,0,0,0'), ('neutres', '0,0,0,0'), ('noirs', '0,0,0,0'), ('relatif', 'true')], L_DRAG),
     'Couleur_selective_SHO_2': ('$PXI_SRCDIR/scripts/clodoweg/Couleur_selective.js', '', [('rouges', '-25,25,0,0'), ('jaunes', '-25,25,0,0'), ('verts', '-50,50,0,0'), ('cyans', '0,0,-50,0'), ('bleus', '0,0,0,0'), ('magentas', '0,0,0,0'), ('blancs', '0,0,0,0'), ('neutres', '0,0,0,0'), ('noirs', '0,0,0,0'), ('relatif', 'true')], L_DRAG),
@@ -822,9 +819,8 @@ def icc_srgb():
                         '      <parameter id="useFloatingPointTransformation" value="true"/>\n'
                         '   </instance>')
 
-EXPORT = [(ghs('Contraste_GHS', 4, hp=0.9, sf=0.32, sp=0.35), ''),   # option P7 : contraste final, réglage de l'utilisateur (22 octobre 2026)
-          (script('Courbes_Photoshop', ''), ''), (script('Voile_Photoshop', ''), ''),   # calques Photoshop séparés, dans leur ordre (8 novembre 2026)
-          (script('Lumiere_Photoshop', ''), ''),   # option P7 : imite le réglage Lumière de Photoshop (Tons clairs -50, Blancs +50 ; 8 novembre 2026)
+EXPORT = [(ghs('Contraste_GHS', 4, hp=0.9, sf=0.32, sp=0.35), ''),   # chemin principal depuis le 8 novembre 2026 : contraste final, réglage de l'utilisateur (22 octobre 2026)
+          # options Courbes_Photoshop, Voile_Photoshop, Lumiere_Photoshop supprimées (demande de l'utilisateur, 8 novembre 2026)
           (icc_srgb(), ''), (script('Export_TIFF', ''), '')]   # tout à la fin : ICC_sRGB en option, Export_TIFF au chemin principal, dernier élément après NXT_dernier (demande de l'utilisateur, 20 octobre 2026)
 EXPORT += [(script('Export_Photoshop', ''), ''), (script('Lecture_Photoshop', ''), '')]   # options : export + Photoshop, puis relecture du .tif retouché (demande de l'utilisateur, 22 octobre 2026 ; Export_TIFF par défaut inchangé)
 EXPORT.append((fermer('Fermer_tout', '*'), ''))   # option après Export_TIFF : fermer toutes les vues (demande de l'utilisateur)
@@ -1507,7 +1503,7 @@ insert_before(rgbsho, 'STF', _its)   # fin de phase 3, après C_RGB_lineaire et 
 sho[:] = [x for x in sho if x[0][0] != 'C_MAS_canaux_rapide']
 # options P7 Couleur sélective (profils SHO, SHO_2, SHO_3 de l'utilisateur), SHO et RGB + SHO, après les options Photoshop (8 novembre 2026)
 for _st in (rgbsho, sho):
-    insert_after(_st, 'Lumiere_Photoshop', [(script(n, ''), '') for n in ('Couleur_selective_SHO', 'Couleur_selective_SHO_2', 'Couleur_selective_SHO_3')])   # R_C_Stat_canaux_rapide remis (demande de l'utilisateur, 8 novembre 2026)
+    insert_after(_st, 'Contraste_GHS', [(script(n, ''), '') for n in ('Couleur_selective_SHO', 'Couleur_selective_SHO_2', 'Couleur_selective_SHO_3')])   # R_C_Stat_canaux_rapide remis (demande de l'utilisateur, 8 novembre 2026)
 
 # T_Turbo_palette (demande de l'utilisateur, 8 novembre 2026, possibilité 1) : Stat_canaux puis la palette (combinaison + NBN) en un
 # conteneur de scripts (Apply Global) ; R_C_Fin_rapide reste à glisser ensuite sur l'image créée (il doit être glissé, et contient des scripts)

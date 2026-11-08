@@ -1483,3 +1483,7 @@ Demande de l'utilisateur : « Opt_Contraste_GHS ne doit plus etre une option ».
 
 Demande de l'utilisateur : « Opt_Boost_final doit avec un mask de luminance simple (juste extraction de la couche de luminance) , pareil pour Opt_Boost_final_doux. et ce, pour tous les process ».
 Fait : Masque_luminance_creer (Masque_auto : creer, s 0, gamma 1, flou 0, luminosite y, couleur) dans Boost_final et Boost_final_doux des 5 workflows (chemin principal, options, R_C_Etoiles_fond_rapide, T_Turbo_fin). Luminance Y Rec. 709 (et non CIE L* de ChannelExtraction : extraction par PixelMath, comme les autres masques).
+
+### Options Photoshop Courbes, Voile, Lumière supprimées (8 novembre 2026)
+
+Demande de l'utilisateur : « supprime Opt_Lumiere_Photoshop, Opt_Courbes_Photoshop et Opt_Voile_Photoshop ». Fait : les trois options retirées des 5 workflows (et de layout.py, short_desc.py) ; Look_Lightroom.js garde ses paramètres (contrasteLineaire, voile, courbe renforcée) mais n'est plus utilisé par aucune icône. Couleur_selective (SHO, RGB + SHO) placées après Contraste_GHS.

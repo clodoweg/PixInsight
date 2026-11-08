@@ -1535,53 +1535,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - trop petites -> S 0,25, ou Etoiles_screen
 > - pour recommencer -> Ctrl+Z
 
-#### Opt_Courbes_Photoshop — Script
-   script `$PXI_SRCDIR/scripts/clodoweg/Look_Lightroom.js`
-   paramètres : `contrasteLineaire=true`, `voile=0`, `exposition=0`, `contraste=0`, `hautes=0`, `foncees=0`, `blancs=0`, `noirs=0`, `temperature=0`, `teinte=0`, `masque=false`, `s=0.14`, `flou=2.0`
-
-> OPTION — tout à la fin, sur l'image finie avec étoiles, avant Export_TIFF : imite ton calque Courbes « Contraste linéaire (RVB) » de Photoshop
-> À prendre seul ou avec Voile_Photoshop et Lumiere_Photoshop, dans cet ordre.
-> 
-> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
-> 
-> PRÉRÉGLÉ : script Look_Lightroom, contrasteLineaire = true, le reste à 0 : courbe « Contraste linéaire (RVB) » de Photoshop, 0,305 -> 0,286 et 0,694 -> 0,713 sur R, G, B (points du préréglage linear_contrast de FFmpeg, repris de Photoshop).
-> 
-> À RÉGLER : glisse sur l'image finie avec étoiles, après NXT_dernier ; puis, si tu veux, Voile_Photoshop et Lumiere_Photoshop ; copie Look_Lightroom.js dans src/scripts/clodoweg.
-> 
-> SI :
-> - trop de contraste -> Ctrl+Z, l'image s'en passe
-
-#### Opt_Voile_Photoshop — Script
-   script `$PXI_SRCDIR/scripts/clodoweg/Look_Lightroom.js`
-   paramètres : `contrasteLineaire=false`, `voile=25`, `exposition=0`, `contraste=0`, `hautes=0`, `foncees=0`, `blancs=0`, `noirs=0`, `temperature=0`, `teinte=0`, `masque=false`, `s=0.14`, `flou=2.0`
-
-> OPTION — tout à la fin, après Courbes_Photoshop si tu le prends : imite ta Correction du voile +25 de Photoshop (fond plus sombre, contraste et couleurs montés).
-> 
-> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
-> 
-> PRÉRÉGLÉ : script Look_Lightroom, voile = 25, le reste à 0 : Correction du voile approchée (formule d'Adobe non publiée : voile local = min(R, G, B) lissé 8 px, ($T − 0,25·V)/(1 − 0,25·V) : fond assombri, contraste et couleurs montés).
-> 
-> À RÉGLER : glisse sur l'image finie avec étoiles, après Courbes_Photoshop si tu le prends ; double-clic puis Apply Global = fenêtre (curseur Correction du voile).
-> 
-> SI :
-> - fond trop noir ou couleurs trop fortes -> voile 10 à 15 dans la fenêtre
-
-#### Opt_Lumiere_Photoshop — Script
-   script `$PXI_SRCDIR/scripts/clodoweg/Look_Lightroom.js`
-   paramètres : `contrasteLineaire=false`, `voile=0`, `exposition=0`, `contraste=0`, `hautes=-50`, `foncees=0`, `blancs=50`, `noirs=0`, `temperature=0`, `teinte=0`, `masque=false`, `s=0.14`, `flou=2.0`
-
-> OPTION — tout à la fin, après Courbes_Photoshop et Voile_Photoshop si tu les prends : imite ton calque Lumière de Photoshop (Tons clairs -50, Blancs +50).
-> 
-> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
-> 
-> PRÉRÉGLÉ : script Look_Lightroom réglé comme ton calque Lumière de Photoshop : Exposition 0, Contraste 0, Tons clairs -50, Tons foncés 0, Blancs +50, Noirs 0, le reste à 0 ; équivalents APPROCHÉS (formules d'Adobe non publiées) : courbe de luminosité CIE L* : avec -50 / +50, 0,62 -> 0,57, 0,75 -> 0,65, 0,88 -> 0,85, 0,95 -> 0,975 (effets renforcés le 8 novembre 2026).
-> 
-> À RÉGLER : glisse sur l'image finie avec étoiles, après Courbes_Photoshop et Voile_Photoshop si tu les prends, avant Export_TIFF ; double-clic puis Apply Global = fenêtre avec tous les curseurs ; copie Look_Lightroom.js dans src/scripts/clodoweg.
-> 
-> SI :
-> - différent de Photoshop -> ajuste Tons clairs et Blancs dans la fenêtre (mêmes valeurs ne veulent pas dire même rendu)
-> - fond qui bouge -> coche le masque de luminance dans la fenêtre
-
 #### Opt_Couleur_selective_SHO — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Couleur_selective.js`
    paramètres : `rouges=-25,25,0,0`, `jaunes=-50,50,0,0`, `verts=-50,50,0,0`, `cyans=0,0,-50,0`, `bleus=0,0,0,0`, `magentas=0,0,0,0`, `blancs=0,0,0,0`, `neutres=0,0,0,0`, `noirs=0,0,0,0`, `relatif=true`
