@@ -1491,3 +1491,7 @@ Demande de l'utilisateur : « supprime Opt_Lumiere_Photoshop, Opt_Courbes_Photos
 ### Couleur sélective en P5 (8 novembre 2026)
 
 Demande de l'utilisateur : « met les option coleurs selectives SHO 1 2 et 3 dans P5 ». Fait : Opt_Couleur_selective_SHO, _SHO_2, _SHO_3 déplacées de P7 en P5 options (après NBN_SHO_doux), à glisser sur SHO_etire sans étoiles après NBN_SHO ; SHO et RGB + SHO.
+
+### RGB + SHO : Etoiles_screen après Contraste_GHS (8 novembre 2026)
+
+Demande de l'utilisateur : « met E30_Etoiles_screen apres GHS mais avant NXT » (E30_Etoiles_screen n'existe qu'en RGB + SHO). Fait : RGB + SHO, P7 = Fond_desature (E28), Fond_auto (E29), Contraste_GHS (E30, image sans étoiles), Etoiles_screen (E31), NXT_dernier (E32), Export_TIFF (E33). SHO sans RGB, HOO, LRGB, LHaRGB non touchés.

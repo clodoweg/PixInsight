@@ -1504,6 +1504,11 @@ sho[:] = [x for x in sho if x[0][0] != 'C_MAS_canaux_rapide']
 # options Couleur sélective (profils SHO, SHO_2, SHO_3 de l'utilisateur), SHO et RGB + SHO : P5, après NBN_SHO_doux (8 novembre 2026, d'abord en P7)
 for _st in (rgbsho, sho):
     insert_after(_st, 'NBN_SHO', [(script(n, ''), '') for n in ('Couleur_selective_SHO', 'Couleur_selective_SHO_2', 'Couleur_selective_SHO_3')])   # R_C_Stat_canaux_rapide remis (demande de l'utilisateur, 8 novembre 2026)
+# RGB + SHO (demande de l'utilisateur, 8 novembre 2026 : « met E30_Etoiles_screen apres GHS mais avant NXT ») : Contraste_GHS sur l'image
+# SANS étoiles, juste avant Etoiles_screen ; ordre P7 : Fond_desature, Fond_auto, Contraste_GHS, Etoiles_screen, NXT_dernier, Export_TIFF
+_it = pick(rgbsho, 'Contraste_GHS')
+rgbsho.remove(_it)
+insert_before(rgbsho, 'Etoiles_screen', [_it])
 
 # T_Turbo_palette (demande de l'utilisateur, 8 novembre 2026, possibilité 1) : Stat_canaux puis la palette (combinaison + NBN) en un
 # conteneur de scripts (Apply Global) ; R_C_Fin_rapide reste à glisser ensuite sur l'image créée (il doit être glissé, et contient des scripts)
