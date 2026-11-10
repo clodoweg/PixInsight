@@ -19,6 +19,7 @@
 //   absolu), borné à [−v, 1 − v] ; chaque canal v reçoit la somme des
 //   poids × d de toutes les gammes.
 // Calcul sur une copie cachée puis recopie (cwApplyOnCopy) : Ctrl+Z.
+// Fenêtre : bouton Aperçu (copie affichée dans la vue CS_apercu, 10 novembre 2026).
 // Non testé dans PixInsight.
 //
 // Installation (Mac et PC) : dans src/scripts/clodoweg de PixInsight.
@@ -118,6 +119,28 @@ function csRun( view, p )
                    CS_GAMMES.map( function( g ) { return g[ 0 ] + " " + csParse( p[ g[ 0 ] ] ).join( "/" ); } ).join( ", " ) + ")." );
 }
 
+// Aperçu (demande de l'utilisateur, 10 novembre 2026) : copie de l'image, réglages de la fenêtre appliqués, affichée dans
+// la vue CS_apercu (remplacée à chaque clic) ; l'image n'est pas modifiée ; vue fermée quand la fenêtre se ferme.
+#define CS_APERCU "CS_apercu"
+
+function csPreview( view, p )
+{
+   cwCloseWindow( CS_APERCU );
+   let w = cwPixelMathNew( view, "$T", CS_APERCU );
+   try
+   {
+      csProcess( w.mainView, p );
+   }
+   catch ( e )
+   {
+      w.forceClose();
+      throw e;
+   }
+   w.show();
+   w.zoomToFit();
+   console.noteln( TITLE + " : aperçu dans " + CS_APERCU + " (l'image " + view.id + " n'est pas modifiée)." );
+}
+
 function csDialog( p, view )
 {
    let d = new CWDialog( TITLE, "<b>Couleur sélective</b> façon Photoshop : pour chaque gamme, « cyan, magenta, jaune, noir » de -100 à +100 " +
@@ -128,10 +151,18 @@ function csDialog( p, view )
    d.group( "Gammes : cyan, magenta, jaune, noir" );
    CS_GAMMES.forEach( function( g ) { d.edit( g[ 1 ], p[ g[ 0 ] ], "Quatre nombres séparés par des virgules, de -100 à +100.", function( t ) { p[ g[ 0 ] ] = t.trim(); } ); } );
    d.endGroup();
+   d.button( "Aperçu", "Applique les réglages à une copie, affichée dans la vue CS_apercu ; l'image ne change pas. Reclique après chaque changement.", function()
+   {
+      if ( sel.view == null || sel.view.isNull || !sel.view.image.isColor )
+         return;
+      cwRun( TITLE, function() { csPreview( sel.view, p ); } );
+   } );
    d.onExport = function() { csExport( p ); };
    d.validate = function() { return (sel.view == null || sel.view.isNull) ? "Choisis l'image." : (sel.view.image.isColor ? "" : "L'image doit être en couleur."); };
    d.finish();
-   return d.execute() ? sel.view : null;
+   let ok = d.execute();
+   cwCloseWindow( CS_APERCU );
+   return ok ? sel.view : null;
 }
 
 function main()

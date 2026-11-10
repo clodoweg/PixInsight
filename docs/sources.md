@@ -1496,3 +1496,7 @@ Demande de l'utilisateur : « met les option coleurs selectives SHO 1 2 et 3 dan
 
 Demande de l'utilisateur : « met E30_Etoiles_screen apres GHS mais avant NXT » (E30_Etoiles_screen n'existe qu'en RGB + SHO). Fait : RGB + SHO, P7 = Fond_desature (E28), Fond_auto (E29), Contraste_GHS (E30, image sans étoiles), Etoiles_screen (E31), NXT_dernier (E32), Export_TIFF (E33). SHO sans RGB, HOO, LRGB, LHaRGB non touchés.
 Puis, à ma question « Tu veux le même changement pour eux ? » (SHO sans RGB et HOO), réponse de l'utilisateur : « OUI ». Fait : même ordre en SHO sans RGB et HOO (Fond_desature, Fond_auto, Contraste_GHS, Etoiles_screen, NXT_dernier, Export_TIFF).
+
+### Couleur_selective : aperçu (10 novembre 2026)
+
+Demande de l'utilisateur : « le script Couleur_selective dans son ihm peut il avoir un preview? ». Fait : bouton « Aperçu » dans la fenêtre : copie de l'image (cwPixelMathNew), réglages appliqués, affichée dans la vue CS_apercu (remplacée à chaque clic, fermée avec la fenêtre) ; l'image n'est pas modifiée. Même principe que « Voir le masque » d'Etoiles_grosses. Pas d'aperçu en temps réel dans la fenêtre. Non testé.
