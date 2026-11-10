@@ -1500,3 +1500,4 @@ Puis, à ma question « Tu veux le même changement pour eux ? » (SHO sans RGB 
 ### Couleur_selective : aperçu (10 novembre 2026)
 
 Demande de l'utilisateur : « le script Couleur_selective dans son ihm peut il avoir un preview? ». Fait : bouton « Aperçu » dans la fenêtre : copie de l'image (cwPixelMathNew), réglages appliqués, affichée dans la vue CS_apercu (remplacée à chaque clic, fermée avec la fenêtre) ; l'image n'est pas modifiée. Même principe que « Voir le masque » d'Etoiles_grosses. Pas d'aperçu en temps réel dans la fenêtre. Non testé.
+Puis (10 novembre 2026) : « tu peux aussi proposer des presets (SHO , SHO 2 SHO 3) dans l'interface du script ? ». Fait : liste « Préréglage » dans la fenêtre (réglages actuels, SHO, SHO 2, SHO 3, Aucun) : remplit les 9 gammes avec les valeurs des profils .asv et repasse en méthode relative ; valeurs modifiables ensuite.

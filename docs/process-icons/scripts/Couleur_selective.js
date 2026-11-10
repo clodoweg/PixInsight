@@ -19,7 +19,7 @@
 //   absolu), borné à [−v, 1 − v] ; chaque canal v reçoit la somme des
 //   poids × d de toutes les gammes.
 // Calcul sur une copie cachée puis recopie (cwApplyOnCopy) : Ctrl+Z.
-// Fenêtre : bouton Aperçu (copie affichée dans la vue CS_apercu, 10 novembre 2026).
+// Fenêtre : bouton Aperçu (copie affichée dans la vue CS_apercu) et préréglages SHO, SHO 2, SHO 3 (10 novembre 2026).
 // Non testé dans PixInsight.
 //
 // Installation (Mac et PC) : dans src/scripts/clodoweg de PixInsight.
@@ -44,6 +44,14 @@ var CS_GAMMES = [
    [ "blancs", "Blancs :", "max(0, 2*(smn - 0.5))" ],
    [ "neutres", "Neutres :", "max(0, 1 - abs(smx - 0.5) - abs(smn - 0.5))" ],
    [ "noirs", "Noirs :", "max(0, 2*(0.5 - smx))" ] ];
+
+// Préréglages de la fenêtre (profils .asv de l'utilisateur, méthode relative ; demande de l'utilisateur, 10 novembre 2026) :
+// rouges, jaunes, verts, cyans ; bleus, magentas, blancs, neutres, noirs à 0
+var CS_PRESETS = [
+   [ "SHO", { rouges: "-25,25,0,0", jaunes: "-50,50,0,0", verts: "-50,50,0,0", cyans: "0,0,-50,0" } ],
+   [ "SHO 2", { rouges: "-25,25,0,0", jaunes: "-25,25,0,0", verts: "-50,50,0,0", cyans: "0,0,-50,0" } ],
+   [ "SHO 3", { rouges: "0,0,0,0", jaunes: "-25,25,0,0", verts: "-50,50,0,0", cyans: "0,0,-50,0" } ],
+   [ "Aucun (tout à 0)", {} ] ];
 
 function csParse( t )
 {
@@ -147,9 +155,25 @@ function csDialog( p, view )
                          "(ex. verts -50,50,0,0 : vert tiré vers l'or). Formule d'Adobe non publiée : équivalent approché.", "Magentas :" );
    let sel = { view: view };
    d.viewList( "Image :", view, "Image couleur (finie, ou sans étoiles après la palette).", function( v ) { sel.view = v; } );
-   d.combo( "Méthode :", [ "relative (comme tes profils)", "absolue" ], p.relatif ? 0 : 1, "Relative : proportionnelle à l'encre déjà présente.", function( k ) { p.relatif = k == 0; } );
+   let methode = d.combo( "Méthode :", [ "relative (comme tes profils)", "absolue" ], p.relatif ? 0 : 1, "Relative : proportionnelle à l'encre déjà présente.", function( k ) { p.relatif = k == 0; } );
+   let edits = {};
+   d.combo( "Préréglage :", [ "(réglages actuels)" ].concat( CS_PRESETS.map( function( x ) { return x[ 0 ]; } ) ), 0,
+            "Remplit les gammes avec un de tes profils Photoshop (méthode relative) ; tu peux ensuite modifier les valeurs.", function( k )
+   {
+      if ( k == 0 )
+         return;
+      let v = CS_PRESETS[ k - 1 ][ 1 ];
+      CS_GAMMES.forEach( function( g )
+      {
+         p[ g[ 0 ] ] = v[ g[ 0 ] ] || "0,0,0,0";
+         if ( edits[ g[ 0 ] ] )
+            edits[ g[ 0 ] ].text = p[ g[ 0 ] ];
+      } );
+      p.relatif = true;
+      methode.currentItem = 0;
+   } );
    d.group( "Gammes : cyan, magenta, jaune, noir" );
-   CS_GAMMES.forEach( function( g ) { d.edit( g[ 1 ], p[ g[ 0 ] ], "Quatre nombres séparés par des virgules, de -100 à +100.", function( t ) { p[ g[ 0 ] ] = t.trim(); } ); } );
+   CS_GAMMES.forEach( function( g ) { edits[ g[ 0 ] ] = d.edit( g[ 1 ], p[ g[ 0 ] ], "Quatre nombres séparés par des virgules, de -100 à +100.", function( t ) { p[ g[ 0 ] ] = t.trim(); } ); } );
    d.endGroup();
    d.button( "Aperçu", "Applique les réglages à une copie, affichée dans la vue CS_apercu ; l'image ne change pas. Reclique après chaque changement.", function()
    {
