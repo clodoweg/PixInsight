@@ -17,6 +17,9 @@
 //      w = 0 jusqu'à fond + debut (0,03), 1 à partir de fond + fin (0,15) ;
 //      chaque canal devient Y + ($T − Y) × w (Y = luminance du pixel) : au
 //      fond, gris neutre de même luminosité.
+//      force (1 par défaut) : désaturation maximale (0,7 = 30 % de couleur
+//      gardée) ; lisse = true : rampe en S. Narrowband : debut 0,02, fin 0,20,
+//      flou 12, force 0,70, lisse (10 novembre 2026, transitions trop franches).
 //
 // Installation (Mac et PC) : dans src/scripts/clodoweg de PixInsight.
 // ----------------------------------------------------------------------------
@@ -32,7 +35,8 @@
 function fdParams()
 {
    return { debut: parseFloat( cwParam( "debut", "0.03" ) ), fin: parseFloat( cwParam( "fin", "0.15" ) ),
-            violetFin: parseFloat( cwParam( "violetFin", "0.30" ) ), flou: parseFloat( cwParam( "flou", "3" ) ) };
+            violetFin: parseFloat( cwParam( "violetFin", "0.30" ) ), flou: parseFloat( cwParam( "flou", "3" ) ),
+            force: parseFloat( cwParam( "force", "1.00" ) ), lisse: cwBool( "lisse", false ) };
 }
 
 function fdExport( p )
@@ -41,6 +45,8 @@ function fdExport( p )
    Parameters.set( "fin", p.fin.toFixed( 2 ) );
    Parameters.set( "violetFin", p.violetFin.toFixed( 2 ) );
    Parameters.set( "flou", p.flou.toFixed( 1 ) );
+   Parameters.set( "force", p.force.toFixed( 2 ) );
+   Parameters.set( "lisse", p.lisse ? "true" : "false" );
 }
 
 // Traite view (couleur) ; name : nom affiché dans la console.
@@ -108,8 +114,14 @@ function fdProcess( view, p, name )
 
    let lo = bg + debut, hi = bg + fin;
    let w = "min(1, max(0, (" + id + " - " + lo.toFixed( 6 ) + ")/" + (hi - lo).toFixed( 6 ) + "))";
+   // lisse : rampe en S (3w² − 2w³) au lieu d'une droite ; force < 1 : couleur du fond gardée en partie
+   // (couleur gardée = 1 − force·(1 − w)) ; narrowband (retour de l'utilisateur, 10 novembre 2026 : « trop brut avec des
+   // demarquations trop franches ») ; galaxies : force 1, rampe droite (inchangé)
+   if ( p.lisse )
+      w = "(" + w + ")^2*(3 - 2*" + w + ")";
+   let garde = p.force >= 1 ? w : "(1 - " + p.force.toFixed( 3 ) + "*(1 - " + w + "))";
    let D = new PixelMath;
-   D.expression = Y + " + ($T - " + Y + ")*" + w;
+   D.expression = Y + " + ($T - " + Y + ")*" + garde;
    D.useSingleExpression = true;
    D.createNewImage = false;
    D.rescale = false;
@@ -135,7 +147,9 @@ function fdDialog( p, view )
    d.group( "Violet des zones faibles" );
    d.numeric( "Fin du violet :", 0.10, 0.60, 2, p.violetFin, "Violet (magenta) neutralisé jusqu'à fond + cette valeur.", function( v ) { p.violetFin = v; } );
    d.endGroup();
-   d.numeric( "Flou (px) :", 0, 10, 1, p.flou, "Lissage de la luminance qui sert de masque.", function( v ) { p.flou = v; } );
+   d.numeric( "Flou (px) :", 0, 30, 1, p.flou, "Lissage de la luminance qui sert de masque (narrowband : 12 px, transitions douces).", function( v ) { p.flou = v; } );
+   d.numeric( "Force :", 0.10, 1.00, 2, p.force, "1 = fond entièrement gris ; 0,7 = 30 % de la couleur du fond gardée (narrowband).", function( v ) { p.force = v; } );
+   d.check( "Transition en S (plus douce)", p.lisse, "Rampe en S entre Début et Fin au lieu d'une droite : pas de démarcation franche.", function( c ) { p.lisse = c; } );
    d.onExport = function() { fdExport( p ); };
    d.validate = function()
    {

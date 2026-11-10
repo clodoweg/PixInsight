@@ -1501,3 +1501,8 @@ Puis, à ma question « Tu veux le même changement pour eux ? » (SHO sans RGB 
 
 Demande de l'utilisateur : « le script Couleur_selective dans son ihm peut il avoir un preview? ». Fait : bouton « Aperçu » dans la fenêtre : copie de l'image (cwPixelMathNew), réglages appliqués, affichée dans la vue CS_apercu (remplacée à chaque clic, fermée avec la fenêtre) ; l'image n'est pas modifiée. Même principe que « Voir le masque » d'Etoiles_grosses. Pas d'aperçu en temps réel dans la fenêtre. Non testé.
 Puis (10 novembre 2026) : « tu peux aussi proposer des presets (SHO , SHO 2 SHO 3) dans l'interface du script ? ». Fait : liste « Préréglage » dans la fenêtre (réglages actuels, SHO, SHO 2, SHO 3, Aucun) : remplit les 9 gammes avec les valeurs des profils .asv et repasse en méthode relative ; valeurs modifiables ensuite.
+
+### Fond_desature plus doux en narrowband (10 novembre 2026)
+
+Retour de l'utilisateur (deux captures) : « pour les SHO parfois a la fin j'ai des teintes colorée persistantres et le script desaturation (qui fonctionne a merveille sur les galaxies en LRGB) est trop fort ici , il est trop brut avec des demarquations trop franche dans son application ».
+Fait : Fond_desature.js, paramètres force et lisse (défauts : comportement inchangé) ; icône Fond_desature_nb (debut 0,02, fin 0,20, violetFin 0,30, flou 12, force 0,70, lisse) dans SHO, RGB + SHO et HOO (chemin principal, R_C_Etoiles_fond_rapide). LRGB et LHaRGB non touchés (vérifié). Choix de ma part, non testé.

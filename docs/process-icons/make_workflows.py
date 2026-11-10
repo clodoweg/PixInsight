@@ -68,6 +68,8 @@ SCRIPTS = {
     'Renommer_auto': ('$PXI_SRCDIR/scripts/clodoweg/Renommer_auto.js', '', [('fermerAutocrop', 'true')], L_GLOBAL),   # ferme les vues *autocrop_c (demande de l'utilisateur)
     'SCNR_etoiles_vert': ('$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js', '', [('vue', 'RGB_stars'), ('amount', '0'), ('satAmount', '0'), ('scnr', 'true'), ('violet', 'false')], L_DRAG),
     'SCNR_etoiles_violet': ('$PXI_SRCDIR/scripts/clodoweg/Etoiles_auto.js', '', [('vue', 'RGB_stars'), ('amount', '0'), ('satAmount', '0'), ('scnr', 'false'), ('violet', 'true')], L_DRAG),   # Invert, SCNR vert 1,0, Invert sur RGB_stars : violet retiré (demande de l'utilisateur)   # SCNR vert 1,0 sur RGB_stars seulement, quelle que soit l'image (demande de l'utilisateur)
+    # narrowband (retour de l'utilisateur, 10 novembre 2026 : « trop brut avec des demarquations trop franches ») : rampe large en S, masque lissé 12 px, 30 % de couleur gardée
+    'Fond_desature_nb': ('$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js', '', [('debut', '0.02'), ('fin', '0.20'), ('violetFin', '0.30'), ('flou', '12'), ('force', '0.70'), ('lisse', 'true')], L_DRAG),
     'Fond_desature': ('$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js', '', [('debut', '0.03'), ('fin', '0.15'), ('violetFin', '0.30'), ('flou', '3')], L_DRAG),
     'Fond_auto': ('$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js', '', [('cible', '0.12'), ('tolerance', '0.005'), ('grille', '8')], L_DRAG),
     'Nettoyage_sans_etoiles': ('$PXI_SRCDIR/scripts/clodoweg/Nettoyage_sans_etoiles.js', '', [('etoiles', 'RGB_stars'), ('seuilBas', '0.05'), ('seuilHaut', '0.12'), ('etendue', '25'), ('passes', '3'), ('protege', '0.08'), ('structure', '0.15'), ('compact', '0.05'), ('tresBrillant', '0.05'), ('etendue2', '80'), ('gain', '3'), ('gain2', '8'), ('afficherMasque', 'false')], L_DRAG),
@@ -1317,10 +1319,10 @@ for _st in (rgbsho, sho, hoo):
     insert_before(_st, 'ICC_sRGB', [(agrandir_x2(), '')])
     _it = pick(_st, 'Fond_desature')
     _st.remove(_it)
-    # narrowband : désaturation du fond plus douce (fin 0,08 au lieu de 0,15 ; demande de l'utilisateur, 8 octobre 2026 : « plus doux ») pour garder la couleur des voiles faibles
-    _a = '<td id="id">fin</td>\n            <td id="value">0.15</td>'
-    assert _a in _it[0][1]
-    _it = ((_it[0][0], _it[0][1].replace(_a, _a.replace('0.15', '0.08'))), _it[1])
+    # narrowband : désaturation du fond plus douce (8 octobre 2026 : fin 0,08) ; 10 novembre 2026 : réglages Fond_desature_nb (rampe large en S,
+    # flou 12, force 0,70 : retour de l'utilisateur « trop brut avec des demarquations trop franches »)
+    _n, _x = script('Fond_desature_nb', '')
+    _it = (('Fond_desature', _x.replace('id="Fond_desature_nb_instance"', 'id="Fond_desature_instance"', 1)), _it[1])
     insert_before(_st, 'Etoiles_screen', [_it, (note('Fond_auto', D_FOND), ''), (script('Fond_auto_clair', ''), '')])
     # options Boost_final_doux et Boost_final (demande de l'utilisateur, 8 octobre 2026) : sur l'image sans étoiles, avant Fond_desature et Etoiles_screen
     insert_before(_st, 'Fond_desature', [(boost_final(True, nb=True, hoo=_st is hoo), ''), (boost_final(nb=True, hoo=_st is hoo), '')])

@@ -1138,18 +1138,19 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 #### E24_Fond_desature — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js`
-   paramètres : `debut=0.03`, `fin=0.08`, `violetFin=0.30`, `flou=3`
+   paramètres : `debut=0.02`, `fin=0.20`, `violetFin=0.30`, `flou=12`, `force=0.70`, `lisse=true`
 
 > LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
 > 
-> PRÉRÉGLÉ : script Fond_desature, réglé plus doux en narrowband : fond mesuré ; violet neutralisé (G remonté jusqu'à min(R, B)) à plein sous fond + 0,08, décroissant jusqu'à + 0,30 ; couleur retirée seulement tout près du fond (rampe de + 0,03 à + 0,08 au lieu de + 0,15) : les voiles faibles de la nébuleuse gardent leur couleur.
+> PRÉRÉGLÉ : script Fond_desature, réglé doux en narrowband (10 novembre 2026) : fond mesuré ; violet neutralisé (G remonté jusqu'à min(R, B)) près du fond, décroissant jusqu'à + 0,30 ; couleur du fond retirée à 70 % (force 0,70 : 30 % gardée), transition en S de + 0,02 à + 0,20 au-dessus du fond, masque lissé 12 px : pas de démarcation franche.
 > 
 > À RÉGLER : glisse sur l'image SANS étoiles finie (après NXT_final), avant Fond_auto et la recombinaison des étoiles (Etoiles_screen, ou Etoiles_reduites).
 > 
 > SI :
+> - teinte encore visible -> force 0,85
+> - voiles faibles grisés -> fin 0,12 ou force 0,50
+> - démarcation encore visible -> flou 20
 > - violet encore visible dans les zones faibles -> violetFin 0,40
-> - fond encore coloré -> fin 0,12
-> - voiles faibles grisés -> fin 0,05, ou saute cette étape
 
 #### E25_Fond_auto — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js`
@@ -1372,7 +1373,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 #### R_C_Etoiles_fond_rapide — ProcessContainer
    1. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js`
-      paramètres : `debut=0.03`, `fin=0.08`, `violetFin=0.30`, `flou=3`, `dialogue=false`
+      paramètres : `debut=0.02`, `fin=0.20`, `violetFin=0.30`, `flou=12`, `force=0.70`, `lisse=true`, `dialogue=false`
    2. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js`
       paramètres : `cible=0.12`, `tolerance=0.005`, `grille=8`, `dialogue=false`
