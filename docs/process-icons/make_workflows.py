@@ -1519,12 +1519,14 @@ for _st in (rgbsho, sho, hoo):
     _it = pick(_st, 'Contraste_GHS')
     _st.remove(_it)
     insert_before(_st, 'Etoiles_screen', [_it])
-# SHO et RGB + SHO (demande de l'utilisateur, 11 novembre 2026 : « pour les SHO mets le +5 entre le GHS et le screen d'étoiles ») :
-# Temperature_PS_5 au chemin principal, entre Contraste_GHS et Etoiles_screen (image sans étoiles) ; +10 reste en option
+# SHO et RGB + SHO (demandes de l'utilisateur, 11 novembre 2026 : d'abord « mets le +5 entre le GHS et le screen d'étoiles », puis
+# « met plutot les temperature apres les options couleurs selectives ») : Temperature_PS_5 et _10 en options P5, juste après
+# Couleur_selective_SHO_3 (sur SHO_etire sans étoiles) ; phase forcée par layout.PHASE_PREFIX
 for _st in (rgbsho, sho):
-    _it = pick(_st, 'Temperature_PS_5')
-    _st.remove(_it)
-    insert_after(_st, 'Contraste_GHS', [_it])
+    _its = [pick(_st, 'Temperature_PS_5'), pick(_st, 'Temperature_PS_10')]
+    for _it in _its:
+        _st.remove(_it)
+    insert_after(_st, 'Couleur_selective_SHO_3', _its)
 
 # T_Turbo_palette (demande de l'utilisateur, 8 novembre 2026, possibilité 1) : Stat_canaux puis la palette (combinaison + NBN) en un
 # conteneur de scripts (Apply Global) ; R_C_Fin_rapide reste à glisser ensuite sur l'image créée (il doit être glissé, et contient des scripts)

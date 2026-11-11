@@ -1521,3 +1521,4 @@ Puis, à ma question pour LRGB et LHaRGB (impacts annoncés : 2 options P7 avant
 ### SHO : Temperature_PS_5 au chemin principal (11 novembre 2026)
 
 Demande de l'utilisateur : « pour les SHO mets le +5 entre le GHS et le screen d'étoiles ». Fait : SHO sans RGB (E25) et RGB + SHO (E31) : Temperature_PS_5 au chemin principal entre Contraste_GHS et Etoiles_screen (image sans étoiles) ; Opt_Temperature_PS_10 reste en option (à la place, au même endroit). HOO, LRGB, LHaRGB inchangés (options).
+Puis : « met plutot les temperature apres les options couleurs selectiives ». Fait : SHO sans RGB et RGB + SHO : Temperature_PS_5 et _10 en options P5, juste après Couleur_selective_SHO_3 (le +5 n'est plus au chemin principal). HOO, LRGB, LHaRGB : options P7 inchangées.

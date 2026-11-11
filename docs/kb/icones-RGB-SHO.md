@@ -981,6 +981,38 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - trop fort -> profil plus doux (SHO_2, puis SHO_3)
 > - différent de Photoshop -> formule d'Adobe non publiée : ajuste les valeurs dans la fenêtre
 
+#### Opt_Temperature_PS_5 — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Temperature_PS.js`
+   paramètres : `reglage=5`
+
+> OPTION — après la palette (NBN_SHO) et la Couleur sélective éventuelle, sur SHO_etire sans étoiles : Température +5 de Photoshop, reproduite d'après une mesure
+> Image plus chaude.
+> 
+> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
+> 
+> PRÉRÉGLÉ : script Temperature_PS, Température +5 du calque Couleur et vibrance de Photoshop : table 3D de 729 couleurs MESURÉE sur Photoshop (mire de l'utilisateur), interpolée ; gris 0,50 -> 0,537 / 0,521 / 0,497 ; écart moyen avec Photoshop sur le gris 0,0003.
+> 
+> À RÉGLER : glisse sur SHO_etire (sans étoiles, P5), après NBN_SHO et la Couleur sélective éventuelle ; un seul des deux (+5 ou +10) ; copie Temperature_PS.js dans src/scripts/clodoweg.
+> 
+> SI :
+> - trop chaud -> Ctrl+Z
+> - pas assez -> Opt_Temperature_PS_10 à la place
+
+#### Opt_Temperature_PS_10 — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Temperature_PS.js`
+   paramètres : `reglage=10`
+
+> OPTION — à la place de Temperature_PS_5, au même endroit (SHO_etire sans étoiles, P5) : Température +10 de Photoshop.
+> 
+> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
+> 
+> PRÉRÉGLÉ : script Temperature_PS, Température +10 (même méthode, mesure à +10) : gris 0,50 -> 0,571 / 0,540 / 0,493 ; écart moyen avec Photoshop sur le gris 0,0006.
+> 
+> À RÉGLER : à la place d'Opt_Temperature_PS_5, au même endroit : SHO_etire (sans étoiles, P5), après NBN_SHO et la Couleur sélective éventuelle.
+> 
+> SI :
+> - trop chaud -> Opt_Temperature_PS_5
+
 #### Opt_Foraxx_SHO — PixelMath
    expression = `(O^~O)*S + ~(O^~O)*H` ; expression1 = `((O*H)^~(O*H))*H + ~((O*H)^~(O*H))*O` ; expression2 = `O` ; useSingleExpression=false ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=true ; showNewImage=true ; newImageId=SHO_Foraxx ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=RGB ; newImageSampleFormat=SameAsTarget
 
@@ -1470,21 +1502,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - cœur brillant qui sature -> baisse HP
 > - trop fort -> Stretch factor 0,15–0,20
 
-#### E31_Temperature_PS_5 — Script
-   script `$PXI_SRCDIR/scripts/clodoweg/Temperature_PS.js`
-   paramètres : `reglage=5`
-
-> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
-> 
-> PRÉRÉGLÉ : script Temperature_PS, Température +5 du calque Couleur et vibrance de Photoshop : table 3D de 729 couleurs MESURÉE sur Photoshop (mire de l'utilisateur), interpolée ; gris 0,50 -> 0,537 / 0,521 / 0,497 ; écart moyen avec Photoshop sur le gris 0,0003.
-> 
-> À RÉGLER : CHEMIN PRINCIPAL : glisse sur l'image SANS étoiles, après Contraste_GHS, avant Etoiles_screen ; copie Temperature_PS.js dans src/scripts/clodoweg.
-> 
-> SI :
-> - trop chaud -> Ctrl+Z et saute cette étape
-> - pas assez -> Opt_Temperature_PS_10 à la place (P7 options)
-
-#### E32_Etoiles_screen — PixelMath
+#### E31_Etoiles_screen — PixelMath
    expression = `~((~$T) * (~RGB_stars))` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
 
 > PRÉRÉGLÉ : ~((~$T) * (~RGB_stars)), sur l'image elle-même.
@@ -1494,7 +1512,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > SI :
 > - autre nom d'étoiles -> corrige-le dans la formule
 
-#### E33_NXT_dernier — NoiseXTerminator
+#### E32_NXT_dernier — NoiseXTerminator
    ml_version=0 ; denoise=0.25 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
 
 > PRÉRÉGLÉ : NoiseXTerminator Denoise 0,25, 1 itération.
@@ -1506,7 +1524,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - bruit encore visible -> 0,35
 > - étoiles adoucies -> 0,15, ou saute cette étape
 
-#### E34_Export_TIFF — Script
+#### E33_Export_TIFF — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js`
    paramètres : `nom=`, `suffixe=`, `dossier=`, `icc=true`
 
@@ -1597,22 +1615,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - étoiles encore grosses -> S 0,15
 > - trop petites -> S 0,25, ou Etoiles_screen
 > - pour recommencer -> Ctrl+Z
-
-#### Opt_Temperature_PS_10 — Script
-   script `$PXI_SRCDIR/scripts/clodoweg/Temperature_PS.js`
-   paramètres : `reglage=10`
-
-> OPTION — tout à la fin, image finie avec étoiles, avant l'export : Température +10 de Photoshop, reproduite d'après une mesure
-> À la place de Temperature_PS_5.
-> 
-> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
-> 
-> PRÉRÉGLÉ : script Temperature_PS, Température +10 (même méthode, mesure à +10) : gris 0,50 -> 0,571 / 0,540 / 0,493 ; écart moyen avec Photoshop sur le gris 0,0006.
-> 
-> À RÉGLER : à la place de E##_Temperature_PS_5 (chemin principal), au même endroit : image SANS étoiles, après Contraste_GHS, avant Etoiles_screen.
-> 
-> SI :
-> - trop chaud -> E##_Temperature_PS_5
 
 #### Opt_ICC_sRGB — ICCProfileTransformation
    targetProfile=sRGB IEC61966-2.1 ; toDefaultProfile=false ; renderingIntent=Perceptual ; useBlackPointCompensation=true ; useFloatingPointTransformation=true

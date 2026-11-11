@@ -16,6 +16,7 @@ PHASE_PREFIX = {('SHO', 'Etoiles_NB_auto'): 3}
 # options d'étoiles en phase 3, là où l'image d'étoiles est faite (demande de l'utilisateur, 20 octobre 2026) : SHO et HOO (NBtoRGB_stars, Etoiles_NB_auto
 # en phase 3 aussi en HOO) ; RGB + SHO : toute la chaîne RGB_stars (MAS, SXT_RGB_etire, SCNR_etoiles_vert, Fermer_RGB, R_C_RGB_etoiles_rapide) en fin de phase 3
 PHASE_PREFIX.update({(p, b): 3 for p in ('SHO', 'HOO') for b in ('Etoiles_NB_auto', 'SCNR_etoiles_vert', 'SCNR_etoiles_violet', 'Saturation_grosses')})
+PHASE_PREFIX.update({(p, b): 5 for p in ('SHO', 'RSHO') for b in ('Temperature_PS_5', 'Temperature_PS_10')})   # options P5 après Couleur sélective (11 novembre 2026)
 PHASE_PREFIX.update({('RSHO', b): 3 for b in ('MAS', 'SXT_RGB_etire', 'SCNR_etoiles_vert', 'SCNR_etoiles_violet', 'Saturation_grosses', 'Fermer_RGB', 'C_RGB_etoiles_rapide')})   # SHO sans RGB : étoiles faites en phase 3 (demande de l'utilisateur, 20 octobre 2026)
 
 PHASE = {
@@ -51,8 +52,6 @@ def role(prefix, base):
         return 'core'   # SHO, RGB + SHO et HOO : chemin principal P4 (option le 22 octobre, de nouveau au chemin principal le 8 novembre 2026, demandes de l'utilisateur)
     if prefix in ('SHO', 'RSHO') and base == 'Statistical_Stretch':
         return 'core'
-    if prefix in ('SHO', 'RSHO') and base == 'Temperature_PS_5':
-        return 'core'   # chemin principal entre Contraste_GHS et Etoiles_screen (demande de l'utilisateur, 11 novembre 2026)
     if prefix in LUM and base == 'Boost_final':
         return 'core'   # galaxies : chemin principal après Etoiles_screen (demande de l'utilisateur, 21 octobre 2026)
     if prefix in LUM and base == 'Star_Stretch':
@@ -285,6 +284,9 @@ for _p in ('SHO', 'RSHO'):
     WHEN_PREFIX[(_p, 'GHS_2_contraste')] = "plus de contraste : après Statistical_Stretch (ou GHS_1_premier), sur chaque canal, même réglage pour les trois, avant la palette"
     WHEN_PREFIX[(_p, 'GHS_3_fond')] = "fond trop clair après Statistical_Stretch (0,25) ou les GHS : sur chaque canal, même SP = HP pour tous (0,22 après Statistical Stretch), fond vers 0,12–0,14, avant la palette"
 WHEN_PREFIX[('HOO', 'GHS_2_contraste')] = "plus de contraste : après GHS_1_premier, sur H puis O, même réglage pour les deux, avant GHS_3_fond"   # option (demande de l'utilisateur, 22 octobre 2026)
+for _p in ('SHO', 'RSHO'):   # options P5 après Couleur sélective (11 novembre 2026)
+    WHEN_PREFIX[(_p, 'Temperature_PS_5')] = "après la palette (NBN_SHO) et la Couleur sélective éventuelle, sur SHO_etire sans étoiles : Température +5 de Photoshop, reproduite d'après une mesure ; image plus chaude"
+    WHEN_PREFIX[(_p, 'Temperature_PS_10')] = "à la place de Temperature_PS_5, au même endroit (SHO_etire sans étoiles, P5) : Température +10 de Photoshop"
 
 def when(prefix, base):
     if (prefix, base) in WHEN_PREFIX:
