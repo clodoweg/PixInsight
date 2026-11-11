@@ -81,6 +81,9 @@ SCRIPTS = {
     'Couleur_selective_SHO': ('$PXI_SRCDIR/scripts/clodoweg/Couleur_selective.js', '', [('rouges', '-25,25,0,0'), ('jaunes', '-50,50,0,0'), ('verts', '-50,50,0,0'), ('cyans', '0,0,-50,0'), ('bleus', '0,0,0,0'), ('magentas', '0,0,0,0'), ('blancs', '0,0,0,0'), ('neutres', '0,0,0,0'), ('noirs', '0,0,0,0'), ('relatif', 'true')], L_DRAG),
     'Couleur_selective_SHO_2': ('$PXI_SRCDIR/scripts/clodoweg/Couleur_selective.js', '', [('rouges', '-25,25,0,0'), ('jaunes', '-25,25,0,0'), ('verts', '-50,50,0,0'), ('cyans', '0,0,-50,0'), ('bleus', '0,0,0,0'), ('magentas', '0,0,0,0'), ('blancs', '0,0,0,0'), ('neutres', '0,0,0,0'), ('noirs', '0,0,0,0'), ('relatif', 'true')], L_DRAG),
     'Couleur_selective_SHO_3': ('$PXI_SRCDIR/scripts/clodoweg/Couleur_selective.js', '', [('rouges', '0,0,0,0'), ('jaunes', '-25,25,0,0'), ('verts', '-50,50,0,0'), ('cyans', '0,0,-50,0'), ('bleus', '0,0,0,0'), ('magentas', '0,0,0,0'), ('blancs', '0,0,0,0'), ('neutres', '0,0,0,0'), ('noirs', '0,0,0,0'), ('relatif', 'true')], L_DRAG),
+    # Température de Photoshop mesurée (calque Couleur et vibrance, +5 / +10 ; demande de l'utilisateur, 11 novembre 2026)
+    'Temperature_PS_5': ('$PXI_SRCDIR/scripts/clodoweg/Temperature_PS.js', '', [('reglage', '5')], L_DRAG),
+    'Temperature_PS_10': ('$PXI_SRCDIR/scripts/clodoweg/Temperature_PS.js', '', [('reglage', '10')], L_DRAG),
     'Export_Photoshop': ('$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js', '', [('nom', ''), ('suffixe', ''), ('dossier', ''), ('icc', 'true'), ('photoshop', 'true'), ('photoshopExe', ''), ('temp', 'true')], L_DRAG),   # option P7 : export TIFF puis ouverture dans Photoshop (demande de l'utilisateur, 22 octobre 2026)
     'Lecture_Photoshop': ('$PXI_SRCDIR/scripts/clodoweg/Lecture_Photoshop.js', '', [('fichier', ''), ('temp', 'true')], L_GLOBAL),   # tmp.tiff (8 novembre 2026)   # option P7 : rouvre le .tif retouché dans Photoshop
     'Crop_reference': ('$PXI_SRCDIR/scripts/clodoweg/Crop_commun.js', '', [('mode', 'reference'), ('nom', 'Crop_ref')], L_GLOBAL),   # option P1 (demande de l'utilisateur) : image minimum + DynamicCrop
@@ -1249,6 +1252,9 @@ for _st in (lrgb, lhargb):
         _it = pick(_st, _b)
         _st.remove(_it)
         insert_before(_st, 'Etoiles_screen', [_it])
+# options P7 Temperature_PS_5 et Temperature_PS_10 (narrowband ; demande de l'utilisateur, 11 novembre 2026), juste avant ICC_sRGB et les exports
+for _st in (rgbsho, sho, hoo):
+    insert_before(_st, 'ICC_sRGB', [(script('Temperature_PS_5', ''), ''), (script('Temperature_PS_10', ''), '')])
 
 def fin_rapide_items(steps, boost=False):
     """Étapes de R_C_Fin_rapide (P6) et de R_C_Etoiles_fond_rapide (P7), à plat (reprises par T_Turbo_fin)."""

@@ -1584,6 +1584,39 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - trop petites -> S 0,25, ou Etoiles_screen
 > - pour recommencer -> Ctrl+Z
 
+#### Opt_Temperature_PS_5 — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Temperature_PS.js`
+   paramètres : `reglage=5`
+
+> OPTION — tout à la fin, image finie avec étoiles, avant l'export : Température +5 de Photoshop (Couleur et vibrance), reproduite d'après une mesure
+> Image plus chaude.
+> 
+> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
+> 
+> PRÉRÉGLÉ : script Temperature_PS, Température +5 du calque Couleur et vibrance de Photoshop : table 3D de 729 couleurs MESURÉE sur Photoshop (mire de l'utilisateur), interpolée ; gris 0,50 -> 0,537 / 0,521 / 0,497 ; écart moyen avec Photoshop sur le gris 0,0003.
+> 
+> À RÉGLER : glisse sur l'image finie (couleur, sRGB), après NXT_dernier, avant l'export ; un seul des deux ; copie Temperature_PS.js dans src/scripts/clodoweg.
+> 
+> SI :
+> - trop chaud -> Ctrl+Z
+> - pas assez -> Temperature_PS_10 à la place
+
+#### Opt_Temperature_PS_10 — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Temperature_PS.js`
+   paramètres : `reglage=10`
+
+> OPTION — tout à la fin, image finie avec étoiles, avant l'export : Température +10 de Photoshop, reproduite d'après une mesure
+> À la place de Temperature_PS_5.
+> 
+> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
+> 
+> PRÉRÉGLÉ : script Temperature_PS, Température +10 (même méthode, mesure à +10) : gris 0,50 -> 0,571 / 0,540 / 0,493 ; écart moyen avec Photoshop sur le gris 0,0006.
+> 
+> À RÉGLER : glisse sur l'image finie (couleur, sRGB), après NXT_dernier, avant l'export ; un seul des deux ; copie Temperature_PS.js dans src/scripts/clodoweg.
+> 
+> SI :
+> - trop chaud -> Temperature_PS_5 à la place
+
 #### Opt_ICC_sRGB — ICCProfileTransformation
    targetProfile=sRGB IEC61966-2.1 ; toDefaultProfile=false ; renderingIntent=Perceptual ; useBlackPointCompensation=true ; useFloatingPointTransformation=true
 

@@ -1511,3 +1511,8 @@ Fait : Fond_desature.js, paramètres force et lisse (défauts : comportement inc
 
 Retours de l'utilisateur : « il en fait pas trop sur le rouge la ? », puis « bof ca fait toujours trop. Est ce que l'on peut faire un degradé sur l'effet ? ca sera plus fort sur le fond et de moins en moins fort quand le fond se rapprochera de la nebuleuse? (tjrs que sur les SHO, HOO, etc) ».
 Fait : paramètre portee (dégradé spatial) dans Fond_desature.js (0 par défaut : galaxies inchangées) ; Fond_desature_nb : debut 0,02, fin 0,12, flou 8, force 0,80, lisse, portee 60 (SHO, RGB + SHO, HOO ; chemin principal et rapides). Choix de ma part, non testé.
+
+### Température de Photoshop +5 / +10, mesurée (11 novembre 2026)
+
+Demande de l'utilisateur : « je veux un script a la fin qui puisse augmenter de +5 et un autre de +10 la temperature exactement de la meme facon que photoshop » ; puis mire_plus5.tif et mire_plus10.tif envoyés (mire passée dans Photoshop).
+Fait : Temperature_PS.js (table 3D mesurée, interpolation trilinéaire) ; options P7 Opt_Temperature_PS_5 et Opt_Temperature_PS_10 en SHO, RGB + SHO et HOO (avant ICC_sRGB). LRGB et LHaRGB : non ajoutées (à demander). Mesures et contrôle dans docs/kb/techniques.md. Non testé dans PixInsight.
