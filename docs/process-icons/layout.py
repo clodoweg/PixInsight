@@ -147,7 +147,7 @@ WHEN = {
     'Couleur_selective_SHO': "tout à la fin, image finie : ton profil Couleur sélective « SHO » de Photoshop (le plus fort : rouges et jaunes tirés vers l'or, verts -50/+50, cyans vers le bleu) ; un seul des trois profils",
     'Couleur_selective_SHO_2': "tout à la fin, image finie : ton profil « SHO_2 » (comme SHO, jaunes moitié moins tirés)",
     'Couleur_selective_SHO_3': "tout à la fin, image finie : ton profil « SHO_3 » (le plus doux : rouges inchangés, jaunes moitié moins)",
-    'Voile_PS': "tout à la fin, image finie, avant l'export : Correction du voile +20 façon Photoshop (fond un peu plus sombre, contraste et couleurs montés) ; modèle des brevets d'Adobe, pas encore calé sur Photoshop",
+    'Voile_PS': "tout à la fin, image finie, avant l'export : Correction du voile +20 façon Photoshop (fond un peu plus sombre, contraste et couleurs montés) ; modèle des brevets d'Adobe, calé sur une de tes images avant / après Photoshop",
     'Temperature_PS_5': "tout à la fin, image finie avec étoiles, avant l'export : Température +5 de Photoshop (Couleur et vibrance), reproduite d'après une mesure ; image plus chaude",
     'Temperature_PS_10': "tout à la fin, image finie avec étoiles, avant l'export : Température +10 de Photoshop, reproduite d'après une mesure ; à la place de Temperature_PS_5",
     'Contraste_GHS': "tout à la fin, sur l'image finie avec étoiles, avant Export_TIFF : un peu plus de contraste sans toucher au fond",
