@@ -1517,3 +1517,7 @@ Fait : paramètre portee (dégradé spatial) dans Fond_desature.js (0 par défau
 Demande de l'utilisateur : « je veux un script a la fin qui puisse augmenter de +5 et un autre de +10 la temperature exactement de la meme facon que photoshop » ; puis mire_plus5.tif et mire_plus10.tif envoyés (mire passée dans Photoshop).
 Fait : Temperature_PS.js (table 3D mesurée, interpolation trilinéaire) ; options P7 Opt_Temperature_PS_5 et Opt_Temperature_PS_10 en SHO, RGB + SHO et HOO (avant ICC_sRGB). LRGB et LHaRGB : non ajoutées (à demander). Mesures et contrôle dans docs/kb/techniques.md. Non testé dans PixInsight.
 Puis, à ma question pour LRGB et LHaRGB (impacts annoncés : 2 options P7 avant ICC_sRGB, chemin principal, rapides et turbos inchangés), réponse de l'utilisateur : « oui ». Fait : Opt_Temperature_PS_5 et _10 aussi en LRGB et LHaRGB.
+
+### SHO : Temperature_PS_5 au chemin principal (11 novembre 2026)
+
+Demande de l'utilisateur : « pour les SHO mets le +5 entre le GHS et le screen d'étoiles ». Fait : SHO sans RGB (E25) et RGB + SHO (E31) : Temperature_PS_5 au chemin principal entre Contraste_GHS et Etoiles_screen (image sans étoiles) ; Opt_Temperature_PS_10 reste en option (à la place, au même endroit). HOO, LRGB, LHaRGB inchangés (options).

@@ -1519,6 +1519,12 @@ for _st in (rgbsho, sho, hoo):
     _it = pick(_st, 'Contraste_GHS')
     _st.remove(_it)
     insert_before(_st, 'Etoiles_screen', [_it])
+# SHO et RGB + SHO (demande de l'utilisateur, 11 novembre 2026 : « pour les SHO mets le +5 entre le GHS et le screen d'étoiles ») :
+# Temperature_PS_5 au chemin principal, entre Contraste_GHS et Etoiles_screen (image sans étoiles) ; +10 reste en option
+for _st in (rgbsho, sho):
+    _it = pick(_st, 'Temperature_PS_5')
+    _st.remove(_it)
+    insert_after(_st, 'Contraste_GHS', [_it])
 
 # T_Turbo_palette (demande de l'utilisateur, 8 novembre 2026, possibilité 1) : Stat_canaux puis la palette (combinaison + NBN) en un
 # conteneur de scripts (Apply Global) ; R_C_Fin_rapide reste à glisser ensuite sur l'image créée (il doit être glissé, et contient des scripts)
