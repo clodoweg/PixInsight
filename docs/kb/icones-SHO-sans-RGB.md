@@ -1221,19 +1221,18 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 #### E22_Fond_desature — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js`
-   paramètres : `debut=0.02`, `fin=0.20`, `violetFin=0.30`, `flou=12`, `force=0.70`, `lisse=true`
+   paramètres : `debut=0.02`, `fin=0.12`, `violetFin=0.30`, `flou=8`, `force=0.80`, `lisse=true`, `portee=60`
 
 > LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
 > 
-> PRÉRÉGLÉ : script Fond_desature, réglé doux en narrowband (10 novembre 2026) : fond mesuré ; violet neutralisé (G remonté jusqu'à min(R, B)) près du fond, décroissant jusqu'à + 0,30 ; couleur du fond retirée à 70 % (force 0,70 : 30 % gardée), transition en S de + 0,02 à + 0,20 au-dessus du fond, masque lissé 12 px : pas de démarcation franche.
+> PRÉRÉGLÉ : script Fond_desature, réglé doux en narrowband (11 novembre 2026) : couleur du fond retirée à 80 % LOIN de la nébuleuse, de moins en moins en s'en approchant (dégradé sur environ 60 px : luminance lissée), rien sur la nébuleuse ; transition en S de + 0,02 à + 0,12 au-dessus du fond, masque lissé 8 px ; violet neutralisé avec le même dégradé.
 > 
 > À RÉGLER : glisse sur l'image SANS étoiles finie (après NXT_final), avant Fond_auto et la recombinaison des étoiles (Etoiles_screen, ou Etoiles_reduites).
 > 
 > SI :
-> - teinte encore visible -> force 0,85
-> - voiles faibles grisés -> fin 0,12 ou force 0,50
-> - démarcation encore visible -> flou 20
-> - violet encore visible dans les zones faibles -> violetFin 0,40
+> - voiles rouges encore touchés -> Dégradé 100 à 150 px, ou Force 0,60
+> - fond lointain encore teinté -> Force 0,95
+> - démarcation visible -> Flou 15
 
 #### E23_Fond_auto — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js`
@@ -1467,7 +1466,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 #### R_C_Etoiles_fond_rapide — ProcessContainer
    1. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js`
-      paramètres : `debut=0.02`, `fin=0.20`, `violetFin=0.30`, `flou=12`, `force=0.70`, `lisse=true`, `dialogue=false`
+      paramètres : `debut=0.02`, `fin=0.12`, `violetFin=0.30`, `flou=8`, `force=0.80`, `lisse=true`, `portee=60`, `dialogue=false`
    2. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js`
       paramètres : `cible=0.12`, `tolerance=0.005`, `grille=8`, `dialogue=false`

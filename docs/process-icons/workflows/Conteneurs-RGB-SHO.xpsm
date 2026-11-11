@@ -6195,17 +6195,17 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <description>PHASE 7 — Étoiles : étoiles : étirement, recombinaison, réduction. Colonne de repère, sans effet.</description>
    </instance>
    <instance class="Script" version="256" id="E28_Fond_desature_instance">
-      <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Fond_desature, réglé doux en narrowband (10 novembre 2026) : fond mesuré ; violet neutralisé (G remonté jusqu'à min(R, B)) près du fond, décroissant jusqu'à + 0,30 ; couleur du fond retirée à 70 % (force 0,70 : 30 % gardée), transition en S de + 0,02 à + 0,20 au-dessus du fond, masque lissé 12 px : pas de démarcation franche.&#10;&#10;À RÉGLER : glisse sur l'image SANS étoiles finie (après NXT_final), avant Fond_auto et la recombinaison des étoiles (Etoiles_screen, ou Etoiles_reduites).&#10;&#10;SI :&#10;- teinte encore visible -&gt; force 0,85&#10;- voiles faibles grisés -&gt; fin 0,12 ou force 0,50&#10;- démarcation encore visible -&gt; flou 20&#10;- violet encore visible dans les zones faibles -&gt; violetFin 0,40</description>
+      <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Fond_desature, réglé doux en narrowband (11 novembre 2026) : couleur du fond retirée à 80 % LOIN de la nébuleuse, de moins en moins en s'en approchant (dégradé sur environ 60 px : luminance lissée), rien sur la nébuleuse ; transition en S de + 0,02 à + 0,12 au-dessus du fond, masque lissé 8 px ; violet neutralisé avec le même dégradé.&#10;&#10;À RÉGLER : glisse sur l'image SANS étoiles finie (après NXT_final), avant Fond_auto et la recombinaison des étoiles (Etoiles_screen, ou Etoiles_reduites).&#10;&#10;SI :&#10;- voiles rouges encore touchés -&gt; Dégradé 100 à 150 px, ou Force 0,60&#10;- fond lointain encore teinté -&gt; Force 0,95&#10;- démarcation visible -&gt; Flou 15</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js</parameter>
       <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="6">
+      <table id="parameters" rows="7">
          <tr>
             <td id="id">debut</td>
             <td id="value">0.02</td>
          </tr>
          <tr>
             <td id="id">fin</td>
-            <td id="value">0.20</td>
+            <td id="value">0.12</td>
          </tr>
          <tr>
             <td id="id">violetFin</td>
@@ -6213,15 +6213,19 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          </tr>
          <tr>
             <td id="id">flou</td>
-            <td id="value">12</td>
+            <td id="value">8</td>
          </tr>
          <tr>
             <td id="id">force</td>
-            <td id="value">0.70</td>
+            <td id="value">0.80</td>
          </tr>
          <tr>
             <td id="id">lisse</td>
             <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">portee</td>
+            <td id="value">60</td>
          </tr>
       </table>
       <parameter id="information"></parameter>
@@ -6981,14 +6985,14 @@ max($T,f1)</parameter>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js</parameter>
          <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="7">
+         <table id="parameters" rows="8">
             <tr>
                <td id="id">debut</td>
                <td id="value">0.02</td>
             </tr>
             <tr>
                <td id="id">fin</td>
-               <td id="value">0.20</td>
+               <td id="value">0.12</td>
             </tr>
             <tr>
                <td id="id">violetFin</td>
@@ -6996,15 +7000,19 @@ max($T,f1)</parameter>
             </tr>
             <tr>
                <td id="id">flou</td>
-               <td id="value">12</td>
+               <td id="value">8</td>
             </tr>
             <tr>
                <td id="id">force</td>
-               <td id="value">0.70</td>
+               <td id="value">0.80</td>
             </tr>
             <tr>
                <td id="id">lisse</td>
                <td id="value">true</td>
+            </tr>
+            <tr>
+               <td id="id">portee</td>
+               <td id="value">60</td>
             </tr>
             <tr>
                <td id="id">dialogue</td>

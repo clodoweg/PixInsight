@@ -1506,3 +1506,8 @@ Puis (10 novembre 2026) : « tu peux aussi proposer des presets (SHO , SHO 2 SHO
 
 Retour de l'utilisateur (deux captures) : « pour les SHO parfois a la fin j'ai des teintes colorée persistantres et le script desaturation (qui fonctionne a merveille sur les galaxies en LRGB) est trop fort ici , il est trop brut avec des demarquations trop franche dans son application ».
 Fait : Fond_desature.js, paramètres force et lisse (défauts : comportement inchangé) ; icône Fond_desature_nb (debut 0,02, fin 0,20, violetFin 0,30, flou 12, force 0,70, lisse) dans SHO, RGB + SHO et HOO (chemin principal, R_C_Etoiles_fond_rapide). LRGB et LHaRGB non touchés (vérifié). Choix de ma part, non testé.
+
+### Fond_desature : dégradé autour de la nébuleuse (11 novembre 2026)
+
+Retours de l'utilisateur : « il en fait pas trop sur le rouge la ? », puis « bof ca fait toujours trop. Est ce que l'on peut faire un degradé sur l'effet ? ca sera plus fort sur le fond et de moins en moins fort quand le fond se rapprochera de la nebuleuse? (tjrs que sur les SHO, HOO, etc) ».
+Fait : paramètre portee (dégradé spatial) dans Fond_desature.js (0 par défaut : galaxies inchangées) ; Fond_desature_nb : debut 0,02, fin 0,12, flou 8, force 0,80, lisse, portee 60 (SHO, RGB + SHO, HOO ; chemin principal et rapides). Choix de ma part, non testé.
