@@ -6470,6 +6470,30 @@ max($T,f1)</parameter>
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
+   <instance class="Script" version="256" id="Opt_Temperature_PS_5_instance">
+      <description>OPTION — tout à la fin, image finie avec étoiles, avant l'export : Température +5 de Photoshop (Couleur et vibrance), reproduite d'après une mesure&#10;Image plus chaude.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Temperature_PS, Température +5 du calque Couleur et vibrance de Photoshop : table 3D de 729 couleurs MESURÉE sur Photoshop (mire de l'utilisateur), interpolée ; gris 0,50 -&gt; 0,537 / 0,521 / 0,497 ; écart moyen avec Photoshop sur le gris 0,0003.&#10;&#10;À RÉGLER : glisse sur l'image finie (couleur, sRGB), après NXT_dernier, avant l'export ; un seul des deux ; copie Temperature_PS.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- trop chaud -&gt; Ctrl+Z&#10;- pas assez -&gt; Temperature_PS_10 à la place</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Temperature_PS.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="1">
+         <tr>
+            <td id="id">reglage</td>
+            <td id="value">5</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
+   </instance>
+   <instance class="Script" version="256" id="Opt_Temperature_PS_10_instance">
+      <description>OPTION — tout à la fin, image finie avec étoiles, avant l'export : Température +10 de Photoshop, reproduite d'après une mesure&#10;À la place de Temperature_PS_5.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Temperature_PS, Température +10 (même méthode, mesure à +10) : gris 0,50 -&gt; 0,571 / 0,540 / 0,493 ; écart moyen avec Photoshop sur le gris 0,0006.&#10;&#10;À RÉGLER : glisse sur l'image finie (couleur, sRGB), après NXT_dernier, avant l'export ; un seul des deux ; copie Temperature_PS.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- trop chaud -&gt; Temperature_PS_5 à la place</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Temperature_PS.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="1">
+         <tr>
+            <td id="id">reglage</td>
+            <td id="value">10</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
+   </instance>
    <instance class="ICCProfileTransformation" version="256" id="Opt_ICC_sRGB_instance">
       <description>OPTION — tout à la fin, avant une finition dans Photoshop, Lightroom ou Affinity : image convertie en sRGB IEC61966-2.1 (couleurs identiques dans l'autre logiciel).&#10;&#10;PRÉRÉGLÉ : ICCProfileTransformation : vers sRGB IEC61966-2.1, Convert to the specified profile, rendu Perceptual, compensation du point noir.&#10;&#10;À RÉGLER : glisse sur l'image finie avant l'export (Export_TIFF le fait aussi sur sa copie : cette icône sert si tu enregistres toi-même).&#10;&#10;SI :&#10;- impression ou Adobe RGB voulu -&gt; change le profil cible dans l'icône</description>
       <parameter id="targetProfile">sRGB IEC61966-2.1</parameter>
@@ -7018,10 +7042,12 @@ max($T,f1)</parameter>
    <icon id="P7_options" instance="P7_options_instance" xpos="1159" ypos="290" workspace="Workspace01"/>
    <icon id="Opt_Boost_final_doux" instance="Opt_Boost_final_doux_instance" xpos="1159" ypos="324" workspace="Workspace01"/>
    <icon id="Opt_Etoiles_reduites" instance="Opt_Etoiles_reduites_instance" xpos="1159" ypos="354" workspace="Workspace01"/>
-   <icon id="Opt_ICC_sRGB" instance="Opt_ICC_sRGB_instance" xpos="1159" ypos="384" workspace="Workspace01"/>
-   <icon id="Opt_Export_Photoshop" instance="Opt_Export_Photoshop_instance" xpos="1159" ypos="414" workspace="Workspace01"/>
-   <icon id="Opt_Lecture_Photoshop" instance="Opt_Lecture_Photoshop_instance" xpos="1159" ypos="444" workspace="Workspace01"/>
-   <icon id="Opt_Fermer_tout" instance="Opt_Fermer_tout_instance" xpos="1159" ypos="474" workspace="Workspace01"/>
-   <icon id="P7_rapide" instance="P7_rapide_instance" xpos="1159" ypos="520" workspace="Workspace01"/>
-   <icon id="R_C_Etoiles_fond_rapide" instance="R_C_Etoiles_fond_rapide_instance" xpos="1159" ypos="554" workspace="Workspace01"/>
+   <icon id="Opt_Temperature_PS_5" instance="Opt_Temperature_PS_5_instance" xpos="1159" ypos="384" workspace="Workspace01"/>
+   <icon id="Opt_Temperature_PS_10" instance="Opt_Temperature_PS_10_instance" xpos="1159" ypos="414" workspace="Workspace01"/>
+   <icon id="Opt_ICC_sRGB" instance="Opt_ICC_sRGB_instance" xpos="1159" ypos="444" workspace="Workspace01"/>
+   <icon id="Opt_Export_Photoshop" instance="Opt_Export_Photoshop_instance" xpos="1159" ypos="474" workspace="Workspace01"/>
+   <icon id="Opt_Lecture_Photoshop" instance="Opt_Lecture_Photoshop_instance" xpos="1159" ypos="504" workspace="Workspace01"/>
+   <icon id="Opt_Fermer_tout" instance="Opt_Fermer_tout_instance" xpos="1159" ypos="534" workspace="Workspace01"/>
+   <icon id="P7_rapide" instance="P7_rapide_instance" xpos="1159" ypos="580" workspace="Workspace01"/>
+   <icon id="R_C_Etoiles_fond_rapide" instance="R_C_Etoiles_fond_rapide_instance" xpos="1159" ypos="614" workspace="Workspace01"/>
 </xpsm>

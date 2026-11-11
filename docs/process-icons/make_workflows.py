@@ -1252,8 +1252,8 @@ for _st in (lrgb, lhargb):
         _it = pick(_st, _b)
         _st.remove(_it)
         insert_before(_st, 'Etoiles_screen', [_it])
-# options P7 Temperature_PS_5 et Temperature_PS_10 (narrowband ; demande de l'utilisateur, 11 novembre 2026), juste avant ICC_sRGB et les exports
-for _st in (rgbsho, sho, hoo):
+# options P7 Temperature_PS_5 et Temperature_PS_10 (narrowband, puis LRGB et LHaRGB : « oui » ; demande de l'utilisateur, 11 novembre 2026), juste avant ICC_sRGB et les exports
+for _st in (rgbsho, sho, hoo, lrgb, lhargb):
     insert_before(_st, 'ICC_sRGB', [(script('Temperature_PS_5', ''), ''), (script('Temperature_PS_10', ''), '')])
 
 def fin_rapide_items(steps, boost=False):
