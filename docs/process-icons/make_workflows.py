@@ -1511,7 +1511,7 @@ insert_before(rgbsho, 'STF', _its)   # fin de phase 3, après C_RGB_lineaire et 
 sho[:] = [x for x in sho if x[0][0] != 'C_MAS_canaux_rapide']
 # options Couleur sélective (profils SHO, SHO_2, SHO_3 de l'utilisateur), SHO et RGB + SHO : P5, après NBN_SHO_doux (8 novembre 2026, d'abord en P7)
 for _st in (rgbsho, sho):
-    insert_after(_st, 'NBN_SHO', [(script(n, ''), '') for n in ('Couleur_selective_SHO', 'Couleur_selective_SHO_2', 'Couleur_selective_SHO_3')])   # R_C_Stat_canaux_rapide remis (demande de l'utilisateur, 8 novembre 2026)
+    insert_before(_st, 'Temperature_PS_5', [(script(n, ''), '') for n in ('Couleur_selective_SHO', 'Couleur_selective_SHO_2', 'Couleur_selective_SHO_3')])   # P7 options, avant les Températures (11 novembre 2026)   # R_C_Stat_canaux_rapide remis (demande de l'utilisateur, 8 novembre 2026)
 # RGB + SHO (demande de l'utilisateur, 8 novembre 2026 : « met E30_Etoiles_screen apres GHS mais avant NXT ») : Contraste_GHS sur l'image
 # SANS étoiles, juste avant Etoiles_screen ; ordre P7 : Fond_desature, Fond_auto, Contraste_GHS, Etoiles_screen, NXT_dernier, Export_TIFF
 # puis SHO sans RGB et HOO aussi (« OUI », 8 novembre 2026)
@@ -1519,14 +1519,7 @@ for _st in (rgbsho, sho, hoo):
     _it = pick(_st, 'Contraste_GHS')
     _st.remove(_it)
     insert_before(_st, 'Etoiles_screen', [_it])
-# SHO et RGB + SHO (demandes de l'utilisateur, 11 novembre 2026 : d'abord « mets le +5 entre le GHS et le screen d'étoiles », puis
-# « met plutot les temperature apres les options couleurs selectives ») : Temperature_PS_5 et _10 en options P5, juste après
-# Couleur_selective_SHO_3 (sur SHO_etire sans étoiles) ; phase forcée par layout.PHASE_PREFIX
-for _st in (rgbsho, sho):
-    _its = [pick(_st, 'Temperature_PS_5'), pick(_st, 'Temperature_PS_10')]
-    for _it in _its:
-        _st.remove(_it)
-    insert_after(_st, 'Couleur_selective_SHO_3', _its)
+# (Temperature_PS en P5 du 11 novembre retirée : options P7, demande de l'utilisateur du 11 novembre 2026)
 
 # T_Turbo_palette (demande de l'utilisateur, 8 novembre 2026, possibilité 1) : Stat_canaux puis la palette (combinaison + NBN) en un
 # conteneur de scripts (Apply Global) ; R_C_Fin_rapide reste à glisser ensuite sur l'image créée (il doit être glissé, et contient des scripts)

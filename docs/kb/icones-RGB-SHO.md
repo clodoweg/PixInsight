@@ -932,87 +932,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - pas assez d'orange -> SII boost 1,5
 > - détail pâteux -> Lightness Ha
 
-#### Opt_Couleur_selective_SHO — Script
-   script `$PXI_SRCDIR/scripts/clodoweg/Couleur_selective.js`
-   paramètres : `rouges=-25,25,0,0`, `jaunes=-50,50,0,0`, `verts=-50,50,0,0`, `cyans=0,0,-50,0`, `bleus=0,0,0,0`, `magentas=0,0,0,0`, `blancs=0,0,0,0`, `neutres=0,0,0,0`, `noirs=0,0,0,0`, `relatif=true`
-
-> OPTION — après la palette (NBN_SHO), sur SHO_etire sans étoiles : ton profil Couleur sélective « SHO » de Photoshop (le plus fort : rouges et jaunes tirés vers l'or, verts -50/+50, cyans vers le bleu)
-> Un seul des trois profils.
-> 
-> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
-> 
-> PRÉRÉGLÉ : script Couleur_selective (équivalent approché de Couleur sélective de Photoshop, méthode relative) : profil SHO : rouges -25,+25,0,0 ; jaunes -50,+50,0,0 ; verts -50,+50,0,0 ; cyans 0,0,-50,0 ; bleus, magentas, blancs, neutres, noirs à 0 (cyan, magenta, jaune, noir).
-> 
-> À RÉGLER : glisse sur SHO_etire après NBN_SHO (P5, image sans étoiles) ; un seul profil à la fois ; double-clic puis Apply Global = fenêtre (une ligne par gamme) ; copie Couleur_selective.js dans src/scripts/clodoweg.
-> 
-> SI :
-> - trop fort -> profil plus doux (SHO_2, puis SHO_3)
-> - différent de Photoshop -> formule d'Adobe non publiée : ajuste les valeurs dans la fenêtre
-
-#### Opt_Couleur_selective_SHO_2 — Script
-   script `$PXI_SRCDIR/scripts/clodoweg/Couleur_selective.js`
-   paramètres : `rouges=-25,25,0,0`, `jaunes=-25,25,0,0`, `verts=-50,50,0,0`, `cyans=0,0,-50,0`, `bleus=0,0,0,0`, `magentas=0,0,0,0`, `blancs=0,0,0,0`, `neutres=0,0,0,0`, `noirs=0,0,0,0`, `relatif=true`
-
-> OPTION — après la palette (NBN_SHO), sur SHO_etire sans étoiles : ton profil « SHO_2 » (comme SHO, jaunes moitié moins tirés).
-> 
-> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
-> 
-> PRÉRÉGLÉ : script Couleur_selective (équivalent approché de Couleur sélective de Photoshop, méthode relative) : profil SHO_2 : rouges -25,+25,0,0 ; jaunes -25,+25,0,0 ; verts -50,+50,0,0 ; cyans 0,0,-50,0 ; bleus, magentas, blancs, neutres, noirs à 0 (cyan, magenta, jaune, noir).
-> 
-> À RÉGLER : glisse sur SHO_etire après NBN_SHO (P5, image sans étoiles) ; un seul profil à la fois ; double-clic puis Apply Global = fenêtre (une ligne par gamme) ; copie Couleur_selective.js dans src/scripts/clodoweg.
-> 
-> SI :
-> - trop fort -> profil plus doux (SHO_2, puis SHO_3)
-> - différent de Photoshop -> formule d'Adobe non publiée : ajuste les valeurs dans la fenêtre
-
-#### Opt_Couleur_selective_SHO_3 — Script
-   script `$PXI_SRCDIR/scripts/clodoweg/Couleur_selective.js`
-   paramètres : `rouges=0,0,0,0`, `jaunes=-25,25,0,0`, `verts=-50,50,0,0`, `cyans=0,0,-50,0`, `bleus=0,0,0,0`, `magentas=0,0,0,0`, `blancs=0,0,0,0`, `neutres=0,0,0,0`, `noirs=0,0,0,0`, `relatif=true`
-
-> OPTION — après la palette (NBN_SHO), sur SHO_etire sans étoiles : ton profil « SHO_3 » (le plus doux : rouges inchangés, jaunes moitié moins).
-> 
-> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
-> 
-> PRÉRÉGLÉ : script Couleur_selective (équivalent approché de Couleur sélective de Photoshop, méthode relative) : profil SHO_3 : rouges 0 ; jaunes -25,+25,0,0 ; verts -50,+50,0,0 ; cyans 0,0,-50,0 ; bleus, magentas, blancs, neutres, noirs à 0 (cyan, magenta, jaune, noir).
-> 
-> À RÉGLER : glisse sur SHO_etire après NBN_SHO (P5, image sans étoiles) ; un seul profil à la fois ; double-clic puis Apply Global = fenêtre (une ligne par gamme) ; copie Couleur_selective.js dans src/scripts/clodoweg.
-> 
-> SI :
-> - trop fort -> profil plus doux (SHO_2, puis SHO_3)
-> - différent de Photoshop -> formule d'Adobe non publiée : ajuste les valeurs dans la fenêtre
-
-#### Opt_Temperature_PS_5 — Script
-   script `$PXI_SRCDIR/scripts/clodoweg/Temperature_PS.js`
-   paramètres : `reglage=5`
-
-> OPTION — après la palette (NBN_SHO) et la Couleur sélective éventuelle, sur SHO_etire sans étoiles : Température +5 de Photoshop, reproduite d'après une mesure
-> Image plus chaude.
-> 
-> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
-> 
-> PRÉRÉGLÉ : script Temperature_PS, Température +5 du calque Couleur et vibrance de Photoshop : table 3D de 729 couleurs MESURÉE sur Photoshop (mire de l'utilisateur), interpolée ; gris 0,50 -> 0,537 / 0,521 / 0,497 ; écart moyen avec Photoshop sur le gris 0,0003.
-> 
-> À RÉGLER : glisse sur SHO_etire (sans étoiles, P5), après NBN_SHO et la Couleur sélective éventuelle ; un seul des deux (+5 ou +10) ; copie Temperature_PS.js dans src/scripts/clodoweg.
-> 
-> SI :
-> - trop chaud -> Ctrl+Z
-> - pas assez -> Opt_Temperature_PS_10 à la place
-
-#### Opt_Temperature_PS_10 — Script
-   script `$PXI_SRCDIR/scripts/clodoweg/Temperature_PS.js`
-   paramètres : `reglage=10`
-
-> OPTION — à la place de Temperature_PS_5, au même endroit (SHO_etire sans étoiles, P5) : Température +10 de Photoshop.
-> 
-> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
-> 
-> PRÉRÉGLÉ : script Temperature_PS, Température +10 (même méthode, mesure à +10) : gris 0,50 -> 0,571 / 0,540 / 0,493 ; écart moyen avec Photoshop sur le gris 0,0006.
-> 
-> À RÉGLER : à la place d'Opt_Temperature_PS_5, au même endroit : SHO_etire (sans étoiles, P5), après NBN_SHO et la Couleur sélective éventuelle.
-> 
-> SI :
-> - trop chaud -> Opt_Temperature_PS_5
-
 #### Opt_Foraxx_SHO — PixelMath
    expression = `(O^~O)*S + ~(O^~O)*H` ; expression1 = `((O*H)^~(O*H))*H + ~((O*H)^~(O*H))*O` ; expression2 = `O` ; useSingleExpression=false ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=true ; showNewImage=true ; newImageId=SHO_Foraxx ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=RGB ; newImageSampleFormat=SameAsTarget
 
@@ -1615,6 +1534,88 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - étoiles encore grosses -> S 0,15
 > - trop petites -> S 0,25, ou Etoiles_screen
 > - pour recommencer -> Ctrl+Z
+
+#### Opt_Couleur_selective_SHO — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Couleur_selective.js`
+   paramètres : `rouges=-25,25,0,0`, `jaunes=-50,50,0,0`, `verts=-50,50,0,0`, `cyans=0,0,-50,0`, `bleus=0,0,0,0`, `magentas=0,0,0,0`, `blancs=0,0,0,0`, `neutres=0,0,0,0`, `noirs=0,0,0,0`, `relatif=true`
+
+> OPTION — tout à la fin, image finie : ton profil Couleur sélective « SHO » de Photoshop (le plus fort : rouges et jaunes tirés vers l'or, verts -50/+50, cyans vers le bleu)
+> Un seul des trois profils.
+> 
+> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
+> 
+> PRÉRÉGLÉ : script Couleur_selective (équivalent approché de Couleur sélective de Photoshop, méthode relative) : profil SHO : rouges -25,+25,0,0 ; jaunes -50,+50,0,0 ; verts -50,+50,0,0 ; cyans 0,0,-50,0 ; bleus, magentas, blancs, neutres, noirs à 0 (cyan, magenta, jaune, noir).
+> 
+> À RÉGLER : glisse sur l'image finie (couleur), avant l'export ; un seul profil à la fois ; double-clic puis Apply Global = fenêtre (une ligne par gamme) ; copie Couleur_selective.js dans src/scripts/clodoweg.
+> 
+> SI :
+> - trop fort -> profil plus doux (SHO_2, puis SHO_3)
+> - différent de Photoshop -> formule d'Adobe non publiée : ajuste les valeurs dans la fenêtre
+
+#### Opt_Couleur_selective_SHO_2 — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Couleur_selective.js`
+   paramètres : `rouges=-25,25,0,0`, `jaunes=-25,25,0,0`, `verts=-50,50,0,0`, `cyans=0,0,-50,0`, `bleus=0,0,0,0`, `magentas=0,0,0,0`, `blancs=0,0,0,0`, `neutres=0,0,0,0`, `noirs=0,0,0,0`, `relatif=true`
+
+> OPTION — tout à la fin, image finie : ton profil « SHO_2 » (comme SHO, jaunes moitié moins tirés).
+> 
+> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
+> 
+> PRÉRÉGLÉ : script Couleur_selective (équivalent approché de Couleur sélective de Photoshop, méthode relative) : profil SHO_2 : rouges -25,+25,0,0 ; jaunes -25,+25,0,0 ; verts -50,+50,0,0 ; cyans 0,0,-50,0 ; bleus, magentas, blancs, neutres, noirs à 0 (cyan, magenta, jaune, noir).
+> 
+> À RÉGLER : glisse sur l'image finie (couleur), avant l'export ; un seul profil à la fois ; double-clic puis Apply Global = fenêtre (une ligne par gamme) ; copie Couleur_selective.js dans src/scripts/clodoweg.
+> 
+> SI :
+> - trop fort -> profil plus doux (SHO_2, puis SHO_3)
+> - différent de Photoshop -> formule d'Adobe non publiée : ajuste les valeurs dans la fenêtre
+
+#### Opt_Couleur_selective_SHO_3 — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Couleur_selective.js`
+   paramètres : `rouges=0,0,0,0`, `jaunes=-25,25,0,0`, `verts=-50,50,0,0`, `cyans=0,0,-50,0`, `bleus=0,0,0,0`, `magentas=0,0,0,0`, `blancs=0,0,0,0`, `neutres=0,0,0,0`, `noirs=0,0,0,0`, `relatif=true`
+
+> OPTION — tout à la fin, image finie : ton profil « SHO_3 » (le plus doux : rouges inchangés, jaunes moitié moins).
+> 
+> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
+> 
+> PRÉRÉGLÉ : script Couleur_selective (équivalent approché de Couleur sélective de Photoshop, méthode relative) : profil SHO_3 : rouges 0 ; jaunes -25,+25,0,0 ; verts -50,+50,0,0 ; cyans 0,0,-50,0 ; bleus, magentas, blancs, neutres, noirs à 0 (cyan, magenta, jaune, noir).
+> 
+> À RÉGLER : glisse sur l'image finie (couleur), avant l'export ; un seul profil à la fois ; double-clic puis Apply Global = fenêtre (une ligne par gamme) ; copie Couleur_selective.js dans src/scripts/clodoweg.
+> 
+> SI :
+> - trop fort -> profil plus doux (SHO_2, puis SHO_3)
+> - différent de Photoshop -> formule d'Adobe non publiée : ajuste les valeurs dans la fenêtre
+
+#### Opt_Temperature_PS_5 — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Temperature_PS.js`
+   paramètres : `reglage=5`
+
+> OPTION — tout à la fin, image finie avec étoiles, avant l'export : Température +5 de Photoshop (Couleur et vibrance), reproduite d'après une mesure
+> Image plus chaude.
+> 
+> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
+> 
+> PRÉRÉGLÉ : script Temperature_PS, Température +5 du calque Couleur et vibrance de Photoshop : table 3D de 729 couleurs MESURÉE sur Photoshop (mire de l'utilisateur), interpolée ; gris 0,50 -> 0,537 / 0,521 / 0,497 ; écart moyen avec Photoshop sur le gris 0,0003.
+> 
+> À RÉGLER : glisse sur l'image finie (couleur, sRGB), après NXT_dernier, avant l'export ; un seul des deux ; copie Temperature_PS.js dans src/scripts/clodoweg.
+> 
+> SI :
+> - trop chaud -> Ctrl+Z
+> - pas assez -> Temperature_PS_10 à la place
+
+#### Opt_Temperature_PS_10 — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Temperature_PS.js`
+   paramètres : `reglage=10`
+
+> OPTION — tout à la fin, image finie avec étoiles, avant l'export : Température +10 de Photoshop, reproduite d'après une mesure
+> À la place de Temperature_PS_5.
+> 
+> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
+> 
+> PRÉRÉGLÉ : script Temperature_PS, Température +10 (même méthode, mesure à +10) : gris 0,50 -> 0,571 / 0,540 / 0,493 ; écart moyen avec Photoshop sur le gris 0,0006.
+> 
+> À RÉGLER : glisse sur l'image finie (couleur, sRGB), après NXT_dernier, avant l'export ; un seul des deux ; copie Temperature_PS.js dans src/scripts/clodoweg.
+> 
+> SI :
+> - trop chaud -> Temperature_PS_5 à la place
 
 #### Opt_ICC_sRGB — ICCProfileTransformation
    targetProfile=sRGB IEC61966-2.1 ; toDefaultProfile=false ; renderingIntent=Perceptual ; useBlackPointCompensation=true ; useFloatingPointTransformation=true
