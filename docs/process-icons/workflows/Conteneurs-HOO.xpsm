@@ -6187,6 +6187,26 @@ max($T,f1)</parameter>
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
+   <instance class="Script" version="256" id="Opt_Voile_PS_instance">
+      <description>OPTION — tout à la fin, image finie, avant l'export : Correction du voile +20 façon Photoshop (fond un peu plus sombre, contraste et couleurs montés)&#10;Modèle des brevets d'Adobe, pas encore calé sur Photoshop.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Voile_PS, force 20 (comme Correction du voile +20) : modèle physique des brevets d'Adobe, calcul en sRGB linéaire ; canal sombre min(R, G, B) lissé 15 px ; transmission t = max(0,10 ; 1 − 0,20·D/A) ; J = (I − A)/t + A ; exemple : fond 0,10 -&gt; 0,086, rouge 0,50/0,20/0,15 -&gt; 0,50/0,19/0,13.&#10;&#10;À RÉGLER : glisse sur l'image finie (couleur, sRGB), avant l'export ; double-clic puis Apply Global = fenêtre (force, rayon, t0, bouton Aperçu) ; copie Voile_PS.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- trop fort -&gt; force 10 à 15&#10;- halos autour des zones claires -&gt; rayon 30&#10;- différent de Photoshop -&gt; pas encore calé : envoie une image avant / après Photoshop +20</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Voile_PS.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="3">
+         <tr>
+            <td id="id">force</td>
+            <td id="value">20</td>
+         </tr>
+         <tr>
+            <td id="id">rayon</td>
+            <td id="value">15</td>
+         </tr>
+         <tr>
+            <td id="id">t0</td>
+            <td id="value">0.10</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
+   </instance>
    <instance class="Script" version="256" id="Opt_Temperature_PS_5_instance">
       <description>OPTION — tout à la fin, image finie avec étoiles, avant l'export : Température +5 de Photoshop (Couleur et vibrance), reproduite d'après une mesure&#10;Image plus chaude.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Temperature_PS, Température +5 du calque Couleur et vibrance de Photoshop : table 3D de 729 couleurs MESURÉE sur Photoshop (mire de l'utilisateur), interpolée ; gris 0,50 -&gt; 0,537 / 0,521 / 0,497 ; écart moyen avec Photoshop sur le gris 0,0003.&#10;&#10;À RÉGLER : glisse sur l'image finie (couleur, sRGB), après NXT_dernier, avant l'export ; un seul des deux ; copie Temperature_PS.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- trop chaud -&gt; Ctrl+Z&#10;- pas assez -&gt; Temperature_PS_10 à la place</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Temperature_PS.js</parameter>
@@ -6521,12 +6541,13 @@ max($T,f1)</parameter>
    <icon id="Opt_Boost_final_doux" instance="Opt_Boost_final_doux_instance" xpos="1264" ypos="354" workspace="Workspace01"/>
    <icon id="Opt_Boost_final" instance="Opt_Boost_final_instance" xpos="1264" ypos="384" workspace="Workspace01"/>
    <icon id="Opt_Etoiles_reduites" instance="Opt_Etoiles_reduites_instance" xpos="1264" ypos="414" workspace="Workspace01"/>
-   <icon id="Opt_Temperature_PS_5" instance="Opt_Temperature_PS_5_instance" xpos="1264" ypos="444" workspace="Workspace01"/>
-   <icon id="Opt_Temperature_PS_10" instance="Opt_Temperature_PS_10_instance" xpos="1264" ypos="474" workspace="Workspace01"/>
-   <icon id="Opt_ICC_sRGB" instance="Opt_ICC_sRGB_instance" xpos="1264" ypos="504" workspace="Workspace01"/>
-   <icon id="Opt_Export_Photoshop" instance="Opt_Export_Photoshop_instance" xpos="1264" ypos="534" workspace="Workspace01"/>
-   <icon id="Opt_Lecture_Photoshop" instance="Opt_Lecture_Photoshop_instance" xpos="1264" ypos="564" workspace="Workspace01"/>
-   <icon id="Opt_Fermer_tout" instance="Opt_Fermer_tout_instance" xpos="1264" ypos="594" workspace="Workspace01"/>
-   <icon id="P7_rapide" instance="P7_rapide_instance" xpos="1264" ypos="640" workspace="Workspace01"/>
-   <icon id="R_C_Etoiles_fond_rapide" instance="R_C_Etoiles_fond_rapide_instance" xpos="1264" ypos="674" workspace="Workspace01"/>
+   <icon id="Opt_Voile_PS" instance="Opt_Voile_PS_instance" xpos="1264" ypos="444" workspace="Workspace01"/>
+   <icon id="Opt_Temperature_PS_5" instance="Opt_Temperature_PS_5_instance" xpos="1264" ypos="474" workspace="Workspace01"/>
+   <icon id="Opt_Temperature_PS_10" instance="Opt_Temperature_PS_10_instance" xpos="1264" ypos="504" workspace="Workspace01"/>
+   <icon id="Opt_ICC_sRGB" instance="Opt_ICC_sRGB_instance" xpos="1264" ypos="534" workspace="Workspace01"/>
+   <icon id="Opt_Export_Photoshop" instance="Opt_Export_Photoshop_instance" xpos="1264" ypos="564" workspace="Workspace01"/>
+   <icon id="Opt_Lecture_Photoshop" instance="Opt_Lecture_Photoshop_instance" xpos="1264" ypos="594" workspace="Workspace01"/>
+   <icon id="Opt_Fermer_tout" instance="Opt_Fermer_tout_instance" xpos="1264" ypos="624" workspace="Workspace01"/>
+   <icon id="P7_rapide" instance="P7_rapide_instance" xpos="1264" ypos="670" workspace="Workspace01"/>
+   <icon id="R_C_Etoiles_fond_rapide" instance="R_C_Etoiles_fond_rapide_instance" xpos="1264" ypos="704" workspace="Workspace01"/>
 </xpsm>

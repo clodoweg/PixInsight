@@ -1309,6 +1309,24 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - étoiles RGB -> RGB_stars ; HOO classiques -> HOO_stars
 > - pour recommencer -> Ctrl+Z
 
+#### Opt_Voile_PS — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Voile_PS.js`
+   paramètres : `force=20`, `rayon=15`, `t0=0.10`
+
+> OPTION — tout à la fin, image finie, avant l'export : Correction du voile +20 façon Photoshop (fond un peu plus sombre, contraste et couleurs montés)
+> Modèle des brevets d'Adobe, pas encore calé sur Photoshop.
+> 
+> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
+> 
+> PRÉRÉGLÉ : script Voile_PS, force 20 (comme Correction du voile +20) : modèle physique des brevets d'Adobe, calcul en sRGB linéaire ; canal sombre min(R, G, B) lissé 15 px ; transmission t = max(0,10 ; 1 − 0,20·D/A) ; J = (I − A)/t + A ; exemple : fond 0,10 -> 0,086, rouge 0,50/0,20/0,15 -> 0,50/0,19/0,13.
+> 
+> À RÉGLER : glisse sur l'image finie (couleur, sRGB), avant l'export ; double-clic puis Apply Global = fenêtre (force, rayon, t0, bouton Aperçu) ; copie Voile_PS.js dans src/scripts/clodoweg.
+> 
+> SI :
+> - trop fort -> force 10 à 15
+> - halos autour des zones claires -> rayon 30
+> - différent de Photoshop -> pas encore calé : envoie une image avant / après Photoshop +20
+
 #### Opt_Temperature_PS_5 — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Temperature_PS.js`
    paramètres : `reglage=5`

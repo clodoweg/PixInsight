@@ -1523,3 +1523,9 @@ Puis, à ma question pour LRGB et LHaRGB (impacts annoncés : 2 options P7 avant
 Demande de l'utilisateur : « pour les SHO mets le +5 entre le GHS et le screen d'étoiles ». Fait : SHO sans RGB (E25) et RGB + SHO (E31) : Temperature_PS_5 au chemin principal entre Contraste_GHS et Etoiles_screen (image sans étoiles) ; Opt_Temperature_PS_10 reste en option (à la place, au même endroit). HOO, LRGB, LHaRGB inchangés (options).
 Puis : « met plutot les temperature apres les options couleurs selectiives ». Fait : SHO sans RGB et RGB + SHO : Temperature_PS_5 et _10 en options P5, juste après Couleur_selective_SHO_3 (le +5 n'est plus au chemin principal). HOO, LRGB, LHaRGB : options P7 inchangées.
 Puis : « passe les opt couleurs selectives et temperatures dans les options de P7 ». Fait : SHO et RGB + SHO : Opt_Couleur_selective_SHO, _SHO_2, _SHO_3 puis Opt_Temperature_PS_5 et _10 en options P7, avant ICC_sRGB (image finie).
+
+### Correction du voile façon Photoshop (11 novembre 2026)
+
+Demandes de l'utilisateur : « tu sais ce que fait l'option reduction du voile dans photoshop ou lightroom? », « et si cherches partout sur internet pour trouver ce que fait cet algo? », « oui, a +20 ».
+Sources : brevets Adobe https://patents.google.com/patent/US9508126B2/en et https://patents.google.com/patent/US9508129B1/en ; https://www.redsharknews.com/post-vfx/item/2673-adobe-makes-the-impossible-possible-with-their-haze-removal-tool (citation du blog Adobe) ; https://community.adobe.com/t5/camera-raw-discussions/dark-channel-prior-image-dehaze-photoshop-camera-raw/m-p/14700501 ; https://blog.adobe.com/en/authors/eric-chan ; https://dl-c.com/forums/viewtopic.php?p=9080.
+Fait : Voile_PS.js et option P7 Voile_PS (force 20) en SHO, RGB + SHO et HOO. LRGB et LHaRGB : à demander. Non calé sur Photoshop, non testé.
