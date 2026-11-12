@@ -1374,7 +1374,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > SI :
 > - cœur encore trop clair -> HDRMT_40 ou HDRMT_50 (options) avant
-> - une option de finition (Boost…) -> entre ce conteneur et R_C_Etoiles_fond_rapide
+> - une option de finition (Boost…) -> entre ce conteneur et Fond_desature (P7)
 > - trop ou pas assez net -> double-clic sur le conteneur, Sharp_MMT : biais 0.02 ou 0.06 ; copie Sharp_MMT.js dans src/scripts/clodoweg
 
 ## P7_Etoiles
