@@ -82,7 +82,7 @@ SCRIPTS = {
     'Couleur_selective_SHO_2': ('$PXI_SRCDIR/scripts/clodoweg/Couleur_selective.js', '', [('rouges', '-25,25,0,0'), ('jaunes', '-25,25,0,0'), ('verts', '-50,50,0,0'), ('cyans', '0,0,-50,0'), ('bleus', '0,0,0,0'), ('magentas', '0,0,0,0'), ('blancs', '0,0,0,0'), ('neutres', '0,0,0,0'), ('noirs', '0,0,0,0'), ('relatif', 'true')], L_DRAG),
     'Couleur_selective_SHO_3': ('$PXI_SRCDIR/scripts/clodoweg/Couleur_selective.js', '', [('rouges', '0,0,0,0'), ('jaunes', '-25,25,0,0'), ('verts', '-50,50,0,0'), ('cyans', '0,0,-50,0'), ('bleus', '0,0,0,0'), ('magentas', '0,0,0,0'), ('blancs', '0,0,0,0'), ('neutres', '0,0,0,0'), ('noirs', '0,0,0,0'), ('relatif', 'true')], L_DRAG),
     # Température de Photoshop mesurée (calque Couleur et vibrance, +5 / +10 ; demande de l'utilisateur, 11 novembre 2026)
-    'Magenta_moins': ('$PXI_SRCDIR/scripts/clodoweg/Magenta_moins.js', '', [('force', '0.80'), ('methode', 'min')], L_DRAG),   # retire le magenta (12 novembre 2026)
+    'Magenta_moins': ('$PXI_SRCDIR/scripts/clodoweg/Magenta_moins.js', '', [('force', '0.80'), ('methode', 'min'), ('fond', 'true'), ('debut', '0.02'), ('fin', '0.12'), ('flou', '8')], L_DRAG),   # retire le magenta, fond du ciel seulement (12 novembre 2026)
     'Voile_PS': ('$PXI_SRCDIR/scripts/clodoweg/Voile_PS.js', '', [('force', '20'), ('rayon', '7.4'), ('t0', '0.10'), ('couleur', '0')], L_DRAG),   # Correction du voile +20, calée sur une image avant / après Photoshop (11 novembre 2026)
     'Temperature_PS_5': ('$PXI_SRCDIR/scripts/clodoweg/Temperature_PS.js', '', [('reglage', '5')], L_DRAG),
     'Temperature_PS_10': ('$PXI_SRCDIR/scripts/clodoweg/Temperature_PS.js', '', [('reglage', '10')], L_DRAG),

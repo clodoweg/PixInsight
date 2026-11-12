@@ -150,7 +150,7 @@ WHEN = {
     'Couleur_selective_SHO': "après la palette (NBN_SHO), sur SHO_etire sans étoiles : ton profil Couleur sélective « SHO » de Photoshop (le plus fort : rouges et jaunes tirés vers l'or, verts -50/+50, cyans vers le bleu) ; un seul des trois profils",
     'Couleur_selective_SHO_2': "après la palette (NBN_SHO), sur SHO_etire sans étoiles : ton profil « SHO_2 » (comme SHO, jaunes moitié moins tirés)",
     'Couleur_selective_SHO_3': "après la palette (NBN_SHO), sur SHO_etire sans étoiles : ton profil « SHO_3 » (le plus doux : rouges inchangés, jaunes moitié moins)",
-    'Magenta_moins': "zones magenta / violettes (R et B au-dessus de G) : sur l'image sans étoiles revenue de Photoshop (tmp_PS) ou finie, avant NXT_dernier et les étoiles ; retire le magenta sans toucher aux bleus ni aux rouges",
+    'Magenta_moins': "zones magenta / violettes (R et B au-dessus de G) : sur l'image sans étoiles revenue de Photoshop (tmp_PS) ou finie, avant NXT_dernier et les étoiles ; retire le magenta du FOND du ciel seulement, sans toucher aux nébuleuses, aux bleus ni aux rouges",
     'Voile_PS': "tout à la fin, image finie, avant l'export : Correction du voile +20 façon Photoshop (fond un peu plus sombre, contraste et couleurs montés) ; modèle des brevets d'Adobe, calé sur une de tes images avant / après Photoshop",
     'Temperature_PS_5': "tout à la fin, image finie avec étoiles, avant l'export : Température +5 de Photoshop (Couleur et vibrance), reproduite d'après une mesure ; image plus chaude",
     'Temperature_PS_10': "tout à la fin, image finie avec étoiles, avant l'export : Température +10 de Photoshop, reproduite d'après une mesure ; à la place de Temperature_PS_5",

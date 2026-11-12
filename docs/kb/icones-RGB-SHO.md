@@ -1627,20 +1627,21 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 #### Opt_Magenta_moins — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Magenta_moins.js`
-   paramètres : `force=0.80`, `methode=min`
+   paramètres : `force=0.80`, `methode=min`, `fond=true`, `debut=0.02`, `fin=0.12`, `flou=8`
 
 > OPTION — zones magenta / violettes (R et B au-dessus de G) : sur l'image sans étoiles revenue de Photoshop (tmp_PS) ou finie, avant NXT_dernier et les étoiles
-> Retire le magenta sans toucher aux bleus ni aux rouges.
+> Retire le magenta du FOND du ciel seulement, sans toucher aux nébuleuses, aux bleus ni aux rouges.
 > 
 > LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
 > 
-> PRÉRÉGLÉ : script Magenta_moins, méthode min, force 0,80 : « inverser, SCNR vert, inverser » écrit directement : G' = max(G, min(R, B)) (le vert manquant est rendu là où R ET B le dépassent), G'' = G + 0,8·(G' − G) ; R et B inchangés.
+> PRÉRÉGLÉ : script Magenta_moins, méthode min, force 0,80, FOND DU CIEL SEULEMENT : G' = max(G, min(R, B)) (« inverser, SCNR vert, inverser ») là où R ET B dépassent G ; effet entier sous fond + 0,02, rien au-dessus de fond + 0,12 (luminance lissée 8 px, transition en S) : les nébuleuses ne sont pas touchées.
 > 
-> À RÉGLER : glisse sur l'image sans étoiles (tmp_PS) avant NXT_dernier et Etoiles_screen, ou sur l'image finie ; double-clic puis Apply Global = fenêtre (méthode, force, bouton Aperçu) ; copie Magenta_moins.js dans src/scripts/clodoweg.
+> À RÉGLER : glisse sur l'image sans étoiles (tmp_PS) avant NXT_dernier et Etoiles_screen ; double-clic puis Apply Global = fenêtre (méthode, force, fond seulement, début, fin, flou, bouton Aperçu) ; copie Magenta_moins.js dans src/scripts/clodoweg.
 > 
 > SI :
-> - violet encore là -> force 1,0, ou méthode moyenne (plus forte, touche aussi les bleus-violets)
-> - image qui tire au vert -> force 0,5
+> - violet encore sur le fond -> force 1,0 ou méthode moyenne
+> - voiles faibles de nébuleuse touchés -> fin 0,08
+> - magenta aussi dans la nébuleuse à retirer -> décoche « Fond du ciel seulement »
 
 #### Opt_Temperature_PS_5 — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Temperature_PS.js`

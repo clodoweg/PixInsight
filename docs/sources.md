@@ -1557,3 +1557,4 @@ Retour de l'utilisateur (capture) : « parfois que j'execute un script (souvent 
 ### Magenta_moins (12 novembre 2026)
 
 Demande de l'utilisateur (capture) : « je veux un scxript qui retire le majenta qu'il y a comme sur cette photo ». Fait : script Magenta_moins.js, option P7 en narrowband (LRGB et LHaRGB : à demander). Formules de SCNR (Average / Maximum Neutral) appliquées à l'image inversée : documentation de SCNR de PixInsight, de mémoire. Non testé.
+Puis : « ca peut le faire que sur le fond du ciel (noir) et pas sur les zones de nebuleuises? ». Fait : paramètre fond (masque du fond comme Fond_desature : luminance lissée 8 px, effet entier sous fond + 0,02, nul au-dessus de fond + 0,12, transition en S), vrai dans Opt_Magenta_moins ; case dans la fenêtre.

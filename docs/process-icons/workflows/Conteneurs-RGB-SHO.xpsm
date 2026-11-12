@@ -6990,10 +6990,10 @@ max($T,f1)</parameter>
       <table id="outputData" rows="0"/>
    </instance>
    <instance class="Script" version="256" id="Opt_Magenta_moins_instance">
-      <description>OPTION — zones magenta / violettes (R et B au-dessus de G) : sur l'image sans étoiles revenue de Photoshop (tmp_PS) ou finie, avant NXT_dernier et les étoiles&#10;Retire le magenta sans toucher aux bleus ni aux rouges.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Magenta_moins, méthode min, force 0,80 : « inverser, SCNR vert, inverser » écrit directement : G' = max(G, min(R, B)) (le vert manquant est rendu là où R ET B le dépassent), G'' = G + 0,8·(G' − G) ; R et B inchangés.&#10;&#10;À RÉGLER : glisse sur l'image sans étoiles (tmp_PS) avant NXT_dernier et Etoiles_screen, ou sur l'image finie ; double-clic puis Apply Global = fenêtre (méthode, force, bouton Aperçu) ; copie Magenta_moins.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- violet encore là -&gt; force 1,0, ou méthode moyenne (plus forte, touche aussi les bleus-violets)&#10;- image qui tire au vert -&gt; force 0,5</description>
+      <description>OPTION — zones magenta / violettes (R et B au-dessus de G) : sur l'image sans étoiles revenue de Photoshop (tmp_PS) ou finie, avant NXT_dernier et les étoiles&#10;Retire le magenta du FOND du ciel seulement, sans toucher aux nébuleuses, aux bleus ni aux rouges.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Magenta_moins, méthode min, force 0,80, FOND DU CIEL SEULEMENT : G' = max(G, min(R, B)) (« inverser, SCNR vert, inverser ») là où R ET B dépassent G ; effet entier sous fond + 0,02, rien au-dessus de fond + 0,12 (luminance lissée 8 px, transition en S) : les nébuleuses ne sont pas touchées.&#10;&#10;À RÉGLER : glisse sur l'image sans étoiles (tmp_PS) avant NXT_dernier et Etoiles_screen ; double-clic puis Apply Global = fenêtre (méthode, force, fond seulement, début, fin, flou, bouton Aperçu) ; copie Magenta_moins.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- violet encore sur le fond -&gt; force 1,0 ou méthode moyenne&#10;- voiles faibles de nébuleuse touchés -&gt; fin 0,08&#10;- magenta aussi dans la nébuleuse à retirer -&gt; décoche « Fond du ciel seulement »</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Magenta_moins.js</parameter>
       <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="2">
+      <table id="parameters" rows="6">
          <tr>
             <td id="id">force</td>
             <td id="value">0.80</td>
@@ -7001,6 +7001,22 @@ max($T,f1)</parameter>
          <tr>
             <td id="id">methode</td>
             <td id="value">min</td>
+         </tr>
+         <tr>
+            <td id="id">fond</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">debut</td>
+            <td id="value">0.02</td>
+         </tr>
+         <tr>
+            <td id="id">fin</td>
+            <td id="value">0.12</td>
+         </tr>
+         <tr>
+            <td id="id">flou</td>
+            <td id="value">8</td>
          </tr>
       </table>
       <parameter id="information"></parameter>
