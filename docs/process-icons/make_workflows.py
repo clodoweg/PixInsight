@@ -1619,6 +1619,14 @@ for _st in (rgbsho, sho, hoo):
         _st.remove(_it)
     insert_after(_st, 'Fond_auto', _its)
 
+# Couleur sélective en tête des options P5 (demande de l'utilisateur, 12 novembre 2026 : « les couleurs selectives doivent passer dans
+# les P5 Options mais mets les en premiers ») ; Températures en P7
+for _st in (rgbsho, sho):
+    _its = [pick(_st, n) for n in ('Couleur_selective_SHO', 'Couleur_selective_SHO_2', 'Couleur_selective_SHO_3')]
+    for _it in _its:
+        _st.remove(_it)
+    insert_after(_st, 'NBN_SHO', _its)
+
 # P7 rapide supprimé en narrowband (demande de l'utilisateur, 12 novembre 2026 : « supprime le P7 rapide pour les SHOs, HOO, .. »)
 for _st in (rgbsho, sho, hoo):
     _st[:] = [x for x in _st if x[0][0] != 'C_Etoiles_fond_rapide']

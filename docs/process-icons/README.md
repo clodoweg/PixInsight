@@ -38,7 +38,7 @@ Tous à copier dans `src/scripts/clodoweg/` de PixInsight (`maj_pc.bat` le fait)
 | `Lineaire_auto.js` | lance des icônes du chemin principal sur des vues données (rapides et turbos) |
 | `Lecture_Photoshop.js` | icône Opt_Lecture_Photoshop (P7) : rouvre dans une nouvelle vue <nom>_PS le dernier .tif d'Export_TIFF, retouché et enregistré dans Photoshop (paramètre `fichier` : chemin forcé) |
 | `Taches_fond.js` | option P4 galaxies : lisse la couleur du fond du RGB sans étoiles (taches rouges, bleues), luminosité gardée |
-| `Couleur_selective.js` | équivalent approché de Couleur sélective de Photoshop (9 gammes, c,m,y,k ; bouton Aperçu et préréglages SHO, SHO 2, SHO 3 dans la fenêtre) ; options P7 Couleur_selective_SHO, _SHO_2, _SHO_3 (profils .asv de l'utilisateur, copiés dans `profils/`) en SHO et RGB-SHO |
+| `Couleur_selective.js` | équivalent approché de Couleur sélective de Photoshop (9 gammes, c,m,y,k ; bouton Aperçu et préréglages SHO, SHO 2, SHO 3 dans la fenêtre) ; options P5 (en tête) Couleur_selective_SHO, _SHO_2, _SHO_3 (profils .asv de l'utilisateur, copiés dans `profils/`) en SHO et RGB-SHO |
 | `Temperature_PS.js` | Température +5 / +10 du calque Couleur et vibrance de Photoshop, d'après une mesure (table 3D de 729 couleurs, mire dans `profils/mesure_temperature/`) ; options P7 Temperature_PS_5 et _10 dans les 5 workflows |
 | `Voile_PS.js` | Correction du voile façon Photoshop (modèle des brevets d'Adobe : canal sombre, sRGB linéaire) ; option P7 Voile_PS (+20) dans les 5 workflows ; bouton Aperçu |
 | `Stat_canaux.js` | Statistical Stretch sur plusieurs canaux mono (S, H, O) en un clic |

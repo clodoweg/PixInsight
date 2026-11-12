@@ -1541,3 +1541,7 @@ Fait (RGB + SHO E28 à E36, SHO sans RGB E22 à E30, HOO E24 à E32) : Fond_desa
 ### Narrowband : P7 rapide supprimé (12 novembre 2026)
 
 Demande de l'utilisateur : « supprime le P7 rapide pour les SHOs, HOO, .. ». Fait : R_C_Etoiles_fond_rapide retiré de RGB + SHO, SHO sans RGB et HOO ; note P7_rapide : « pas de rapide en phase 7 » ; texte de R_C_Fin_rapide mis à jour. LRGB et LHaRGB gardent le leur.
+
+### Couleur sélective en tête des options P5 (12 novembre 2026)
+
+Demande de l'utilisateur : « les couleurs selectives doivent passer dans les P5 Options mais mets les en premiers ». Fait : SHO et RGB + SHO, Opt_Couleur_selective_SHO, _SHO_2, _SHO_3 en tête des options P5 (avant Opt_NBN_SHO_doux), sur SHO_etire après NBN_SHO ; Températures restées en P7.
