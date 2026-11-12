@@ -1545,3 +1545,7 @@ Demande de l'utilisateur : « supprime le P7 rapide pour les SHOs, HOO, .. ». F
 ### Couleur sélective en tête des options P5 (12 novembre 2026)
 
 Demande de l'utilisateur : « les couleurs selectives doivent passer dans les P5 Options mais mets les en premiers ». Fait : SHO et RGB + SHO, Opt_Couleur_selective_SHO, _SHO_2, _SHO_3 en tête des options P5 (avant Opt_NBN_SHO_doux), sur SHO_etire après NBN_SHO ; Températures restées en P7.
+
+### RGB + SHO : Etoiles_reduites au chemin principal (12 novembre 2026)
+
+Demande de l'utilisateur : « Pour le RGB avec SHO (juste lui), mets E29_Etoiles_screen en option et remplace le par Opt_Etoiles_reduites ». Fait : RGB + SHO, E35_Etoiles_reduites (après NXT_dernier, avant Export_TIFF), Opt_Etoiles_screen en option P7 (layout.WF_DEFAULT['RSHO'] = et reduit). SHO sans RGB et HOO inchangés.

@@ -6361,14 +6361,17 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="detail" value="0.15"/>
       <parameter id="overlap" value="0.20"/>
    </instance>
-   <instance class="PixelMath" version="256" id="E35_Etoiles_screen_instance">
-      <description>PRÉRÉGLÉ : ~((~$T) * (~RGB_stars)), sur l'image elle-même.&#10;&#10;À RÉGLER : glisse sur l'image sans étoiles finale : elle reçoit les étoiles ; étoiles étirées nommées RGB_stars (nom donné par SXT, s minuscule).&#10;&#10;SI :&#10;- autre nom d'étoiles -&gt; corrige-le dans la formule</description>
-      <parameter id="expression">~((~$T) * (~RGB_stars))</parameter>
+   <instance class="PixelMath" version="256" id="E35_Etoiles_reduites_instance">
+      <description>PRÉRÉGLÉ : S = 0,20 (Bill : 0,15) ; recombinaison screen + réduction Blanshan en une formule, sur l'image elle-même.&#10;&#10;À RÉGLER : CHEMIN PRINCIPAL (RGB + SHO, 12 novembre 2026) : glisse sur l'image sans étoiles (tmp_PS si tu es passé par Photoshop), après NXT_dernier, avant Export_TIFF ; étoiles étirées nommées RGB_stars.&#10;&#10;SI :&#10;- étoiles encore grosses -&gt; S 0,15&#10;- trop petites -&gt; S 0,25, ou Etoiles_screen&#10;- pour recommencer -&gt; Ctrl+Z</description>
+      <parameter id="expression">S=0.20;
+W=~((~$T)*(~RGB_stars));
+f1= ~((~mtf(~S,W)/~mtf(~S,$T))*~$T);
+max($T,f1)</parameter>
       <parameter id="expression1"></parameter>
       <parameter id="expression2"></parameter>
       <parameter id="expression3"></parameter>
       <parameter id="useSingleExpression" value="true"/>
-      <parameter id="symbols"></parameter>
+      <parameter id="symbols">S, W, f1</parameter>
       <parameter id="clearImageCacheAndExit" value="false"/>
       <parameter id="cacheGeneratedImages" value="false"/>
       <parameter id="generateOutput" value="true"/>
@@ -6948,17 +6951,14 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          <parameter id="information"></parameter>
       </instance>
    </instance>
-   <instance class="PixelMath" version="256" id="Opt_Etoiles_reduites_instance">
-      <description>ALTERNATIVE — Recombinaison + réduction Blanshan.&#10;&#10;PRÉRÉGLÉ : S = 0,20 (Bill : 0,15) ; recombinaison screen + réduction Blanshan en une formule, sur l'image elle-même.&#10;&#10;À RÉGLER : À LA PLACE d'Etoiles_screen : glisse sur l'image sans étoiles finale ; étoiles étirées nommées RGB_stars.&#10;&#10;SI :&#10;- étoiles encore grosses -&gt; S 0,15&#10;- trop petites -&gt; S 0,25, ou Etoiles_screen&#10;- pour recommencer -&gt; Ctrl+Z</description>
-      <parameter id="expression">S=0.20;
-W=~((~$T)*(~RGB_stars));
-f1= ~((~mtf(~S,W)/~mtf(~S,$T))*~$T);
-max($T,f1)</parameter>
+   <instance class="PixelMath" version="256" id="Opt_Etoiles_screen_instance">
+      <description>ALTERNATIVE — Recombinaison simple.&#10;&#10;PRÉRÉGLÉ : ~((~$T) * (~RGB_stars)), sur l'image elle-même.&#10;&#10;À RÉGLER : À LA PLACE d'Etoiles_reduites (même endroit, après NXT_dernier) : recombinaison simple, sans réduction des étoiles ; étoiles étirées nommées RGB_stars.&#10;&#10;SI :&#10;- autre nom d'étoiles -&gt; corrige-le dans la formule</description>
+      <parameter id="expression">~((~$T) * (~RGB_stars))</parameter>
       <parameter id="expression1"></parameter>
       <parameter id="expression2"></parameter>
       <parameter id="expression3"></parameter>
       <parameter id="useSingleExpression" value="true"/>
-      <parameter id="symbols">S, W, f1</parameter>
+      <parameter id="symbols"></parameter>
       <parameter id="clearImageCacheAndExit" value="false"/>
       <parameter id="cacheGeneratedImages" value="false"/>
       <parameter id="generateOutput" value="true"/>
@@ -7135,12 +7135,12 @@ max($T,f1)</parameter>
    <icon id="E32_Export_Photoshop" instance="E32_Export_Photoshop_instance" xpos="1264" ypos="184" workspace="Workspace01"/>
    <icon id="E33_Lecture_Photoshop" instance="E33_Lecture_Photoshop_instance" xpos="1264" ypos="214" workspace="Workspace01"/>
    <icon id="E34_NXT_dernier" instance="E34_NXT_dernier_instance" xpos="1264" ypos="244" workspace="Workspace01"/>
-   <icon id="E35_Etoiles_screen" instance="E35_Etoiles_screen_instance" xpos="1264" ypos="274" workspace="Workspace01"/>
+   <icon id="E35_Etoiles_reduites" instance="E35_Etoiles_reduites_instance" xpos="1264" ypos="274" workspace="Workspace01"/>
    <icon id="E36_Export_TIFF" instance="E36_Export_TIFF_instance" xpos="1264" ypos="304" workspace="Workspace01"/>
    <icon id="P7_options" instance="P7_options_instance" xpos="1264" ypos="350" workspace="Workspace01"/>
    <icon id="Opt_Boost_final_doux" instance="Opt_Boost_final_doux_instance" xpos="1264" ypos="384" workspace="Workspace01"/>
    <icon id="Opt_Boost_final" instance="Opt_Boost_final_instance" xpos="1264" ypos="414" workspace="Workspace01"/>
-   <icon id="Opt_Etoiles_reduites" instance="Opt_Etoiles_reduites_instance" xpos="1264" ypos="444" workspace="Workspace01"/>
+   <icon id="Opt_Etoiles_screen" instance="Opt_Etoiles_screen_instance" xpos="1264" ypos="444" workspace="Workspace01"/>
    <icon id="Opt_Temperature_PS_5" instance="Opt_Temperature_PS_5_instance" xpos="1264" ypos="474" workspace="Workspace01"/>
    <icon id="Opt_Temperature_PS_10" instance="Opt_Temperature_PS_10_instance" xpos="1264" ypos="504" workspace="Workspace01"/>
    <icon id="Opt_ICC_sRGB" instance="Opt_ICC_sRGB_instance" xpos="1264" ypos="534" workspace="Workspace01"/>

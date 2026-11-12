@@ -1523,15 +1523,17 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - bruit encore visible -> 0,35
 > - étoiles adoucies -> 0,15, ou saute cette étape
 
-#### E35_Etoiles_screen — PixelMath
-   expression = `~((~$T) * (~RGB_stars))` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
+#### E35_Etoiles_reduites — PixelMath
+   expression = `S=0.20; W=~((~$T)*(~RGB_stars)); f1= ~((~mtf(~S,W)/~mtf(~S,$T))*~$T); max($T,f1)` ; useSingleExpression=true ; symbols = `S, W, f1` ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
 
-> PRÉRÉGLÉ : ~((~$T) * (~RGB_stars)), sur l'image elle-même.
+> PRÉRÉGLÉ : S = 0,20 (Bill : 0,15) ; recombinaison screen + réduction Blanshan en une formule, sur l'image elle-même.
 > 
-> À RÉGLER : glisse sur l'image sans étoiles finale : elle reçoit les étoiles ; étoiles étirées nommées RGB_stars (nom donné par SXT, s minuscule).
+> À RÉGLER : CHEMIN PRINCIPAL (RGB + SHO, 12 novembre 2026) : glisse sur l'image sans étoiles (tmp_PS si tu es passé par Photoshop), après NXT_dernier, avant Export_TIFF ; étoiles étirées nommées RGB_stars.
 > 
 > SI :
-> - autre nom d'étoiles -> corrige-le dans la formule
+> - étoiles encore grosses -> S 0,15
+> - trop petites -> S 0,25, ou Etoiles_screen
+> - pour recommencer -> Ctrl+Z
 
 #### E36_Export_TIFF — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js`
@@ -1611,19 +1613,17 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - trop fort -> Boost_final_doux
 > - fond teinté -> Fond_desature ensuite le retire
 
-#### Opt_Etoiles_reduites — PixelMath
-   expression = `S=0.20; W=~((~$T)*(~RGB_stars)); f1= ~((~mtf(~S,W)/~mtf(~S,$T))*~$T); max($T,f1)` ; useSingleExpression=true ; symbols = `S, W, f1` ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
+#### Opt_Etoiles_screen — PixelMath
+   expression = `~((~$T) * (~RGB_stars))` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
 
-> ALTERNATIVE — Recombinaison + réduction Blanshan.
+> ALTERNATIVE — Recombinaison simple.
 > 
-> PRÉRÉGLÉ : S = 0,20 (Bill : 0,15) ; recombinaison screen + réduction Blanshan en une formule, sur l'image elle-même.
+> PRÉRÉGLÉ : ~((~$T) * (~RGB_stars)), sur l'image elle-même.
 > 
-> À RÉGLER : À LA PLACE d'Etoiles_screen : glisse sur l'image sans étoiles finale ; étoiles étirées nommées RGB_stars.
+> À RÉGLER : À LA PLACE d'Etoiles_reduites (même endroit, après NXT_dernier) : recombinaison simple, sans réduction des étoiles ; étoiles étirées nommées RGB_stars.
 > 
 > SI :
-> - étoiles encore grosses -> S 0,15
-> - trop petites -> S 0,25, ou Etoiles_screen
-> - pour recommencer -> Ctrl+Z
+> - autre nom d'étoiles -> corrige-le dans la formule
 
 #### Opt_Temperature_PS_5 — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Temperature_PS.js`

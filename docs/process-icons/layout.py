@@ -95,6 +95,7 @@ def role(prefix, base):
 DEFAULT = {'grad': 'mgc', 'str': 'ghs', 'pal': 'nbn', 'et': 'reduit'}
 WF_DEFAULT = {p: {'str': 'mix', 'et': 'screen'} for p in LUM}   # galaxies : pas de réduction d'étoiles par défaut
 WF_DEFAULT.update({p: {'et': 'screen'} for p in NB})   # narrowband aussi : Etoiles_screen par défaut, Etoiles_reduites en alternative (demande de l'utilisateur, 8 octobre 2026)
+WF_DEFAULT['RSHO'] = {'et': 'reduit'}   # RGB + SHO seul : Etoiles_reduites au chemin principal, Etoiles_screen en option (demande de l'utilisateur, 12 novembre 2026)
 CHOICES = {
     'grad': ('Gradient', [('mgc', 'MGC + MARS (défaut)'), ('gc', 'GradientCorrection (sans MARS)'), ('dbe', 'DBE (nébuleuse qui remplit le champ)')]),
     'str': ('Étirement', [('mix', 'Statistical Stretch sur RGB + GHS sur L (défaut LRGB)'), ('ghs', 'GHS sur tout (défaut sans L)'), ('stat', 'Statistical Stretch sur tout (automatique ; jamais avec L : halos d\'étoiles)')]),
@@ -286,6 +287,7 @@ for _p in ('SHO', 'RSHO'):
     WHEN_PREFIX[(_p, 'GHS_2_contraste')] = "plus de contraste : après Statistical_Stretch (ou GHS_1_premier), sur chaque canal, même réglage pour les trois, avant la palette"
     WHEN_PREFIX[(_p, 'GHS_3_fond')] = "fond trop clair après Statistical_Stretch (0,25) ou les GHS : sur chaque canal, même SP = HP pour tous (0,22 après Statistical Stretch), fond vers 0,12–0,14, avant la palette"
 WHEN_PREFIX[('HOO', 'GHS_2_contraste')] = "plus de contraste : après GHS_1_premier, sur H puis O, même réglage pour les deux, avant GHS_3_fond"   # option (demande de l'utilisateur, 22 octobre 2026)
+WHEN_PREFIX[('RSHO', 'Etoiles_screen')] = "à la place d'Etoiles_reduites (chemin principal en RGB + SHO), si tu ne veux pas réduire les étoiles : recombinaison simple"   # 12 novembre 2026
 
 def when(prefix, base):
     if (prefix, base) in WHEN_PREFIX:

@@ -1618,6 +1618,10 @@ for _st in (rgbsho, sho, hoo):
     for _it in _its:
         _st.remove(_it)
     insert_after(_st, 'Fond_auto', _its)
+# RGB + SHO seul (demande de l'utilisateur, 12 novembre 2026) : Etoiles_reduites à la place d'Etoiles_screen (qui passe en option, juste après)
+_it = pick(rgbsho, 'Etoiles_reduites')
+rgbsho.remove(_it)
+insert_before(rgbsho, 'Etoiles_screen', [_it])
 
 # Couleur sélective en tête des options P5 (demande de l'utilisateur, 12 novembre 2026 : « les couleurs selectives doivent passer dans
 # les P5 Options mais mets les en premiers ») ; Températures en P7
