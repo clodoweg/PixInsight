@@ -1531,3 +1531,4 @@ Sources : brevets Adobe https://patents.google.com/patent/US9508126B2/en et http
 Fait : Voile_PS.js et option P7 Voile_PS (force 20) en SHO, RGB + SHO et HOO. LRGB et LHaRGB : à demander. Non calé sur Photoshop, non testé.
 Puis (11 novembre 2026) : deux images JPEG de l'utilisateur, avant / après Photoshop Correction du voile +20. Fait : Voile_PS.js réécrit et calé (détail et chiffres dans docs/kb/techniques.md) ; icône rayon 7.4 (% de la largeur). Non testé dans PixInsight.
 Puis, à ma question pour LRGB et LHaRGB (une option P7 de plus, chemin principal, rapides et turbos inchangés), réponse de l'utilisateur : « oui » (12 novembre 2026). Fait : Opt_Voile_PS aussi en LRGB et LHaRGB, avant les Températures.
+Puis : « mais je ne veux pas que le voile rajoute du rouge ». Fait : paramètre couleur de Voile_PS.js (0 = luminance seule, teinte gardée ; défaut et icônes à 0).

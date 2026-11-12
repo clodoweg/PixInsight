@@ -18,6 +18,10 @@
 // forces et autres images non vérifiées (ω supposé proportionnel à la force).
 // Calcul en JavaScript : passes 1 et 2 sur un pixel sur 4 (centile, grille du
 // canal sombre), passe 3 sur toute l'image. Copie cachée puis recopie : Ctrl+Z.
+// couleur (0 par défaut, 12 novembre 2026 : « je ne veux pas que le voile rajoute
+// du rouge ») : 0 = voile retiré sur la luminance seule, R, G, B multipliés par
+// le même facteur (teinte et saturation gardées) ; 1 = canal par canal comme
+// Photoshop (le rouge baisse moins : image plus rouge et plus saturée).
 // Non testé dans PixInsight.
 //
 // Installation (Mac et PC) : dans src/scripts/clodoweg de PixInsight.
@@ -36,7 +40,8 @@
 
 function vpParams()
 {
-   return { force: parseFloat( cwParam( "force", "20" ) ), rayon: parseFloat( cwParam( "rayon", "7.4" ) ), t0: parseFloat( cwParam( "t0", "0.10" ) ) };
+   return { force: parseFloat( cwParam( "force", "20" ) ), rayon: parseFloat( cwParam( "rayon", "7.4" ) ), t0: parseFloat( cwParam( "t0", "0.10" ) ),
+            couleur: parseFloat( cwParam( "couleur", "0" ) ) };
 }
 
 function vpExport( p )
@@ -44,6 +49,7 @@ function vpExport( p )
    Parameters.set( "force", p.force.toFixed( 0 ) );
    Parameters.set( "rayon", p.rayon.toFixed( 1 ) );
    Parameters.set( "t0", p.t0.toFixed( 2 ) );
+   Parameters.set( "couleur", p.couleur.toFixed( 2 ) );
 }
 
 // facteurs de A mesurés sur l'image de calage (Photoshop +20)
@@ -119,6 +125,7 @@ function vpProcess( view, p )
          for ( let i = -rad; i <= rad; ++i ) v += noyau[ i + rad ]*tmp[ Math.min( ny - 1, Math.max( 0, gy + i ) )*nx + gx ];
          grille[ gy*nx + gx ] = v;
       }
+   let AY = 0.2126*A[ 0 ] + 0.7152*A[ 1 ] + 0.0722*A[ 2 ];
    // 3. image entière : canal sombre interpolé (bilinéaire, centres des cases), t, J
    view.beginProcess( UndoFlag_NoSwapFile );
    try
@@ -139,9 +146,17 @@ function vpProcess( view, p )
                let k0 = iy*nx + ix, k1 = (ny < 2) ? k0 : k0 + nx;
                let d = (grille[ k0 ]*(1 - tx) + grille[ k0 + 1 ]*tx)*(1 - ty) + (grille[ k1 ]*(1 - tx) + grille[ k1 + 1 ]*tx)*ty;
                let t = Math.max( p.t0, 1 - w*d ), i = base + x;
-               R[ i ] = Math.min( 1, Math.max( 0, (R[ i ] - A[ 0 ])/t + A[ 0 ] ) );
-               G[ i ] = Math.min( 1, Math.max( 0, (G[ i ] - A[ 1 ])/t + A[ 1 ] ) );
-               B[ i ] = Math.min( 1, Math.max( 0, (B[ i ] - A[ 2 ])/t + A[ 2 ] ) );
+               // version Photoshop (canal par canal : renforce le rouge sur l'image de calage)
+               let pr = (R[ i ] - A[ 0 ])/t + A[ 0 ], pg = (G[ i ] - A[ 1 ])/t + A[ 1 ], pb = (B[ i ] - A[ 2 ])/t + A[ 2 ];
+               // version neutre (couleur = 0, défaut ; demande de l'utilisateur, 12 novembre 2026 : « je ne veux pas que le voile
+               // rajoute du rouge ») : même voile retiré sur la luminance seule, R, G, B multipliés par le même facteur
+               // (teinte et saturation gardées)
+               let Y = 0.2126*R[ i ] + 0.7152*G[ i ] + 0.0722*B[ i ];
+               let k = Y > 1e-6 ? Math.max( 0, (Y - AY)/t + AY )/Y : 1;
+               let nr = R[ i ]*k, ng = G[ i ]*k, nb = B[ i ]*k;
+               R[ i ] = Math.min( 1, Math.max( 0, nr + p.couleur*(pr - nr) ) );
+               G[ i ] = Math.min( 1, Math.max( 0, ng + p.couleur*(pg - ng) ) );
+               B[ i ] = Math.min( 1, Math.max( 0, nb + p.couleur*(pb - nb) ) );
             }
          }
          img.setSamples( R, rect, 0 ); img.setSamples( G, rect, 1 ); img.setSamples( B, rect, 2 );
@@ -153,7 +168,7 @@ function vpProcess( view, p )
       view.endProcess();
    }
    console.noteln( TITLE + " : force " + p.force.toFixed( 0 ) + " (ω " + w.toFixed( 3 ) + "), A = " + A.map( function( a ) { return a.toFixed( 3 ); } ).join( " / " ) +
-                   ", rayon " + p.rayon + " % de la largeur, t0 " + p.t0 + "." );
+                   ", rayon " + p.rayon + " % de la largeur, t0 " + p.t0 + ", couleur " + p.couleur.toFixed( 2 ) + (p.couleur == 0 ? " (neutre : pas de rouge ajouté)" : "") + "." );
 }
 
 function vpRun( view, p )
@@ -176,6 +191,7 @@ function vpDialog( p, view )
    d.viewList( "Image :", view, "Image couleur finie (sRGB).", function( v ) { sel.view = v; } );
    d.numeric( "Force :", 0, 100, 0, p.force, "Comme le curseur de Photoshop (0 à 100) : +20 par défaut.", function( v ) { p.force = v; } );
    d.numeric( "Rayon (% largeur) :", 1, 20, 1, p.rayon, "Taille des zones où le voile est estimé, en % de la largeur de l'image (7,4 : calé sur Photoshop).", function( v ) { p.rayon = v; } );
+   d.numeric( "Couleur :", 0, 1, 2, p.couleur, "0 = neutre (teinte et saturation gardées, pas de rouge ajouté) ; 1 = comme Photoshop (renforce le rouge sur ton image de calage).", function( v ) { p.couleur = v; } );
    d.numeric( "Transmission min. (t0) :", 0.05, 0.50, 2, p.t0, "Limite l'effet dans les zones très voilées.", function( v ) { p.t0 = v; } );
    d.button( "Aperçu", "Applique sur une copie affichée dans la vue VP_apercu ; l'image ne change pas.", function()
    {

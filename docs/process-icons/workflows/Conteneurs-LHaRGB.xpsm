@@ -6871,10 +6871,10 @@ max($T,f1)</parameter>
       <table id="outputData" rows="0"/>
    </instance>
    <instance class="Script" version="256" id="Opt_Voile_PS_instance">
-      <description>OPTION — tout à la fin, image finie, avant l'export : Correction du voile +20 façon Photoshop (fond un peu plus sombre, contraste et couleurs montés)&#10;Modèle des brevets d'Adobe, calé sur une de tes images avant / après Photoshop.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Voile_PS, force 20 (comme Correction du voile +20) : modèle des brevets d'Adobe (canal sombre) CALÉ sur ton image avant / après Photoshop +20 : lumière de l'air = 99e centile × (0,71 ; 1,08 ; 1,03), canal sombre lissé sur 7,4 % de la largeur, ω = 0,153 ; 59 % de l'effet de Photoshop reproduit sur l'image de calage.&#10;&#10;À RÉGLER : glisse sur l'image finie (couleur, sRGB), avant l'export ; double-clic puis Apply Global = fenêtre (force, rayon, t0, bouton Aperçu) ; copie Voile_PS.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- trop fort -&gt; force 10 à 15&#10;- différent de Photoshop sur une autre image -&gt; envoie un autre avant / après pour affiner le calage</description>
+      <description>OPTION — tout à la fin, image finie, avant l'export : Correction du voile +20 façon Photoshop (fond un peu plus sombre, contraste et couleurs montés)&#10;Modèle des brevets d'Adobe, calé sur une de tes images avant / après Photoshop.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Voile_PS, force 20, couleur 0 : voile retiré comme Correction du voile +20 (modèle des brevets d'Adobe calé sur ton image avant / après Photoshop : canal sombre lissé sur 7,4 % de la largeur, ω = 0,153), mais sur la LUMINANCE seule : R, G, B multipliés par le même facteur, teinte et saturation gardées, pas de rouge ajouté ; couleur 1 = canal par canal comme Photoshop (plus rouge).&#10;&#10;À RÉGLER : glisse sur l'image finie (couleur, sRGB), avant l'export ; double-clic puis Apply Global = fenêtre (force, rayon, couleur, t0, bouton Aperçu) ; copie Voile_PS.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- trop fort -&gt; force 10 à 15&#10;- couleurs pas assez vives -&gt; couleur 0,3 à 0,5 (un peu de l'effet couleur de Photoshop)</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Voile_PS.js</parameter>
       <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="3">
+      <table id="parameters" rows="4">
          <tr>
             <td id="id">force</td>
             <td id="value">20</td>
@@ -6886,6 +6886,10 @@ max($T,f1)</parameter>
          <tr>
             <td id="id">t0</td>
             <td id="value">0.10</td>
+         </tr>
+         <tr>
+            <td id="id">couleur</td>
+            <td id="value">0</td>
          </tr>
       </table>
       <parameter id="information"></parameter>
