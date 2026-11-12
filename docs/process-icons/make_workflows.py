@@ -1619,6 +1619,12 @@ for _st in (rgbsho, sho, hoo):
         _st.remove(_it)
     insert_after(_st, 'Fond_auto', _its)
 
+# P7 rapide supprimé en narrowband (demande de l'utilisateur, 12 novembre 2026 : « supprime le P7 rapide pour les SHOs, HOO, .. »)
+for _st in (rgbsho, sho, hoo):
+    _st[:] = [x for x in _st if x[0][0] != 'C_Etoiles_fond_rapide']
+for _p in ('RSHO', 'SHO', 'HOO'):
+    RAPIDE_NOTE[_p][7] = "pas de rapide en phase 7 (supprimé le 12 novembre 2026) : chemin principal"
+
 for fn, pre, title, steps in [
     ('Workflow-LRGB.xpsm', 'LRGB', 'Workflow LRGB', lrgb),
     ('Workflow-LHaRGB.xpsm', 'LHA', 'Workflow LHaRGB', lhargb),

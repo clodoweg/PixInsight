@@ -1370,7 +1370,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > PRÉRÉGLÉ : conteneur : HDRMT à 30 % (copie HDR_avant, HDRMT 6 couches, mélange 0,3 × résultat + 0,7 × copie, copie fermée), masque_L créé sans être attaché, copie de l'image, Courbes, LHE (rayon 150), LHE_fin (rayon 40), mélange par masque_L ; masque attaché, Sharp_MMT (MMT couches 2 à 4 biais +0,04), masque retiré ; NXT_final (Denoise 0,40).
 > 
-> À RÉGLER : glisse sur l'image sans étoiles après la palette (SHO_etire après NBN_SHO ou R_C_Palette_rapide ; HOO : image après NBN_HOO) ; ensuite R_C_Etoiles_fond_rapide.
+> À RÉGLER : glisse sur l'image sans étoiles après la palette (SHO_etire après NBN_SHO ou R_C_Palette_rapide ; HOO : image après NBN_HOO) ; ensuite la phase 7 au chemin principal (Fond_desature, Fond_auto, Voile_PS…).
 > 
 > SI :
 > - cœur encore trop clair -> HDRMT_40 ou HDRMT_50 (options) avant
@@ -1685,31 +1685,3 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - rien n'est enregistré : exporte ou sauve AVANT
 
 ### P7_rapide
-
-#### R_C_Etoiles_fond_rapide — ProcessContainer
-   1. Script
-      script `$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js`
-      paramètres : `debut=0.02`, `fin=0.12`, `violetFin=0.30`, `flou=8`, `force=0.80`, `lisse=true`, `portee=60`, `dialogue=false`
-   2. Script
-      script `$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js`
-      paramètres : `cible=0.12`, `tolerance=0.005`, `grille=8`, `dialogue=false`
-   3. PixelMath
-      expression = `~((~$T) * (~RGB_stars))` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
-   4. NoiseXTerminator
-      ml_version=0 ; denoise=0.25 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
-   5. Script
-      script `$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js`
-      paramètres : `nom=`, `suffixe=`, `dossier=`, `icc=true`, `dialogue=false`
-
-> MODE RAPIDE, à la place de Fond_desature, Fond_auto, Etoiles_screen, NXT_dernier et Export_TIFF : GLISSE sur l'image sans étoiles finie, image d'étoiles du workflow ouverte et étirée.
-> 
-> LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
-> 
-> PRÉRÉGLÉ : conteneur : Fond_desature (teinte du fond retirée), Fond_auto (fond amené à 0,12, neutre), Etoiles_screen (~((~$T) * (~RGB_stars))), NXT_dernier (Denoise 0,25, image avec étoiles), Export_TIFF (copie TIFF 16 bits sRGB nommée d'après le dossier des masters).
-> 
-> À RÉGLER : glisse sur l'image sans étoiles finie ; RGB_stars (P3) ouverte ; l'image est finie et exportée.
-> 
-> SI :
-> - étoiles trop présentes -> fais les étapes à la main avec Etoiles_reduites (à la place d'Etoiles_screen)
-> - étoiles d'un autre nom (Stars_HOO, RGB_stars…) -> double-clic sur le conteneur, change le nom dans Etoiles_screen
-> - nébuleuse qui remplit le champ (fond AVANT lu par Fond_auto au-dessus d'environ 0,20 dans la console) -> Ctrl+Z, puis les étapes à la main sans Fond_auto

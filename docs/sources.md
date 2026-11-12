@@ -1537,3 +1537,7 @@ Puis : « mais je ne veux pas que le voile rajoute du rouge ». Fait : paramètr
 
 Demande de l'utilisateur : « pour les SHOs HOO, .. je veux dans le chemin principal dans l'ordre: E28, E29,Voile PS, Contraste_GHS, Export PhotoShop, Lecture Photoshop, NXT dernier, etoiles screen, export tiff ».
 Fait (RGB + SHO E28 à E36, SHO sans RGB E22 à E30, HOO E24 à E32) : Fond_desature, Fond_auto, Voile_PS, Contraste_GHS, Export_Photoshop, Lecture_Photoshop, NXT_dernier, Etoiles_screen, Export_TIFF ; Voile_PS, Export_Photoshop et Lecture_Photoshop au chemin principal (layout.role). R_C_Etoiles_fond_rapide inchangé. LRGB et LHaRGB non touchés.
+
+### Narrowband : P7 rapide supprimé (12 novembre 2026)
+
+Demande de l'utilisateur : « supprime le P7 rapide pour les SHOs, HOO, .. ». Fait : R_C_Etoiles_fond_rapide retiré de RGB + SHO, SHO sans RGB et HOO ; note P7_rapide : « pas de rapide en phase 7 » ; texte de R_C_Fin_rapide mis à jour. LRGB et LHaRGB gardent le leur.
