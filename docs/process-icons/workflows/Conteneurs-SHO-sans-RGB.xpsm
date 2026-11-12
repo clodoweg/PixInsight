@@ -6485,6 +6485,22 @@ max($T,f1)</parameter>
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
+   <instance class="Script" version="256" id="Opt_Magenta_moins_instance">
+      <description>OPTION — zones magenta / violettes (R et B au-dessus de G) : sur l'image sans étoiles revenue de Photoshop (tmp_PS) ou finie, avant NXT_dernier et les étoiles&#10;Retire le magenta sans toucher aux bleus ni aux rouges.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Magenta_moins, méthode min, force 0,80 : « inverser, SCNR vert, inverser » écrit directement : G' = max(G, min(R, B)) (le vert manquant est rendu là où R ET B le dépassent), G'' = G + 0,8·(G' − G) ; R et B inchangés.&#10;&#10;À RÉGLER : glisse sur l'image sans étoiles (tmp_PS) avant NXT_dernier et Etoiles_screen, ou sur l'image finie ; double-clic puis Apply Global = fenêtre (méthode, force, bouton Aperçu) ; copie Magenta_moins.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- violet encore là -&gt; force 1,0, ou méthode moyenne (plus forte, touche aussi les bleus-violets)&#10;- image qui tire au vert -&gt; force 0,5</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Magenta_moins.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="2">
+         <tr>
+            <td id="id">force</td>
+            <td id="value">0.80</td>
+         </tr>
+         <tr>
+            <td id="id">methode</td>
+            <td id="value">min</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
+   </instance>
    <instance class="Script" version="256" id="Opt_Temperature_PS_5_instance">
       <description>OPTION — tout à la fin, image finie avec étoiles, avant l'export : Température +5 de Photoshop (Couleur et vibrance), reproduite d'après une mesure&#10;Image plus chaude.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Temperature_PS, Température +5 du calque Couleur et vibrance de Photoshop : table 3D de 729 couleurs MESURÉE sur Photoshop (mire de l'utilisateur), interpolée ; gris 0,50 -&gt; 0,537 / 0,521 / 0,497 ; écart moyen avec Photoshop sur le gris 0,0003.&#10;&#10;À RÉGLER : glisse sur l'image finie (couleur, sRGB), après NXT_dernier, avant l'export ; un seul des deux ; copie Temperature_PS.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- trop chaud -&gt; Ctrl+Z&#10;- pas assez -&gt; Temperature_PS_10 à la place</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Temperature_PS.js</parameter>
@@ -6634,9 +6650,10 @@ max($T,f1)</parameter>
    <icon id="Opt_Boost_final_doux" instance="Opt_Boost_final_doux_instance" xpos="1269" ypos="444" workspace="Workspace01"/>
    <icon id="Opt_Boost_final" instance="Opt_Boost_final_instance" xpos="1269" ypos="474" workspace="Workspace01"/>
    <icon id="Opt_Etoiles_reduites" instance="Opt_Etoiles_reduites_instance" xpos="1269" ypos="504" workspace="Workspace01"/>
-   <icon id="Opt_Temperature_PS_5" instance="Opt_Temperature_PS_5_instance" xpos="1269" ypos="534" workspace="Workspace01"/>
-   <icon id="Opt_Temperature_PS_10" instance="Opt_Temperature_PS_10_instance" xpos="1269" ypos="564" workspace="Workspace01"/>
-   <icon id="Opt_ICC_sRGB" instance="Opt_ICC_sRGB_instance" xpos="1269" ypos="594" workspace="Workspace01"/>
-   <icon id="Opt_Fermer_tout" instance="Opt_Fermer_tout_instance" xpos="1269" ypos="624" workspace="Workspace01"/>
-   <icon id="P7_rapide" instance="P7_rapide_instance" xpos="1269" ypos="670" workspace="Workspace01"/>
+   <icon id="Opt_Magenta_moins" instance="Opt_Magenta_moins_instance" xpos="1269" ypos="534" workspace="Workspace01"/>
+   <icon id="Opt_Temperature_PS_5" instance="Opt_Temperature_PS_5_instance" xpos="1269" ypos="564" workspace="Workspace01"/>
+   <icon id="Opt_Temperature_PS_10" instance="Opt_Temperature_PS_10_instance" xpos="1269" ypos="594" workspace="Workspace01"/>
+   <icon id="Opt_ICC_sRGB" instance="Opt_ICC_sRGB_instance" xpos="1269" ypos="624" workspace="Workspace01"/>
+   <icon id="Opt_Fermer_tout" instance="Opt_Fermer_tout_instance" xpos="1269" ypos="654" workspace="Workspace01"/>
+   <icon id="P7_rapide" instance="P7_rapide_instance" xpos="1269" ypos="700" workspace="Workspace01"/>
 </xpsm>

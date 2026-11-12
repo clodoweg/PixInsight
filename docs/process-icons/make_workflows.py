@@ -82,6 +82,7 @@ SCRIPTS = {
     'Couleur_selective_SHO_2': ('$PXI_SRCDIR/scripts/clodoweg/Couleur_selective.js', '', [('rouges', '-25,25,0,0'), ('jaunes', '-25,25,0,0'), ('verts', '-50,50,0,0'), ('cyans', '0,0,-50,0'), ('bleus', '0,0,0,0'), ('magentas', '0,0,0,0'), ('blancs', '0,0,0,0'), ('neutres', '0,0,0,0'), ('noirs', '0,0,0,0'), ('relatif', 'true')], L_DRAG),
     'Couleur_selective_SHO_3': ('$PXI_SRCDIR/scripts/clodoweg/Couleur_selective.js', '', [('rouges', '0,0,0,0'), ('jaunes', '-25,25,0,0'), ('verts', '-50,50,0,0'), ('cyans', '0,0,-50,0'), ('bleus', '0,0,0,0'), ('magentas', '0,0,0,0'), ('blancs', '0,0,0,0'), ('neutres', '0,0,0,0'), ('noirs', '0,0,0,0'), ('relatif', 'true')], L_DRAG),
     # Température de Photoshop mesurée (calque Couleur et vibrance, +5 / +10 ; demande de l'utilisateur, 11 novembre 2026)
+    'Magenta_moins': ('$PXI_SRCDIR/scripts/clodoweg/Magenta_moins.js', '', [('force', '0.80'), ('methode', 'min')], L_DRAG),   # retire le magenta (12 novembre 2026)
     'Voile_PS': ('$PXI_SRCDIR/scripts/clodoweg/Voile_PS.js', '', [('force', '20'), ('rayon', '7.4'), ('t0', '0.10'), ('couleur', '0')], L_DRAG),   # Correction du voile +20, calée sur une image avant / après Photoshop (11 novembre 2026)
     'Temperature_PS_5': ('$PXI_SRCDIR/scripts/clodoweg/Temperature_PS.js', '', [('reglage', '5')], L_DRAG),
     'Temperature_PS_10': ('$PXI_SRCDIR/scripts/clodoweg/Temperature_PS.js', '', [('reglage', '10')], L_DRAG),
@@ -1515,7 +1516,10 @@ for _st in (rgbsho, sho):
     insert_before(_st, 'Temperature_PS_5', [(script(n, ''), '') for n in ('Couleur_selective_SHO', 'Couleur_selective_SHO_2', 'Couleur_selective_SHO_3')])
 # option P7 Voile_PS (Correction du voile +20, modèle des brevets d'Adobe), narrowband, avant les Températures (demande de l'utilisateur, 11 novembre 2026)
 for _st in (rgbsho, sho, hoo, lrgb, lhargb):   # LRGB et LHaRGB aussi (« oui », 12 novembre 2026)
-    insert_before(_st, 'Temperature_PS_5', [(script('Voile_PS', ''), '')])   # P7 options, avant les Températures (11 novembre 2026)   # R_C_Stat_canaux_rapide remis (demande de l'utilisateur, 8 novembre 2026)
+    insert_before(_st, 'Temperature_PS_5', [(script('Voile_PS', ''), '')])
+# option P7 Magenta_moins (narrowband ; demande de l'utilisateur, 12 novembre 2026 : « je veux un script qui retire le majenta »)
+for _st in (rgbsho, sho, hoo):
+    insert_before(_st, 'Temperature_PS_5', [(script('Magenta_moins', ''), '')])   # P7 options, avant les Températures (11 novembre 2026)   # R_C_Stat_canaux_rapide remis (demande de l'utilisateur, 8 novembre 2026)
 # RGB + SHO (demande de l'utilisateur, 8 novembre 2026 : « met E30_Etoiles_screen apres GHS mais avant NXT ») : Contraste_GHS sur l'image
 # SANS étoiles, juste avant Etoiles_screen ; ordre P7 : Fond_desature, Fond_auto, Contraste_GHS, Etoiles_screen, NXT_dernier, Export_TIFF
 # puis SHO sans RGB et HOO aussi (« OUI », 8 novembre 2026)

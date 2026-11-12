@@ -41,6 +41,7 @@ Tous à copier dans `src/scripts/clodoweg/` de PixInsight (`maj_pc.bat` le fait)
 | `Couleur_selective.js` | équivalent approché de Couleur sélective de Photoshop (9 gammes, c,m,y,k ; bouton Aperçu et préréglages SHO, SHO 2, SHO 3 dans la fenêtre) ; options P5 (en tête) Couleur_selective_SHO, _SHO_2, _SHO_3 (profils .asv de l'utilisateur, copiés dans `profils/`) en SHO et RGB-SHO |
 | `Temperature_PS.js` | Température +5 / +10 du calque Couleur et vibrance de Photoshop, d'après une mesure (table 3D de 729 couleurs, mire dans `profils/mesure_temperature/`) ; options P7 Temperature_PS_5 et _10 dans les 5 workflows |
 | `Voile_PS.js` | Correction du voile façon Photoshop (modèle des brevets d'Adobe : canal sombre, sRGB linéaire) ; option P7 Voile_PS (+20) dans les 5 workflows ; bouton Aperçu |
+| `Magenta_moins.js` | retire le magenta / violet (inverser, SCNR vert, inverser : G' = max(G, min(R, B))) ; option P7 Magenta_moins en narrowband ; bouton Aperçu |
 | `Stat_canaux.js` | Statistical Stretch sur plusieurs canaux mono (S, H, O) en un clic |
 | `Etoiles_auto.js` | sur l'image d'étoiles : SCNR vert (SCNR_etoiles_vert), anti-violet (SCNR_etoiles_violet), saturation, étirement si amount > 0 |
 | `Etoiles_NB_auto.js` | étoiles RGB plausibles à partir des étoiles narrowband (SHO sans RGB, HOO) |

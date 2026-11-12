@@ -1553,3 +1553,7 @@ Demande de l'utilisateur : « Pour le RGB avec SHO (juste lui), mets E29_Etoiles
 ### Fenêtre vide bloquante (12 novembre 2026)
 
 Retour de l'utilisateur (capture) : « parfois que j'execute un script (souvent celui de copie ou ouverture photoshop), j'ai ce probleme la. je peux fermer la fenetre buggée mais ensuite je ne peux rien toucher dans pixinsight, je dois kill le process ». Fait : dialogue = false dans les icônes Export_Photoshop et Lecture_Photoshop (5 workflows). Cause non établie (hypothèse dans docs/kb/generateur.md).
+
+### Magenta_moins (12 novembre 2026)
+
+Demande de l'utilisateur (capture) : « je veux un scxript qui retire le majenta qu'il y a comme sur cette photo ». Fait : script Magenta_moins.js, option P7 en narrowband (LRGB et LHaRGB : à demander). Formules de SCNR (Average / Maximum Neutral) appliquées à l'image inversée : documentation de SCNR de PixInsight, de mémoire. Non testé.

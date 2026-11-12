@@ -1350,6 +1350,23 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - étoiles RGB -> RGB_stars ; HOO classiques -> HOO_stars
 > - pour recommencer -> Ctrl+Z
 
+#### Opt_Magenta_moins — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Magenta_moins.js`
+   paramètres : `force=0.80`, `methode=min`
+
+> OPTION — zones magenta / violettes (R et B au-dessus de G) : sur l'image sans étoiles revenue de Photoshop (tmp_PS) ou finie, avant NXT_dernier et les étoiles
+> Retire le magenta sans toucher aux bleus ni aux rouges.
+> 
+> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
+> 
+> PRÉRÉGLÉ : script Magenta_moins, méthode min, force 0,80 : « inverser, SCNR vert, inverser » écrit directement : G' = max(G, min(R, B)) (le vert manquant est rendu là où R ET B le dépassent), G'' = G + 0,8·(G' − G) ; R et B inchangés.
+> 
+> À RÉGLER : glisse sur l'image sans étoiles (tmp_PS) avant NXT_dernier et Etoiles_screen, ou sur l'image finie ; double-clic puis Apply Global = fenêtre (méthode, force, bouton Aperçu) ; copie Magenta_moins.js dans src/scripts/clodoweg.
+> 
+> SI :
+> - violet encore là -> force 1,0, ou méthode moyenne (plus forte, touche aussi les bleus-violets)
+> - image qui tire au vert -> force 0,5
+
 #### Opt_Temperature_PS_5 — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Temperature_PS.js`
    paramètres : `reglage=5`
