@@ -1514,7 +1514,7 @@ sho[:] = [x for x in sho if x[0][0] != 'C_MAS_canaux_rapide']
 for _st in (rgbsho, sho):
     insert_before(_st, 'Temperature_PS_5', [(script(n, ''), '') for n in ('Couleur_selective_SHO', 'Couleur_selective_SHO_2', 'Couleur_selective_SHO_3')])
 # option P7 Voile_PS (Correction du voile +20, modèle des brevets d'Adobe), narrowband, avant les Températures (demande de l'utilisateur, 11 novembre 2026)
-for _st in (rgbsho, sho, hoo):
+for _st in (rgbsho, sho, hoo, lrgb, lhargb):   # LRGB et LHaRGB aussi (« oui », 12 novembre 2026)
     insert_before(_st, 'Temperature_PS_5', [(script('Voile_PS', ''), '')])   # P7 options, avant les Températures (11 novembre 2026)   # R_C_Stat_canaux_rapide remis (demande de l'utilisateur, 8 novembre 2026)
 # RGB + SHO (demande de l'utilisateur, 8 novembre 2026 : « met E30_Etoiles_screen apres GHS mais avant NXT ») : Contraste_GHS sur l'image
 # SANS étoiles, juste avant Etoiles_screen ; ordre P7 : Fond_desature, Fond_auto, Contraste_GHS, Etoiles_screen, NXT_dernier, Export_TIFF
