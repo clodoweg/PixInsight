@@ -1549,3 +1549,7 @@ Demande de l'utilisateur : « les couleurs selectives doivent passer dans les P5
 ### RGB + SHO : Etoiles_reduites au chemin principal (12 novembre 2026)
 
 Demande de l'utilisateur : « Pour le RGB avec SHO (juste lui), mets E29_Etoiles_screen en option et remplace le par Opt_Etoiles_reduites ». Fait : RGB + SHO, E35_Etoiles_reduites (après NXT_dernier, avant Export_TIFF), Opt_Etoiles_screen en option P7 (layout.WF_DEFAULT['RSHO'] = et reduit). SHO sans RGB et HOO inchangés.
+
+### Fenêtre vide bloquante (12 novembre 2026)
+
+Retour de l'utilisateur (capture) : « parfois que j'execute un script (souvent celui de copie ou ouverture photoshop), j'ai ce probleme la. je peux fermer la fenetre buggée mais ensuite je ne peux rien toucher dans pixinsight, je dois kill le process ». Fait : dialogue = false dans les icônes Export_Photoshop et Lecture_Photoshop (5 workflows). Cause non établie (hypothèse dans docs/kb/generateur.md).

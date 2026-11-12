@@ -1311,7 +1311,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 #### Opt_Export_Photoshop — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js`
-   paramètres : `nom=`, `suffixe=`, `dossier=`, `icc=true`, `photoshop=true`, `photoshopExe=`, `temp=true`
+   paramètres : `nom=`, `suffixe=`, `dossier=`, `icc=true`, `photoshop=true`, `photoshopExe=`, `temp=true`, `dialogue=false`
 
 > OPTION — pour retoucher dans Photoshop : TIFF 16 bits sRGB enregistré sous tmp.tiff (dossier temporaire), puis ouvert dans Photoshop
 > Export_TIFF reste l'export final au nom de l'objet.
@@ -1327,7 +1327,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 #### Opt_Lecture_Photoshop — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Lecture_Photoshop.js`
-   paramètres : `fichier=`, `temp=true`
+   paramètres : `fichier=`, `temp=true`, `dialogue=false`
 
 > OPTION — après tes retouches dans Photoshop (Ctrl+S sur tmp.tiff) : rouvre tmp.tiff dans PixInsight, nouvelle vue tmp_PS.
 > 
@@ -1335,7 +1335,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > PRÉRÉGLÉ : script Lecture_Photoshop, temp = true : ouvre tmp.tiff (dossier temporaire, écrit par Opt_Export_Photoshop) dans une nouvelle vue tmp_PS.
 > 
-> À RÉGLER : après tes retouches : dans Photoshop, Ctrl+S (même fichier, TIFF), puis double-clic sur l'icône et Apply Global ; copie Lecture_Photoshop.js et clodoweg_objet.jsh dans src/scripts/clodoweg.
+> À RÉGLER : après tes retouches : dans Photoshop, Ctrl+S (même fichier, TIFF), puis double-clic sur l'icône et Apply Global : ouverture DIRECTE, sans fenêtre (dialogue = false) ; copie Lecture_Photoshop.js et clodoweg_objet.jsh dans src/scripts/clodoweg.
 > 
 > SI :
 > - calques dans Photoshop -> aplatis avant d'enregistrer, par prudence

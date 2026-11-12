@@ -1277,7 +1277,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 #### E26_Export_Photoshop — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js`
-   paramètres : `nom=`, `suffixe=`, `dossier=`, `icc=true`, `photoshop=true`, `photoshopExe=`, `temp=true`
+   paramètres : `nom=`, `suffixe=`, `dossier=`, `icc=true`, `photoshop=true`, `photoshopExe=`, `temp=true`, `dialogue=false`
 
 > LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
 > 
@@ -1290,13 +1290,13 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 #### E27_Lecture_Photoshop — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Lecture_Photoshop.js`
-   paramètres : `fichier=`, `temp=true`
+   paramètres : `fichier=`, `temp=true`, `dialogue=false`
 
 > LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
 > 
 > PRÉRÉGLÉ : script Lecture_Photoshop, temp = true : ouvre tmp.tiff (dossier temporaire, écrit par Opt_Export_Photoshop) dans une nouvelle vue tmp_PS.
 > 
-> À RÉGLER : CHEMIN PRINCIPAL, après tes retouches dans Photoshop (Ctrl+S sur tmp.tiff) : double-clic puis Apply Global ; la suite (NXT_dernier, Etoiles_screen, Export_TIFF) se fait sur la vue tmp_PS.
+> À RÉGLER : CHEMIN PRINCIPAL, après tes retouches dans Photoshop (Ctrl+S sur tmp.tiff) : double-clic puis Apply Global, ouverture directe sans fenêtre ; la suite (NXT_dernier, Etoiles_screen, Export_TIFF) se fait sur la vue tmp_PS.
 > 
 > SI :
 > - calques dans Photoshop -> aplatis avant d'enregistrer, par prudence

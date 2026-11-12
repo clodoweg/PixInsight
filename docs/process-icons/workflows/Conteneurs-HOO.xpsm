@@ -5569,7 +5569,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Export_TIFF, photoshop = true, temp = true : TIFF 16 bits sRGB enregistré sous tmp.tiff dans le dossier temporaire (plus sous le nom de l'objet ; remplacé à chaque fois), puis ouvert dans Photoshop (PC : Photoshop.exe le plus récent de C:/Program Files/Adobe ; Mac : open -b com.adobe.Photoshop).&#10;&#10;À RÉGLER : CHEMIN PRINCIPAL : glisse sur l'image SANS étoiles, après Contraste_GHS : tmp.tiff s'ouvre dans Photoshop ; retouche, Ctrl+S, puis Lecture_Photoshop.&#10;&#10;SI :&#10;- Photoshop introuvable -&gt; double-clic, Apply Global, bouton Choisir Photoshop… (ou photoshopExe dans l'icône) ; le .tif est quand même enregistré</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js</parameter>
       <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="7">
+      <table id="parameters" rows="8">
          <tr>
             <td id="id">nom</td>
             <td id="value"></td>
@@ -5598,14 +5598,18 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
             <td id="id">temp</td>
             <td id="value">true</td>
          </tr>
+         <tr>
+            <td id="id">dialogue</td>
+            <td id="value">false</td>
+         </tr>
       </table>
       <parameter id="information"></parameter>
    </instance>
    <instance class="Script" version="256" id="E29_Lecture_Photoshop_instance">
-      <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Lecture_Photoshop, temp = true : ouvre tmp.tiff (dossier temporaire, écrit par Opt_Export_Photoshop) dans une nouvelle vue tmp_PS.&#10;&#10;À RÉGLER : CHEMIN PRINCIPAL, après tes retouches dans Photoshop (Ctrl+S sur tmp.tiff) : double-clic puis Apply Global ; la suite (NXT_dernier, Etoiles_screen, Export_TIFF) se fait sur la vue tmp_PS.&#10;&#10;SI :&#10;- calques dans Photoshop -&gt; aplatis avant d'enregistrer, par prudence&#10;- autre fichier -&gt; bouton Choisir le fichier… dans la fenêtre</description>
+      <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Lecture_Photoshop, temp = true : ouvre tmp.tiff (dossier temporaire, écrit par Opt_Export_Photoshop) dans une nouvelle vue tmp_PS.&#10;&#10;À RÉGLER : CHEMIN PRINCIPAL, après tes retouches dans Photoshop (Ctrl+S sur tmp.tiff) : double-clic puis Apply Global, ouverture directe sans fenêtre ; la suite (NXT_dernier, Etoiles_screen, Export_TIFF) se fait sur la vue tmp_PS.&#10;&#10;SI :&#10;- calques dans Photoshop -&gt; aplatis avant d'enregistrer, par prudence&#10;- autre fichier -&gt; bouton Choisir le fichier… dans la fenêtre</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Lecture_Photoshop.js</parameter>
       <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="2">
+      <table id="parameters" rows="3">
          <tr>
             <td id="id">fichier</td>
             <td id="value"></td>
@@ -5613,6 +5617,10 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          <tr>
             <td id="id">temp</td>
             <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">dialogue</td>
+            <td id="value">false</td>
          </tr>
       </table>
       <parameter id="information"></parameter>
