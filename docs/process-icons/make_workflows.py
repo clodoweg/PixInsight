@@ -1610,6 +1610,15 @@ for _st in (rgbsho, sho):
     insert_after(_st, 'NBN_SHO', [(nbn_sho('NBN_SHO_doux', lightness='Lightness_Off', scnr='0.200', o3Boost='1.200', s2Boost='1.400'), D_NBN_DOUX)])
     # méthode Cosgrove (NBN_SHO_lineaire, MAS_Cosgrove, R_C_Cosgrove_rapide) retirée le même jour (demande de l'utilisateur : « enlève cosgrove de mes process icon »)
 
+# Narrowband, fin de P7 au chemin principal (demande de l'utilisateur, 12 novembre 2026 : « E28, E29, Voile PS, Contraste_GHS,
+# Export PhotoShop, Lecture Photoshop, NXT dernier, etoiles screen, export tiff ») : Fond_desature, Fond_auto, Voile_PS, Contraste_GHS,
+# Export_Photoshop, Lecture_Photoshop, NXT_dernier, Etoiles_screen, Export_TIFF ; Voile_PS et les deux Photoshop au chemin principal (layout.role)
+for _st in (rgbsho, sho, hoo):
+    _its = [pick(_st, b) for b in ('Voile_PS', 'Contraste_GHS', 'Export_Photoshop', 'Lecture_Photoshop', 'NXT_dernier', 'Etoiles_screen', 'Export_TIFF')]
+    for _it in _its:
+        _st.remove(_it)
+    insert_after(_st, 'Fond_auto', _its)
+
 for fn, pre, title, steps in [
     ('Workflow-LRGB.xpsm', 'LRGB', 'Workflow LRGB', lrgb),
     ('Workflow-LHaRGB.xpsm', 'LHA', 'Workflow LHaRGB', lhargb),

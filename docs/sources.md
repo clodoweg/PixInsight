@@ -1532,3 +1532,8 @@ Fait : Voile_PS.js et option P7 Voile_PS (force 20) en SHO, RGB + SHO et HOO. LR
 Puis (11 novembre 2026) : deux images JPEG de l'utilisateur, avant / après Photoshop Correction du voile +20. Fait : Voile_PS.js réécrit et calé (détail et chiffres dans docs/kb/techniques.md) ; icône rayon 7.4 (% de la largeur). Non testé dans PixInsight.
 Puis, à ma question pour LRGB et LHaRGB (une option P7 de plus, chemin principal, rapides et turbos inchangés), réponse de l'utilisateur : « oui » (12 novembre 2026). Fait : Opt_Voile_PS aussi en LRGB et LHaRGB, avant les Températures.
 Puis : « mais je ne veux pas que le voile rajoute du rouge ». Fait : paramètre couleur de Voile_PS.js (0 = luminance seule, teinte gardée ; défaut et icônes à 0).
+
+### Narrowband : fin de P7 avec Voile_PS et l'aller-retour Photoshop (12 novembre 2026)
+
+Demande de l'utilisateur : « pour les SHOs HOO, .. je veux dans le chemin principal dans l'ordre: E28, E29,Voile PS, Contraste_GHS, Export PhotoShop, Lecture Photoshop, NXT dernier, etoiles screen, export tiff ».
+Fait (RGB + SHO E28 à E36, SHO sans RGB E22 à E30, HOO E24 à E32) : Fond_desature, Fond_auto, Voile_PS, Contraste_GHS, Export_Photoshop, Lecture_Photoshop, NXT_dernier, Etoiles_screen, Export_TIFF ; Voile_PS, Export_Photoshop et Lecture_Photoshop au chemin principal (layout.role). R_C_Etoiles_fond_rapide inchangé. LRGB et LHaRGB non touchés.

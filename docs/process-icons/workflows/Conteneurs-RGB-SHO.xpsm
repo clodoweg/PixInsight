@@ -6106,7 +6106,31 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </table>
       <parameter id="information"></parameter>
    </instance>
-   <instance class="GeneralizedHyperbolicStretch" version="256" id="E30_Contraste_GHS_instance">
+   <instance class="Script" version="256" id="E30_Voile_PS_instance">
+      <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Voile_PS, force 20, couleur 0 : voile retiré comme Correction du voile +20 (modèle des brevets d'Adobe calé sur ton image avant / après Photoshop : canal sombre lissé sur 7,4 % de la largeur, ω = 0,153), mais sur la LUMINANCE seule : R, G, B multipliés par le même facteur, teinte et saturation gardées, pas de rouge ajouté ; couleur 1 = canal par canal comme Photoshop (plus rouge).&#10;&#10;À RÉGLER : CHEMIN PRINCIPAL : glisse sur l'image SANS étoiles, après Fond_auto, avant Contraste_GHS ; copie Voile_PS.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- trop fort -&gt; force 10 à 15&#10;- couleurs pas assez vives -&gt; couleur 0,3 à 0,5 (un peu de l'effet couleur de Photoshop)</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Voile_PS.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="4">
+         <tr>
+            <td id="id">force</td>
+            <td id="value">20</td>
+         </tr>
+         <tr>
+            <td id="id">rayon</td>
+            <td id="value">7.4</td>
+         </tr>
+         <tr>
+            <td id="id">t0</td>
+            <td id="value">0.10</td>
+         </tr>
+         <tr>
+            <td id="id">couleur</td>
+            <td id="value">0</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
+   </instance>
+   <instance class="GeneralizedHyperbolicStretch" version="256" id="E31_Contraste_GHS_instance">
       <description>PRÉRÉGLÉ : GHS Generalised Hyperbolic, RGB, Stretch factor 0,32, b = 4, SP 0,35, LP 0, HP 0,9 (réglage de l'utilisateur).&#10;&#10;À RÉGLER : glisse sur l'image SANS étoiles finie, après Fond_auto et avant Etoiles_screen (puis NXT_dernier et Export_TIFF) ; SP = valeur de ta zone plate, au-dessus du fond.&#10;&#10;SI :&#10;- fond qui monte -&gt; monte SP ou baisse le Stretch factor&#10;- cœur brillant qui sature -&gt; baisse HP&#10;- trop fort -&gt; Stretch factor 0,15–0,20</description>
       <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
       <parameter id="stretchChannel" value="SC_RGB"/>
@@ -6122,7 +6146,78 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="clipType" value="CT_RGBBlend"/>
       <parameter id="useRGBWorkingSpace" value="false"/>
    </instance>
-   <instance class="PixelMath" version="256" id="E31_Etoiles_screen_instance">
+   <instance class="Script" version="256" id="E32_Export_Photoshop_instance">
+      <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Export_TIFF, photoshop = true, temp = true : TIFF 16 bits sRGB enregistré sous tmp.tiff dans le dossier temporaire (plus sous le nom de l'objet ; remplacé à chaque fois), puis ouvert dans Photoshop (PC : Photoshop.exe le plus récent de C:/Program Files/Adobe ; Mac : open -b com.adobe.Photoshop).&#10;&#10;À RÉGLER : CHEMIN PRINCIPAL : glisse sur l'image SANS étoiles, après Contraste_GHS : tmp.tiff s'ouvre dans Photoshop ; retouche, Ctrl+S, puis Lecture_Photoshop.&#10;&#10;SI :&#10;- Photoshop introuvable -&gt; double-clic, Apply Global, bouton Choisir Photoshop… (ou photoshopExe dans l'icône) ; le .tif est quand même enregistré</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="7">
+         <tr>
+            <td id="id">nom</td>
+            <td id="value"></td>
+         </tr>
+         <tr>
+            <td id="id">suffixe</td>
+            <td id="value"></td>
+         </tr>
+         <tr>
+            <td id="id">dossier</td>
+            <td id="value"></td>
+         </tr>
+         <tr>
+            <td id="id">icc</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">photoshop</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">photoshopExe</td>
+            <td id="value"></td>
+         </tr>
+         <tr>
+            <td id="id">temp</td>
+            <td id="value">true</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
+   </instance>
+   <instance class="Script" version="256" id="E33_Lecture_Photoshop_instance">
+      <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Lecture_Photoshop, temp = true : ouvre tmp.tiff (dossier temporaire, écrit par Opt_Export_Photoshop) dans une nouvelle vue tmp_PS.&#10;&#10;À RÉGLER : CHEMIN PRINCIPAL, après tes retouches dans Photoshop (Ctrl+S sur tmp.tiff) : double-clic puis Apply Global ; la suite (NXT_dernier, Etoiles_screen, Export_TIFF) se fait sur la vue tmp_PS.&#10;&#10;SI :&#10;- calques dans Photoshop -&gt; aplatis avant d'enregistrer, par prudence&#10;- autre fichier -&gt; bouton Choisir le fichier… dans la fenêtre</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Lecture_Photoshop.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="2">
+         <tr>
+            <td id="id">fichier</td>
+            <td id="value"></td>
+         </tr>
+         <tr>
+            <td id="id">temp</td>
+            <td id="value">true</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
+   </instance>
+   <instance class="NoiseXTerminator" version="256" id="E34_NXT_dernier_instance">
+      <description>PRÉRÉGLÉ : NoiseXTerminator Denoise 0,25, 1 itération.&#10;&#10;À RÉGLER : glisse sur l'image SANS étoiles revenue de Photoshop (vue tmp_PS, après Lecture_Photoshop ; sinon l'image sans étoiles), AVANT Etoiles_screen (ordre de l'utilisateur, 12 novembre 2026).&#10;&#10;SI :&#10;- aspect plastique -&gt; Denoise 0,15&#10;- bruit encore visible -&gt; 0,35&#10;- étoiles adoucies -&gt; 0,15, ou saute cette étape</description>
+      <parameter id="ml_version" value="0"/>
+      <parameter id="denoise" value="0.25"/>
+      <parameter id="enable_color_separation" value="false"/>
+      <parameter id="enable_frequency_separation" value="false"/>
+      <parameter id="denoise_intensity" value="0.90"/>
+      <parameter id="denoise_color" value="0.90"/>
+      <parameter id="denoise_high_freq" value="0.90"/>
+      <parameter id="denoise_low_freq" value="0.90"/>
+      <parameter id="denoise_intensity_high_freq" value="0.90"/>
+      <parameter id="denoise_intensity_low_freq" value="0.90"/>
+      <parameter id="denoise_color_high_freq" value="0.90"/>
+      <parameter id="denoise_color_low_freq" value="0.90"/>
+      <parameter id="frequency_scale" value="5.0"/>
+      <parameter id="iterations" value="1"/>
+      <parameter id="detail" value="0.15"/>
+      <parameter id="overlap" value="0.20"/>
+   </instance>
+   <instance class="PixelMath" version="256" id="E35_Etoiles_screen_instance">
       <description>PRÉRÉGLÉ : ~((~$T) * (~RGB_stars)), sur l'image elle-même.&#10;&#10;À RÉGLER : glisse sur l'image sans étoiles finale : elle reçoit les étoiles ; étoiles étirées nommées RGB_stars (nom donné par SXT, s minuscule).&#10;&#10;SI :&#10;- autre nom d'étoiles -&gt; corrige-le dans la formule</description>
       <parameter id="expression">~((~$T) * (~RGB_stars))</parameter>
       <parameter id="expression1"></parameter>
@@ -6152,26 +6247,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
-   <instance class="NoiseXTerminator" version="256" id="E32_NXT_dernier_instance">
-      <description>PRÉRÉGLÉ : NoiseXTerminator Denoise 0,25, 1 itération.&#10;&#10;À RÉGLER : dernière étape avant Export_TIFF : glisse sur l'image finie AVEC ses étoiles, juste après la recombinaison (Etoiles_reduites ou Etoiles_screen).&#10;&#10;SI :&#10;- aspect plastique -&gt; Denoise 0,15&#10;- bruit encore visible -&gt; 0,35&#10;- étoiles adoucies -&gt; 0,15, ou saute cette étape</description>
-      <parameter id="ml_version" value="0"/>
-      <parameter id="denoise" value="0.25"/>
-      <parameter id="enable_color_separation" value="false"/>
-      <parameter id="enable_frequency_separation" value="false"/>
-      <parameter id="denoise_intensity" value="0.90"/>
-      <parameter id="denoise_color" value="0.90"/>
-      <parameter id="denoise_high_freq" value="0.90"/>
-      <parameter id="denoise_low_freq" value="0.90"/>
-      <parameter id="denoise_intensity_high_freq" value="0.90"/>
-      <parameter id="denoise_intensity_low_freq" value="0.90"/>
-      <parameter id="denoise_color_high_freq" value="0.90"/>
-      <parameter id="denoise_color_low_freq" value="0.90"/>
-      <parameter id="frequency_scale" value="5.0"/>
-      <parameter id="iterations" value="1"/>
-      <parameter id="detail" value="0.15"/>
-      <parameter id="overlap" value="0.20"/>
-   </instance>
-   <instance class="Script" version="256" id="E33_Export_TIFF_instance">
+   <instance class="Script" version="256" id="E36_Export_TIFF_instance">
       <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Export_TIFF : copie de l'image en entiers 16 bits, convertie en sRGB IEC61966-2.1 (icc = true), enregistrée en TIFF (.tif) sous le NOM DE L'OBJET, sans espace (NGC 1532 -&gt; NGC1532), = nom du dossier des masters ouverts (L, R, G, B, H…), dossiers génériques (master, lights, output, WBPP…) sautés ; masters fermés (narrowband) : dossier retenu par Renommer_auto ; enregistrée dans ce dossier ; l'image ouverte ne change pas.&#10;&#10;À RÉGLER : DERNIÈRE étape du chemin principal : glisse sur l'image finie, juste après NXT_dernier ; aucune vue n'est fermée ; copie Export_TIFF.js et clodoweg_objet.jsh dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- aucun master ouvert -&gt; mot-clé OBJECT, sinon nom de la vue, dans ton dossier personnel&#10;- autre nom -&gt; remplis nom&#10;- autre dossier -&gt; remplis dossier&#10;- garder plusieurs versions -&gt; suffixe (ex. _v2)&#10;- garder le profil actuel -&gt; icc false</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js</parameter>
       <parameter id="md5sum"></parameter>
@@ -6905,30 +6981,6 @@ max($T,f1)</parameter>
       </table>
       <parameter id="information"></parameter>
    </instance>
-   <instance class="Script" version="256" id="Opt_Voile_PS_instance">
-      <description>OPTION — tout à la fin, image finie, avant l'export : Correction du voile +20 façon Photoshop (fond un peu plus sombre, contraste et couleurs montés)&#10;Modèle des brevets d'Adobe, calé sur une de tes images avant / après Photoshop.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Voile_PS, force 20, couleur 0 : voile retiré comme Correction du voile +20 (modèle des brevets d'Adobe calé sur ton image avant / après Photoshop : canal sombre lissé sur 7,4 % de la largeur, ω = 0,153), mais sur la LUMINANCE seule : R, G, B multipliés par le même facteur, teinte et saturation gardées, pas de rouge ajouté ; couleur 1 = canal par canal comme Photoshop (plus rouge).&#10;&#10;À RÉGLER : glisse sur l'image finie (couleur, sRGB), avant l'export ; double-clic puis Apply Global = fenêtre (force, rayon, couleur, t0, bouton Aperçu) ; copie Voile_PS.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- trop fort -&gt; force 10 à 15&#10;- couleurs pas assez vives -&gt; couleur 0,3 à 0,5 (un peu de l'effet couleur de Photoshop)</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Voile_PS.js</parameter>
-      <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="4">
-         <tr>
-            <td id="id">force</td>
-            <td id="value">20</td>
-         </tr>
-         <tr>
-            <td id="id">rayon</td>
-            <td id="value">7.4</td>
-         </tr>
-         <tr>
-            <td id="id">t0</td>
-            <td id="value">0.10</td>
-         </tr>
-         <tr>
-            <td id="id">couleur</td>
-            <td id="value">0</td>
-         </tr>
-      </table>
-      <parameter id="information"></parameter>
-   </instance>
    <instance class="Script" version="256" id="Opt_Temperature_PS_5_instance">
       <description>OPTION — tout à la fin, image finie avec étoiles, avant l'export : Température +5 de Photoshop (Couleur et vibrance), reproduite d'après une mesure&#10;Image plus chaude.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Temperature_PS, Température +5 du calque Couleur et vibrance de Photoshop : table 3D de 729 couleurs MESURÉE sur Photoshop (mire de l'utilisateur), interpolée ; gris 0,50 -&gt; 0,537 / 0,521 / 0,497 ; écart moyen avec Photoshop sur le gris 0,0003.&#10;&#10;À RÉGLER : glisse sur l'image finie (couleur, sRGB), après NXT_dernier, avant l'export ; un seul des deux ; copie Temperature_PS.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- trop chaud -&gt; Ctrl+Z&#10;- pas assez -&gt; Temperature_PS_10 à la place</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Temperature_PS.js</parameter>
@@ -6960,58 +7012,6 @@ max($T,f1)</parameter>
       <parameter id="renderingIntent" value="Perceptual"/>
       <parameter id="useBlackPointCompensation" value="true"/>
       <parameter id="useFloatingPointTransformation" value="true"/>
-   </instance>
-   <instance class="Script" version="256" id="Opt_Export_Photoshop_instance">
-      <description>OPTION — pour retoucher dans Photoshop : TIFF 16 bits sRGB enregistré sous tmp.tiff (dossier temporaire), puis ouvert dans Photoshop&#10;Export_TIFF reste l'export final au nom de l'objet.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Export_TIFF, photoshop = true, temp = true : TIFF 16 bits sRGB enregistré sous tmp.tiff dans le dossier temporaire (plus sous le nom de l'objet ; remplacé à chaque fois), puis ouvert dans Photoshop (PC : Photoshop.exe le plus récent de C:/Program Files/Adobe ; Mac : open -b com.adobe.Photoshop).&#10;&#10;À RÉGLER : à la place d'Export_TIFF : glisse sur l'image finie ; copie Export_TIFF.js et clodoweg_objet.jsh dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- Photoshop introuvable -&gt; double-clic, Apply Global, bouton Choisir Photoshop… (ou photoshopExe dans l'icône) ; le .tif est quand même enregistré</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js</parameter>
-      <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="7">
-         <tr>
-            <td id="id">nom</td>
-            <td id="value"></td>
-         </tr>
-         <tr>
-            <td id="id">suffixe</td>
-            <td id="value"></td>
-         </tr>
-         <tr>
-            <td id="id">dossier</td>
-            <td id="value"></td>
-         </tr>
-         <tr>
-            <td id="id">icc</td>
-            <td id="value">true</td>
-         </tr>
-         <tr>
-            <td id="id">photoshop</td>
-            <td id="value">true</td>
-         </tr>
-         <tr>
-            <td id="id">photoshopExe</td>
-            <td id="value"></td>
-         </tr>
-         <tr>
-            <td id="id">temp</td>
-            <td id="value">true</td>
-         </tr>
-      </table>
-      <parameter id="information"></parameter>
-   </instance>
-   <instance class="Script" version="256" id="Opt_Lecture_Photoshop_instance">
-      <description>OPTION — après tes retouches dans Photoshop (Ctrl+S sur tmp.tiff) : rouvre tmp.tiff dans PixInsight, nouvelle vue tmp_PS.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Lecture_Photoshop, temp = true : ouvre tmp.tiff (dossier temporaire, écrit par Opt_Export_Photoshop) dans une nouvelle vue tmp_PS.&#10;&#10;À RÉGLER : après tes retouches : dans Photoshop, Ctrl+S (même fichier, TIFF), puis double-clic sur l'icône et Apply Global ; copie Lecture_Photoshop.js et clodoweg_objet.jsh dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- calques dans Photoshop -&gt; aplatis avant d'enregistrer, par prudence&#10;- autre fichier -&gt; bouton Choisir le fichier… dans la fenêtre</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Lecture_Photoshop.js</parameter>
-      <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="2">
-         <tr>
-            <td id="id">fichier</td>
-            <td id="value"></td>
-         </tr>
-         <tr>
-            <td id="id">temp</td>
-            <td id="value">true</td>
-         </tr>
-      </table>
-      <parameter id="information"></parameter>
    </instance>
    <instance class="Script" version="256" id="Opt_Fermer_tout_instance">
       <description>OPTION — tout à la fin, après Export_TIFF : ferme toutes les vues ouvertes sans demander (image suivante).&#10;&#10;PRÉRÉGLÉ : script Fermer_vues, views = * : ferme TOUTES les vues ouvertes, sans demander d'enregistrer.&#10;&#10;À RÉGLER : après Export_TIFF (TIFF déjà enregistré) : double-clic puis Apply Global, la fenêtre s'ouvre avec toutes les vues cochées, clique Fermer ; glissée sur une image, ferme tout sauf cette image ; copie Fermer_vues.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- une vue à garder -&gt; décoche-la dans la fenêtre&#10;- rien n'est enregistré : exporte ou sauve AVANT</description>
@@ -7266,23 +7266,23 @@ max($T,f1)</parameter>
    <icon id="P7_Etoiles" instance="P7_Etoiles_instance" xpos="1259" ypos="20" workspace="Workspace01"/>
    <icon id="E28_Fond_desature" instance="E28_Fond_desature_instance" xpos="1259" ypos="64" workspace="Workspace01"/>
    <icon id="E29_Fond_auto" instance="E29_Fond_auto_instance" xpos="1259" ypos="94" workspace="Workspace01"/>
-   <icon id="E30_Contraste_GHS" instance="E30_Contraste_GHS_instance" xpos="1259" ypos="124" workspace="Workspace01"/>
-   <icon id="E31_Etoiles_screen" instance="E31_Etoiles_screen_instance" xpos="1259" ypos="154" workspace="Workspace01"/>
-   <icon id="E32_NXT_dernier" instance="E32_NXT_dernier_instance" xpos="1259" ypos="184" workspace="Workspace01"/>
-   <icon id="E33_Export_TIFF" instance="E33_Export_TIFF_instance" xpos="1259" ypos="214" workspace="Workspace01"/>
-   <icon id="P7_options" instance="P7_options_instance" xpos="1259" ypos="260" workspace="Workspace01"/>
-   <icon id="Opt_Boost_final_doux" instance="Opt_Boost_final_doux_instance" xpos="1259" ypos="294" workspace="Workspace01"/>
-   <icon id="Opt_Boost_final" instance="Opt_Boost_final_instance" xpos="1259" ypos="324" workspace="Workspace01"/>
-   <icon id="Opt_Etoiles_reduites" instance="Opt_Etoiles_reduites_instance" xpos="1259" ypos="354" workspace="Workspace01"/>
-   <icon id="Opt_Couleur_selective_SHO" instance="Opt_Couleur_selective_SHO_instance" xpos="1259" ypos="384" workspace="Workspace01"/>
-   <icon id="Opt_Couleur_selective_SHO_2" instance="Opt_Couleur_selective_SHO_2_instance" xpos="1259" ypos="414" workspace="Workspace01"/>
-   <icon id="Opt_Couleur_selective_SHO_3" instance="Opt_Couleur_selective_SHO_3_instance" xpos="1259" ypos="444" workspace="Workspace01"/>
-   <icon id="Opt_Voile_PS" instance="Opt_Voile_PS_instance" xpos="1259" ypos="474" workspace="Workspace01"/>
-   <icon id="Opt_Temperature_PS_5" instance="Opt_Temperature_PS_5_instance" xpos="1259" ypos="504" workspace="Workspace01"/>
-   <icon id="Opt_Temperature_PS_10" instance="Opt_Temperature_PS_10_instance" xpos="1259" ypos="534" workspace="Workspace01"/>
-   <icon id="Opt_ICC_sRGB" instance="Opt_ICC_sRGB_instance" xpos="1259" ypos="564" workspace="Workspace01"/>
-   <icon id="Opt_Export_Photoshop" instance="Opt_Export_Photoshop_instance" xpos="1259" ypos="594" workspace="Workspace01"/>
-   <icon id="Opt_Lecture_Photoshop" instance="Opt_Lecture_Photoshop_instance" xpos="1259" ypos="624" workspace="Workspace01"/>
+   <icon id="E30_Voile_PS" instance="E30_Voile_PS_instance" xpos="1259" ypos="124" workspace="Workspace01"/>
+   <icon id="E31_Contraste_GHS" instance="E31_Contraste_GHS_instance" xpos="1259" ypos="154" workspace="Workspace01"/>
+   <icon id="E32_Export_Photoshop" instance="E32_Export_Photoshop_instance" xpos="1259" ypos="184" workspace="Workspace01"/>
+   <icon id="E33_Lecture_Photoshop" instance="E33_Lecture_Photoshop_instance" xpos="1259" ypos="214" workspace="Workspace01"/>
+   <icon id="E34_NXT_dernier" instance="E34_NXT_dernier_instance" xpos="1259" ypos="244" workspace="Workspace01"/>
+   <icon id="E35_Etoiles_screen" instance="E35_Etoiles_screen_instance" xpos="1259" ypos="274" workspace="Workspace01"/>
+   <icon id="E36_Export_TIFF" instance="E36_Export_TIFF_instance" xpos="1259" ypos="304" workspace="Workspace01"/>
+   <icon id="P7_options" instance="P7_options_instance" xpos="1259" ypos="350" workspace="Workspace01"/>
+   <icon id="Opt_Boost_final_doux" instance="Opt_Boost_final_doux_instance" xpos="1259" ypos="384" workspace="Workspace01"/>
+   <icon id="Opt_Boost_final" instance="Opt_Boost_final_instance" xpos="1259" ypos="414" workspace="Workspace01"/>
+   <icon id="Opt_Etoiles_reduites" instance="Opt_Etoiles_reduites_instance" xpos="1259" ypos="444" workspace="Workspace01"/>
+   <icon id="Opt_Couleur_selective_SHO" instance="Opt_Couleur_selective_SHO_instance" xpos="1259" ypos="474" workspace="Workspace01"/>
+   <icon id="Opt_Couleur_selective_SHO_2" instance="Opt_Couleur_selective_SHO_2_instance" xpos="1259" ypos="504" workspace="Workspace01"/>
+   <icon id="Opt_Couleur_selective_SHO_3" instance="Opt_Couleur_selective_SHO_3_instance" xpos="1259" ypos="534" workspace="Workspace01"/>
+   <icon id="Opt_Temperature_PS_5" instance="Opt_Temperature_PS_5_instance" xpos="1259" ypos="564" workspace="Workspace01"/>
+   <icon id="Opt_Temperature_PS_10" instance="Opt_Temperature_PS_10_instance" xpos="1259" ypos="594" workspace="Workspace01"/>
+   <icon id="Opt_ICC_sRGB" instance="Opt_ICC_sRGB_instance" xpos="1259" ypos="624" workspace="Workspace01"/>
    <icon id="Opt_Fermer_tout" instance="Opt_Fermer_tout_instance" xpos="1259" ypos="654" workspace="Workspace01"/>
    <icon id="P7_rapide" instance="P7_rapide_instance" xpos="1259" ypos="700" workspace="Workspace01"/>
    <icon id="R_C_Etoiles_fond_rapide" instance="R_C_Etoiles_fond_rapide_instance" xpos="1259" ypos="734" workspace="Workspace01"/>

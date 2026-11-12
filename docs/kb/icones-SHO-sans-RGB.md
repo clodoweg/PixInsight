@@ -1200,7 +1200,21 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - données très propres -> 0,10 à 0,11
 > - nébuleuse qui remplit le champ : regarde le fond AVANT dans la console ; au-dessus d'environ 0,20 (seuil au jugé), ce n'est pas du vrai ciel -> Ctrl+Z et saute cette étape
 
-#### E24_Contraste_GHS — GeneralizedHyperbolicStretch
+#### E24_Voile_PS — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Voile_PS.js`
+   paramètres : `force=20`, `rayon=7.4`, `t0=0.10`, `couleur=0`
+
+> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
+> 
+> PRÉRÉGLÉ : script Voile_PS, force 20, couleur 0 : voile retiré comme Correction du voile +20 (modèle des brevets d'Adobe calé sur ton image avant / après Photoshop : canal sombre lissé sur 7,4 % de la largeur, ω = 0,153), mais sur la LUMINANCE seule : R, G, B multipliés par le même facteur, teinte et saturation gardées, pas de rouge ajouté ; couleur 1 = canal par canal comme Photoshop (plus rouge).
+> 
+> À RÉGLER : CHEMIN PRINCIPAL : glisse sur l'image SANS étoiles, après Fond_auto, avant Contraste_GHS ; copie Voile_PS.js dans src/scripts/clodoweg.
+> 
+> SI :
+> - trop fort -> force 10 à 15
+> - couleurs pas assez vives -> couleur 0,3 à 0,5 (un peu de l'effet couleur de Photoshop)
+
+#### E25_Contraste_GHS — GeneralizedHyperbolicStretch
    stretchType=ST_GeneralisedHyperbolic ; stretchChannel=SC_RGB ; inverse=false ; stretchFactor=0.320 ; localIntensity=4.000 ; symmetryPoint=0.350000 ; highlightProtection=0.900000 ; shadowProtection=0.000000 ; blackPoint=0.000000 ; whitePoint=1.000000 ; colourBlend=1.000 ; clipType=CT_RGBBlend ; useRGBWorkingSpace=false
 
 > PRÉRÉGLÉ : GHS Generalised Hyperbolic, RGB, Stretch factor 0,32, b = 4, SP 0,35, LP 0, HP 0,9 (réglage de l'utilisateur).
@@ -1212,7 +1226,46 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - cœur brillant qui sature -> baisse HP
 > - trop fort -> Stretch factor 0,15–0,20
 
-#### E25_Etoiles_screen — PixelMath
+#### E26_Export_Photoshop — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js`
+   paramètres : `nom=`, `suffixe=`, `dossier=`, `icc=true`, `photoshop=true`, `photoshopExe=`, `temp=true`
+
+> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
+> 
+> PRÉRÉGLÉ : script Export_TIFF, photoshop = true, temp = true : TIFF 16 bits sRGB enregistré sous tmp.tiff dans le dossier temporaire (plus sous le nom de l'objet ; remplacé à chaque fois), puis ouvert dans Photoshop (PC : Photoshop.exe le plus récent de C:/Program Files/Adobe ; Mac : open -b com.adobe.Photoshop).
+> 
+> À RÉGLER : CHEMIN PRINCIPAL : glisse sur l'image SANS étoiles, après Contraste_GHS : tmp.tiff s'ouvre dans Photoshop ; retouche, Ctrl+S, puis Lecture_Photoshop.
+> 
+> SI :
+> - Photoshop introuvable -> double-clic, Apply Global, bouton Choisir Photoshop… (ou photoshopExe dans l'icône) ; le .tif est quand même enregistré
+
+#### E27_Lecture_Photoshop — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Lecture_Photoshop.js`
+   paramètres : `fichier=`, `temp=true`
+
+> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
+> 
+> PRÉRÉGLÉ : script Lecture_Photoshop, temp = true : ouvre tmp.tiff (dossier temporaire, écrit par Opt_Export_Photoshop) dans une nouvelle vue tmp_PS.
+> 
+> À RÉGLER : CHEMIN PRINCIPAL, après tes retouches dans Photoshop (Ctrl+S sur tmp.tiff) : double-clic puis Apply Global ; la suite (NXT_dernier, Etoiles_screen, Export_TIFF) se fait sur la vue tmp_PS.
+> 
+> SI :
+> - calques dans Photoshop -> aplatis avant d'enregistrer, par prudence
+> - autre fichier -> bouton Choisir le fichier… dans la fenêtre
+
+#### E28_NXT_dernier — NoiseXTerminator
+   ml_version=0 ; denoise=0.25 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
+
+> PRÉRÉGLÉ : NoiseXTerminator Denoise 0,25, 1 itération.
+> 
+> À RÉGLER : glisse sur l'image SANS étoiles revenue de Photoshop (vue tmp_PS, après Lecture_Photoshop ; sinon l'image sans étoiles), AVANT Etoiles_screen (ordre de l'utilisateur, 12 novembre 2026).
+> 
+> SI :
+> - aspect plastique -> Denoise 0,15
+> - bruit encore visible -> 0,35
+> - étoiles adoucies -> 0,15, ou saute cette étape
+
+#### E29_Etoiles_screen — PixelMath
    expression = `~((~$T) * (~NBtoRGB_stars))` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
 
 > PRÉRÉGLÉ : ~((~$T) * (~NBtoRGB_stars)), sur l'image elle-même.
@@ -1223,19 +1276,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - étoiles synthétiques -> remplace par Stars_HOO
 > - étoiles aux couleurs de la palette -> par SHO_stars (étirée)
 
-#### E26_NXT_dernier — NoiseXTerminator
-   ml_version=0 ; denoise=0.25 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
-
-> PRÉRÉGLÉ : NoiseXTerminator Denoise 0,25, 1 itération.
-> 
-> À RÉGLER : dernière étape avant Export_TIFF : glisse sur l'image finie AVEC ses étoiles, juste après la recombinaison (Etoiles_reduites ou Etoiles_screen).
-> 
-> SI :
-> - aspect plastique -> Denoise 0,15
-> - bruit encore visible -> 0,35
-> - étoiles adoucies -> 0,15, ou saute cette étape
-
-#### E27_Export_TIFF — Script
+#### E30_Export_TIFF — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js`
    paramètres : `nom=`, `suffixe=`, `dossier=`, `icc=true`
 
@@ -1403,23 +1444,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - trop fort -> profil plus doux (SHO_2, puis SHO_3)
 > - différent de Photoshop -> formule d'Adobe non publiée : ajuste les valeurs dans la fenêtre
 
-#### Opt_Voile_PS — Script
-   script `$PXI_SRCDIR/scripts/clodoweg/Voile_PS.js`
-   paramètres : `force=20`, `rayon=7.4`, `t0=0.10`, `couleur=0`
-
-> OPTION — tout à la fin, image finie, avant l'export : Correction du voile +20 façon Photoshop (fond un peu plus sombre, contraste et couleurs montés)
-> Modèle des brevets d'Adobe, calé sur une de tes images avant / après Photoshop.
-> 
-> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
-> 
-> PRÉRÉGLÉ : script Voile_PS, force 20, couleur 0 : voile retiré comme Correction du voile +20 (modèle des brevets d'Adobe calé sur ton image avant / après Photoshop : canal sombre lissé sur 7,4 % de la largeur, ω = 0,153), mais sur la LUMINANCE seule : R, G, B multipliés par le même facteur, teinte et saturation gardées, pas de rouge ajouté ; couleur 1 = canal par canal comme Photoshop (plus rouge).
-> 
-> À RÉGLER : glisse sur l'image finie (couleur, sRGB), avant l'export ; double-clic puis Apply Global = fenêtre (force, rayon, couleur, t0, bouton Aperçu) ; copie Voile_PS.js dans src/scripts/clodoweg.
-> 
-> SI :
-> - trop fort -> force 10 à 15
-> - couleurs pas assez vives -> couleur 0,3 à 0,5 (un peu de l'effet couleur de Photoshop)
-
 #### Opt_Temperature_PS_5 — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Temperature_PS.js`
    paramètres : `reglage=5`
@@ -1464,38 +1488,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > SI :
 > - impression ou Adobe RGB voulu -> change le profil cible dans l'icône
-
-#### Opt_Export_Photoshop — Script
-   script `$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js`
-   paramètres : `nom=`, `suffixe=`, `dossier=`, `icc=true`, `photoshop=true`, `photoshopExe=`, `temp=true`
-
-> OPTION — pour retoucher dans Photoshop : TIFF 16 bits sRGB enregistré sous tmp.tiff (dossier temporaire), puis ouvert dans Photoshop
-> Export_TIFF reste l'export final au nom de l'objet.
-> 
-> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
-> 
-> PRÉRÉGLÉ : script Export_TIFF, photoshop = true, temp = true : TIFF 16 bits sRGB enregistré sous tmp.tiff dans le dossier temporaire (plus sous le nom de l'objet ; remplacé à chaque fois), puis ouvert dans Photoshop (PC : Photoshop.exe le plus récent de C:/Program Files/Adobe ; Mac : open -b com.adobe.Photoshop).
-> 
-> À RÉGLER : à la place d'Export_TIFF : glisse sur l'image finie ; copie Export_TIFF.js et clodoweg_objet.jsh dans src/scripts/clodoweg.
-> 
-> SI :
-> - Photoshop introuvable -> double-clic, Apply Global, bouton Choisir Photoshop… (ou photoshopExe dans l'icône) ; le .tif est quand même enregistré
-
-#### Opt_Lecture_Photoshop — Script
-   script `$PXI_SRCDIR/scripts/clodoweg/Lecture_Photoshop.js`
-   paramètres : `fichier=`, `temp=true`
-
-> OPTION — après tes retouches dans Photoshop (Ctrl+S sur tmp.tiff) : rouvre tmp.tiff dans PixInsight, nouvelle vue tmp_PS.
-> 
-> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
-> 
-> PRÉRÉGLÉ : script Lecture_Photoshop, temp = true : ouvre tmp.tiff (dossier temporaire, écrit par Opt_Export_Photoshop) dans une nouvelle vue tmp_PS.
-> 
-> À RÉGLER : après tes retouches : dans Photoshop, Ctrl+S (même fichier, TIFF), puis double-clic sur l'icône et Apply Global ; copie Lecture_Photoshop.js et clodoweg_objet.jsh dans src/scripts/clodoweg.
-> 
-> SI :
-> - calques dans Photoshop -> aplatis avant d'enregistrer, par prudence
-> - autre fichier -> bouton Choisir le fichier… dans la fenêtre
 
 #### Opt_Fermer_tout — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`

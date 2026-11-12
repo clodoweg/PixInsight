@@ -51,6 +51,8 @@ def role(prefix, base):
         return 'core'   # SHO, RGB + SHO et HOO : chemin principal P4 (option le 22 octobre, de nouveau au chemin principal le 8 novembre 2026, demandes de l'utilisateur)
     if prefix in ('SHO', 'RSHO') and base == 'Statistical_Stretch':
         return 'core'
+    if prefix in NB and base in ('Voile_PS', 'Export_Photoshop', 'Lecture_Photoshop'):
+        return 'core'   # chemin principal P7 en narrowband (demande de l'utilisateur, 12 novembre 2026)
     if prefix in LUM and base == 'Boost_final':
         return 'core'   # galaxies : chemin principal après Etoiles_screen (demande de l'utilisateur, 21 octobre 2026)
     if prefix in LUM and base == 'Star_Stretch':
