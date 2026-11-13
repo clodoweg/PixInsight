@@ -1359,7 +1359,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 #### E36_Export_TIFF — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js`
-   paramètres : `nom=`, `suffixe=`, `dossier=`, `icc=true`
+   paramètres : `nom=`, `suffixe=`, `dossier=`, `icc=true`, `dialogue=false`
 
 > LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
 > 
@@ -1517,16 +1517,16 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 #### Opt_Fermer_tout — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
-   paramètres : `views=*`
+   paramètres : `views=*`, `dialogue=false`
 
 > OPTION — tout à la fin, après Export_TIFF : ferme toutes les vues ouvertes sans demander (image suivante).
 > 
 > PRÉRÉGLÉ : script Fermer_vues, views = * : ferme TOUTES les vues ouvertes, sans demander d'enregistrer.
 > 
-> À RÉGLER : après Export_TIFF (TIFF déjà enregistré) : double-clic puis Apply Global, la fenêtre s'ouvre avec toutes les vues cochées, clique Fermer ; glissée sur une image, ferme tout sauf cette image ; copie Fermer_vues.js dans src/scripts/clodoweg.
+> À RÉGLER : après Export_TIFF (TIFF déjà enregistré) : double-clic puis Apply Global : TOUTES les vues sont fermées tout de suite, sans fenêtre ni question (13 novembre 2026) ; glissée sur une image, ferme tout sauf cette image ; copie Fermer_vues.js dans src/scripts/clodoweg.
 > 
 > SI :
-> - une vue à garder -> décoche-la dans la fenêtre
+> - une vue à garder -> glisse l'icône sur cette vue (elle reste ouverte), ou ferme les autres à la main
 > - rien n'est enregistré : exporte ou sauve AVANT
 
 ### P7_rapide

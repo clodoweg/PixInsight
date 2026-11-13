@@ -75,7 +75,7 @@ SCRIPTS = {
     'Nettoyage_sans_etoiles': ('$PXI_SRCDIR/scripts/clodoweg/Nettoyage_sans_etoiles.js', '', [('etoiles', 'RGB_stars'), ('seuilBas', '0.05'), ('seuilHaut', '0.12'), ('etendue', '25'), ('passes', '3'), ('protege', '0.08'), ('structure', '0.15'), ('compact', '0.05'), ('tresBrillant', '0.05'), ('etendue2', '80'), ('gain', '3'), ('gain2', '8'), ('afficherMasque', 'false')], L_DRAG),
     'Saturation_grosses': ('$PXI_SRCDIR/scripts/clodoweg/Saturation_grosses.js', '', [('vue', 'RGB_stars'), ('taille', '7'), ('seuil', '0.15'), ('etendue', '12'), ('passes', '1')], L_DRAG),   # option P4 : courbe de saturation de l'utilisateur sur les grosses étoiles seulement (demande de l'utilisateur)
     'Etoiles_grosses': ('$PXI_SRCDIR/scripts/clodoweg/Etoiles_grosses.js', '', [('taille', '7'), ('seuil', '0.15'), ('etendue', '12'), ('force', '0.80'), ('afficherMasque', 'false')], L_DRAG),   # demande de l'utilisateur : réduire seulement les grosses étoiles
-    'Export_TIFF': ('$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js', '', [('nom', ''), ('suffixe', ''), ('dossier', ''), ('icc', 'true')], L_DRAG),   # plus aucune vue fermée (demande de l'utilisateur)
+    'Export_TIFF': ('$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js', '', [('nom', ''), ('suffixe', ''), ('dossier', ''), ('icc', 'true'), ('dialogue', 'false')], L_DRAG),   # sans fenêtre (13 novembre 2026 : fenêtre vide bloquante)   # plus aucune vue fermée (demande de l'utilisateur)
     'Taches_fond': ('$PXI_SRCDIR/scripts/clodoweg/Taches_fond.js', '', [('couches', '6'), ('force', '1.00'), ('debut', '0.05'), ('fin', '0.20'), ('flou', '3')], L_DRAG),   # option P4 galaxies : couleur du fond lissée (demande de l'utilisateur, 23 octobre 2026)
     # Couleur sélective, profils .asv de l'utilisateur lus (version 1, méthode relative ; demande de l'utilisateur, 8 novembre 2026)
     'Couleur_selective_SHO': ('$PXI_SRCDIR/scripts/clodoweg/Couleur_selective.js', '', [('rouges', '-25,25,0,0'), ('jaunes', '-50,50,0,0'), ('verts', '-50,50,0,0'), ('cyans', '0,0,-50,0'), ('bleus', '0,0,0,0'), ('magentas', '0,0,0,0'), ('blancs', '0,0,0,0'), ('neutres', '0,0,0,0'), ('noirs', '0,0,0,0'), ('relatif', 'true')], L_DRAG),
@@ -389,12 +389,14 @@ def container(name, xmls):
     return '   <instance class="ProcessContainer" id="%s_instance">\n%s\n   </instance>' % (name, '\n'.join(nested(x) for x in xmls))
 
 
-def fermer(icon, views):
+def fermer(icon, views, sans_fenetre=False):
     """Icône Script Fermer_vues réglée pour fermer les vues données (dernière étape d'un conteneur)."""
     n, x = script('Fermer_vues', '')
     a = '<td id="id">views</td>\n            <td id="value"></td>'
     assert a in x
     x = x.replace(a, '<td id="id">views</td>\n            <td id="value">%s</td>' % views)
+    if sans_fenetre:
+        x = no_dialog(x)   # dialogue = false : exécution directe, sans fenêtre
     return icon, x.replace('id="Fermer_vues_instance"', 'id="%s_instance"' % icon, 1)
 
 def curves_cs(name, c, s):
@@ -830,7 +832,7 @@ EXPORT = [(ghs('Contraste_GHS', 4, hp=0.9, sf=0.32, sp=0.35), ''),   # chemin pr
           # options Courbes_Photoshop, Voile_Photoshop, Lumiere_Photoshop supprimées (demande de l'utilisateur, 8 novembre 2026)
           (icc_srgb(), ''), (script('Export_TIFF', ''), '')]   # tout à la fin : ICC_sRGB en option, Export_TIFF au chemin principal, dernier élément après NXT_dernier (demande de l'utilisateur, 20 octobre 2026)
 EXPORT += [(script('Export_Photoshop', ''), ''), (script('Lecture_Photoshop', ''), '')]   # options : export + Photoshop, puis relecture du .tif retouché (demande de l'utilisateur, 22 octobre 2026 ; Export_TIFF par défaut inchangé)
-EXPORT.append((fermer('Fermer_tout', '*'), ''))   # option après Export_TIFF : fermer toutes les vues (demande de l'utilisateur)
+EXPORT.append((fermer('Fermer_tout', '*', sans_fenetre=True), ''))   # sans fenêtre (13 novembre 2026 : fenêtre vide bloquante)   # option après Export_TIFF : fermer toutes les vues (demande de l'utilisateur)
 
 def etoiles_nb_item(s_stars=True):
     """Étoiles du SHO sans RGB et du HOO au chemin principal (demande de l'utilisateur, 8 octobre 2026 : NB_to_RGB_Stars « avec les parametres

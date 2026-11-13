@@ -5678,7 +5678,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Export_TIFF : copie de l'image en entiers 16 bits, convertie en sRGB IEC61966-2.1 (icc = true), enregistrée en TIFF (.tif) sous le NOM DE L'OBJET, sans espace (NGC 1532 -&gt; NGC1532), = nom du dossier des masters ouverts (L, R, G, B, H…), dossiers génériques (master, lights, output, WBPP…) sautés ; masters fermés (narrowband) : dossier retenu par Renommer_auto ; enregistrée dans ce dossier ; l'image ouverte ne change pas.&#10;&#10;À RÉGLER : DERNIÈRE étape du chemin principal : glisse sur l'image finie, juste après NXT_dernier ; aucune vue n'est fermée ; copie Export_TIFF.js et clodoweg_objet.jsh dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- aucun master ouvert -&gt; mot-clé OBJECT, sinon nom de la vue, dans ton dossier personnel&#10;- autre nom -&gt; remplis nom&#10;- autre dossier -&gt; remplis dossier&#10;- garder plusieurs versions -&gt; suffixe (ex. _v2)&#10;- garder le profil actuel -&gt; icc false</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js</parameter>
       <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="4">
+      <table id="parameters" rows="5">
          <tr>
             <td id="id">nom</td>
             <td id="value"></td>
@@ -5694,6 +5694,10 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          <tr>
             <td id="id">icc</td>
             <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">dialogue</td>
+            <td id="value">false</td>
          </tr>
       </table>
       <parameter id="information"></parameter>
@@ -6336,13 +6340,17 @@ max($T,f1)</parameter>
       <parameter id="useFloatingPointTransformation" value="true"/>
    </instance>
    <instance class="Script" version="256" id="Opt_Fermer_tout_instance">
-      <description>OPTION — tout à la fin, après Export_TIFF : ferme toutes les vues ouvertes sans demander (image suivante).&#10;&#10;PRÉRÉGLÉ : script Fermer_vues, views = * : ferme TOUTES les vues ouvertes, sans demander d'enregistrer.&#10;&#10;À RÉGLER : après Export_TIFF (TIFF déjà enregistré) : double-clic puis Apply Global, la fenêtre s'ouvre avec toutes les vues cochées, clique Fermer ; glissée sur une image, ferme tout sauf cette image ; copie Fermer_vues.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- une vue à garder -&gt; décoche-la dans la fenêtre&#10;- rien n'est enregistré : exporte ou sauve AVANT</description>
+      <description>OPTION — tout à la fin, après Export_TIFF : ferme toutes les vues ouvertes sans demander (image suivante).&#10;&#10;PRÉRÉGLÉ : script Fermer_vues, views = * : ferme TOUTES les vues ouvertes, sans demander d'enregistrer.&#10;&#10;À RÉGLER : après Export_TIFF (TIFF déjà enregistré) : double-clic puis Apply Global : TOUTES les vues sont fermées tout de suite, sans fenêtre ni question (13 novembre 2026) ; glissée sur une image, ferme tout sauf cette image ; copie Fermer_vues.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- une vue à garder -&gt; glisse l'icône sur cette vue (elle reste ouverte), ou ferme les autres à la main&#10;- rien n'est enregistré : exporte ou sauve AVANT</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
       <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="1">
+      <table id="parameters" rows="2">
          <tr>
             <td id="id">views</td>
             <td id="value">*</td>
+         </tr>
+         <tr>
+            <td id="id">dialogue</td>
+            <td id="value">false</td>
          </tr>
       </table>
       <parameter id="information"></parameter>
