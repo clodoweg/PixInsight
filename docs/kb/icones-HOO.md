@@ -253,7 +253,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
       script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
       paramètres : `etapes=HOO_simple>H ; NBN_HOO*>HOO_etire`, `dialogue=false`
 
-> MODE TURBO, phases 1 à 5 en un clic (T_Turbo_debut puis T_Turbo_palette) : masters seuls ouverts, Conteneurs du workflow chargé, double-clic puis Apply Global ; ensuite GLISSE R_C_Fin_rapide (P6) sur l'image créée par la palette.
+> MODE TURBO (réglage habituel, GradientCorrection), phases 1 à 5 en un clic (T_Turbo_debut puis T_Turbo_palette) : masters seuls ouverts, Conteneurs du workflow chargé, double-clic puis Apply Global ; ensuite GLISSE R_C_Fin_rapide (P6) sur l'image créée par la palette.
 > 
 > LANCEMENT : masters seuls ouverts, double-clic puis Apply Global (rond bleu) ; pas en glissant (ImageSolver échoue sur une image en cours de traitement).
 > 
@@ -264,6 +264,53 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > SI :
 > - une étape échoue -> la console dit laquelle ; lance T_Turbo_debut puis T_Turbo_palette séparément pour voir où
 > - gradient mal retiré -> T_Turbo_debut_graxpert puis T_Turbo_palette à la place
+
+#### T_Turbo_mega_graxpert — ProcessContainer
+   1. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Renommer_auto.js`
+      paramètres : `fermerAutocrop=true`, `dialogue=false`
+   2. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/LPS_UnClic.js`
+      paramètres : `correctColumns=false`, `correctEntireImage=true`, `defectTableFilePath=`, `layersToRemove=9`, `rejectionLimit=3`, `globalRejection=true`, `globalRejectionLimit=5`, `autoBackground=true`, `backgroundReferenceLeft=0`, `backgroundReferenceTop=0`, `backgroundReferenceWidth=512`, `backgroundReferenceHeight=512`, `allOpenImages=true`, `closeWorkingImages=true`, `vues=L,R,G,B`, `dialogue=false`
+   3. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/GC_Solver_auto.js`
+      paramètres : `gradient=false`, `solve=true`, `solveTout=false`, `defaultDate=2020-01-01T00:00:00`, `dialogue=false`, `metadata_focal=2939`, `metadata_xpixsz=3.76`, `solver_catalogMode=3`, `solver_distortionCorrection=true`, `(+ 42 autres réglages ImageSolver)`
+   4. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Gradient_auto.js`
+      paramètres : `outil=graxpert`, `dialogue=false`
+   5. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
+      paramètres : `etapes=Combinaison_HOO>H`, `dialogue=false`
+   6. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
+      paramètres : `views=H, O`, `dialogue=false`
+   7. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
+      paramètres : `etapes=C_HOO_lineaire>HOO ; C_Extraction_HOO>HOO ; C_Extraction_etoiles>HOO_stars`, `dialogue=false`
+   8. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
+      paramètres : `views=HOO`, `dialogue=false`
+   9. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Etoiles_NB_auto.js`
+      paramètres : `h=H_stars`, `o=O_stars`, `s=`, `ratio=0.30`, `linearfit=true`, `stretch=5.0`, `boost=1.00`, `scnr=false`, `nom=NBtoRGB_stars`, `fermer=true`, `dialogue=false`
+   10. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Stat_canaux.js`
+      paramètres : `vues=H,O`, `cible=0.25`, `sigma=5.0`, `dialogue=false`
+   11. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
+      paramètres : `etapes=HOO_simple>H ; NBN_HOO*>HOO_etire`, `dialogue=false`
+
+> comme T_Turbo_mega mais avec GraXpert au lieu de GradientCorrection : gradient fort ou irrégulier (Lune, pollution lumineuse) ; risque d'enlever des voiles faibles quand la nébuleuse remplit le champ.
+> 
+> LANCEMENT : masters seuls ouverts, double-clic puis Apply Global (rond bleu) ; pas en glissant (ImageSolver échoue sur une image en cours de traitement).
+> 
+> PRÉRÉGLÉ : conteneur, en une fois : toutes les étapes de T_Turbo_debut_graxpert (préparation, ImageSolver, GraXpert au lieu de GradientCorrection, phase linéaire, extraction des étoiles et des canaux) puis de T_Turbo_palette (Statistical Stretch des canaux, combinaison et NarrowbandNormalization).
+> 
+> À RÉGLER : nuit avec la Lune ou gradient qui résiste : masters seuls ouverts (enregistrés) ; Conteneurs du workflow chargé ; application GraXpert installée ; double-clic puis Apply Global ; ENSUITE glisse R_C_Fin_rapide (P6) sur l'image créée.
+> 
+> SI :
+> - voiles faibles assombris ou disparus -> T_Turbo_mega (GradientCorrection) à la place
+> - GraXpert introuvable -> installe l'application GraXpert (4.0 ou plus) et son module PixInsight
 
 ## P2_Gradient
 

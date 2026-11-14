@@ -1576,3 +1576,4 @@ Fait (SHO sans RGB, RGB + SHO, HOO) : Opt_GHS_2_contraste entre Opt_GHS_1_premie
 ### T_Turbo_mega (14 novembre 2026)
 
 Demande de l'utilisateur : « fais moi un mega turbo qui va de P1 a P6 pour les shos, hoo ». Fait : T_Turbo_mega (colonne P1, groupe turbo) en RGB + SHO, SHO sans RGB et HOO = étapes de T_Turbo_debut puis de T_Turbo_palette (P1 à P5) ; P6 non enchaînable (R_C_Fin_rapide doit être glissé sur l'image créée par la palette et contient des scripts que Lineaire_auto ne peut pas lancer, voir 8 novembre) : à glisser ensuite. XML vérifié (ElementTree). Non testé dans PixInsight.
+Puis (14 novembre 2026) : « oui fais les deux » : T_Turbo_mega_graxpert ajouté sous T_Turbo_mega (T_Turbo_debut_graxpert + T_Turbo_palette), RGB + SHO, SHO sans RGB, HOO. XML vérifié.

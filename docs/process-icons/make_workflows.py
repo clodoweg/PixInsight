@@ -246,7 +246,7 @@ def layout(entries, naming):
         rows += 1
     return insts, icons
 
-TURBO = {'Turbo_debut', 'Turbo_fin', 'Turbo_debut_graxpert', 'Turbo_palette', 'Turbo_mega'}   # ancien mode Turbo supprimé ; Turbo_debut ajouté ensuite (demande de l'utilisateur, 5 octobre 2026)
+TURBO = {'Turbo_debut', 'Turbo_fin', 'Turbo_debut_graxpert', 'Turbo_palette', 'Turbo_mega', 'Turbo_mega_graxpert'}   # ancien mode Turbo supprimé ; Turbo_debut ajouté ensuite (demande de l'utilisateur, 5 octobre 2026)
 RAPIDE = {'Gradient_auto_graxpert_rapide', 'C_Ha_RGB_rapide', 'C_Lineaire_rapide', 'C_MAS_canaux_rapide', 'C_Stat_canaux_rapide', 'C_Palette_rapide', 'C_RGB_etoiles_rapide', 'Main_continuum', 'Lineaire_rapide', 'C_P3_rapide', 'C_RGB_etire_rapide', 'C_Fin_rapide', 'C_Etoiles_fond_rapide', 'C_Preparation_rapide', 'Gradient_auto_rapide', 'C_RGB_rapide', 'C_L_rapide', 'C_RGB_fin_rapide', 'C_LRGB_rapide'}
 RAPIDE_NOTE = {
     'LRGB': {1: "MODE RAPIDE (galaxies) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre (étoiles gardées jusqu'à LRGB) : R_C_Preparation_rapide ; R_Gradient_auto_rapide ; R_Lineaire_rapide (RGB et L) ; GHS_1_premier, GHS_2_contraste, GHS_3_fond sur L ; R_C_RGB_etire_rapide sur RGB ; R_C_LRGB_rapide (LRGB sans étoiles) ; finition. Phase 1 : R_C_Preparation_rapide (double-clic puis Apply Global) à la place de LinearPatternSubtraction, Renommer_auto, Combinaison_RGB et Solver_auto",
@@ -1660,6 +1660,9 @@ def _merge_cont(name, *xmls):
 for _st in (rgbsho, sho, hoo):
     _x = _merge_cont('__ID__', pick(_st, 'Turbo_debut')[0][1], pick(_st, 'Turbo_palette')[0][1])
     insert_after(_st, 'Turbo_debut_graxpert', [(('Turbo_mega', _x), '')])
+    # version GraXpert (demande de l'utilisateur, 14 novembre 2026 : « oui fais les deux ») : T_Turbo_debut_graxpert puis T_Turbo_palette
+    _x = _merge_cont('__ID__', pick(_st, 'Turbo_debut_graxpert')[0][1], pick(_st, 'Turbo_palette')[0][1])
+    insert_after(_st, 'Turbo_mega', [(('Turbo_mega_graxpert', _x), '')])
 
 # P7 rapide supprimé en narrowband (demande de l'utilisateur, 12 novembre 2026 : « supprime le P7 rapide pour les SHOs, HOO, .. »)
 for _st in (rgbsho, sho, hoo):
