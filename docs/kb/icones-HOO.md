@@ -570,9 +570,20 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > SI :
 > - bruit de O ou S qui ressort -> SP trop bas, remonte-le
 
-#### E15_GHS_2_contraste — GeneralizedHyperbolicStretch
+#### E15_GHS_3_fond — GeneralizedHyperbolicStretch
+   stretchType=ST_GeneralisedHyperbolic ; stretchChannel=SC_RGB ; inverse=false ; stretchFactor=1.000 ; localIntensity=10.000 ; symmetryPoint=0.200000 ; highlightProtection=0.200000 ; shadowProtection=0.000000 ; blackPoint=0.000000 ; whitePoint=1.000000 ; colourBlend=1.000 ; clipType=CT_RGBBlend ; useRGBWorkingSpace=false
+
+> PRÉRÉGLÉ : b = 10, SP = HP = 0,20, Stretch factor 1 (fond à 0,23 après GHS_2).
+> 
+> À RÉGLER : SP = HP = fond lu - 0,03 (0,22 après Statistical Stretch à 0,25) ; Stretch factor 0,8 à 1,2 jusqu'au fond vers 0,12–0,14.
+
+### P4_options
+
+#### Opt_GHS_2_contraste — GeneralizedHyperbolicStretch
    stretchType=ST_GeneralisedHyperbolic ; stretchChannel=SC_RGB ; inverse=false ; stretchFactor=1.000 ; localIntensity=4.000 ; symmetryPoint=0.350000 ; highlightProtection=0.900000 ; shadowProtection=0.000000 ; blackPoint=0.000000 ; whitePoint=1.000000 ; colourBlend=1.000 ; clipType=CT_RGBBlend ; useRGBWorkingSpace=false
 
+> OPTION — plus de contraste : après GHS_1_premier, sur H puis O, même réglage pour les deux, avant GHS_3_fond.
+> 
 > PRÉRÉGLÉ : b = 4, HP 0,9, Stretch factor 1, SP 0,35.
 > 
 > À RÉGLER : SP = valeur de ta zone plate, au-dessus du fond (souvent 0,30–0,45 ; jamais 0,25 = le fond) ; Stretch factor 1 à 2.
@@ -581,15 +592,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - cœur brillant qui sature -> baisse HP vers sa valeur
 > - fond trop sombre -> monte LP vers sa valeur (pas au-dessus de SP)
 > - fond bruité qui ressort -> SP trop bas
-
-#### E16_GHS_3_fond — GeneralizedHyperbolicStretch
-   stretchType=ST_GeneralisedHyperbolic ; stretchChannel=SC_RGB ; inverse=false ; stretchFactor=1.000 ; localIntensity=10.000 ; symmetryPoint=0.200000 ; highlightProtection=0.200000 ; shadowProtection=0.000000 ; blackPoint=0.000000 ; whitePoint=1.000000 ; colourBlend=1.000 ; clipType=CT_RGBBlend ; useRGBWorkingSpace=false
-
-> PRÉRÉGLÉ : b = 10, SP = HP = 0,20, Stretch factor 1 (fond à 0,23 après GHS_2).
-> 
-> À RÉGLER : SP = HP = fond lu - 0,03 (0,22 après Statistical Stretch à 0,25) ; Stretch factor 0,8 à 1,2 jusqu'au fond vers 0,12–0,14.
-
-### P4_options
 
 #### Opt_Statistical_Stretch — Script
    script `$PXI_SRCDIR/scripts/statisticalstretch.js`
@@ -661,13 +663,13 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
       paramètres : `vues=H,O`, `cible=0.25`, `sigma=5.0`, `dialogue=false`
    2. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
-      paramètres : `etapes=GHS_2_contraste*>H,O ; HOO_simple>H ; NBN_HOO*>HOO_etire`, `dialogue=false`
+      paramètres : `etapes=HOO_simple>H ; NBN_HOO*>HOO_etire`, `dialogue=false`
 
 > MODE TURBO, à la place de R_C_Stat_canaux_rapide et R_C_Palette_rapide : canaux linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut), double-clic puis Apply Global ; ensuite GLISSE R_C_Fin_rapide sur l'image créée.
 > 
 > LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).
 > 
-> PRÉRÉGLÉ : conteneur de scripts, en une fois : Stat_canaux (Statistical Stretch, médiane 0,25, sur H et O, à la place des GHS) puis Lineaire_auto : GHS_2_contraste (E## du chemin principal) sur H et O, HOO_simple (H, O -> HOO_etire) et NBN_HOO (palette HOO, SCNR 0) sur HOO_etire ; H et O restent ouverts.
+> PRÉRÉGLÉ : conteneur de scripts, en une fois : Stat_canaux (Statistical Stretch, médiane 0,25, sur H et O, à la place des GHS) puis Lineaire_auto : HOO_simple (H, O -> HOO_etire) et NBN_HOO (palette HOO, SCNR 0) sur HOO_etire ; H et O restent ouverts.
 > 
 > À RÉGLER : H et O linéaires, sans étoiles, ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut) ; Conteneurs-HOO chargé ; double-clic puis Apply Global (pas en glissant) ; ENSUITE glisse R_C_Fin_rapide sur HOO_etire.
 > 
@@ -677,14 +679,14 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 ## P5_Couleur
 
-#### E17_HOO_simple — PixelMath
+#### E16_HOO_simple — PixelMath
    expression = `H` ; expression1 = `O` ; expression2 = `O` ; useSingleExpression=false ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=true ; showNewImage=true ; newImageId=HOO_etire ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=RGB ; newImageSampleFormat=SameAsTarget
 
 > PRÉRÉGLÉ : R = H, G = O, B = O.
 > 
 > À RÉGLER : vues H et O étirées.
 
-#### E18_NBN_HOO — NarrowbandNormalization
+#### E17_NBN_HOO — NarrowbandNormalization
    palette=Palette_HOO ; lightness=Lightness_Off ; blendMode=Blend_Mode1 ; haBlend=0.000 ; scnr=0.000 ; o3Boost=1.000 ; s2Boost=1.000 ; shadowpoint=1.000 ; highlightReduction=1.000 ; brightness=1.000
 
 > PRÉRÉGLÉ : palette HOO ; SCNR 0 (demande de l'utilisateur, 8 novembre 2026) ; O3 boost, Brightness, Highlight reduction à 1 (neutres : multiplicateurs, 0 rend l'image noire) ; Shadow point 1.
@@ -746,7 +748,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 ## P6_Finition
 
-#### E19_HDRMT_30 — ProcessContainer
+#### E18_HDRMT_30 — ProcessContainer
    1. PixelMath
       expression = `$T` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=true ; showNewImage=true ; newImageId=HDR_avant ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
    2. HDRMultiscaleTransform
@@ -767,7 +769,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - cœur encore trop clair -> HDRMT_40 ou HDRMT_50
 > - aucun effet visible -> saute la partie 1
 
-#### E20_C_Finition — ProcessContainer
+#### E19_C_Finition — ProcessContainer
    1. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
       paramètres : `mode=creer`, `s=0.14`, `flou=2`, `nom=masque_L`, `couleur=true`, `dialogue=false`
@@ -796,7 +798,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > Double-clic sur le conteneur pour voir ou changer les réglages de chaque étape.
 
-#### E21_C_Sharp_MMT — ProcessContainer
+#### E20_C_Sharp_MMT — ProcessContainer
    1. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
       paramètres : `mode=attacher`, `s=0.14`, `flou=2`, `nom=masque_L`, `dialogue=false`
@@ -818,7 +820,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - halos ou aspect dur -> biais 0.02
 > - bruit accentué -> première couche 3
 
-#### E22_NXT_final — NoiseXTerminator
+#### E21_NXT_final — NoiseXTerminator
    ml_version=0 ; denoise=0.40 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
 
 > PRÉRÉGLÉ : Denoise 0,40, 1 itération.
@@ -1130,69 +1132,25 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 ## P7_Etoiles
 
-#### E23_Etoiles_HOO — NoOperation
+#### E22_Etoiles_HOO — NoOperation
 
 > PRÉRÉGLÉ : rien (icône-note).
 > 
 > À RÉGLER : avec RGB : étoiles RGB ; sans RGB : étoiles de SXT, NB to RGB ou étoiles synthétiques.
 
-#### E24_Fond_desature — Script
-   script `$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js`
-   paramètres : `debut=0.02`, `fin=0.12`, `violetFin=0.30`, `flou=8`, `force=0.80`, `lisse=true`, `portee=60`
-
-> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
-> 
-> PRÉRÉGLÉ : script Fond_desature, réglé doux en narrowband (11 novembre 2026) : couleur du fond retirée à 80 % LOIN de la nébuleuse, de moins en moins en s'en approchant (dégradé sur environ 60 px : luminance lissée), rien sur la nébuleuse ; transition en S de + 0,02 à + 0,12 au-dessus du fond, masque lissé 8 px ; violet neutralisé avec le même dégradé.
-> 
-> À RÉGLER : glisse sur l'image SANS étoiles finie (après NXT_final), avant Fond_auto et la recombinaison des étoiles (Etoiles_screen, ou Etoiles_reduites).
-> 
-> SI :
-> - voiles rouges encore touchés -> Dégradé 100 à 150 px, ou Force 0,60
-> - fond lointain encore teinté -> Force 0,95
-> - démarcation visible -> Flou 15
-
-#### E25_Fond_auto — Script
-   script `$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js`
-   paramètres : `cible=0.12`, `tolerance=0.005`, `grille=8`
-
-> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
-> 
-> PRÉRÉGLÉ : script Fond_auto : fond de chaque canal mesuré (grille 8 × 8, quart le plus sombre des cases), puis mtf canal par canal pour l'amener à 0,12, sans écrêtage ; fond neutre.
-> 
-> À RÉGLER : glisse sur l'image SANS étoiles, après Fond_desature, avant la recombinaison des étoiles ; console : fond avant et après.
-> 
-> SI :
-> - image trop sombre -> cible 0,13 ou 0,14
-> - données très propres -> 0,10 à 0,11
-> - nébuleuse qui remplit le champ : regarde le fond AVANT dans la console ; au-dessus d'environ 0,20 (seuil au jugé), ce n'est pas du vrai ciel -> Ctrl+Z et saute cette étape
-
-#### E26_Voile_PS — Script
-   script `$PXI_SRCDIR/scripts/clodoweg/Voile_PS.js`
-   paramètres : `force=20`, `rayon=7.4`, `t0=0.10`, `couleur=0`
-
-> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
-> 
-> PRÉRÉGLÉ : script Voile_PS, force 20, couleur 0 : voile retiré comme Correction du voile +20 (modèle des brevets d'Adobe calé sur ton image avant / après Photoshop : canal sombre lissé sur 7,4 % de la largeur, ω = 0,153), mais sur la LUMINANCE seule : R, G, B multipliés par le même facteur, teinte et saturation gardées, pas de rouge ajouté ; couleur 1 = canal par canal comme Photoshop (plus rouge).
-> 
-> À RÉGLER : CHEMIN PRINCIPAL : glisse sur l'image SANS étoiles, après Fond_auto, avant Contraste_GHS ; copie Voile_PS.js dans src/scripts/clodoweg.
-> 
-> SI :
-> - trop fort -> force 10 à 15
-> - couleurs pas assez vives -> couleur 0,3 à 0,5 (un peu de l'effet couleur de Photoshop)
-
-#### E27_Contraste_GHS — GeneralizedHyperbolicStretch
+#### E23_Contraste_GHS — GeneralizedHyperbolicStretch
    stretchType=ST_GeneralisedHyperbolic ; stretchChannel=SC_RGB ; inverse=false ; stretchFactor=0.320 ; localIntensity=4.000 ; symmetryPoint=0.350000 ; highlightProtection=0.900000 ; shadowProtection=0.000000 ; blackPoint=0.000000 ; whitePoint=1.000000 ; colourBlend=1.000 ; clipType=CT_RGBBlend ; useRGBWorkingSpace=false
 
 > PRÉRÉGLÉ : GHS Generalised Hyperbolic, RGB, Stretch factor 0,32, b = 4, SP 0,35, LP 0, HP 0,9 (réglage de l'utilisateur).
 > 
-> À RÉGLER : glisse sur l'image SANS étoiles finie, après Fond_auto et avant Etoiles_screen (puis NXT_dernier et Export_TIFF) ; SP = valeur de ta zone plate, au-dessus du fond.
+> À RÉGLER : glisse sur l'image SANS étoiles finie (après NXT_final ; Fond_desature et Fond_auto en option avant), avant Export_Photoshop ; SP = valeur de ta zone plate, au-dessus du fond.
 > 
 > SI :
 > - fond qui monte -> monte SP ou baisse le Stretch factor
 > - cœur brillant qui sature -> baisse HP
 > - trop fort -> Stretch factor 0,15–0,20
 
-#### E28_Export_Photoshop — Script
+#### E24_Export_Photoshop — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js`
    paramètres : `nom=`, `suffixe=`, `dossier=`, `icc=true`, `photoshop=true`, `photoshopExe=`, `temp=true`, `dialogue=false`
 
@@ -1205,7 +1163,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > SI :
 > - Photoshop introuvable -> double-clic, Apply Global, bouton Choisir Photoshop… (ou photoshopExe dans l'icône) ; le .tif est quand même enregistré
 
-#### E29_Lecture_Photoshop — Script
+#### E25_Lecture_Photoshop — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Lecture_Photoshop.js`
    paramètres : `fichier=`, `temp=true`, `dialogue=false`
 
@@ -1219,7 +1177,21 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - calques dans Photoshop -> aplatis avant d'enregistrer, par prudence
 > - autre fichier -> bouton Choisir le fichier… dans la fenêtre
 
-#### E30_NXT_dernier — NoiseXTerminator
+#### E26_Voile_PS — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Voile_PS.js`
+   paramètres : `force=20`, `rayon=7.4`, `t0=0.10`, `couleur=0`
+
+> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
+> 
+> PRÉRÉGLÉ : script Voile_PS, force 20, couleur 0 : voile retiré comme Correction du voile +20 (modèle des brevets d'Adobe calé sur ton image avant / après Photoshop : canal sombre lissé sur 7,4 % de la largeur, ω = 0,153), mais sur la LUMINANCE seule : R, G, B multipliés par le même facteur, teinte et saturation gardées, pas de rouge ajouté ; couleur 1 = canal par canal comme Photoshop (plus rouge).
+> 
+> À RÉGLER : CHEMIN PRINCIPAL : glisse sur l'image revenue de Photoshop (tmp_PS), après Lecture_Photoshop, avant NXT_dernier ; copie Voile_PS.js dans src/scripts/clodoweg.
+> 
+> SI :
+> - trop fort -> force 10 à 15
+> - couleurs pas assez vives -> couleur 0,3 à 0,5 (un peu de l'effet couleur de Photoshop)
+
+#### E27_NXT_dernier — NoiseXTerminator
    ml_version=0 ; denoise=0.25 ; enable_color_separation=false ; enable_frequency_separation=false ; denoise_intensity=0.90 ; denoise_color=0.90 ; denoise_high_freq=0.90 ; denoise_low_freq=0.90 ; denoise_intensity_high_freq=0.90 ; denoise_intensity_low_freq=0.90 ; denoise_color_high_freq=0.90 ; denoise_color_low_freq=0.90 ; frequency_scale=5.0 ; iterations=1 ; detail=0.15 ; overlap=0.20
 
 > PRÉRÉGLÉ : NoiseXTerminator Denoise 0,25, 1 itération.
@@ -1231,7 +1203,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - bruit encore visible -> 0,35
 > - étoiles adoucies -> 0,15, ou saute cette étape
 
-#### E31_Etoiles_screen — PixelMath
+#### E28_Etoiles_screen — PixelMath
    expression = `~((~$T) * (~NBtoRGB_stars))` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
 
 > PRÉRÉGLÉ : ~((~$T) * (~NBtoRGB_stars)), sur l'image elle-même.
@@ -1243,7 +1215,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - étoiles HOO classiques -> HOO_stars (étirée)
 > - synthétiques -> Stars_HOO
 
-#### E32_Export_TIFF — Script
+#### E29_Export_TIFF — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js`
    paramètres : `nom=`, `suffixe=`, `dossier=`, `icc=true`, `dialogue=false`
 
@@ -1336,6 +1308,42 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - fond trop boosté -> s 0,15 dans le masque du conteneur (double-clic sur le conteneur)
 > - trop fort -> Boost_final_doux
 > - fond teinté -> Fond_desature ensuite le retire
+
+#### Opt_Fond_desature — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js`
+   paramètres : `debut=0.02`, `fin=0.12`, `violetFin=0.30`, `flou=8`, `force=0.80`, `lisse=true`, `portee=60`
+
+> OPTION — teinte ou violet sur le fond du ciel : sur l'image sans étoiles, avant les étoiles
+> Dégradé autour de la nébuleuse.
+> 
+> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
+> 
+> PRÉRÉGLÉ : script Fond_desature, réglé doux en narrowband (11 novembre 2026) : couleur du fond retirée à 80 % LOIN de la nébuleuse, de moins en moins en s'en approchant (dégradé sur environ 60 px : luminance lissée), rien sur la nébuleuse ; transition en S de + 0,02 à + 0,12 au-dessus du fond, masque lissé 8 px ; violet neutralisé avec le même dégradé.
+> 
+> À RÉGLER : glisse sur l'image SANS étoiles finie (après NXT_final), avant Fond_auto et la recombinaison des étoiles (Etoiles_screen, ou Etoiles_reduites).
+> 
+> SI :
+> - voiles rouges encore touchés -> Dégradé 100 à 150 px, ou Force 0,60
+> - fond lointain encore teinté -> Force 0,95
+> - démarcation visible -> Flou 15
+
+#### Opt_Fond_auto — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js`
+   paramètres : `cible=0.12`, `tolerance=0.005`, `grille=8`
+
+> OPTION — fond trop clair ou teinté (vrai fond de ciel visible) : sur l'image sans étoiles, avant les étoiles
+> Nébuleuse qui remplit le champ : à sauter.
+> 
+> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
+> 
+> PRÉRÉGLÉ : script Fond_auto : fond de chaque canal mesuré (grille 8 × 8, quart le plus sombre des cases), puis mtf canal par canal pour l'amener à 0,12, sans écrêtage ; fond neutre.
+> 
+> À RÉGLER : glisse sur l'image SANS étoiles, après Fond_desature, avant la recombinaison des étoiles ; console : fond avant et après.
+> 
+> SI :
+> - image trop sombre -> cible 0,13 ou 0,14
+> - données très propres -> 0,10 à 0,11
+> - nébuleuse qui remplit le champ : regarde le fond AVANT dans la console ; au-dessus d'environ 0,20 (seuil au jugé), ce n'est pas du vrai ciel -> Ctrl+Z et saute cette étape
 
 #### Opt_Etoiles_reduites — PixelMath
    expression = `S=0.20; W=~((~$T)*(~NBtoRGB_stars)); f1= ~((~mtf(~S,W)/~mtf(~S,$T))*~$T); max($T,f1)` ; useSingleExpression=true ; symbols = `S, W, f1` ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget

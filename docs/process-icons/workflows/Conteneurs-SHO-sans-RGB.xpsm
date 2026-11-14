@@ -2781,22 +2781,6 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </table>
       <parameter id="information"></parameter>
    </instance>
-   <instance class="GeneralizedHyperbolicStretch" version="256" id="E15_GHS_2_contraste_instance">
-      <description>PRÉRÉGLÉ : b = 4, HP 0,9, Stretch factor 1, SP 0,35.&#10;&#10;À RÉGLER : glisse sur S, puis H, puis O, après Statistical_Stretch (ou GHS_1_premier) : SP = valeur de ta zone plate, au-dessus du fond (souvent 0,30–0,45 ; jamais 0,25 = le fond) ; Stretch factor 1 à 2 ; même réglage pour les trois ; puis la palette (GHS_3_fond en option si le fond est trop clair).&#10;&#10;SI :&#10;- cœur brillant qui sature -&gt; baisse HP vers sa valeur&#10;- fond trop sombre -&gt; monte LP vers sa valeur (pas au-dessus de SP)&#10;- fond bruité qui ressort -&gt; SP trop bas</description>
-      <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
-      <parameter id="stretchChannel" value="SC_RGB"/>
-      <parameter id="inverse" value="false"/>
-      <parameter id="stretchFactor" value="1.000"/>
-      <parameter id="localIntensity" value="4.000"/>
-      <parameter id="symmetryPoint" value="0.350000"/>
-      <parameter id="highlightProtection" value="0.900000"/>
-      <parameter id="shadowProtection" value="0.000000"/>
-      <parameter id="blackPoint" value="0.000000"/>
-      <parameter id="whitePoint" value="1.000000"/>
-      <parameter id="colourBlend" value="1.000"/>
-      <parameter id="clipType" value="CT_RGBBlend"/>
-      <parameter id="useRGBWorkingSpace" value="false"/>
-   </instance>
    <instance class="NoOperation" version="256" id="P4_options_instance">
       <description>OPTIONS de la phase 4 — Étirement : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
    </instance>
@@ -2809,6 +2793,22 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="localIntensity" value="10.000"/>
       <parameter id="symmetryPoint" value="0.000000"/>
       <parameter id="highlightProtection" value="1.000000"/>
+      <parameter id="shadowProtection" value="0.000000"/>
+      <parameter id="blackPoint" value="0.000000"/>
+      <parameter id="whitePoint" value="1.000000"/>
+      <parameter id="colourBlend" value="1.000"/>
+      <parameter id="clipType" value="CT_RGBBlend"/>
+      <parameter id="useRGBWorkingSpace" value="false"/>
+   </instance>
+   <instance class="GeneralizedHyperbolicStretch" version="256" id="Opt_GHS_2_contraste_instance">
+      <description>OPTION — plus de contraste : après Statistical_Stretch (ou GHS_1_premier), sur chaque canal, même réglage pour les trois, avant la palette.&#10;&#10;PRÉRÉGLÉ : b = 4, HP 0,9, Stretch factor 1, SP 0,35.&#10;&#10;À RÉGLER : glisse sur S, puis H, puis O, après Statistical_Stretch (ou GHS_1_premier) : SP = valeur de ta zone plate, au-dessus du fond (souvent 0,30–0,45 ; jamais 0,25 = le fond) ; Stretch factor 1 à 2 ; même réglage pour les trois ; puis la palette (GHS_3_fond en option si le fond est trop clair).&#10;&#10;SI :&#10;- cœur brillant qui sature -&gt; baisse HP vers sa valeur&#10;- fond trop sombre -&gt; monte LP vers sa valeur (pas au-dessus de SP)&#10;- fond bruité qui ressort -&gt; SP trop bas</description>
+      <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
+      <parameter id="stretchChannel" value="SC_RGB"/>
+      <parameter id="inverse" value="false"/>
+      <parameter id="stretchFactor" value="1.000"/>
+      <parameter id="localIntensity" value="4.000"/>
+      <parameter id="symmetryPoint" value="0.350000"/>
+      <parameter id="highlightProtection" value="0.900000"/>
       <parameter id="shadowProtection" value="0.000000"/>
       <parameter id="blackPoint" value="0.000000"/>
       <parameter id="whitePoint" value="1.000000"/>
@@ -2874,7 +2874,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <description>MODE RAPIDE, phase 4 — Étirement : R_C_Stat_canaux_rapide (double-clic puis Apply Global) à la place de Statistical_Stretch sur S, H, O ; ou T_Turbo_palette (P4 turbo) : Statistical Stretch puis la palette (SHO_simple, NBN_SHO) en une fois, ensuite R_C_Fin_rapide glissé sur SHO_etire. Icône de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="R_C_Stat_canaux_rapide_instance">
-      <description>MODE RAPIDE, à la place de Statistical_Stretch sur les canaux (Statistical Stretch, médiane 0,25) : S, H, O linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut), double-clic puis Apply Global (pas en glissant) ; GHS_2_contraste compris ; ensuite la palette (GHS_3_fond en option).&#10;&#10;LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).&#10;&#10;PRÉRÉGLÉ : conteneur de scripts : Stat_canaux (calcul de Statistical Stretch de SetiAstro) sur S, H et O : point noir médiane − 5 × 1,4826 × MAD, médiane amenée à 0,25 pour les trois ; puis Lineaire_auto lance GHS_2_contraste (E## du chemin principal) sur S, H et O (contraste, même réglage pour les trois) ; un Ctrl+Z par canal et par étape.&#10;&#10;À RÉGLER : S, H, O linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut) ; Conteneurs du workflow chargé ; double-clic puis Apply Global (pas en glissant) ; ensuite R_C_Palette_rapide ou la palette (GHS_3_fond en option si le fond est trop clair) ; copie Stat_canaux.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- fond trop sombre, signal faible perdu -&gt; double-clic sur Stat_canaux dans le conteneur : Blackpoint Sigma 3&#10;- fond trop clair -&gt; Target Median 0,20&#10;- un canal mal étiré -&gt; Ctrl+Z sur ce canal, puis Statistical_Stretch à la main&#10;- trop de contraste -&gt; double-clic sur E##_GHS_2_contraste (P4) : Stretch factor plus bas, puis relance</description>
+      <description>MODE RAPIDE, à la place de Statistical_Stretch sur les canaux (Statistical Stretch, médiane 0,25) : S, H, O linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut), double-clic puis Apply Global (pas en glissant) ; ensuite la palette (GHS_2_contraste et GHS_3_fond en option).&#10;&#10;LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).&#10;&#10;PRÉRÉGLÉ : conteneur de scripts : Stat_canaux (calcul de Statistical Stretch de SetiAstro) sur S, H et O : point noir médiane − 5 × 1,4826 × MAD, médiane amenée à 0,25 pour les trois ; un Ctrl+Z par canal et par étape.&#10;&#10;À RÉGLER : S, H, O linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut) ; Conteneurs du workflow chargé ; double-clic puis Apply Global (pas en glissant) ; ensuite R_C_Palette_rapide ou la palette (GHS_3_fond en option si le fond est trop clair) ; copie Stat_canaux.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- fond trop sombre, signal faible perdu -&gt; double-clic sur Stat_canaux dans le conteneur : Blackpoint Sigma 3&#10;- fond trop clair -&gt; Target Median 0,20&#10;- un canal mal étiré -&gt; Ctrl+Z sur ce canal, puis Statistical_Stretch à la main&#10;- pas assez de contraste -&gt; Opt_GHS_2_contraste (P4) ensuite sur S, H, O</description>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Stat_canaux.js</parameter>
          <parameter id="md5sum"></parameter>
@@ -2890,21 +2890,6 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
             <tr>
                <td id="id">sigma</td>
                <td id="value">5.0</td>
-            </tr>
-            <tr>
-               <td id="id">dialogue</td>
-               <td id="value">false</td>
-            </tr>
-         </table>
-         <parameter id="information"></parameter>
-      </instance>
-      <instance class="Script" version="256" enabled="true">
-         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js</parameter>
-         <parameter id="md5sum"></parameter>
-         <table id="parameters" rows="2">
-            <tr>
-               <td id="id">etapes</td>
-               <td id="value">GHS_2_contraste*&gt;S,H,O</td>
             </tr>
             <tr>
                <td id="id">dialogue</td>
@@ -2918,7 +2903,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <description>MODE TURBO, phase 4 — Étirement : une icône T_ enchaîne en un clic les étapes de plusieurs icônes rapides (R_) ; elle les contient, les icônes R_ ne sont pas nécessaires. Icône de repère, sans effet.</description>
    </instance>
    <instance class="ProcessContainer" id="T_Turbo_palette_instance">
-      <description>MODE TURBO, à la place de R_C_Stat_canaux_rapide et R_C_Palette_rapide : canaux linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut), double-clic puis Apply Global ; ensuite GLISSE R_C_Fin_rapide sur l'image créée.&#10;&#10;LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).&#10;&#10;PRÉRÉGLÉ : conteneur de scripts, en une fois : Stat_canaux (Statistical Stretch, médiane 0,25, sur S, H, O) puis Lineaire_auto : GHS_2_contraste (E## du chemin principal) sur S, H, O, SHO_simple (S, H, O -&gt; SHO_etire) et NBN_SHO (palette SHO, Lightness Ha, SCNR 0, O3 et S2 boost 1) sur SHO_etire ; S, H, O restent ouverts.&#10;&#10;À RÉGLER : S, H, O linéaires, sans étoiles, ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut) ; Conteneurs du workflow chargé ; double-clic puis Apply Global (pas en glissant) ; ENSUITE glisse R_C_Fin_rapide sur SHO_etire (il ne peut pas être enchaîné : il doit être glissé).&#10;&#10;SI :&#10;- une étape échoue -&gt; la console dit laquelle ; lance R_C_Stat_canaux_rapide puis R_C_Palette_rapide un par un&#10;- palette trop verte -&gt; SCNR dans l'icône NBN_SHO (P5), puis relance</description>
+      <description>MODE TURBO, à la place de R_C_Stat_canaux_rapide et R_C_Palette_rapide : canaux linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut), double-clic puis Apply Global ; ensuite GLISSE R_C_Fin_rapide sur l'image créée.&#10;&#10;LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).&#10;&#10;PRÉRÉGLÉ : conteneur de scripts, en une fois : Stat_canaux (Statistical Stretch, médiane 0,25, sur S, H, O) puis Lineaire_auto : SHO_simple (S, H, O -&gt; SHO_etire) et NBN_SHO (palette SHO, Lightness Ha, SCNR 0, O3 et S2 boost 1) sur SHO_etire ; S, H, O restent ouverts.&#10;&#10;À RÉGLER : S, H, O linéaires, sans étoiles, ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut) ; Conteneurs du workflow chargé ; double-clic puis Apply Global (pas en glissant) ; ENSUITE glisse R_C_Fin_rapide sur SHO_etire (il ne peut pas être enchaîné : il doit être glissé).&#10;&#10;SI :&#10;- une étape échoue -&gt; la console dit laquelle ; lance R_C_Stat_canaux_rapide puis R_C_Palette_rapide un par un&#10;- palette trop verte -&gt; SCNR dans l'icône NBN_SHO (P5), puis relance</description>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Stat_canaux.js</parameter>
          <parameter id="md5sum"></parameter>
@@ -2948,7 +2933,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          <table id="parameters" rows="2">
             <tr>
                <td id="id">etapes</td>
-               <td id="value">GHS_2_contraste*&gt;S,H,O ; SHO_simple&gt;H ; NBN_SHO*&gt;SHO_etire</td>
+               <td id="value">SHO_simple&gt;H ; NBN_SHO*&gt;SHO_etire</td>
             </tr>
             <tr>
                <td id="id">dialogue</td>
@@ -2961,7 +2946,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
    <instance class="NoOperation" version="256" id="P5_Couleur_instance">
       <description>PHASE 5 — Couleur : combinaison finale et palette. Colonne de repère, sans effet.</description>
    </instance>
-   <instance class="PixelMath" version="256" id="E16_SHO_simple_instance">
+   <instance class="PixelMath" version="256" id="E15_SHO_simple_instance">
       <description>PRÉRÉGLÉ : R = S, G = H, B = O, nouvelle image SHO_etire.&#10;&#10;À RÉGLER : vues S, H, O étirées, sans étoiles, même fond (après Statistical_Stretch) : double-clic puis Apply Global, ou glisse sur une des trois ; ensuite NBN_SHO sur SHO_etire.&#10;&#10;SI :&#10;- une image SHO_etire existe déjà -&gt; ferme-la avant&#10;- palette Foraxx voulue -&gt; pas besoin : Foraxx_SHO lit S, H, O directement</description>
       <parameter id="expression">S</parameter>
       <parameter id="expression1">H</parameter>
@@ -2991,7 +2976,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
-   <instance class="NarrowbandNormalization" version="256" id="E17_NBN_SHO_instance">
+   <instance class="NarrowbandNormalization" version="256" id="E16_NBN_SHO_instance">
       <description>PRÉRÉGLÉ : palette SHO, Lightness = Ha (H porte le détail) (demande de l'utilisateur) ; SCNR 0, O3 boost 1, S2 boost 1 (demande de l'utilisateur, 8 novembre 2026) ; Brightness, Highlight reduction à 1 (neutres : ce sont des multiplicateurs, 0 rend l'image noire) ; Shadow point 1 (normalisation à partir de la médiane).&#10;&#10;À RÉGLER : glisse sur SHO_etire (SHO_simple) ; O3 boost au-dessus de 1, S2 boost autour de 1,2, peu à peu ; Shadow point : 1 = normalisation à partir de la médiane, vers 0 = zones faibles aussi (plus de bruit).&#10;&#10;SI :&#10;- trop vert -&gt; SCNR partiel&#10;- O discret -&gt; O3 boost</description>
       <parameter id="palette" value="Palette_SHO"/>
       <parameter id="lightness" value="Lightness_Ha"/>
@@ -3006,150 +2991,6 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
    </instance>
    <instance class="NoOperation" version="256" id="P5_options_instance">
       <description>OPTIONS de la phase 5 — Couleur : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
-   </instance>
-   <instance class="Script" version="256" id="Opt_Couleur_selective_SHO_instance">
-      <description>OPTION — après la palette (NBN_SHO), sur SHO_etire sans étoiles : ton profil Couleur sélective « SHO » de Photoshop (le plus fort : rouges et jaunes tirés vers l'or, verts -50/+50, cyans vers le bleu)&#10;Un seul des trois profils.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Couleur_selective (équivalent approché de Couleur sélective de Photoshop, méthode relative) : profil SHO : rouges -25,+25,0,0 ; jaunes -50,+50,0,0 ; verts -50,+50,0,0 ; cyans 0,0,-50,0 ; bleus, magentas, blancs, neutres, noirs à 0 (cyan, magenta, jaune, noir).&#10;&#10;À RÉGLER : glisse sur SHO_etire après NBN_SHO (P5, image sans étoiles) ; un seul profil à la fois ; double-clic puis Apply Global = fenêtre (une ligne par gamme) ; copie Couleur_selective.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- trop fort -&gt; profil plus doux (SHO_2, puis SHO_3)&#10;- différent de Photoshop -&gt; formule d'Adobe non publiée : ajuste les valeurs dans la fenêtre</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Couleur_selective.js</parameter>
-      <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="10">
-         <tr>
-            <td id="id">rouges</td>
-            <td id="value">-25,25,0,0</td>
-         </tr>
-         <tr>
-            <td id="id">jaunes</td>
-            <td id="value">-50,50,0,0</td>
-         </tr>
-         <tr>
-            <td id="id">verts</td>
-            <td id="value">-50,50,0,0</td>
-         </tr>
-         <tr>
-            <td id="id">cyans</td>
-            <td id="value">0,0,-50,0</td>
-         </tr>
-         <tr>
-            <td id="id">bleus</td>
-            <td id="value">0,0,0,0</td>
-         </tr>
-         <tr>
-            <td id="id">magentas</td>
-            <td id="value">0,0,0,0</td>
-         </tr>
-         <tr>
-            <td id="id">blancs</td>
-            <td id="value">0,0,0,0</td>
-         </tr>
-         <tr>
-            <td id="id">neutres</td>
-            <td id="value">0,0,0,0</td>
-         </tr>
-         <tr>
-            <td id="id">noirs</td>
-            <td id="value">0,0,0,0</td>
-         </tr>
-         <tr>
-            <td id="id">relatif</td>
-            <td id="value">true</td>
-         </tr>
-      </table>
-      <parameter id="information"></parameter>
-   </instance>
-   <instance class="Script" version="256" id="Opt_Couleur_selective_SHO_2_instance">
-      <description>OPTION — après la palette (NBN_SHO), sur SHO_etire sans étoiles : ton profil « SHO_2 » (comme SHO, jaunes moitié moins tirés).&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Couleur_selective (équivalent approché de Couleur sélective de Photoshop, méthode relative) : profil SHO_2 : rouges -25,+25,0,0 ; jaunes -25,+25,0,0 ; verts -50,+50,0,0 ; cyans 0,0,-50,0 ; bleus, magentas, blancs, neutres, noirs à 0 (cyan, magenta, jaune, noir).&#10;&#10;À RÉGLER : glisse sur SHO_etire après NBN_SHO (P5, image sans étoiles) ; un seul profil à la fois ; double-clic puis Apply Global = fenêtre (une ligne par gamme) ; copie Couleur_selective.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- trop fort -&gt; profil plus doux (SHO_2, puis SHO_3)&#10;- différent de Photoshop -&gt; formule d'Adobe non publiée : ajuste les valeurs dans la fenêtre</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Couleur_selective.js</parameter>
-      <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="10">
-         <tr>
-            <td id="id">rouges</td>
-            <td id="value">-25,25,0,0</td>
-         </tr>
-         <tr>
-            <td id="id">jaunes</td>
-            <td id="value">-25,25,0,0</td>
-         </tr>
-         <tr>
-            <td id="id">verts</td>
-            <td id="value">-50,50,0,0</td>
-         </tr>
-         <tr>
-            <td id="id">cyans</td>
-            <td id="value">0,0,-50,0</td>
-         </tr>
-         <tr>
-            <td id="id">bleus</td>
-            <td id="value">0,0,0,0</td>
-         </tr>
-         <tr>
-            <td id="id">magentas</td>
-            <td id="value">0,0,0,0</td>
-         </tr>
-         <tr>
-            <td id="id">blancs</td>
-            <td id="value">0,0,0,0</td>
-         </tr>
-         <tr>
-            <td id="id">neutres</td>
-            <td id="value">0,0,0,0</td>
-         </tr>
-         <tr>
-            <td id="id">noirs</td>
-            <td id="value">0,0,0,0</td>
-         </tr>
-         <tr>
-            <td id="id">relatif</td>
-            <td id="value">true</td>
-         </tr>
-      </table>
-      <parameter id="information"></parameter>
-   </instance>
-   <instance class="Script" version="256" id="Opt_Couleur_selective_SHO_3_instance">
-      <description>OPTION — après la palette (NBN_SHO), sur SHO_etire sans étoiles : ton profil « SHO_3 » (le plus doux : rouges inchangés, jaunes moitié moins).&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Couleur_selective (équivalent approché de Couleur sélective de Photoshop, méthode relative) : profil SHO_3 : rouges 0 ; jaunes -25,+25,0,0 ; verts -50,+50,0,0 ; cyans 0,0,-50,0 ; bleus, magentas, blancs, neutres, noirs à 0 (cyan, magenta, jaune, noir).&#10;&#10;À RÉGLER : glisse sur SHO_etire après NBN_SHO (P5, image sans étoiles) ; un seul profil à la fois ; double-clic puis Apply Global = fenêtre (une ligne par gamme) ; copie Couleur_selective.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- trop fort -&gt; profil plus doux (SHO_2, puis SHO_3)&#10;- différent de Photoshop -&gt; formule d'Adobe non publiée : ajuste les valeurs dans la fenêtre</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Couleur_selective.js</parameter>
-      <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="10">
-         <tr>
-            <td id="id">rouges</td>
-            <td id="value">0,0,0,0</td>
-         </tr>
-         <tr>
-            <td id="id">jaunes</td>
-            <td id="value">-25,25,0,0</td>
-         </tr>
-         <tr>
-            <td id="id">verts</td>
-            <td id="value">-50,50,0,0</td>
-         </tr>
-         <tr>
-            <td id="id">cyans</td>
-            <td id="value">0,0,-50,0</td>
-         </tr>
-         <tr>
-            <td id="id">bleus</td>
-            <td id="value">0,0,0,0</td>
-         </tr>
-         <tr>
-            <td id="id">magentas</td>
-            <td id="value">0,0,0,0</td>
-         </tr>
-         <tr>
-            <td id="id">blancs</td>
-            <td id="value">0,0,0,0</td>
-         </tr>
-         <tr>
-            <td id="id">neutres</td>
-            <td id="value">0,0,0,0</td>
-         </tr>
-         <tr>
-            <td id="id">noirs</td>
-            <td id="value">0,0,0,0</td>
-         </tr>
-         <tr>
-            <td id="id">relatif</td>
-            <td id="value">true</td>
-         </tr>
-      </table>
-      <parameter id="information"></parameter>
    </instance>
    <instance class="NarrowbandNormalization" version="256" id="Opt_NBN_SHO_doux_instance">
       <description>OPTION — à la place de NBN_SHO, à tester : réglages plus doux (Deep Space Place 2026 : Lightness Off, SCNR 0,20, OIII 1,2, SII 1,4)&#10;Glisse sur SHO_etire après SHO_simple, compare avec NBN_SHO.&#10;&#10;PRÉRÉGLÉ : NarrowbandNormalization palette SHO, Lightness Off, SCNR 0,20, OIII boost 1,2, SII boost 1,4, Highlight reduction et Brightness à 1 (Deep Space Place 2026).&#10;&#10;À RÉGLER : glisse sur SHO_etire après SHO_simple, à la place de NBN_SHO ; compare les deux (Ctrl+Z entre les deux).&#10;&#10;SI :&#10;- trop vert -&gt; SCNR 0,4&#10;- pas assez d'orange -&gt; SII boost 1,5&#10;- détail pâteux -&gt; Lightness Ha</description>
@@ -3204,13 +3045,6 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
    <instance class="NoOperation" version="256" id="Opt_NBColourMapper_instance">
       <description>OPTION — teintes libres, filtre par filtre.&#10;&#10;PRÉRÉGLÉ : rien (icône-note).&#10;&#10;À RÉGLER : H rouge-orangé, O cyan-bleu, S rouge profond ou or.</description>
    </instance>
-   <instance class="SCNR" version="256" id="Opt_SCNR_SHO_instance">
-      <description>OPTION — reste de vert après la palette.&#10;&#10;PRÉRÉGLÉ : vert, Average Neutral, Amount 0,70.&#10;&#10;À RÉGLER : rien.&#10;&#10;SI :&#10;- encore vert -&gt; 0,80&#10;- trop magenta -&gt; 0,50</description>
-      <parameter id="amount" value="0.70"/>
-      <parameter id="protectionMethod" value="AverageNeutral"/>
-      <parameter id="colorToRemove" value="Green"/>
-      <parameter id="preserveLightness" value="true"/>
-   </instance>
    <instance class="NoOperation" version="256" id="P5_rapide_instance">
       <description>MODE RAPIDE, phase 5 — Couleur : R_C_Palette_rapide (double-clic puis Apply Global) à la place de SHO_simple et NBN_SHO : S, H, O étirés combinés en SHO_etire, NarrowbandNormalization (palette SHO, Lightness Ha, SCNR 0, O3 et S2 boost 1) ; S, H, O restent ouverts. Icône de repère, sans effet.</description>
    </instance>
@@ -3235,7 +3069,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
    <instance class="NoOperation" version="256" id="P6_Finition_instance">
       <description>PHASE 6 — Finition : contraste et saturation sur l'image sans étoiles. Colonne de repère, sans effet.</description>
    </instance>
-   <instance class="ProcessContainer" id="E18_HDRMT_30_instance">
+   <instance class="ProcessContainer" id="E17_HDRMT_30_instance">
       <description>LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : copie de l'image (vue HDR_avant), HDRMT 6 couches To lightness / Preserve hue / Lightness mask, mélange 0,3 × résultat + 0,7 × copie, puis fermeture de la copie.&#10;&#10;À RÉGLER : PARTIE 1 de la finition (cœur), par défaut : glisse sur l'image sans étoiles étirée, AVANT C_Finition ; la copie HDR_avant est fermée automatiquement.&#10;&#10;SI :&#10;- cœur encore trop clair -&gt; HDRMT_40 ou HDRMT_50&#10;- aucun effet visible -&gt; saute la partie 1</description>
       <instance class="PixelMath" version="256" enabled="true">
          <parameter id="expression">$T</parameter>
@@ -3334,7 +3168,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          <parameter id="information"></parameter>
       </instance>
    </instance>
-   <instance class="ProcessContainer" id="E19_C_Finition_instance">
+   <instance class="ProcessContainer" id="E18_C_Finition_instance">
       <description>LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;CONTENEUR : Masque_L_creer, Masque_copie, Courbes, LHE, LHE_fin, Masque_melange, Fermer_Masque_avant, Masque_retirer.&#10;&#10;SUR : l'image sans étoiles étirée (masque_L créé, Courbes, LHE et LHE_fin sur une copie, mélange par masque_L, copie et masque fermés automatiquement) ; courbe en S, saturation 0,5 -&gt; 0,58 (couleurs trop ternes : Finition_saturee, 0,65, à la place).&#10;&#10;Double-clic sur le conteneur pour voir ou changer les réglages de chaque étape.</description>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
@@ -3609,7 +3443,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          <parameter id="information"></parameter>
       </instance>
    </instance>
-   <instance class="ProcessContainer" id="E20_C_Sharp_MMT_instance">
+   <instance class="ProcessContainer" id="E19_C_Sharp_MMT_instance">
       <description>LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : masque de luminance attaché (Masque_L, s = 0,14), script Sharp_MMT (MultiscaleMedianTransform 5 couches, couches 2 à 4 biais +0,04, couche 1 inchangée), masque retiré.&#10;&#10;À RÉGLER : glisse sur l'image SANS étoiles étirée, après C_Finition, avant NXT_final ; regarde à 100 % sur la galaxie ; copie Sharp_MMT.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- pas assez net -&gt; double-clic sur le conteneur, Sharp_MMT : biais 0.06&#10;- halos ou aspect dur -&gt; biais 0.02&#10;- bruit accentué -&gt; première couche 3</description>
       <instance class="Script" version="256" enabled="true">
          <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
@@ -3685,7 +3519,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          <parameter id="information"></parameter>
       </instance>
    </instance>
-   <instance class="NoiseXTerminator" version="256" id="E21_NXT_final_instance">
+   <instance class="NoiseXTerminator" version="256" id="E20_NXT_final_instance">
       <description>PRÉRÉGLÉ : Denoise 0,40, 1 itération.&#10;&#10;À RÉGLER : PARTIE 3 de la finition (bruit) : glisse sur l'image sans étoiles après C_Finition et C_Sharp_MMT ; options à la place : NXT_final_doux (0,25), NXT_final_fort (0,60).&#10;&#10;SI :&#10;- aspect plastique -&gt; NXT_final_doux&#10;- bruit encore visible -&gt; NXT_final_fort</description>
       <parameter id="ml_version" value="0"/>
       <parameter id="denoise" value="0.40"/>
@@ -5653,88 +5487,8 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
    <instance class="NoOperation" version="256" id="P7_Etoiles_instance">
       <description>PHASE 7 — Étoiles : étoiles : étirement, recombinaison, réduction. Colonne de repère, sans effet.</description>
    </instance>
-   <instance class="Script" version="256" id="E22_Fond_desature_instance">
-      <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Fond_desature, réglé doux en narrowband (11 novembre 2026) : couleur du fond retirée à 80 % LOIN de la nébuleuse, de moins en moins en s'en approchant (dégradé sur environ 60 px : luminance lissée), rien sur la nébuleuse ; transition en S de + 0,02 à + 0,12 au-dessus du fond, masque lissé 8 px ; violet neutralisé avec le même dégradé.&#10;&#10;À RÉGLER : glisse sur l'image SANS étoiles finie (après NXT_final), avant Fond_auto et la recombinaison des étoiles (Etoiles_screen, ou Etoiles_reduites).&#10;&#10;SI :&#10;- voiles rouges encore touchés -&gt; Dégradé 100 à 150 px, ou Force 0,60&#10;- fond lointain encore teinté -&gt; Force 0,95&#10;- démarcation visible -&gt; Flou 15</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js</parameter>
-      <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="7">
-         <tr>
-            <td id="id">debut</td>
-            <td id="value">0.02</td>
-         </tr>
-         <tr>
-            <td id="id">fin</td>
-            <td id="value">0.12</td>
-         </tr>
-         <tr>
-            <td id="id">violetFin</td>
-            <td id="value">0.30</td>
-         </tr>
-         <tr>
-            <td id="id">flou</td>
-            <td id="value">8</td>
-         </tr>
-         <tr>
-            <td id="id">force</td>
-            <td id="value">0.80</td>
-         </tr>
-         <tr>
-            <td id="id">lisse</td>
-            <td id="value">true</td>
-         </tr>
-         <tr>
-            <td id="id">portee</td>
-            <td id="value">60</td>
-         </tr>
-      </table>
-      <parameter id="information"></parameter>
-   </instance>
-   <instance class="Script" version="256" id="E23_Fond_auto_instance">
-      <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Fond_auto : fond de chaque canal mesuré (grille 8 × 8, quart le plus sombre des cases), puis mtf canal par canal pour l'amener à 0,12, sans écrêtage ; fond neutre.&#10;&#10;À RÉGLER : glisse sur l'image SANS étoiles, après Fond_desature, avant la recombinaison des étoiles ; console : fond avant et après.&#10;&#10;SI :&#10;- image trop sombre -&gt; cible 0,13 ou 0,14&#10;- données très propres -&gt; 0,10 à 0,11&#10;- nébuleuse qui remplit le champ : regarde le fond AVANT dans la console ; au-dessus d'environ 0,20 (seuil au jugé), ce n'est pas du vrai ciel -&gt; Ctrl+Z et saute cette étape</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js</parameter>
-      <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="3">
-         <tr>
-            <td id="id">cible</td>
-            <td id="value">0.12</td>
-         </tr>
-         <tr>
-            <td id="id">tolerance</td>
-            <td id="value">0.005</td>
-         </tr>
-         <tr>
-            <td id="id">grille</td>
-            <td id="value">8</td>
-         </tr>
-      </table>
-      <parameter id="information"></parameter>
-   </instance>
-   <instance class="Script" version="256" id="E24_Voile_PS_instance">
-      <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Voile_PS, force 20, couleur 0 : voile retiré comme Correction du voile +20 (modèle des brevets d'Adobe calé sur ton image avant / après Photoshop : canal sombre lissé sur 7,4 % de la largeur, ω = 0,153), mais sur la LUMINANCE seule : R, G, B multipliés par le même facteur, teinte et saturation gardées, pas de rouge ajouté ; couleur 1 = canal par canal comme Photoshop (plus rouge).&#10;&#10;À RÉGLER : CHEMIN PRINCIPAL : glisse sur l'image SANS étoiles, après Fond_auto, avant Contraste_GHS ; copie Voile_PS.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- trop fort -&gt; force 10 à 15&#10;- couleurs pas assez vives -&gt; couleur 0,3 à 0,5 (un peu de l'effet couleur de Photoshop)</description>
-      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Voile_PS.js</parameter>
-      <parameter id="md5sum"></parameter>
-      <table id="parameters" rows="4">
-         <tr>
-            <td id="id">force</td>
-            <td id="value">20</td>
-         </tr>
-         <tr>
-            <td id="id">rayon</td>
-            <td id="value">7.4</td>
-         </tr>
-         <tr>
-            <td id="id">t0</td>
-            <td id="value">0.10</td>
-         </tr>
-         <tr>
-            <td id="id">couleur</td>
-            <td id="value">0</td>
-         </tr>
-      </table>
-      <parameter id="information"></parameter>
-   </instance>
-   <instance class="GeneralizedHyperbolicStretch" version="256" id="E25_Contraste_GHS_instance">
-      <description>PRÉRÉGLÉ : GHS Generalised Hyperbolic, RGB, Stretch factor 0,32, b = 4, SP 0,35, LP 0, HP 0,9 (réglage de l'utilisateur).&#10;&#10;À RÉGLER : glisse sur l'image SANS étoiles finie, après Fond_auto et avant Etoiles_screen (puis NXT_dernier et Export_TIFF) ; SP = valeur de ta zone plate, au-dessus du fond.&#10;&#10;SI :&#10;- fond qui monte -&gt; monte SP ou baisse le Stretch factor&#10;- cœur brillant qui sature -&gt; baisse HP&#10;- trop fort -&gt; Stretch factor 0,15–0,20</description>
+   <instance class="GeneralizedHyperbolicStretch" version="256" id="E21_Contraste_GHS_instance">
+      <description>PRÉRÉGLÉ : GHS Generalised Hyperbolic, RGB, Stretch factor 0,32, b = 4, SP 0,35, LP 0, HP 0,9 (réglage de l'utilisateur).&#10;&#10;À RÉGLER : glisse sur l'image SANS étoiles finie (après NXT_final ; Fond_desature et Fond_auto en option avant), avant Export_Photoshop ; SP = valeur de ta zone plate, au-dessus du fond.&#10;&#10;SI :&#10;- fond qui monte -&gt; monte SP ou baisse le Stretch factor&#10;- cœur brillant qui sature -&gt; baisse HP&#10;- trop fort -&gt; Stretch factor 0,15–0,20</description>
       <parameter id="stretchType" value="ST_GeneralisedHyperbolic"/>
       <parameter id="stretchChannel" value="SC_RGB"/>
       <parameter id="inverse" value="false"/>
@@ -5749,7 +5503,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="clipType" value="CT_RGBBlend"/>
       <parameter id="useRGBWorkingSpace" value="false"/>
    </instance>
-   <instance class="Script" version="256" id="E26_Export_Photoshop_instance">
+   <instance class="Script" version="256" id="E22_Export_Photoshop_instance">
       <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Export_TIFF, photoshop = true, temp = true : TIFF 16 bits sRGB enregistré sous tmp.tiff dans le dossier temporaire (plus sous le nom de l'objet ; remplacé à chaque fois), puis ouvert dans Photoshop (PC : Photoshop.exe le plus récent de C:/Program Files/Adobe ; Mac : open -b com.adobe.Photoshop).&#10;&#10;À RÉGLER : CHEMIN PRINCIPAL : glisse sur l'image SANS étoiles, après Contraste_GHS : tmp.tiff s'ouvre dans Photoshop ; retouche, Ctrl+S, puis Lecture_Photoshop.&#10;&#10;SI :&#10;- Photoshop introuvable -&gt; double-clic, Apply Global, bouton Choisir Photoshop… (ou photoshopExe dans l'icône) ; le .tif est quand même enregistré</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js</parameter>
       <parameter id="md5sum"></parameter>
@@ -5789,7 +5543,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </table>
       <parameter id="information"></parameter>
    </instance>
-   <instance class="Script" version="256" id="E27_Lecture_Photoshop_instance">
+   <instance class="Script" version="256" id="E23_Lecture_Photoshop_instance">
       <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Lecture_Photoshop, temp = true : ouvre tmp.tiff (dossier temporaire, écrit par Opt_Export_Photoshop) dans une nouvelle vue tmp_PS.&#10;&#10;À RÉGLER : CHEMIN PRINCIPAL, après tes retouches dans Photoshop (Ctrl+S sur tmp.tiff) : double-clic puis Apply Global, ouverture directe sans fenêtre ; la suite (NXT_dernier, Etoiles_screen, Export_TIFF) se fait sur la vue tmp_PS.&#10;&#10;SI :&#10;- calques dans Photoshop -&gt; aplatis avant d'enregistrer, par prudence&#10;- autre fichier -&gt; bouton Choisir le fichier… dans la fenêtre</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Lecture_Photoshop.js</parameter>
       <parameter id="md5sum"></parameter>
@@ -5809,7 +5563,31 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </table>
       <parameter id="information"></parameter>
    </instance>
-   <instance class="NoiseXTerminator" version="256" id="E28_NXT_dernier_instance">
+   <instance class="Script" version="256" id="E24_Voile_PS_instance">
+      <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Voile_PS, force 20, couleur 0 : voile retiré comme Correction du voile +20 (modèle des brevets d'Adobe calé sur ton image avant / après Photoshop : canal sombre lissé sur 7,4 % de la largeur, ω = 0,153), mais sur la LUMINANCE seule : R, G, B multipliés par le même facteur, teinte et saturation gardées, pas de rouge ajouté ; couleur 1 = canal par canal comme Photoshop (plus rouge).&#10;&#10;À RÉGLER : CHEMIN PRINCIPAL : glisse sur l'image revenue de Photoshop (tmp_PS), après Lecture_Photoshop, avant NXT_dernier ; copie Voile_PS.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- trop fort -&gt; force 10 à 15&#10;- couleurs pas assez vives -&gt; couleur 0,3 à 0,5 (un peu de l'effet couleur de Photoshop)</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Voile_PS.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="4">
+         <tr>
+            <td id="id">force</td>
+            <td id="value">20</td>
+         </tr>
+         <tr>
+            <td id="id">rayon</td>
+            <td id="value">7.4</td>
+         </tr>
+         <tr>
+            <td id="id">t0</td>
+            <td id="value">0.10</td>
+         </tr>
+         <tr>
+            <td id="id">couleur</td>
+            <td id="value">0</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
+   </instance>
+   <instance class="NoiseXTerminator" version="256" id="E25_NXT_dernier_instance">
       <description>PRÉRÉGLÉ : NoiseXTerminator Denoise 0,25, 1 itération.&#10;&#10;À RÉGLER : glisse sur l'image SANS étoiles revenue de Photoshop (vue tmp_PS, après Lecture_Photoshop ; sinon l'image sans étoiles), AVANT Etoiles_screen (ordre de l'utilisateur, 12 novembre 2026).&#10;&#10;SI :&#10;- aspect plastique -&gt; Denoise 0,15&#10;- bruit encore visible -&gt; 0,35&#10;- étoiles adoucies -&gt; 0,15, ou saute cette étape</description>
       <parameter id="ml_version" value="0"/>
       <parameter id="denoise" value="0.25"/>
@@ -5828,7 +5606,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="detail" value="0.15"/>
       <parameter id="overlap" value="0.20"/>
    </instance>
-   <instance class="PixelMath" version="256" id="E29_Etoiles_screen_instance">
+   <instance class="PixelMath" version="256" id="E26_Etoiles_screen_instance">
       <description>PRÉRÉGLÉ : ~((~$T) * (~NBtoRGB_stars)), sur l'image elle-même.&#10;&#10;À RÉGLER : glisse sur l'image SHO sans étoiles finale ; étoiles de NB to RGB (NBtoRGB_stars), étirées.&#10;&#10;SI :&#10;- étoiles synthétiques -&gt; remplace par Stars_HOO&#10;- étoiles aux couleurs de la palette -&gt; par SHO_stars (étirée)</description>
       <parameter id="expression">~((~$T) * (~NBtoRGB_stars))</parameter>
       <parameter id="expression1"></parameter>
@@ -5858,7 +5636,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
    </instance>
-   <instance class="Script" version="256" id="E30_Export_TIFF_instance">
+   <instance class="Script" version="256" id="E27_Export_TIFF_instance">
       <description>LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Export_TIFF : copie de l'image en entiers 16 bits, convertie en sRGB IEC61966-2.1 (icc = true), enregistrée en TIFF (.tif) sous le NOM DE L'OBJET, sans espace (NGC 1532 -&gt; NGC1532), = nom du dossier des masters ouverts (L, R, G, B, H…), dossiers génériques (master, lights, output, WBPP…) sautés ; masters fermés (narrowband) : dossier retenu par Renommer_auto ; enregistrée dans ce dossier ; l'image ouverte ne change pas.&#10;&#10;À RÉGLER : DERNIÈRE étape du chemin principal : glisse sur l'image finie, juste après NXT_dernier ; aucune vue n'est fermée ; copie Export_TIFF.js et clodoweg_objet.jsh dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- aucun master ouvert -&gt; mot-clé OBJECT, sinon nom de la vue, dans ton dossier personnel&#10;- autre nom -&gt; remplis nom&#10;- autre dossier -&gt; remplis dossier&#10;- garder plusieurs versions -&gt; suffixe (ex. _v2)&#10;- garder le profil actuel -&gt; icc false</description>
       <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Export_TIFF.js</parameter>
       <parameter id="md5sum"></parameter>
@@ -6456,6 +6234,62 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          <parameter id="information"></parameter>
       </instance>
    </instance>
+   <instance class="Script" version="256" id="Opt_Fond_desature_instance">
+      <description>OPTION — teinte ou violet sur le fond du ciel : sur l'image sans étoiles, avant les étoiles&#10;Dégradé autour de la nébuleuse.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Fond_desature, réglé doux en narrowband (11 novembre 2026) : couleur du fond retirée à 80 % LOIN de la nébuleuse, de moins en moins en s'en approchant (dégradé sur environ 60 px : luminance lissée), rien sur la nébuleuse ; transition en S de + 0,02 à + 0,12 au-dessus du fond, masque lissé 8 px ; violet neutralisé avec le même dégradé.&#10;&#10;À RÉGLER : glisse sur l'image SANS étoiles finie (après NXT_final), avant Fond_auto et la recombinaison des étoiles (Etoiles_screen, ou Etoiles_reduites).&#10;&#10;SI :&#10;- voiles rouges encore touchés -&gt; Dégradé 100 à 150 px, ou Force 0,60&#10;- fond lointain encore teinté -&gt; Force 0,95&#10;- démarcation visible -&gt; Flou 15</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_desature.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="7">
+         <tr>
+            <td id="id">debut</td>
+            <td id="value">0.02</td>
+         </tr>
+         <tr>
+            <td id="id">fin</td>
+            <td id="value">0.12</td>
+         </tr>
+         <tr>
+            <td id="id">violetFin</td>
+            <td id="value">0.30</td>
+         </tr>
+         <tr>
+            <td id="id">flou</td>
+            <td id="value">8</td>
+         </tr>
+         <tr>
+            <td id="id">force</td>
+            <td id="value">0.80</td>
+         </tr>
+         <tr>
+            <td id="id">lisse</td>
+            <td id="value">true</td>
+         </tr>
+         <tr>
+            <td id="id">portee</td>
+            <td id="value">60</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
+   </instance>
+   <instance class="Script" version="256" id="Opt_Fond_auto_instance">
+      <description>OPTION — fond trop clair ou teinté (vrai fond de ciel visible) : sur l'image sans étoiles, avant les étoiles&#10;Nébuleuse qui remplit le champ : à sauter.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Fond_auto : fond de chaque canal mesuré (grille 8 × 8, quart le plus sombre des cases), puis mtf canal par canal pour l'amener à 0,12, sans écrêtage ; fond neutre.&#10;&#10;À RÉGLER : glisse sur l'image SANS étoiles, après Fond_desature, avant la recombinaison des étoiles ; console : fond avant et après.&#10;&#10;SI :&#10;- image trop sombre -&gt; cible 0,13 ou 0,14&#10;- données très propres -&gt; 0,10 à 0,11&#10;- nébuleuse qui remplit le champ : regarde le fond AVANT dans la console ; au-dessus d'environ 0,20 (seuil au jugé), ce n'est pas du vrai ciel -&gt; Ctrl+Z et saute cette étape</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fond_auto.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="3">
+         <tr>
+            <td id="id">cible</td>
+            <td id="value">0.12</td>
+         </tr>
+         <tr>
+            <td id="id">tolerance</td>
+            <td id="value">0.005</td>
+         </tr>
+         <tr>
+            <td id="id">grille</td>
+            <td id="value">8</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
+   </instance>
    <instance class="PixelMath" version="256" id="Opt_Etoiles_reduites_instance">
       <description>ALTERNATIVE — Recombinaison + réduction Blanshan.&#10;&#10;PRÉRÉGLÉ : S = 0,20 ; screen + réduction Blanshan avec NBtoRGB_stars, sur l'image elle-même.&#10;&#10;À RÉGLER : à la place d'Etoiles_screen : glisse sur l'image SHO sans étoiles finale.&#10;&#10;SI :&#10;- étoiles synthétiques -&gt; remplace NBtoRGB_stars par Stars_HOO&#10;- pour recommencer -&gt; Ctrl+Z</description>
       <parameter id="expression">S=0.20;
@@ -6520,6 +6354,157 @@ max($T,f1)</parameter>
          </tr>
       </table>
       <parameter id="information"></parameter>
+   </instance>
+   <instance class="Script" version="256" id="Opt_Couleur_selective_SHO_instance">
+      <description>OPTION — en P7, sur l'image sans étoiles revenue de Photoshop (tmp_PS) ou finie : ton profil Couleur sélective « SHO » de Photoshop (le plus fort : rouges et jaunes tirés vers l'or, verts -50/+50, cyans vers le bleu)&#10;Un seul des trois profils.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Couleur_selective (équivalent approché de Couleur sélective de Photoshop, méthode relative) : profil SHO : rouges -25,+25,0,0 ; jaunes -50,+50,0,0 ; verts -50,+50,0,0 ; cyans 0,0,-50,0 ; bleus, magentas, blancs, neutres, noirs à 0 (cyan, magenta, jaune, noir).&#10;&#10;À RÉGLER : glisse sur l'image sans étoiles revenue de Photoshop (tmp_PS) ou finie, avant les étoiles ; un seul profil à la fois ; double-clic puis Apply Global = fenêtre (une ligne par gamme) ; copie Couleur_selective.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- trop fort -&gt; profil plus doux (SHO_2, puis SHO_3)&#10;- différent de Photoshop -&gt; formule d'Adobe non publiée : ajuste les valeurs dans la fenêtre</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Couleur_selective.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="10">
+         <tr>
+            <td id="id">rouges</td>
+            <td id="value">-25,25,0,0</td>
+         </tr>
+         <tr>
+            <td id="id">jaunes</td>
+            <td id="value">-50,50,0,0</td>
+         </tr>
+         <tr>
+            <td id="id">verts</td>
+            <td id="value">-50,50,0,0</td>
+         </tr>
+         <tr>
+            <td id="id">cyans</td>
+            <td id="value">0,0,-50,0</td>
+         </tr>
+         <tr>
+            <td id="id">bleus</td>
+            <td id="value">0,0,0,0</td>
+         </tr>
+         <tr>
+            <td id="id">magentas</td>
+            <td id="value">0,0,0,0</td>
+         </tr>
+         <tr>
+            <td id="id">blancs</td>
+            <td id="value">0,0,0,0</td>
+         </tr>
+         <tr>
+            <td id="id">neutres</td>
+            <td id="value">0,0,0,0</td>
+         </tr>
+         <tr>
+            <td id="id">noirs</td>
+            <td id="value">0,0,0,0</td>
+         </tr>
+         <tr>
+            <td id="id">relatif</td>
+            <td id="value">true</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
+   </instance>
+   <instance class="Script" version="256" id="Opt_Couleur_selective_SHO_2_instance">
+      <description>OPTION — en P7, sur l'image sans étoiles revenue de Photoshop (tmp_PS) ou finie : ton profil « SHO_2 » (comme SHO, jaunes moitié moins tirés).&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Couleur_selective (équivalent approché de Couleur sélective de Photoshop, méthode relative) : profil SHO_2 : rouges -25,+25,0,0 ; jaunes -25,+25,0,0 ; verts -50,+50,0,0 ; cyans 0,0,-50,0 ; bleus, magentas, blancs, neutres, noirs à 0 (cyan, magenta, jaune, noir).&#10;&#10;À RÉGLER : glisse sur l'image sans étoiles revenue de Photoshop (tmp_PS) ou finie, avant les étoiles ; un seul profil à la fois ; double-clic puis Apply Global = fenêtre (une ligne par gamme) ; copie Couleur_selective.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- trop fort -&gt; profil plus doux (SHO_2, puis SHO_3)&#10;- différent de Photoshop -&gt; formule d'Adobe non publiée : ajuste les valeurs dans la fenêtre</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Couleur_selective.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="10">
+         <tr>
+            <td id="id">rouges</td>
+            <td id="value">-25,25,0,0</td>
+         </tr>
+         <tr>
+            <td id="id">jaunes</td>
+            <td id="value">-25,25,0,0</td>
+         </tr>
+         <tr>
+            <td id="id">verts</td>
+            <td id="value">-50,50,0,0</td>
+         </tr>
+         <tr>
+            <td id="id">cyans</td>
+            <td id="value">0,0,-50,0</td>
+         </tr>
+         <tr>
+            <td id="id">bleus</td>
+            <td id="value">0,0,0,0</td>
+         </tr>
+         <tr>
+            <td id="id">magentas</td>
+            <td id="value">0,0,0,0</td>
+         </tr>
+         <tr>
+            <td id="id">blancs</td>
+            <td id="value">0,0,0,0</td>
+         </tr>
+         <tr>
+            <td id="id">neutres</td>
+            <td id="value">0,0,0,0</td>
+         </tr>
+         <tr>
+            <td id="id">noirs</td>
+            <td id="value">0,0,0,0</td>
+         </tr>
+         <tr>
+            <td id="id">relatif</td>
+            <td id="value">true</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
+   </instance>
+   <instance class="Script" version="256" id="Opt_Couleur_selective_SHO_3_instance">
+      <description>OPTION — en P7, sur l'image sans étoiles revenue de Photoshop (tmp_PS) ou finie : ton profil « SHO_3 » (le plus doux : rouges inchangés, jaunes moitié moins).&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Couleur_selective (équivalent approché de Couleur sélective de Photoshop, méthode relative) : profil SHO_3 : rouges 0 ; jaunes -25,+25,0,0 ; verts -50,+50,0,0 ; cyans 0,0,-50,0 ; bleus, magentas, blancs, neutres, noirs à 0 (cyan, magenta, jaune, noir).&#10;&#10;À RÉGLER : glisse sur l'image sans étoiles revenue de Photoshop (tmp_PS) ou finie, avant les étoiles ; un seul profil à la fois ; double-clic puis Apply Global = fenêtre (une ligne par gamme) ; copie Couleur_selective.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- trop fort -&gt; profil plus doux (SHO_2, puis SHO_3)&#10;- différent de Photoshop -&gt; formule d'Adobe non publiée : ajuste les valeurs dans la fenêtre</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Couleur_selective.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="10">
+         <tr>
+            <td id="id">rouges</td>
+            <td id="value">0,0,0,0</td>
+         </tr>
+         <tr>
+            <td id="id">jaunes</td>
+            <td id="value">-25,25,0,0</td>
+         </tr>
+         <tr>
+            <td id="id">verts</td>
+            <td id="value">-50,50,0,0</td>
+         </tr>
+         <tr>
+            <td id="id">cyans</td>
+            <td id="value">0,0,-50,0</td>
+         </tr>
+         <tr>
+            <td id="id">bleus</td>
+            <td id="value">0,0,0,0</td>
+         </tr>
+         <tr>
+            <td id="id">magentas</td>
+            <td id="value">0,0,0,0</td>
+         </tr>
+         <tr>
+            <td id="id">blancs</td>
+            <td id="value">0,0,0,0</td>
+         </tr>
+         <tr>
+            <td id="id">neutres</td>
+            <td id="value">0,0,0,0</td>
+         </tr>
+         <tr>
+            <td id="id">noirs</td>
+            <td id="value">0,0,0,0</td>
+         </tr>
+         <tr>
+            <td id="id">relatif</td>
+            <td id="value">true</td>
+         </tr>
+      </table>
+      <parameter id="information"></parameter>
+   </instance>
+   <instance class="SCNR" version="256" id="Opt_SCNR_SHO_instance">
+      <description>OPTION — reste de vert sur l'image finie (P7) : sur l'image sans étoiles revenue de Photoshop (tmp_PS) ou finie, avant les étoiles.&#10;&#10;PRÉRÉGLÉ : vert, Average Neutral, Amount 0,70.&#10;&#10;À RÉGLER : rien.&#10;&#10;SI :&#10;- encore vert -&gt; 0,80&#10;- trop magenta -&gt; 0,50</description>
+      <parameter id="amount" value="0.70"/>
+      <parameter id="protectionMethod" value="AverageNeutral"/>
+      <parameter id="colorToRemove" value="Green"/>
+      <parameter id="preserveLightness" value="true"/>
    </instance>
    <instance class="Script" version="256" id="Opt_Temperature_PS_5_instance">
       <description>OPTION — tout à la fin, image finie avec étoiles, avant l'export : Température +5 de Photoshop (Couleur et vibrance), reproduite d'après une mesure&#10;Image plus chaude.&#10;&#10;LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).&#10;&#10;PRÉRÉGLÉ : script Temperature_PS, Température +5 du calque Couleur et vibrance de Photoshop : table 3D de 729 couleurs MESURÉE sur Photoshop (mire de l'utilisateur), interpolée ; gris 0,50 -&gt; 0,537 / 0,521 / 0,497 ; écart moyen avec Photoshop sur le gris 0,0003.&#10;&#10;À RÉGLER : glisse sur l'image finie (couleur, sRGB), après NXT_dernier, avant l'export ; un seul des deux ; copie Temperature_PS.js dans src/scripts/clodoweg.&#10;&#10;SI :&#10;- trop chaud -&gt; Ctrl+Z&#10;- pas assez -&gt; Temperature_PS_10 à la place</description>
@@ -6616,9 +6601,9 @@ max($T,f1)</parameter>
    <icon id="R_C_Lineaire_rapide" instance="R_C_Lineaire_rapide_instance" xpos="469" ypos="434" workspace="Workspace01"/>
    <icon id="P4_Etirement" instance="P4_Etirement_instance" xpos="665" ypos="20" workspace="Workspace01"/>
    <icon id="E14_Statistical_Stretch" instance="E14_Statistical_Stretch_instance" xpos="665" ypos="80" workspace="Workspace01"/>
-   <icon id="E15_GHS_2_contraste" instance="E15_GHS_2_contraste_instance" xpos="665" ypos="110" workspace="Workspace01"/>
-   <icon id="P4_options" instance="P4_options_instance" xpos="665" ypos="156" workspace="Workspace01"/>
-   <icon id="Opt_GHS_1_premier" instance="Opt_GHS_1_premier_instance" xpos="665" ypos="190" workspace="Workspace01"/>
+   <icon id="P4_options" instance="P4_options_instance" xpos="665" ypos="126" workspace="Workspace01"/>
+   <icon id="Opt_GHS_1_premier" instance="Opt_GHS_1_premier_instance" xpos="665" ypos="160" workspace="Workspace01"/>
+   <icon id="Opt_GHS_2_contraste" instance="Opt_GHS_2_contraste_instance" xpos="665" ypos="190" workspace="Workspace01"/>
    <icon id="Opt_GHS_3_fond" instance="Opt_GHS_3_fond_instance" xpos="665" ypos="220" workspace="Workspace01"/>
    <icon id="Opt_MAS_light" instance="Opt_MAS_light_instance" xpos="665" ypos="250" workspace="Workspace01"/>
    <icon id="Opt_MAS_canaux" instance="Opt_MAS_canaux_instance" xpos="665" ypos="280" workspace="Workspace01"/>
@@ -6627,57 +6612,57 @@ max($T,f1)</parameter>
    <icon id="P4_turbo" instance="P4_turbo_instance" xpos="665" ypos="406" workspace="Workspace01"/>
    <icon id="T_Turbo_palette" instance="T_Turbo_palette_instance" xpos="665" ypos="440" workspace="Workspace01"/>
    <icon id="P5_Couleur" instance="P5_Couleur_instance" xpos="856" ypos="20" workspace="Workspace01"/>
-   <icon id="E16_SHO_simple" instance="E16_SHO_simple_instance" xpos="856" ypos="64" workspace="Workspace01"/>
-   <icon id="E17_NBN_SHO" instance="E17_NBN_SHO_instance" xpos="856" ypos="94" workspace="Workspace01"/>
+   <icon id="E15_SHO_simple" instance="E15_SHO_simple_instance" xpos="856" ypos="64" workspace="Workspace01"/>
+   <icon id="E16_NBN_SHO" instance="E16_NBN_SHO_instance" xpos="856" ypos="94" workspace="Workspace01"/>
    <icon id="P5_options" instance="P5_options_instance" xpos="856" ypos="140" workspace="Workspace01"/>
-   <icon id="Opt_Couleur_selective_SHO" instance="Opt_Couleur_selective_SHO_instance" xpos="856" ypos="174" workspace="Workspace01"/>
-   <icon id="Opt_Couleur_selective_SHO_2" instance="Opt_Couleur_selective_SHO_2_instance" xpos="856" ypos="204" workspace="Workspace01"/>
-   <icon id="Opt_Couleur_selective_SHO_3" instance="Opt_Couleur_selective_SHO_3_instance" xpos="856" ypos="234" workspace="Workspace01"/>
-   <icon id="Opt_NBN_SHO_doux" instance="Opt_NBN_SHO_doux_instance" xpos="856" ypos="264" workspace="Workspace01"/>
-   <icon id="Opt_Foraxx_SHO" instance="Opt_Foraxx_SHO_instance" xpos="856" ypos="294" workspace="Workspace01"/>
-   <icon id="Opt_Perfect_Palette_Picker" instance="Opt_Perfect_Palette_Picker_instance" xpos="856" ypos="324" workspace="Workspace01"/>
-   <icon id="Opt_NBColourMapper" instance="Opt_NBColourMapper_instance" xpos="856" ypos="354" workspace="Workspace01"/>
-   <icon id="Opt_SCNR_SHO" instance="Opt_SCNR_SHO_instance" xpos="856" ypos="384" workspace="Workspace01"/>
-   <icon id="P5_rapide" instance="P5_rapide_instance" xpos="856" ypos="430" workspace="Workspace01"/>
-   <icon id="R_C_Palette_rapide" instance="R_C_Palette_rapide_instance" xpos="856" ypos="464" workspace="Workspace01"/>
-   <icon id="P6_Finition" instance="P6_Finition_instance" xpos="1065" ypos="20" workspace="Workspace01"/>
-   <icon id="E18_HDRMT_30" instance="E18_HDRMT_30_instance" xpos="1065" ypos="64" workspace="Workspace01"/>
-   <icon id="E19_C_Finition" instance="E19_C_Finition_instance" xpos="1065" ypos="94" workspace="Workspace01"/>
-   <icon id="E20_C_Sharp_MMT" instance="E20_C_Sharp_MMT_instance" xpos="1065" ypos="124" workspace="Workspace01"/>
-   <icon id="E21_NXT_final" instance="E21_NXT_final_instance" xpos="1065" ypos="154" workspace="Workspace01"/>
-   <icon id="P6_options" instance="P6_options_instance" xpos="1065" ypos="200" workspace="Workspace01"/>
-   <icon id="Opt_Nettoyage_sans_etoiles" instance="Opt_Nettoyage_sans_etoiles_instance" xpos="1065" ypos="234" workspace="Workspace01"/>
-   <icon id="Opt_HDRMT_40" instance="Opt_HDRMT_40_instance" xpos="1065" ypos="264" workspace="Workspace01"/>
-   <icon id="Opt_HDRMT_50" instance="Opt_HDRMT_50_instance" xpos="1065" ypos="294" workspace="Workspace01"/>
-   <icon id="Opt_HDRMT_eclat" instance="Opt_HDRMT_eclat_instance" xpos="1065" ypos="324" workspace="Workspace01"/>
-   <icon id="Opt_DarkStructureEnhance" instance="Opt_DarkStructureEnhance_instance" xpos="1065" ypos="354" workspace="Workspace01"/>
-   <icon id="Opt_Finition_saturee" instance="Opt_Finition_saturee_instance" xpos="1065" ypos="384" workspace="Workspace01"/>
-   <icon id="Opt_Boost_finition_light" instance="Opt_Boost_finition_light_instance" xpos="1065" ypos="414" workspace="Workspace01"/>
-   <icon id="Opt_Boost_finition" instance="Opt_Boost_finition_instance" xpos="1065" ypos="444" workspace="Workspace01"/>
-   <icon id="Opt_NXT_final_doux" instance="Opt_NXT_final_doux_instance" xpos="1065" ypos="474" workspace="Workspace01"/>
-   <icon id="Opt_NXT_final_fort" instance="Opt_NXT_final_fort_instance" xpos="1065" ypos="504" workspace="Workspace01"/>
-   <icon id="P6_rapide" instance="P6_rapide_instance" xpos="1065" ypos="550" workspace="Workspace01"/>
-   <icon id="R_C_Fin_rapide" instance="R_C_Fin_rapide_instance" xpos="1065" ypos="584" workspace="Workspace01"/>
-   <icon id="P7_Etoiles" instance="P7_Etoiles_instance" xpos="1269" ypos="20" workspace="Workspace01"/>
-   <icon id="E22_Fond_desature" instance="E22_Fond_desature_instance" xpos="1269" ypos="64" workspace="Workspace01"/>
-   <icon id="E23_Fond_auto" instance="E23_Fond_auto_instance" xpos="1269" ypos="94" workspace="Workspace01"/>
-   <icon id="E24_Voile_PS" instance="E24_Voile_PS_instance" xpos="1269" ypos="124" workspace="Workspace01"/>
-   <icon id="E25_Contraste_GHS" instance="E25_Contraste_GHS_instance" xpos="1269" ypos="154" workspace="Workspace01"/>
-   <icon id="E26_Export_Photoshop" instance="E26_Export_Photoshop_instance" xpos="1269" ypos="184" workspace="Workspace01"/>
-   <icon id="E27_Lecture_Photoshop" instance="E27_Lecture_Photoshop_instance" xpos="1269" ypos="214" workspace="Workspace01"/>
-   <icon id="E28_NXT_dernier" instance="E28_NXT_dernier_instance" xpos="1269" ypos="244" workspace="Workspace01"/>
-   <icon id="E29_Etoiles_screen" instance="E29_Etoiles_screen_instance" xpos="1269" ypos="274" workspace="Workspace01"/>
-   <icon id="E30_Export_TIFF" instance="E30_Export_TIFF_instance" xpos="1269" ypos="304" workspace="Workspace01"/>
-   <icon id="P7_options" instance="P7_options_instance" xpos="1269" ypos="350" workspace="Workspace01"/>
-   <icon id="Opt_NB_to_RGB_Stars" instance="Opt_NB_to_RGB_Stars_instance" xpos="1269" ypos="384" workspace="Workspace01"/>
-   <icon id="Opt_Etoiles_HOO_synth" instance="Opt_Etoiles_HOO_synth_instance" xpos="1269" ypos="414" workspace="Workspace01"/>
-   <icon id="Opt_Boost_final_doux" instance="Opt_Boost_final_doux_instance" xpos="1269" ypos="444" workspace="Workspace01"/>
-   <icon id="Opt_Boost_final" instance="Opt_Boost_final_instance" xpos="1269" ypos="474" workspace="Workspace01"/>
-   <icon id="Opt_Etoiles_reduites" instance="Opt_Etoiles_reduites_instance" xpos="1269" ypos="504" workspace="Workspace01"/>
-   <icon id="Opt_Magenta_moins" instance="Opt_Magenta_moins_instance" xpos="1269" ypos="534" workspace="Workspace01"/>
-   <icon id="Opt_Temperature_PS_5" instance="Opt_Temperature_PS_5_instance" xpos="1269" ypos="564" workspace="Workspace01"/>
-   <icon id="Opt_Temperature_PS_10" instance="Opt_Temperature_PS_10_instance" xpos="1269" ypos="594" workspace="Workspace01"/>
-   <icon id="Opt_ICC_sRGB" instance="Opt_ICC_sRGB_instance" xpos="1269" ypos="624" workspace="Workspace01"/>
-   <icon id="Opt_Fermer_tout" instance="Opt_Fermer_tout_instance" xpos="1269" ypos="654" workspace="Workspace01"/>
-   <icon id="P7_rapide" instance="P7_rapide_instance" xpos="1269" ypos="700" workspace="Workspace01"/>
+   <icon id="Opt_NBN_SHO_doux" instance="Opt_NBN_SHO_doux_instance" xpos="856" ypos="174" workspace="Workspace01"/>
+   <icon id="Opt_Foraxx_SHO" instance="Opt_Foraxx_SHO_instance" xpos="856" ypos="204" workspace="Workspace01"/>
+   <icon id="Opt_Perfect_Palette_Picker" instance="Opt_Perfect_Palette_Picker_instance" xpos="856" ypos="234" workspace="Workspace01"/>
+   <icon id="Opt_NBColourMapper" instance="Opt_NBColourMapper_instance" xpos="856" ypos="264" workspace="Workspace01"/>
+   <icon id="P5_rapide" instance="P5_rapide_instance" xpos="856" ypos="310" workspace="Workspace01"/>
+   <icon id="R_C_Palette_rapide" instance="R_C_Palette_rapide_instance" xpos="856" ypos="344" workspace="Workspace01"/>
+   <icon id="P6_Finition" instance="P6_Finition_instance" xpos="1060" ypos="20" workspace="Workspace01"/>
+   <icon id="E17_HDRMT_30" instance="E17_HDRMT_30_instance" xpos="1060" ypos="64" workspace="Workspace01"/>
+   <icon id="E18_C_Finition" instance="E18_C_Finition_instance" xpos="1060" ypos="94" workspace="Workspace01"/>
+   <icon id="E19_C_Sharp_MMT" instance="E19_C_Sharp_MMT_instance" xpos="1060" ypos="124" workspace="Workspace01"/>
+   <icon id="E20_NXT_final" instance="E20_NXT_final_instance" xpos="1060" ypos="154" workspace="Workspace01"/>
+   <icon id="P6_options" instance="P6_options_instance" xpos="1060" ypos="200" workspace="Workspace01"/>
+   <icon id="Opt_Nettoyage_sans_etoiles" instance="Opt_Nettoyage_sans_etoiles_instance" xpos="1060" ypos="234" workspace="Workspace01"/>
+   <icon id="Opt_HDRMT_40" instance="Opt_HDRMT_40_instance" xpos="1060" ypos="264" workspace="Workspace01"/>
+   <icon id="Opt_HDRMT_50" instance="Opt_HDRMT_50_instance" xpos="1060" ypos="294" workspace="Workspace01"/>
+   <icon id="Opt_HDRMT_eclat" instance="Opt_HDRMT_eclat_instance" xpos="1060" ypos="324" workspace="Workspace01"/>
+   <icon id="Opt_DarkStructureEnhance" instance="Opt_DarkStructureEnhance_instance" xpos="1060" ypos="354" workspace="Workspace01"/>
+   <icon id="Opt_Finition_saturee" instance="Opt_Finition_saturee_instance" xpos="1060" ypos="384" workspace="Workspace01"/>
+   <icon id="Opt_Boost_finition_light" instance="Opt_Boost_finition_light_instance" xpos="1060" ypos="414" workspace="Workspace01"/>
+   <icon id="Opt_Boost_finition" instance="Opt_Boost_finition_instance" xpos="1060" ypos="444" workspace="Workspace01"/>
+   <icon id="Opt_NXT_final_doux" instance="Opt_NXT_final_doux_instance" xpos="1060" ypos="474" workspace="Workspace01"/>
+   <icon id="Opt_NXT_final_fort" instance="Opt_NXT_final_fort_instance" xpos="1060" ypos="504" workspace="Workspace01"/>
+   <icon id="P6_rapide" instance="P6_rapide_instance" xpos="1060" ypos="550" workspace="Workspace01"/>
+   <icon id="R_C_Fin_rapide" instance="R_C_Fin_rapide_instance" xpos="1060" ypos="584" workspace="Workspace01"/>
+   <icon id="P7_Etoiles" instance="P7_Etoiles_instance" xpos="1264" ypos="20" workspace="Workspace01"/>
+   <icon id="E21_Contraste_GHS" instance="E21_Contraste_GHS_instance" xpos="1264" ypos="64" workspace="Workspace01"/>
+   <icon id="E22_Export_Photoshop" instance="E22_Export_Photoshop_instance" xpos="1264" ypos="94" workspace="Workspace01"/>
+   <icon id="E23_Lecture_Photoshop" instance="E23_Lecture_Photoshop_instance" xpos="1264" ypos="124" workspace="Workspace01"/>
+   <icon id="E24_Voile_PS" instance="E24_Voile_PS_instance" xpos="1264" ypos="154" workspace="Workspace01"/>
+   <icon id="E25_NXT_dernier" instance="E25_NXT_dernier_instance" xpos="1264" ypos="184" workspace="Workspace01"/>
+   <icon id="E26_Etoiles_screen" instance="E26_Etoiles_screen_instance" xpos="1264" ypos="214" workspace="Workspace01"/>
+   <icon id="E27_Export_TIFF" instance="E27_Export_TIFF_instance" xpos="1264" ypos="244" workspace="Workspace01"/>
+   <icon id="P7_options" instance="P7_options_instance" xpos="1264" ypos="290" workspace="Workspace01"/>
+   <icon id="Opt_NB_to_RGB_Stars" instance="Opt_NB_to_RGB_Stars_instance" xpos="1264" ypos="324" workspace="Workspace01"/>
+   <icon id="Opt_Etoiles_HOO_synth" instance="Opt_Etoiles_HOO_synth_instance" xpos="1264" ypos="354" workspace="Workspace01"/>
+   <icon id="Opt_Boost_final_doux" instance="Opt_Boost_final_doux_instance" xpos="1264" ypos="384" workspace="Workspace01"/>
+   <icon id="Opt_Boost_final" instance="Opt_Boost_final_instance" xpos="1264" ypos="414" workspace="Workspace01"/>
+   <icon id="Opt_Fond_desature" instance="Opt_Fond_desature_instance" xpos="1264" ypos="444" workspace="Workspace01"/>
+   <icon id="Opt_Fond_auto" instance="Opt_Fond_auto_instance" xpos="1264" ypos="474" workspace="Workspace01"/>
+   <icon id="Opt_Etoiles_reduites" instance="Opt_Etoiles_reduites_instance" xpos="1264" ypos="504" workspace="Workspace01"/>
+   <icon id="Opt_Magenta_moins" instance="Opt_Magenta_moins_instance" xpos="1264" ypos="534" workspace="Workspace01"/>
+   <icon id="Opt_Couleur_selective_SHO" instance="Opt_Couleur_selective_SHO_instance" xpos="1264" ypos="564" workspace="Workspace01"/>
+   <icon id="Opt_Couleur_selective_SHO_2" instance="Opt_Couleur_selective_SHO_2_instance" xpos="1264" ypos="594" workspace="Workspace01"/>
+   <icon id="Opt_Couleur_selective_SHO_3" instance="Opt_Couleur_selective_SHO_3_instance" xpos="1264" ypos="624" workspace="Workspace01"/>
+   <icon id="Opt_SCNR_SHO" instance="Opt_SCNR_SHO_instance" xpos="1264" ypos="654" workspace="Workspace01"/>
+   <icon id="Opt_Temperature_PS_5" instance="Opt_Temperature_PS_5_instance" xpos="1264" ypos="684" workspace="Workspace01"/>
+   <icon id="Opt_Temperature_PS_10" instance="Opt_Temperature_PS_10_instance" xpos="1264" ypos="714" workspace="Workspace01"/>
+   <icon id="Opt_ICC_sRGB" instance="Opt_ICC_sRGB_instance" xpos="1264" ypos="744" workspace="Workspace01"/>
+   <icon id="Opt_Fermer_tout" instance="Opt_Fermer_tout_instance" xpos="1264" ypos="774" workspace="Workspace01"/>
+   <icon id="P7_rapide" instance="P7_rapide_instance" xpos="1264" ypos="820" workspace="Workspace01"/>
 </xpsm>

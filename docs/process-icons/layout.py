@@ -16,6 +16,7 @@ PHASE_PREFIX = {('SHO', 'Etoiles_NB_auto'): 3}
 # options d'étoiles en phase 3, là où l'image d'étoiles est faite (demande de l'utilisateur, 20 octobre 2026) : SHO et HOO (NBtoRGB_stars, Etoiles_NB_auto
 # en phase 3 aussi en HOO) ; RGB + SHO : toute la chaîne RGB_stars (MAS, SXT_RGB_etire, SCNR_etoiles_vert, Fermer_RGB, R_C_RGB_etoiles_rapide) en fin de phase 3
 PHASE_PREFIX.update({(p, b): 3 for p in ('SHO', 'HOO') for b in ('Etoiles_NB_auto', 'SCNR_etoiles_vert', 'SCNR_etoiles_violet', 'Saturation_grosses')})
+PHASE_PREFIX.update({(p, 'SCNR_SHO'): 7 for p in ('SHO', 'RSHO')})   # options P7 (14 novembre 2026)
 PHASE_PREFIX.update({('RSHO', b): 3 for b in ('MAS', 'SXT_RGB_etire', 'SCNR_etoiles_vert', 'SCNR_etoiles_violet', 'Saturation_grosses', 'Fermer_RGB', 'C_RGB_etoiles_rapide')})   # SHO sans RGB : étoiles faites en phase 3 (demande de l'utilisateur, 20 octobre 2026)
 
 PHASE = {
@@ -29,7 +30,7 @@ PHASE = {
     'GHS_1_premier': 4, 'GHS_2_contraste': 4, 'GHS_3_fond': 4, 'Statistical_Stretch': 4, 'Star_Stretch': 4,
     'LRGB_ajout_L': 5, 'NBN_SHO': 5, 'NBN_HOO': 5, 'Foraxx_SHO': 5, 'Foraxx_HOO': 5, 'HOO_simple': 5, 'SHO_simple': 5, 'HOO_Hubble': 5,
     'Perfect_Palette_Picker': 5, 'NBColourMapper': 5, 'SCNR_SHO': 5, 'SCNR_RGB': 4, 'CloneStamp': 4, 'Taches_fond': 4, 'H_en_luminance': 5,
-    'Masque_L': 6, 'Masque_retirer': 6, 'Courbes': 6, 'LHE': 6, 'LHE_fin': 6, 'Boost_finition_light': 6, 'Finition_saturee': 6, 'Boost_finition': 6, 'HDRMT_50': 6, 'HDRMT_eclat': 6, 'NXT_final': 6, 'HDRMT_40': 6, 'Mode_rapide': 1, 'Turbo_debut': 1, 'Turbo_fin': 4, 'Turbo_debut_graxpert': 1, 'Turbo_palette': 4, 'GraXpert': 2, 'Gradient_auto_graxpert_rapide': 2, 'Boost_final_doux': 7, 'C_Fin_rapide': 6, 'C_Etoiles_fond_rapide': 7, 'SXT_non_lineaire': 4, 'Gradient_auto_rapide': 2, 'Solver_auto': 1, 'C_Preparation_rapide': 1, 'C_RGB_rapide': 3, 'SXT_LRGB': 5, 'C_LRGB_rapide': 5, 'C_L_rapide': 3, 'STF': 3, 'C_RGB_couleur_rapide': 3, 'C_H_rapide': 3, 'C_RGB_fin_rapide': 3, 'HDRMT_30': 6, 'Nettoyage_sans_etoiles': 6, 'Contraste_GHS': 7, 'Voile_PS': 7, 'Magenta_moins': 7, 'Temperature_PS_5': 7, 'Temperature_PS_10': 7, 'Couleur_selective_SHO': 5, 'Couleur_selective_SHO_2': 5, 'Couleur_selective_SHO_3': 5, 'ICC_sRGB': 7, 'Export_TIFF': 7, 'Export_Photoshop': 7, 'Lecture_Photoshop': 7, 'Fermer_tout': 7, 'NXT_final_doux': 6, 'NXT_final_fort': 6, 'Fond_auto': 7, 'Fond_auto_clair': 7, 'Boost_final': 7, 'Fond_desature': 7,
+    'Masque_L': 6, 'Masque_retirer': 6, 'Courbes': 6, 'LHE': 6, 'LHE_fin': 6, 'Boost_finition_light': 6, 'Finition_saturee': 6, 'Boost_finition': 6, 'HDRMT_50': 6, 'HDRMT_eclat': 6, 'NXT_final': 6, 'HDRMT_40': 6, 'Mode_rapide': 1, 'Turbo_debut': 1, 'Turbo_fin': 4, 'Turbo_debut_graxpert': 1, 'Turbo_palette': 4, 'GraXpert': 2, 'Gradient_auto_graxpert_rapide': 2, 'Boost_final_doux': 7, 'C_Fin_rapide': 6, 'C_Etoiles_fond_rapide': 7, 'SXT_non_lineaire': 4, 'Gradient_auto_rapide': 2, 'Solver_auto': 1, 'C_Preparation_rapide': 1, 'C_RGB_rapide': 3, 'SXT_LRGB': 5, 'C_LRGB_rapide': 5, 'C_L_rapide': 3, 'STF': 3, 'C_RGB_couleur_rapide': 3, 'C_H_rapide': 3, 'C_RGB_fin_rapide': 3, 'HDRMT_30': 6, 'Nettoyage_sans_etoiles': 6, 'Contraste_GHS': 7, 'Voile_PS': 7, 'Magenta_moins': 7, 'Temperature_PS_5': 7, 'Temperature_PS_10': 7, 'Couleur_selective_SHO': 7, 'Couleur_selective_SHO_2': 7, 'Couleur_selective_SHO_3': 7, 'ICC_sRGB': 7, 'Export_TIFF': 7, 'Export_Photoshop': 7, 'Lecture_Photoshop': 7, 'Fermer_tout': 7, 'NXT_final_doux': 6, 'NXT_final_fort': 6, 'Fond_auto': 7, 'Fond_auto_clair': 7, 'Boost_final': 7, 'Fond_desature': 7,
     'Etoiles_RGB': 7, 'Etoiles_HOO': 7, 'NB_to_RGB_Stars': 7, 'Etoiles_HOO_synth': 7, 'Etoiles_screen': 7, 'CorrectMagentaStars': 7, 'LinearFit_etoiles': 7, 'Etoiles_NB_auto': 7, 'Look_Lightroom': 7,
     'Etoiles_reduites': 7, 'Fermer_RGB': 4, 'Fermer_L_stars': 3, 'Fermer_continuum': 3, 'Fermer_etoiles': 7, 'MT_etoiles': 7, 'Halo_B_Gon': 7, 'Etoiles_plafond': 7, 'Saturation_grosses': 4, 'EZ_Soft_Stretch': 4, 'C_P3_rapide': 3, 'Main_continuum': 3, 'C_Ha_RGB_rapide': 3, 'NXT_dernier': 7, 'Etoiles_grosses': 7, 'Lineaire_rapide': 3, 'SCNR_etoiles_vert': 4, 'SCNR_etoiles_violet': 4, 'SXT_RGB_etire': 4, 'Sharp_USM': 6, 'C_Sharp_MMT': 6, 'C_RGB_etire_rapide': 4, 'C_RGB_etoiles_rapide': 4, 'MAS_canaux': 4, 'C_MAS_canaux_rapide': 4, 'C_Stat_canaux_rapide': 4, 'C_Palette_rapide': 5, 'C_Lineaire_rapide': 3, 'Continuum_SHO': 3, 'Copie_RGB_continuum': 3, 'SXT_RGB_continuum': 3, 'C_Continuum_prep': 3, 'C_NB_renommer': 3, 'C_Continuum_fin': 3,
     'NBN_SHO_doux': 5,
@@ -48,7 +49,9 @@ def role(prefix, base):
     if prefix in ('SHO', 'RSHO') and base in ('GHS_1_premier', 'GHS_3_fond'):
         return 'opt'    # SHO et RGB + SHO : GHS en option, Statistical_Stretch au chemin principal (demande de l'utilisateur, 20 octobre 2026)
     if prefix in NB and base == 'GHS_2_contraste':
-        return 'core'   # SHO, RGB + SHO et HOO : chemin principal P4 (option le 22 octobre, de nouveau au chemin principal le 8 novembre 2026, demandes de l'utilisateur)
+        return 'opt'    # SHO, RGB + SHO et HOO : option entre GHS_1 et GHS_3 (14 novembre 2026 ; avant : chemin principal du 8 novembre)
+    if prefix in NB and base in ('Fond_desature', 'Fond_auto'):
+        return 'opt'    # narrowband : options P7 (demande de l'utilisateur, 14 novembre 2026)
     if prefix in ('SHO', 'RSHO') and base == 'Statistical_Stretch':
         return 'core'
     if prefix in NB and base in ('Voile_PS', 'Export_Photoshop', 'Lecture_Photoshop'):
@@ -147,9 +150,9 @@ WHEN = {
     'Finition_saturee': "à la place de C_Finition, couleurs trop ternes : même finition (masque, Courbes, LHE, LHE_fin, masque retiré) avec la saturation de l'ancienne version (0,65 au lieu de 0,58)",
     'Boost_finition_light': "un tout petit peu plus de couleur et de contraste après LHE_fin (version douce du Boost, rejouable)",
     'Boost_finition': "encore un peu plus de couleur et de contraste après LHE_fin (rejouable)",
-    'Couleur_selective_SHO': "après la palette (NBN_SHO), sur SHO_etire sans étoiles : ton profil Couleur sélective « SHO » de Photoshop (le plus fort : rouges et jaunes tirés vers l'or, verts -50/+50, cyans vers le bleu) ; un seul des trois profils",
-    'Couleur_selective_SHO_2': "après la palette (NBN_SHO), sur SHO_etire sans étoiles : ton profil « SHO_2 » (comme SHO, jaunes moitié moins tirés)",
-    'Couleur_selective_SHO_3': "après la palette (NBN_SHO), sur SHO_etire sans étoiles : ton profil « SHO_3 » (le plus doux : rouges inchangés, jaunes moitié moins)",
+    'Couleur_selective_SHO': "en P7, sur l'image sans étoiles revenue de Photoshop (tmp_PS) ou finie : ton profil Couleur sélective « SHO » de Photoshop (le plus fort : rouges et jaunes tirés vers l'or, verts -50/+50, cyans vers le bleu) ; un seul des trois profils",
+    'Couleur_selective_SHO_2': "en P7, sur l'image sans étoiles revenue de Photoshop (tmp_PS) ou finie : ton profil « SHO_2 » (comme SHO, jaunes moitié moins tirés)",
+    'Couleur_selective_SHO_3': "en P7, sur l'image sans étoiles revenue de Photoshop (tmp_PS) ou finie : ton profil « SHO_3 » (le plus doux : rouges inchangés, jaunes moitié moins)",
     'Magenta_moins': "zones magenta / violettes (R et B au-dessus de G) : sur l'image sans étoiles revenue de Photoshop (tmp_PS) ou finie, avant NXT_dernier et les étoiles ; retire le magenta du FOND du ciel seulement, sans toucher aux nébuleuses, aux bleus ni aux rouges",
     'Voile_PS': "tout à la fin, image finie, avant l'export : Correction du voile +20 façon Photoshop (fond un peu plus sombre, contraste et couleurs montés) ; modèle des brevets d'Adobe, calé sur une de tes images avant / après Photoshop",
     'Temperature_PS_5': "tout à la fin, image finie avec étoiles, avant l'export : Température +5 de Photoshop (Couleur et vibrance), reproduite d'après une mesure ; image plus chaude",
@@ -236,7 +239,7 @@ CONTAINERS = {
 # Textes d'option propres au narrowband
 WHEN_NB = {
     'NBN_SHO_doux': "à la place de NBN_SHO, à tester : réglages plus doux (Deep Space Place 2026 : Lightness Off, SCNR 0,20, OIII 1,2, SII 1,4) ; glisse sur SHO_etire après SHO_simple, compare avec NBN_SHO",
-    'C_Stat_canaux_rapide': "MODE RAPIDE, à la place de GHS_1 et GHS_2 sur les canaux (Statistical Stretch, médiane 0,25) : S, H, O linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut), double-clic puis Apply Global (pas en glissant) ; GHS_2_contraste compris ; ensuite la palette (GHS_3_fond en option)",
+    'C_Stat_canaux_rapide': "MODE RAPIDE, à la place de GHS_1 et GHS_2 sur les canaux (Statistical Stretch, médiane 0,25) : S, H, O linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut), double-clic puis Apply Global (pas en glissant) ; ensuite la palette (GHS_2_contraste et GHS_3_fond en option)",
     'NB_to_RGB_Stars': "à la place d'Etoiles_NB_auto, à la main dans la fenêtre du script SetiAstro (même mélange) ; LinearFit des étoiles sur H_stars avant",
     'Star_Stretch': "seulement si NB_to_RGB_Stars a été lancé sans Apply Star Stretch (ou pour HOO_stars, Stars_HOO) : sur l'image d'étoiles LINÉAIRE",
     'SCNR_etoiles_vert': "étoiles vertes : sur NBtoRGB_stars étirée (SHO sans RGB) ou RGB_stars, avant Etoiles_screen ; glisse sur n'importe quelle image",
@@ -289,6 +292,11 @@ for _p in ('SHO', 'RSHO'):
     WHEN_PREFIX[(_p, 'GHS_3_fond')] = "fond trop clair après Statistical_Stretch (0,25) ou les GHS : sur chaque canal, même SP = HP pour tous (0,22 après Statistical Stretch), fond vers 0,12–0,14, avant la palette"
 WHEN_PREFIX[('HOO', 'GHS_2_contraste')] = "plus de contraste : après GHS_1_premier, sur H puis O, même réglage pour les deux, avant GHS_3_fond"   # option (demande de l'utilisateur, 22 octobre 2026)
 WHEN_PREFIX[('RSHO', 'Etoiles_screen')] = "à la place d'Etoiles_reduites (chemin principal en RGB + SHO), si tu ne veux pas réduire les étoiles : recombinaison simple"   # 12 novembre 2026
+for _p in ('SHO', 'RSHO', 'HOO'):   # options P7 en narrowband (14 novembre 2026)
+    WHEN_PREFIX[(_p, 'Fond_desature')] = "teinte ou violet sur le fond du ciel : sur l'image sans étoiles, avant les étoiles ; dégradé autour de la nébuleuse"
+    WHEN_PREFIX[(_p, 'Fond_auto')] = "fond trop clair ou teinté (vrai fond de ciel visible) : sur l'image sans étoiles, avant les étoiles ; nébuleuse qui remplit le champ : à sauter"
+for _p in ('SHO', 'RSHO'):
+    WHEN_PREFIX[(_p, 'SCNR_SHO')] = "reste de vert sur l'image finie (P7) : sur l'image sans étoiles revenue de Photoshop (tmp_PS) ou finie, avant les étoiles"
 
 def when(prefix, base):
     if (prefix, base) in WHEN_PREFIX:

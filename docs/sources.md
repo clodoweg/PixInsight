@@ -1567,3 +1567,8 @@ Retour de l'utilisateur : « j'ai le probleme de script qui fait tout planté su
 
 Demande de l'utilisateur : « le script qui copy les tif vers le repertoire final (copie_ ...) doit au prealable renommer en .tiff en .tif avant la copie ».
 Fait : avant la copie, chaque .tiff de Fits (tous les sous-dossiers de chaque année) est renommé en .tif ; si un .tif du même nom existe déjà, le .tiff est laissé tel quel et signalé (« non renommé », compté en erreur) ; recap : « Renommés .tiff -> .tif ». Non testé sous Windows.
+
+### Narrowband : GHS_2 en option, Couleur sélective et SCNR en P7, Fond_desature et Fond_auto en options (14 novembre 2026)
+
+Demande de l'utilisateur : « pour les SHOs et HOO: Met E21_GHS_2_contraste en option (entre le 1 et le 3), et supprime le des rapides et turbo (si c'est le cas) ; Met les 3 couleurs selectives et le SCNR en P7 Options ; En P7 mets E28 et E29 en optios et met le VOile apres la lecture photoshop ».
+Fait (SHO sans RGB, RGB + SHO, HOO) : Opt_GHS_2_contraste entre Opt_GHS_1_premier et Opt_GHS_3_fond (HOO : GHS_1 et GHS_3 au chemin principal, GHS_2 en option) ; retiré de R_C_Stat_canaux_rapide et T_Turbo_palette ; Opt_Couleur_selective_SHO/_2/_3 et Opt_SCNR_SHO en options P7 (SHO, RGB + SHO) ; Fond_desature (E28) et Fond_auto (E29) en options P7 ; chemin principal P7 : Contraste_GHS, Export_Photoshop, Lecture_Photoshop, Voile_PS, NXT_dernier, Etoiles_screen / Etoiles_reduites, Export_TIFF. LRGB et LHaRGB non touchés.

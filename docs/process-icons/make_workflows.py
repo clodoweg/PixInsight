@@ -1379,7 +1379,8 @@ for _st, _v in ((rgbsho, 'S,H,O'), (sho, 'S,H,O'), (hoo, 'H,O')):
 for _st in (rgbsho, sho):
     # R_C_Stat_canaux_rapide (demande de l'utilisateur, 9 octobre 2026 : « fais aussi R_C_MAS_canaux_rapide avec StatStrech pour SHO sans et avec RGB »)
     # + GHS_2_contraste (E## du chemin principal) sur S, H, O par Lineaire_auto (demande de l'utilisateur, 8 novembre 2026)
-    insert_after(_st, 'C_MAS_canaux_rapide', [(cont('C_Stat_canaux_rapide', [script('Stat_canaux', ''), lineaire_rapide('GHS_2_contraste*>S,H,O')]), '')])
+    # GHS_2_contraste retiré du rapide (demande de l'utilisateur, 14 novembre 2026 : GHS_2 en option)
+    insert_after(_st, 'C_MAS_canaux_rapide', [(cont('C_Stat_canaux_rapide', [script('Stat_canaux', '')]), '')])
     insert_after(_st, 'NBN_SHO', [(cont('C_Palette_rapide', [lineaire_rapide('SHO_simple>H ; NBN_SHO*>SHO_etire')]), '')])   # S, H, O gardés ouverts (demande de l'utilisateur, 8 octobre 2026)
 insert_after(rgbsho, 'Fermer_RGB', [(cont('C_RGB_etoiles_rapide', [lineaire_rapide('MAS*>RGB ; SXT_RGB_etire>RGB'), script('SCNR_etoiles_vert', ''), fermer('Fermer_RGB', 'RGB')]), '')])
 # RGB + SHO, continuum (demande de l'utilisateur, 8 octobre 2026 : « il faut pouvoir gerer le continuum aussi » ; choix : nettoyer H, O, S par le RGB,
@@ -1542,7 +1543,7 @@ for _st, _v, _pal in ((rgbsho, 'S,H,O', 'SHO_simple>H ; NBN_SHO*>SHO_etire'), (s
                       (hoo, 'H,O', 'HOO_simple>H ; NBN_HOO*>HOO_etire')):
     _at = 'C_Stat_canaux_rapide' if _st is not hoo else 'C_MAS_canaux_rapide'
     # GHS_2_contraste sur les canaux entre Stat_canaux et la palette (demande de l'utilisateur, 8 novembre 2026)
-    insert_after(_st, _at, [(cont('Turbo_palette', [_stat_vues(_v), lineaire_rapide('GHS_2_contraste*>%s ; %s' % (_v, _pal))]), '')])
+    insert_after(_st, _at, [(cont('Turbo_palette', [_stat_vues(_v), lineaire_rapide(_pal)]), '')])   # sans GHS_2_contraste (14 novembre 2026)
 
 # SHO et RGB + SHO (demande de l'utilisateur, 20 octobre 2026 : « pour les SHO avec et sans RGB, mets le Stat Streh a la place du GHS (qui passe en option).
 # Passe aussi le GHS 3 en option ») : Statistical_Stretch au chemin principal, avant les GHS (options, rôles dans layout.role) ; HOO inchangé
@@ -1620,7 +1621,8 @@ for _st in (rgbsho, sho):
 # Export PhotoShop, Lecture Photoshop, NXT dernier, etoiles screen, export tiff ») : Fond_desature, Fond_auto, Voile_PS, Contraste_GHS,
 # Export_Photoshop, Lecture_Photoshop, NXT_dernier, Etoiles_screen, Export_TIFF ; Voile_PS et les deux Photoshop au chemin principal (layout.role)
 for _st in (rgbsho, sho, hoo):
-    _its = [pick(_st, b) for b in ('Voile_PS', 'Contraste_GHS', 'Export_Photoshop', 'Lecture_Photoshop', 'NXT_dernier', 'Etoiles_screen', 'Export_TIFF')]
+    # 14 novembre 2026 : Voile_PS après Lecture_Photoshop ; Fond_desature et Fond_auto en options (layout.role)
+    _its = [pick(_st, b) for b in ('Contraste_GHS', 'Export_Photoshop', 'Lecture_Photoshop', 'Voile_PS', 'NXT_dernier', 'Etoiles_screen', 'Export_TIFF')]
     for _it in _its:
         _st.remove(_it)
     insert_after(_st, 'Fond_auto', _its)
@@ -1631,11 +1633,17 @@ insert_before(rgbsho, 'Etoiles_screen', [_it])
 
 # Couleur sélective en tête des options P5 (demande de l'utilisateur, 12 novembre 2026 : « les couleurs selectives doivent passer dans
 # les P5 Options mais mets les en premiers ») ; Températures en P7
+# puis (14 novembre 2026) : les 3 Couleur sélective et SCNR_SHO en options P7, avant les Températures
 for _st in (rgbsho, sho):
-    _its = [pick(_st, n) for n in ('Couleur_selective_SHO', 'Couleur_selective_SHO_2', 'Couleur_selective_SHO_3')]
+    _its = [pick(_st, n) for n in ('Couleur_selective_SHO', 'Couleur_selective_SHO_2', 'Couleur_selective_SHO_3', 'SCNR_SHO')]
     for _it in _its:
         _st.remove(_it)
-    insert_after(_st, 'NBN_SHO', _its)
+    insert_before(_st, 'Temperature_PS_5', _its)
+# GHS_2_contraste en option entre GHS_1_premier et GHS_3_fond (14 novembre 2026)
+for _st in (rgbsho, sho, hoo):
+    _it = pick(_st, 'GHS_2_contraste')
+    _st.remove(_it)
+    insert_after(_st, 'GHS_1_premier', [_it])
 
 # P7 rapide supprimé en narrowband (demande de l'utilisateur, 12 novembre 2026 : « supprime le P7 rapide pour les SHOs, HOO, .. »)
 for _st in (rgbsho, sho, hoo):
