@@ -1572,3 +1572,7 @@ Fait : avant la copie, chaque .tiff de Fits (tous les sous-dossiers de chaque an
 
 Demande de l'utilisateur : « pour les SHOs et HOO: Met E21_GHS_2_contraste en option (entre le 1 et le 3), et supprime le des rapides et turbo (si c'est le cas) ; Met les 3 couleurs selectives et le SCNR en P7 Options ; En P7 mets E28 et E29 en optios et met le VOile apres la lecture photoshop ».
 Fait (SHO sans RGB, RGB + SHO, HOO) : Opt_GHS_2_contraste entre Opt_GHS_1_premier et Opt_GHS_3_fond (HOO : GHS_1 et GHS_3 au chemin principal, GHS_2 en option) ; retiré de R_C_Stat_canaux_rapide et T_Turbo_palette ; Opt_Couleur_selective_SHO/_2/_3 et Opt_SCNR_SHO en options P7 (SHO, RGB + SHO) ; Fond_desature (E28) et Fond_auto (E29) en options P7 ; chemin principal P7 : Contraste_GHS, Export_Photoshop, Lecture_Photoshop, Voile_PS, NXT_dernier, Etoiles_screen / Etoiles_reduites, Export_TIFF. LRGB et LHaRGB non touchés.
+
+### T_Turbo_mega (14 novembre 2026)
+
+Demande de l'utilisateur : « fais moi un mega turbo qui va de P1 a P6 pour les shos, hoo ». Fait : T_Turbo_mega (colonne P1, groupe turbo) en RGB + SHO, SHO sans RGB et HOO = étapes de T_Turbo_debut puis de T_Turbo_palette (P1 à P5) ; P6 non enchaînable (R_C_Fin_rapide doit être glissé sur l'image créée par la palette et contient des scripts que Lineaire_auto ne peut pas lancer, voir 8 novembre) : à glisser ensuite. XML vérifié (ElementTree). Non testé dans PixInsight.

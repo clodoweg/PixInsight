@@ -1545,6 +1545,466 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          <parameter id="information"></parameter>
       </instance>
    </instance>
+   <instance class="ProcessContainer" id="T_Turbo_mega_instance">
+      <description>MODE TURBO, phases 1 à 5 en un clic (T_Turbo_debut puis T_Turbo_palette) : masters seuls ouverts, Conteneurs du workflow chargé, double-clic puis Apply Global ; ensuite GLISSE R_C_Fin_rapide (P6) sur l'image créée par la palette.&#10;&#10;LANCEMENT : masters seuls ouverts, double-clic puis Apply Global (rond bleu) ; pas en glissant (ImageSolver échoue sur une image en cours de traitement).&#10;&#10;PRÉRÉGLÉ : conteneur, en une fois : toutes les étapes de T_Turbo_debut (préparation, ImageSolver, GradientCorrection, phase linéaire, extraction des étoiles et des canaux) puis de T_Turbo_palette (Statistical Stretch des canaux, combinaison et NarrowbandNormalization) ; résultat : SHO_etire (HOO : HOO_etire) étirée sans étoiles, étoiles prêtes.&#10;&#10;À RÉGLER : masters seuls ouverts (enregistrés : ils sont fermés sans enregistrer) ; Conteneurs du workflow chargé ; double-clic puis Apply Global (pas en glissant) ; ENSUITE glisse R_C_Fin_rapide (P6) sur l'image créée (il ne peut pas être enchaîné : il doit être glissé), puis la phase 7.&#10;&#10;SI :&#10;- une étape échoue -&gt; la console dit laquelle ; lance T_Turbo_debut puis T_Turbo_palette séparément pour voir où&#10;- gradient mal retiré -&gt; T_Turbo_debut_graxpert puis T_Turbo_palette à la place</description>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Renommer_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="2">
+            <tr>
+               <td id="id">fermerAutocrop</td>
+               <td id="value">true</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/LPS_UnClic.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="16">
+            <tr>
+               <td id="id">correctColumns</td>
+               <td id="value">false</td>
+            </tr>
+            <tr>
+               <td id="id">correctEntireImage</td>
+               <td id="value">true</td>
+            </tr>
+            <tr>
+               <td id="id">defectTableFilePath</td>
+               <td id="value"></td>
+            </tr>
+            <tr>
+               <td id="id">layersToRemove</td>
+               <td id="value">9</td>
+            </tr>
+            <tr>
+               <td id="id">rejectionLimit</td>
+               <td id="value">3</td>
+            </tr>
+            <tr>
+               <td id="id">globalRejection</td>
+               <td id="value">true</td>
+            </tr>
+            <tr>
+               <td id="id">globalRejectionLimit</td>
+               <td id="value">5</td>
+            </tr>
+            <tr>
+               <td id="id">autoBackground</td>
+               <td id="value">true</td>
+            </tr>
+            <tr>
+               <td id="id">backgroundReferenceLeft</td>
+               <td id="value">0</td>
+            </tr>
+            <tr>
+               <td id="id">backgroundReferenceTop</td>
+               <td id="value">0</td>
+            </tr>
+            <tr>
+               <td id="id">backgroundReferenceWidth</td>
+               <td id="value">512</td>
+            </tr>
+            <tr>
+               <td id="id">backgroundReferenceHeight</td>
+               <td id="value">512</td>
+            </tr>
+            <tr>
+               <td id="id">allOpenImages</td>
+               <td id="value">true</td>
+            </tr>
+            <tr>
+               <td id="id">closeWorkingImages</td>
+               <td id="value">true</td>
+            </tr>
+            <tr>
+               <td id="id">vues</td>
+               <td id="value">L,R,G,B</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/GC_Solver_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="51">
+            <tr>
+               <td id="id">gradient</td>
+               <td id="value">false</td>
+            </tr>
+            <tr>
+               <td id="id">solve</td>
+               <td id="value">true</td>
+            </tr>
+            <tr>
+               <td id="id">solveTout</td>
+               <td id="value">false</td>
+            </tr>
+            <tr>
+               <td id="id">defaultDate</td>
+               <td id="value">2020-01-01T00:00:00</td>
+            </tr>
+            <tr>
+               <td id="id">metadata_focal</td>
+               <td id="value">2939</td>
+            </tr>
+            <tr>
+               <td id="id">metadata_useFocal</td>
+               <td id="value">true</td>
+            </tr>
+            <tr>
+               <td id="id">metadata_xpixsz</td>
+               <td id="value">3.76</td>
+            </tr>
+            <tr>
+               <td id="id">metadata_resolution</td>
+               <td id="value">0.00007330116739335556</td>
+            </tr>
+            <tr>
+               <td id="id">metadata_referenceSystem</td>
+               <td id="value">ICRS</td>
+            </tr>
+            <tr>
+               <td id="id">metadata_topocentric</td>
+               <td id="value">false</td>
+            </tr>
+            <tr>
+               <td id="id">solver_version</td>
+               <td id="value">6.4.2</td>
+            </tr>
+            <tr>
+               <td id="id">solver_magnitude</td>
+               <td id="value">15</td>
+            </tr>
+            <tr>
+               <td id="id">solver_autoMagnitude</td>
+               <td id="value">false</td>
+            </tr>
+            <tr>
+               <td id="id">solver_databasePath</td>
+               <td id="value">undefined</td>
+            </tr>
+            <tr>
+               <td id="id">solver_generateErrorImg</td>
+               <td id="value">false</td>
+            </tr>
+            <tr>
+               <td id="id">solver_structureLayers</td>
+               <td id="value">5</td>
+            </tr>
+            <tr>
+               <td id="id">solver_minStructureSize</td>
+               <td id="value">0</td>
+            </tr>
+            <tr>
+               <td id="id">solver_hotPixelFilterRadius</td>
+               <td id="value">1</td>
+            </tr>
+            <tr>
+               <td id="id">solver_noiseReductionFilterRadius</td>
+               <td id="value">0</td>
+            </tr>
+            <tr>
+               <td id="id">solver_sensitivity</td>
+               <td id="value">0.5</td>
+            </tr>
+            <tr>
+               <td id="id">solver_peakResponse</td>
+               <td id="value">0.5</td>
+            </tr>
+            <tr>
+               <td id="id">solver_brightThreshold</td>
+               <td id="value">3</td>
+            </tr>
+            <tr>
+               <td id="id">solver_maxStarDistortion</td>
+               <td id="value">0.6</td>
+            </tr>
+            <tr>
+               <td id="id">solver_autoPSF</td>
+               <td id="value">false</td>
+            </tr>
+            <tr>
+               <td id="id">solver_catalogMode</td>
+               <td id="value">3</td>
+            </tr>
+            <tr>
+               <td id="id">solver_vizierServer</td>
+               <td id="value">https://vizier.idia.ac.za/</td>
+            </tr>
+            <tr>
+               <td id="id">solver_showStars</td>
+               <td id="value">false</td>
+            </tr>
+            <tr>
+               <td id="id">solver_showStarMatches</td>
+               <td id="value">false</td>
+            </tr>
+            <tr>
+               <td id="id">solver_showSimplifiedSurfaces</td>
+               <td id="value">false</td>
+            </tr>
+            <tr>
+               <td id="id">solver_showDistortion</td>
+               <td id="value">false</td>
+            </tr>
+            <tr>
+               <td id="id">solver_generateDistortModel</td>
+               <td id="value">false</td>
+            </tr>
+            <tr>
+               <td id="id">solver_catalog</td>
+               <td id="value">GaiaDR3SP_XPSD</td>
+            </tr>
+            <tr>
+               <td id="id">solver_distortionCorrection</td>
+               <td id="value">true</td>
+            </tr>
+            <tr>
+               <td id="id">solver_rbfType</td>
+               <td id="value">101</td>
+            </tr>
+            <tr>
+               <td id="id">solver_maxSplinePoints</td>
+               <td id="value">4000</td>
+            </tr>
+            <tr>
+               <td id="id">solver_splineOrder</td>
+               <td id="value">2</td>
+            </tr>
+            <tr>
+               <td id="id">solver_splineSmoothing</td>
+               <td id="value">0.005</td>
+            </tr>
+            <tr>
+               <td id="id">solver_enableSimplifier</td>
+               <td id="value">true</td>
+            </tr>
+            <tr>
+               <td id="id">solver_simplifierRejectFraction</td>
+               <td id="value">0.1</td>
+            </tr>
+            <tr>
+               <td id="id">solver_outlierDetectionRadius</td>
+               <td id="value">160</td>
+            </tr>
+            <tr>
+               <td id="id">solver_outlierDetectionMinThreshold</td>
+               <td id="value">4</td>
+            </tr>
+            <tr>
+               <td id="id">solver_outlierDetectionSigma</td>
+               <td id="value">5</td>
+            </tr>
+            <tr>
+               <td id="id">solver_useActive</td>
+               <td id="value">true</td>
+            </tr>
+            <tr>
+               <td id="id">solver_outSuffix</td>
+               <td id="value">_ast</td>
+            </tr>
+            <tr>
+               <td id="id">solver_projection</td>
+               <td id="value">0</td>
+            </tr>
+            <tr>
+               <td id="id">solver_projectionOriginMode</td>
+               <td id="value">0</td>
+            </tr>
+            <tr>
+               <td id="id">solver_restrictToHQStars</td>
+               <td id="value">false</td>
+            </tr>
+            <tr>
+               <td id="id">solver_intersectionMode</td>
+               <td id="value">1</td>
+            </tr>
+            <tr>
+               <td id="id">solver_tryApparentCoordinates</td>
+               <td id="value">true</td>
+            </tr>
+            <tr>
+               <td id="id">solver_tryExhaustiveInitialAlignment</td>
+               <td id="value">false</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Gradient_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="1">
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="2">
+            <tr>
+               <td id="id">etapes</td>
+               <td id="value">Combinaison_HOO&gt;H</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="2">
+            <tr>
+               <td id="id">views</td>
+               <td id="value">H, O</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="2">
+            <tr>
+               <td id="id">etapes</td>
+               <td id="value">C_HOO_lineaire&gt;HOO ; C_Extraction_HOO&gt;HOO ; C_Extraction_etoiles&gt;HOO_stars</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="2">
+            <tr>
+               <td id="id">views</td>
+               <td id="value">HOO</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Etoiles_NB_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="11">
+            <tr>
+               <td id="id">h</td>
+               <td id="value">H_stars</td>
+            </tr>
+            <tr>
+               <td id="id">o</td>
+               <td id="value">O_stars</td>
+            </tr>
+            <tr>
+               <td id="id">s</td>
+               <td id="value"></td>
+            </tr>
+            <tr>
+               <td id="id">ratio</td>
+               <td id="value">0.30</td>
+            </tr>
+            <tr>
+               <td id="id">linearfit</td>
+               <td id="value">true</td>
+            </tr>
+            <tr>
+               <td id="id">stretch</td>
+               <td id="value">5.0</td>
+            </tr>
+            <tr>
+               <td id="id">boost</td>
+               <td id="value">1.00</td>
+            </tr>
+            <tr>
+               <td id="id">scnr</td>
+               <td id="value">false</td>
+            </tr>
+            <tr>
+               <td id="id">nom</td>
+               <td id="value">NBtoRGB_stars</td>
+            </tr>
+            <tr>
+               <td id="id">fermer</td>
+               <td id="value">true</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Stat_canaux.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="4">
+            <tr>
+               <td id="id">vues</td>
+               <td id="value">H,O</td>
+            </tr>
+            <tr>
+               <td id="id">cible</td>
+               <td id="value">0.25</td>
+            </tr>
+            <tr>
+               <td id="id">sigma</td>
+               <td id="value">5.0</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="2">
+            <tr>
+               <td id="id">etapes</td>
+               <td id="value">HOO_simple&gt;H ; NBN_HOO*&gt;HOO_etire</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+   </instance>
    <instance class="NoOperation" version="256" id="P2_Gradient_instance">
       <description>PHASE 2 — Gradient : image linéaire : retrait du gradient. Colonne de repère, sans effet.</description>
    </instance>
@@ -6372,6 +6832,7 @@ max($T,f1)</parameter>
    <icon id="P1_turbo" instance="P1_turbo_instance" xpos="30" ypos="420" workspace="Workspace01"/>
    <icon id="T_Turbo_debut" instance="T_Turbo_debut_instance" xpos="30" ypos="454" workspace="Workspace01"/>
    <icon id="T_Turbo_debut_graxpert" instance="T_Turbo_debut_graxpert_instance" xpos="30" ypos="484" workspace="Workspace01"/>
+   <icon id="T_Turbo_mega" instance="T_Turbo_mega_instance" xpos="30" ypos="514" workspace="Workspace01"/>
    <icon id="P2_Gradient" instance="P2_Gradient_instance" xpos="243" ypos="20" workspace="Workspace01"/>
    <icon id="E03_ImageSolver" instance="E03_ImageSolver_instance" xpos="243" ypos="64" workspace="Workspace01"/>
    <icon id="E04_SPFC_H" instance="E04_SPFC_H_instance" xpos="243" ypos="94" workspace="Workspace01"/>
