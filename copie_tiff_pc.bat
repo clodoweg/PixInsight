@@ -3,6 +3,8 @@ rem Copie tous les .tif (et les anciens .tiff) de Fits\<annee>\<cible>\ vers Wor
 rem Ensuite le .tiff d'origine est SUPPRIME de Fits, seulement si la copie existe bien dans Works\Astro (copie, remplace ou deja la).
 rem Un fichier qui REMPLACERAIT un fichier deja dans Works\Astro n'est pas copie tout de suite : a la fin, une question O/N par fichier
 rem (O = remplace puis original supprime de Fits ; N = rien ne change, original garde dans Fits). Demande de l'utilisateur, 6 novembre 2026.
+rem D'abord, dans Fits, chaque .tiff est renomme en .tif (sauf si un .tif du meme nom existe deja : il est alors laisse tel quel,
+rem signale dans le recap). Demande de l'utilisateur, 14 novembre 2026.
 chcp 65001 >nul
 setlocal
 
@@ -17,6 +19,7 @@ set /a INCHANGES=0
 set /a ERREURS=0
 set /a SUPPRIMES=0
 set /a REFUSES=0
+set /a RENOMMES=0
 if exist "%LOG%" del "%LOG%"
 if exist "%ATT%" del "%ATT%"
 
@@ -26,6 +29,8 @@ if not exist "%SRC%\" (
   exit /b 1
 )
 
+echo Renommage des .tiff en .tif dans Fits...
+for /d %%Y in ("%SRC%\*") do call :renommer_annee "%%Y"
 echo Copie des .tif / .tiff en cours...
 echo.
 
@@ -44,6 +49,7 @@ if exist "%ATT%" (
 echo ============ RECAP ============
 if exist "%LOG%" (type "%LOG%") else (echo Aucun fichier copié.)
 echo -------------------------------
+echo Renommés .tiff -^> .tif : %RENOMMES%
 echo Nouveaux : %NOUVEAUX%
 echo Remplacés : %REMPLACES%
 echo Remplacements refusés (gardés dans Fits) : %REFUSES%
@@ -51,6 +57,30 @@ echo Inchangés (non recopiés) : %INCHANGES%
 echo Erreurs : %ERREURS%
 echo Supprimés de Fits : %SUPPRIMES%
 echo ===============================
+exit /b 0
+
+:renommer_annee
+rem %1 = sous-dossier de Fits (annee) : chaque .tiff de ses sous-dossiers devient .tif
+for /r "%~1" %%F in (*.tiff) do call :renommer "%%F"
+exit /b 0
+
+:renommer
+rem %1 = fichier ; seulement la vraie extension .tiff (le motif *.tiff peut aussi trouver d'autres noms)
+if /i not "%~x1"==".tiff" exit /b 0
+if not exist "%~f1" exit /b 0
+if exist "%~dpn1.tif" (
+  set /a ERREURS+=1
+  echo [non renommé] %~nx1 : %~n1.tif existe déjà dans %~dp1 >> "%LOG%"
+  exit /b 0
+)
+ren "%~f1" "%~n1.tif" >nul 2>&1
+if exist "%~dpn1.tif" (
+  set /a RENOMMES+=1
+  echo [renommé]  %~nx1 -^> %~n1.tif   ^(%~dp1^) >> "%LOG%"
+) else (
+  set /a ERREURS+=1
+  echo [ERREUR]   %~nx1 : renommage impossible dans %~dp1 >> "%LOG%"
+)
 exit /b 0
 
 :annee

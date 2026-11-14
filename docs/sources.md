@@ -1562,3 +1562,8 @@ Puis : « ca peut le faire que sur le fond du ciel (noir) et pas sur les zones d
 ### Fermer_tout et Export_TIFF sans fenêtre (13 novembre 2026)
 
 Retour de l'utilisateur : « j'ai le probleme de script qui fait tout planté sur le fermert tout et sur le exporter tiff ». Fait : dialogue = false dans Opt_Fermer_tout et Export_TIFF (5 workflows). Cause de la fenêtre vide toujours non établie.
+
+### copie_tiff_pc.bat : .tiff renommés en .tif avant la copie (14 novembre 2026)
+
+Demande de l'utilisateur : « le script qui copy les tif vers le repertoire final (copie_ ...) doit au prealable renommer en .tiff en .tif avant la copie ».
+Fait : avant la copie, chaque .tiff de Fits (tous les sous-dossiers de chaque année) est renommé en .tif ; si un .tif du même nom existe déjà, le .tiff est laissé tel quel et signalé (« non renommé », compté en erreur) ; recap : « Renommés .tiff -> .tif ». Non testé sous Windows.
