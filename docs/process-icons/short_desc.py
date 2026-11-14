@@ -457,6 +457,6 @@ for _p, _img in (('SHO', 'SHO_etire'), ('RSHO', 'SHO_etire'), ('HOO', 'HOO_etire
     for _b in ('Turbo_debut', 'Turbo_debut_graxpert'):
         _k = (_p, _b) if (_p, _b) in V else None
         _t = V[_k] if _k else S[_b]
-        V[(_p, _b)] = (_t[0] + " ; PUIS les étapes de T_Turbo_palette : Statistical Stretch des canaux, combinaison et NarrowbandNormalization (phases 4 et 5) ; résultat : " + _img,
+        V[(_p, _b)] = (_t[0] + " ; PUIS phases 4 et 5 : Statistical Stretch des canaux (Stat_canaux), combinaison (SHO_simple / HOO_simple) et NarrowbandNormalization ; résultat : " + _img,
                        "masters seuls ouverts (enregistrés : ils sont fermés sans enregistrer) ; Conteneurs du workflow chargé ; double-clic puis Apply Global (pas en glissant) ; ENSUITE glisse R_C_Fin_rapide (P6) sur " + _img + ", puis la phase 7",
                        list(_t[2]) + ["s'arrêter à la phase 3 -> R_C_Preparation_rapide, R_Gradient_auto_rapide et R_C_Lineaire_rapide un par un"])

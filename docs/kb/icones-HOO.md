@@ -173,7 +173,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > LANCEMENT : masters seuls ouverts, double-clic puis Apply Global (rond bleu) ; pas en glissant (ImageSolver échoue sur une image en cours de traitement).
 > 
-> PRÉRÉGLÉ : conteneur, en une fois : Renommer_auto, LinearPatternSubtraction, Solver_auto (images couleur seulement : aucune ici, = R_C_Preparation_rapide) ; Gradient_auto (= R_Gradient_auto_rapide) ; Lineaire_auto Combinaison_HOO, masters H, O fermés, Lineaire_auto C_HOO_lineaire (BXT, SXT, NXT_NB) et C_Extraction_HOO et C_Extraction_etoiles, HOO fermée, Etoiles_NB_auto (= R_C_Lineaire_rapide) ; résultat : H, O sans étoiles, linéaires, NBtoRGB_stars (étirée) et HOO_stars ; PUIS les étapes de T_Turbo_palette : Statistical Stretch des canaux, combinaison et NarrowbandNormalization (phases 4 et 5) ; résultat : HOO_etire.
+> PRÉRÉGLÉ : conteneur, en une fois : Renommer_auto, LinearPatternSubtraction, Solver_auto (images couleur seulement : aucune ici, = R_C_Preparation_rapide) ; Gradient_auto (= R_Gradient_auto_rapide) ; Lineaire_auto Combinaison_HOO, masters H, O fermés, Lineaire_auto C_HOO_lineaire (BXT, SXT, NXT_NB) et C_Extraction_HOO et C_Extraction_etoiles, HOO fermée, Etoiles_NB_auto (= R_C_Lineaire_rapide) ; résultat : H, O sans étoiles, linéaires, NBtoRGB_stars (étirée) et HOO_stars ; PUIS phases 4 et 5 : Statistical Stretch des canaux (Stat_canaux), combinaison (SHO_simple / HOO_simple) et NarrowbandNormalization ; résultat : HOO_etire.
 > 
 > À RÉGLER : masters seuls ouverts (enregistrés : ils sont fermés sans enregistrer) ; Conteneurs du workflow chargé ; double-clic puis Apply Global (pas en glissant) ; ENSUITE glisse R_C_Fin_rapide (P6) sur HOO_etire, puis la phase 7.
 > 
@@ -223,7 +223,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > LANCEMENT : masters seuls ouverts, double-clic puis Apply Global (rond bleu) ; pas en glissant (ImageSolver échoue sur une image en cours de traitement).
 > 
-> PRÉRÉGLÉ : conteneur, en une fois : comme T_Turbo_debut, mais l'étape de gradient est GraXpert (Gradient_auto.js, outil = graxpert) au lieu de GradientCorrection ; PUIS les étapes de T_Turbo_palette : Statistical Stretch des canaux, combinaison et NarrowbandNormalization (phases 4 et 5) ; résultat : HOO_etire.
+> PRÉRÉGLÉ : conteneur, en une fois : comme T_Turbo_debut, mais l'étape de gradient est GraXpert (Gradient_auto.js, outil = graxpert) au lieu de GradientCorrection ; PUIS phases 4 et 5 : Statistical Stretch des canaux (Stat_canaux), combinaison (SHO_simple / HOO_simple) et NarrowbandNormalization ; résultat : HOO_etire.
 > 
 > À RÉGLER : masters seuls ouverts (enregistrés : ils sont fermés sans enregistrer) ; Conteneurs du workflow chargé ; double-clic puis Apply Global (pas en glissant) ; ENSUITE glisse R_C_Fin_rapide (P6) sur HOO_etire, puis la phase 7.
 > 
@@ -668,28 +668,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > SI :
 > - un canal mal étiré -> Ctrl+Z sur ce canal, puis GHS à la main
 > - réglage MAS à changer -> double-clic sur Opt_MAS_canaux
-
-### P4_turbo
-
-#### T_Turbo_palette — ProcessContainer
-   1. Script
-      script `$PXI_SRCDIR/scripts/clodoweg/Stat_canaux.js`
-      paramètres : `vues=H,O`, `cible=0.25`, `sigma=5.0`, `dialogue=false`
-   2. Script
-      script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
-      paramètres : `etapes=HOO_simple>H ; NBN_HOO*>HOO_etire`, `dialogue=false`
-
-> MODE TURBO, à la place de R_C_Stat_canaux_rapide et R_C_Palette_rapide : canaux linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut), double-clic puis Apply Global ; ensuite GLISSE R_C_Fin_rapide sur l'image créée.
-> 
-> LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).
-> 
-> PRÉRÉGLÉ : conteneur de scripts, en une fois : Stat_canaux (Statistical Stretch, médiane 0,25, sur H et O, à la place des GHS) puis Lineaire_auto : HOO_simple (H, O -> HOO_etire) et NBN_HOO (palette HOO, SCNR 0) sur HOO_etire ; H et O restent ouverts.
-> 
-> À RÉGLER : H et O linéaires, sans étoiles, ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut) ; Conteneurs-HOO chargé ; double-clic puis Apply Global (pas en glissant) ; ENSUITE glisse R_C_Fin_rapide sur HOO_etire.
-> 
-> SI :
-> - une étape échoue -> la console dit laquelle ; fais le chemin principal à partir de cette étape
-> - fond trop clair -> GHS_3_fond (option) sur H et O avant HOO_simple, puis relance la palette à la main
 
 ## P5_Couleur
 

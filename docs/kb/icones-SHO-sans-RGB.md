@@ -154,7 +154,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > LANCEMENT : masters seuls ouverts, double-clic puis Apply Global (rond bleu) ; pas en glissant (ImageSolver échoue sur une image en cours de traitement).
 > 
-> PRÉRÉGLÉ : conteneur, en une fois : Renommer_auto, LinearPatternSubtraction, Solver_auto (images couleur seulement : aucune ici, = R_C_Preparation_rapide) ; Gradient_auto (GradientCorrection sur toutes les images, = R_Gradient_auto_rapide) ; Lineaire_auto Combinaison_SHO, masters S, H, O fermés, Lineaire_auto C_SHO_lineaire (BXT, SXT, NXT_NB), C_Extraction_SHO et C_Extraction_etoiles, SHO fermée, Etoiles_NB_auto (= R_C_Lineaire_rapide) ; résultat : S, H, O sans étoiles, linéaires, NBtoRGB_stars (étirée) et SHO_stars ; PUIS les étapes de T_Turbo_palette : Statistical Stretch des canaux, combinaison et NarrowbandNormalization (phases 4 et 5) ; résultat : SHO_etire.
+> PRÉRÉGLÉ : conteneur, en une fois : Renommer_auto, LinearPatternSubtraction, Solver_auto (images couleur seulement : aucune ici, = R_C_Preparation_rapide) ; Gradient_auto (GradientCorrection sur toutes les images, = R_Gradient_auto_rapide) ; Lineaire_auto Combinaison_SHO, masters S, H, O fermés, Lineaire_auto C_SHO_lineaire (BXT, SXT, NXT_NB), C_Extraction_SHO et C_Extraction_etoiles, SHO fermée, Etoiles_NB_auto (= R_C_Lineaire_rapide) ; résultat : S, H, O sans étoiles, linéaires, NBtoRGB_stars (étirée) et SHO_stars ; PUIS phases 4 et 5 : Statistical Stretch des canaux (Stat_canaux), combinaison (SHO_simple / HOO_simple) et NarrowbandNormalization ; résultat : SHO_etire.
 > 
 > À RÉGLER : masters seuls ouverts (enregistrés : ils sont fermés sans enregistrer) ; Conteneurs du workflow chargé ; double-clic puis Apply Global (pas en glissant) ; ENSUITE glisse R_C_Fin_rapide (P6) sur SHO_etire, puis la phase 7.
 > 
@@ -203,7 +203,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > LANCEMENT : masters seuls ouverts, double-clic puis Apply Global (rond bleu) ; pas en glissant (ImageSolver échoue sur une image en cours de traitement).
 > 
-> PRÉRÉGLÉ : conteneur, en une fois : comme T_Turbo_debut, mais l'étape de gradient est GraXpert (Gradient_auto.js, outil = graxpert) au lieu de GradientCorrection ; PUIS les étapes de T_Turbo_palette : Statistical Stretch des canaux, combinaison et NarrowbandNormalization (phases 4 et 5) ; résultat : SHO_etire.
+> PRÉRÉGLÉ : conteneur, en une fois : comme T_Turbo_debut, mais l'étape de gradient est GraXpert (Gradient_auto.js, outil = graxpert) au lieu de GradientCorrection ; PUIS phases 4 et 5 : Statistical Stretch des canaux (Stat_canaux), combinaison (SHO_simple / HOO_simple) et NarrowbandNormalization ; résultat : SHO_etire.
 > 
 > À RÉGLER : masters seuls ouverts (enregistrés : ils sont fermés sans enregistrer) ; Conteneurs du workflow chargé ; double-clic puis Apply Global (pas en glissant) ; ENSUITE glisse R_C_Fin_rapide (P6) sur SHO_etire, puis la phase 7.
 > 
@@ -672,28 +672,6 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - fond trop clair -> Target Median 0,20
 > - un canal mal étiré -> Ctrl+Z sur ce canal, puis Statistical_Stretch à la main
 > - pas assez de contraste -> Opt_GHS_2_contraste (P4) ensuite sur S, H, O
-
-### P4_turbo
-
-#### T_Turbo_palette — ProcessContainer
-   1. Script
-      script `$PXI_SRCDIR/scripts/clodoweg/Stat_canaux.js`
-      paramètres : `vues=S,H,O`, `cible=0.25`, `sigma=5.0`, `dialogue=false`
-   2. Script
-      script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
-      paramètres : `etapes=SHO_simple>H ; NBN_SHO*>SHO_etire`, `dialogue=false`
-
-> MODE TURBO, à la place de R_C_Stat_canaux_rapide et R_C_Palette_rapide : canaux linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut), double-clic puis Apply Global ; ensuite GLISSE R_C_Fin_rapide sur l'image créée.
-> 
-> LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).
-> 
-> PRÉRÉGLÉ : conteneur de scripts, en une fois : Stat_canaux (Statistical Stretch, médiane 0,25, sur S, H, O) puis Lineaire_auto : SHO_simple (S, H, O -> SHO_etire) et NBN_SHO (palette SHO, Lightness Ha, SCNR 0, O3 et S2 boost 1) sur SHO_etire ; S, H, O restent ouverts.
-> 
-> À RÉGLER : S, H, O linéaires, sans étoiles, ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut) ; Conteneurs du workflow chargé ; double-clic puis Apply Global (pas en glissant) ; ENSUITE glisse R_C_Fin_rapide sur SHO_etire (il ne peut pas être enchaîné : il doit être glissé).
-> 
-> SI :
-> - une étape échoue -> la console dit laquelle ; lance R_C_Stat_canaux_rapide puis R_C_Palette_rapide un par un
-> - palette trop verte -> SCNR dans l'icône NBN_SHO (P5), puis relance
 
 ## P5_Couleur
 

@@ -284,8 +284,8 @@ for _p in ('RSHO', 'SHO'):
 RAPIDE_NOTE['RSHO'][4] = "Statistical_Stretch sur S, H, O (chemin principal, Target Median 0,25 ; GHS en option)"
 # P4 (8 novembre 2026) : R_C_Stat_canaux_rapide (SHO, RGB + SHO) ; T_Turbo_palette (3 workflows) = Stat_canaux + palette, puis R_C_Fin_rapide glissé
 for _p in ('RSHO', 'SHO'):
-    RAPIDE_NOTE[_p][4] = "R_C_Stat_canaux_rapide (double-clic puis Apply Global) à la place de Statistical_Stretch sur S, H, O ; ou T_Turbo_palette (P4 turbo) : Statistical Stretch puis la palette (SHO_simple, NBN_SHO) en une fois, ensuite R_C_Fin_rapide glissé sur SHO_etire"
-RAPIDE_NOTE['HOO'][4] = "T_Turbo_palette (P4 turbo, double-clic puis Apply Global) : Statistical Stretch sur H et O (à la place des GHS) puis HOO_simple et NBN_HOO en une fois ; ensuite R_C_Fin_rapide glissé sur HOO_etire"
+    RAPIDE_NOTE[_p][4] = "R_C_Stat_canaux_rapide (double-clic puis Apply Global) à la place de Statistical_Stretch sur S, H, O ; les turbos de la colonne P1 font aussi les phases 4 et 5"
+RAPIDE_NOTE['HOO'][4] = "pas de rapide en phase 4 : chemin principal ; les turbos de la colonne P1 font aussi les phases 4 et 5 (Statistical Stretch sur H et O, HOO_simple, NBN_HOO)"
 RAPIDE_NOTE['RSHO'][3] += " ; puis R_C_RGB_etoiles_rapide (double-clic puis Apply Global) à la place de MAS, SXT_RGB_etire, SCNR_etoiles_vert et Fermer_RGB : crée RGB_stars, ferme le RGB sans étoiles"
 
 def layout_all(main, opts, rapide=None, notes=None, turbo=None):
@@ -1664,6 +1664,8 @@ for _st in (rgbsho, sho, hoo):
     for _b in ('Turbo_debut', 'Turbo_debut_graxpert'):
         _i = next(k for k, (it, d) in enumerate(_st) if it[0] == _b)
         _st[_i] = ((_b, _merge_cont('__ID__', _st[_i][0][1], _pal)), _st[_i][1])
+    # T_Turbo_palette supprimé (demande de l'utilisateur, 14 novembre 2026) : ses étapes restent dans les turbos du début
+    _st[:] = [x for x in _st if x[0][0] != 'Turbo_palette']
 
 # P7 rapide supprimé en narrowband (demande de l'utilisateur, 12 novembre 2026 : « supprime le P7 rapide pour les SHOs, HOO, .. »)
 for _st in (rgbsho, sho, hoo):
