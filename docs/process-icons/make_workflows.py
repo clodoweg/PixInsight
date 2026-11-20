@@ -1707,6 +1707,14 @@ for _st in (lhargb, lrgb):
         if _x != _it[1]:
             _st[_k] = ((_it[0], _x), _d)
 
+# recherche aveugle aussi en narrowband (demande de l'utilisateur, 20 novembre 2026 : « met aussi dans les SHO, HOO, etc le nouveau
+# script de Blind Solve ») : seulement solver_blindSolver = 1 (catalogue, magnitude et focale du narrowband inchangés)
+for _st in (rgbsho, sho, hoo):
+    for _k, (_it, _d) in enumerate(_st):
+        _x = _ajoute_blind(_it[1])
+        if _x != _it[1]:
+            _st[_k] = ((_it[0], _x), _d)
+
 # P7 rapide supprimé en narrowband (demande de l'utilisateur, 12 novembre 2026 : « supprime le P7 rapide pour les SHOs, HOO, .. »)
 for _st in (rgbsho, sho, hoo):
     _st[:] = [x for x in _st if x[0][0] != 'C_Etoiles_fond_rapide']

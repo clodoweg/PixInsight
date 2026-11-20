@@ -1591,3 +1591,5 @@ Puis (capture de BlindSolver 1.0.0) : « sinon utilise ce process la ». Fait : 
 - 20 novembre 2026 : « Les images comme ca doivent etre fermée automatiquement au debut » (capture : vues MasterLight_R_crop_mask, MasterLight_L_crop_mask). Renommer_auto (E00 de tous les workflows, rapides et turbos) ferme toujours les vues dont le nom contient crop_mask ; elles ne sont plus prises pour un master (sinon le masque R pouvait faire fermer le vrai master R autocrop comme doublon).
 
 - 20 novembre 2026 : « je veux que tu rajoute graexpert avec le script dans les LRGB et HaRGB et que tu mette un turbo avec ». LRGB et LHaRGB : option Opt_GraXpert (P2, après DBE), R_Gradient_auto_graxpert_rapide (sous R_Gradient_auto_rapide, Gradient_auto.js outil = graxpert) et T_Turbo_debut_graxpert (P1, sous T_Turbo_debut : même turbo, étape de gradient GraXpert), comme en narrowband.
+
+- 20 novembre 2026 : « met aussi dans les SHO, HOO, etc le nouveau script de Blind Solve ». SHO sans RGB, RGB + SHO, HOO : solver_blindSolver = 1 dans toutes les tables ImageSolver (Solver_auto, turbos, ImageSolver, ImageSolver_Date) ; catalogue, magnitude et focale inchangés.
