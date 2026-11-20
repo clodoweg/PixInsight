@@ -11,6 +11,7 @@
 // Ferme d'abord, sans demander, les vues dont le nom contient autocrop quand
 // une autre vue du même filtre est ouverte (doublon) ; seule pour son filtre, elle
 // est gardée et renommée (paramètre fermerAutocrop, coché par défaut).
+// Ferme toujours, sans demander, les masques de recadrage (*crop_mask).
 // Retient aussi le dossier de l'objet (dossier des masters, clodoweg_objet.jsh)
 // pour Export_TIFF, utile quand les masters sont fermés avant l'export.
 //
@@ -98,6 +99,18 @@ function renIsAutocrop( id )
    return /autocrop/i.test( id );   // « autocrop » n'importe où dans le nom (demande de l'utilisateur, 21 octobre 2026)
 }
 
+// Masques de recadrage (MasterLight_R_crop_mask...) : toujours fermés au début, jamais renommés
+// ni comptés comme master (demande de l'utilisateur, 20 novembre 2026).
+function renIsCropMask( id )
+{
+   return /crop_?mask/i.test( id );
+}
+
+function renCropMaskWindows()
+{
+   return ImageWindow.windows.filter( function( w ) { return renIsCropMask( w.mainView.id ); } );
+}
+
 // Filtre d'une vue mono (FILTER, nom du fichier, nom de la vue) ; "" si inconnu ou couleur.
 function renFilterOf( w )
 {
@@ -118,7 +131,7 @@ function renAutocropWindows()
 {
    let all = ImageWindow.windows, autres = {};
    for ( let k = 0; k < all.length; ++k )
-      if ( !renIsAutocrop( all[ k ].mainView.id ) )
+      if ( !renIsAutocrop( all[ k ].mainView.id ) && !renIsCropMask( all[ k ].mainView.id ) )
       {
          let f = renFilterOf( all[ k ] );
          if ( f.length > 0 )
@@ -126,7 +139,7 @@ function renAutocropWindows()
       }
    return all.filter( function( w )
    {
-      if ( !renIsAutocrop( w.mainView.id ) )
+      if ( !renIsAutocrop( w.mainView.id ) || renIsCropMask( w.mainView.id ) )
          return false;
       let f = renFilterOf( w );
       return f.length > 0 && autres[ f ] === true;
@@ -138,6 +151,7 @@ function renAutocropWindows()
 function renProposals( fermer )
 {
    let fermees = {};
+   renCropMaskWindows().forEach( function( w ) { fermees[ w.mainView.id ] = true; } );
    if ( fermer )
       renAutocropWindows().forEach( function( w ) { fermees[ w.mainView.id ] = true; } );
    let windows = ImageWindow.windows.filter( function( w ) { return fermees[ w.mainView.id ] !== true; } );
@@ -189,6 +203,20 @@ function renProposals( fermer )
 function renApply( list, fermer )
 {
    console.show();
+   {
+      let target = Parameters.isViewTarget ? Parameters.targetView.id : "";
+      let masks = renCropMaskWindows(), closed = [];
+      for ( let k = 0; k < masks.length; ++k )
+      {
+         let id = masks[ k ].mainView.id;
+         if ( id == target )
+            continue;
+         masks[ k ].forceClose();
+         closed.push( id );
+      }
+      if ( closed.length > 0 )
+         console.noteln( REN_TITLE + " : " + closed.length + " masque(s) de recadrage fermé(s) : " + closed.join( ", " ) + "." );
+   }
    if ( fermer )
    {
       let target = Parameters.isViewTarget ? Parameters.targetView.id : "";
@@ -241,8 +269,12 @@ function renDialog( list, p )
       let r = list[ k ];
       html += "<tr><td>" + r.old + "</td><td>" + (r.note.length ? "<i>" + r.note + "</i>" : "<b>" + r.id + "</b>") + "</td><td>" + r.source + "</td></tr>";
    }
+   html += "</table>";
+   let cm = renCropMaskWindows().map( function( w ) { return w.mainView.id; } );
+   if ( cm.length > 0 )
+      html += "<p>Masques de recadrage fermés : <b>" + cm.join( ", " ) + "</b></p>";
    let dir = cwObjectDirFromWindows();
-   d.info( html + "</table><p>Dossier de l'objet retenu pour Export_TIFF : <b>" + (dir.length > 0 ? dir : "aucun (images sans fichier)") + "</b></p>" );
+   d.info( html + "<p>Dossier de l'objet retenu pour Export_TIFF : <b>" + (dir.length > 0 ? dir : "aucun (images sans fichier)") + "</b></p>" );
    let ac = renAutocropWindows().map( function( w ) { return w.mainView.id; } );
    d.check( "Fermer les vues *autocrop*" + (ac.length > 0 ? " (" + ac.join( ", " ) + ")" : " (aucune ouverte)"), p.fermer,
             "Ferme sans demander, avant le renommage, les vues dont le nom contient autocrop QUAND une autre vue du même filtre est ouverte ; une vue autocrop_c seule pour son filtre est gardée et renommée.", function( c ) { p.fermer = c; } );

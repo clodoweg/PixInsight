@@ -27,7 +27,7 @@ Tous à copier dans `src/scripts/clodoweg/` de PixInsight (`maj_pc.bat` le fait)
 |---|---|
 | `clodoweg_ui.jsh` | fenêtres de réglages et fonctions communes à tous les scripts (à copier avec eux) |
 | `clodoweg_objet.jsh` | dossier de l'objet (dossier des masters), commun à Renommer_auto et Export_TIFF ; dernier .tif exporté, relu par Lecture_Photoshop |
-| `Renommer_auto.js` | renomme les masters L, R, G, B, H, O, S d'après FILTER, le nom du fichier ou de la vue (V -> G) ; ferme les vues *autocrop* en doublon |
+| `Renommer_auto.js` | renomme les masters L, R, G, B, H, O, S d'après FILTER, le nom du fichier ou de la vue (V -> G) ; ferme les vues *autocrop* en doublon et les masques *crop_mask* |
 | `LPS_UnClic.js` | LinearPatternSubtraction sans dialogue sur tous les masters mono ouverts |
 | `Combiner_RGB.js` | R, G, B → `RGB`, en-tête du rouge copié ; ferme les masters (`garder` pour en garder) |
 | `GC_Solver_auto.js` | ImageSolver sur toutes les images, ou les images couleur seulement (icône Solver_auto) |
