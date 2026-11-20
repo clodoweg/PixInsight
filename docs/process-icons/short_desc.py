@@ -460,3 +460,9 @@ for _p, _img in (('SHO', 'SHO_etire'), ('RSHO', 'SHO_etire'), ('HOO', 'HOO_etire
         V[(_p, _b)] = (_t[0] + " ; PUIS phases 4 et 5 : Statistical Stretch des canaux (Stat_canaux), combinaison (SHO_simple / HOO_simple) et NarrowbandNormalization ; résultat : " + _img,
                        "masters seuls ouverts (enregistrés : ils sont fermés sans enregistrer) ; Conteneurs du workflow chargé ; double-clic puis Apply Global (pas en glissant) ; ENSUITE glisse R_C_Fin_rapide (P6) sur " + _img + ", puis la phase 7",
                        list(_t[2]) + ["s'arrêter à la phase 3 -> R_C_Preparation_rapide, R_Gradient_auto_rapide et R_C_Lineaire_rapide un par un"])
+
+# galaxies (20 novembre 2026) : ImageSolver en ligne PPMXL, magnitude 15, focale 2957,413 mm (réglages de la résolution réussie à la main)
+for _p in ('LRGB', 'LHA'):
+    V[(_p, 'ImageSolver')] = (S['ImageSolver'][0].replace("focale 2 939 mm", "focale 2 957,413 mm").replace("catalogue LOCAL Gaia DR3/SP", "catalogue EN LIGNE PPMXL (VizieR ; le local Gaia DR3/SP échouait sur les champs de galaxies, 20 novembre 2026) au lieu du catalogue local Gaia DR3/SP"),
+                              S['ImageSolver'][1], ["échec en ligne (serveur VizieR en panne) -> bouton base de données à côté de PPMXL dans la fenêtre d'ImageSolver : choisis un autre miroir"] + list(S['ImageSolver'][2]))
+

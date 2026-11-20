@@ -53,7 +53,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 #### E03_Solver_auto — Script
    script `$PXI_SRCDIR/scripts/clodoweg/GC_Solver_auto.js`
-   paramètres : `gradient=false`, `solve=true`, `solveTout=true`, `defaultDate=2020-01-01T00:00:00`, `metadata_focal=2939`, `metadata_xpixsz=3.76`, `solver_catalogMode=3`, `solver_distortionCorrection=true`, `(+ 42 autres réglages ImageSolver)`
+   paramètres : `gradient=false`, `solve=true`, `solveTout=true`, `defaultDate=2020-01-01T00:00:00`, `metadata_focal=2957.413`, `metadata_xpixsz=3.76`, `solver_catalogMode=1`, `solver_distortionCorrection=true`, `(+ 42 autres réglages ImageSolver)`
 
 > LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
 > 
@@ -116,7 +116,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
       paramètres : `red=R`, `green=G`, `blue=B`, `newId=RGB`, `closeSources=true`, `copyKeywords=true`, `garder=`, `dialogue=false`
    4. Script
       script `$PXI_SRCDIR/scripts/clodoweg/GC_Solver_auto.js`
-      paramètres : `gradient=false`, `solve=true`, `solveTout=false`, `defaultDate=2020-01-01T00:00:00`, `dialogue=false`, `metadata_focal=2939`, `metadata_xpixsz=3.76`, `solver_catalogMode=3`, `solver_distortionCorrection=true`, `(+ 42 autres réglages ImageSolver)`
+      paramètres : `gradient=false`, `solve=true`, `solveTout=false`, `defaultDate=2020-01-01T00:00:00`, `dialogue=false`, `metadata_focal=2957.413`, `metadata_xpixsz=3.76`, `solver_catalogMode=1`, `solver_distortionCorrection=true`, `(+ 42 autres réglages ImageSolver)`
 
 > MODE RAPIDE, à la place d'E00 à E03 : masters seuls ouverts, double-clic puis Apply Global (pas en glissant : ImageSolver échoue sur une image en cours de traitement) : Renommer_auto, LinearPatternSubtraction, Combinaison_RGB, Solver_auto (ImageSolver sur le RGB seulement) en un seul conteneur.
 > 
@@ -144,7 +144,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
       paramètres : `red=R`, `green=G`, `blue=B`, `newId=RGB`, `closeSources=true`, `copyKeywords=true`, `garder=`, `dialogue=false`
    4. Script
       script `$PXI_SRCDIR/scripts/clodoweg/GC_Solver_auto.js`
-      paramètres : `gradient=false`, `solve=true`, `solveTout=false`, `defaultDate=2020-01-01T00:00:00`, `dialogue=false`, `metadata_focal=2939`, `metadata_xpixsz=3.76`, `solver_catalogMode=3`, `solver_distortionCorrection=true`, `(+ 42 autres réglages ImageSolver)`
+      paramètres : `gradient=false`, `solve=true`, `solveTout=false`, `defaultDate=2020-01-01T00:00:00`, `dialogue=false`, `metadata_focal=2957.413`, `metadata_xpixsz=3.76`, `solver_catalogMode=1`, `solver_distortionCorrection=true`, `(+ 42 autres réglages ImageSolver)`
    5. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Gradient_auto.js`
       paramètres : `dialogue=false`
@@ -167,15 +167,16 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 #### E04_ImageSolver — Script
    script `$PXI_SRCDIR/scripts/clodoweg/ImageSolver_Date.js`
-   paramètres : `defaultDate=2020-01-01T00:00:00`, `metadata_focal=2939`, `metadata_xpixsz=3.76`, `solver_catalogMode=3`, `solver_distortionCorrection=true`, `(+ 42 autres réglages ImageSolver)`
+   paramètres : `defaultDate=2020-01-01T00:00:00`, `metadata_focal=2957.413`, `metadata_xpixsz=3.76`, `solver_catalogMode=1`, `solver_distortionCorrection=true`, `(+ 42 autres réglages ImageSolver)`
 
 > LANCEMENT : glisse l'icône sur l'image.
 > 
-> PRÉRÉGLÉ : script ImageSolver_Date.js en une seule icône (pas de conteneur) : date d'observation 2020-01-01 ajoutée seulement si l'image n'en a pas, puis ImageSolver 6.4.2 lancé avec focale 2 939 mm, pixel 3,76 µm (0,264″/px), catalogue LOCAL Gaia DR3/SP (XPSD, le même que SPFC et SPCC, sans internet), magnitude limite fixe 15, correction de distorsion ; coordonnées et vraie date lues dans l'image.
+> PRÉRÉGLÉ : script ImageSolver_Date.js en une seule icône (pas de conteneur) : date d'observation 2020-01-01 ajoutée seulement si l'image n'en a pas, puis ImageSolver 6.4.2 lancé avec focale 2 957,413 mm, pixel 3,76 µm (0,264″/px), catalogue EN LIGNE PPMXL (VizieR ; le local Gaia DR3/SP échouait sur les champs de galaxies, 20 novembre 2026) au lieu du catalogue local Gaia DR3/SP (XPSD, le même que SPFC et SPCC, sans internet), magnitude limite fixe 15, correction de distorsion ; coordonnées et vraie date lues dans l'image.
 > 
 > À RÉGLER : une seule fois par ordinateur : copie la NOUVELLE version d'ImageSolver_Date.js dans src/scripts/clodoweg ; ensuite glisse l'icône sur CHAQUE image à calibrer, juste avant SPFC ou SPCC : image RGB combinée, master L, masters H, O et S.
 > 
 > SI :
+> - échec en ligne (serveur VizieR en panne) -> bouton base de données à côté de PPMXL dans la fenêtre d'ImageSolver : choisis un autre miroir
 > - la date est ajoutée mais ImageSolver ne se lance pas -> glisse l'icône ImageSolver_seul (options) sur la même image
 > - échec sans coordonnées dans l'en-tête -> lance ImageSolver depuis le menu Script et utilise Search (nom de l'objet)
 > - master en bin 2 -> metadata_xpixsz = 7.52 et metadata_resolution = 0.0001466 dans solverParams
@@ -233,7 +234,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 #### Opt_ImageSolver_seul — Script
    script `$PXI_SRCDIR/scripts/ImageSolver/ImageSolver.js`
-   paramètres : `metadata_focal=2939`, `metadata_xpixsz=3.76`, `solver_catalogMode=3`, `solver_distortionCorrection=true`, `(+ 42 autres réglages ImageSolver)`
+   paramètres : `metadata_focal=2957.413`, `metadata_xpixsz=3.76`, `solver_catalogMode=1`, `solver_distortionCorrection=true`, `(+ 42 autres réglages ImageSolver)`
 
 > OPTION — secours : ImageSolver seul, si l'icône ImageSolver (date + ImageSolver) s'arrête après la date.
 > 
