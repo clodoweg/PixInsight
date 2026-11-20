@@ -1713,6 +1713,22 @@ for _st in (rgbsho, sho, hoo):
 for _p in ('RSHO', 'SHO', 'HOO'):
     RAPIDE_NOTE[_p][7] = "pas de rapide en phase 7 (supprimé le 12 novembre 2026) : chemin principal"
 
+# GraXpert en LRGB et LHaRGB (demande de l'utilisateur, 20 novembre 2026 : « rajoute graexpert avec le script dans les LRGB et HaRGB et
+# mets un turbo avec ») : option GraXpert après DBE, R_Gradient_auto_graxpert_rapide sous R_Gradient_auto_rapide, T_Turbo_debut_graxpert sous
+# T_Turbo_debut (copie du turbo final, étape de gradient remplacée)
+for _st in (lrgb, lhargb):
+    insert_after(_st, 'DBE', [(graxpert(), '')])
+    insert_after(_st, 'Gradient_auto_rapide', [(script('Gradient_auto_graxpert_rapide', ''), '')])
+    _t = pick(_st, 'Turbo_debut')[0][1]
+    _a = ('Gradient_auto.js</parameter>\n         <parameter id="md5sum"></parameter>\n         <table id="parameters" rows="1">\n'
+          '            <tr>\n               <td id="id">dialogue</td>')
+    assert _t.count(_a) == 1
+    _tx = _t.replace(_a, _a.replace('rows="1"', 'rows="2"').replace('            <tr>\n               <td id="id">dialogue</td>',
+          '            <tr>\n               <td id="id">outil</td>\n               <td id="value">graxpert</td>\n            </tr>\n'
+          '            <tr>\n               <td id="id">dialogue</td>')).replace('id="Turbo_debut_instance"', 'id="Turbo_debut_graxpert_instance"')
+    assert 'Turbo_debut_graxpert_instance' in _tx
+    insert_after(_st, 'Turbo_debut', [(('Turbo_debut_graxpert', _tx), '')])
+
 for fn, pre, title, steps in [
     ('Workflow-LRGB.xpsm', 'LRGB', 'Workflow LRGB', lrgb),
     ('Workflow-LHaRGB.xpsm', 'LHA', 'Workflow LHaRGB', lhargb),

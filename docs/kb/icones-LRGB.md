@@ -164,6 +164,38 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - une étape échoue -> lance les trois icônes R_ une par une pour voir laquelle
 > - gradient mal retiré -> chemin principal de la phase 2 (MGC + MARS) à la place, puis R_Lineaire_rapide
 
+#### T_Turbo_debut_graxpert — ProcessContainer
+   1. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Renommer_auto.js`
+      paramètres : `fermerAutocrop=true`, `dialogue=false`
+   2. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/LPS_UnClic.js`
+      paramètres : `correctColumns=false`, `correctEntireImage=true`, `defectTableFilePath=`, `layersToRemove=9`, `rejectionLimit=3`, `globalRejection=true`, `globalRejectionLimit=5`, `autoBackground=true`, `backgroundReferenceLeft=0`, `backgroundReferenceTop=0`, `backgroundReferenceWidth=512`, `backgroundReferenceHeight=512`, `allOpenImages=true`, `closeWorkingImages=true`, `vues=L,R,G,B`, `dialogue=false`
+   3. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Combiner_RGB.js`
+      paramètres : `red=R`, `green=G`, `blue=B`, `newId=RGB`, `closeSources=true`, `copyKeywords=true`, `garder=`, `dialogue=false`
+   4. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/GC_Solver_auto.js`
+      paramètres : `gradient=false`, `solve=true`, `solveTout=false`, `defaultDate=2020-01-01T00:00:00`, `dialogue=false`, `metadata_focal=2957.413`, `metadata_xpixsz=3.76`, `solver_catalogMode=1`, `solver_distortionCorrection=true`, `(+ 43 autres réglages ImageSolver)`
+   5. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Gradient_auto.js`
+      paramètres : `outil=graxpert`, `dialogue=false`
+   6. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
+      paramètres : `etapes=C_RGB_lineaire>RGB ; C_L_lineaire>L`, `dialogue=false`
+
+> MODE TURBO, comme T_Turbo_debut mais avec GraXpert au lieu de GradientCorrection : masters seuls ouverts, Conteneurs du workflow chargé, double-clic puis Apply Global (pas en glissant) ; module et application GraXpert installés.
+> 
+> LANCEMENT : masters seuls ouverts, double-clic puis Apply Global (rond bleu) ; pas en glissant (ImageSolver échoue sur une image en cours de traitement).
+> 
+> PRÉRÉGLÉ : conteneur, en une fois : comme T_Turbo_debut, mais l'étape de gradient est GraXpert (Gradient_auto.js, outil = graxpert) au lieu de GradientCorrection.
+> 
+> À RÉGLER : masters seuls ouverts ; Conteneurs du workflow chargé ; double-clic puis Apply Global (pas en glissant) ; module et application GraXpert installés.
+> 
+> SI :
+> - une étape échoue -> lance les icônes R_ une par une pour voir laquelle
+> - « process GraXpert absent » -> installe le module et l'application GraXpert
+
 ## P2_Gradient
 
 #### E04_ImageSolver — Script
@@ -254,6 +286,21 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - points rouges -> Tolerance 1,0 à 1,5
 > - vignettage -> Division
 
+#### Opt_GraXpert — GraXpert
+   backgroundExtraction=true ; smoothing=0.000 ; createBackground=false ; denoising=false ; deconvolution=false ; replaceImage=true
+
+> OPTION — à la place de GradientCorrection (ou de MGC + MARS) : extraction de fond par IA de GraXpert (Subtraction, smoothing 0) sur chaque master linéaire
+> Module DeepSkyForge et application GraXpert 4.0.0 ou plus installés.
+> 
+> PRÉRÉGLÉ : process GraXpert (module DeepSkyForge) : extraction de fond par IA, Correction Subtraction, Smoothing 0, modèle IA recommandé, image remplacée ; ni débruitage ni déconvolution.
+> 
+> À RÉGLER : glisse sur chaque master linéaire (S, H, O ; RGB aussi), à la place de GradientCorrection ; une seule fois : application GraXpert 4.0.0 ou plus installée, module ajouté par le dépôt https://pixinsight.deepskyforge.com/update/graxpert-process/.
+> 
+> SI :
+> - gradient très fort, vignettage -> Correction Division
+> - nébuleuse qui remplit le champ, fond rongé -> DBE ou GradientCorrection
+> - process introuvable -> installe le module (dépôt DeepSkyForge) et l'application GraXpert
+
 ### P2_rapide
 
 #### R_Gradient_auto_rapide — Script
@@ -266,6 +313,22 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > PRÉRÉGLÉ : script Gradient_auto.js : GradientCorrection (sans modèle de gradient) sur TOUTES les images ouvertes, rien d'autre (pas d'ImageSolver) ; images *_stars ignorées ; une erreur n'arrête pas les autres.
 > 
 > À RÉGLER : double-clic puis Apply Global, masters et RGB ouverts, après R_C_Preparation_rapide (astrométrie déjà faite par Solver_auto) ; AVANT R_Lineaire_rapide (le chemin principal de la phase 3 n'a pas de GradientCorrection) ; copie Gradient_auto.js dans src/scripts/clodoweg.
+
+#### R_Gradient_auto_graxpert_rapide — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Gradient_auto.js`
+   paramètres : `outil=graxpert`
+
+> MODE RAPIDE, à la place de R_Gradient_auto_rapide (même place) : GraXpert au lieu de GradientCorrection, sur TOUTES les images ouvertes ; module et application GraXpert installés.
+> 
+> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
+> 
+> PRÉRÉGLÉ : script Gradient_auto.js, outil = graxpert : GraXpert (IA, Subtraction, smoothing 0, image remplacée) sur TOUTES les images ouvertes ; images *_stars ignorées ; une erreur n'arrête pas les autres.
+> 
+> À RÉGLER : double-clic puis Apply Global, après R_C_Preparation_rapide, à la place de R_Gradient_auto_rapide ; ensuite la phase 3 (R_C_Lineaire_rapide).
+> 
+> SI :
+> - « process GraXpert absent » -> installe le module (dépôt DeepSkyForge) et l'application GraXpert 4.0.0 ou plus
+> - une image en erreur -> refais-la avec Opt_GraXpert
 
 ## P3_Lineaire
 
