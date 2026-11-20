@@ -1579,3 +1579,7 @@ Demande de l'utilisateur : « fais moi un mega turbo qui va de P1 a P6 pour les 
 Puis (14 novembre 2026) : « oui fais les deux » : T_Turbo_mega_graxpert ajouté sous T_Turbo_mega (T_Turbo_debut_graxpert + T_Turbo_palette), RGB + SHO, SHO sans RGB, HOO. XML vérifié.
 Puis (14 novembre 2026) : « en fait au lieu de faire un mega, fait juste les turbo: celui qui commence 1 fait toutes les étapes, pas besoin de mega ». Fait : T_Turbo_mega et T_Turbo_mega_graxpert supprimés ; T_Turbo_debut et T_Turbo_debut_graxpert (RGB + SHO, SHO sans RGB, HOO) contiennent maintenant aussi les étapes de T_Turbo_palette (P1 à P5) ; T_Turbo_palette gardé seul en P4. XML vérifié.
 Puis : « supprime T_Turbo_palette ». Fait : T_Turbo_palette retiré (ses étapes restent dans T_Turbo_debut et T_Turbo_debut_graxpert) ; notes P4 rapide mises à jour.
+
+### LHaRGB : ImageSolver magnitude 17 (20 novembre 2026)
+
+Retour de l'utilisateur : « en lhrgb mon turbo ne marche pas, je pense que c'est car le vizier de strasbourg ne marche pas et qu'il faut faire a la place harvard », puis le journal d'ImageSolver (« 0 star pair matches found », 16 étoiles du catalogue local contre 579 détectées). Fait : solver_magnitude 17 dans les icônes ImageSolver de LHaRGB (catalogue local Gaia DR3/SP, VizieR non utilisé). Non testé.
