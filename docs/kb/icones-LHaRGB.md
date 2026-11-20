@@ -53,7 +53,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 #### E03_Solver_auto — Script
    script `$PXI_SRCDIR/scripts/clodoweg/GC_Solver_auto.js`
-   paramètres : `gradient=false`, `solve=true`, `solveTout=true`, `defaultDate=2020-01-01T00:00:00`, `metadata_focal=2957.413`, `metadata_xpixsz=3.76`, `solver_catalogMode=1`, `solver_distortionCorrection=true`, `(+ 42 autres réglages ImageSolver)`
+   paramètres : `gradient=false`, `solve=true`, `solveTout=true`, `defaultDate=2020-01-01T00:00:00`, `metadata_focal=2957.413`, `metadata_xpixsz=3.76`, `solver_catalogMode=1`, `solver_distortionCorrection=true`, `(+ 43 autres réglages ImageSolver)`
 
 > LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
 > 
@@ -116,7 +116,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
       paramètres : `red=R`, `green=G`, `blue=B`, `newId=RGB`, `closeSources=true`, `copyKeywords=true`, `garder=`, `dialogue=false`
    4. Script
       script `$PXI_SRCDIR/scripts/clodoweg/GC_Solver_auto.js`
-      paramètres : `gradient=false`, `solve=true`, `solveTout=false`, `defaultDate=2020-01-01T00:00:00`, `dialogue=false`, `metadata_focal=2957.413`, `metadata_xpixsz=3.76`, `solver_catalogMode=1`, `solver_distortionCorrection=true`, `(+ 42 autres réglages ImageSolver)`
+      paramètres : `gradient=false`, `solve=true`, `solveTout=false`, `defaultDate=2020-01-01T00:00:00`, `dialogue=false`, `metadata_focal=2957.413`, `metadata_xpixsz=3.76`, `solver_catalogMode=1`, `solver_distortionCorrection=true`, `(+ 43 autres réglages ImageSolver)`
 
 > MODE RAPIDE, à la place d'E00 à E03 : masters seuls ouverts, double-clic puis Apply Global (pas en glissant : ImageSolver échoue sur une image en cours de traitement) : Renommer_auto, LinearPatternSubtraction, Combinaison_RGB, Solver_auto (ImageSolver sur le RGB seulement) en un seul conteneur.
 > 
@@ -144,7 +144,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
       paramètres : `red=R`, `green=G`, `blue=B`, `newId=RGB`, `closeSources=true`, `copyKeywords=true`, `garder=`, `dialogue=false`
    4. Script
       script `$PXI_SRCDIR/scripts/clodoweg/GC_Solver_auto.js`
-      paramètres : `gradient=false`, `solve=true`, `solveTout=false`, `defaultDate=2020-01-01T00:00:00`, `dialogue=false`, `metadata_focal=2957.413`, `metadata_xpixsz=3.76`, `solver_catalogMode=1`, `solver_distortionCorrection=true`, `(+ 42 autres réglages ImageSolver)`
+      paramètres : `gradient=false`, `solve=true`, `solveTout=false`, `defaultDate=2020-01-01T00:00:00`, `dialogue=false`, `metadata_focal=2957.413`, `metadata_xpixsz=3.76`, `solver_catalogMode=1`, `solver_distortionCorrection=true`, `(+ 43 autres réglages ImageSolver)`
    5. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Gradient_auto.js`
       paramètres : `dialogue=false`
@@ -167,7 +167,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 #### E04_ImageSolver — Script
    script `$PXI_SRCDIR/scripts/clodoweg/ImageSolver_Date.js`
-   paramètres : `defaultDate=2020-01-01T00:00:00`, `metadata_focal=2957.413`, `metadata_xpixsz=3.76`, `solver_catalogMode=1`, `solver_distortionCorrection=true`, `(+ 42 autres réglages ImageSolver)`
+   paramètres : `defaultDate=2020-01-01T00:00:00`, `metadata_focal=2957.413`, `metadata_xpixsz=3.76`, `solver_catalogMode=1`, `solver_distortionCorrection=true`, `(+ 43 autres réglages ImageSolver)`
 
 > LANCEMENT : glisse l'icône sur l'image.
 > 
@@ -234,7 +234,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 #### Opt_ImageSolver_seul — Script
    script `$PXI_SRCDIR/scripts/ImageSolver/ImageSolver.js`
-   paramètres : `metadata_focal=2957.413`, `metadata_xpixsz=3.76`, `solver_catalogMode=1`, `solver_distortionCorrection=true`, `(+ 42 autres réglages ImageSolver)`
+   paramètres : `metadata_focal=2957.413`, `metadata_xpixsz=3.76`, `solver_catalogMode=1`, `solver_distortionCorrection=true`, `(+ 43 autres réglages ImageSolver)`
 
 > OPTION — secours : ImageSolver seul, si l'icône ImageSolver (date + ImageSolver) s'arrête après la date.
 > 

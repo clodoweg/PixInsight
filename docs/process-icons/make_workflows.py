@@ -1673,6 +1673,25 @@ for _st in (rgbsho, sho, hoo):
 _rx = re.compile(r'(<td id="id">solver_magnitude</td>\s*<td id="value">)15(</td>)')
 # puis (20 novembre 2026, capture de l'utilisateur : « ca marche quand je faiis ca a la main ») : LRGB et LHaRGB réglés comme sa
 # résolution réussie à la main : catalogue EN LIGNE PPMXL, magnitude 15, focale 2957,413 mm (valeur de sa fenêtre ImageSolver)
+def _ajoute_blind(x):
+    """Ajoute la ligne solver_blindSolver = 1 après solver_magnitude dans chaque table ImageSolver (lignes et compteur rows)."""
+    if 'solver_blindSolver' in x:
+        return x
+    out, pos = [], 0
+    for m in re.finditer(r'(\n(\s*)<tr>\n\s*<td id="id">solver_magnitude</td>\n\s*<td id="value">[^<]*</td>\n\s*</tr>)', x):
+        ind = m.group(2)
+        row = '\n%s<tr>\n%s   <td id="id">solver_blindSolver</td>\n%s   <td id="value">1</td>\n%s</tr>' % (ind, ind, ind, ind)
+        # compteur de lignes de la table qui contient ce paramètre
+        t = x.rindex('<table id="parameters" rows="', 0, m.start())
+        out.append((t, m.end(), row))
+    if not out:
+        return x
+    for t, e, row in reversed(out):
+        x = x[:e] + row + x[e:]
+        n = re.match(r'<table id="parameters" rows="(\d+)"', x[t:])
+        x = x[:t] + '<table id="parameters" rows="%d"' % (int(n.group(1)) + 1) + x[t + len(n.group(0)):]
+    return x
+
 _sub = [(r'(<td id="id">solver_catalogMode</td>\s*<td id="value">)3(</td>)', r'\g<1>1\g<2>'),
         (r'(<td id="id">solver_catalog</td>\s*<td id="value">)GaiaDR3SP_XPSD(</td>)', r'\g<1>PPMXL\g<2>'),
         (r'(<td id="id">metadata_focal</td>\s*<td id="value">)2939(</td>)', r'\g<1>2957.413\g<2>')]
@@ -1681,6 +1700,10 @@ for _st in (lhargb, lrgb):
         _x = _it[1]
         for _a, _b in _sub:
             _x = re.sub(_a, _b, _x)
+        # puis (20 novembre 2026, capture de BlindSolver 1.0.0 et de l'index C:/GAIA/gdr3-idx-1.0.0-g17.xpsd : « sinon utilise ce
+        # process la ») : ImageSolver 6.6 avec solver_blindSolver = 1 (BlindSolverMode.Always, ImageSolverEngine.js) : centre et échelle
+        # trouvés d'après les étoiles avec l'index astrométrique local (le même que BlindSolver), sans se fier à l'en-tête
+        _x = _ajoute_blind(_x)
         if _x != _it[1]:
             _st[_k] = ((_it[0], _x), _d)
 
