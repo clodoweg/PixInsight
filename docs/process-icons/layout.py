@@ -68,6 +68,10 @@ def role(prefix, base):
         return 'opt'    # étirement fait par NB_to_RGB_Stars (Apply Star Stretch 5 / 1,0, demande de l'utilisateur, 8 octobre 2026)
     if prefix in ('SHO', 'HOO') and base == 'SCNR_etoiles_vert':
         return 'opt'    # SHO sans RGB : options étoiles sur NBtoRGB_stars (demande de l'utilisateur, 8 octobre 2026)
+    if prefix in NB and base == 'GraXpert':
+        return 'grad:mgc|gc'   # narrowband : GraXpert au chemin principal à la place de GradientCorrection (20 novembre 2026)
+    if prefix in NB and base == 'GradientCorrection':
+        return 'opt'
     if base in OPT or (base == 'MGC_MARS' and prefix in ('SHO', 'HOO')):   # RGB + SHO : MGC_MARS sur RGB au chemin principal (comme en LRGB)
         return 'opt'
     if base == 'Etoiles_screen':
@@ -300,6 +304,12 @@ for _p in ('SHO', 'RSHO'):
 for _p in ('SHO', 'RSHO', 'HOO'):   # turbos du début jusqu'à la palette (14 novembre 2026)
     WHEN_PREFIX[(_p, 'Turbo_debut')] = "MODE TURBO, phases 1 à 5 en un clic (préparation, gradient, phase linéaire, Statistical Stretch, palette) : masters seuls ouverts, Conteneurs du workflow chargé, double-clic puis Apply Global ; ensuite GLISSE R_C_Fin_rapide (P6) sur l'image créée"
     WHEN_PREFIX[(_p, 'Turbo_debut_graxpert')] = "comme T_Turbo_debut (phases 1 à 5) mais avec GraXpert au lieu de GradientCorrection : Lune ou gradient qui résiste ; risque d'enlever des voiles faibles"
+
+for _p in ('SHO', 'RSHO', 'HOO'):   # GraXpert par défaut en narrowband (20 novembre 2026)
+    WHEN_PREFIX[(_p, 'GraXpert')] = "chemin principal, après MGC + MARS : extraction de fond par IA de GraXpert (Subtraction, smoothing 0) sur chaque master linéaire ; module DeepSkyForge et application GraXpert 4.0.0 ou plus installés"
+    WHEN_PREFIX[(_p, 'GradientCorrection')] = "à la place de GraXpert : GraXpert absent ou qui assombrit la nébuleuse (voiles faibles enlevés)"
+    WHEN_PREFIX[(_p, 'Gradient_auto_rapide')] = WHEN_NB['Gradient_auto_rapide'].replace(", GradientCorrection) : GradientCorrection sur TOUTES", ", GraXpert) : GraXpert sur TOUTES")
+    assert 'GraXpert sur TOUTES' in WHEN_PREFIX[(_p, 'Gradient_auto_rapide')]
 
 def when(prefix, base):
     if (prefix, base) in WHEN_PREFIX:

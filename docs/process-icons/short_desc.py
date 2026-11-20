@@ -461,6 +461,19 @@ for _p, _img in (('SHO', 'SHO_etire'), ('RSHO', 'SHO_etire'), ('HOO', 'HOO_etire
                        "masters seuls ouverts (enregistrés : ils sont fermés sans enregistrer) ; Conteneurs du workflow chargé ; double-clic puis Apply Global (pas en glissant) ; ENSUITE glisse R_C_Fin_rapide (P6) sur " + _img + ", puis la phase 7",
                        list(_t[2]) + ["s'arrêter à la phase 3 -> R_C_Preparation_rapide, R_Gradient_auto_rapide et R_C_Lineaire_rapide un par un"])
 
+# narrowband (20 novembre 2026) : GraXpert par défaut (chemin principal, R_Gradient_auto_rapide, T_Turbo_debut)
+for _p in ('SHO', 'RSHO', 'HOO'):
+    _t = V[(_p, 'Turbo_debut')]
+    _a = _t[0].replace("Gradient_auto (GradientCorrection sur toutes les images, = R_Gradient_auto_rapide)", "Gradient_auto (= R_Gradient_auto_rapide)")
+    assert "Gradient_auto (= R_Gradient_auto_rapide" in _a
+    _a = _a.replace("Gradient_auto (= R_Gradient_auto_rapide", "Gradient_auto, outil GraXpert (GraXpert sur toutes les images, = R_Gradient_auto_rapide")
+    V[(_p, 'Turbo_debut')] = (_a, _t[1] + " ; module et application GraXpert installés", list(_t[2]) + ["« process GraXpert absent » -> installe le module et l'application GraXpert, ou lance les icônes R_ une par une avec GradientCorrection à la main"])
+    V[(_p, 'Gradient_auto_rapide')] = ("script Gradient_auto.js, outil = graxpert : GraXpert (IA, Subtraction, smoothing 0, image remplacée) sur TOUTES les images ouvertes (masters narrowband ; RGB aussi en RGB + SHO), rien d'autre ; pas de SPFC ni de MGC + MARS ; images *_stars ignorées ; une erreur n'arrête pas les autres",
+        "double-clic puis Apply Global, masters ouverts, après R_C_Preparation_rapide (astrométrie déjà faite) ; remplace toute la phase 2 ; ensuite la phase 3 ; module et application GraXpert installés ; copie Gradient_auto.js dans src/scripts/clodoweg",
+        ["« process GraXpert absent » -> installe le module (dépôt DeepSkyForge) et l'application GraXpert 4.0.0 ou plus", "nébuleuse assombrie ou voiles faibles enlevés -> Ctrl+Z, Opt_GradientCorrection à la main", "nébuleuse qui remplit le champ -> chemin principal (MGC + MARS) ou DBE"])
+    _g = S['GraXpert']
+    V[(_p, 'GraXpert')] = (_g[0], _g[1].replace("à la place de GradientCorrection", "après MGC + MARS (chemin principal ; GradientCorrection en option)"), _g[2])
+
 # galaxies (20 novembre 2026) : ImageSolver en ligne PPMXL, magnitude 15, focale 2957,413 mm (réglages de la résolution réussie à la main)
 for _p in ('LRGB', 'LHA'):
     V[(_p, 'ImageSolver')] = (S['ImageSolver'][0].replace("focale 2 939 mm", "focale 2 957,413 mm").replace("catalogue LOCAL Gaia DR3/SP", "catalogue EN LIGNE PPMXL (VizieR ; le local Gaia DR3/SP échouait sur les champs de galaxies, 20 novembre 2026) au lieu du catalogue local Gaia DR3/SP"),
