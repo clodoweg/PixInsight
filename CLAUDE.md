@@ -116,3 +116,4 @@ Process galaxies (demande de l'utilisateur, 5 octobre 2026) : L sans étoiles, R
 ## État et suite
 
 Workflow LRGB terminé et validé par l'utilisateur (5 octobre 2026) ; LHaRGB fini (7 octobre 2026). Chantier en cours : SHO, RGB + SHO et HOO (voir « Workflows narrowband » plus haut ; dernière session : 8 octobre 2026). Méthode de l'utilisateur pour ce chantier : analyse et sources d'abord, puis il choisit, puis on modifie. Points ouverts : section « Non vérifié » de `docs/sources.md`.
+- ImageSolver (20 novembre 2026) : catalogue local Gaia DR3/SP ; magnitude limite 17 en LRGB et LHaRGB (champs de galaxies : à 15, seulement 16 à 26 étoiles de référence, échec « 0 star pair matches ») ; 15 en narrowband.

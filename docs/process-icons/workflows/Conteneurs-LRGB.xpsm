@@ -175,7 +175,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          </tr>
          <tr>
             <td id="id">solver_magnitude</td>
-            <td id="value">15</td>
+            <td id="value">17</td>
          </tr>
          <tr>
             <td id="id">solver_autoMagnitude</td>
@@ -547,7 +547,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
             </tr>
             <tr>
                <td id="id">solver_magnitude</td>
-               <td id="value">15</td>
+               <td id="value">17</td>
             </tr>
             <tr>
                <td id="id">solver_autoMagnitude</td>
@@ -889,7 +889,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
             </tr>
             <tr>
                <td id="id">solver_magnitude</td>
-               <td id="value">15</td>
+               <td id="value">17</td>
             </tr>
             <tr>
                <td id="id">solver_autoMagnitude</td>
@@ -1119,7 +1119,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          </tr>
          <tr>
             <td id="id">solver_magnitude</td>
-            <td id="value">15</td>
+            <td id="value">17</td>
          </tr>
          <tr>
             <td id="id">solver_autoMagnitude</td>
@@ -1426,7 +1426,7 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          </tr>
          <tr>
             <td id="id">solver_magnitude</td>
-            <td id="value">15</td>
+            <td id="value">17</td>
          </tr>
          <tr>
             <td id="id">solver_autoMagnitude</td>

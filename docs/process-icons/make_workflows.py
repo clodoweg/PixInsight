@@ -1671,9 +1671,10 @@ for _st in (rgbsho, sho, hoo):
 # étoiles du catalogue Gaia DR3/SP dans le champ à magnitude 15, contre 579 détectées) : magnitude limite 17 (DR3/SP va jusqu'à G ≈ 17,6)
 # dans toutes les icônes ImageSolver de LHaRGB (ImageSolver, Solver_auto, conteneurs, turbo)
 _rx = re.compile(r'(<td id="id">solver_magnitude</td>\s*<td id="value">)15(</td>)')
-for _k, (_it, _d) in enumerate(lhargb):
-    if _rx.search(_it[1]):
-        lhargb[_k] = ((_it[0], _rx.sub(r'\g<1>17\g<2>', _it[1])), _d)
+for _st in (lhargb, lrgb):   # LRGB aussi (« oui », 20 novembre 2026)
+    for _k, (_it, _d) in enumerate(_st):
+        if _rx.search(_it[1]):
+            _st[_k] = ((_it[0], _rx.sub(r'\g<1>17\g<2>', _it[1])), _d)
 
 # P7 rapide supprimé en narrowband (demande de l'utilisateur, 12 novembre 2026 : « supprime le P7 rapide pour les SHOs, HOO, .. »)
 for _st in (rgbsho, sho, hoo):

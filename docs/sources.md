@@ -1583,3 +1583,4 @@ Puis : « supprime T_Turbo_palette ». Fait : T_Turbo_palette retiré (ses étap
 ### LHaRGB : ImageSolver magnitude 17 (20 novembre 2026)
 
 Retour de l'utilisateur : « en lhrgb mon turbo ne marche pas, je pense que c'est car le vizier de strasbourg ne marche pas et qu'il faut faire a la place harvard », puis le journal d'ImageSolver (« 0 star pair matches found », 16 étoiles du catalogue local contre 579 détectées). Fait : solver_magnitude 17 dans les icônes ImageSolver de LHaRGB (catalogue local Gaia DR3/SP, VizieR non utilisé). Non testé.
+Puis, pour LRGB, réponse de l'utilisateur : « oui ». Fait : solver_magnitude 17 aussi dans les icônes ImageSolver de LRGB. Narrowband : 15 inchangé.
