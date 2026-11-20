@@ -72,6 +72,26 @@ function addDefaultDate( window )
 }
 
 // Même enchaînement que ImageSolver lancé sur une vue (ImageSolver.js, main()).
+// Binning / drizzle : la résolution de l'icône (focale 2939 mm, pixel 3,76 µm = 0,262″/px) vaut pour une image QHY600 en bin 1
+// (9576 × 6388). Image nettement plus petite (bin 2 : ~4788 px) ou plus grande (drizzle 2× : ~19 150 px) : pixel effectif
+// multiplié d'autant, sinon ImageSolver échoue (retour de l'utilisateur, 20 novembre 2026 : « RANSAC: Unable to find a valid set of
+// star pair matches », résolution 0,262″/px imposée). Facteur d'après le plus grand côté de l'image (un autocrop retire peu).
+function cwAjusteBinning( engine, window )
+{
+   let img = window.mainView.image, cote = Math.max( img.width, img.height ), r = 9576/cote;
+   let f = r >= 1.5 ? Math.round( r ) : (r <= 0.67 ? 1/Math.round( 1/r ) : 1);
+   if ( f == 1 || !(engine.metadata.xpixsz > 0) )
+      return;
+   engine.metadata.xpixsz *= f;
+   if ( engine.metadata.useFocal && engine.metadata.focal > 0 )
+      engine.metadata.resolution = engine.metadata.ResolutionFromFocal( engine.metadata.focal );
+   else if ( engine.metadata.resolution > 0 )
+      engine.metadata.resolution *= f;
+   console.warningln( "<end><cbr>" + window.mainView.id + " : " + img.width + " × " + img.height + " px, facteur " + f +
+                      " (binning ou drizzle) : pixel effectif " + engine.metadata.xpixsz.toFixed( 2 ) + " µm, résolution " +
+                      (engine.metadata.resolution*3600).toFixed( 3 ) + "″/px." );
+}
+
 function solve( window )
 {
    if ( !Parameters.has( "metadata_focal" ) )
@@ -79,6 +99,7 @@ function solve( window )
    console.show();
    let engine = new ImageSolver;
    engine.initialize( window );
+   cwAjusteBinning( engine, window );
    engine.metadata.SaveParameters();
    engine.solverCfg.SaveParameters();
    engine.solveImage( window );
