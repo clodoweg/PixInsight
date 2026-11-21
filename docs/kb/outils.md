@@ -1174,6 +1174,14 @@ Option Opt_CloneStamp (P4, LRGB et LHaRGB, demande de l'utilisateur, 18 octobre 
 - Dépôts au 21 novembre 2026 (fichiers updates.xri lus) : RC Astro 2.6.11 du 6 novembre 2026 (1.9.5:1.9.99 ; exécution plus rapide de tous les outils d'après l'historique des versions RC Astro) ; GHS module 3.2.0 du 4 novembre 2026 (aperçu en temps réel 32 bits, rien à changer aux icônes) ; NarrowbandNormalization 1.0 (inchangé) ; SetiAstro paquet du 31 octobre (inchangé) ; Toolbox du 29 novembre 2025 (inchangé) ; GraXpert : process retiré (voir la section GraXpert). Gaia DR4 annoncé par l'ESA pour le 2 décembre 2026 (index astrométriques PixInsight correspondants : rien trouvé). MARS : toujours DR2 (juin 2026).
 - Dépôts au 4 novembre 2026 : RC Astro 2.6.10 (1.9.5:1.9.99), SetiAstro (1.9.4:1.9.9 ; BlindSolver2000 et Cosmic Clarity retirés le 31 octobre), Toolbox (1.9.4:1.9.7), GHS, NarrowbandNormalization, Cosmic Photons (jusqu'à 1.9.99) : installables en 1.9.6. GraXpert : dépôt injoignable ce jour.
 
+## Veille du 21 novembre 2026 (rapport : ../veille/veille-2026-11-21.md)
+
+- **Module GraXpert pour PixInsight retiré** (DeepSkyForge, ~16 novembre 2026, règle CPD 5.5 : pas de composants d'autres applications astro). Dépôt en redirection : à retirer de Manage Repositories (son échec peut bloquer les autres mises à jour). Le module installé marche encore, mais ne reviendra pas après une réinstallation de PixInsight : les icônes GraXpert (narrowband au chemin principal, options LRGB / LHaRGB) en dépendent.
+- Règles CPD 1.0.2 (en vigueur le 12 décembre 2026) : visent le code signé ; scripts personnels non signés non concernés.
+- PixInsight 1.9.6 build 1718 (13-14 novembre) : recherche d'objets hors ligne, ExtendedSources, ImageSolver / BlindSolver grands champs, GradientCorrection 1.3.0 utilisable par script, SPFC / MGC en lot corrigés, Pause/Abort corrigé après un process lancé par script. Build 1719 (~20 novembre) : accélération GPU optionnelle (NVIDIA compute 5.2+, pilote Windows 527.41+), LHE corrigé (bords droit et bas), HDRMT en une transformée.
+- RC Astro suite 2.6.11 (6 novembre) ; anciens dépôts par outil fermés le 11 décembre 2026 (garder https://www.rc-astro.com/PixInsight). GHS module 3.2.0 (4 novembre, aperçus 32 bits, mêmes paramètres).
+- CDS (VizieR, SIMBAD) toujours dégradé au 18 novembre ; Gaia DR4 le 2 décembre 2026, pas d'index PixInsight annoncé.
+
 ## BXT ML5 : réglages (20 octobre 2026)
 
 - L'utilisateur a la licence ML5 ; toutes les icônes en `ml_version = 0` prennent ML5.

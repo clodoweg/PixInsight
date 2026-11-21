@@ -376,6 +376,16 @@ Question : « Est-ce que tu penses qu'il est possible de rajouter à la fin une 
 
 - [GraXpert 3.0.2 and PixInsight script on Mac (AstroBin)](https://app.astrobin.com/forum/topic/125008/graxpert-302-and-pixinsight-script-on-mac-intel-macos-sonoma-145) — Forum *(résumé)* : scripts sous /Applications/PixInsight/src/scripts (chemin d'un message d'erreur).
 
+## Veille du 21 novembre 2026 (skill veille, période 21 novembre 2025 - 21 novembre 2026)
+
+Rapport complet et liste des URL : `docs/veille/veille-2026-11-21.md`. Principales sources :
+- Officiel — [DeepSkyForge](https://www.deepskyforge.com/) (retrait du module GraXpert, ~16 novembre 2026, règle CPD 5.5) ; dépôt https://pixinsight.deepskyforge.com/update/graxpert-process/ en redirection 302 vers deepskyforge.com/vso (testé le 21 novembre) ; Forum — [fil 27693](https://pixinsight.com/forum/index.php?threads/unable-to-download-repository-information.27693/).
+- Officiel — [règles CPD 1.0.2](https://pixinsight.com/security/cpd-rules/) (29 octobre, en vigueur le 12 décembre 2026).
+- Officiel — [build 1718](https://pixinsight.net/dev/index.php?articles/pixinsight-1-9-6-lockhart-build-1718-released.30/) (13-14 novembre), [build 1719](https://pixinsight.net/dev/index.php?articles/pixinsight-1-9-6-lockhart-build-1719-released.31/) (~20 novembre).
+- Officiel — [RC Astro, historique](https://www.rc-astro.com/version-history/) (2.6.11, 6 novembre), [anciens dépôts retirés le 11 décembre](https://www.rc-astro.com/legacy-pixinsight-repositories-to-be-retired-on-friday-11-december-2026/) ; dépôt GHS (module 3.2.0, 4 novembre) ; [CDS](https://cds.unistra.fr/) ; [ESA Gaia DR4](https://www.cosmos.esa.int/web/gaia/release).
+- Tutoriel — Ron Brecher : [NGC 891](https://astrodoc.ca/ngc-891-2026/), [NGC 7635](https://astrodoc.ca/ngc-7635-sky-watcher-skymax-200-dx-first-light/), [vdB 142](https://astrodoc.ca/vdb-142-in-three-colour-palettes/) ; [Wainwright](https://x-bit-astro-imaging.blogspot.com/2026/02) ; Cosgrove (M76, Sh2-134, Sh2-173, Sh2-88) ; [Deep Space Place SHO](https://deepspaceplace.com/tutorials/pixinsight-sho-workflow) ; [Chaotic Nebula MLDenoise](https://chaoticnebula.com/deep-sky-denoising-a-practical-guide-to-pixinsights-mldenoise/).
+- Officiel — [GraXpert 4.0.0](https://github.com/Dark-Matters-Astro/GraXpert/releases/tag/4.0.0), [SASpro](https://github.com/setiastro/setiastrosuitepro/releases), [Siril 1.4.5](https://siril.org/download/2026-10-28-siril-1-4-5/), [StarNet](https://www.starnetastro.com/release-notes/) ; Presse — Adobe MAX 2026 *(résumé)*.
+
 ## ImageSolver en local Gaia DR3/SP (6 novembre 2026)
 
 Demande de l'utilisateur : « je veux utiliser ern local C:\GAIA\DR3SP » (après « too short response » sur le miroir de Harvard).
@@ -470,6 +480,8 @@ Narrowband, sources récentes :
 - Tutoriel — [Warren Keller, masterclass d'étirement 2026](https://app.telescope.live/en/tutorials/217/2026-pixinsight-stretching-masterclass) et [NBN](https://app.telescope.live/en/tutorials/98/exploring-pixinsight-narrowband-normalization-techniques) : sans réglages chiffrés lisibles.
 
 ## Non vérifié
+
+- Veille du 21 novembre 2026 : date exacte du retrait GraXpert et retrait éventuel des scripts GraXpert de la Toolbox ; bugs 1.9.6 signalés (MLDenoise build 1719 sous Windows, StarDetector selon le nombre de threads, modules perdus après mise à jour, scripts SetiAstro en 1.9.6) ; effet réel du correctif LHE ; détail de SRGC (SASpro 1.24.0) ; Camera Raw 19 / Photoshop 28 (presse) ; formules de Wainwright (une source) ; BXT en accentuation non linéaire (Brecher, contraire à l'usage RC Astro) ; index Gaia DR4 pour PixInsight.
 
 - GraXpert retiré (21 novembre 2026) : date exacte du retrait (déduite du commit du 15 novembre), texte exact de la règle CPD 5.5, durée de fonctionnement d'un module déjà installé (futures versions de PixInsight) : non vérifiés.
 
