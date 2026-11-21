@@ -5,7 +5,7 @@ Ordre des étapes, ce que fait chaque étape et pourquoi, mode rapide, images fe
 Issu de l'ancienne fiche HTML `docs/pixinsight-workflow.html` (octobre 2026) ; sources dans `docs/sources.md`.
 
 ## Mode rapide (LRGB et LHaRGB)
-Pour traiter beaucoup de galaxies vite : des conteneurs préréglés, à glisser dans l'ordre. Gradient par GradientCorrection seulement (MGC + MARS reste au mode normal).
+Pour traiter beaucoup de galaxies vite : des conteneurs préréglés, à glisser dans l'ordre. Gradient par GradientCorrection (MGC + MARS reste au mode normal) ; variantes GraXpert à côté (R_Gradient_auto_graxpert_rapide, T_Turbo_debut_graxpert, Opt_GraXpert ; 20 novembre 2026).
 
 **Où sont les icônes** : [Conteneurs-LRGB.xpsm](https://github.com/clodoweg/PixInsight/blob/main/docs/process-icons/workflows/Conteneurs-LRGB.xpsm) et [Conteneurs-LHaRGB.xpsm](https://github.com/clodoweg/PixInsight/blob/main/docs/process-icons/workflows/Conteneurs-LHaRGB.xpsm). Chaque colonne a trois groupes : **P#_Nom** (chemin principal, E00…), **P#_options** (Opt_…) et **P#_rapide** (R_…) ; sans icône R_, prends le chemin principal. L est étirée SANS étoiles, à la main par les 3 GHS ; le RGB est étiré AVEC ses étoiles par MAS, puis SXT Unscreen (RGB_stars) ; LRGB sur les deux images sans étoiles ; RGB_stars remises à la fin. Le turbo T_Turbo_debut fait P1 à P3 en un clic.
 
@@ -19,7 +19,9 @@ Où| Icône| Sur| Ce qu'elle fait
 ---|---|---|---  
 P1_rapide| R_C_Preparation_rapide| masters seuls ouverts ; double-clic puis **Apply Global**| Renommer_auto, LinearPatternSubtraction, Combinaison_RGB (crée `RGB`), Solver_auto  
 P1_turbo| T_Turbo_debut| masters seuls ouverts ; double-clic puis **Apply Global**| en une fois : étapes de R_C_Preparation_rapide, R_Gradient_auto_rapide et R_Lineaire_rapide (un seul conteneur, les icônes R_ ne sont pas nécessaires) ; ensuite GHS_1_premier sur L  
+P1_turbo| T_Turbo_debut_graxpert| masters seuls ouverts ; double-clic puis **Apply Global**| comme T_Turbo_debut, gradient par GraXpert (module et application GraXpert installés)  
 P2_rapide| R_Gradient_auto_rapide| double-clic puis Apply Global| GradientCorrection sur toutes les images ouvertes  
+P2_rapide| R_Gradient_auto_graxpert_rapide| double-clic puis Apply Global| GraXpert sur toutes les images ouvertes, à la place de R_Gradient_auto_rapide  
 P3_rapide| R_Lineaire_rapide| double-clic puis Apply Global| lance E08_C_RGB_lineaire sur RGB (BXT Correct Only, SPCC, BXT, NXT) puis E09_C_L_lineaire sur L (BXT, NXT, SXT : L sans étoiles)  
 P4| E10 GHS_1_premier, E11 GHS_2_contraste, E12 GHS_3_fond (chemin principal)| L sans étoiles| GHS_1 à la main, puis GHS_2 et GHS_3_fond  
 P4_rapide| R_C_RGB_etire_rapide| RGB linéaire avec étoiles| MAS (fond 0,15), SXT Unscreen (crée RGB_stars), SCNR vert sur RGB_stars, GHS fond (violet : SCNR_etoiles_violet à part) (SP = HP = 0,12)  

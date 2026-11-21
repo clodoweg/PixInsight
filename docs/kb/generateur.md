@@ -74,7 +74,7 @@ Règle : chaque script a une fenêtre, mise à jour à chaque changement du scri
 ## Ctrl+Z dans les rapides narrowband (revue du code, 8 octobre 2026, demande de l'utilisateur)
 
 Aucun test dans PixInsight. Règle : process natif lancé sur une vue (executeOn, hors fenêtre de script) ou recopie par cwApplyOnCopy (beginProcess / assign / endProcess) = étape d'historique, annulable ; fermeture (Fermer_vues, forceClose) = jamais annulable.
-- R_Gradient_auto_rapide : GradientCorrection par executeOn, annulable image par image.
+- R_Gradient_auto_rapide : GradientCorrection (galaxies) ou GraXpert (narrowband, outil = graxpert) par executeOn, annulable image par image.
 - R_C_MAS_canaux_rapide : MAS par executeOn (Lineaire_auto), annulable canal par canal.
 - R_C_Palette_rapide : NBN_SHO annulable sur SHO_etire ; S, H, O restent ouverts.
 - R_C_RGB_etoiles_rapide : SCNR vert (Etoiles_auto, executeOn) annulable sur RGB_stars ; MAS et SXT faits sur RGB, fermé ensuite.
@@ -120,3 +120,14 @@ Skill `maj-diagrammes` (20 octobre 2026, demande de l'utilisateur) : `build/kb_i
 - Enregistrer le projet (.xosm) depuis un script : aucune fonction PJSR documentée (8 novembre 2026) ; l'utilisateur ne veut PAS de sauvegarde des images à la place (« trop lourd ») : ne rien proposer d'autre.
 - Fenêtre de script vide qui bloque PixInsight (12 novembre 2026, capture de l'utilisateur : fenêtre « Lecture Photoshop » vide ; une fois fermée par la croix, plus rien ne répond, PixInsight à tuer ; « souvent celui de copie ou ouverture photoshop ») : cause non établie ; hypothèse : la fenêtre modale est créée pendant que Photoshop prend le premier plan (aller-retour Photoshop), elle n'est pas dessinée et la croix ne termine pas proprement la boucle modale. Mesure prise : Opt_Export_Photoshop et Lecture_Photoshop (option et chemin principal narrowband) avec `dialogue = false` : exécution directe, sans fenêtre (la fenêtre reste accessible par le menu Script › clodoweg). Ne pas fermer une telle fenêtre vide par la croix : essayer Échap ou Entrée.
 - Même blocage (13 novembre 2026, retour de l'utilisateur : « j'ai le probleme de script qui fait tout planté sur le fermer tout et sur le exporter tiff ») : Opt_Fermer_tout et Export_TIFF (chemin principal, options) aussi avec `dialogue = false`. Fermer_tout ferme donc toutes les vues sans fenêtre ; pour garder une vue, glisser l'icône sur elle. Si le blocage touche d'autres scripts : généraliser `dialogue = false` aux icônes Apply Global (la fenêtre reste dans le menu Script › clodoweg).
+
+## Renommer_auto : masques de recadrage (20 novembre 2026)
+
+Demande de l'utilisateur (capture : vues MasterLight_R_crop_mask, MasterLight_L_crop_mask) : « Les images comme ca doivent etre fermée automatiquement au debut ». Renommer_auto ferme toujours, sans demander, les vues dont le nom contient `crop_mask` (`renIsCropMask`, `renCropMaskWindows`) et ne les compte plus comme masters : le masque R porte le fichier du master R (FILTER-R) et pouvait faire fermer le vrai master R autocrop comme doublon.
+
+## GraXpert et recherche aveugle (20 novembre 2026)
+
+Bloc final de make_workflows.py (avant la boucle d'écriture) :
+- LRGB et LHaRGB : GraXpert après DBE (option), R_Gradient_auto_graxpert_rapide sous R_Gradient_auto_rapide, T_Turbo_debut_graxpert = copie du T_Turbo_debut final dont la table de Gradient_auto reçoit `outil=graxpert`.
+- Narrowband : GraXpert échangé avec GradientCorrection (rôle `grad:mgc|gc` par `layout.role`, GradientCorrection `opt`) ; `outil=graxpert` ajouté à R_Gradient_auto_rapide et à T_Turbo_debut ; variantes _graxpert retirées ; textes : `WHEN_PREFIX` (layout.py), `V` (short_desc.py), `RAPIDE_NOTE[p][2]`.
+- `_ajoute_blind` (solver_blindSolver = 1 après solver_magnitude, compteur `rows` augmenté) appliqué aux 5 workflows.

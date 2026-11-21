@@ -34,7 +34,7 @@ Tous à copier dans `src/scripts/clodoweg/` de PixInsight (`maj_pc.bat` le fait)
 | `ImageSolver_Date.js` | date ajoutée si absente, puis ImageSolver avec les réglages du matériel (catalogue en ligne Gaia DR2) |
 | `Crop_commun.js` | crop commun : image minimum Crop_ref + DynamicCrop (`mode=reference`), puis même crop sur toutes les images (`mode=appliquer`) |
 | `Binning_x2.js` | binning logiciel 2×2 de toutes les images ouvertes (solution astrométrique gardée) |
-| `Gradient_auto.js` | GradientCorrection seule sur toutes les images (R_Gradient_auto_rapide), ou GraXpert avec `outil=graxpert` (R_Gradient_auto_graxpert_rapide) |
+| `Gradient_auto.js` | GradientCorrection seule sur toutes les images (R_Gradient_auto_rapide en LRGB et LHaRGB), ou GraXpert avec `outil=graxpert` (R_Gradient_auto_graxpert_rapide en LRGB et LHaRGB ; R_Gradient_auto_rapide et T_Turbo_debut en narrowband) |
 | `Lineaire_auto.js` | lance des icônes du chemin principal sur des vues données (rapides et turbos) |
 | `Lecture_Photoshop.js` | icône Opt_Lecture_Photoshop (P7) : rouvre dans une nouvelle vue <nom>_PS le dernier .tif d'Export_TIFF, retouché et enregistré dans Photoshop (paramètre `fichier` : chemin forcé) |
 | `Taches_fond.js` | option P4 galaxies : lisse la couleur du fond du RGB sans étoiles (taches rouges, bleues), luminosité gardée |
