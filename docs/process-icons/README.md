@@ -44,7 +44,7 @@ Tous à copier dans `src/scripts/clodoweg/` de PixInsight (`maj_pc.bat` le fait)
 | `Magenta_moins.js` | retire le magenta / violet (inverser, SCNR vert, inverser : G' = max(G, min(R, B))) ; option P7 Magenta_moins en narrowband ; bouton Aperçu |
 | `Stat_canaux.js` | Statistical Stretch sur plusieurs canaux mono (S, H, O) en un clic |
 | `Etoiles_auto.js` | sur l'image d'étoiles : SCNR vert (SCNR_etoiles_vert), anti-violet (SCNR_etoiles_violet), saturation, étirement si amount > 0 |
-| `Etoiles_NB_auto.js` | étoiles RGB plausibles à partir des étoiles narrowband (SHO sans RGB, HOO) |
+| `Etoiles_NB_auto.js` | étoiles RGB plausibles à partir des étoiles narrowband (SHO sans RGB, HOO) ; paramètre `melange` : NB to RGB (défaut) ou Wainwright (option Etoiles_NB_wainwright, 21 novembre 2026) |
 | `Saturation_grosses.js` | sature seulement les grosses étoiles presque blanches de RGB_stars |
 | `Etoiles_grosses.js` | réduit seulement les grosses étoiles de l'image d'étoiles, avant la recombinaison |
 | `Masque_auto.js` | masque de luminance masque_L : attacher, retirer, créer sans attacher (couleur = RGB pour les conteneurs), mélanger |

@@ -12,7 +12,7 @@ PHASE_NOTE = [
 ]
 
 # phase propre à un workflow (prioritaire sur PHASE)
-PHASE_PREFIX = {('SHO', 'Etoiles_NB_auto'): 3}
+PHASE_PREFIX = {('SHO', 'Etoiles_NB_auto'): 3, ('SHO', 'Etoiles_NB_wainwright'): 3, ('HOO', 'Etoiles_NB_wainwright'): 3}
 # options d'étoiles en phase 3, là où l'image d'étoiles est faite (demande de l'utilisateur, 20 octobre 2026) : SHO et HOO (NBtoRGB_stars, Etoiles_NB_auto
 # en phase 3 aussi en HOO) ; RGB + SHO : toute la chaîne RGB_stars (MAS, SXT_RGB_etire, SCNR_etoiles_vert, Fermer_RGB, R_C_RGB_etoiles_rapide) en fin de phase 3
 PHASE_PREFIX.update({(p, b): 3 for p in ('SHO', 'HOO') for b in ('Etoiles_NB_auto', 'SCNR_etoiles_vert', 'SCNR_etoiles_violet', 'Saturation_grosses')})
@@ -35,11 +35,12 @@ PHASE = {
     'Etoiles_reduites': 7, 'Fermer_RGB': 4, 'Fermer_L_stars': 3, 'Fermer_continuum': 3, 'Fermer_etoiles': 7, 'MT_etoiles': 7, 'Halo_B_Gon': 7, 'Etoiles_plafond': 7, 'Saturation_grosses': 4, 'EZ_Soft_Stretch': 4, 'C_P3_rapide': 3, 'Main_continuum': 3, 'C_Ha_RGB_rapide': 3, 'NXT_dernier': 7, 'Etoiles_grosses': 7, 'Lineaire_rapide': 3, 'SCNR_etoiles_vert': 4, 'SCNR_etoiles_violet': 4, 'SXT_RGB_etire': 4, 'Sharp_USM': 6, 'C_Sharp_MMT': 6, 'C_RGB_etire_rapide': 4, 'C_RGB_etoiles_rapide': 4, 'MAS_canaux': 4, 'C_MAS_canaux_rapide': 4, 'C_Stat_canaux_rapide': 4, 'C_Palette_rapide': 5, 'C_Lineaire_rapide': 3, 'Continuum_SHO': 3, 'Copie_RGB_continuum': 3, 'SXT_RGB_continuum': 3, 'C_Continuum_prep': 3, 'C_NB_renommer': 3, 'C_Continuum_fin': 3,
     'NBN_SHO_doux': 5,
     'Binning_x2': 1, 'Crop_reference': 1, 'Crop_appliquer': 1, 'H_dans_RGB_v2': 3, 'CombineHaWithRGB': 3, 'MAS': 4, 'MAS_light': 4, 'DarkStructureEnhance': 6, 'Agrandir_x2': 7,
+    'Finition_LHE3': 6, 'SynthL': 1, 'SynthL_vers_L': 1, 'MAS_L': 4, 'Etoiles_NB_wainwright': 7,   # veille du 21 novembre 2026
 }
 
 NB = ('RSHO', 'SHO', 'HOO')
 LUM = ('LRGB', 'LHA')   # workflows avec luminance : par défaut Statistical Stretch sur le RGB, GHS sur L
-OPT = {'GraXpert', 'Magenta_moins', 'Voile_PS', 'Temperature_PS_5', 'Temperature_PS_10', 'Turbo_palette', 'Gradient_auto_graxpert_rapide', 'Turbo_debut_graxpert', 'Turbo_fin', 'NBN_SHO_doux', 'C_Ha_RGB_rapide', 'Look_Lightroom', 'C_Stat_canaux_rapide', 'MAS_light', 'C_Lineaire_rapide', 'MAS_canaux', 'C_MAS_canaux_rapide', 'C_Palette_rapide', 'C_RGB_etoiles_rapide', 'Continuum_SHO', 'Copie_RGB_continuum', 'SXT_RGB_continuum', 'C_Continuum_prep', 'C_NB_renommer', 'C_Continuum_fin', 'NXT_H', 'NXT_O_S', 'Main_continuum', 'ImageSolver_seul', 'EZ_Soft_Stretch', 'Turbo_debut', 'H_dans_RGB', 'C_P3_rapide', 'Finition_saturee', 'Boost_finition_light', 'Boost_finition', 'WBPP', 'CC_auto', 'Find_Background', 'LinearFit_ref_H', 'H_dans_L', 'NBRGBCombination', 'HDRMT_30', 'HDRMT_40', 'HDRMT_50', 'HDRMT_eclat', 'Boost_final', 'Fond_desature', 'NXT_final', 'NXT_final_doux', 'NXT_final_fort', 'Fond_auto_clair', 'Nettoyage_sans_etoiles', 'Couleur_selective_SHO', 'Couleur_selective_SHO_2', 'Couleur_selective_SHO_3', 'ICC_sRGB', 'Export_Photoshop', 'Lecture_Photoshop', 'Fermer_tout', 'Gradient_auto_rapide', 'Boost_final_doux', 'SXT_non_lineaire', 'C_Fin_rapide', 'C_Etoiles_fond_rapide', 'Mode_rapide', 'C_Preparation_rapide', 'C_RGB_rapide', 'C_LRGB_rapide', 'C_L_rapide', 'STF', 'C_RGB_couleur_rapide', 'C_H_rapide', 'C_RGB_fin_rapide',
+OPT = {'Finition_LHE3', 'SynthL', 'SynthL_vers_L', 'MAS_L', 'Etoiles_NB_wainwright', 'GraXpert', 'Magenta_moins', 'Voile_PS', 'Temperature_PS_5', 'Temperature_PS_10', 'Turbo_palette', 'Gradient_auto_graxpert_rapide', 'Turbo_debut_graxpert', 'Turbo_fin', 'NBN_SHO_doux', 'C_Ha_RGB_rapide', 'Look_Lightroom', 'C_Stat_canaux_rapide', 'MAS_light', 'C_Lineaire_rapide', 'MAS_canaux', 'C_MAS_canaux_rapide', 'C_Palette_rapide', 'C_RGB_etoiles_rapide', 'Continuum_SHO', 'Copie_RGB_continuum', 'SXT_RGB_continuum', 'C_Continuum_prep', 'C_NB_renommer', 'C_Continuum_fin', 'NXT_H', 'NXT_O_S', 'Main_continuum', 'ImageSolver_seul', 'EZ_Soft_Stretch', 'Turbo_debut', 'H_dans_RGB', 'C_P3_rapide', 'Finition_saturee', 'Boost_finition_light', 'Boost_finition', 'WBPP', 'CC_auto', 'Find_Background', 'LinearFit_ref_H', 'H_dans_L', 'NBRGBCombination', 'HDRMT_30', 'HDRMT_40', 'HDRMT_50', 'HDRMT_eclat', 'Boost_final', 'Fond_desature', 'NXT_final', 'NXT_final_doux', 'NXT_final_fort', 'Fond_auto_clair', 'Nettoyage_sans_etoiles', 'Couleur_selective_SHO', 'Couleur_selective_SHO_2', 'Couleur_selective_SHO_3', 'ICC_sRGB', 'Export_Photoshop', 'Lecture_Photoshop', 'Fermer_tout', 'Gradient_auto_rapide', 'Boost_final_doux', 'SXT_non_lineaire', 'C_Fin_rapide', 'C_Etoiles_fond_rapide', 'Mode_rapide', 'C_Preparation_rapide', 'C_RGB_rapide', 'C_LRGB_rapide', 'C_L_rapide', 'STF', 'C_RGB_couleur_rapide', 'C_H_rapide', 'C_RGB_fin_rapide',
        'MT_etoiles', 'Halo_B_Gon', 'Etoiles_plafond', 'Saturation_grosses', 'SCNR_etoiles_violet', 'Etoiles_grosses', 'CorrectMagentaStars', 'SCNR_SHO', 'CloneStamp', 'Taches_fond', 'Perfect_Palette_Picker', 'NBColourMapper', 'H_en_luminance',
        'Etoiles_HOO_synth', 'DualBand_H', 'DualBand_O', 'SPFC_S',
        'Binning_x2', 'Crop_reference', 'Crop_appliquer', 'H_dans_RGB_v2', 'C_RGB_etire_rapide', 'DarkStructureEnhance', 'Agrandir_x2', 'Lineaire_rapide', 'Sharp_USM'}
@@ -108,6 +109,11 @@ CHOICES = {
 
 # pour les options : quand les ajouter
 WHEN = {
+    # veille du 21 novembre 2026 (Ron Brecher, novembre 2026)
+    'Finition_LHE3': "à la place de C_Finition, pour plus de relief à toutes les échelles : même courbe (saturation 0,58), puis LHE à 3 rayons (40, 150, 512) au lieu de 2 ; compare avec C_Finition sur la même image (Ctrl+Z entre les deux)",
+    'SynthL': "L faible ou bruitée : super-L = L + R + G + B pondérées par leur rapport signal/bruit ; après LinearPatternSubtraction, avant Combinaison_RGB (R, G, B encore ouvertes) ; ensuite SynthL_vers_L",
+    'SynthL_vers_L': "juste après SynthL : glisse sur L, qui prend les pixels de SyntheticLuminance (fermée ensuite) ; la suite du workflow ne change pas",
+    'MAS_L': "à la place de GHS_1, GHS_2 et GHS_3_fond sur L sans étoiles linéaire : étirement automatique (comme le RGB) ; compare avec tes 3 GHS",
     'Look_Lightroom': "retouche finale façon Camera Raw / Lightroom (tes réglages : Exposition +0,25, Tons clairs -100, Blancs +50, Température +10) : glisse sur l'image SANS étoiles finie (après Fond_desature et Fond_auto), juste avant Etoiles_screen ; toute l'image par défaut (masque de luminance en option dans la fenêtre)",
     'C_Fin_rapide': "MODE RAPIDE, à la place de HDRMT_30, C_Finition, C_Sharp_MMT et NXT_final : sur l'image sans étoiles après LRGB_ajout_L (ou R_C_LRGB_rapide)",
     'C_Etoiles_fond_rapide': "MODE RAPIDE, à la place de Fond_desature, Fond_auto, Etoiles_screen, Boost_final, NXT_dernier et Export_TIFF : sur l'image sans étoiles finie, RGB_stars et L ouvertes",
@@ -238,6 +244,8 @@ CONTAINERS = {
 
 # Textes d'option propres au narrowband
 WHEN_NB = {
+    'Finition_LHE3': "à la place de C_Finition, pour plus de relief à toutes les échelles : même courbe (saturation 0,58), puis LHE à 3 rayons (40, 150, 512) au lieu de 2 ; compare avec C_Finition sur la même image (Ctrl+Z entre les deux)",
+    'Etoiles_NB_wainwright': "à la place d'Etoiles_NB_auto (même place, mêmes étoiles linéaires) : autre mélange de couleur des étoiles (Steve Wainwright) ; compare les deux NBtoRGB_stars",
     'NBN_SHO_doux': "à la place de NBN_SHO, à tester : réglages plus doux (Deep Space Place 2026 : Lightness Off, SCNR 0,20, OIII 1,2, SII 1,4) ; glisse sur SHO_etire après SHO_simple, compare avec NBN_SHO",
     'C_Stat_canaux_rapide': "MODE RAPIDE, à la place de GHS_1 et GHS_2 sur les canaux (Statistical Stretch, médiane 0,25) : S, H, O linéaires sans étoiles ouverts (après R_C_Lineaire_rapide ou T_Turbo_debut), double-clic puis Apply Global (pas en glissant) ; ensuite la palette (GHS_2_contraste et GHS_3_fond en option)",
     'NB_to_RGB_Stars': "à la place d'Etoiles_NB_auto, à la main dans la fenêtre du script SetiAstro (même mélange) ; LinearFit des étoiles sur H_stars avant",

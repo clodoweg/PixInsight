@@ -460,3 +460,7 @@ Demande de l'utilisateur : « met aussi dans les SHO, HOO, etc le nouveau script
 ## LinearFit en SHO (21 novembre 2026, question)
 
 Question de l'utilisateur : « est ce que en SHO faire un linear fit au debut du process a un interet? ». Réponse (raisonnement, pas de mesure) : presque aucun dans ce workflow, Opt_LinearFit_ref_H reste en option. Les canaux sont étirés séparément (Stat_canaux, fond 0,25) puis NBN rééquilibre la palette ; LinearFit défait l'étalonnage SPFC de H et O et amplifie le bruit de S. Utile seulement si S, H, O sont étirés ensemble en un bloc, ou éventuellement pour BXT / SXT sur un S très faible (gain non mesuré).
+
+## Etoiles_NB_wainwright (21 novembre 2026, veille)
+
+Demande de l'utilisateur : « Fais toutes les autres propositions » (proposition 7 de la veille du 21 novembre). Script Etoiles_NB_auto, nouveau paramètre `melange` (`nbtorgb` par défaut, `wainwright`), choix « Mélange » dans la fenêtre. Wainwright (blog, février 2026) : M1 R = 0,8H + 0,2S, G = B = O ; M2 R = 0,4H + 0,6S, G = 0,4O + 0,3H + 0,3S, B = O ; M3 R = H, G = 0,2H + 0,8O, B = O ; M4 = moyenne (son choix) : R = 0,7333H + 0,2667S, G = 0,7333O + 0,1667H + 0,1S, B = O. HOO : S remplacé par H (R = H, G = 0,7333O + 0,2667H), choix fait ici, non publié. Option Opt_Etoiles_NB_wainwright (P3, SHO sans RGB et HOO), mêmes réglages que Etoiles_NB_auto (SHO : étirement 6, boost 1,3 ; HOO : 5 et 1,0). Une seule source ; étape linéaire ou non et LinearFit non précisés par l'auteur (ici : LinearFit sur H puis mélange linéaire, comme NB to RGB). Non testé.

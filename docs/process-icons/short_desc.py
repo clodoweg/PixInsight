@@ -413,6 +413,30 @@ STAT_SUBS = [("ensuite GHS_1_premier sur H", "ensuite Statistical_Stretch sur S,
              ("après les GHS", "après Statistical_Stretch"), ("en phase 4 : GHS sur S, H, O", "en phase 4 : Statistical_Stretch sur S, H, O"),
              ("les GHS de S, H, O", "Statistical_Stretch de S, H, O"), ("puis GHS à la main", "puis Statistical_Stretch à la main"),
              ("à la place des GHS", "à la place de Statistical_Stretch"), ("des GHS sur chaque canal", "de Statistical_Stretch sur chaque canal")]
+# veille du 21 novembre 2026 (demande de l'utilisateur : « Fais toutes les autres propositions »)
+S['Finition_LHE3'] = ("conteneur : masque_L créé sans être attaché, copie de l'image, courbe en S (0,25 -> 0,19 ; 0,75 -> 0,81) avec saturation 0,5 -> 0,58 (comme C_Finition), puis LHE rayon 40 (Amount 0,25), rayon 150 (0,18), rayon 512 (0,20), Contrast limit 1,5, circulaire ; mélange masque_L × résultat + (1 − masque_L) × copie, copie et masque fermés (Ron Brecher, NGC 7635, 2026)",
+                      "glisse sur l'image sans étoiles étirée, à la place de C_Finition ; ensuite C_Sharp_MMT comme d'habitude",
+                      ["trop de relief, aspect dur -> Ctrl+Z et C_Finition", "halos sombres autour du cœur -> Amount du rayon 512 à 0,10 (double-clic sur le conteneur)", "pas assez de relief -> Amount du rayon 150 à 0,25"])
+S['SynthL'] = ("script SyntheticLuminance (Cosmic Photons, conçu avec John Hayes) : l'icône ouvre sa fenêtre, qui garde tes derniers réglages (pas de réglage dans l'icône)",
+               "après LinearPatternSubtraction, avant Combinaison_RGB (L, R, G, B linéaires ouvertes) : double-clic puis Apply Global ; Mode = R, G, B [+ Luminance], Red = R, Green = G, Blue = B, case « combine with a luminance image » cochée, Luminance = L ; Set Auto Weights ; Output view id = SyntheticLuminance ; Execute ; ensuite SynthL_vers_L",
+               ["script absent -> dépôt https://www.cosmicphotons.com/pi-scripts/syntheticluminance/ dans Manage Repositories, puis Check for Updates",
+                "fonds de R, G, B très différents (gradient fort) -> le script ne les égalise pas : garde ta L seule",
+                "vue créée SyntheticLuminance1 -> ferme l'ancienne SyntheticLuminance avant"])
+S['SynthL_vers_L'] = ("conteneur : PixelMath SyntheticLuminance -> L (L prend les pixels de la super-L), puis Fermer_vues SyntheticLuminance",
+                      "glisse sur L juste après SynthL ; ensuite Combinaison_RGB comme d'habitude",
+                      ["« undefined symbol SyntheticLuminance » -> SynthL pas lancé, ou vue nommée autrement : renomme-la SyntheticLuminance", "tailles différentes -> recadre avant (Crop_appliquer)"])
+S['MAS_L'] = ("MultiscaleAdaptiveStretch, tes réglages MAS (Aggressiveness 0,70, Target background 0,150, Dynamic range compression 0,40, Contrast recovery coché, séparation 1024) ; saturation sans effet sur L (gris)",
+              "glisse sur L sans étoiles LINÉAIRE (après C_L_lineaire), à la place de GHS_1, GHS_2 et GHS_3_fond ; ensuite MAS sur le RGB comme d'habitude",
+              ["fond de L plus clair que celui du RGB -> GHS_3_fond sur L", "cœur brûlé -> Dynamic range compression 0,60", "trop plat -> Aggressiveness 0,85, ou tes 3 GHS"])
+S['Etoiles_NB_wainwright'] = ("script Etoiles_NB_auto, mélange Wainwright (moyenne M4 de ses 3 mélanges) : LinearFit d'O_stars et S_stars sur H_stars ; R = 0,73·H + 0,27·S, G = 0,73·O + 0,17·H + 0,10·S, B = O dans NBtoRGB_stars ; étirement Star Stretch 6 ; Color Boost 1,3 ; étoiles par canal fermées",
+                              "à la place d'Etoiles_NB_auto, même place (phase 3, étoiles linéaires) : double-clic puis Apply Global (fenêtre : choix « Mélange »), ou glisse l'icône sur n'importe quelle image ; copie Etoiles_NB_auto.js dans src/scripts/clodoweg (lance maj_pc.bat)",
+                              ["étoiles trop rouges -> mélange NB to RGB (Etoiles_NB_auto)", "étoiles criardes -> Color Boost 0,7", "vue NBtoRGB_stars déjà là -> elle est remplacée"])
+V[('HOO', 'Etoiles_NB_wainwright')] = (S['Etoiles_NB_wainwright'][0].replace("O_stars et S_stars sur H_stars", "O_stars sur H_stars").replace("R = 0,73·H + 0,27·S, G = 0,73·O + 0,17·H + 0,10·S", "sans S (S remplacé par H) : R = H, G = 0,73·O + 0,27·H").replace("Star Stretch 6 ; Color Boost 1,3", "Star Stretch 5 ; Color Boost 1,0"),
+                                       S['Etoiles_NB_wainwright'][1], S['Etoiles_NB_wainwright'][2])
+_si = "autre couleur des étoiles -> Etoiles_NB_wainwright (option), ou « Mélange » dans la fenêtre"
+for _k in (('SHO', 'Etoiles_NB_auto'), ('HOO', 'Etoiles_NB_auto')):
+    V[_k] = (V[_k][0], V[_k][1], list(V[_k][2]) + [_si])
+
 def stat_sub(t):
     for a, b in STAT_SUBS:
         t = t.replace(a, b)

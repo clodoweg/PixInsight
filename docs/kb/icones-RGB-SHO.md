@@ -1214,6 +1214,43 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > SI :
 > - trop saturé -> C_Finition (saturation 0,58)
 
+#### Opt_Finition_LHE3 — ProcessContainer
+   1. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
+      paramètres : `mode=creer`, `s=0.14`, `flou=2`, `nom=masque_L`, `couleur=true`, `dialogue=false`
+   2. PixelMath
+      expression = `$T` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=true ; showNewImage=true ; newImageId=Masque_avant ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
+   3. CurvesTransformation
+      Rt=AkimaSubsplines ; Gt=AkimaSubsplines ; Bt=AkimaSubsplines ; Kt=AkimaSubsplines ; At=AkimaSubsplines ; Lt=AkimaSubsplines ; at=AkimaSubsplines ; bt=AkimaSubsplines ; ct=AkimaSubsplines ; Ht=AkimaSubsplines ; St=AkimaSubsplines ; table R (2 lignes) ; table G (2 lignes) ; table B (2 lignes) ; table K (4 lignes) ; table A (2 lignes) ; table L (2 lignes) ; table a (2 lignes) ; table b (2 lignes) ; table c (2 lignes) ; table H (2 lignes) ; table S (3 lignes)
+   4. LocalHistogramEqualization
+      radius=40 ; histogramBins=Bit10 ; slopeLimit=1.5 ; amount=0.250 ; circularKernel=true
+   5. LocalHistogramEqualization
+      radius=150 ; histogramBins=Bit12 ; slopeLimit=1.5 ; amount=0.180 ; circularKernel=true
+   6. LocalHistogramEqualization
+      radius=512 ; histogramBins=Bit12 ; slopeLimit=1.5 ; amount=0.200 ; circularKernel=true
+   7. PixelMath
+      expression = `masque_L*$T + (1 - masque_L)*Masque_avant` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
+   8. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
+      paramètres : `views=Masque_avant`, `dialogue=false`
+   9. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
+      paramètres : `mode=retirer`, `nom=masque_L`, `dialogue=false`
+
+> OPTION — à la place de C_Finition, pour plus de relief à toutes les échelles : même courbe (saturation 0,58), puis LHE à 3 rayons (40, 150, 512) au lieu de 2
+> Compare avec C_Finition sur la même image (Ctrl+Z entre les deux).
+> 
+> LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
+> 
+> PRÉRÉGLÉ : conteneur : masque_L créé sans être attaché, copie de l'image, courbe en S (0,25 -> 0,19 ; 0,75 -> 0,81) avec saturation 0,5 -> 0,58 (comme C_Finition), puis LHE rayon 40 (Amount 0,25), rayon 150 (0,18), rayon 512 (0,20), Contrast limit 1,5, circulaire ; mélange masque_L × résultat + (1 − masque_L) × copie, copie et masque fermés (Ron Brecher, NGC 7635, 2026).
+> 
+> À RÉGLER : glisse sur l'image sans étoiles étirée, à la place de C_Finition ; ensuite C_Sharp_MMT comme d'habitude.
+> 
+> SI :
+> - trop de relief, aspect dur -> Ctrl+Z et C_Finition
+> - halos sombres autour du cœur -> Amount du rayon 512 à 0,10 (double-clic sur le conteneur)
+> - pas assez de relief -> Amount du rayon 150 à 0,25
+
 #### Opt_Boost_finition_light — ProcessContainer
    1. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`

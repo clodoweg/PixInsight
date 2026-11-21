@@ -48,7 +48,10 @@ SCRIPTS = {
     'Masque_L': ('$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js', '', [('mode', 'attacher'), ('s', '0.14'), ('flou', '2'), ('nom', 'masque_L')], L_DRAG),
     # mode creer (demande de l'utilisateur, 8 octobre 2026) : masque créé SANS être attaché ; les conteneurs mélangent eux-mêmes (sous_masque)
     # étoiles RGB plausibles depuis les étoiles narrowband, en un clic (demande de l'utilisateur, 8 octobre 2026) : LinearFit sur H, mélange NB to RGB, Star Stretch 5, boost 1
-    'Etoiles_NB_auto': ('$PXI_SRCDIR/scripts/clodoweg/Etoiles_NB_auto.js', '', [('h', 'H_stars'), ('o', 'O_stars'), ('s', 'S_stars'), ('ratio', '0.30'), ('linearfit', 'true'), ('stretch', '5.0'), ('boost', '1.00'), ('scnr', 'false'), ('nom', 'NBtoRGB_stars'), ('fermer', 'true')], L_GLOBAL),
+    'Etoiles_NB_auto': ('$PXI_SRCDIR/scripts/clodoweg/Etoiles_NB_auto.js', '', [('h', 'H_stars'), ('o', 'O_stars'), ('s', 'S_stars'), ('ratio', '0.30'), ('linearfit', 'true'), ('stretch', '5.0'), ('boost', '1.00'), ('scnr', 'false'), ('nom', 'NBtoRGB_stars'), ('fermer', 'true'), ('melange', 'nbtorgb')], L_GLOBAL),
+    # super-L (veille du 21 novembre 2026, Ron Brecher NGC 891 ; script SyntheticLuminance 1.1 de Cosmic Photons, sans paramètres d'icône :
+    # il ouvre sa fenêtre et garde ses derniers réglages ; chemin lu dans le paquet du dépôt cosmicphotons.com)
+    'SynthL': ('$PXI_SRCDIR/scripts/CosmicPhotons/SyntheticLuminance/SyntheticLuminance.js', '', [], L_GLOBAL),
     # retouche finale façon Lightroom (demande de l'utilisateur, 8 octobre 2026) : Hautes lumières -50, Blancs +50, Température +10, Teinte +20, masque de luminance en option
     'Look_Lightroom': ('$PXI_SRCDIR/scripts/clodoweg/Look_Lightroom.js', '', [('exposition', '0.25'), ('contraste', '0'), ('hautes', '-100'), ('foncees', '0'), ('blancs', '50'), ('noirs', '0'), ('temperature', '10'), ('teinte', '0'), ('masque', 'false'), ('s', '0.14'), ('flou', '2.0')], L_DRAG),
     # Statistical Stretch (calcul de SetiAstro) sur S, H, O en un clic (demande de l'utilisateur, 9 octobre 2026) : R_C_Stat_canaux_rapide
@@ -1736,6 +1739,34 @@ for _st in (lrgb, lhargb):
           '            <tr>\n               <td id="id">dialogue</td>')).replace('id="Turbo_debut_instance"', 'id="Turbo_debut_graxpert_instance"')
     assert 'Turbo_debut_graxpert_instance' in _tx
     insert_after(_st, 'Turbo_debut', [(('Turbo_debut_graxpert', _tx), '')])
+
+# Veille du 21 novembre 2026 (demande de l'utilisateur : « Fais toutes les autres propositions ») : options seulement, chemin principal inchangé.
+# 5. Finition_LHE3 (5 workflows) : à la place de C_Finition, même courbe (saturation 0,58) puis LHE à 3 échelles (Ron Brecher, NGC 7635,
+#    11 novembre 2026 : 40 / 0,25 ; 150 / 0,18 ; 512 / 0,20 ; Contrast Limit 1,5), sous masque_L comme C_Finition (rayon maxi 512, PCL)
+def finition_lhe3():
+    return _cont('Finition_LHE3', sous_masque([curves('Courbes_LHE3', sat=0.58),
+        M.instance('LocalHistogramEqualization', 'LHE_40', {'radius': 40, 'histogramBins': 'Bit10', 'slopeLimit': '1.5', 'amount': '0.250', 'circularKernel': True}),
+        M.instance('LocalHistogramEqualization', 'LHE_150', {'radius': 150, 'histogramBins': 'Bit12', 'slopeLimit': '1.5', 'amount': '0.180', 'circularKernel': True}),
+        M.instance('LocalHistogramEqualization', 'LHE_512', {'radius': 512, 'histogramBins': 'Bit12', 'slopeLimit': '1.5', 'amount': '0.200', 'circularKernel': True})]))
+for _st in (lrgb, lhargb, rgbsho, sho, hoo):
+    insert_after(_st, 'Finition_saturee', [(finition_lhe3(), '')])
+# 6. Galaxies (LRGB, LHaRGB) : super-L puis MAS sur L (Ron Brecher, NGC 891, 5 novembre 2026)
+#    P1 : SynthL (fenêtre de SyntheticLuminance, mode R, G, B + Luminance) puis SynthL_vers_L (glissé sur L : L remplacée, SyntheticLuminance fermée),
+#    avant Combinaison_RGB (qui ferme R, G, B) ; P4 : MAS_L sur L sans étoiles, à la place de GHS_1, GHS_2, GHS_3_fond (réglages de ton MAS)
+def mas_l():
+    n, x = mas()
+    return 'MAS_L', x.replace('id="MAS_instance"', 'id="MAS_L_instance"', 1)
+for _st in (lrgb, lhargb):
+    insert_before(_st, 'Combinaison_RGB', [(script('SynthL', ''), ''),
+        (cont('SynthL_vers_L', [pm('SynthL_copie', 'SyntheticLuminance'), fermer('Fermer_SynthL', 'SyntheticLuminance')]), '')])
+    insert_after(_st, 'GHS_3_fond', [(mas_l(), '')])
+# 7. SHO sans RGB et HOO : Etoiles_NB_wainwright = Etoiles_NB_auto avec melange = wainwright (Steve Wainwright, février 2026, moyenne M4)
+for _st in (sho, hoo):
+    (_n, _x), _d = pick(_st, 'Etoiles_NB_auto')
+    _a = '<td id="id">melange</td>\n            <td id="value">nbtorgb</td>'
+    assert _a in _x
+    _x = _x.replace(_a, _a.replace('nbtorgb', 'wainwright')).replace('id="Etoiles_NB_auto_instance"', 'id="Etoiles_NB_wainwright_instance"', 1)
+    insert_after(_st, 'Etoiles_NB_auto', [(('Etoiles_NB_wainwright', _x), '')])
 
 for fn, pre, title, steps in [
     ('Workflow-LRGB.xpsm', 'LRGB', 'Workflow LRGB', lrgb),

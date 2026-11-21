@@ -376,6 +376,15 @@ Question : « Est-ce que tu penses qu'il est possible de rajouter à la fin une 
 
 - [GraXpert 3.0.2 and PixInsight script on Mac (AstroBin)](https://app.astrobin.com/forum/topic/125008/graxpert-302-and-pixinsight-script-on-mac-intel-macos-sonoma-145) — Forum *(résumé)* : scripts sous /Applications/PixInsight/src/scripts (chemin d'un message d'erreur).
 
+## Options de la veille du 21 novembre 2026 (Finition_LHE3, SynthL, MAS_L, Etoiles_NB_wainwright)
+
+Demande de l'utilisateur : « 1 - retire le depot manquant. je viens de mettre deja a jour mes process pour avoir gradientcorrection a la place / Fais toutes les autres propositions ». Dépôt GraXpert déjà retiré de `docs/depots-pixinsight.txt` (veille) ; GradientCorrection remise par l'utilisateur (commit du 21 novembre).
+- Tutoriel — [Ron Brecher, NGC 7635](https://astrodoc.ca/ngc-7635-sky-watcher-skymax-200-dx-first-light/) (LHE 40 / 0,25, 150 / 0,18, 512 / 0,20, Contrast Limit 1,5) ; [NGC 891](https://astrodoc.ca/ngc-891-2026/) (SynthL, MAS sur L, LHE 40 et 100 sous masque inversé).
+- Officiel (code) — [PCL, LocalHistogramEqualizationParameters.cpp](https://gitlab.com/pixinsight/PCL/-/blob/master/src/modules/processes/contrib/zvrastil/LocalHistogramEqualization/LocalHistogramEqualizationParameters.cpp) : radius 16 à 512 (défaut 64), slopeLimit 1 à 64 (défaut 2), histogramBins Bit8 / Bit10 / Bit12.
+- Officiel — dépôt [SyntheticLuminance](https://www.cosmicphotons.com/pi-scripts/syntheticluminance/) : paquet 20260914 v0101, chemin `src/scripts/CosmicPhotons/SyntheticLuminance/SyntheticLuminance.js` (MD5 9d2c010f5a33fab049e2fd5e1b862437, non mis dans l'icône), moteur v8, fenêtre seulement, réglages gardés par le script (`writeSetting`), sortie « SyntheticLuminance » par défaut ; documentation du paquet (modes, Set Auto Weights, fonds R, G, B non égalisés).
+- Tutoriel — [Steve Wainwright, février 2026](https://x-bit-astro-imaging.blogspot.com/2026/02) : mélanges M1 à M4 des étoiles NB.
+- Non vérifié : effet réel de ces options (aucun essai dans PixInsight) ; HOO avec S remplacé par H (choix du générateur) ; SyntheticLuminance avant correction du gradient.
+
 ## Veille du 21 novembre 2026 (skill veille, période 21 novembre 2025 - 21 novembre 2026)
 
 Rapport complet et liste des URL : `docs/veille/veille-2026-11-21.md`. Principales sources :

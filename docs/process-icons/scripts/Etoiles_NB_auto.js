@@ -16,6 +16,10 @@
 //      0,7 × boost sur les cyans, comme star_stretch.js), boost = 1 ;
 //      scnr = true : SCNR vert (Average Neutral) ;
 //   4. fermer = true : ferme h, o et s (images d'étoiles par canal, inutiles).
+// melange = wainwright (21 novembre 2026, veille : Steve Wainwright, février
+// 2026, moyenne M4 de ses trois mélanges) à la place du mélange NB to RGB :
+//   R = 0,7333·H + 0,2667·S ; G = 0,7333·O + 0,1667·H + 0,1·S ; B = O
+//   (sans S : S remplacé par H, R = H, G = 0,7333·O + 0,2667·H) ; ratio ignoré.
 // Une image « nom » déjà ouverte est remplacée.
 //
 // Lancement : double-clic puis Apply Global (fenêtre de réglages), ou glisser
@@ -36,7 +40,8 @@ function enParams()
    return { h: cwParam( "h", "H_stars" ), o: cwParam( "o", "O_stars" ), s: cwParam( "s", "S_stars" ),
             ratio: parseFloat( cwParam( "ratio", "0.3" ) ), linearfit: cwBool( "linearfit", true ),
             stretch: parseFloat( cwParam( "stretch", "5" ) ), boost: parseFloat( cwParam( "boost", "1.0" ) ),
-            scnr: cwBool( "scnr", false ), nom: cwParam( "nom", "NBtoRGB_stars" ), fermer: cwBool( "fermer", true ) };
+            scnr: cwBool( "scnr", false ), nom: cwParam( "nom", "NBtoRGB_stars" ), fermer: cwBool( "fermer", true ),
+            melange: (cwParam( "melange", "nbtorgb" ).toLowerCase() == "wainwright") ? "wainwright" : "nbtorgb" };
 }
 
 function enExport( p )
@@ -51,6 +56,7 @@ function enExport( p )
    Parameters.set( "scnr", p.scnr ? "true" : "false" );
    Parameters.set( "nom", p.nom );
    Parameters.set( "fermer", p.fermer ? "true" : "false" );
+   Parameters.set( "melange", p.melange );
 }
 
 function enDialog( p )
@@ -60,6 +66,9 @@ function enDialog( p )
    d.viewList( "Étoiles H :", cwViewById( p.h ), "Étoiles H linéaires (H_stars), référence du LinearFit.", function( v ) { p.h = v.isNull ? "" : v.id; } );
    d.viewList( "Étoiles O :", cwViewById( p.o ), "Étoiles O linéaires (O_stars).", function( v ) { p.o = v.isNull ? "" : v.id; } );
    d.edit( "Étoiles S (vide = aucune) :", p.s, "Étoiles S linéaires (S_stars) ; vide en HOO.", function( t ) { p.s = t.trim(); } );
+   d.combo( "Mélange :", [ "NB to RGB (SetiAstro)", "Wainwright (moyenne M4)" ], p.melange == "wainwright" ? 1 : 0,
+            "NB to RGB : R = 0,5 H + 0,5 S, G = ratio H + (1 − ratio) O, B = O. Wainwright : R = 0,73 H + 0,27 S, G = 0,73 O + 0,17 H + 0,10 S, B = O (ratio ignoré).",
+            function( i ) { p.melange = i == 1 ? "wainwright" : "nbtorgb"; } );
    d.check( "LinearFit sur H avant le mélange", p.linearfit, "Égalise O et S sur H (sinon étoiles toutes bleues).", function( c ) { p.linearfit = c; } );
    d.numeric( "Ratio H dans le vert :", 0, 1, 2, p.ratio, "G = ratio·H + (1 − ratio)·O ; 0,3 par défaut ; 0 = G = O.", function( v ) { p.ratio = v; } );
    d.numeric( "Étirement :", 0, 8, 1, p.stretch, "Stretch Factor de Star Stretch : 5 ; 0 = pas d'étirement.", function( v ) { p.stretch = v; } );
@@ -112,9 +121,20 @@ function enRun( p )
    cwCloseWindow( p.nom );
    let r = p.ratio;
    let P = new PixelMath;
-   P.expression = avecS ? "0.5*" + p.h + " + 0.5*" + p.s : p.h;
-   P.expression1 = r + "*" + p.h + " + " + (1 - r) + "*" + p.o;
-   P.expression2 = p.o;
+   if ( p.melange == "wainwright" )
+   {
+      // Wainwright M4 = moyenne de M1, M2, M3 ; sans S, S remplacé par H
+      let s = avecS ? p.s : p.h;
+      P.expression = "0.733333*" + p.h + " + 0.266667*" + s;
+      P.expression1 = "0.733333*" + p.o + " + 0.166667*" + p.h + " + 0.1*" + s;
+      P.expression2 = p.o;
+   }
+   else
+   {
+      P.expression = avecS ? "0.5*" + p.h + " + 0.5*" + p.s : p.h;
+      P.expression1 = r + "*" + p.h + " + " + (1 - r) + "*" + p.o;
+      P.expression2 = p.o;
+   }
    P.useSingleExpression = false;
    P.createNewImage = true;
    P.showNewImage = true;
@@ -164,7 +184,7 @@ function enRun( p )
          cwCloseWindow( p.s );
    }
    nw.bringToFront();
-   console.noteln( EN_TITLE + " : " + p.nom + " créée (" + (avecS ? "H, O, S" : "H, O") + (p.linearfit ? ", LinearFit sur H" : "") +
+   console.noteln( EN_TITLE + " : " + p.nom + " créée (" + (avecS ? "H, O, S" : "H, O") + (p.linearfit ? ", LinearFit sur H" : "") + (p.melange == "wainwright" ? ", mélange Wainwright" : "") +
                    ", ratio " + r + ", étirement " + p.stretch + ", Color Boost " + p.boost + (p.scnr ? ", SCNR" : "") + ")." );
 }
 

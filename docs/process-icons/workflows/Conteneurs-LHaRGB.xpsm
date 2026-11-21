@@ -371,6 +371,60 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
       </table>
       <parameter id="information"></parameter>
    </instance>
+   <instance class="Script" version="256" id="Opt_SynthL_instance">
+      <description>OPTION — L faible ou bruitée : super-L = L + R + G + B pondérées par leur rapport signal/bruit&#10;Après LinearPatternSubtraction, avant Combinaison_RGB (R, G, B encore ouvertes)&#10;Ensuite SynthL_vers_L.&#10;&#10;LANCEMENT : double-clic sur l'icône, puis Apply Global.&#10;&#10;PRÉRÉGLÉ : script SyntheticLuminance (Cosmic Photons, conçu avec John Hayes) : l'icône ouvre sa fenêtre, qui garde tes derniers réglages (pas de réglage dans l'icône).&#10;&#10;À RÉGLER : après LinearPatternSubtraction, avant Combinaison_RGB (L, R, G, B linéaires ouvertes) : double-clic puis Apply Global ; Mode = R, G, B [+ Luminance], Red = R, Green = G, Blue = B, case « combine with a luminance image » cochée, Luminance = L ; Set Auto Weights ; Output view id = SyntheticLuminance ; Execute ; ensuite SynthL_vers_L.&#10;&#10;SI :&#10;- script absent -&gt; dépôt https://www.cosmicphotons.com/pi-scripts/syntheticluminance/ dans Manage Repositories, puis Check for Updates&#10;- fonds de R, G, B très différents (gradient fort) -&gt; le script ne les égalise pas : garde ta L seule&#10;- vue créée SyntheticLuminance1 -&gt; ferme l'ancienne SyntheticLuminance avant</description>
+      <parameter id="filePath">$PXI_SRCDIR/scripts/CosmicPhotons/SyntheticLuminance/SyntheticLuminance.js</parameter>
+      <parameter id="md5sum"></parameter>
+      <table id="parameters" rows="0"/>
+      <parameter id="information"></parameter>
+   </instance>
+   <instance class="ProcessContainer" id="Opt_SynthL_vers_L_instance">
+      <description>OPTION — juste après SynthL : glisse sur L, qui prend les pixels de SyntheticLuminance (fermée ensuite)&#10;La suite du workflow ne change pas.&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : PixelMath SyntheticLuminance -&gt; L (L prend les pixels de la super-L), puis Fermer_vues SyntheticLuminance.&#10;&#10;À RÉGLER : glisse sur L juste après SynthL ; ensuite Combinaison_RGB comme d'habitude.&#10;&#10;SI :&#10;- « undefined symbol SyntheticLuminance » -&gt; SynthL pas lancé, ou vue nommée autrement : renomme-la SyntheticLuminance&#10;- tailles différentes -&gt; recadre avant (Crop_appliquer)</description>
+      <instance class="PixelMath" version="256" enabled="true">
+         <parameter id="expression">SyntheticLuminance</parameter>
+         <parameter id="expression1"></parameter>
+         <parameter id="expression2"></parameter>
+         <parameter id="expression3"></parameter>
+         <parameter id="useSingleExpression" value="true"/>
+         <parameter id="symbols"></parameter>
+         <parameter id="clearImageCacheAndExit" value="false"/>
+         <parameter id="cacheGeneratedImages" value="false"/>
+         <parameter id="generateOutput" value="true"/>
+         <parameter id="singleThreaded" value="false"/>
+         <parameter id="optimization" value="true"/>
+         <parameter id="use64BitWorkingImage" value="false"/>
+         <parameter id="rescale" value="false"/>
+         <parameter id="rescaleLower" value="0"/>
+         <parameter id="rescaleUpper" value="1"/>
+         <parameter id="truncate" value="true"/>
+         <parameter id="truncateLower" value="0"/>
+         <parameter id="truncateUpper" value="1"/>
+         <parameter id="createNewImage" value="false"/>
+         <parameter id="showNewImage" value="true"/>
+         <parameter id="newImageId"></parameter>
+         <parameter id="newImageWidth" value="0"/>
+         <parameter id="newImageHeight" value="0"/>
+         <parameter id="newImageAlpha" value="false"/>
+         <parameter id="newImageColorSpace" value="SameAsTarget"/>
+         <parameter id="newImageSampleFormat" value="SameAsTarget"/>
+         <table id="outputData" rows="0"/>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="2">
+            <tr>
+               <td id="id">views</td>
+               <td id="value">SyntheticLuminance</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+   </instance>
    <instance class="NoOperation" version="256" id="P1_rapide_instance">
       <description>MODE RAPIDE, phase 1 — Préparation : MODE RAPIDE (galaxies) : dans chaque colonne, une icône R_ remplace les étapes du chemin principal qu'elle cite ; sans icône R_, chemin principal. Ordre : R_C_Preparation_rapide ; R_Gradient_auto_rapide ; R_Lineaire_rapide (RGB, L et H), Continuum_auto, H_dans_RGB, C_RGB_bruit (étoiles gardées) ; GHS_1_premier, GHS_2_contraste, GHS_3_fond sur L ; R_C_RGB_etire_rapide sur RGB ; R_C_LRGB_rapide (LRGB sans étoiles) ; finition. Phase 1 : R_C_Preparation_rapide (double-clic puis Apply Global) à la place de LinearPatternSubtraction, Renommer_auto, Combinaison_RGB et Solver_auto. Icône de repère, sans effet.</description>
    </instance>
@@ -2839,6 +2893,25 @@ max($T, HaNB*a)</parameter>
    </instance>
    <instance class="NoOperation" version="256" id="P4_options_instance">
       <description>OPTIONS de la phase 4 — Étirement : à utiliser seulement si besoin (la description de chaque icône dit quand). Icône de repère, sans effet.</description>
+   </instance>
+   <instance class="MultiscaleAdaptiveStretch" version="256" id="Opt_MAS_L_instance">
+      <description>OPTION — à la place de GHS_1, GHS_2 et GHS_3_fond sur L sans étoiles linéaire : étirement automatique (comme le RGB)&#10;Compare avec tes 3 GHS.&#10;&#10;PRÉRÉGLÉ : MultiscaleAdaptiveStretch, tes réglages MAS (Aggressiveness 0,70, Target background 0,150, Dynamic range compression 0,40, Contrast recovery coché, séparation 1024) ; saturation sans effet sur L (gris).&#10;&#10;À RÉGLER : glisse sur L sans étoiles LINÉAIRE (après C_L_lineaire), à la place de GHS_1, GHS_2 et GHS_3_fond ; ensuite MAS sur le RGB comme d'habitude.&#10;&#10;SI :&#10;- fond de L plus clair que celui du RGB -&gt; GHS_3_fond sur L&#10;- cœur brûlé -&gt; Dynamic range compression 0,60&#10;- trop plat -&gt; Aggressiveness 0,85, ou tes 3 GHS</description>
+      <parameter id="aggressiveness" value="0.70"/>
+      <parameter id="targetBackground" value="0.150"/>
+      <parameter id="dynamicRangeCompression" value="0.40"/>
+      <parameter id="contrastRecovery" value="true"/>
+      <parameter id="scaleSeparation" value="1024"/>
+      <parameter id="contrastRecoveryIntensity" value="1.000"/>
+      <parameter id="previewLargeScale" value="false"/>
+      <parameter id="saturationEnabled" value="true"/>
+      <parameter id="saturationAmount" value="0.75"/>
+      <parameter id="saturationBoost" value="0.50"/>
+      <parameter id="saturationLightnessMask" value="true"/>
+      <parameter id="backgroundROIEnabled" value="false"/>
+      <parameter id="backgroundROIX0" value="0"/>
+      <parameter id="backgroundROIY0" value="0"/>
+      <parameter id="backgroundROIWidth" value="0"/>
+      <parameter id="backgroundROIHeight" value="0"/>
    </instance>
    <instance class="CloneStamp" version="256" id="Opt_CloneStamp_instance">
       <description>OPTION — défaut local sur une image étirée SANS étoiles (reste d'étoile, trace de satellite, poussière, pixel chaud) : à la main, sur L après les GHS ou sur le RGB après SXT_RGB_etire, avant LRGB&#10;Pas dans le rapide.&#10;&#10;PRÉRÉGLÉ : process CloneStamp vide (aucun clonage enregistré).&#10;&#10;À RÉGLER : double-clic : la fenêtre CloneStamp s'ouvre ; règle Radius, Softness, Opacity ; Ctrl+clic sur une zone propre (source), puis clic ou glisser sur le défaut ; coche verte (Execute) pour valider ; sur l'image étirée SANS étoiles (L ou RGB), avant LRGB.&#10;&#10;SI :&#10;- bord visible -&gt; Softness plus haut, Radius plus grand&#10;- motif répété -&gt; change souvent de source (Ctrl+clic)&#10;- erreur -&gt; Ctrl+Z dans la fenêtre CloneStamp avant de valider</description>
@@ -5543,6 +5616,288 @@ max($T, HaNB*a)</parameter>
          <parameter id="information"></parameter>
       </instance>
    </instance>
+   <instance class="ProcessContainer" id="Opt_Finition_LHE3_instance">
+      <description>OPTION — à la place de C_Finition, pour plus de relief à toutes les échelles : même courbe (saturation 0,58), puis LHE à 3 rayons (40, 150, 512) au lieu de 2&#10;Compare avec C_Finition sur la même image (Ctrl+Z entre les deux).&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : masque_L créé sans être attaché, copie de l'image, courbe en S (0,25 -&gt; 0,19 ; 0,75 -&gt; 0,81) avec saturation 0,5 -&gt; 0,58 (comme C_Finition), puis LHE rayon 40 (Amount 0,25), rayon 150 (0,18), rayon 512 (0,20), Contrast limit 1,5, circulaire ; mélange masque_L × résultat + (1 − masque_L) × copie, copie et masque fermés (Ron Brecher, NGC 7635, 2026).&#10;&#10;À RÉGLER : glisse sur l'image sans étoiles étirée, à la place de C_Finition ; ensuite C_Sharp_MMT comme d'habitude.&#10;&#10;SI :&#10;- trop de relief, aspect dur -&gt; Ctrl+Z et C_Finition&#10;- halos sombres autour du cœur -&gt; Amount du rayon 512 à 0,10 (double-clic sur le conteneur)&#10;- pas assez de relief -&gt; Amount du rayon 150 à 0,25</description>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="6">
+            <tr>
+               <td id="id">mode</td>
+               <td id="value">creer</td>
+            </tr>
+            <tr>
+               <td id="id">s</td>
+               <td id="value">0.14</td>
+            </tr>
+            <tr>
+               <td id="id">flou</td>
+               <td id="value">2</td>
+            </tr>
+            <tr>
+               <td id="id">nom</td>
+               <td id="value">masque_L</td>
+            </tr>
+            <tr>
+               <td id="id">couleur</td>
+               <td id="value">true</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+      <instance class="PixelMath" version="256" enabled="true">
+         <parameter id="expression">$T</parameter>
+         <parameter id="expression1"></parameter>
+         <parameter id="expression2"></parameter>
+         <parameter id="expression3"></parameter>
+         <parameter id="useSingleExpression" value="true"/>
+         <parameter id="symbols"></parameter>
+         <parameter id="clearImageCacheAndExit" value="false"/>
+         <parameter id="cacheGeneratedImages" value="false"/>
+         <parameter id="generateOutput" value="true"/>
+         <parameter id="singleThreaded" value="false"/>
+         <parameter id="optimization" value="true"/>
+         <parameter id="use64BitWorkingImage" value="false"/>
+         <parameter id="rescale" value="false"/>
+         <parameter id="rescaleLower" value="0"/>
+         <parameter id="rescaleUpper" value="1"/>
+         <parameter id="truncate" value="true"/>
+         <parameter id="truncateLower" value="0"/>
+         <parameter id="truncateUpper" value="1"/>
+         <parameter id="createNewImage" value="true"/>
+         <parameter id="showNewImage" value="true"/>
+         <parameter id="newImageId">Masque_avant</parameter>
+         <parameter id="newImageWidth" value="0"/>
+         <parameter id="newImageHeight" value="0"/>
+         <parameter id="newImageAlpha" value="false"/>
+         <parameter id="newImageColorSpace" value="SameAsTarget"/>
+         <parameter id="newImageSampleFormat" value="SameAsTarget"/>
+         <table id="outputData" rows="0"/>
+      </instance>
+      <instance class="CurvesTransformation" version="256" enabled="true">
+         <table id="R" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="Rt" value="AkimaSubsplines"/>
+         <table id="G" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="Gt" value="AkimaSubsplines"/>
+         <table id="B" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="Bt" value="AkimaSubsplines"/>
+         <table id="K" rows="4">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="0.25000"/>
+               <td id="y" value="0.19000"/>
+            </tr>
+            <tr>
+               <td id="x" value="0.75000"/>
+               <td id="y" value="0.81000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="Kt" value="AkimaSubsplines"/>
+         <table id="A" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="At" value="AkimaSubsplines"/>
+         <table id="L" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="Lt" value="AkimaSubsplines"/>
+         <table id="a" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="at" value="AkimaSubsplines"/>
+         <table id="b" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="bt" value="AkimaSubsplines"/>
+         <table id="c" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="ct" value="AkimaSubsplines"/>
+         <table id="H" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="Ht" value="AkimaSubsplines"/>
+         <table id="S" rows="3">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="0.50000"/>
+               <td id="y" value="0.58000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="St" value="AkimaSubsplines"/>
+      </instance>
+      <instance class="LocalHistogramEqualization" version="256" enabled="true">
+         <parameter id="radius" value="40"/>
+         <parameter id="histogramBins" value="Bit10"/>
+         <parameter id="slopeLimit" value="1.5"/>
+         <parameter id="amount" value="0.250"/>
+         <parameter id="circularKernel" value="true"/>
+      </instance>
+      <instance class="LocalHistogramEqualization" version="256" enabled="true">
+         <parameter id="radius" value="150"/>
+         <parameter id="histogramBins" value="Bit12"/>
+         <parameter id="slopeLimit" value="1.5"/>
+         <parameter id="amount" value="0.180"/>
+         <parameter id="circularKernel" value="true"/>
+      </instance>
+      <instance class="LocalHistogramEqualization" version="256" enabled="true">
+         <parameter id="radius" value="512"/>
+         <parameter id="histogramBins" value="Bit12"/>
+         <parameter id="slopeLimit" value="1.5"/>
+         <parameter id="amount" value="0.200"/>
+         <parameter id="circularKernel" value="true"/>
+      </instance>
+      <instance class="PixelMath" version="256" enabled="true">
+         <parameter id="expression">masque_L*$T + (1 - masque_L)*Masque_avant</parameter>
+         <parameter id="expression1"></parameter>
+         <parameter id="expression2"></parameter>
+         <parameter id="expression3"></parameter>
+         <parameter id="useSingleExpression" value="true"/>
+         <parameter id="symbols"></parameter>
+         <parameter id="clearImageCacheAndExit" value="false"/>
+         <parameter id="cacheGeneratedImages" value="false"/>
+         <parameter id="generateOutput" value="true"/>
+         <parameter id="singleThreaded" value="false"/>
+         <parameter id="optimization" value="true"/>
+         <parameter id="use64BitWorkingImage" value="false"/>
+         <parameter id="rescale" value="false"/>
+         <parameter id="rescaleLower" value="0"/>
+         <parameter id="rescaleUpper" value="1"/>
+         <parameter id="truncate" value="true"/>
+         <parameter id="truncateLower" value="0"/>
+         <parameter id="truncateUpper" value="1"/>
+         <parameter id="createNewImage" value="false"/>
+         <parameter id="showNewImage" value="true"/>
+         <parameter id="newImageId"></parameter>
+         <parameter id="newImageWidth" value="0"/>
+         <parameter id="newImageHeight" value="0"/>
+         <parameter id="newImageAlpha" value="false"/>
+         <parameter id="newImageColorSpace" value="SameAsTarget"/>
+         <parameter id="newImageSampleFormat" value="SameAsTarget"/>
+         <table id="outputData" rows="0"/>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="2">
+            <tr>
+               <td id="id">views</td>
+               <td id="value">Masque_avant</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="3">
+            <tr>
+               <td id="id">mode</td>
+               <td id="value">retirer</td>
+            </tr>
+            <tr>
+               <td id="id">nom</td>
+               <td id="value">masque_L</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+   </instance>
    <instance class="ProcessContainer" id="Opt_Boost_finition_light_instance">
       <description>OPTION — un tout petit peu plus de couleur et de contraste après LHE_fin (version douce du Boost, rejouable).&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : masque_L créé sans être attaché, copie de l'image, courbe très légère (0,25 -&gt; 0,24 ; 0,75 -&gt; 0,76, saturation 0,5 -&gt; 0,57) puis LHE rayon 80, Amount 0,12, puis mélange masque_L × résultat + (1 − masque_L) × copie, copie et masque fermés.&#10;&#10;À RÉGLER : sous Masque_L, après LHE_fin ; un glisser = un petit cran.&#10;&#10;SI :&#10;- pas assez -&gt; un deuxième passage, ou Boost_finition</description>
       <instance class="Script" version="256" enabled="true">
@@ -7820,11 +8175,13 @@ max($T,f1)</parameter>
    <icon id="P1_options" instance="P1_options_instance" xpos="30" ypos="200" workspace="Workspace01"/>
    <icon id="Opt_Crop_reference" instance="Opt_Crop_reference_instance" xpos="30" ypos="234" workspace="Workspace01"/>
    <icon id="Opt_Crop_appliquer" instance="Opt_Crop_appliquer_instance" xpos="30" ypos="264" workspace="Workspace01"/>
-   <icon id="P1_rapide" instance="P1_rapide_instance" xpos="30" ypos="310" workspace="Workspace01"/>
-   <icon id="R_C_Preparation_rapide" instance="R_C_Preparation_rapide_instance" xpos="30" ypos="344" workspace="Workspace01"/>
-   <icon id="P1_turbo" instance="P1_turbo_instance" xpos="30" ypos="390" workspace="Workspace01"/>
-   <icon id="T_Turbo_debut" instance="T_Turbo_debut_instance" xpos="30" ypos="424" workspace="Workspace01"/>
-   <icon id="T_Turbo_debut_graxpert" instance="T_Turbo_debut_graxpert_instance" xpos="30" ypos="454" workspace="Workspace01"/>
+   <icon id="Opt_SynthL" instance="Opt_SynthL_instance" xpos="30" ypos="294" workspace="Workspace01"/>
+   <icon id="Opt_SynthL_vers_L" instance="Opt_SynthL_vers_L_instance" xpos="30" ypos="324" workspace="Workspace01"/>
+   <icon id="P1_rapide" instance="P1_rapide_instance" xpos="30" ypos="370" workspace="Workspace01"/>
+   <icon id="R_C_Preparation_rapide" instance="R_C_Preparation_rapide_instance" xpos="30" ypos="404" workspace="Workspace01"/>
+   <icon id="P1_turbo" instance="P1_turbo_instance" xpos="30" ypos="450" workspace="Workspace01"/>
+   <icon id="T_Turbo_debut" instance="T_Turbo_debut_instance" xpos="30" ypos="484" workspace="Workspace01"/>
+   <icon id="T_Turbo_debut_graxpert" instance="T_Turbo_debut_graxpert_instance" xpos="30" ypos="514" workspace="Workspace01"/>
    <icon id="P2_Gradient" instance="P2_Gradient_instance" xpos="243" ypos="20" workspace="Workspace01"/>
    <icon id="E04_ImageSolver" instance="E04_ImageSolver_instance" xpos="243" ypos="64" workspace="Workspace01"/>
    <icon id="E05_SPFC_RGB_filtres" instance="E05_SPFC_RGB_filtres_instance" xpos="243" ypos="94" workspace="Workspace01"/>
@@ -7869,17 +8226,18 @@ max($T,f1)</parameter>
    <icon id="E23_SCNR_etoiles_vert" instance="E23_SCNR_etoiles_vert_instance" xpos="647" ypos="214" workspace="Workspace01"/>
    <icon id="E24_SCNR_RGB" instance="E24_SCNR_RGB_instance" xpos="647" ypos="244" workspace="Workspace01"/>
    <icon id="P4_options" instance="P4_options_instance" xpos="647" ypos="290" workspace="Workspace01"/>
-   <icon id="Opt_CloneStamp" instance="Opt_CloneStamp_instance" xpos="647" ypos="324" workspace="Workspace01"/>
-   <icon id="Opt_Taches_fond" instance="Opt_Taches_fond_instance" xpos="647" ypos="354" workspace="Workspace01"/>
-   <icon id="Opt_SCNR_etoiles_violet" instance="Opt_SCNR_etoiles_violet_instance" xpos="647" ypos="384" workspace="Workspace01"/>
-   <icon id="Opt_Saturation_grosses" instance="Opt_Saturation_grosses_instance" xpos="647" ypos="414" workspace="Workspace01"/>
-   <icon id="Opt_Statistical_Stretch" instance="Opt_Statistical_Stretch_instance" xpos="647" ypos="444" workspace="Workspace01"/>
-   <icon id="Opt_MAS_light" instance="Opt_MAS_light_instance" xpos="647" ypos="474" workspace="Workspace01"/>
-   <icon id="Opt_Star_Stretch" instance="Opt_Star_Stretch_instance" xpos="647" ypos="504" workspace="Workspace01"/>
-   <icon id="P4_rapide" instance="P4_rapide_instance" xpos="647" ypos="550" workspace="Workspace01"/>
-   <icon id="R_C_RGB_etire_rapide" instance="R_C_RGB_etire_rapide_instance" xpos="647" ypos="584" workspace="Workspace01"/>
-   <icon id="P4_turbo" instance="P4_turbo_instance" xpos="647" ypos="630" workspace="Workspace01"/>
-   <icon id="T_Turbo_fin" instance="T_Turbo_fin_instance" xpos="647" ypos="664" workspace="Workspace01"/>
+   <icon id="Opt_MAS_L" instance="Opt_MAS_L_instance" xpos="647" ypos="324" workspace="Workspace01"/>
+   <icon id="Opt_CloneStamp" instance="Opt_CloneStamp_instance" xpos="647" ypos="354" workspace="Workspace01"/>
+   <icon id="Opt_Taches_fond" instance="Opt_Taches_fond_instance" xpos="647" ypos="384" workspace="Workspace01"/>
+   <icon id="Opt_SCNR_etoiles_violet" instance="Opt_SCNR_etoiles_violet_instance" xpos="647" ypos="414" workspace="Workspace01"/>
+   <icon id="Opt_Saturation_grosses" instance="Opt_Saturation_grosses_instance" xpos="647" ypos="444" workspace="Workspace01"/>
+   <icon id="Opt_Statistical_Stretch" instance="Opt_Statistical_Stretch_instance" xpos="647" ypos="474" workspace="Workspace01"/>
+   <icon id="Opt_MAS_light" instance="Opt_MAS_light_instance" xpos="647" ypos="504" workspace="Workspace01"/>
+   <icon id="Opt_Star_Stretch" instance="Opt_Star_Stretch_instance" xpos="647" ypos="534" workspace="Workspace01"/>
+   <icon id="P4_rapide" instance="P4_rapide_instance" xpos="647" ypos="580" workspace="Workspace01"/>
+   <icon id="R_C_RGB_etire_rapide" instance="R_C_RGB_etire_rapide_instance" xpos="647" ypos="614" workspace="Workspace01"/>
+   <icon id="P4_turbo" instance="P4_turbo_instance" xpos="647" ypos="660" workspace="Workspace01"/>
+   <icon id="T_Turbo_fin" instance="T_Turbo_fin_instance" xpos="647" ypos="694" workspace="Workspace01"/>
    <icon id="P5_Couleur" instance="P5_Couleur_instance" xpos="838" ypos="20" workspace="Workspace01"/>
    <icon id="E25_LRGB_ajout_L" instance="E25_LRGB_ajout_L_instance" xpos="838" ypos="64" workspace="Workspace01"/>
    <icon id="P5_rapide" instance="P5_rapide_instance" xpos="838" ypos="110" workspace="Workspace01"/>
@@ -7896,12 +8254,13 @@ max($T,f1)</parameter>
    <icon id="Opt_HDRMT_eclat" instance="Opt_HDRMT_eclat_instance" xpos="998" ypos="324" workspace="Workspace01"/>
    <icon id="Opt_DarkStructureEnhance" instance="Opt_DarkStructureEnhance_instance" xpos="998" ypos="354" workspace="Workspace01"/>
    <icon id="Opt_Finition_saturee" instance="Opt_Finition_saturee_instance" xpos="998" ypos="384" workspace="Workspace01"/>
-   <icon id="Opt_Boost_finition_light" instance="Opt_Boost_finition_light_instance" xpos="998" ypos="414" workspace="Workspace01"/>
-   <icon id="Opt_Boost_finition" instance="Opt_Boost_finition_instance" xpos="998" ypos="444" workspace="Workspace01"/>
-   <icon id="Opt_NXT_final_doux" instance="Opt_NXT_final_doux_instance" xpos="998" ypos="474" workspace="Workspace01"/>
-   <icon id="Opt_NXT_final_fort" instance="Opt_NXT_final_fort_instance" xpos="998" ypos="504" workspace="Workspace01"/>
-   <icon id="P6_rapide" instance="P6_rapide_instance" xpos="998" ypos="550" workspace="Workspace01"/>
-   <icon id="R_C_Fin_rapide" instance="R_C_Fin_rapide_instance" xpos="998" ypos="584" workspace="Workspace01"/>
+   <icon id="Opt_Finition_LHE3" instance="Opt_Finition_LHE3_instance" xpos="998" ypos="414" workspace="Workspace01"/>
+   <icon id="Opt_Boost_finition_light" instance="Opt_Boost_finition_light_instance" xpos="998" ypos="444" workspace="Workspace01"/>
+   <icon id="Opt_Boost_finition" instance="Opt_Boost_finition_instance" xpos="998" ypos="474" workspace="Workspace01"/>
+   <icon id="Opt_NXT_final_doux" instance="Opt_NXT_final_doux_instance" xpos="998" ypos="504" workspace="Workspace01"/>
+   <icon id="Opt_NXT_final_fort" instance="Opt_NXT_final_fort_instance" xpos="998" ypos="534" workspace="Workspace01"/>
+   <icon id="P6_rapide" instance="P6_rapide_instance" xpos="998" ypos="580" workspace="Workspace01"/>
+   <icon id="R_C_Fin_rapide" instance="R_C_Fin_rapide_instance" xpos="998" ypos="614" workspace="Workspace01"/>
    <icon id="P7_Etoiles" instance="P7_Etoiles_instance" xpos="1202" ypos="20" workspace="Workspace01"/>
    <icon id="E30_Fond_desature" instance="E30_Fond_desature_instance" xpos="1202" ypos="64" workspace="Workspace01"/>
    <icon id="E31_Fond_auto" instance="E31_Fond_auto_instance" xpos="1202" ypos="94" workspace="Workspace01"/>

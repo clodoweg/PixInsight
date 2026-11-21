@@ -5042,6 +5042,288 @@ Format XPSM 1.0 (PixInsight 1.9.x). Valeurs de départ : à ajuster sur tes imag
          <parameter id="information"></parameter>
       </instance>
    </instance>
+   <instance class="ProcessContainer" id="Opt_Finition_LHE3_instance">
+      <description>OPTION — à la place de C_Finition, pour plus de relief à toutes les échelles : même courbe (saturation 0,58), puis LHE à 3 rayons (40, 150, 512) au lieu de 2&#10;Compare avec C_Finition sur la même image (Ctrl+Z entre les deux).&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : masque_L créé sans être attaché, copie de l'image, courbe en S (0,25 -&gt; 0,19 ; 0,75 -&gt; 0,81) avec saturation 0,5 -&gt; 0,58 (comme C_Finition), puis LHE rayon 40 (Amount 0,25), rayon 150 (0,18), rayon 512 (0,20), Contrast limit 1,5, circulaire ; mélange masque_L × résultat + (1 − masque_L) × copie, copie et masque fermés (Ron Brecher, NGC 7635, 2026).&#10;&#10;À RÉGLER : glisse sur l'image sans étoiles étirée, à la place de C_Finition ; ensuite C_Sharp_MMT comme d'habitude.&#10;&#10;SI :&#10;- trop de relief, aspect dur -&gt; Ctrl+Z et C_Finition&#10;- halos sombres autour du cœur -&gt; Amount du rayon 512 à 0,10 (double-clic sur le conteneur)&#10;- pas assez de relief -&gt; Amount du rayon 150 à 0,25</description>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="6">
+            <tr>
+               <td id="id">mode</td>
+               <td id="value">creer</td>
+            </tr>
+            <tr>
+               <td id="id">s</td>
+               <td id="value">0.14</td>
+            </tr>
+            <tr>
+               <td id="id">flou</td>
+               <td id="value">2</td>
+            </tr>
+            <tr>
+               <td id="id">nom</td>
+               <td id="value">masque_L</td>
+            </tr>
+            <tr>
+               <td id="id">couleur</td>
+               <td id="value">true</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+      <instance class="PixelMath" version="256" enabled="true">
+         <parameter id="expression">$T</parameter>
+         <parameter id="expression1"></parameter>
+         <parameter id="expression2"></parameter>
+         <parameter id="expression3"></parameter>
+         <parameter id="useSingleExpression" value="true"/>
+         <parameter id="symbols"></parameter>
+         <parameter id="clearImageCacheAndExit" value="false"/>
+         <parameter id="cacheGeneratedImages" value="false"/>
+         <parameter id="generateOutput" value="true"/>
+         <parameter id="singleThreaded" value="false"/>
+         <parameter id="optimization" value="true"/>
+         <parameter id="use64BitWorkingImage" value="false"/>
+         <parameter id="rescale" value="false"/>
+         <parameter id="rescaleLower" value="0"/>
+         <parameter id="rescaleUpper" value="1"/>
+         <parameter id="truncate" value="true"/>
+         <parameter id="truncateLower" value="0"/>
+         <parameter id="truncateUpper" value="1"/>
+         <parameter id="createNewImage" value="true"/>
+         <parameter id="showNewImage" value="true"/>
+         <parameter id="newImageId">Masque_avant</parameter>
+         <parameter id="newImageWidth" value="0"/>
+         <parameter id="newImageHeight" value="0"/>
+         <parameter id="newImageAlpha" value="false"/>
+         <parameter id="newImageColorSpace" value="SameAsTarget"/>
+         <parameter id="newImageSampleFormat" value="SameAsTarget"/>
+         <table id="outputData" rows="0"/>
+      </instance>
+      <instance class="CurvesTransformation" version="256" enabled="true">
+         <table id="R" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="Rt" value="AkimaSubsplines"/>
+         <table id="G" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="Gt" value="AkimaSubsplines"/>
+         <table id="B" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="Bt" value="AkimaSubsplines"/>
+         <table id="K" rows="4">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="0.25000"/>
+               <td id="y" value="0.19000"/>
+            </tr>
+            <tr>
+               <td id="x" value="0.75000"/>
+               <td id="y" value="0.81000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="Kt" value="AkimaSubsplines"/>
+         <table id="A" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="At" value="AkimaSubsplines"/>
+         <table id="L" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="Lt" value="AkimaSubsplines"/>
+         <table id="a" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="at" value="AkimaSubsplines"/>
+         <table id="b" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="bt" value="AkimaSubsplines"/>
+         <table id="c" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="ct" value="AkimaSubsplines"/>
+         <table id="H" rows="2">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="Ht" value="AkimaSubsplines"/>
+         <table id="S" rows="3">
+            <tr>
+               <td id="x" value="0.00000"/>
+               <td id="y" value="0.00000"/>
+            </tr>
+            <tr>
+               <td id="x" value="0.50000"/>
+               <td id="y" value="0.58000"/>
+            </tr>
+            <tr>
+               <td id="x" value="1.00000"/>
+               <td id="y" value="1.00000"/>
+            </tr>
+         </table>
+         <parameter id="St" value="AkimaSubsplines"/>
+      </instance>
+      <instance class="LocalHistogramEqualization" version="256" enabled="true">
+         <parameter id="radius" value="40"/>
+         <parameter id="histogramBins" value="Bit10"/>
+         <parameter id="slopeLimit" value="1.5"/>
+         <parameter id="amount" value="0.250"/>
+         <parameter id="circularKernel" value="true"/>
+      </instance>
+      <instance class="LocalHistogramEqualization" version="256" enabled="true">
+         <parameter id="radius" value="150"/>
+         <parameter id="histogramBins" value="Bit12"/>
+         <parameter id="slopeLimit" value="1.5"/>
+         <parameter id="amount" value="0.180"/>
+         <parameter id="circularKernel" value="true"/>
+      </instance>
+      <instance class="LocalHistogramEqualization" version="256" enabled="true">
+         <parameter id="radius" value="512"/>
+         <parameter id="histogramBins" value="Bit12"/>
+         <parameter id="slopeLimit" value="1.5"/>
+         <parameter id="amount" value="0.200"/>
+         <parameter id="circularKernel" value="true"/>
+      </instance>
+      <instance class="PixelMath" version="256" enabled="true">
+         <parameter id="expression">masque_L*$T + (1 - masque_L)*Masque_avant</parameter>
+         <parameter id="expression1"></parameter>
+         <parameter id="expression2"></parameter>
+         <parameter id="expression3"></parameter>
+         <parameter id="useSingleExpression" value="true"/>
+         <parameter id="symbols"></parameter>
+         <parameter id="clearImageCacheAndExit" value="false"/>
+         <parameter id="cacheGeneratedImages" value="false"/>
+         <parameter id="generateOutput" value="true"/>
+         <parameter id="singleThreaded" value="false"/>
+         <parameter id="optimization" value="true"/>
+         <parameter id="use64BitWorkingImage" value="false"/>
+         <parameter id="rescale" value="false"/>
+         <parameter id="rescaleLower" value="0"/>
+         <parameter id="rescaleUpper" value="1"/>
+         <parameter id="truncate" value="true"/>
+         <parameter id="truncateLower" value="0"/>
+         <parameter id="truncateUpper" value="1"/>
+         <parameter id="createNewImage" value="false"/>
+         <parameter id="showNewImage" value="true"/>
+         <parameter id="newImageId"></parameter>
+         <parameter id="newImageWidth" value="0"/>
+         <parameter id="newImageHeight" value="0"/>
+         <parameter id="newImageAlpha" value="false"/>
+         <parameter id="newImageColorSpace" value="SameAsTarget"/>
+         <parameter id="newImageSampleFormat" value="SameAsTarget"/>
+         <table id="outputData" rows="0"/>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="2">
+            <tr>
+               <td id="id">views</td>
+               <td id="value">Masque_avant</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="3">
+            <tr>
+               <td id="id">mode</td>
+               <td id="value">retirer</td>
+            </tr>
+            <tr>
+               <td id="id">nom</td>
+               <td id="value">masque_L</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
+   </instance>
    <instance class="ProcessContainer" id="Opt_Boost_finition_light_instance">
       <description>OPTION — un tout petit peu plus de couleur et de contraste après LHE_fin (version douce du Boost, rejouable).&#10;&#10;LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).&#10;&#10;PRÉRÉGLÉ : conteneur : masque_L créé sans être attaché, copie de l'image, courbe très légère (0,25 -&gt; 0,24 ; 0,75 -&gt; 0,76, saturation 0,5 -&gt; 0,57) puis LHE rayon 80, Amount 0,12, puis mélange masque_L × résultat + (1 − masque_L) × copie, copie et masque fermés.&#10;&#10;À RÉGLER : sous Masque_L, après LHE_fin ; un glisser = un petit cran.&#10;&#10;SI :&#10;- pas assez -&gt; un deuxième passage, ou Boost_finition</description>
       <instance class="Script" version="256" enabled="true">
@@ -7204,12 +7486,13 @@ max($T,f1)</parameter>
    <icon id="Opt_HDRMT_eclat" instance="Opt_HDRMT_eclat_instance" xpos="1055" ypos="324" workspace="Workspace01"/>
    <icon id="Opt_DarkStructureEnhance" instance="Opt_DarkStructureEnhance_instance" xpos="1055" ypos="354" workspace="Workspace01"/>
    <icon id="Opt_Finition_saturee" instance="Opt_Finition_saturee_instance" xpos="1055" ypos="384" workspace="Workspace01"/>
-   <icon id="Opt_Boost_finition_light" instance="Opt_Boost_finition_light_instance" xpos="1055" ypos="414" workspace="Workspace01"/>
-   <icon id="Opt_Boost_finition" instance="Opt_Boost_finition_instance" xpos="1055" ypos="444" workspace="Workspace01"/>
-   <icon id="Opt_NXT_final_doux" instance="Opt_NXT_final_doux_instance" xpos="1055" ypos="474" workspace="Workspace01"/>
-   <icon id="Opt_NXT_final_fort" instance="Opt_NXT_final_fort_instance" xpos="1055" ypos="504" workspace="Workspace01"/>
-   <icon id="P6_rapide" instance="P6_rapide_instance" xpos="1055" ypos="550" workspace="Workspace01"/>
-   <icon id="R_C_Fin_rapide" instance="R_C_Fin_rapide_instance" xpos="1055" ypos="584" workspace="Workspace01"/>
+   <icon id="Opt_Finition_LHE3" instance="Opt_Finition_LHE3_instance" xpos="1055" ypos="414" workspace="Workspace01"/>
+   <icon id="Opt_Boost_finition_light" instance="Opt_Boost_finition_light_instance" xpos="1055" ypos="444" workspace="Workspace01"/>
+   <icon id="Opt_Boost_finition" instance="Opt_Boost_finition_instance" xpos="1055" ypos="474" workspace="Workspace01"/>
+   <icon id="Opt_NXT_final_doux" instance="Opt_NXT_final_doux_instance" xpos="1055" ypos="504" workspace="Workspace01"/>
+   <icon id="Opt_NXT_final_fort" instance="Opt_NXT_final_fort_instance" xpos="1055" ypos="534" workspace="Workspace01"/>
+   <icon id="P6_rapide" instance="P6_rapide_instance" xpos="1055" ypos="580" workspace="Workspace01"/>
+   <icon id="R_C_Fin_rapide" instance="R_C_Fin_rapide_instance" xpos="1055" ypos="614" workspace="Workspace01"/>
    <icon id="P7_Etoiles" instance="P7_Etoiles_instance" xpos="1259" ypos="20" workspace="Workspace01"/>
    <icon id="E27_Contraste_GHS" instance="E27_Contraste_GHS_instance" xpos="1259" ypos="64" workspace="Workspace01"/>
    <icon id="E28_Export_Photoshop" instance="E28_Export_Photoshop_instance" xpos="1259" ypos="94" workspace="Workspace01"/>

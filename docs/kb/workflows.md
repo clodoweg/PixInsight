@@ -243,3 +243,10 @@ Anneaux clairs ou sombres autour des étoiles| PSF différentes entre H et R| Pr
 **Étoiles d'avant injection** (hors icônes) : SXT sur une copie du RGB non injecté, garde ces étoiles-là pour Etoiles_screen.
 
 **Quand choisir autre chose :** galaxie sans régions HII marquées (elliptique, lenticulaire) : LRGB ; nébuleuse en émission sans galaxie : la version HaRGB simple ci-dessus, ou le narrowband (HOO, SHO) ; avec aussi de l'O (nébuleuses planétaires) : RGB + SHO.
+
+## Options de la veille du 21 novembre 2026 (demande de l'utilisateur : « Fais toutes les autres propositions »)
+
+Options seulement, chemin principal inchangé ; non testées dans PixInsight.
+- **Finition_LHE3** (P6, 5 workflows) : à la place de C_Finition ; même courbe (saturation 0,58), puis LHE rayon 40 (0,25), 150 (0,18), 512 (0,20), Contrast limit 1,5, sous masque_L (sous_masque). Valeurs : Ron Brecher, NGC 7635 (11 novembre 2026) ; NGC 891 (5 novembre 2026) : 40 / 0,25 puis 100 / 0,25 sous un masque de luminance INVERSÉ (non repris : masque_L normal ici). Rayon maximum de LHE : 512 (PCL, LocalHistogramEqualizationParameters.cpp). Une seule source pour ces valeurs.
+- **SynthL + SynthL_vers_L** (P1, LRGB et LHaRGB) : super-L par le script SyntheticLuminance 1.1 (Cosmic Photons, fenêtre seulement, réglages gardés par le script), mode R, G, B + Luminance, Set Auto Weights, sortie SyntheticLuminance ; puis conteneur glissé sur L (PixelMath SyntheticLuminance -> L, fermeture). Avant Combinaison_RGB (R, G, B encore ouvertes). Le script n'égalise pas les fonds de R, G, B (doc du script) : masters encore avec gradient à ce stade, à surveiller. Méthode : Ron Brecher, NGC 891 (SynthL par ImageIntegration sans rejet, pondérée).
+- **MAS_L** (P4, LRGB et LHaRGB) : MAS (réglages du MAS de l'utilisateur) sur L sans étoiles linéaire, à la place des 3 GHS. Brecher (NGC 891) étire L par MAS sans donner de valeurs ; Adam Block (veille du 20 octobre) aussi.

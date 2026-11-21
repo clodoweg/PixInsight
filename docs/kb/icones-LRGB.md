@@ -102,6 +102,44 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - cadre à refaire -> Ctrl+Z sur Crop_ref, nouveau cadre, coche verte, puis relance
 > - une image n'est pas recadrée -> taille différente, la console la nomme
 
+#### Opt_SynthL — Script
+   script `$PXI_SRCDIR/scripts/CosmicPhotons/SyntheticLuminance/SyntheticLuminance.js`
+
+> OPTION — L faible ou bruitée : super-L = L + R + G + B pondérées par leur rapport signal/bruit
+> Après LinearPatternSubtraction, avant Combinaison_RGB (R, G, B encore ouvertes)
+> Ensuite SynthL_vers_L.
+> 
+> LANCEMENT : double-clic sur l'icône, puis Apply Global.
+> 
+> PRÉRÉGLÉ : script SyntheticLuminance (Cosmic Photons, conçu avec John Hayes) : l'icône ouvre sa fenêtre, qui garde tes derniers réglages (pas de réglage dans l'icône).
+> 
+> À RÉGLER : après LinearPatternSubtraction, avant Combinaison_RGB (L, R, G, B linéaires ouvertes) : double-clic puis Apply Global ; Mode = R, G, B [+ Luminance], Red = R, Green = G, Blue = B, case « combine with a luminance image » cochée, Luminance = L ; Set Auto Weights ; Output view id = SyntheticLuminance ; Execute ; ensuite SynthL_vers_L.
+> 
+> SI :
+> - script absent -> dépôt https://www.cosmicphotons.com/pi-scripts/syntheticluminance/ dans Manage Repositories, puis Check for Updates
+> - fonds de R, G, B très différents (gradient fort) -> le script ne les égalise pas : garde ta L seule
+> - vue créée SyntheticLuminance1 -> ferme l'ancienne SyntheticLuminance avant
+
+#### Opt_SynthL_vers_L — ProcessContainer
+   1. PixelMath
+      expression = `SyntheticLuminance` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
+   2. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
+      paramètres : `views=SyntheticLuminance`, `dialogue=false`
+
+> OPTION — juste après SynthL : glisse sur L, qui prend les pixels de SyntheticLuminance (fermée ensuite)
+> La suite du workflow ne change pas.
+> 
+> LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
+> 
+> PRÉRÉGLÉ : conteneur : PixelMath SyntheticLuminance -> L (L prend les pixels de la super-L), puis Fermer_vues SyntheticLuminance.
+> 
+> À RÉGLER : glisse sur L juste après SynthL ; ensuite Combinaison_RGB comme d'habitude.
+> 
+> SI :
+> - « undefined symbol SyntheticLuminance » -> SynthL pas lancé, ou vue nommée autrement : renomme-la SyntheticLuminance
+> - tailles différentes -> recadre avant (Crop_appliquer)
+
 ### P1_rapide
 
 #### R_C_Preparation_rapide — ProcessContainer
@@ -492,6 +530,21 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - vert encore visible -> vérifie SPCC avant de pousser
 
 ### P4_options
+
+#### Opt_MAS_L — MultiscaleAdaptiveStretch
+   aggressiveness=0.70 ; targetBackground=0.150 ; dynamicRangeCompression=0.40 ; contrastRecovery=true ; scaleSeparation=1024 ; contrastRecoveryIntensity=1.000 ; previewLargeScale=false ; saturationEnabled=true ; saturationAmount=0.75 ; saturationBoost=0.50 ; saturationLightnessMask=true ; backgroundROIEnabled=false ; backgroundROIX0=0 ; backgroundROIY0=0 ; backgroundROIWidth=0 ; backgroundROIHeight=0
+
+> OPTION — à la place de GHS_1, GHS_2 et GHS_3_fond sur L sans étoiles linéaire : étirement automatique (comme le RGB)
+> Compare avec tes 3 GHS.
+> 
+> PRÉRÉGLÉ : MultiscaleAdaptiveStretch, tes réglages MAS (Aggressiveness 0,70, Target background 0,150, Dynamic range compression 0,40, Contrast recovery coché, séparation 1024) ; saturation sans effet sur L (gris).
+> 
+> À RÉGLER : glisse sur L sans étoiles LINÉAIRE (après C_L_lineaire), à la place de GHS_1, GHS_2 et GHS_3_fond ; ensuite MAS sur le RGB comme d'habitude.
+> 
+> SI :
+> - fond de L plus clair que celui du RGB -> GHS_3_fond sur L
+> - cœur brûlé -> Dynamic range compression 0,60
+> - trop plat -> Aggressiveness 0,85, ou tes 3 GHS
 
 #### Opt_CloneStamp — CloneStamp
    width=0 ; height=0 ; clonerColor=4292927712 ; boundsColor=4292927712
@@ -1013,6 +1066,43 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > SI :
 > - trop saturé -> C_Finition (saturation 0,58)
+
+#### Opt_Finition_LHE3 — ProcessContainer
+   1. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
+      paramètres : `mode=creer`, `s=0.14`, `flou=2`, `nom=masque_L`, `couleur=true`, `dialogue=false`
+   2. PixelMath
+      expression = `$T` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=true ; showNewImage=true ; newImageId=Masque_avant ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
+   3. CurvesTransformation
+      Rt=AkimaSubsplines ; Gt=AkimaSubsplines ; Bt=AkimaSubsplines ; Kt=AkimaSubsplines ; At=AkimaSubsplines ; Lt=AkimaSubsplines ; at=AkimaSubsplines ; bt=AkimaSubsplines ; ct=AkimaSubsplines ; Ht=AkimaSubsplines ; St=AkimaSubsplines ; table R (2 lignes) ; table G (2 lignes) ; table B (2 lignes) ; table K (4 lignes) ; table A (2 lignes) ; table L (2 lignes) ; table a (2 lignes) ; table b (2 lignes) ; table c (2 lignes) ; table H (2 lignes) ; table S (3 lignes)
+   4. LocalHistogramEqualization
+      radius=40 ; histogramBins=Bit10 ; slopeLimit=1.5 ; amount=0.250 ; circularKernel=true
+   5. LocalHistogramEqualization
+      radius=150 ; histogramBins=Bit12 ; slopeLimit=1.5 ; amount=0.180 ; circularKernel=true
+   6. LocalHistogramEqualization
+      radius=512 ; histogramBins=Bit12 ; slopeLimit=1.5 ; amount=0.200 ; circularKernel=true
+   7. PixelMath
+      expression = `masque_L*$T + (1 - masque_L)*Masque_avant` ; useSingleExpression=true ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
+   8. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
+      paramètres : `views=Masque_avant`, `dialogue=false`
+   9. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Masque_auto.js`
+      paramètres : `mode=retirer`, `nom=masque_L`, `dialogue=false`
+
+> OPTION — à la place de C_Finition, pour plus de relief à toutes les échelles : même courbe (saturation 0,58), puis LHE à 3 rayons (40, 150, 512) au lieu de 2
+> Compare avec C_Finition sur la même image (Ctrl+Z entre les deux).
+> 
+> LANCEMENT : GLISSE l'icône sur l'image (le rond Apply Global ne marche pas : les process de ce conteneur ont besoin d'une image).
+> 
+> PRÉRÉGLÉ : conteneur : masque_L créé sans être attaché, copie de l'image, courbe en S (0,25 -> 0,19 ; 0,75 -> 0,81) avec saturation 0,5 -> 0,58 (comme C_Finition), puis LHE rayon 40 (Amount 0,25), rayon 150 (0,18), rayon 512 (0,20), Contrast limit 1,5, circulaire ; mélange masque_L × résultat + (1 − masque_L) × copie, copie et masque fermés (Ron Brecher, NGC 7635, 2026).
+> 
+> À RÉGLER : glisse sur l'image sans étoiles étirée, à la place de C_Finition ; ensuite C_Sharp_MMT comme d'habitude.
+> 
+> SI :
+> - trop de relief, aspect dur -> Ctrl+Z et C_Finition
+> - halos sombres autour du cœur -> Amount du rayon 512 à 0,10 (double-clic sur le conteneur)
+> - pas assez de relief -> Amount du rayon 150 à 0,25
 
 #### Opt_Boost_finition_light — ProcessContainer
    1. Script
