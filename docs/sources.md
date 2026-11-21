@@ -1,7 +1,7 @@
 # Sources de la fiche PixInsight
 
 Sources consultées pour construire et vérifier `docs/pixinsight-workflow.html`, classées par sujet.
-Dernière mise à jour : 20 octobre 2026 (deux passages du skill maj-kb).
+Dernière mise à jour : 21 novembre 2026 (skill maj-kb, passage complet : dépôts, versions, GraXpert).
 
 Légende :
 - **Officiel** : documentation de l'éditeur ou de l'auteur de l'outil.
@@ -471,9 +471,11 @@ Narrowband, sources récentes :
 
 ## Non vérifié
 
+- GraXpert retiré (21 novembre 2026) : date exacte du retrait (déduite du commit du 15 novembre), texte exact de la règle CPD 5.5, durée de fonctionnement d'un module déjà installé (futures versions de PixInsight) : non vérifiés.
+
 - Panne VizieR du CDS (novembre 2026) : date de début, cause et durée (forums seulement) ; adresse IDIA corrigée (https://vizier.idia.ac.za/) ; retour des miroirs à Gaia DR2 inconnu.
 
-- Veille du 4 novembre 2026 (PixInsight 1.9.6) : compatibilité de GC_Solver_auto et ImageSolver_Date avec ImageSolver 6.6.0 (code non publié) ; nom exact du paramètre « Blind solver » dans une icône ImageSolver ; fin des notes de version lue en résumé (prérequis, problèmes connus, lecture des XISF révision 2 en 1.9.5) ; date exacte de sortie (affichée « Friday ») ; dépôt GraXpert injoignable. Complément du 5 novembre : résultat de PixelMath pour une division par zéro en 1.9.6 (non précisé), effet sur Etoiles_reduites ; 17 des 24 scripts mis à jour non nommés par les notes.
+- Veille du 4 novembre 2026 (PixInsight 1.9.6) : compatibilité de GC_Solver_auto et ImageSolver_Date avec ImageSolver 6.6.0 (code non publié) ; nom exact du paramètre « Blind solver » dans une icône ImageSolver (CLOS le 20 novembre 2026 : `solver_blindSolver`, lu dans ImageSolverEngine.js) ; fin des notes de version lue en résumé (prérequis, problèmes connus, lecture des XISF révision 2 en 1.9.5) ; date exacte de sortie (affichée « Friday ») ; dépôt GraXpert injoignable. Complément du 5 novembre : résultat de PixelMath pour une division par zéro en 1.9.6 (non précisé), effet sur Etoiles_reduites ; 17 des 24 scripts mis à jour non nommés par les notes.
 
 - Revue du 20 octobre 2026 (2e passage) : défauts et plages d'Aggressiveness et de DRC de MAS ; couverture MARS DR2 à 2 939 mm ; Reject high 0,92 de LinearFit (Siril seulement) ; textes officiels LHE, HDRMT, MMT, CurvesTransformation (pages doc en 404/406) ; valeurs Light Vortex et Chaotic Nebula non relues (sites injoignables).
 
@@ -1597,3 +1599,15 @@ Puis (capture de BlindSolver 1.0.0) : « sinon utilise ce process la ». Fait : 
 - 20 novembre 2026 : « je veux aussi qu'ils utilisent le nouveau script de graexpert partout » (SHO, HOO...), réponse à ma question : « GraXpert remplace tout ». SHO sans RGB, RGB + SHO, HOO : GraXpert au chemin principal de P2 à la place de GradientCorrection (passée en option Opt_GradientCorrection) ; R_Gradient_auto_rapide et T_Turbo_debut en mode GraXpert (Gradient_auto.js, outil = graxpert) ; R_Gradient_auto_graxpert_rapide et T_Turbo_debut_graxpert supprimés.
 - 21 novembre 2026 : « met a jour la base de connaissance et les grph et tout sur github ». Fiches kb (outils, narrowband, workflows, generateur), README des scripts et diagrammes régénérés pour GraXpert, la recherche aveugle et les masques de recadrage.
 - 21 novembre 2026, questions : « est ce que en SHO faire un linear fit au debut du process a un interet? » (réponse dans kb/narrowband.md) ; « pour graexpert j'utilise bien partout la derniere version du process? » (réponse dans kb/outils.md, section GraXpert).
+
+## Revue du 21 novembre 2026 (skill maj-kb, passage complet)
+
+Demande de l'utilisateur : « on, avais pas une skill de mise a jour? », puis « sur tout ».
+- Officiel — fichiers `updates.xri` des dépôts de `docs/depots-pixinsight.txt`, lus le 21 novembre 2026 : RC Astro Suite 2.6.11 (paquets du 6 novembre 2026) ; GHS module 3.2.0 (4 novembre 2026, « Update for 32-bit floating-point Real-Time Preview images ») ; NarrowbandNormalization 1.0 ; SetiAstro 31 octobre 2026 ; ScreenStars 2.1 (15 mai 2026) ; Toolbox 29 novembre 2025 ; SyntheticLuminance 1.1 (14 septembre 2026). GraXpert : l'adresse du dépôt redirige (302) vers https://www.deepskyforge.com/vso/index.html (page d'un autre module, VariableStarsObserver).
+- Officiel — [DeepSkyForge/GraXpert4PixInsight, README](https://github.com/DeepSkyForge/GraXpert4PixInsight) (revu le 21 novembre 2026 ; commit « Update README.md » du 15 novembre 2026) : « GraXpert Process Discontinued […] withdrawn to comply with PixInsight's Certified PixInsight Developer Program Rules version 1.0.2, specifically Rule 5.5 ». Recoupé par [la page DeepSkyForge](https://www.deepskyforge.com/index.html) *(résumé)* et un fil Cloudy Nights *(résumé, page en 403)* : process encore utilisable s'il est déjà installé, avertissement « repository isn't responding » à la mise à jour.
+- Officiel — [Règles CPD de PixInsight](https://pixinsight.com/security/cpd-rules/) *(résumé : texte indexé illisible, règle 5.5 non lue directement)*.
+- Officiel — [RC Astro, historique des versions](https://www.rc-astro.com/version-history/) *(résumé)* : 2.6.11, 6 novembre 2026, toutes plateformes, exécution plus rapide.
+- Officiel — [ESA, Gaia DR4](https://www.cosmos.esa.int/en/web/gaia/data-release-4) *(résumé)* : publication prévue le 2 décembre 2026 (66 mois, 2,8 milliards de sources), quelques jours d'arrêt des services avant.
+- Officiel — [MARS DR2, ScopeTrader](https://scopetrader.com/mars-dr2-for-pixinsight-released/) *(résumé)* : pas de DR3 trouvé.
+- Rien trouvé : PixInsight 1.9.7 ; panne VizieR en novembre 2026.
+- Non revérifié dans ce passage (à refaire par sujet) : pages de documentation et tutoriels déjà notés (BXT, NXT, SXT, SPCC, MAS, LHE, HDRMT…), contenu détaillé des règles CPD.

@@ -296,6 +296,8 @@ GRATUIT
 
 Méthode
 
+**ATTENTION (revue du 21 novembre 2026) : le process GraXpert pour PixInsight est RETIRÉ par DeepSkyForge** (README du dépôt GitHub DeepSkyForge/GraXpert4PixInsight, modifié le 15 novembre 2026 : « The GraXpert process for PixInsight has been withdrawn to comply with PixInsight's Certified PixInsight Developer Program Rules version 1.0.2, specifically Rule 5.5 », qui interdit au code signé de lancer des composants d'autres logiciels d'astrophoto). Le dépôt de mise à jour redirige vers une autre page (302) : plus de mise à jour ni de nouvelle installation. Un module déjà installé continue de fonctionner d'après des utilisateurs (forum, non vérifié). Aucun remplaçant annoncé. Repli : GradientCorrection / MGC + MARS dans PixInsight, ou l'application GraXpert seule (hors PixInsight).
+
 1. Installe l'application GraXpert (4.0.0 ou plus exigé par le module 3.1.0) sur ta machine, puis le module via son dépôt (https://pixinsight.deepskyforge.com/update/graxpert-process/). Paramètres d'icône lus dans le module (GraXpert-pxm.dll, octobre 2026) : backgroundExtraction, smoothing, correction, createBackground, denoising, deconvolution, replaceImage, backgroundExtractionAIModel. Version de l'instance (256) non vérifiée.
 2. Lance le process sur l'image linéaire, contrôle le modèle de fond.
 
@@ -1169,6 +1171,7 @@ Option Opt_CloneStamp (P4, LRGB et LHaRGB, demande de l'utilisateur, 18 octobre 
 - Crop, DynamicCrop, Rotation, Resample… transforment la solution astrométrique linéaire au lieu de l'effacer.
 - MGC : facteurs d'échelle automatiques, Edge correction (désactivé par défaut), pixels à zéro = sans données, « Allow MARS mosaics » (désactivé) ; les icônes gardent scaleFactor 1,00.
 - Nouveaux : MultiscaleTGVDenoise (TGVDenoise obsolète), ImageAnalysis (SubframeSelector obsolète), AstrometricRegistration, FeatureRegistration, WBPP / FBPP 3.2.0, ImageIntegration 1.8.0 ; MLDenoise sur plus de GPU NVIDIA ; graphes natifs SPCC / SPFC ; aperçus 32 bits HT, Curves ; XISF révision 2 ; modules PNG, WebP, JPEG XL, BigTIFF, XMP / EXIF en TIFF ; fenêtres « Contained » et police Inter par défaut ; Pyth4PI bloqué.
+- Dépôts au 21 novembre 2026 (fichiers updates.xri lus) : RC Astro 2.6.11 du 6 novembre 2026 (1.9.5:1.9.99 ; exécution plus rapide de tous les outils d'après l'historique des versions RC Astro) ; GHS module 3.2.0 du 4 novembre 2026 (aperçu en temps réel 32 bits, rien à changer aux icônes) ; NarrowbandNormalization 1.0 (inchangé) ; SetiAstro paquet du 31 octobre (inchangé) ; Toolbox du 29 novembre 2025 (inchangé) ; GraXpert : process retiré (voir la section GraXpert). Gaia DR4 annoncé par l'ESA pour le 2 décembre 2026 (index astrométriques PixInsight correspondants : rien trouvé). MARS : toujours DR2 (juin 2026).
 - Dépôts au 4 novembre 2026 : RC Astro 2.6.10 (1.9.5:1.9.99), SetiAstro (1.9.4:1.9.9 ; BlindSolver2000 et Cosmic Clarity retirés le 31 octobre), Toolbox (1.9.4:1.9.7), GHS, NarrowbandNormalization, Cosmic Photons (jusqu'à 1.9.99) : installables en 1.9.6. GraXpert : dépôt injoignable ce jour.
 
 ## BXT ML5 : réglages (20 octobre 2026)
