@@ -129,5 +129,5 @@ Demande de l'utilisateur (capture : vues MasterLight_R_crop_mask, MasterLight_L_
 
 Bloc final de make_workflows.py (avant la boucle d'écriture) :
 - LRGB et LHaRGB : GraXpert après DBE (option), R_Gradient_auto_graxpert_rapide sous R_Gradient_auto_rapide, T_Turbo_debut_graxpert = copie du T_Turbo_debut final dont la table de Gradient_auto reçoit `outil=graxpert`.
-- Narrowband : GraXpert échangé avec GradientCorrection (rôle `grad:mgc|gc` par `layout.role`, GradientCorrection `opt`) ; `outil=graxpert` ajouté à R_Gradient_auto_rapide et à T_Turbo_debut ; variantes _graxpert retirées ; textes : `WHEN_PREFIX` (layout.py), `V` (short_desc.py), `RAPIDE_NOTE[p][2]`.
+- Narrowband (ANNULÉ le 21 novembre 2026 par git revert, process GraXpert retiré) : GraXpert échangé avec GradientCorrection (rôle `grad:mgc|gc` par `layout.role`, GradientCorrection `opt`) ; `outil=graxpert` ajouté à R_Gradient_auto_rapide et à T_Turbo_debut ; variantes _graxpert retirées ; textes : `WHEN_PREFIX` (layout.py), `V` (short_desc.py), `RAPIDE_NOTE[p][2]`.
 - `_ajoute_blind` (solver_blindSolver = 1 après solver_magnitude, compteur `rows` augmenté) appliqué aux 5 workflows.

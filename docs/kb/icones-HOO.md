@@ -146,7 +146,7 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
       paramètres : `gradient=false`, `solve=true`, `solveTout=false`, `defaultDate=2020-01-01T00:00:00`, `dialogue=false`, `metadata_focal=2939`, `metadata_xpixsz=3.76`, `solver_catalogMode=3`, `solver_distortionCorrection=true`, `(+ 43 autres réglages ImageSolver)`
    4. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Gradient_auto.js`
-      paramètres : `outil=graxpert`, `dialogue=false`
+      paramètres : `dialogue=false`
    5. Script
       script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
       paramètres : `etapes=Combinaison_HOO>H`, `dialogue=false`
@@ -173,9 +173,9 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > LANCEMENT : masters seuls ouverts, double-clic puis Apply Global (rond bleu) ; pas en glissant (ImageSolver échoue sur une image en cours de traitement).
 > 
-> PRÉRÉGLÉ : conteneur, en une fois : Renommer_auto, LinearPatternSubtraction, Solver_auto (images couleur seulement : aucune ici, = R_C_Preparation_rapide) ; Gradient_auto, outil GraXpert (GraXpert sur toutes les images, = R_Gradient_auto_rapide) ; Lineaire_auto Combinaison_HOO, masters H, O fermés, Lineaire_auto C_HOO_lineaire (BXT, SXT, NXT_NB) et C_Extraction_HOO et C_Extraction_etoiles, HOO fermée, Etoiles_NB_auto (= R_C_Lineaire_rapide) ; résultat : H, O sans étoiles, linéaires, NBtoRGB_stars (étirée) et HOO_stars ; PUIS phases 4 et 5 : Statistical Stretch des canaux (Stat_canaux), combinaison (SHO_simple / HOO_simple) et NarrowbandNormalization ; résultat : HOO_etire.
+> PRÉRÉGLÉ : conteneur, en une fois : Renommer_auto, LinearPatternSubtraction, Solver_auto (images couleur seulement : aucune ici, = R_C_Preparation_rapide) ; Gradient_auto (= R_Gradient_auto_rapide) ; Lineaire_auto Combinaison_HOO, masters H, O fermés, Lineaire_auto C_HOO_lineaire (BXT, SXT, NXT_NB) et C_Extraction_HOO et C_Extraction_etoiles, HOO fermée, Etoiles_NB_auto (= R_C_Lineaire_rapide) ; résultat : H, O sans étoiles, linéaires, NBtoRGB_stars (étirée) et HOO_stars ; PUIS phases 4 et 5 : Statistical Stretch des canaux (Stat_canaux), combinaison (SHO_simple / HOO_simple) et NarrowbandNormalization ; résultat : HOO_etire.
 > 
-> À RÉGLER : masters seuls ouverts (enregistrés : ils sont fermés sans enregistrer) ; Conteneurs du workflow chargé ; double-clic puis Apply Global (pas en glissant) ; ENSUITE glisse R_C_Fin_rapide (P6) sur HOO_etire, puis la phase 7 ; module et application GraXpert installés.
+> À RÉGLER : masters seuls ouverts (enregistrés : ils sont fermés sans enregistrer) ; Conteneurs du workflow chargé ; double-clic puis Apply Global (pas en glissant) ; ENSUITE glisse R_C_Fin_rapide (P6) sur HOO_etire, puis la phase 7.
 > 
 > SI :
 > - une étape échoue -> la console dit laquelle ; lance les icônes R_ une par une pour voir où
@@ -183,7 +183,54 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - masters à garder -> enregistre-les AVANT : ils sont fermés sans enregistrer
 > - caméra couleur dual-band -> pas le turbo : chemin principal (DualBand_H, DualBand_O)
 > - s'arrêter à la phase 3 -> R_C_Preparation_rapide, R_Gradient_auto_rapide et R_C_Lineaire_rapide un par un
-> - « process GraXpert absent » -> installe le module et l'application GraXpert, ou lance les icônes R_ une par une avec GradientCorrection à la main
+
+#### T_Turbo_debut_graxpert — ProcessContainer
+   1. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Renommer_auto.js`
+      paramètres : `fermerAutocrop=true`, `dialogue=false`
+   2. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/LPS_UnClic.js`
+      paramètres : `correctColumns=false`, `correctEntireImage=true`, `defectTableFilePath=`, `layersToRemove=9`, `rejectionLimit=3`, `globalRejection=true`, `globalRejectionLimit=5`, `autoBackground=true`, `backgroundReferenceLeft=0`, `backgroundReferenceTop=0`, `backgroundReferenceWidth=512`, `backgroundReferenceHeight=512`, `allOpenImages=true`, `closeWorkingImages=true`, `vues=L,R,G,B`, `dialogue=false`
+   3. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/GC_Solver_auto.js`
+      paramètres : `gradient=false`, `solve=true`, `solveTout=false`, `defaultDate=2020-01-01T00:00:00`, `dialogue=false`, `metadata_focal=2939`, `metadata_xpixsz=3.76`, `solver_catalogMode=3`, `solver_distortionCorrection=true`, `(+ 43 autres réglages ImageSolver)`
+   4. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Gradient_auto.js`
+      paramètres : `outil=graxpert`, `dialogue=false`
+   5. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
+      paramètres : `etapes=Combinaison_HOO>H`, `dialogue=false`
+   6. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
+      paramètres : `views=H, O`, `dialogue=false`
+   7. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
+      paramètres : `etapes=C_HOO_lineaire>HOO ; C_Extraction_HOO>HOO ; C_Extraction_etoiles>HOO_stars`, `dialogue=false`
+   8. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Fermer_vues.js`
+      paramètres : `views=HOO`, `dialogue=false`
+   9. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Etoiles_NB_auto.js`
+      paramètres : `h=H_stars`, `o=O_stars`, `s=`, `ratio=0.30`, `linearfit=true`, `stretch=5.0`, `boost=1.00`, `scnr=false`, `nom=NBtoRGB_stars`, `fermer=true`, `dialogue=false`
+   10. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Stat_canaux.js`
+      paramètres : `vues=H,O`, `cible=0.25`, `sigma=5.0`, `dialogue=false`
+   11. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
+      paramètres : `etapes=HOO_simple>H ; NBN_HOO*>HOO_etire`, `dialogue=false`
+
+> comme T_Turbo_debut (phases 1 à 5) mais avec GraXpert au lieu de GradientCorrection : Lune ou gradient qui résiste ; risque d'enlever des voiles faibles.
+> 
+> LANCEMENT : masters seuls ouverts, double-clic puis Apply Global (rond bleu) ; pas en glissant (ImageSolver échoue sur une image en cours de traitement).
+> 
+> PRÉRÉGLÉ : conteneur, en une fois : comme T_Turbo_debut, mais l'étape de gradient est GraXpert (Gradient_auto.js, outil = graxpert) au lieu de GradientCorrection ; PUIS phases 4 et 5 : Statistical Stretch des canaux (Stat_canaux), combinaison (SHO_simple / HOO_simple) et NarrowbandNormalization ; résultat : HOO_etire.
+> 
+> À RÉGLER : masters seuls ouverts (enregistrés : ils sont fermés sans enregistrer) ; Conteneurs du workflow chargé ; double-clic puis Apply Global (pas en glissant) ; ENSUITE glisse R_C_Fin_rapide (P6) sur HOO_etire, puis la phase 7.
+> 
+> SI :
+> - une étape échoue -> lance les icônes R_ une par une pour voir laquelle
+> - « process GraXpert absent » -> installe le module et l'application GraXpert
+> - s'arrêter à la phase 3 -> R_C_Preparation_rapide, R_Gradient_auto_rapide et R_C_Lineaire_rapide un par un
 
 ## P2_Gradient
 
@@ -241,17 +288,16 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - cible au sud au-delà de −15° environ (et narrowband au-delà de +75°) -> pas de référence MARS : GradientCorrection ou DBE
 > - gradient restant -> Gradient scale 512 puis 256
 
-#### E08_GraXpert — GraXpert
-   backgroundExtraction=true ; smoothing=0.000 ; createBackground=false ; denoising=false ; deconvolution=false ; replaceImage=true
+#### E08_GradientCorrection — GradientCorrection
+   reference=0.50 ; lowThreshold=0.20 ; lowTolerance=0.50 ; highThreshold=0.05 ; highTolerance=0.00 ; iterations=15 ; scale=5.00 ; smoothness=0.60 ; downsamplingFactor=16 ; protection=true ; protectionThreshold=0.10 ; protectionAmount=0.50 ; protectionSmoothingFactor=16 ; lowClippingLevel=0.000076 ; automaticConvergence=true ; convergenceLimit=0.00001000 ; maxIterations=10 ; useSimplification=false ; simplificationDegree=1 ; simplificationScale=1024 ; generateSimpleModel=false ; generateGradientModel=false ; generateProtectionMasks=false ; gridSamplingDelta=16
 
-> PRÉRÉGLÉ : process GraXpert (module DeepSkyForge) : extraction de fond par IA, Correction Subtraction, Smoothing 0, modèle IA recommandé, image remplacée ; ni débruitage ni déconvolution.
+> PRÉRÉGLÉ : valeurs par défaut, Structure protection activée.
 > 
-> À RÉGLER : glisse sur chaque master linéaire (S, H, O ; RGB aussi), après MGC + MARS (chemin principal ; GradientCorrection en option) ; une seule fois : application GraXpert 4.0.0 ou plus installée, module ajouté par le dépôt https://pixinsight.deepskyforge.com/update/graxpert-process/.
+> À RÉGLER : rien ; contrôle le modèle de gradient.
 > 
 > SI :
-> - gradient très fort, vignettage -> Correction Division
-> - nébuleuse qui remplit le champ, fond rongé -> DBE ou GradientCorrection
-> - process introuvable -> installe le module (dépôt DeepSkyForge) et l'application GraXpert
+> - gradient dans les coins -> baisse Gradient scale
+> - nébuleuse assombrie -> monte Protection amount
 
 ### P2_options
 
@@ -297,18 +343,20 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > - points rouges -> Tolerance 1,0 à 1,5
 > - vignettage -> Division
 
-#### Opt_GradientCorrection — GradientCorrection
-   reference=0.50 ; lowThreshold=0.20 ; lowTolerance=0.50 ; highThreshold=0.05 ; highTolerance=0.00 ; iterations=15 ; scale=5.00 ; smoothness=0.60 ; downsamplingFactor=16 ; protection=true ; protectionThreshold=0.10 ; protectionAmount=0.50 ; protectionSmoothingFactor=16 ; lowClippingLevel=0.000076 ; automaticConvergence=true ; convergenceLimit=0.00001000 ; maxIterations=10 ; useSimplification=false ; simplificationDegree=1 ; simplificationScale=1024 ; generateSimpleModel=false ; generateGradientModel=false ; generateProtectionMasks=false ; gridSamplingDelta=16
+#### Opt_GraXpert — GraXpert
+   backgroundExtraction=true ; smoothing=0.000 ; createBackground=false ; denoising=false ; deconvolution=false ; replaceImage=true
 
-> OPTION — à la place de GraXpert : GraXpert absent ou qui assombrit la nébuleuse (voiles faibles enlevés).
+> OPTION — à la place de GradientCorrection (ou de MGC + MARS) : extraction de fond par IA de GraXpert (Subtraction, smoothing 0) sur chaque master linéaire
+> Module DeepSkyForge et application GraXpert 4.0.0 ou plus installés.
 > 
-> PRÉRÉGLÉ : valeurs par défaut, Structure protection activée.
+> PRÉRÉGLÉ : process GraXpert (module DeepSkyForge) : extraction de fond par IA, Correction Subtraction, Smoothing 0, modèle IA recommandé, image remplacée ; ni débruitage ni déconvolution.
 > 
-> À RÉGLER : rien ; contrôle le modèle de gradient.
+> À RÉGLER : glisse sur chaque master linéaire (S, H, O ; RGB aussi), à la place de GradientCorrection ; une seule fois : application GraXpert 4.0.0 ou plus installée, module ajouté par le dépôt https://pixinsight.deepskyforge.com/update/graxpert-process/.
 > 
 > SI :
-> - gradient dans les coins -> baisse Gradient scale
-> - nébuleuse assombrie -> monte Protection amount
+> - gradient très fort, vignettage -> Correction Division
+> - nébuleuse qui remplit le champ, fond rongé -> DBE ou GradientCorrection
+> - process introuvable -> installe le module (dépôt DeepSkyForge) et l'application GraXpert
 
 #### Opt_LinearFit_ref_H — LinearFit
    referenceViewId=H ; rejectLow=0.000000 ; rejectHigh=0.920000
@@ -323,20 +371,35 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 
 #### R_Gradient_auto_rapide — Script
    script `$PXI_SRCDIR/scripts/clodoweg/Gradient_auto.js`
-   paramètres : `outil=graxpert`
 
-> MODE RAPIDE, à la place de toute la phase 2 (ImageSolver, SPFC, MGC + MARS, GraXpert) : GraXpert sur TOUTES les images ouvertes, après R_C_Preparation_rapide (astrométrie déjà faite) ; ensuite la phase 3 du chemin principal (Combinaison).
+> MODE RAPIDE, à la place de toute la phase 2 (ImageSolver, SPFC, MGC + MARS, GradientCorrection) : GradientCorrection sur TOUTES les images ouvertes, après R_C_Preparation_rapide (astrométrie déjà faite) ; ensuite la phase 3 du chemin principal (Combinaison).
 > 
 > LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
 > 
-> PRÉRÉGLÉ : script Gradient_auto.js, outil = graxpert : GraXpert (IA, Subtraction, smoothing 0, image remplacée) sur TOUTES les images ouvertes (masters narrowband ; RGB aussi en RGB + SHO), rien d'autre ; pas de SPFC ni de MGC + MARS ; images *_stars ignorées ; une erreur n'arrête pas les autres.
+> PRÉRÉGLÉ : script Gradient_auto.js : GradientCorrection (sans modèle de gradient) sur TOUTES les images ouvertes (masters narrowband ; RGB aussi en RGB + SHO), rien d'autre ; pas de SPFC ni de MGC + MARS ; images *_stars ignorées ; une erreur n'arrête pas les autres.
 > 
-> À RÉGLER : double-clic puis Apply Global, masters ouverts, après R_C_Preparation_rapide (astrométrie déjà faite) ; remplace toute la phase 2 ; ensuite la phase 3 ; module et application GraXpert installés ; copie Gradient_auto.js dans src/scripts/clodoweg.
+> À RÉGLER : double-clic puis Apply Global, masters ouverts, après R_C_Preparation_rapide (astrométrie déjà faite) ; remplace toute la phase 2 ; ensuite Combinaison_SHO (ou Combinaison_HOO) en phase 3 ; copie Gradient_auto.js dans src/scripts/clodoweg.
+> 
+> SI :
+> - O (ou un autre canal) garde un gradient, Lune -> Ctrl+Z, puis chemin principal de la phase 2 (SPFC, MGC + MARS) pour ce master
+> - nébuleuse assombrie -> Ctrl+Z, GradientCorrection à la main avec Protection amount plus haut
+> - nébuleuse qui remplit le champ -> chemin principal (MGC + MARS) ou DBE
+
+#### R_Gradient_auto_graxpert_rapide — Script
+   script `$PXI_SRCDIR/scripts/clodoweg/Gradient_auto.js`
+   paramètres : `outil=graxpert`
+
+> MODE RAPIDE, à la place de R_Gradient_auto_rapide (même place) : GraXpert au lieu de GradientCorrection, sur TOUTES les images ouvertes ; module et application GraXpert installés.
+> 
+> LANCEMENT : glisse l'icône sur l'image = exécution directe avec ces réglages ; double-clic puis Apply Global (rond bleu) = fenêtre de réglages (choix de l'image, curseurs, aperçu, triangle pour enregistrer une nouvelle icône).
+> 
+> PRÉRÉGLÉ : script Gradient_auto.js, outil = graxpert : GraXpert (IA, Subtraction, smoothing 0, image remplacée) sur TOUTES les images ouvertes ; images *_stars ignorées ; une erreur n'arrête pas les autres.
+> 
+> À RÉGLER : double-clic puis Apply Global, après R_C_Preparation_rapide, à la place de R_Gradient_auto_rapide ; ensuite la phase 3 (R_C_Lineaire_rapide).
 > 
 > SI :
 > - « process GraXpert absent » -> installe le module (dépôt DeepSkyForge) et l'application GraXpert 4.0.0 ou plus
-> - nébuleuse assombrie ou voiles faibles enlevés -> Ctrl+Z, Opt_GradientCorrection à la main
-> - nébuleuse qui remplit le champ -> chemin principal (MGC + MARS) ou DBE
+> - une image en erreur -> refais-la avec Opt_GraXpert
 
 ## P3_Lineaire
 

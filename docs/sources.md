@@ -1611,3 +1611,4 @@ Demande de l'utilisateur : « on, avais pas une skill de mise a jour? », puis �
 - Officiel — [MARS DR2, ScopeTrader](https://scopetrader.com/mars-dr2-for-pixinsight-released/) *(résumé)* : pas de DR3 trouvé.
 - Rien trouvé : PixInsight 1.9.7 ; panne VizieR en novembre 2026.
 - Non revérifié dans ce passage (à refaire par sujet) : pages de documentation et tutoriels déjà notés (BXT, NXT, SXT, SPCC, MAS, LHE, HDRMT…), contenu détaillé des règles CPD.
+- 21 novembre 2026 : « oui » (proposition : remettre GradientCorrection par défaut en narrowband, process GraXpert retiré par DeepSkyForge). Fait : annulation du changement du 20 novembre (git revert) : GradientCorrection au chemin principal P2, dans R_Gradient_auto_rapide et T_Turbo_debut ; Opt_GraXpert, R_Gradient_auto_graxpert_rapide et T_Turbo_debut_graxpert de retour en SHO sans RGB, RGB + SHO et HOO.

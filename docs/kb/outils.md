@@ -281,7 +281,7 @@ Paramètres
 
 - **Replace target image** : Coché
 
-#### GraXpert (module DeepSkyForge) — narrowband : chemin principal P2, R_Gradient_auto_rapide et T_Turbo_debut (par défaut depuis le 20 novembre 2026, GradientCorrection en option) ; LRGB et LHaRGB : Opt_GraXpert, R_Gradient_auto_graxpert_rapide, T_Turbo_debut_graxpert (20 novembre 2026)
+#### GraXpert (module DeepSkyForge, RETIRÉ en novembre 2026) — variantes dans les 5 workflows : Opt_GraXpert, R_Gradient_auto_graxpert_rapide, T_Turbo_debut_graxpert (GradientCorrection par défaut partout)
 GRATUIT
 
 **À régler :**

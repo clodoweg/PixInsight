@@ -1737,33 +1737,6 @@ for _st in (lrgb, lhargb):
     assert 'Turbo_debut_graxpert_instance' in _tx
     insert_after(_st, 'Turbo_debut', [(('Turbo_debut_graxpert', _tx), '')])
 
-# GraXpert par défaut en narrowband (demande de l'utilisateur, 20 novembre 2026 : « je veux aussi qu'ils utilisent le nouveau script de
-# graexpert partout », réponse « GraXpert remplace tout ») : GraXpert au chemin principal à la place de GradientCorrection (qui passe en
-# option), R_Gradient_auto_rapide et T_Turbo_debut en mode GraXpert ; R_Gradient_auto_graxpert_rapide et T_Turbo_debut_graxpert supprimés
-_GA = ('Gradient_auto.js</parameter>\n         <parameter id="md5sum"></parameter>\n         <table id="parameters" rows="1">\n'
-       '            <tr>\n               <td id="id">dialogue</td>')
-_GAX = _GA.replace('rows="1"', 'rows="2"').replace('            <tr>\n               <td id="id">dialogue</td>',
-       '            <tr>\n               <td id="id">outil</td>\n               <td id="value">graxpert</td>\n            </tr>\n'
-       '            <tr>\n               <td id="id">dialogue</td>')
-for _p in ('RSHO', 'SHO', 'HOO'):
-    _t = RAPIDE_NOTE[_p][2].replace('MGC + MARS, GradientCorrection) : GradientCorrection sur toutes', 'MGC + MARS, GraXpert) : GraXpert sur toutes')
-    assert 'GraXpert sur toutes' in _t
-    RAPIDE_NOTE[_p][2] = _t
-for _st in (rgbsho, sho, hoo):
-    _i, _j = _st.index(pick(_st, 'GradientCorrection')), _st.index(pick(_st, 'GraXpert'))
-    _st[_i], _st[_j] = _st[_j], _st[_i]
-    _k = _st.index(pick(_st, 'Gradient_auto_rapide'))
-    (_n, _x), _d = _st[_k]
-    _r0 = '<table id="parameters" rows="0"/>'
-    assert _x.count(_r0) == 1
-    _st[_k] = ((_n, _x.replace(_r0, '<table id="parameters" rows="1">\n         <tr>\n            <td id="id">outil</td>\n'
-                                     '            <td id="value">graxpert</td>\n         </tr>\n      </table>')), _d)
-    _k = _st.index(pick(_st, 'Turbo_debut'))
-    (_n, _x), _d = _st[_k]
-    assert _x.count(_GA) == 1
-    _st[_k] = ((_n, _x.replace(_GA, _GAX)), _d)
-    _st[:] = [x for x in _st if x[0][0] not in ('Gradient_auto_graxpert_rapide', 'Turbo_debut_graxpert')]
-
 for fn, pre, title, steps in [
     ('Workflow-LRGB.xpsm', 'LRGB', 'Workflow LRGB', lrgb),
     ('Workflow-LHaRGB.xpsm', 'LHA', 'Workflow LHaRGB', lhargb),
