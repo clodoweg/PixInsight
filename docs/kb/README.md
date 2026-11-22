@@ -18,7 +18,7 @@ Source de référence pour répondre aux questions de l'utilisateur et modifier 
 
 ## Utilisateur
 
-PixInsight 1.9.5 sur PC Windows ; CDK17 (2 939 mm) + QHY600 (IMX455, 3,76 µm, 0,264″/px) ; filtres Antlia V Pro LRGB et Antlia 3 nm ; RC Astro (BXT, NXT, SXT), GHS. Une centaine de galaxies, masters déjà empilés. Galaxies : `Conteneurs-LRGB.xpsm`, `Conteneurs-LHaRGB.xpsm` (travaillés en premier). Nébuleuses : beaucoup de SHO et de RGB + SHO (`Conteneurs-SHO-sans-RGB.xpsm`, `Conteneurs-RGB-SHO.xpsm`, aussi `Conteneurs-HOO.xpsm`), chantier en cours depuis le 8 octobre 2026. Préférences : voir CLAUDE.md.
+PixInsight 1.9.6 (build 1713 ou plus récente) sur PC Windows ; CDK17 (2 939 mm) + QHY600 (IMX455, 3,76 µm, 0,264″/px) ; filtres Antlia V Pro LRGB et Antlia 3 nm ; RC Astro (BXT, NXT, SXT), GHS. Une centaine de galaxies, masters déjà empilés. Galaxies : `Conteneurs-LRGB.xpsm`, `Conteneurs-LHaRGB.xpsm` (travaillés en premier). Nébuleuses : beaucoup de SHO et de RGB + SHO (`Conteneurs-SHO-sans-RGB.xpsm`, `Conteneurs-RGB-SHO.xpsm`, aussi `Conteneurs-HOO.xpsm`), chantier en cours depuis le 8 octobre 2026. Préférences : voir CLAUDE.md.
 
 ## Règles de mise à jour
 

@@ -36,7 +36,7 @@ Pour chaque outil du périmètre, cherche (WebSearch, mode `standard` d'abord, `
 
 Mots de recherche utiles : nom de l'outil + « release notes », « new version », « 2026 », nom du paramètre.
 
-Pour chaque nouveauté trouvée : lis-la, note ce qui change pour l'utilisateur (PixInsight 1.9.5 sur PC Windows, CDK17 + QHY600, filtres Antlia : voir `CLAUDE.md`).
+Pour chaque nouveauté trouvée : lis-la, note ce qui change pour l'utilisateur (PixInsight 1.9.6 sur PC Windows, CDK17 + QHY600, filtres Antlia : voir `CLAUDE.md`).
 
 ## 3. Recouper
 

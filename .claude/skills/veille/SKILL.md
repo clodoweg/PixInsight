@@ -36,7 +36,7 @@ Recherche en mode `standard`, puis `extended` pour ce qui est récent ou maigre.
 Pour chaque nouveauté :
 
 - **Quoi** : outil ou méthode, version, date, source (Officiel / Tutoriel / Forum).
-- **Pour toi** : est-ce que l'utilisateur l'utilise déjà (icône, étape) ? Quel workflow est concerné (LRGB, LHaRGB, RGB + SHO, SHO sans RGB, HOO) ? Compatible avec PixInsight 1.9.5 sur PC Windows, CDK17 + QHY600, filtres Antlia ?
+- **Pour toi** : est-ce que l'utilisateur l'utilise déjà (icône, étape) ? Quel workflow est concerné (LRGB, LHaRGB, RGB + SHO, SHO sans RGB, HOO) ? Compatible avec PixInsight 1.9.6 sur PC Windows, CDK17 + QHY600, filtres Antlia ?
 - **Intérêt** : fort / moyen / faible, en une phrase (gain de qualité, de temps, de simplicité).
 - **Fiabilité** : recoupé par deux sources ? divergence ? position de l'éditeur ?
 
