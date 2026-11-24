@@ -2538,7 +2538,7 @@ $T[0] + w*(HaNB - med(HaNB))</parameter>
       <table id="outputData" rows="0"/>
    </instance>
    <instance class="PixelMath" version="256" id="Opt_H_dans_L_instance">
-      <description>OPTION — régions HII plus nettes (H injecté dans la luminance).&#10;&#10;PRÉRÉGLÉ : a = 1,0 ; L = max(L, a·HaNB), sur L elle-même.&#10;&#10;À RÉGLER : glisse sur L ; HaNB (Continuum_auto) doit exister.&#10;&#10;SI :&#10;- couleurs délavées -&gt; baisse a</description>
+      <description>OPTION — régions HII plus nettes (H injecté dans la luminance)&#10;HaNB avec résidus d'étoiles -&gt; C_H_dans_L à la place.&#10;&#10;PRÉRÉGLÉ : a = 1,0 ; L = max(L, a·HaNB), sur L elle-même.&#10;&#10;À RÉGLER : glisse sur L ; HaNB (Continuum_auto) doit exister.&#10;&#10;SI :&#10;- couleurs délavées -&gt; baisse a&#10;- étoiles résiduelles de HaNB remises dans L -&gt; C_H_dans_L à la place (SXT sur HaNB d'abord)</description>
       <parameter id="expression">a = 1.0;
 max($T, HaNB*a)</parameter>
       <parameter id="expression1"></parameter>
@@ -2567,6 +2567,24 @@ max($T, HaNB*a)</parameter>
       <parameter id="newImageColorSpace" value="SameAsTarget"/>
       <parameter id="newImageSampleFormat" value="SameAsTarget"/>
       <table id="outputData" rows="0"/>
+   </instance>
+   <instance class="ProcessContainer" id="Opt_C_H_dans_L_instance">
+      <description>OPTION — régions HII plus nettes dans L, sans remettre d'étoiles : à la place de H_dans_L, après E16_C_RGB_bruit et avant E17_Fermer_continuum.&#10;&#10;LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).&#10;&#10;PRÉRÉGLÉ : conteneur de scripts : Lineaire_auto lance E13_SXT_L_lineaire sur HaNB (étoiles résiduelles retirées), puis Opt_H_dans_L sur L : L = max(L, a·HaNB), a = 1,0 ; un Ctrl+Z sur L.&#10;&#10;À RÉGLER : après E15_CombineHaWithRGB et E16_C_RGB_bruit (HaNB et L linéaire sans étoiles ouvertes), avant E17_Fermer_continuum ; Conteneurs-LHaRGB chargé ; double-clic puis Apply Global (pas en glissant).&#10;&#10;SI :&#10;- nœuds HII compacts disparus de HaNB -&gt; Ctrl+Z sur L, ferme HaNB, refais E14_Continuum_auto, puis Opt_H_dans_L seule (ou masque noir sur ces nœuds dans HaNB avant SXT)&#10;- couleurs délavées -&gt; double-clic sur Opt_H_dans_L : baisse a (c'est elle qui est lancée)&#10;- HaNB absente -&gt; lance E14_Continuum_auto avant</description>
+      <instance class="Script" version="256" enabled="true">
+         <parameter id="filePath">$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js</parameter>
+         <parameter id="md5sum"></parameter>
+         <table id="parameters" rows="2">
+            <tr>
+               <td id="id">etapes</td>
+               <td id="value">SXT_L_lineaire&gt;HaNB ; Opt_H_dans_L*&gt;L</td>
+            </tr>
+            <tr>
+               <td id="id">dialogue</td>
+               <td id="value">false</td>
+            </tr>
+         </table>
+         <parameter id="information"></parameter>
+      </instance>
    </instance>
    <instance class="NoOperation" version="256" id="Opt_NBRGBCombination_instance">
       <description>OPTION — alternative à la soustraction du continuum.&#10;&#10;PRÉRÉGLÉ : rien (icône-note).&#10;&#10;À RÉGLER : RGB bande 100 nm, H bande 3 nm, Scale 1,2.&#10;&#10;SI :&#10;- H trop discret -&gt; Scale 3 à 5</description>
@@ -8211,12 +8229,13 @@ max($T,f1)</parameter>
    <icon id="Opt_H_dans_RGB" instance="Opt_H_dans_RGB_instance" xpos="469" ypos="384" workspace="Workspace01"/>
    <icon id="Opt_H_dans_RGB_v2" instance="Opt_H_dans_RGB_v2_instance" xpos="469" ypos="414" workspace="Workspace01"/>
    <icon id="Opt_H_dans_L" instance="Opt_H_dans_L_instance" xpos="469" ypos="444" workspace="Workspace01"/>
-   <icon id="Opt_NBRGBCombination" instance="Opt_NBRGBCombination_instance" xpos="469" ypos="474" workspace="Workspace01"/>
-   <icon id="Opt_STF" instance="Opt_STF_instance" xpos="469" ypos="504" workspace="Workspace01"/>
-   <icon id="P3_rapide" instance="P3_rapide_instance" xpos="469" ypos="550" workspace="Workspace01"/>
-   <icon id="R_C_P3_rapide" instance="R_C_P3_rapide_instance" xpos="469" ypos="584" workspace="Workspace01"/>
-   <icon id="R_Main_continuum" instance="R_Main_continuum_instance" xpos="469" ypos="614" workspace="Workspace01"/>
-   <icon id="R_C_Ha_RGB_rapide" instance="R_C_Ha_RGB_rapide_instance" xpos="469" ypos="644" workspace="Workspace01"/>
+   <icon id="Opt_C_H_dans_L" instance="Opt_C_H_dans_L_instance" xpos="469" ypos="474" workspace="Workspace01"/>
+   <icon id="Opt_NBRGBCombination" instance="Opt_NBRGBCombination_instance" xpos="469" ypos="504" workspace="Workspace01"/>
+   <icon id="Opt_STF" instance="Opt_STF_instance" xpos="469" ypos="534" workspace="Workspace01"/>
+   <icon id="P3_rapide" instance="P3_rapide_instance" xpos="469" ypos="580" workspace="Workspace01"/>
+   <icon id="R_C_P3_rapide" instance="R_C_P3_rapide_instance" xpos="469" ypos="614" workspace="Workspace01"/>
+   <icon id="R_Main_continuum" instance="R_Main_continuum_instance" xpos="469" ypos="644" workspace="Workspace01"/>
+   <icon id="R_C_Ha_RGB_rapide" instance="R_C_Ha_RGB_rapide_instance" xpos="469" ypos="674" workspace="Workspace01"/>
    <icon id="P4_Etirement" instance="P4_Etirement_instance" xpos="647" ypos="20" workspace="Workspace01"/>
    <icon id="E18_GHS_1_premier" instance="E18_GHS_1_premier_instance" xpos="647" ypos="64" workspace="Workspace01"/>
    <icon id="E19_GHS_2_contraste" instance="E19_GHS_2_contraste_instance" xpos="647" ypos="94" workspace="Workspace01"/>

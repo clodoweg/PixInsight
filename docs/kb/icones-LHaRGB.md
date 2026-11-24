@@ -535,7 +535,8 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 #### Opt_H_dans_L — PixelMath
    expression = `a = 1.0; max($T, HaNB*a)` ; useSingleExpression=true ; symbols = `a` ; clearImageCacheAndExit=false ; cacheGeneratedImages=false ; generateOutput=true ; singleThreaded=false ; optimization=true ; use64BitWorkingImage=false ; rescale=false ; rescaleLower=0 ; rescaleUpper=1 ; truncate=true ; truncateLower=0 ; truncateUpper=1 ; createNewImage=false ; showNewImage=true ; newImageId= ; newImageWidth=0 ; newImageHeight=0 ; newImageAlpha=false ; newImageColorSpace=SameAsTarget ; newImageSampleFormat=SameAsTarget
 
-> OPTION — régions HII plus nettes (H injecté dans la luminance).
+> OPTION — régions HII plus nettes (H injecté dans la luminance)
+> HaNB avec résidus d'étoiles -> C_H_dans_L à la place.
 > 
 > PRÉRÉGLÉ : a = 1,0 ; L = max(L, a·HaNB), sur L elle-même.
 > 
@@ -543,6 +544,25 @@ Préfixes : `E##_` chemin principal (dans l'ordre), `Opt_` option, `R_` mode rap
 > 
 > SI :
 > - couleurs délavées -> baisse a
+> - étoiles résiduelles de HaNB remises dans L -> C_H_dans_L à la place (SXT sur HaNB d'abord)
+
+#### Opt_C_H_dans_L — ProcessContainer
+   1. Script
+      script `$PXI_SRCDIR/scripts/clodoweg/Lineaire_auto.js`
+      paramètres : `etapes=SXT_L_lineaire>HaNB ; Opt_H_dans_L*>L`, `dialogue=false`
+
+> OPTION — régions HII plus nettes dans L, sans remettre d'étoiles : à la place de H_dans_L, après E16_C_RGB_bruit et avant E17_Fermer_continuum.
+> 
+> LANCEMENT : double-clic puis Apply Global (rond bleu) ; pas en glissant (les scripts du conteneur choisissent eux-mêmes leurs vues).
+> 
+> PRÉRÉGLÉ : conteneur de scripts : Lineaire_auto lance E13_SXT_L_lineaire sur HaNB (étoiles résiduelles retirées), puis Opt_H_dans_L sur L : L = max(L, a·HaNB), a = 1,0 ; un Ctrl+Z sur L.
+> 
+> À RÉGLER : après E15_CombineHaWithRGB et E16_C_RGB_bruit (HaNB et L linéaire sans étoiles ouvertes), avant E17_Fermer_continuum ; Conteneurs-LHaRGB chargé ; double-clic puis Apply Global (pas en glissant).
+> 
+> SI :
+> - nœuds HII compacts disparus de HaNB -> Ctrl+Z sur L, ferme HaNB, refais E14_Continuum_auto, puis Opt_H_dans_L seule (ou masque noir sur ces nœuds dans HaNB avant SXT)
+> - couleurs délavées -> double-clic sur Opt_H_dans_L : baisse a (c'est elle qui est lancée)
+> - HaNB absente -> lance E14_Continuum_auto avant
 
 #### Opt_NBRGBCombination — NoOperation
 

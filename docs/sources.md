@@ -1633,3 +1633,10 @@ Demande de l'utilisateur : « on, avais pas une skill de mise a jour? », puis �
 - Rien trouvé : PixInsight 1.9.7 ; panne VizieR en novembre 2026.
 - Non revérifié dans ce passage (à refaire par sujet) : pages de documentation et tutoriels déjà notés (BXT, NXT, SXT, SPCC, MAS, LHE, HDRMT…), contenu détaillé des règles CPD.
 - 21 novembre 2026 : « oui » (proposition : remettre GradientCorrection par défaut en narrowband, process GraXpert retiré par DeepSkyForge). Fait : annulation du changement du 20 novembre (git revert) : GradientCorrection au chemin principal P2, dans R_Gradient_auto_rapide et T_Turbo_debut ; Opt_GraXpert, R_Gradient_auto_graxpert_rapide et T_Turbo_debut_graxpert de retour en SHO sans RGB, RGB + SHO et HOO.
+
+## Ha dans L sans étoiles (24 novembre 2026)
+
+Demandes de l'utilisateur : « Dans LHRGB je ne peux pas integrer le H avec L pour gagner en quyalité? », « je met le H ou le HaNB dans L ? », « il reste quand meme des etoiles dans la HaNB », puis « oui » à un conteneur.
+- Fait : option Opt_C_H_dans_L (LHaRGB seul, P3) : Lineaire_auto lance E13_SXT_L_lineaire sur HaNB, puis Opt_H_dans_L (copie puis recopie, Ctrl+Z) sur L. LRGB inchangé.
+- Raisonnement de la fiche, sans source externe nouvelle : HaNB = H − continuum (code de ContinuumSubtraction.js déjà noté plus haut) ; résidus d'étoiles dus aux couleurs et PSF différentes entre H et R. SXT sur une image grise linéaire : usage déjà fait sur L (SXT_L_lineaire).
+- Non vérifié : SXT peut retirer des nœuds HII compacts de HaNB ; pas encore testé dans PixInsight.

@@ -199,7 +199,7 @@ def shorten(xml, prefix, base):
     drag = md5 = None
     if xml.lstrip().startswith('<instance class="ProcessContainer"'):
         # conteneur (retour de l'utilisateur) : rien ne disait de le GLISSER ; le rond Apply Global échoue avec des process natifs
-        drag = 'cont_global' if '/GC_Solver_auto.js' in xml else 'cont_scripts' if base in ('C_Lineaire_rapide', 'C_MAS_canaux_rapide', 'C_Stat_canaux_rapide', 'C_Palette_rapide', 'Turbo_palette', 'C_Continuum_prep', 'C_Continuum_fin', 'C_RGB_etoiles_rapide') else 'cont'
+        drag = 'cont_global' if '/GC_Solver_auto.js' in xml else 'cont_scripts' if base in ('C_Lineaire_rapide', 'C_MAS_canaux_rapide', 'C_Stat_canaux_rapide', 'C_Palette_rapide', 'Turbo_palette', 'C_Continuum_prep', 'C_Continuum_fin', 'C_RGB_etoiles_rapide', 'C_H_dans_L') else 'cont'
         if '<description>' not in xml:
             xml = re.sub(r'(<instance class="ProcessContainer" id="[^"]*">)', r'\1\n      <description></description>', xml, count=1)
     elif base in SCRIPTS and 'class="Script"' in xml:
@@ -1385,6 +1385,9 @@ for _st in (rgbsho, sho):
     # GHS_2_contraste retiré du rapide (demande de l'utilisateur, 14 novembre 2026 : GHS_2 en option)
     insert_after(_st, 'C_MAS_canaux_rapide', [(cont('C_Stat_canaux_rapide', [script('Stat_canaux', '')]), '')])
     insert_after(_st, 'NBN_SHO', [(cont('C_Palette_rapide', [lineaire_rapide('SHO_simple>H ; NBN_SHO*>SHO_etire')]), '')])   # S, H, O gardés ouverts (demande de l'utilisateur, 8 octobre 2026)
+# LHaRGB seul (demande de l'utilisateur, 24 novembre 2026 : HaNB garde des résidus d'étoiles ; « oui » à un conteneur) :
+# Opt_C_H_dans_L, Apply Global : Lineaire_auto lance E13_SXT_L_lineaire sur HaNB puis Opt_H_dans_L sur L
+insert_after(lhargb, 'H_dans_L', [(cont('C_H_dans_L', [lineaire_rapide('SXT_L_lineaire>HaNB ; Opt_H_dans_L*>L')]), '')])
 insert_after(rgbsho, 'Fermer_RGB', [(cont('C_RGB_etoiles_rapide', [lineaire_rapide('MAS*>RGB ; SXT_RGB_etire>RGB'), script('SCNR_etoiles_vert', ''), fermer('Fermer_RGB', 'RGB')]), '')])
 # RGB + SHO, continuum (demande de l'utilisateur, 8 octobre 2026 : « il faut pouvoir gerer le continuum aussi » ; choix : nettoyer H, O, S par le RGB,
 # RGB + SHO seulement) : options P3 avant Combinaison_SHO ; ContinuumSubtraction.js (SetiAstro, code 1.3.5 lu) accepte Ha, OIII, SII et un RGB
